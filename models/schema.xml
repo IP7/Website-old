@@ -1,0 +1,592 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database name="ip7" tablePrefix="ip7" defaultIdMethod="native">
+
+    <!-- === utilisateurs === -->
+    <table name="users" phpName="User">
+
+        <!-- == identification == -->
+        <column name="id"                    type="INTEGER"  required="true" primaryKey="true" autoIncrement="true"/>
+        <!-- login -->
+        <column name="username"              type="VARCHAR"  required="true" />
+        <!-- mot de passe -->
+        <column name="password"              type="VARCHAR"  required="true" />
+
+        <!-- type d'utilisateur, utilisé pour les droits. Plus le nombre est haut, plus
+             l'utilisateur a de droits. Exemples possibles:
+                 0 - visiteur
+                10 - membre
+                20 - admin
+             On garde de la place pour d'éventuels futurs ajouts.
+             -->
+        <column name="type"                  type="TINYINT"  required="true" defaultExpr="0" />
+
+        <!-- prénom -->
+        <column name="firstname"             type="VARCHAR"  required="true" />
+        <!-- nom -->
+        <column name="lastname"              type="VARCHAR"  required="true" />
+
+        <!-- == coordonnées == -->
+
+        <!-- e-mail -->
+        <column name="email"                 type="VARCHAR" />
+        <!-- tél -->
+        <column name="phone"                 type="VARCHAR" />
+        <!-- adresse -->
+        <column name="address"               type="VARCHAR" />
+
+        <!-- site web -->
+        <column name="website"               type="VARCHAR" />
+
+        <!-- date de naissance -->
+        <column name="birth_date"            type="DATE" />
+
+        <!-- == statistiques == -->
+
+        <!-- date de première inscription -->
+        <column name="first_entry"           type="DATE" />
+        <!-- date de dernière inscription -->
+        <column name="last_entry"            type="DATE" />
+
+        <!-- date de dernière visite -->
+        <column name="last_visit"            type="TIMESTAMP" />
+        <!-- nb de visites -->
+        <column name="visits_nb"             type="INTEGER" />
+
+        <!-- == configuration == -->
+
+        <!-- montrer l'e-mail publiquement -->
+        <column name="config_show_email"     type="BOOLEAN" />
+        <!-- montrer le vrai nom publiquement (à la place du pseudo) -->
+        <column name="config_show_real_name" type="BOOLEAN" />
+        <!-- désactiver le compte -->
+        <column name="deactivated"           type="BOOLEAN" />
+
+        <!-- == autres informations == -->
+
+        <!-- avatar (= id de fichier) -->
+        <column name="avatar_id"             type="INTEGER" />
+
+        <!-- description -->
+        <column name="description"           type="LONGVARCHAR"    lazyLoad="true" />
+
+        <!-- commentaires (pour la trésorerie) -->
+        <column name="comments"              type="LONGVARCHAR" lazyLoad="true" />
+
+
+        <!-- == index & clefs étrangères == -->
+
+        <foreign-key foreignTable="files" onDelete="setnull" onUpdate="cascade">
+            <reference local="avatar_id" foreign="id" />
+        </foreign-key>
+
+        <unique>
+            <unique-column name="username" />
+        </unique>
+    </table>
+
+    <!-- === cursus: L1,L2,L3,M1,M2 === -->
+    <table name="cursus" phpName="Cursus">
+
+        <!-- id -->
+        <column name="id"             type="INTEGER" required="true" primaryKey="true" autoIncrement="true"/>
+
+        <!-- nom -->
+        <column name="name"           type="VARCHAR" required="true" />
+
+        <!-- description -->
+        <column name="description"    type="LONGVARCHAR" lazyLoad="true" />
+
+        <!-- id du responsable -->
+        <column name="responsable_id" type="INTEGER" />
+
+        <!-- id de la newsletter associée (s'il y en a une) -->
+        <column name="newsletter_id" type="INTEGER" />
+
+        <!-- == index & clefs étrangères == -->
+
+        <unique>
+            <unique-column name="name" />
+        </unique>
+
+        <foreign-key foreignTable="users" onDelete="setnull" onUpdate="cascade">
+            <reference local="responsable_id" foreign="id" />
+        </foreign-key>
+
+        <foreign-key foreignTable="newsletters" onDelete="setnull" onUpdate="cascade">
+            <reference local="newsletter_id" foreign="id" />
+        </foreign-key>
+    </table>
+
+    <!-- cursus au(x)quel(s) sont inscrit les utilisateurs -->
+    <table name="users_cursus" isCrossRef="true">
+        <!-- id de l'utilisateur -->
+        <column name="user_id" type="INTEGER" primaryKey="true"/>
+        <!-- id du cursus -->
+        <column name="cursus_id" type="INTEGER" primaryKey="true"/>
+
+        <!-- == index & clefs étrangères == -->
+
+        <foreign-key foreignTable="users">
+            <reference local="user_id" foreign="id"/>
+        </foreign-key>
+        <foreign-key foreignTable="cursus">
+            <reference local="cursus_id" foreign="id"/>
+        </foreign-key>
+    </table>
+
+    <!-- === matières === -->
+    <table name="subjects" phpName="Subject">
+
+        <!-- id -->
+        <column name="id"          type="INTEGER" required="true" primaryKey="true" autoIncrement="true"/>
+
+        <!-- cursus correspondant -->
+        <column name="cursus_id"   type="SMALLINT" /> 
+
+        <!-- nom -->
+        <column name="name"        type="VARCHAR" required="true" />
+
+        <!-- description -->
+        <column name="description" type="LONGVARCHAR" />
+
+        <!-- == index & clefs étrangères == -->
+
+        <foreign-key foreignTable="cursus" onDelete="setnull" onUpdate="cascade">
+            <reference local="cursus_id" foreign="id" />
+        </foreign-key>
+
+        <unique>
+            <unique-column name="name" />
+            <unique-column name="cursus_id" />
+        </unique>
+    </table>
+
+    <!-- === fichiers === -->
+    <table name="files" phpName="File">
+
+        <!-- id -->
+        <column name="id"            type="INTEGER" required="true" primaryKey="true" autoIncrement="true"/>
+
+        <!-- == Informations basiques == -->
+
+        <!-- auteur (ou celui qui l'a déposé) -->
+        <column name="author_id"     type="INTEGER" />
+
+        <!-- nom (= titre, peut être différent du vrai nom du fichier stocké) -->
+        <column name="name"          type="VARCHAR" required="true" />
+
+        <!-- date à laquelle a été posté le fichier -->
+        <column name="date"          type="TIMESTAMP" required="true" />
+
+        <!-- courte description -->
+        <column name="description"   type="VARCHAR" />
+
+        <!-- type du fichier
+                - text : tout ce qui est full text (non binaire)
+                - image : images
+                - pdf   : PDF,PS
+                - binary : autres fichiers binaires
+        -->
+        <column name="file_type"     type="ENUM" valueSet="text,image,pdf,binary" />
+
+        <!-- == accès == -->
+
+        <!-- chemin d'accès (comprenant le « vrai » nom du fichier) -->
+        <column name="path"          type="VARCHAR" required="true" />
+
+        <!-- droits d'accès -->
+        <column name="access_rights" type="TINYINT" defaultExpr="0" />
+
+        <!-- == index & clefs étrangères == -->
+
+        <unique>
+            <unique-column name="path" />
+        </unique>
+
+        <foreign-key foreignTable="users" onDelete="setnull" onUpdate="cascade">
+            <reference local="author_id" foreign="id" />
+        </foreign-key>
+    </table>
+
+    <!-- === newsletter === -->
+    <table name="newsletters" phpName="Newsletter">
+        <!-- id -->
+        <column name="id"   type="INTEGER" required="true" primaryKey="true" autoIncrement="true"/>
+
+        <!-- nom -->
+        <column name="name" type="VARCHAR" required="true" />
+
+        <!-- courte description -->
+        <column name="desc" type="VARCHAR" />
+    </table>
+
+    <!-- message de newsletter -->
+    <table name="newsletters_posts" phpName="NewsletterPost">
+
+        <!-- id -->
+        <column name="id"            type="INTEGER" required="true" primaryKey="true" autoIncrement="true"/>
+
+        <!-- id de la newsletter correspondante -->
+        <column name="newsletter_id" type="INTEGER" />
+        
+        <!-- date d'envoi -->
+        <column name="date"          type="TIMESTAMP" required="true" />
+
+        <!-- contenu -->
+        <column name="text"          type="LONGVARCHAR" required="true" lazyLoad="true" />
+
+        <!-- == index & clefs étrangères == -->
+
+        <foreign-key foreignTable="newsletters" onDelete="setnull" onUpdate="cascade">
+            <reference local="newsletter_id" foreign="id" />
+        </foreign-key>
+    </table>
+
+    <!-- abonnés aux newsletters -->
+    <table name="newsletters_subscribers" isCrossRef="true">
+
+        <!-- id de l'abonné -->
+        <column name="subscriber_id" type="INTEGER" primaryKey="true"/>
+        <!-- id de la newsletter -->
+        <column name="newsletter_id" type="INTEGER" primaryKey="true"/>
+
+        <!-- == index & clefs étrangères == -->
+
+        <foreign-key foreignTable="users">
+            <reference local="subscriber_id" foreign="id"/>
+        </foreign-key>
+        <foreign-key foreignTable="newsletters">
+            <reference local="newsletter_id" foreign="id"/>
+        </foreign-key>
+    </table>
+
+    <!-- === évènements === -->
+    <table name="events" phpName="Event">
+
+        <!-- id -->
+        <column name="id"            type="INTEGER" required="true" primaryKey="true" autoIncrement="true"/>
+
+        <!-- nom -->
+        <column name="nom"           type="VARCHAR" required="true" />
+
+        <!-- type: réunion, conférence, soirée -->
+        <column name="type"          type="ENUM" valueSet="meeting,party,talk,misc" defaultExpr="misc" />
+        
+        <!-- description -->         
+        <column name="desc"          type="LONGVARCHAR" />
+        
+        <!-- date -->
+        <column name="date"          type="DATE" />
+        
+        <!-- heure de début -->
+        <column name="beginning"     type="TIME" />
+        
+        <!-- heure de fin -->
+        <column name="end"           type="TIME" />
+        
+        <!-- lieu -->
+        <column name="place"         type="VARCHAR" />
+
+        <!-- rang des personnes concernées -->
+        <column name="access_rights" type="TINYINT" defaultExpr="0" />
+
+    </table>
+
+    <!-- === contenus === -->
+    <table name="contents" phpName="Content">
+
+        <!-- id -->
+        <column name="id"            type="INTEGER" required="true" primaryKey="true" autoIncrement="true"/>
+
+        <!-- id de l'auteur -->
+        <column name="author_id"     type="INTEGER" />
+
+        <!-- type: examen, projet, td, tp, tutorial -->
+        <column name="type"          type="ENUM" valueSet="examen,projet,td,tp,tutorial" />
+
+        <!-- date à laquelle le contenu a été posté -->
+        <column name="date"          type="TIMESTAMP" required="true" />
+
+        <!-- droits d'accès -->
+        <column name="access_rights" type="TINYINT" defaultExpr="0" />
+
+        <!-- si le contenu a été validé par un responsable -->
+        <column name="validated"     type="BOOLEAN" defaultExpr="0" />
+
+        <!-- texte du contenu -->
+        <column name="text"          type="LONGVARCHAR" required="true" lazyLoad="true" />
+
+        <!-- == index & clefs étrangères == -->
+
+        <foreign-key foreignTable="users">
+            <reference local="author_id" foreign="id" />
+        </foreign-key>
+
+    </table>
+
+    <!-- fichiers des contenus -->
+    <table name="contents_files" isCrossRef="true">
+        <!-- id du contenu -->
+        <column name="content_id" type="INTEGER" primaryKey="true" />
+        <!-- id du fichier -->
+        <column name="file_id" type="INTEGER" primaryKey="true" />
+
+        <!-- == index & clefs étrangères == -->
+
+        <foreign-key foreignTable="contents">
+            <reference local="content_id" foreign="id" />
+        </foreign-key>
+
+        <foreign-key foreignTable="files">
+            <reference local="file_id" foreign="id" />
+        </foreign-key>
+    </table>
+
+    <!-- === commentaires === -->
+    <table name="content_comments" phpName="Comment">
+
+        <!-- id -->
+        <column name="id"            type="INTEGER" required="true" primaryKey="true" autoIncrement="true"/>
+
+        <!-- id du commentaire auquel celui-ci répond -->
+        <column name="reply_to_id"   type="INTEGER" />
+
+        <!-- id du contenu commenté -->
+        <column name="content_id"    type="INTEGER" />
+
+        <!-- id de l'auteur -->
+        <column name="author_id"     type="INTEGER" />
+
+        <!-- date -->
+        <column name="date"          type="TIMESTAMP" required="true" />
+
+        <!-- texte -->
+        <column name="text"          type="LONGVARCHAR" required="true" lazyLoad="true" />
+
+
+        <!-- == index & clefs étrangères == -->
+
+        <foreign-key foreignTable="content_comments">
+            <reference local="reply_to_id" foreign="id" />
+        </foreign-key>
+
+        <foreign-key foreignTable="contents">
+            <reference local="content_id" foreign="id" />
+        </foreign-key>
+
+        <foreign-key foreignTable="users">
+            <reference local="author_id" foreign="id" />
+        </foreign-key>
+
+    </table>
+
+    <!-- === mots-clefs === -->
+    <table name="tags" phpName="Tag">
+        <!-- id -->
+        <column name="id"   type="INTEGER" required="true" primaryKey="true" autoIncrement="true"/>
+        <!-- nom -->
+        <column name="name" type="VARCHAR" size="16" required="true" />
+    </table>
+
+    <!-- associations contenus/mots-clefs -->
+    <table name="contents_tags" isCrossRef="true">
+        <!-- id du mot-clef -->
+        <column name="tag_id"     type="INTEGER" />
+
+        <!-- id du contenu -->
+        <column name="content_id" type="INTEGER" />
+
+        <!-- == index & clefs étrangères == -->
+
+        <foreign-key foreignTable="tags">
+            <reference local="tag_id" foreign="id" />
+        </foreign-key>
+
+        <foreign-key foreignTable="contents">
+            <reference local="content_id" foreign="id" />
+        </foreign-key>
+    </table>
+
+    <!-- associations annonces/mots-clefs -->
+    <table name="ads_tags" isCrossRef="true">
+        <!-- id du mot-clef -->
+        <column name="tag_id"     type="INTEGER" />
+
+        <!-- id de l'annonce -->
+        <column name="ad_id" type="INTEGER" />
+
+        <!-- == index & clefs étrangères == -->
+
+        <foreign-key foreignTable="tags">
+            <reference local="tag_id" foreign="id" />
+        </foreign-key>
+
+        <foreign-key foreignTable="ads">
+            <reference local="ad_id" foreign="id" />
+        </foreign-key>
+    </table>
+
+    <!-- === contenu signalé === -->
+    <table name="reports" phpName="Report">
+        <!-- id -->
+        <column name="id"        type="INTEGER" required="true" primaryKey="true" autoIncrement="true"/>
+
+        <!-- id du contenu -->
+        <column name="content_id" type="INTEGER" />
+        
+        <!-- id du signaleur -->
+        <column name="author_id" type="INTEGER" />
+
+        <!-- date -->
+        <column name="date"      type="TIMESTAMP" required="true" />
+
+        <!-- courte explication -->
+        <column name="text"      type="VARCHAR" />
+
+        <!-- == index & clefs étrangères == -->
+
+        <foreign-key foreignTable="contents">
+            <reference local="content_id" foreign="id" />
+        </foreign-key>
+
+        <foreign-key foreignTable="users">
+            <reference local="author_id" foreign="id" />
+        </foreign-key>
+
+    </table>
+
+
+    <!-- === notes === -->
+    <table name="notes" phpName="Note">
+        <!-- id -->
+        <column name="id"         type="INTEGER" required="true" primaryKey="true" autoIncrement="true"/>
+
+        <!-- personne qui a eu la note -->
+        <column name="user_id"    type="INTEGER" required="true" />
+
+        <!-- matière concernée -->
+        <column name="subject_id" type="INTEGER" required="true" />
+
+        <!-- note -->
+        <column name="score"      type="FLOAT"   required="true" />
+
+        <!-- == index & clefs étrangères == -->
+
+        <foreign-key foreignTable="users">
+            <reference local="user_id" foreign="id" />
+        </foreign-key>
+
+        <foreign-key foreignTable="subjects">
+            <reference local="subject_id" foreign="id" />
+        </foreign-key>
+
+    </table>
+
+    <!-- actualités -->
+    <table name="news" phpName="News">
+        <!-- id -->
+        <column name="id"         type="INTEGER" required="true" primaryKey="true" autoIncrement="true"/>
+
+        <!-- auteur -->
+        <column name="author_id"  type="INTEGER" required="true" />
+
+        <!-- titre -->
+        <column name="title"      type="VARCHAR" required="true" />
+
+        <!-- corps -->
+        <column name="text"       type="LONGVARCHAR" size="1024" required="true" />
+
+        <!-- date -->
+        <column name="date"       type="TIMESTAMP" required="true" />
+
+        <!-- cursus concerné (s'il y en a un) -->
+        <column name="cursus_id"  type="INTEGER" />
+
+        <!-- matière concernée (s'il y en a une) -->
+        <column name="subject_id" type="INTEGER" />
+
+        <!-- membres concernés -->
+        <column name="access_rights" type="TINYINT" defaultExpr="0" />
+
+        <!-- == index & clefs étrangères == -->
+
+        <foreign-key foreignTable="users">
+            <reference local="author_id" foreign="id" />
+        </foreign-key>
+
+        <foreign-key foreignTable="subjects">
+            <reference local="subject_id" foreign="id" />
+        </foreign-key>
+
+        <foreign-key foreignTable="cursus">
+            <reference local="cursus_id" foreign="id" />
+        </foreign-key>
+
+    </table>
+
+    <!-- (petites) annonces (dont offres de stages) -->
+    <table name="ads" phpName="Ad">
+        <!-- id -->
+        <column name="id"        type="INTEGER" required="true" primaryKey="true" autoIncrement="true"/>
+
+        <!-- auteur -->
+        <column name="author_id" type="INTEGER" required="true" />
+
+        <!-- titre -->
+        <column name="title"     type="VARCHAR" required="true" />
+
+        <!-- corps -->
+        <column name="text"      type="LONGVARCHAR" size="400" />
+
+        <!-- date -->
+        <column name="date"      type="TIMESTAMP" required="true" />
+
+        <!-- si l'annonce a été validée -->
+        <column name="validated" type="BOOLEAN" defaultExpr="1" />
+
+        <!-- == index & clefs étrangères == -->
+
+        <foreign-key foreignTable="users">
+            <reference local="author_id" foreign="id" />
+        </foreign-key>
+
+    </table>
+
+    <!-- Transactions (trésorerie) -->
+    <table name="transactions" phpName="Transaction">
+        <!-- id -->
+        <column name="id"   type="INTEGER" required="true" primaryKey="true" autoIncrement="true"/>
+
+        <!-- description -->
+        <column name="desc" type="VARCHAR" required="true" />
+
+        <!-- montant -->
+        <column name="amount" type="DOUBLE" required="true" defaultExpr="0" />
+
+        <!-- personne concernée (s'il y en a une) -->
+        <column name="user_id" type="INTEGER" />
+
+        <!-- transaction validée ou non -->
+        <column name="validated"     type="BOOLEAN" defaultExpr="0" />
+
+        <!-- == index & clefs étrangères == -->
+
+        <foreign-key foreignTable="users">
+            <reference local="user_id" foreign="id" />
+        </foreign-key>
+    </table>
+
+
+    <!-- TODO
+
+        - vérifier les champs requis ('required')
+        - ajouter des phpNames pour les clefs étrangères
+        - vérifier les onUpdate et onDelete pour les clefs étrangères
+        - vérifier les types (ex: TINYINT versus INTEGER ou VARCHAR (≤255) versus LONGVARCHAR)
+        - ajouter des validateurs: http://www.propelorm.org/documentation/05-validators.html
+
+        documentation de Propel (l’ORM qu’on utilise) : http://www.propelorm.org/documentation/
+
+    -->
+
+</database>
