@@ -47,18 +47,21 @@ Petites annonces
 `infop7.org/annonces` (liste complète)
 
 Si on fait plusieurs pages : `infop7.org/annonces/<numero>`
+
 Exemple : `infop7.org/annonces/3` (page 3)
 
 Page d'une annonce : `infop7.org/annonce/<id>`
+
 Exemple : `infop7.org/annonce/8457`
 
 Annonces par tags : `infop7.org/annonces/<tag>/`
+
 Exemples :
 - `infop7.org/annonces/stage/`
 - `infop7.org/annonces/css/`
 
-Recherche 
----------
+Résultats de recherche 
+----------------------
 
 `infop7.org/search/<params>`
 
@@ -76,6 +79,7 @@ Exemples :
 - `infop7.org/events/2013/01/` : tous les évènements de janvier 2013
 
 Page d’un évènement : `infop7.org/event/<id>`
+
 Exemple : `infop7.org/event/458`
 
 Profil de membre 
@@ -90,12 +94,17 @@ Administration
 
 `admin.infop7.org/…` (sous-domaine dédié)
 
+- Gérer les membres : `admin.infop7.org/membres`
+- Gérer les comptes (argent) : `admin.infop7.org/comptes`
+
 
 Contraintes
 ===========
 
 - Les URL doivent fonctionner indépendamment de la casse, en dehors des
-  paramètres GET. Exemples :
+  paramètres GET.
+  
+  Exemples :
 
     * `infop7.org/L1` = `infop7.org/l1`
     * `infop7.org/l1/Io2/eXaMens` = `infop7.org/L1/iO2/Examens` = `infop7.org/L1/IO2/EXAMENS`
