@@ -89,13 +89,24 @@ Profil de membre
 
 Exemple : `infop7.org/~tsalmon`
 
+Actualités
+----------
+
+- Actualités générales : `infop7.org/actus`
+- Page d'une actualité : `infop7.org/actu/<id>`
+  
+  Exemple : `infop7.org/actu/427`
+- Actualités relatives à un cursus : `infop7.org/<cursus>/actus`
+- Actualités relatives à une matière : `infop7.org/<cursus>/<matière>/actus`
+
+
 Administration 
 --------------
 
 `admin.infop7.org/…` (sous-domaine dédié)
 
 - Gérer les membres : `admin.infop7.org/membres`
-- Gérer les comptes (argent) : `admin.infop7.org/comptes`
+- Gérer la trésorerie : `admin.infop7.org/transactions`
 
 
 Contraintes
