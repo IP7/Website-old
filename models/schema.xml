@@ -100,7 +100,7 @@
         <column name="responsable_id" type="INTEGER" />
 
         <!-- id de la newsletter associée (s'il y en a une) -->
-        <column name="newsletter_id" type="INTEGER" />
+        <column name="newsletter_id"  type="INTEGER" />
 
         <!-- == index & clefs étrangères == -->
 
@@ -120,7 +120,7 @@
     <!-- cursus au(x)quel(s) sont inscrit les utilisateurs -->
     <table name="users_cursus" isCrossRef="true">
         <!-- id de l'utilisateur -->
-        <column name="user_id" type="INTEGER" primaryKey="true"/>
+        <column name="user_id"   type="INTEGER" primaryKey="true"/>
         <!-- id du cursus -->
         <column name="cursus_id" type="INTEGER" primaryKey="true"/>
 
@@ -217,7 +217,7 @@
         <column name="name" type="VARCHAR" required="true" />
 
         <!-- courte description -->
-        <column name="desc" type="VARCHAR" />
+        <column name="description" type="VARCHAR" />
     </table>
 
     <!-- message de newsletter -->
@@ -273,7 +273,7 @@
         <column name="type"          type="ENUM" valueSet="meeting,party,talk,misc" defaultExpr="misc" />
         
         <!-- description -->         
-        <column name="desc"          type="LONGVARCHAR" />
+        <column name="description"   type="LONGVARCHAR" />
         
         <!-- date -->
         <column name="date"          type="DATE" />
@@ -329,7 +329,7 @@
         <!-- id du contenu -->
         <column name="content_id" type="INTEGER" primaryKey="true" />
         <!-- id du fichier -->
-        <column name="file_id" type="INTEGER" primaryKey="true" />
+        <column name="file_id"    type="INTEGER" primaryKey="true" />
 
         <!-- == index & clefs étrangères == -->
 
@@ -410,10 +410,10 @@
     <!-- associations annonces/mots-clefs -->
     <table name="ads_tags" isCrossRef="true">
         <!-- id du mot-clef -->
-        <column name="tag_id"     type="INTEGER" />
+        <column name="tag_id" type="INTEGER" />
 
         <!-- id de l'annonce -->
-        <column name="ad_id" type="INTEGER" />
+        <column name="ad_id"  type="INTEGER" />
 
         <!-- == index & clefs étrangères == -->
 
@@ -429,19 +429,19 @@
     <!-- === contenu signalé === -->
     <table name="reports" phpName="Report">
         <!-- id -->
-        <column name="id"        type="INTEGER" required="true" primaryKey="true" autoIncrement="true"/>
+        <column name="id"         type="INTEGER" required="true" primaryKey="true" autoIncrement="true"/>
 
         <!-- id du contenu -->
         <column name="content_id" type="INTEGER" />
         
         <!-- id du signaleur -->
-        <column name="author_id" type="INTEGER" />
+        <column name="author_id"  type="INTEGER" />
 
         <!-- date -->
-        <column name="date"      type="TIMESTAMP" required="true" />
+        <column name="date"       type="TIMESTAMP" required="true" />
 
         <!-- courte explication -->
-        <column name="text"      type="VARCHAR" />
+        <column name="text"       type="VARCHAR" />
 
         <!-- == index & clefs étrangères == -->
 
@@ -485,25 +485,25 @@
     <!-- actualités -->
     <table name="news" phpName="News">
         <!-- id -->
-        <column name="id"         type="INTEGER" required="true" primaryKey="true" autoIncrement="true"/>
+        <column name="id"            type="INTEGER" required="true" primaryKey="true" autoIncrement="true"/>
 
         <!-- auteur -->
-        <column name="author_id"  type="INTEGER" required="true" />
+        <column name="author_id"     type="INTEGER" required="true" />
 
         <!-- titre -->
-        <column name="title"      type="VARCHAR" required="true" />
+        <column name="title"         type="VARCHAR" required="true" />
 
         <!-- corps -->
-        <column name="text"       type="LONGVARCHAR" size="1024" required="true" />
+        <column name="text"          type="LONGVARCHAR" size="1024" required="true" />
 
         <!-- date -->
-        <column name="date"       type="TIMESTAMP" required="true" />
+        <column name="date"          type="TIMESTAMP" required="true" />
 
         <!-- cursus concerné (s'il y en a un) -->
-        <column name="cursus_id"  type="INTEGER" />
+        <column name="cursus_id"     type="INTEGER" />
 
         <!-- matière concernée (s'il y en a une) -->
-        <column name="subject_id" type="INTEGER" />
+        <column name="subject_id"    type="INTEGER" />
 
         <!-- membres concernés -->
         <column name="access_rights" type="TINYINT" defaultExpr="0" />
@@ -555,19 +555,19 @@
     <!-- Transactions (trésorerie) -->
     <table name="transactions" phpName="Transaction">
         <!-- id -->
-        <column name="id"   type="INTEGER" required="true" primaryKey="true" autoIncrement="true"/>
+        <column name="id"          type="INTEGER" required="true" primaryKey="true" autoIncrement="true"/>
 
         <!-- description -->
-        <column name="desc" type="VARCHAR" required="true" />
+        <column name="description" type="VARCHAR" required="true" />
 
         <!-- montant -->
-        <column name="amount" type="DOUBLE" required="true" defaultExpr="0" />
+        <column name="amount"      type="DOUBLE" required="true" defaultExpr="0" />
 
         <!-- personne concernée (s'il y en a une) -->
-        <column name="user_id" type="INTEGER" />
+        <column name="user_id"     type="INTEGER" />
 
         <!-- transaction validée ou non -->
-        <column name="validated"     type="BOOLEAN" defaultExpr="0" />
+        <column name="validated"   type="BOOLEAN" defaultExpr="0" />
 
         <!-- == index & clefs étrangères == -->
 
