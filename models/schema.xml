@@ -75,7 +75,7 @@
 
         <!-- == index & clefs étrangères == -->
 
-        <foreign-key foreignTable="files" onDelete="setnull" onUpdate="cascade">
+        <foreign-key foreignTable="files" onDelete="SETNULL" onUpdate="CASCADE">
             <reference local="avatar_id" foreign="id" />
         </foreign-key>
 
@@ -108,11 +108,11 @@
             <unique-column name="name" />
         </unique>
 
-        <foreign-key foreignTable="users" onDelete="setnull" onUpdate="cascade">
+        <foreign-key foreignTable="users" onDelete="SETNULL" onUpdate="CASCADE">
             <reference local="responsable_id" foreign="id" />
         </foreign-key>
 
-        <foreign-key foreignTable="newsletters" onDelete="setnull" onUpdate="cascade">
+        <foreign-key foreignTable="newsletters" onDelete="SETNULL" onUpdate="CASCADE">
             <reference local="newsletter_id" foreign="id" />
         </foreign-key>
     </table>
@@ -120,16 +120,16 @@
     <!-- cursus au(x)quel(s) sont inscrit les utilisateurs -->
     <table name="users_cursus" isCrossRef="true">
         <!-- id de l'utilisateur -->
-        <column name="user_id"   type="INTEGER" primaryKey="true"/>
+        <column name="user_id"   type="INTEGER" primaryKey="true" />
         <!-- id du cursus -->
-        <column name="cursus_id" type="INTEGER" primaryKey="true"/>
+        <column name="cursus_id" type="INTEGER" primaryKey="true" />
 
         <!-- == index & clefs étrangères == -->
 
-        <foreign-key foreignTable="users">
+        <foreign-key foreignTable="users" onDelete="CASCADE" onUpdate="CASCADE">
             <reference local="user_id" foreign="id"/>
         </foreign-key>
-        <foreign-key foreignTable="cursus">
+        <foreign-key foreignTable="cursus" onDelete="CASCADE" onUpdate="CASCADE">
             <reference local="cursus_id" foreign="id"/>
         </foreign-key>
     </table>
@@ -151,7 +151,7 @@
 
         <!-- == index & clefs étrangères == -->
 
-        <foreign-key foreignTable="cursus" onDelete="setnull" onUpdate="cascade">
+        <foreign-key foreignTable="cursus" onDelete="CASCADE" onUpdate="CASCADE">
             <reference local="cursus_id" foreign="id" />
         </foreign-key>
 
@@ -203,7 +203,7 @@
             <unique-column name="path" />
         </unique>
 
-        <foreign-key foreignTable="users" onDelete="setnull" onUpdate="cascade">
+        <foreign-key foreignTable="users" onDelete="SETNULL" onUpdate="CASCADE">
             <reference local="author_id" foreign="id" />
         </foreign-key>
     </table>
@@ -237,7 +237,7 @@
 
         <!-- == index & clefs étrangères == -->
 
-        <foreign-key foreignTable="newsletters" onDelete="setnull" onUpdate="cascade">
+        <foreign-key foreignTable="newsletters" onDelete="SETNULL" onUpdate="CASCADE">
             <reference local="newsletter_id" foreign="id" />
         </foreign-key>
     </table>
@@ -252,10 +252,10 @@
 
         <!-- == index & clefs étrangères == -->
 
-        <foreign-key foreignTable="users">
+        <foreign-key foreignTable="users" onDelete="CASCADE" onUpdate="CASCADE">
             <reference local="subscriber_id" foreign="id"/>
         </foreign-key>
-        <foreign-key foreignTable="newsletters">
+        <foreign-key foreignTable="newsletters" onDelete="CASCADE" onUpdate="CASCADE">
             <reference local="newsletter_id" foreign="id"/>
         </foreign-key>
     </table>
@@ -316,10 +316,24 @@
         <!-- texte du contenu -->
         <column name="text"          type="LONGVARCHAR" required="true" lazyLoad="true" />
 
+        <!-- cursus concerné (s'il y en a un) -->
+        <column name="cursus_id"     type="INTEGER" />
+
+        <!-- matière concernée (s'il y en a une) -->
+        <column name="subject_id"   type="INTEGER" />
+
         <!-- == index & clefs étrangères == -->
 
-        <foreign-key foreignTable="users">
+        <foreign-key foreignTable="users" onDelete="SETNULL" onUpdate="CASCADE">
             <reference local="author_id" foreign="id" />
+        </foreign-key>
+
+        <foreign-key foreignTable="cursus" onDelete="CASCADE" onUpdate="CASCADE">
+            <reference local="cursus_id" foreign="id" />
+        </foreign-key>
+
+        <foreign-key foreignTable="subjects" onDelete="CASCADE" onUpdate="CASCADE">
+            <reference local="subject_id" foreign="id" />
         </foreign-key>
 
     </table>
@@ -333,11 +347,11 @@
 
         <!-- == index & clefs étrangères == -->
 
-        <foreign-key foreignTable="contents">
+        <foreign-key foreignTable="contents" onDelete="CASCADE" onUpdate="CASCADE">
             <reference local="content_id" foreign="id" />
         </foreign-key>
 
-        <foreign-key foreignTable="files">
+        <foreign-key foreignTable="files" onDelete="CASCADE" onUpdate="CASCADE">
             <reference local="file_id" foreign="id" />
         </foreign-key>
     </table>
@@ -366,15 +380,15 @@
 
         <!-- == index & clefs étrangères == -->
 
-        <foreign-key foreignTable="content_comments">
+        <foreign-key foreignTable="content_comments" onDelete="SETNULL" onUpdate="CASCADE">
             <reference local="reply_to_id" foreign="id" />
         </foreign-key>
 
-        <foreign-key foreignTable="contents">
+        <foreign-key foreignTable="contents" onDelete="CASCADE" onUpdate="CASCADE">
             <reference local="content_id" foreign="id" />
         </foreign-key>
 
-        <foreign-key foreignTable="users">
+        <foreign-key foreignTable="users" onDelete="CASCADE" onUpdate="CASCADE">
             <reference local="author_id" foreign="id" />
         </foreign-key>
 
@@ -398,11 +412,11 @@
 
         <!-- == index & clefs étrangères == -->
 
-        <foreign-key foreignTable="tags">
+        <foreign-key foreignTable="tags" onDelete="CASCADE" onUpdate="CASCADE">
             <reference local="tag_id" foreign="id" />
         </foreign-key>
 
-        <foreign-key foreignTable="contents">
+        <foreign-key foreignTable="contents" onDelete="CASCADE" onUpdate="CASCADE">
             <reference local="content_id" foreign="id" />
         </foreign-key>
     </table>
@@ -417,11 +431,11 @@
 
         <!-- == index & clefs étrangères == -->
 
-        <foreign-key foreignTable="tags">
+        <foreign-key foreignTable="tags" onDelete="CASCADE" onUpdate="CASCADE">
             <reference local="tag_id" foreign="id" />
         </foreign-key>
 
-        <foreign-key foreignTable="ads">
+        <foreign-key foreignTable="ads" onDelete="CASCADE" onUpdate="CASCADE">
             <reference local="ad_id" foreign="id" />
         </foreign-key>
     </table>
@@ -445,11 +459,11 @@
 
         <!-- == index & clefs étrangères == -->
 
-        <foreign-key foreignTable="contents">
+        <foreign-key foreignTable="contents" onDelete="CASCADE" onUpdate="CASCADE">
             <reference local="content_id" foreign="id" />
         </foreign-key>
 
-        <foreign-key foreignTable="users">
+        <foreign-key foreignTable="users" onDelete="SETNULL" onUpdate="CASCADE">
             <reference local="author_id" foreign="id" />
         </foreign-key>
 
@@ -464,6 +478,9 @@
         <!-- personne qui a eu la note -->
         <column name="user_id"    type="INTEGER" required="true" />
 
+        <!-- cursus concernée -->
+        <column name="cursus_id" type="INTEGER" required="true" />
+
         <!-- matière concernée -->
         <column name="subject_id" type="INTEGER" required="true" />
 
@@ -472,11 +489,15 @@
 
         <!-- == index & clefs étrangères == -->
 
-        <foreign-key foreignTable="users">
+        <foreign-key foreignTable="users" onDelete="CASCADE" onUpdate="CASCADE">
             <reference local="user_id" foreign="id" />
         </foreign-key>
 
-        <foreign-key foreignTable="subjects">
+        <foreign-key foreignTable="cursus" onDelete="CASCADE" onUpdate="CASCADE">
+            <reference local="cursus_id" foreign="id" />
+        </foreign-key>
+
+        <foreign-key foreignTable="subjects" onDelete="CASCADE" onUpdate="CASCADE">
             <reference local="subject_id" foreign="id" />
         </foreign-key>
 
@@ -510,15 +531,15 @@
 
         <!-- == index & clefs étrangères == -->
 
-        <foreign-key foreignTable="users">
+        <foreign-key foreignTable="users" onDelete="SETNULL" onUpdate="CASCADE">
             <reference local="author_id" foreign="id" />
         </foreign-key>
 
-        <foreign-key foreignTable="subjects">
+        <foreign-key foreignTable="subjects" onDelete="CASCADE" onUpdate="CASCADE">
             <reference local="subject_id" foreign="id" />
         </foreign-key>
 
-        <foreign-key foreignTable="cursus">
+        <foreign-key foreignTable="cursus" onDelete="CASCADE" onUpdate="CASCADE">
             <reference local="cursus_id" foreign="id" />
         </foreign-key>
 
@@ -546,7 +567,7 @@
 
         <!-- == index & clefs étrangères == -->
 
-        <foreign-key foreignTable="users">
+        <foreign-key foreignTable="users" onDelete="CASCADE" onUpdate="CASCADE">
             <reference local="author_id" foreign="id" />
         </foreign-key>
 
@@ -571,7 +592,7 @@
 
         <!-- == index & clefs étrangères == -->
 
-        <foreign-key foreignTable="users">
+        <foreign-key foreignTable="users" onDelete="SETNULL" onUpdate="CASCADE">
             <reference local="user_id" foreign="id" />
         </foreign-key>
     </table>
@@ -581,7 +602,6 @@
 
         - vérifier les champs requis ('required')
         - ajouter des phpNames pour les clefs étrangères
-        - vérifier les onUpdate et onDelete pour les clefs étrangères
         - vérifier les types (ex: TINYINT versus INTEGER ou VARCHAR (≤255) versus LONGVARCHAR)
         - ajouter des validateurs: http://www.propelorm.org/documentation/05-validators.html
 
