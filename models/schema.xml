@@ -75,7 +75,7 @@
 
         <!-- == index & clefs étrangères == -->
 
-        <foreign-key foreignTable="files" onDelete="SETNULL" onUpdate="CASCADE">
+        <foreign-key foreignTable="files" onDelete="SETNULL" onUpdate="CASCADE" phpName="Avatar">
             <reference local="avatar_id" foreign="id" />
         </foreign-key>
 
@@ -108,11 +108,11 @@
             <unique-column name="name" />
         </unique>
 
-        <foreign-key foreignTable="users" onDelete="SETNULL" onUpdate="CASCADE">
+        <foreign-key foreignTable="users" onDelete="SETNULL" onUpdate="CASCADE" phpName="Responsable">
             <reference local="responsable_id" foreign="id" />
         </foreign-key>
 
-        <foreign-key foreignTable="newsletters" onDelete="SETNULL" onUpdate="CASCADE">
+        <foreign-key foreignTable="newsletters" onDelete="SETNULL" onUpdate="CASCADE" phpName="Newsletter">
             <reference local="newsletter_id" foreign="id" />
         </foreign-key>
     </table>
@@ -151,7 +151,7 @@
 
         <!-- == index & clefs étrangères == -->
 
-        <foreign-key foreignTable="cursus" onDelete="CASCADE" onUpdate="CASCADE">
+        <foreign-key foreignTable="cursus" onDelete="CASCADE" onUpdate="CASCADE" phpName="Cursus">
             <reference local="cursus_id" foreign="id" />
         </foreign-key>
 
@@ -203,7 +203,7 @@
             <unique-column name="path" />
         </unique>
 
-        <foreign-key foreignTable="users" onDelete="SETNULL" onUpdate="CASCADE">
+        <foreign-key foreignTable="users" onDelete="SETNULL" onUpdate="CASCADE" phpName="Author">
             <reference local="author_id" foreign="id" />
         </foreign-key>
     </table>
@@ -237,7 +237,7 @@
 
         <!-- == index & clefs étrangères == -->
 
-        <foreign-key foreignTable="newsletters" onDelete="SETNULL" onUpdate="CASCADE">
+        <foreign-key foreignTable="newsletters" onDelete="SETNULL" onUpdate="CASCADE" phpName="Newsletter">
             <reference local="newsletter_id" foreign="id" />
         </foreign-key>
     </table>
@@ -324,15 +324,15 @@
 
         <!-- == index & clefs étrangères == -->
 
-        <foreign-key foreignTable="users" onDelete="SETNULL" onUpdate="CASCADE">
+        <foreign-key foreignTable="users" onDelete="SETNULL" onUpdate="CASCADE" phpName="Author">
             <reference local="author_id" foreign="id" />
         </foreign-key>
 
-        <foreign-key foreignTable="cursus" onDelete="CASCADE" onUpdate="CASCADE">
+        <foreign-key foreignTable="cursus" onDelete="CASCADE" onUpdate="CASCADE" phpName="Cursus">
             <reference local="cursus_id" foreign="id" />
         </foreign-key>
 
-        <foreign-key foreignTable="subjects" onDelete="CASCADE" onUpdate="CASCADE">
+        <foreign-key foreignTable="subjects" onDelete="CASCADE" onUpdate="CASCADE" phpName="Subject">
             <reference local="subject_id" foreign="id" />
         </foreign-key>
 
@@ -380,15 +380,15 @@
 
         <!-- == index & clefs étrangères == -->
 
-        <foreign-key foreignTable="content_comments" onDelete="SETNULL" onUpdate="CASCADE">
+        <foreign-key foreignTable="content_comments" onDelete="SETNULL" onUpdate="CASCADE" phpName="ReplyToComment">
             <reference local="reply_to_id" foreign="id" />
         </foreign-key>
 
-        <foreign-key foreignTable="contents" onDelete="CASCADE" onUpdate="CASCADE">
+        <foreign-key foreignTable="contents" onDelete="CASCADE" onUpdate="CASCADE" phpName="Content">
             <reference local="content_id" foreign="id" />
         </foreign-key>
 
-        <foreign-key foreignTable="users" onDelete="CASCADE" onUpdate="CASCADE">
+        <foreign-key foreignTable="users" onDelete="CASCADE" onUpdate="CASCADE" phpName="Author">
             <reference local="author_id" foreign="id" />
         </foreign-key>
 
@@ -459,11 +459,11 @@
 
         <!-- == index & clefs étrangères == -->
 
-        <foreign-key foreignTable="contents" onDelete="CASCADE" onUpdate="CASCADE">
+        <foreign-key foreignTable="contents" onDelete="CASCADE" onUpdate="CASCADE" phpName="Content">
             <reference local="content_id" foreign="id" />
         </foreign-key>
 
-        <foreign-key foreignTable="users" onDelete="SETNULL" onUpdate="CASCADE">
+        <foreign-key foreignTable="users" onDelete="SETNULL" onUpdate="CASCADE" phpName="Author">
             <reference local="author_id" foreign="id" />
         </foreign-key>
 
@@ -489,15 +489,15 @@
 
         <!-- == index & clefs étrangères == -->
 
-        <foreign-key foreignTable="users" onDelete="CASCADE" onUpdate="CASCADE">
+        <foreign-key foreignTable="users" onDelete="CASCADE" onUpdate="CASCADE" phpName="User">
             <reference local="user_id" foreign="id" />
         </foreign-key>
 
-        <foreign-key foreignTable="cursus" onDelete="CASCADE" onUpdate="CASCADE">
+        <foreign-key foreignTable="cursus" onDelete="CASCADE" onUpdate="CASCADE" phpName="Cursus">
             <reference local="cursus_id" foreign="id" />
         </foreign-key>
 
-        <foreign-key foreignTable="subjects" onDelete="CASCADE" onUpdate="CASCADE">
+        <foreign-key foreignTable="subjects" onDelete="CASCADE" onUpdate="CASCADE" phpName="Subject">
             <reference local="subject_id" foreign="id" />
         </foreign-key>
 
@@ -531,15 +531,15 @@
 
         <!-- == index & clefs étrangères == -->
 
-        <foreign-key foreignTable="users" onDelete="SETNULL" onUpdate="CASCADE">
+        <foreign-key foreignTable="users" onDelete="SETNULL" onUpdate="CASCADE" phpName="Author">
             <reference local="author_id" foreign="id" />
         </foreign-key>
 
-        <foreign-key foreignTable="subjects" onDelete="CASCADE" onUpdate="CASCADE">
+        <foreign-key foreignTable="subjects" onDelete="CASCADE" onUpdate="CASCADE" phpName="Subject">
             <reference local="subject_id" foreign="id" />
         </foreign-key>
 
-        <foreign-key foreignTable="cursus" onDelete="CASCADE" onUpdate="CASCADE">
+        <foreign-key foreignTable="cursus" onDelete="CASCADE" onUpdate="CASCADE" phpName="Cursus">
             <reference local="cursus_id" foreign="id" />
         </foreign-key>
 
@@ -567,7 +567,7 @@
 
         <!-- == index & clefs étrangères == -->
 
-        <foreign-key foreignTable="users" onDelete="CASCADE" onUpdate="CASCADE">
+        <foreign-key foreignTable="users" onDelete="CASCADE" onUpdate="CASCADE" phpName="Author">
             <reference local="author_id" foreign="id" />
         </foreign-key>
 
@@ -592,7 +592,7 @@
 
         <!-- == index & clefs étrangères == -->
 
-        <foreign-key foreignTable="users" onDelete="SETNULL" onUpdate="CASCADE">
+        <foreign-key foreignTable="users" onDelete="SETNULL" onUpdate="CASCADE" phpName="User">
             <reference local="user_id" foreign="id" />
         </foreign-key>
     </table>
@@ -601,7 +601,6 @@
     <!-- TODO
 
         - vérifier les champs requis ('required')
-        - ajouter des phpNames pour les clefs étrangères
         - vérifier les types (ex: TINYINT versus INTEGER ou VARCHAR (≤255) versus LONGVARCHAR)
         - ajouter des validateurs: http://www.propelorm.org/documentation/05-validators.html
 
