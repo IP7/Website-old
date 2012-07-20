@@ -89,17 +89,6 @@ Profil de membre
 
 Exemple : `infop7.org/~tsalmon`
 
-Actualités
-----------
-
-- Actualités générales : `infop7.org/actus`
-- Page d'une actualité : `infop7.org/actu/<id>`
-  
-  Exemple : `infop7.org/actu/427`
-- Actualités relatives à un cursus : `infop7.org/<cursus>/actus`
-- Actualités relatives à une matière : `infop7.org/<cursus>/<matière>/actus`
-
-
 Administration 
 --------------
 
