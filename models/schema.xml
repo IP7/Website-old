@@ -146,6 +146,9 @@
         <!-- cursus correspondant -->
         <column name="cursus_id"   type="INTEGER" /> 
 
+        <!-- si la matière est facultative -->
+        <column name="optional"    type="BOOLEAN" required="true" defaultExpr="0" />
+
         <!-- nom -->
         <column name="name"        type="VARCHAR" required="true" />
 
