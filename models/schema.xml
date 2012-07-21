@@ -551,7 +551,7 @@
 
     </table>
 
-    <!-- actualités -->
+    <!-- == actualités == -->
     <table name="news" phpName="News">
         <!-- id -->
         <column name="id"            type="INTEGER" required="true" primaryKey="true" autoIncrement="true"/>
@@ -593,7 +593,7 @@
 
     </table>
 
-    <!-- (petites) annonces (dont offres de stages) -->
+    <!-- == (petites) annonces (dont offres de stages) == -->
     <table name="ads" phpName="Ad">
         <!-- id -->
         <column name="id"        type="INTEGER" required="true" primaryKey="true" autoIncrement="true"/>
@@ -621,7 +621,7 @@
 
     </table>
 
-    <!-- Transactions (trésorerie) -->
+    <!-- == Transactions (trésorerie) == -->
     <table name="transactions" phpName="Transaction">
         <!-- id -->
         <column name="id"          type="INTEGER" required="true" primaryKey="true" autoIncrement="true"/>
@@ -647,6 +647,15 @@
 
 
     <!-- TODO
+
+        - ajouter des tables pour le forum
+            - categories (avec foreign key vers categories pour les sous-catégories)
+                - sujets (id, titre)
+                    - messages (id du sujet, date, …)
+
+                récupérer un sujet = récupérer tous les messages qui mentionnent son id
+                                     + ordonner par date (ou id de message).
+
 
         - vérifier les champs requis ('required')
         - ajouter des validateurs: http://www.propelorm.org/documentation/05-validators.html
