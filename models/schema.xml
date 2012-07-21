@@ -7,15 +7,15 @@
         <!-- == identification == -->
         <column name="id"                    type="INTEGER"  required="true" primaryKey="true" autoIncrement="true"/>
         <!-- login -->
-        <column name="username"              type="VARCHAR"  required="true" />
+        <column name="username"              type="VARCHAR"  size="16" required="true" />
         <!-- mot de passe -->
         <column name="password"              type="VARCHAR"  required="true" />
 
         <!-- type d'utilisateur, utilisé pour les droits. Plus le nombre est haut, plus
              l'utilisateur a de droits. Exemples possibles:
                  0 - visiteur
-                10 - membre
-                20 - admin
+                30 - membre
+                80 - admin
              On garde de la place pour d'éventuels futurs ajouts.
              -->
         <column name="type"                  type="TINYINT"  required="true" defaultExpr="0" />
@@ -28,9 +28,9 @@
         <!-- == coordonnées == -->
 
         <!-- e-mail -->
-        <column name="email"                 type="VARCHAR" />
+        <column name="email"                 type="VARCHAR"  required="true" />
         <!-- tél -->
-        <column name="phone"                 type="VARCHAR" />
+        <column name="phone"                 type="VARCHAR" size="16" />
         <!-- adresse -->
         <column name="address"               type="VARCHAR" />
 
@@ -56,8 +56,11 @@
 
         <!-- montrer l'e-mail publiquement -->
         <column name="config_show_email"     type="BOOLEAN" />
+        <!-- montrer le tél publiquement -->
+        <column name="config_show_phone"     type="BOOLEAN" />
         <!-- montrer le vrai nom publiquement (à la place du pseudo) -->
         <column name="config_show_real_name" type="BOOLEAN" />
+
         <!-- désactiver le compte -->
         <column name="deactivated"           type="BOOLEAN" />
 
@@ -67,10 +70,10 @@
         <column name="avatar_id"             type="INTEGER" />
 
         <!-- description -->
-        <column name="description"           type="LONGVARCHAR"    lazyLoad="true" />
+        <column name="description"           type="LONGVARCHAR" size="1024" lazyLoad="true" />
 
         <!-- commentaires (pour la trésorerie) -->
-        <column name="comments"              type="LONGVARCHAR" lazyLoad="true" />
+        <column name="comments"              type="VARCHAR" lazyLoad="true" />
 
 
         <!-- == index & clefs étrangères == -->
@@ -91,10 +94,10 @@
         <column name="id"             type="INTEGER" required="true" primaryKey="true" autoIncrement="true"/>
 
         <!-- nom -->
-        <column name="name"           type="VARCHAR" required="true" />
+        <column name="name"           type="VARCHAR" size="16" required="true" />
 
         <!-- description -->
-        <column name="description"    type="LONGVARCHAR" lazyLoad="true" />
+        <column name="description"    type="LONGVARCHAR" size="1024" lazyLoad="true" />
 
         <!-- id du responsable -->
         <column name="responsable_id" type="INTEGER" />
@@ -141,13 +144,13 @@
         <column name="id"          type="INTEGER" required="true" primaryKey="true" autoIncrement="true"/>
 
         <!-- cursus correspondant -->
-        <column name="cursus_id"   type="SMALLINT" /> 
+        <column name="cursus_id"   type="INTEGER" /> 
 
         <!-- nom -->
         <column name="name"        type="VARCHAR" required="true" />
 
         <!-- description -->
-        <column name="description" type="LONGVARCHAR" />
+        <column name="description" type="LONGVARCHAR" size="1024" />
 
         <!-- == index & clefs étrangères == -->
 
@@ -173,7 +176,7 @@
         <column name="author_id"     type="INTEGER" />
 
         <!-- nom (= titre, peut être différent du vrai nom du fichier stocké) -->
-        <column name="name"          type="VARCHAR" required="true" />
+        <column name="name"          type="VARCHAR" required="true" size="128" />
 
         <!-- date à laquelle a été posté le fichier -->
         <column name="date"          type="TIMESTAMP" required="true" />
@@ -184,10 +187,12 @@
         <!-- type du fichier
                 - text : tout ce qui est full text (non binaire)
                 - image : images
-                - pdf   : PDF,PS
+                - video : vidéos
+                - audio : sons
+                - pdf   : PDF,PS & assimilés
                 - binary : autres fichiers binaires
         -->
-        <column name="file_type"     type="ENUM" valueSet="text,image,pdf,binary" />
+        <column name="file_type"     type="ENUM" valueSet="text,image,video,audio,pdf,binary" />
 
         <!-- == accès == -->
 
@@ -252,12 +257,52 @@
 
         <!-- == index & clefs étrangères == -->
 
-        <foreign-key foreignTable="users" onDelete="CASCADE" onUpdate="CASCADE">
+        <foreign-key foreignTable="users" onDelete="CASCADE" onUpdate="CASCADE" phpName="Subscriber">
             <reference local="subscriber_id" foreign="id"/>
         </foreign-key>
-        <foreign-key foreignTable="newsletters" onDelete="CASCADE" onUpdate="CASCADE">
+        <foreign-key foreignTable="newsletters" onDelete="CASCADE" onUpdate="CASCADE" phpName="Newsletter">
             <reference local="newsletter_id" foreign="id"/>
         </foreign-key>
+    </table>
+
+    <!-- == alertes == -->
+    <table name="alerts" phpName="Alert">
+        <!-- id -->
+        <column name="id"   type="INTEGER" required="true" primaryKey="true" autoIncrement="true"/>
+
+        <!-- utilisateur à notifier (abonné) -->
+        <column name="subscriber_id" type="INTEGER" required="true" />
+
+        <!-- cursus concerné (s'il y en a un) -->
+        <column name="cursus_id"   type="INTEGER" />
+
+        <!-- matière concernée (s'il y en a une) -->
+        <column name="subject_id"    type="INTEGER" />
+
+        <!-- tag concerné (s'il y en a un) -->
+        <column name="tag_id" type="INTEGER" />
+
+        <!-- type de contenu : examen, projet, td, tips (astuces), tp, tutorial, quiz, misc (divers) -->
+        <column name="content_type" type="ENUM" valueSet="examen,projet,td,tips,tp,tutorial,quiz,misc" defaultExpr="NULL" />
+
+        <!-- == index & clefs étrangères == -->
+
+        <foreign-key foreignTable="users" onDelete="CASCADE" onUpdate="CASCADE" phpName="Subscriber">
+            <reference local="subscriber_id" foreign="id"/>
+        </foreign-key>
+
+        <foreign-key foreignTable="cursus" onDelete="CASCADE" onUpdate="CASCADE" phpName="Cursus">
+            <reference local="cursus_id" foreign="id"/>
+        </foreign-key>
+
+        <foreign-key foreignTable="subjects" onDelete="CASCADE" onUpdate="CASCADE" phpName="Subject">
+            <reference local="subject_id" foreign="id"/>
+        </foreign-key>
+
+        <foreign-key foreignTable="tags" onDelete="CASCADE" onUpdate="CASCADE" phpName="Tag">
+            <reference local="tag_id" foreign="id"/>
+        </foreign-key>
+
     </table>
 
     <!-- === évènements === -->
@@ -269,8 +314,8 @@
         <!-- nom -->
         <column name="nom"           type="VARCHAR" required="true" />
 
-        <!-- type: réunion, conférence, soirée -->
-        <column name="type"          type="ENUM" valueSet="meeting,party,talk,misc" defaultExpr="misc" />
+        <!-- type: élection, réunion, soirée, conférence, vote -->
+        <column name="type"          type="ENUM" valueSet="meeting,party,talk,vote,misc" defaultExpr="misc" />
         
         <!-- description -->         
         <column name="description"   type="LONGVARCHAR" />
@@ -301,8 +346,8 @@
         <!-- id de l'auteur -->
         <column name="author_id"     type="INTEGER" />
 
-        <!-- type: examen, projet, td, tp, tutorial -->
-        <column name="type"          type="ENUM" valueSet="examen,projet,td,tp,tutorial" />
+        <!-- type: examen, projet, td, tips (astuces), tp, tutorial, quiz, misc (divers) -->
+        <column name="type"          type="ENUM" valueSet="examen,projet,td,tips,tp,tutorial,quiz,misc" />
 
         <!-- date à laquelle le contenu a été posté -->
         <column name="date"          type="TIMESTAMP" required="true" />
@@ -347,11 +392,11 @@
 
         <!-- == index & clefs étrangères == -->
 
-        <foreign-key foreignTable="contents" onDelete="CASCADE" onUpdate="CASCADE">
+        <foreign-key foreignTable="contents" onDelete="CASCADE" onUpdate="CASCADE" phpName="Content">
             <reference local="content_id" foreign="id" />
         </foreign-key>
 
-        <foreign-key foreignTable="files" onDelete="CASCADE" onUpdate="CASCADE">
+        <foreign-key foreignTable="files" onDelete="CASCADE" onUpdate="CASCADE" phpName="File">
             <reference local="file_id" foreign="id" />
         </foreign-key>
     </table>
@@ -412,11 +457,11 @@
 
         <!-- == index & clefs étrangères == -->
 
-        <foreign-key foreignTable="tags" onDelete="CASCADE" onUpdate="CASCADE">
+        <foreign-key foreignTable="tags" onDelete="CASCADE" onUpdate="CASCADE" phpName="Tag">
             <reference local="tag_id" foreign="id" />
         </foreign-key>
 
-        <foreign-key foreignTable="contents" onDelete="CASCADE" onUpdate="CASCADE">
+        <foreign-key foreignTable="contents" onDelete="CASCADE" onUpdate="CASCADE" phpName="Content">
             <reference local="content_id" foreign="id" />
         </foreign-key>
     </table>
@@ -431,11 +476,11 @@
 
         <!-- == index & clefs étrangères == -->
 
-        <foreign-key foreignTable="tags" onDelete="CASCADE" onUpdate="CASCADE">
+        <foreign-key foreignTable="tags" onDelete="CASCADE" onUpdate="CASCADE" phpName="Tag">
             <reference local="tag_id" foreign="id" />
         </foreign-key>
 
-        <foreign-key foreignTable="ads" onDelete="CASCADE" onUpdate="CASCADE">
+        <foreign-key foreignTable="ads" onDelete="CASCADE" onUpdate="CASCADE" phpName="Ad">
             <reference local="ad_id" foreign="id" />
         </foreign-key>
     </table>
@@ -601,7 +646,6 @@
     <!-- TODO
 
         - vérifier les champs requis ('required')
-        - vérifier les types (ex: TINYINT versus INTEGER ou VARCHAR (≤255) versus LONGVARCHAR)
         - ajouter des validateurs: http://www.propelorm.org/documentation/05-validators.html
 
         documentation de Propel (l’ORM qu’on utilise) : http://www.propelorm.org/documentation/
