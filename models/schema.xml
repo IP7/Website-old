@@ -551,7 +551,7 @@
 
     </table>
 
-    <!-- == actualités == -->
+    <!-- === actualités === -->
     <table name="news" phpName="News">
         <!-- id -->
         <column name="id"            type="INTEGER" required="true" primaryKey="true" autoIncrement="true"/>
@@ -593,7 +593,7 @@
 
     </table>
 
-    <!-- == (petites) annonces (dont offres de stages) == -->
+    <!-- === (petites) annonces (dont offres de stages) === -->
     <table name="ads" phpName="Ad">
         <!-- id -->
         <column name="id"        type="INTEGER" required="true" primaryKey="true" autoIncrement="true"/>
@@ -621,7 +621,7 @@
 
     </table>
 
-    <!-- == Transactions (trésorerie) == -->
+    <!-- === Transactions (trésorerie) === -->
     <table name="transactions" phpName="Transaction">
         <!-- id -->
         <column name="id"          type="INTEGER" required="true" primaryKey="true" autoIncrement="true"/>
@@ -645,22 +645,84 @@
         </foreign-key>
     </table>
 
+    <!-- === (sous-)catégories du forum === -->
+    <table name="forum_categories" phpName="ForumCategory">
+        <!-- id -->
+        <column name="id"            type="INTEGER" required="true" primaryKey="true" autoIncrement="true"/>
+
+        <!-- nom -->
+        <column name="name"          type="VARCHAR" size="32" required="true" />
+
+        <!-- id de la catégorie parente (s'il y en a une) -->
+        <column name="parent_id"     type="INTEGER" />
+
+        <!-- rang des utilisateurs qui peuvent y accéder -->
+        <column name="access_rights" type="TINYINT" defaultExpr="0" />
+
+        <!-- == index & clefs étrangères == -->
+
+        <foreign-key foreignTable="forum_categories" onDelete="SETNULL" onUpdate="CASCADE" phpName="ParentCategory">
+            <reference local="parent_id" foreign="id" />
+        </foreign-key>
+    </table>
+
+    <!-- === sujets des forums === -->
+    <table name="forum_topics" phpName="ForumTopic">
+        <!-- id -->
+        <column name="id"              type="INTEGER" required="true" primaryKey="true" autoIncrement="true"/>
+
+        <!-- id de la catégorie parente -->
+        <column name="category_id"     type="INTEGER" required="true" />
+
+        <!-- titre -->
+        <column name="title"           type="VARCHAR" required="true" />
+
+        <!-- si le sujet est verrouillé -->
+        <column name="is_locked"       type="BOOLEAN" defaultExpr="0" />
+
+        <!-- si le sujet est une annonce -->
+        <column name="is_announcement" type="BOOLEAN" defaultExpr="0" />
+
+        <!-- == index & clefs étrangères == -->
+
+        <foreign-key foreignTable="forum_categories" onDelete="CASCADE" onUpdate="CASCADE" phpName="Category">
+            <reference local="category_id" foreign="id" />
+        </foreign-key>
+
+    </table>
+
+    <table name="forum_messages" phpName="ForumMessage">
+        <!-- id -->
+        <column name="id"                type="INTEGER" required="true" primaryKey="true" autoIncrement="true"/>
+
+        <!-- id de l'auteur -->
+        <column name="author_id"         type="INTEGER" required="true" />
+
+        <!-- id du sujet -->
+        <column name="topic_id"          type="INTEGER" required="true" />
+
+        <!-- date de dernière modification -->
+        <column name="last_modification" type="TIMESTAMP" required="true" />
+
+        <!-- texte -->
+        <column name="text"              type="VARCHAR" required="true" />
+
+        <!-- == index & clefs étrangères == -->
+
+        <foreign-key foreignTable="users" onDelete="CASCADE" onUpdate="CASCADE" phpName="Author">
+            <reference local="author_id" foreign="id" />
+        </foreign-key>
+
+        <foreign-key foreignTable="forum_topics" onDelete="CASCADE" onUpdate="CASCADE" phpName="Topic">
+            <reference local="topic_id" foreign="id" />
+        </foreign-key>
+
+    </table>
 
     <!-- TODO
 
-        - ajouter des tables pour le forum
-            - categories (avec foreign key vers categories pour les sous-catégories)
-                - sujets (id, titre)
-                    - messages (id du sujet, date, …)
-
-                récupérer un sujet = récupérer tous les messages qui mentionnent son id
-                                     + ordonner par date (ou id de message).
-
-
         - vérifier les champs requis ('required')
         - ajouter des validateurs: http://www.propelorm.org/documentation/05-validators.html
-
-        documentation de Propel (l’ORM qu’on utilise) : http://www.propelorm.org/documentation/
 
     -->
 
