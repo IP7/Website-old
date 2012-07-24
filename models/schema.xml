@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<database name="ip7" tablePrefix="ip7" defaultIdMethod="native">
+<database name="ip7db" tablePrefix="ip7" defaultIdMethod="native">
 
     <!-- === utilisateurs === -->
     <table name="users" phpName="User">
@@ -7,8 +7,13 @@
         <!-- == identification == -->
         <column name="id"                    type="INTEGER"  required="true" primaryKey="true" autoIncrement="true"/>
         <!-- login -->
+        <!--
+             TODO validator:
+                min-length = 4,
+                + définir une regex -->
         <column name="username"              type="VARCHAR"  size="16" required="true" />
         <!-- mot de passe -->
+        <!-- TODO validator: min-length = 4 (ou plus) -->
         <column name="password"              type="VARCHAR"  required="true" />
 
         <!-- type d'utilisateur, utilisé pour les droits. Plus le nombre est haut, plus
@@ -21,20 +26,25 @@
         <column name="type"                  type="TINYINT"  required="true" defaultExpr="0" />
 
         <!-- prénom -->
+        <!-- TODO validator: min-length = 1 -->
         <column name="firstname"             type="VARCHAR"  required="true" />
         <!-- nom -->
+        <!-- TODO validator: min-length = 1 -->
         <column name="lastname"              type="VARCHAR"  required="true" />
 
         <!-- == coordonnées == -->
 
         <!-- e-mail -->
+        <!-- TODO validator: definir une regex qui verifie qu'il y a un '@' dedans
+                             + min-length = 6 -->
         <column name="email"                 type="VARCHAR"  required="true" />
         <!-- tél -->
-        <column name="phone"                 type="VARCHAR" size="16" />
+        <column name="phone"                 type="VARCHAR" size="20" />
         <!-- adresse -->
         <column name="address"               type="VARCHAR" />
 
         <!-- site web -->
+        <!-- TODO validator: vérifier le protocole (http ou https) -->
         <column name="website"               type="VARCHAR" />
 
         <!-- date de naissance -->
@@ -50,19 +60,20 @@
         <!-- date de dernière visite -->
         <column name="last_visit"            type="TIMESTAMP" />
         <!-- nb de visites -->
-        <column name="visits_nb"             type="INTEGER" />
+        <!-- TODO validator: nb positif -->
+        <column name="visits_nb"             type="INTEGER" defaultExpr="0" />
 
         <!-- == configuration == -->
 
         <!-- montrer l'e-mail publiquement -->
-        <column name="config_show_email"     type="BOOLEAN" />
+        <column name="config_show_email"     type="BOOLEAN" defaultExpr="0" />
         <!-- montrer le tél publiquement -->
-        <column name="config_show_phone"     type="BOOLEAN" />
+        <column name="config_show_phone"     type="BOOLEAN" defaultExpr="0" />
         <!-- montrer le vrai nom publiquement (à la place du pseudo) -->
-        <column name="config_show_real_name" type="BOOLEAN" />
+        <column name="config_show_real_name" type="BOOLEAN" defaultExpr="1" />
 
         <!-- désactiver le compte -->
-        <column name="deactivated"           type="BOOLEAN" />
+        <column name="deactivated"           type="BOOLEAN" defaultExpr="0" />
 
         <!-- == autres informations == -->
 
@@ -70,7 +81,7 @@
         <column name="avatar_id"             type="INTEGER" />
 
         <!-- description -->
-        <column name="description"           type="LONGVARCHAR" size="1024" lazyLoad="true" />
+        <column name="description"           type="LONGVARCHAR" size="512" lazyLoad="true" />
 
         <!-- commentaires (pour la trésorerie) -->
         <column name="comments"              type="VARCHAR" lazyLoad="true" />
@@ -94,6 +105,7 @@
         <column name="id"             type="INTEGER" required="true" primaryKey="true" autoIncrement="true"/>
 
         <!-- nom -->
+        <!-- TODO validator: min-length = 1 -->
         <column name="name"           type="VARCHAR" size="16" required="true" />
 
         <!-- description -->
@@ -150,6 +162,7 @@
         <column name="optional"    type="BOOLEAN" required="true" defaultExpr="0" />
 
         <!-- nom -->
+        <!-- TODO validator: min-length = 3 -->
         <column name="name"        type="VARCHAR" required="true" />
 
         <!-- description -->
@@ -179,6 +192,7 @@
         <column name="author_id"     type="INTEGER" />
 
         <!-- nom (= titre, peut être différent du vrai nom du fichier stocké) -->
+        <!-- TODO validator: min-length = 3 -->
         <column name="name"          type="VARCHAR" required="true" size="128" />
 
         <!-- date à laquelle a été posté le fichier -->
@@ -200,6 +214,8 @@
         <!-- == accès == -->
 
         <!-- chemin d'accès (comprenant le « vrai » nom du fichier) -->
+        <!-- TODO validator: min-length = 3, + faire une regex pour verifier
+             que c'est un chemin en local (pas une URL) -->
         <column name="path"          type="VARCHAR" required="true" />
 
         <!-- droits d'accès -->
@@ -222,6 +238,7 @@
         <column name="id"   type="INTEGER" required="true" primaryKey="true" autoIncrement="true"/>
 
         <!-- nom -->
+        <!-- TODO validator: min-length = 2, + nom unique -->
         <column name="name" type="VARCHAR" required="true" />
 
         <!-- courte description -->
@@ -286,7 +303,13 @@
         <column name="tag_id" type="INTEGER" />
 
         <!-- type de contenu : examen, projet, td, tips (astuces), tp, tutorial, quiz, misc (divers) -->
-        <column name="content_type" type="ENUM" valueSet="examen,projet,td,tips,tp,tutorial,quiz,misc" defaultExpr="NULL" />
+        <!-- TODO voir si ça serait pas plus simple d'avoir une relation “one-to-one” avec
+             une autre table 'content_types' -->
+        <column name="content_type" type="ENUM" valueSet="exam,project,td,tips,tp,tutorial,quiz,misc" defaultExpr="NULL" />
+
+        <!-- TODO validator:
+                s'assurer qu'il y a au moins une valeur non nulle pour cursus_id, subject_id,
+                    tag_id ou content_type -->
 
         <!-- == index & clefs étrangères == -->
 
@@ -315,9 +338,10 @@
         <column name="id"            type="INTEGER" required="true" primaryKey="true" autoIncrement="true"/>
 
         <!-- nom -->
+        <!-- TODO validator: min-length = 3 -->
         <column name="nom"           type="VARCHAR" required="true" />
 
-        <!-- type: élection, réunion, soirée, conférence, vote -->
+        <!-- type: réunion, soirée, conférence, vote(, divers) -->
         <column name="type"          type="ENUM" valueSet="meeting,party,talk,vote,misc" defaultExpr="misc" />
         
         <!-- description -->         
@@ -331,6 +355,8 @@
         
         <!-- heure de fin -->
         <column name="end"           type="TIME" />
+
+        <!-- TODO validator: verifier que end > beginning -->
         
         <!-- lieu -->
         <column name="place"         type="VARCHAR" />
@@ -350,7 +376,7 @@
         <column name="author_id"     type="INTEGER" />
 
         <!-- type: examen, projet, td, tips (astuces), tp, tutorial, quiz, misc (divers) -->
-        <column name="type"          type="ENUM" valueSet="examen,projet,td,tips,tp,tutorial,quiz,misc" />
+        <column name="type"          type="ENUM" valueSet="exam,project,td,tips,tp,tutorial,quiz,misc" />
 
         <!-- date à laquelle le contenu a été posté -->
         <column name="date"          type="TIMESTAMP" required="true" />
@@ -362,7 +388,7 @@
         <column name="validated"     type="BOOLEAN" defaultExpr="0" />
 
         <!-- texte du contenu -->
-        <column name="text"          type="LONGVARCHAR" required="true" lazyLoad="true" />
+        <column name="text"          type="LONGVARCHAR" lazyLoad="true" />
 
         <!-- cursus concerné (s'il y en a un) -->
         <column name="cursus_id"     type="INTEGER" />
@@ -423,6 +449,7 @@
         <column name="date"          type="TIMESTAMP" required="true" />
 
         <!-- texte -->
+        <!-- TODO validator: min-length = 1 (ou plus) -->
         <column name="text"          type="LONGVARCHAR" required="true" lazyLoad="true" />
 
 
@@ -447,6 +474,7 @@
         <!-- id -->
         <column name="id"   type="INTEGER" required="true" primaryKey="true" autoIncrement="true"/>
         <!-- nom -->
+        <!-- TODO validator: min-length = 1 (pas plus, ex: 'C') -->
         <column name="name" type="VARCHAR" size="16" required="true" />
     </table>
 
@@ -514,7 +542,6 @@
         <foreign-key foreignTable="users" onDelete="SETNULL" onUpdate="CASCADE" phpName="Author">
             <reference local="author_id" foreign="id" />
         </foreign-key>
-
     </table>
 
 
@@ -533,6 +560,7 @@
         <column name="subject_id" type="INTEGER" required="true" />
 
         <!-- note -->
+        <!--TODO validator: minValue = 0 -->
         <column name="score"      type="FLOAT"   required="true" />
 
         <!-- == index & clefs étrangères == -->
@@ -548,7 +576,6 @@
         <foreign-key foreignTable="subjects" onDelete="CASCADE" onUpdate="CASCADE" phpName="Subject">
             <reference local="subject_id" foreign="id" />
         </foreign-key>
-
     </table>
 
     <!-- === actualités === -->
@@ -560,9 +587,11 @@
         <column name="author_id"     type="INTEGER" required="true" />
 
         <!-- titre -->
+        <!-- TODO validator: min-length = 1 -->
         <column name="title"         type="VARCHAR" required="true" />
 
         <!-- corps -->
+        <!-- TODO validator: min-length = 1 -->
         <column name="text"          type="LONGVARCHAR" size="1024" required="true" />
 
         <!-- date -->
@@ -602,6 +631,7 @@
         <column name="author_id" type="INTEGER" required="true" />
 
         <!-- titre -->
+        <!-- TODO validator: min-length = 1 -->
         <column name="title"     type="VARCHAR" required="true" />
 
         <!-- corps -->
@@ -610,8 +640,10 @@
         <!-- date -->
         <column name="date"      type="TIMESTAMP" required="true" />
 
-        <!-- si l'annonce a été validée -->
+        <!-- si l'annonce a été validée (ex: par un responsable) -->
         <column name="validated" type="BOOLEAN" defaultExpr="1" />
+
+        <!-- TODO droits d'accès ? -->
 
         <!-- == index & clefs étrangères == -->
 
@@ -627,6 +659,7 @@
         <column name="id"          type="INTEGER" required="true" primaryKey="true" autoIncrement="true"/>
 
         <!-- description -->
+        <!-- TODO validator: min-length = 1 -->
         <column name="description" type="VARCHAR" required="true" />
 
         <!-- montant -->
@@ -651,6 +684,7 @@
         <column name="id"            type="INTEGER" required="true" primaryKey="true" autoIncrement="true"/>
 
         <!-- nom -->
+        <!-- TODO validator: min-length = 1 -->
         <column name="name"          type="VARCHAR" size="32" required="true" />
 
         <!-- id de la catégorie parente (s'il y en a une) -->
@@ -675,6 +709,7 @@
         <column name="category_id"     type="INTEGER" required="true" />
 
         <!-- titre -->
+        <!-- TODO validator: min-length = 1 -->
         <column name="title"           type="VARCHAR" required="true" />
 
         <!-- si le sujet est verrouillé -->
@@ -705,7 +740,8 @@
         <column name="last_modification" type="TIMESTAMP" required="true" />
 
         <!-- texte -->
-        <column name="text"              type="VARCHAR" required="true" />
+        <!-- TODO validator: min-length = 1 -->
+        <column name="text"              type="LONGVARCHAR" required="true" />
 
         <!-- == index & clefs étrangères == -->
 
@@ -723,6 +759,7 @@
 
         - vérifier les champs requis ('required')
         - ajouter des validateurs: http://www.propelorm.org/documentation/05-validators.html
+                cf les "TODO validator:"
 
     -->
 
