@@ -150,7 +150,7 @@
     </table>
 
     <!-- === matières === -->
-    <table name="subjects" phpName="Subject">
+    <table name="courses" phpName="Course">
 
         <!-- id -->
         <column name="id"          type="INTEGER" required="true" primaryKey="true" autoIncrement="true"/>
@@ -297,7 +297,7 @@
         <column name="cursus_id"   type="INTEGER" />
 
         <!-- matière concernée (s'il y en a une) -->
-        <column name="subject_id"    type="INTEGER" />
+        <column name="course_id"    type="INTEGER" />
 
         <!-- tag concerné (s'il y en a un) -->
         <column name="tag_id" type="INTEGER" />
@@ -308,7 +308,7 @@
         <column name="content_type" type="ENUM" valueSet="exam,project,td,tips,tp,tutorial,quiz,misc" defaultExpr="NULL" />
 
         <!-- TODO validator:
-                s'assurer qu'il y a au moins une valeur non nulle pour cursus_id, subject_id,
+                s'assurer qu'il y a au moins une valeur non nulle pour cursus_id, course_id,
                     tag_id ou content_type -->
 
         <!-- == index & clefs étrangères == -->
@@ -321,8 +321,8 @@
             <reference local="cursus_id" foreign="id"/>
         </foreign-key>
 
-        <foreign-key foreignTable="subjects" onDelete="CASCADE" onUpdate="CASCADE" phpName="Subject">
-            <reference local="subject_id" foreign="id"/>
+        <foreign-key foreignTable="courses" onDelete="CASCADE" onUpdate="CASCADE" phpName="Course">
+            <reference local="course_id" foreign="id"/>
         </foreign-key>
 
         <foreign-key foreignTable="tags" onDelete="CASCADE" onUpdate="CASCADE" phpName="Tag">
@@ -394,7 +394,7 @@
         <column name="cursus_id"     type="INTEGER" />
 
         <!-- matière concernée (s'il y en a une) -->
-        <column name="subject_id"   type="INTEGER" />
+        <column name="course_id"     type="INTEGER" />
 
         <!-- == index & clefs étrangères == -->
 
@@ -406,8 +406,8 @@
             <reference local="cursus_id" foreign="id" />
         </foreign-key>
 
-        <foreign-key foreignTable="subjects" onDelete="CASCADE" onUpdate="CASCADE" phpName="Subject">
-            <reference local="subject_id" foreign="id" />
+        <foreign-key foreignTable="courses" onDelete="CASCADE" onUpdate="CASCADE" phpName="Course">
+            <reference local="course_id" foreign="id" />
         </foreign-key>
 
     </table>
@@ -481,10 +481,10 @@
     <!-- associations contenus/mots-clefs -->
     <table name="contents_tags" isCrossRef="true">
         <!-- id du mot-clef -->
-        <column name="tag_id"     type="INTEGER" />
+        <column name="tag_id"     type="INTEGER" primaryKey="true" />
 
         <!-- id du contenu -->
-        <column name="content_id" type="INTEGER" />
+        <column name="content_id" type="INTEGER" primaryKey="true" />
 
         <!-- == index & clefs étrangères == -->
 
@@ -500,10 +500,10 @@
     <!-- associations annonces/mots-clefs -->
     <table name="ads_tags" isCrossRef="true">
         <!-- id du mot-clef -->
-        <column name="tag_id" type="INTEGER" />
+        <column name="tag_id" type="INTEGER" primaryKey="true" />
 
         <!-- id de l'annonce -->
-        <column name="ad_id"  type="INTEGER" />
+        <column name="ad_id"  type="INTEGER" primaryKey="true" />
 
         <!-- == index & clefs étrangères == -->
 
@@ -554,10 +554,10 @@
         <column name="user_id"    type="INTEGER" required="true" />
 
         <!-- cursus concernée -->
-        <column name="cursus_id" type="INTEGER" required="true" />
+        <column name="cursus_id"  type="INTEGER" required="true" />
 
         <!-- matière concernée -->
-        <column name="subject_id" type="INTEGER" required="true" />
+        <column name="course_id"  type="INTEGER" required="true" />
 
         <!-- note -->
         <!--TODO validator: minValue = 0 -->
@@ -573,8 +573,8 @@
             <reference local="cursus_id" foreign="id" />
         </foreign-key>
 
-        <foreign-key foreignTable="subjects" onDelete="CASCADE" onUpdate="CASCADE" phpName="Subject">
-            <reference local="subject_id" foreign="id" />
+        <foreign-key foreignTable="courses" onDelete="CASCADE" onUpdate="CASCADE" phpName="Course">
+            <reference local="course_id" foreign="id" />
         </foreign-key>
     </table>
 
@@ -601,7 +601,7 @@
         <column name="cursus_id"     type="INTEGER" />
 
         <!-- matière concernée (s'il y en a une) -->
-        <column name="subject_id"    type="INTEGER" />
+        <column name="course_id"     type="INTEGER" />
 
         <!-- membres concernés -->
         <column name="access_rights" type="TINYINT" defaultExpr="0" />
@@ -612,8 +612,8 @@
             <reference local="author_id" foreign="id" />
         </foreign-key>
 
-        <foreign-key foreignTable="subjects" onDelete="CASCADE" onUpdate="CASCADE" phpName="Subject">
-            <reference local="subject_id" foreign="id" />
+        <foreign-key foreignTable="courses" onDelete="CASCADE" onUpdate="CASCADE" phpName="Course">
+            <reference local="course_id" foreign="id" />
         </foreign-key>
 
         <foreign-key foreignTable="cursus" onDelete="CASCADE" onUpdate="CASCADE" phpName="Cursus">
@@ -723,9 +723,9 @@
         <foreign-key foreignTable="forum_categories" onDelete="CASCADE" onUpdate="CASCADE" phpName="Category">
             <reference local="category_id" foreign="id" />
         </foreign-key>
-
     </table>
 
+    <!-- === messages des forums === -->
     <table name="forum_messages" phpName="ForumMessage">
         <!-- id -->
         <column name="id"                type="INTEGER" required="true" primaryKey="true" autoIncrement="true"/>
@@ -752,15 +752,46 @@
         <foreign-key foreignTable="forum_topics" onDelete="CASCADE" onUpdate="CASCADE" phpName="Topic">
             <reference local="topic_id" foreign="id" />
         </foreign-key>
+    </table>
+
+    <!-- === Examens/partiels === -->
+    <table name="exams" phpName="Exam">
+        <!-- id -->
+        <column name="id"        type="INTEGER" required="true" primaryKey="true" autoIncrement="true"/>
+
+        <!-- id du cursus -->
+        <column name="cursus_id" type="INTEGER" required="true" />
+
+        <!-- id de la matière -->
+        <column name="course_id" type="INTEGER" required="true" />
+        
+        <!-- jour -->
+        <column name="date"      type="DATE" required="true" />
+        
+        <!-- heure de début -->
+        <column name="beginning" type="TIME" />
+
+        <!-- heure de fin -->
+        <column name="end"       type="TIME" />
+
+        <!-- remarques -->
+        <column name="comments" type="VARCHAR" />
+
+        <!-- TODO validator: verifier que end > beginning -->
+
+        <!-- == index & clefs étrangères == -->
+
+        <foreign-key foreignTable="cursus" onDelete="CASCADE" onUpdate="CASCADE" phpName="Cursus">
+            <reference local="cursus_id" foreign="id"/>
+        </foreign-key>
+
+        <foreign-key foreignTable="courses" onDelete="CASCADE" onUpdate="CASCADE" phpName="Course">
+            <reference local="course_id" foreign="id"/>
 
     </table>
 
     <!-- TODO
-        
-        - ajouter les tables pour les emplois du temps
-        - renommer les tables relatives aux matières ('subjects') en 'courses'
 
-        - vérifier les champs requis ('required')
         - ajouter des validateurs: http://www.propelorm.org/documentation/05-validators.html
                 cf les "TODO validator:"
 
