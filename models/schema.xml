@@ -756,6 +756,9 @@
     </table>
 
     <!-- TODO
+        
+        - ajouter les tables pour les emplois du temps
+        - renommer les tables relatives aux matières ('subjects') en 'courses'
 
         - vérifier les champs requis ('required')
         - ajouter des validateurs: http://www.propelorm.org/documentation/05-validators.html
