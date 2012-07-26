@@ -7,14 +7,9 @@
         <!-- == identification == -->
         <column name="id"                    type="INTEGER"  required="true" primaryKey="true" autoIncrement="true"/>
         <!-- login -->
-        <!--
-             TODO validator:
-                min-length = 4,
-                + définir une regex -->
         <column name="username"              type="VARCHAR"  size="16" required="true" />
-        <!-- mot de passe -->
-        <!-- TODO validator: min-length = 4 (ou plus) -->
-        <column name="password"              type="VARCHAR"  required="true" />
+        <!-- mot de passe (hash bcrypt) -->
+        <column name="password_hash"          type="VARCHAR"  required="true" />
 
         <!-- type d'utilisateur, utilisé pour les droits. Plus le nombre est haut, plus
              l'utilisateur a de droits. Exemples possibles:
@@ -26,17 +21,13 @@
         <column name="type"                  type="TINYINT"  required="true" defaultExpr="0" />
 
         <!-- prénom -->
-        <!-- TODO validator: min-length = 1 -->
         <column name="firstname"             type="VARCHAR"  required="true" />
         <!-- nom -->
-        <!-- TODO validator: min-length = 1 -->
         <column name="lastname"              type="VARCHAR"  required="true" />
 
         <!-- == coordonnées == -->
 
         <!-- e-mail -->
-        <!-- TODO validator: definir une regex qui verifie qu'il y a un '@' dedans
-                             + min-length = 6 -->
         <column name="email"                 type="VARCHAR"  required="true" />
         <!-- tél -->
         <column name="phone"                 type="VARCHAR" size="20" />
@@ -44,7 +35,6 @@
         <column name="address"               type="VARCHAR" />
 
         <!-- site web -->
-        <!-- TODO validator: vérifier le protocole (http ou https) -->
         <column name="website"               type="VARCHAR" />
 
         <!-- date de naissance -->
@@ -60,7 +50,6 @@
         <!-- date de dernière visite -->
         <column name="last_visit"            type="TIMESTAMP" />
         <!-- nb de visites -->
-        <!-- TODO validator: nb positif -->
         <column name="visits_nb"             type="INTEGER" defaultExpr="0" />
 
         <!-- == configuration == -->
@@ -93,9 +82,39 @@
             <reference local="avatar_id" foreign="id" />
         </foreign-key>
 
-        <unique>
-            <unique-column name="username" />
-        </unique>
+        <validator column="username">
+            <rule name="minLength" value="4" message="Username must be at least ${value} characters." />
+            <rule name="match"     value="/^[a-z](?:[-_]?[a-z0-9]+)+$/i"
+                                             message="Please enter a valid username." />
+            <rule name="unique"              message="Username already exists." />
+        </validator>
+
+        <validator column="firstname">
+            <rule name="minLength" value="1" message="First name must be at least ${value} characters." />
+        </validator>
+
+        <validator column="lastname">
+            <rule name="minLength" value="1" message="Last name must be at least ${value} characters." />
+        </validator>
+
+        <validator column="email">
+            <rule name="minLength" value="6" message="Email must be at least ${value} characters." />
+            <!-- Volontairement laxiste, il est plus facile d'accepter de mauvaises adresses que
+                 d'éviter d'en exclure de bonnes. L'adresse est de toute façon validée autrement
+                 (e-mail de validation). -->
+            <rule name="match"     value="/^[-+\w\.]+@[-\.\w]+\.[a-z]{2,4}$/"
+                                             message="Please enter a valid email address." />
+        </validator>
+
+        <validator column="website">
+            <rule name="match"     value="/^https?/"
+                                             message="Please use a valid protocol" />
+        </validator>
+
+        <validator column="visits_nb">
+            <rule name="minValue"  value="0" message="The number of visits cannot be negative." />
+        </validator>
+
     </table>
 
     <!-- === cursus: L1,L2,L3,M1,M2 === -->
@@ -792,6 +811,8 @@
     </table>
 
     <!-- TODO
+
+        - tester les regex des validateurs
 
         - ajouter des validateurs: http://www.propelorm.org/documentation/05-validators.html
                 cf les "TODO validator:"
