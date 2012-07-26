@@ -787,6 +787,7 @@
 
         <foreign-key foreignTable="courses" onDelete="CASCADE" onUpdate="CASCADE" phpName="Course">
             <reference local="course_id" foreign="id"/>
+        </foreign-key>
 
     </table>
 
