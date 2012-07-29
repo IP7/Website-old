@@ -66,6 +66,12 @@
 
         <!-- == autres informations == -->
 
+        <!-- si c'est actuellement un enseignant -->
+        <column name="is_a_teacher"          type="BOOLEAN" defaultExpr="0" />
+        
+        <!-- si c'est actuellement un étudiant -->
+        <column name="is_a_student"          type="BOOLEAN" defaultExpr="1" />
+
         <!-- avatar (= id de fichier) -->
         <column name="avatar_id"             type="INTEGER" />
 
