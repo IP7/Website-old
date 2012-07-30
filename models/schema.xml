@@ -9,7 +9,7 @@
         <!-- login -->
         <column name="username"              type="VARCHAR"  size="16" required="true" />
         <!-- mot de passe (hash bcrypt) -->
-        <column name="password_hash"          type="VARCHAR"  required="true" />
+        <column name="password_hash"         type="VARCHAR"  required="true" />
 
         <!-- type d'utilisateur, utilisé pour les droits. Plus le nombre est haut, plus
              l'utilisateur a de droits. Exemples possibles:
@@ -157,6 +157,7 @@
 
         <validator column="name">
             <rule name="minLength" value="1" message="Name must be at least ${value} characters." />
+            <rule name="unique" message="Name already exists." />
         </validator>
     </table>
 
@@ -560,6 +561,11 @@
             <rule name="minLength" value="1" message="Name must be at least ${value} characters." />
             <rule name="unique" message="Name must be unique." />
         </validator>
+
+        <index>
+            <index-column name="name" />
+        </index>
+
     </table>
 
     <!-- associations contenus/mots-clefs -->
@@ -962,7 +968,5 @@
             <reference local="scheduled_course_id" foreign="id"/>
         </foreign-key>
     </table>
-
-    <!-- TODO ajouter des index sur les colonnes potentiellement beaucoup requêtées -->
 
 </database>
