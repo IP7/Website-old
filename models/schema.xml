@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<database name="ip7db" tablePrefix="ip7" defaultIdMethod="native">
+<database name="ip7db" defaultIdMethod="native">
 
     <!-- === utilisateurs === -->
     <table name="users" phpName="User">
@@ -878,15 +878,91 @@
 
         <!-- == index & clefs étrangères == -->
 
-        <foreign-key foreignTable="cursus" onDelete="CASCADE" onUpdate="CASCADE" phpName="Cursus">
-            <reference local="cursus_id" foreign="id"/>
-        </foreign-key>
-
         <foreign-key foreignTable="courses" onDelete="CASCADE" onUpdate="CASCADE" phpName="Course">
             <reference local="course_id" foreign="id"/>
         </foreign-key>
 
     </table>
 
+    <!-- === Emplois du temps === --> 
+    <table name="schedules" phpName="Schedule">
+        <!-- id -->
+        <column name="id"        type="INTEGER" required="true" primaryKey="true" autoIncrement="true"/>
+
+        <!-- id du cursus concerné -->
+        <column name="cursus_id" type="INTEGER" />
+        
+        <!-- nom -->
+        <column name="name"      type="VARCHAR" size="32" required="true" />
+        
+        <!-- date de début de validité -->
+        <column name="beginning" type="DATE" />
+        
+        <!-- date d'expiration -->
+        <column name="end" type="DATE" />
+
+        <!-- == index & clefs étrangères == -->
+
+        <foreign-key foreignTable="cursus" onDelete="CASCADE" onUpdate="CASCADE" phpName="Cursus">
+            <reference local="cursus_id" foreign="id"/>
+        </foreign-key>
+    
+    </table>
+
+    <!-- === matières des EDT === -->
+    <table name="scheduled_courses" phpName="ScheduledCourse">
+        <!-- id -->
+        <column name="id"           type="INTEGER" required="true" primaryKey="true" autoIncrement="true"/>
+        
+        <!-- id de la matière concernée -->
+        <column name="course_id"    type="INTEGER" required="true" />
+        
+        <!-- id de l'enseignant (s'il est inscrit) -->
+        <column name="teacher_id"   type="INTEGER" />
+        
+        <!-- nom de l'enseignant (utiliser l'id s'il est inscrit) -->
+        <column name="teacher_name" type="VARCHAR" size="32" />
+        
+        <!-- jour de la semaine -->
+        <column name="weekday"      type="ENUM" valueSet="monday|tuesday|wednesday|thursday|friday|saturday" />
+        
+        <!-- heure de début -->
+        <column name="beginning"    type="TIME" />
+        
+        <!-- heure de fin -->
+        <column name="end"          type="TIME" />
+        
+        <!-- nom de la salle/amphi -->
+        <column name="place"        type="VARCHAR" size="32" />
+
+        <!-- == index & clefs étrangères == -->
+
+        <foreign-key foreignTable="courses" onDelete="CASCADE" onUpdate="CASCADE" phpName="Course">
+            <reference local="course_id" foreign="id"/>
+        </foreign-key>
+
+        <foreign-key foreignTable="users" onDelete="SETNULL" onUpdate="CASCADE" phpName="Teacher">
+            <reference local="teacher_id" foreign="id"/>
+        </foreign-key>
+    </table>
+
+    <!-- lien matières+horaires / EDT -->
+    <table name="schedules_courses" isCrossRef="true">
+        <!-- id de l'EDT -->
+        <column name="schedule_id"         type="INTEGER" primaryKey="true" />
+        <!-- id de la matière -->
+        <column name="scheduled_course_id" type="INTEGER" primaryKey="true" />
+
+        <!-- == index & clefs étrangères == -->
+
+        <foreign-key foreignTable="schedules" onDelete="CASCADE" onUpdate="CASCADE">
+            <reference local="schedule_id" foreign="id"/>
+        </foreign-key>
+        <foreign-key foreignTable="scheduled_courses" onDelete="CASCADE" onUpdate="CASCADE">
+            <reference local="scheduled_course_id" foreign="id"/>
+        </foreign-key>
+    </table>
+
+    <!-- TODO ajouter des index sur les colonnes potentiellement beaucoup requêtées -->
 
 </database>
