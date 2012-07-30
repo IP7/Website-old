@@ -11,7 +11,7 @@
 abstract class BaseForumMessagePeer {
 
     /** the default database name for this class */
-    const DATABASE_NAME = 'ip7db';
+    const DATABASE_NAME = 'infop7db';
 
     /** the table name for this class */
     const TABLE_NAME = 'forum_messages';

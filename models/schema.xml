@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<database name="ip7db" defaultIdMethod="native">
+<database name="infop7db" defaultIdMethod="native">
 
     <!-- === utilisateurs === -->
     <table name="users" phpName="User">
