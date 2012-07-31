@@ -26,17 +26,31 @@ class Config {
         self::$tpl = new Twig_Environment($loader, array(
             'cache'            => dirname(__FILE__).'/cache/templates',
             'charset'          => 'utf-8',
-            'strict_variables' => true
+            'strict_variables' => true,
+            'autoescape'       => true
         ));
 
         self::$default_tpl_values = array(
+
+            'site' => array(
+                'root' => '/',
+
+                'logo' => array(
+                    'src'    => '',
+                    'width'  => 0,
+                    'height' => 0
+                ),
+
+                'title' => 'IP7'
+
+            ),
+
             'page' => array(
                 'lang'        => 'fr',
                 'charset'     => 'utf-8',
                 'keywords'    => 'ip7, informatique, paris diderot, association',
                 'description' => 'IP7 est une association de filière en Informatique'
                                . ' à l\'Université Paris Diderot.',
-                'title'       => 'IP7'
             )
         );
     }
