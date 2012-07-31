@@ -24,7 +24,9 @@ class Config {
         $loader = new Twig_Loader_Filesystem('views/templates');
 
         self::$tpl = new Twig_Environment($loader, array(
-            'cache' => dirname(__FILE__).'/cache/templates'
+            'cache'            => dirname(__FILE__).'/cache/templates',
+            'charset'          => 'utf-8',
+            'strict_variables' => true
         ));
 
         self::$default_tpl_values = array(
