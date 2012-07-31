@@ -6,11 +6,11 @@
     </a>
     
     {# navigation #}
-    {% if global_nav %}
+    {% if global_nav|default(false) %}
     <nav id="global_nav">
         <ul>
         {% for item in global_nav %}
-            <li class="nav_item"><a href="{{ item.href }}" {% if item.title %}title="{{ item.title }}" {% endif %}>{{ item.value }}</a></li>
+            <li class="nav_item"><a href="{{ item.href }}" {% if item.title|default(false) %}title="{{ item.title }}" {% endif %}>{{ item.value }}</a></li>
         {% endfor %}
         </ul>
     </nav>
