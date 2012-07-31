@@ -21,7 +21,7 @@ class Config {
 
         Twig_Autoloader::register();
 
-        $loader = new Twig_Loader_Filesystem('static/templates');
+        $loader = new Twig_Loader_Filesystem('views/templates');
 
         self::$tpl = new Twig_Environment($loader, array(
             'cache' => dirname(__FILE__).'/cache/templates'
