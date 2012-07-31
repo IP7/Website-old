@@ -1,0 +1,20 @@
+<header id="globalheader">
+
+    {# logo #}
+    <a href="{{ site.root }}">
+        <img src="{{ site.logo.src }}" alt="IP7" id="logo" width="{{ site.logo.width }}" height="{{ site.logo.height }}" />
+    </a>
+    
+    {# navigation #}
+    {% if global_nav %}
+    <nav id="global_nav">
+        <ul>
+        {% for item in global_nav %}
+            <li class="nav_item"><a href="{{ item.href }}" {% if item.title %}title="{{ item.title }}" {% endif %}>{{ item.value }}</a></li>
+        {% endfor %}
+        </ul>
+    </nav>
+    {% endif %}
+
+    {# TODO #} 
+</header>

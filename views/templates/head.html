@@ -4,7 +4,7 @@
     {% block head %}
         <meta charset="{{ page.charset }}" />
         <meta name="language" content="{{ page.lang }}" />
-        <title>{{ page.title }}</title>
+        <title>{{ site.title }}{% if page.title %} – {{ page.title }}{% endif %}</title>
 
         {# referencement #}
         <meta name="keywords" content="{{ page.keywords }}" />
