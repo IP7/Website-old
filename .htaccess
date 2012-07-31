@@ -3,17 +3,28 @@ SetEnv PHP_VER 5
 AddDefaultCharset UTF-8
 
 <IfModule mod_rewrite.c>
-  Options +FollowSymlinks
-  Options +Indexes
-  RewriteEngine on
 
-  # test string is a valid files
-  RewriteCond %{SCRIPT_FILENAME} !-f
-  # test string is a valid directory
-  RewriteCond %{SCRIPT_FILENAME} !-d
+Options +FollowSymlinks
+Options +Indexes
+RewriteEngine on
 
-  RewriteRule ^(.*)$   index.php?uri=/$1    [NC,L,QSA]
-  # with QSA flag (query string append),
-  # forces the rewrite engine to append a query string part of the
-  # substitution string to the existing string, instead of replacing it.
+# disable the rule if using in local (for tests)
+RewriteCond %{HTTP_HOST} !^localhost$ [NC]
+
+# redirect to www.
+RewriteCond %{HTTP_HOST} !^www.infop7.org$ [NC]
+RewriteRule ^(.*)$ http://www.infop7.org/$1 [L,R=301]
+
+# Limonade
+
+# test string is a valid files
+RewriteCond %{SCRIPT_FILENAME} !-f
+# test string is a valid directory
+RewriteCond %{SCRIPT_FILENAME} !-d
+
+RewriteRule ^(.*)$   index.php?uri=/$1    [NC,L,QSA]
+# with QSA flag (query string append),
+# forces the rewrite engine to append a query string part of the
+# substitution string to the existing string, instead of replacing it.
+
 </IfModule>
