@@ -341,7 +341,7 @@ function run($env = null)
   option('debug',              true);
   option('session',            LIM_SESSION_NAME); // true, false or the name of your session
   option('encoding',           'utf-8');
-  option('signature',          LIM_NAME); // X-Limonade header value or false to hide it
+  option('signature',          false); // X-Limonade header value or false to hide it
   option('gzip',               false);
   option('x-sendfile',         0); // 0: disabled, 
                                    // X-SENDFILE: for Apache and Lighttpd v. >= 1.5,
