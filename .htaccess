@@ -1,5 +1,5 @@
-
 SetEnv PHP_VER 5
+SetEnv SESSION_USE_TRANS_SID 0
 AddDefaultCharset UTF-8
 
 <IfModule mod_rewrite.c>
@@ -8,11 +8,8 @@ Options +FollowSymlinks
 Options +Indexes
 RewriteEngine on
 
-# disable the rule if using in local (for tests)
-RewriteCond %{HTTP_HOST} !^localhost$ [NC]
-
 # redirect to www.
-RewriteCond %{HTTP_HOST} !^www.infop7.org$ [NC]
+RewriteCond %{HTTP_HOST} ^infop7.org$ [NC]
 RewriteRule ^(.*)$ http://www.infop7.org/$1 [L,R=301]
 
 # Limonade
