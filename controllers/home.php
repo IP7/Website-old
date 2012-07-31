@@ -4,7 +4,7 @@ function display_home() {
 
     return Config::$tpl->render('home.html', tpl_array(array(
         'page' => array(
-            'title' => 'IP7 – Accueil'
+            'title' => 'Accueil'
         ),
 
         // temporary solution
