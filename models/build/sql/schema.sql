@@ -34,7 +34,7 @@ CREATE TABLE `users`
     `is_a_student` TINYINT(1) DEFAULT 1,
     `avatar_id` INTEGER,
     `description` TEXT(512),
-    `comments` VARCHAR(255),
+    `remarks` VARCHAR(255),
     PRIMARY KEY (`id`),
     INDEX `users_FI_1` (`avatar_id`),
     CONSTRAINT `users_FK_1`

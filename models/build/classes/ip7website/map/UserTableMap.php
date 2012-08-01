@@ -61,7 +61,7 @@ class UserTableMap extends TableMap
         $this->addColumn('IS_A_STUDENT', 'IsAStudent', 'BOOLEAN', false, 1, '1');
         $this->addForeignKey('AVATAR_ID', 'AvatarId', 'INTEGER', 'files', 'ID', false, null, null);
         $this->addColumn('DESCRIPTION', 'Description', 'LONGVARCHAR', false, 512, null);
-        $this->addColumn('COMMENTS', 'Comments', 'VARCHAR', false, 255, null);
+        $this->addColumn('REMARKS', 'Remarks', 'VARCHAR', false, 255, null);
         // validators
         $this->addValidator('USERNAME', 'minLength', 'propel.validator.MinLengthValidator', '4', 'Username must be at least 4 characters.');
         $this->addValidator('USERNAME', 'match', 'propel.validator.MatchValidator', '/^[a-z](?:[-_]?[a-z0-9]+)+$/i', 'Please enter a valid username.');

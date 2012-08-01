@@ -79,7 +79,7 @@
         <column name="description"           type="LONGVARCHAR" size="512" lazyLoad="true" />
 
         <!-- commentaires (pour la trésorerie) -->
-        <column name="comments"              type="VARCHAR" lazyLoad="true" />
+        <column name="remarks"               type="VARCHAR" lazyLoad="true" />
 
 
         <!-- == index & clefs étrangères == -->

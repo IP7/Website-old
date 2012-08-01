@@ -184,17 +184,17 @@ abstract class BaseUser extends BaseObject
     protected $description_isLoaded = false;
 
     /**
-     * The value for the comments field.
+     * The value for the remarks field.
      * @var        string
      */
-    protected $comments;
+    protected $remarks;
 
     /**
-     * Whether the lazy-loaded $comments value has been loaded from database.
-     * This is necessary to avoid repeated lookups if $comments column is NULL in the db.
+     * Whether the lazy-loaded $remarks value has been loaded from database.
+     * This is necessary to avoid repeated lookups if $remarks column is NULL in the db.
      * @var        boolean
      */
-    protected $comments_isLoaded = false;
+    protected $remarks_isLoaded = false;
 
     /**
      * @var        File
@@ -803,44 +803,44 @@ abstract class BaseUser extends BaseObject
         }
     }
     /**
-     * Get the [comments] column value.
+     * Get the [remarks] column value.
      * 
      * @param      PropelPDO $con An optional PropelPDO connection to use for fetching this lazy-loaded column.
      * @return   string
      */
-    public function getComments(PropelPDO $con = null)
+    public function getRemarks(PropelPDO $con = null)
     {
-        if (!$this->comments_isLoaded && $this->comments === null && !$this->isNew()) {
-            $this->loadComments($con);
+        if (!$this->remarks_isLoaded && $this->remarks === null && !$this->isNew()) {
+            $this->loadRemarks($con);
         }
 
 
-        return $this->comments;
+        return $this->remarks;
     }
 
     /**
-     * Load the value for the lazy-loaded [comments] column.
+     * Load the value for the lazy-loaded [remarks] column.
      *
      * This method performs an additional query to return the value for
-     * the [comments] column, since it is not populated by
+     * the [remarks] column, since it is not populated by
      * the hydrate() method.
      *
      * @param  PropelPDO $con (optional) The PropelPDO connection to use.
      * @return void
      * @throws PropelException - any underlying error will be wrapped and re-thrown.
      */
-    protected function loadComments(PropelPDO $con = null)
+    protected function loadRemarks(PropelPDO $con = null)
     {
         $c = $this->buildPkeyCriteria();
-        $c->addSelectColumn(UserPeer::COMMENTS);
+        $c->addSelectColumn(UserPeer::REMARKS);
         try {
             $stmt = UserPeer::doSelectStmt($c, $con);
             $row = $stmt->fetch(PDO::FETCH_NUM);
             $stmt->closeCursor();
-            $this->comments = ($row[0] !== null) ? (string) $row[0] : null;
-            $this->comments_isLoaded = true;
+            $this->remarks = ($row[0] !== null) ? (string) $row[0] : null;
+            $this->remarks_isLoaded = true;
         } catch (Exception $e) {
-            throw new PropelException("Error loading value for [comments] column on demand.", $e);
+            throw new PropelException("Error loading value for [remarks] column on demand.", $e);
         }
     }
     /**
@@ -1393,31 +1393,31 @@ abstract class BaseUser extends BaseObject
     } // setDescription()
 
     /**
-     * Set the value of [comments] column.
+     * Set the value of [remarks] column.
      * 
      * @param      string $v new value
      * @return   User The current object (for fluent API support)
      */
-    public function setComments($v)
+    public function setRemarks($v)
     {
         // explicitly set the is-loaded flag to true for this lazy load col;
         // it doesn't matter if the value is actually set or not (logic below) as
         // any attempt to set the value means that no db lookup should be performed
-        // when the getComments() method is called.
-        $this->comments_isLoaded = true;
+        // when the getRemarks() method is called.
+        $this->remarks_isLoaded = true;
 
         if ($v !== null) {
             $v = (string) $v;
         }
 
-        if ($this->comments !== $v) {
-            $this->comments = $v;
-            $this->modifiedColumns[] = UserPeer::COMMENTS;
+        if ($this->remarks !== $v) {
+            $this->remarks = $v;
+            $this->modifiedColumns[] = UserPeer::REMARKS;
         }
 
 
         return $this;
-    } // setComments()
+    } // setRemarks()
 
     /**
      * Indicates whether the columns in this object are only set to default values.
@@ -1548,9 +1548,9 @@ abstract class BaseUser extends BaseObject
         $this->description = null;
         $this->description_isLoaded = false;
 
-        // Reset the comments lazy-load column
-        $this->comments = null;
-        $this->comments_isLoaded = false;
+        // Reset the remarks lazy-load column
+        $this->remarks = null;
+        $this->remarks_isLoaded = false;
 
         if ($deep) {  // also de-associate any related objects?
 
@@ -2101,8 +2101,8 @@ abstract class BaseUser extends BaseObject
         if ($this->isColumnModified(UserPeer::DESCRIPTION)) {
             $modifiedColumns[':p' . $index++]  = '`DESCRIPTION`';
         }
-        if ($this->isColumnModified(UserPeer::COMMENTS)) {
-            $modifiedColumns[':p' . $index++]  = '`COMMENTS`';
+        if ($this->isColumnModified(UserPeer::REMARKS)) {
+            $modifiedColumns[':p' . $index++]  = '`REMARKS`';
         }
 
         $sql = sprintf(
@@ -2184,8 +2184,8 @@ abstract class BaseUser extends BaseObject
                     case '`DESCRIPTION`':
 						$stmt->bindValue($identifier, $this->description, PDO::PARAM_STR);
                         break;
-                    case '`COMMENTS`':
-						$stmt->bindValue($identifier, $this->comments, PDO::PARAM_STR);
+                    case '`REMARKS`':
+						$stmt->bindValue($identifier, $this->remarks, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -2515,7 +2515,7 @@ abstract class BaseUser extends BaseObject
                 return $this->getDescription();
                 break;
             case 23:
-                return $this->getComments();
+                return $this->getRemarks();
                 break;
             default:
                 return null;
@@ -2569,7 +2569,7 @@ abstract class BaseUser extends BaseObject
             $keys[20] => $this->getIsAStudent(),
             $keys[21] => $this->getAvatarId(),
             $keys[22] => ($includeLazyLoadColumns) ? $this->getDescription() : null,
-            $keys[23] => ($includeLazyLoadColumns) ? $this->getComments() : null,
+            $keys[23] => ($includeLazyLoadColumns) ? $this->getRemarks() : null,
         );
         if ($includeForeignObjects) {
             if (null !== $this->aAvatar) {
@@ -2721,7 +2721,7 @@ abstract class BaseUser extends BaseObject
                 $this->setDescription($value);
                 break;
             case 23:
-                $this->setComments($value);
+                $this->setRemarks($value);
                 break;
         } // switch()
     }
@@ -2770,7 +2770,7 @@ abstract class BaseUser extends BaseObject
         if (array_key_exists($keys[20], $arr)) $this->setIsAStudent($arr[$keys[20]]);
         if (array_key_exists($keys[21], $arr)) $this->setAvatarId($arr[$keys[21]]);
         if (array_key_exists($keys[22], $arr)) $this->setDescription($arr[$keys[22]]);
-        if (array_key_exists($keys[23], $arr)) $this->setComments($arr[$keys[23]]);
+        if (array_key_exists($keys[23], $arr)) $this->setRemarks($arr[$keys[23]]);
     }
 
     /**
@@ -2805,7 +2805,7 @@ abstract class BaseUser extends BaseObject
         if ($this->isColumnModified(UserPeer::IS_A_STUDENT)) $criteria->add(UserPeer::IS_A_STUDENT, $this->is_a_student);
         if ($this->isColumnModified(UserPeer::AVATAR_ID)) $criteria->add(UserPeer::AVATAR_ID, $this->avatar_id);
         if ($this->isColumnModified(UserPeer::DESCRIPTION)) $criteria->add(UserPeer::DESCRIPTION, $this->description);
-        if ($this->isColumnModified(UserPeer::COMMENTS)) $criteria->add(UserPeer::COMMENTS, $this->comments);
+        if ($this->isColumnModified(UserPeer::REMARKS)) $criteria->add(UserPeer::REMARKS, $this->remarks);
 
         return $criteria;
     }
@@ -2891,7 +2891,7 @@ abstract class BaseUser extends BaseObject
         $copyObj->setIsAStudent($this->getIsAStudent());
         $copyObj->setAvatarId($this->getAvatarId());
         $copyObj->setDescription($this->getDescription());
-        $copyObj->setComments($this->getComments());
+        $copyObj->setRemarks($this->getRemarks());
 
         if ($deepCopy && !$this->startCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -6291,8 +6291,8 @@ abstract class BaseUser extends BaseObject
         $this->avatar_id = null;
         $this->description = null;
         $this->description_isLoaded = false;
-        $this->comments = null;
-        $this->comments_isLoaded = false;
+        $this->remarks = null;
+        $this->remarks_isLoaded = false;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->clearAllReferences();

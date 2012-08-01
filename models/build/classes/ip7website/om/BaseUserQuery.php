@@ -29,7 +29,7 @@
  * @method     UserQuery orderByIsAStudent($order = Criteria::ASC) Order by the is_a_student column
  * @method     UserQuery orderByAvatarId($order = Criteria::ASC) Order by the avatar_id column
  * @method     UserQuery orderByDescription($order = Criteria::ASC) Order by the description column
- * @method     UserQuery orderByComments($order = Criteria::ASC) Order by the comments column
+ * @method     UserQuery orderByRemarks($order = Criteria::ASC) Order by the remarks column
  *
  * @method     UserQuery groupById() Group by the id column
  * @method     UserQuery groupByUsername() Group by the username column
@@ -54,7 +54,7 @@
  * @method     UserQuery groupByIsAStudent() Group by the is_a_student column
  * @method     UserQuery groupByAvatarId() Group by the avatar_id column
  * @method     UserQuery groupByDescription() Group by the description column
- * @method     UserQuery groupByComments() Group by the comments column
+ * @method     UserQuery groupByRemarks() Group by the remarks column
  *
  * @method     UserQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method     UserQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -146,7 +146,7 @@
  * @method     User findOneByIsAStudent(boolean $is_a_student) Return the first User filtered by the is_a_student column
  * @method     User findOneByAvatarId(int $avatar_id) Return the first User filtered by the avatar_id column
  * @method     User findOneByDescription(string $description) Return the first User filtered by the description column
- * @method     User findOneByComments(string $comments) Return the first User filtered by the comments column
+ * @method     User findOneByRemarks(string $remarks) Return the first User filtered by the remarks column
  *
  * @method     array findById(int $id) Return User objects filtered by the id column
  * @method     array findByUsername(string $username) Return User objects filtered by the username column
@@ -171,7 +171,7 @@
  * @method     array findByIsAStudent(boolean $is_a_student) Return User objects filtered by the is_a_student column
  * @method     array findByAvatarId(int $avatar_id) Return User objects filtered by the avatar_id column
  * @method     array findByDescription(string $description) Return User objects filtered by the description column
- * @method     array findByComments(string $comments) Return User objects filtered by the comments column
+ * @method     array findByRemarks(string $remarks) Return User objects filtered by the remarks column
  *
  * @package    propel.generator.ip7website.om
  */
@@ -1099,32 +1099,32 @@ abstract class BaseUserQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the comments column
+     * Filter the query on the remarks column
      *
      * Example usage:
      * <code>
-     * $query->filterByComments('fooValue');   // WHERE comments = 'fooValue'
-     * $query->filterByComments('%fooValue%'); // WHERE comments LIKE '%fooValue%'
+     * $query->filterByRemarks('fooValue');   // WHERE remarks = 'fooValue'
+     * $query->filterByRemarks('%fooValue%'); // WHERE remarks LIKE '%fooValue%'
      * </code>
      *
-     * @param     string $comments The value to use as filter.
+     * @param     string $remarks The value to use as filter.
      *              Accepts wildcards (* and % trigger a LIKE)
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return UserQuery The current query, for fluid interface
      */
-    public function filterByComments($comments = null, $comparison = null)
+    public function filterByRemarks($remarks = null, $comparison = null)
     {
         if (null === $comparison) {
-            if (is_array($comments)) {
+            if (is_array($remarks)) {
                 $comparison = Criteria::IN;
-            } elseif (preg_match('/[\%\*]/', $comments)) {
-                $comments = str_replace('*', '%', $comments);
+            } elseif (preg_match('/[\%\*]/', $remarks)) {
+                $remarks = str_replace('*', '%', $remarks);
                 $comparison = Criteria::LIKE;
             }
         }
 
-        return $this->addUsingAlias(UserPeer::COMMENTS, $comments, $comparison);
+        return $this->addUsingAlias(UserPeer::REMARKS, $remarks, $comparison);
     }
 
     /**
