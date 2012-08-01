@@ -2,6 +2,7 @@
 
 require_once 'lib/vendors/Twig/Autoloader.php';
 require_once 'lib/vendors/limonade/limonade.php';
+require_once 'lib/vendors/phpass/PasswordHash.php';
 
 # Usage:
 #
@@ -17,6 +18,7 @@ require_once 'lib/vendors/limonade/limonade.php';
 class Config {
 
     static $tpl;
+    static $p_hasher;
     static $default_tpl_values;
 
     private static $initialized = false;
@@ -79,6 +81,10 @@ class Config {
         set_include_path(dirname(__FILE__)."/models/build/classes" . PATH_SEPARATOR . get_include_path());
     }
 
+    private static function phpass_init() {
+        self::$p_hasher = new PasswordHash(8, FALSE);
+    }
+
     # call others *_init() methods
     static function init() {
         if (self::$initialized) {
@@ -89,6 +95,7 @@ class Config {
         self::tpl_init();
         self::routes_init();
         self::orm_init();
+        self::phpass_init();
     }
 
 };
