@@ -147,7 +147,7 @@
             <unique-column name="name" />
         </unique>
 
-        <foreign-key foreignTable="users" onDelete="SETNULL" onUpdate="CASCADE" phpName="Responsable">
+        <foreign-key foreignTable="users" onDelete="SETNULL" onUpdate="CASCADE" phpName="Responsable" refPhpName="CursusResponsability">
             <reference local="responsable_id" foreign="id" />
         </foreign-key>
 

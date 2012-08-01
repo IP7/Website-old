@@ -64,9 +64,9 @@
  * @method     UserQuery rightJoinAvatar($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Avatar relation
  * @method     UserQuery innerJoinAvatar($relationAlias = null) Adds a INNER JOIN clause to the query using the Avatar relation
  *
- * @method     UserQuery leftJoinCursus($relationAlias = null) Adds a LEFT JOIN clause to the query using the Cursus relation
- * @method     UserQuery rightJoinCursus($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Cursus relation
- * @method     UserQuery innerJoinCursus($relationAlias = null) Adds a INNER JOIN clause to the query using the Cursus relation
+ * @method     UserQuery leftJoinCursusResponsability($relationAlias = null) Adds a LEFT JOIN clause to the query using the CursusResponsability relation
+ * @method     UserQuery rightJoinCursusResponsability($relationAlias = null) Adds a RIGHT JOIN clause to the query using the CursusResponsability relation
+ * @method     UserQuery innerJoinCursusResponsability($relationAlias = null) Adds a INNER JOIN clause to the query using the CursusResponsability relation
  *
  * @method     UserQuery leftJoinUsersCursus($relationAlias = null) Adds a LEFT JOIN clause to the query using the UsersCursus relation
  * @method     UserQuery rightJoinUsersCursus($relationAlias = null) Adds a RIGHT JOIN clause to the query using the UsersCursus relation
@@ -1212,33 +1212,33 @@ abstract class BaseUserQuery extends ModelCriteria
      * @return   UserQuery The current query, for fluid interface
      * @throws   PropelException - if the provided filter is invalid.
      */
-    public function filterByCursus($cursus, $comparison = null)
+    public function filterByCursusResponsability($cursus, $comparison = null)
     {
         if ($cursus instanceof Cursus) {
             return $this
                 ->addUsingAlias(UserPeer::ID, $cursus->getResponsableId(), $comparison);
         } elseif ($cursus instanceof PropelObjectCollection) {
             return $this
-                ->useCursusQuery()
+                ->useCursusResponsabilityQuery()
                 ->filterByPrimaryKeys($cursus->getPrimaryKeys())
                 ->endUse();
         } else {
-            throw new PropelException('filterByCursus() only accepts arguments of type Cursus or PropelCollection');
+            throw new PropelException('filterByCursusResponsability() only accepts arguments of type Cursus or PropelCollection');
         }
     }
 
     /**
-     * Adds a JOIN clause to the query using the Cursus relation
+     * Adds a JOIN clause to the query using the CursusResponsability relation
      *
      * @param     string $relationAlias optional alias for the relation
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
      * @return UserQuery The current query, for fluid interface
      */
-    public function joinCursus($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    public function joinCursusResponsability($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('Cursus');
+        $relationMap = $tableMap->getRelation('CursusResponsability');
 
         // create a ModelJoin object for this join
         $join = new ModelJoin();
@@ -1253,14 +1253,14 @@ abstract class BaseUserQuery extends ModelCriteria
             $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
             $this->addJoinObject($join, $relationAlias);
         } else {
-            $this->addJoinObject($join, 'Cursus');
+            $this->addJoinObject($join, 'CursusResponsability');
         }
 
         return $this;
     }
 
     /**
-     * Use the Cursus relation Cursus object
+     * Use the CursusResponsability relation Cursus object
      *
      * @see       useQuery()
      *
@@ -1270,11 +1270,11 @@ abstract class BaseUserQuery extends ModelCriteria
      *
      * @return   CursusQuery A secondary query class using the current class as primary query
      */
-    public function useCursusQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    public function useCursusResponsabilityQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         return $this
-            ->joinCursus($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'Cursus', 'CursusQuery');
+            ->joinCursusResponsability($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'CursusResponsability', 'CursusQuery');
     }
 
     /**

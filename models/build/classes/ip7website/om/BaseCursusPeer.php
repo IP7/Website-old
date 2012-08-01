@@ -639,7 +639,7 @@ abstract class BaseCursusPeer {
                 } // if obj2 already loaded
 
                 // Add the $obj1 (Cursus) to $obj2 (User)
-                $obj2->addCursus($obj1);
+                $obj2->addCursusResponsability($obj1);
 
             } // if joined row was not null
 
@@ -834,7 +834,7 @@ abstract class BaseCursusPeer {
                 } // if obj2 loaded
 
                 // Add the $obj1 (Cursus) to the collection in $obj2 (User)
-                $obj2->addCursus($obj1);
+                $obj2->addCursusResponsability($obj1);
             } // if joined row not null
 
             // Add objects for joined Newsletter rows
@@ -1101,7 +1101,7 @@ abstract class BaseCursusPeer {
                 } // if $obj2 already loaded
 
                 // Add the $obj1 (Cursus) to the collection in $obj2 (User)
-                $obj2->addCursus($obj1);
+                $obj2->addCursusResponsability($obj1);
 
             } // if joined row is not null
 

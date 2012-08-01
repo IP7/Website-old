@@ -80,7 +80,7 @@ class UserTableMap extends TableMap
     public function buildRelations()
     {
         $this->addRelation('Avatar', 'File', RelationMap::MANY_TO_ONE, array('avatar_id' => 'id', ), 'SET NULL', 'CASCADE');
-        $this->addRelation('Cursus', 'Cursus', RelationMap::ONE_TO_MANY, array('id' => 'responsable_id', ), 'SET NULL', 'CASCADE', 'Cursuss');
+        $this->addRelation('CursusResponsability', 'Cursus', RelationMap::ONE_TO_MANY, array('id' => 'responsable_id', ), 'SET NULL', 'CASCADE', 'CursusResponsabilitys');
         $this->addRelation('UsersCursus', 'UsersCursus', RelationMap::ONE_TO_MANY, array('id' => 'user_id', ), 'CASCADE', 'CASCADE', 'UsersCursuss');
         $this->addRelation('FileRelatedByAuthorId', 'File', RelationMap::ONE_TO_MANY, array('id' => 'author_id', ), 'SET NULL', 'CASCADE', 'FilesRelatedByAuthorId');
         $this->addRelation('NewslettersSubscribers', 'NewslettersSubscribers', RelationMap::ONE_TO_MANY, array('id' => 'subscriber_id', ), 'CASCADE', 'CASCADE', 'NewslettersSubscriberss');
