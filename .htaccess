@@ -14,6 +14,7 @@ RewriteCond %{HTTP_HOST} !^dev.infop7.org$ [NC]
 RewriteCond %{HTTP_HOST} !^static1.infop7.org$ [NC]
 RewriteCond %{HTTP_HOST} !^static2.infop7.org$ [NC]
 RewriteCond %{HTTP_HOST} !^test.infop7.org$ [NC]
+RewriteCond %{HTTP_HOST} !^www.infop7.org$ [NC]
 
 RewriteRule ^(.*)$ http://www.infop7.org/$1 [L,R=301]
 
