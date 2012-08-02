@@ -27,6 +27,11 @@ propel-gen: ${PROPEL_BUILD_DIR}
 clean:
 	find . -name "*~" -delete
 
+# phpunit tests
+
+unit-tests:
+	cd tests;for f in *_unit_tests.php; do echo "Running $$f tests…";phpunit $$f;done
+
 
 ${PROPEL_DOC_DIR}: 
 	@echo "Génération de la documentation pour Propel..."
