@@ -61,7 +61,7 @@ class UserTableMap extends TableMap
         $this->addColumn('IS_A_STUDENT', 'IsAStudent', 'BOOLEAN', false, 1, '1');
         $this->addForeignKey('AVATAR_ID', 'AvatarId', 'INTEGER', 'files', 'ID', false, null, null);
         $this->addColumn('DESCRIPTION', 'Description', 'LONGVARCHAR', false, 512, null);
-        $this->addColumn('COMMENTS', 'Comments', 'VARCHAR', false, 255, null);
+        $this->addColumn('REMARKS', 'Remarks', 'VARCHAR', false, 255, null);
         // validators
         $this->addValidator('USERNAME', 'minLength', 'propel.validator.MinLengthValidator', '4', 'Username must be at least 4 characters.');
         $this->addValidator('USERNAME', 'match', 'propel.validator.MatchValidator', '/^[a-z](?:[-_]?[a-z0-9]+)+$/i', 'Please enter a valid username.');
@@ -80,7 +80,7 @@ class UserTableMap extends TableMap
     public function buildRelations()
     {
         $this->addRelation('Avatar', 'File', RelationMap::MANY_TO_ONE, array('avatar_id' => 'id', ), 'SET NULL', 'CASCADE');
-        $this->addRelation('Cursus', 'Cursus', RelationMap::ONE_TO_MANY, array('id' => 'responsable_id', ), 'SET NULL', 'CASCADE', 'Cursuss');
+        $this->addRelation('CursusResponsability', 'Cursus', RelationMap::ONE_TO_MANY, array('id' => 'responsable_id', ), 'SET NULL', 'CASCADE', 'CursusResponsabilitys');
         $this->addRelation('UsersCursus', 'UsersCursus', RelationMap::ONE_TO_MANY, array('id' => 'user_id', ), 'CASCADE', 'CASCADE', 'UsersCursuss');
         $this->addRelation('FileRelatedByAuthorId', 'File', RelationMap::ONE_TO_MANY, array('id' => 'author_id', ), 'SET NULL', 'CASCADE', 'FilesRelatedByAuthorId');
         $this->addRelation('NewslettersSubscribers', 'NewslettersSubscribers', RelationMap::ONE_TO_MANY, array('id' => 'subscriber_id', ), 'CASCADE', 'CASCADE', 'NewslettersSubscriberss');

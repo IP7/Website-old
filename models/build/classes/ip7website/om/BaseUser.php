@@ -184,17 +184,17 @@ abstract class BaseUser extends BaseObject
     protected $description_isLoaded = false;
 
     /**
-     * The value for the comments field.
+     * The value for the remarks field.
      * @var        string
      */
-    protected $comments;
+    protected $remarks;
 
     /**
-     * Whether the lazy-loaded $comments value has been loaded from database.
-     * This is necessary to avoid repeated lookups if $comments column is NULL in the db.
+     * Whether the lazy-loaded $remarks value has been loaded from database.
+     * This is necessary to avoid repeated lookups if $remarks column is NULL in the db.
      * @var        boolean
      */
-    protected $comments_isLoaded = false;
+    protected $remarks_isLoaded = false;
 
     /**
      * @var        File
@@ -204,7 +204,7 @@ abstract class BaseUser extends BaseObject
     /**
      * @var        PropelObjectCollection|Cursus[] Collection to store aggregation of Cursus objects.
      */
-    protected $collCursuss;
+    protected $collCursusResponsabilitys;
 
     /**
      * @var        PropelObjectCollection|UsersCursus[] Collection to store aggregation of UsersCursus objects.
@@ -311,7 +311,7 @@ abstract class BaseUser extends BaseObject
      * An array of objects scheduled for deletion.
      * @var		PropelObjectCollection
      */
-    protected $cursussScheduledForDeletion = null;
+    protected $cursusResponsabilitysScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
@@ -803,44 +803,44 @@ abstract class BaseUser extends BaseObject
         }
     }
     /**
-     * Get the [comments] column value.
+     * Get the [remarks] column value.
      * 
      * @param      PropelPDO $con An optional PropelPDO connection to use for fetching this lazy-loaded column.
      * @return   string
      */
-    public function getComments(PropelPDO $con = null)
+    public function getRemarks(PropelPDO $con = null)
     {
-        if (!$this->comments_isLoaded && $this->comments === null && !$this->isNew()) {
-            $this->loadComments($con);
+        if (!$this->remarks_isLoaded && $this->remarks === null && !$this->isNew()) {
+            $this->loadRemarks($con);
         }
 
 
-        return $this->comments;
+        return $this->remarks;
     }
 
     /**
-     * Load the value for the lazy-loaded [comments] column.
+     * Load the value for the lazy-loaded [remarks] column.
      *
      * This method performs an additional query to return the value for
-     * the [comments] column, since it is not populated by
+     * the [remarks] column, since it is not populated by
      * the hydrate() method.
      *
      * @param  PropelPDO $con (optional) The PropelPDO connection to use.
      * @return void
      * @throws PropelException - any underlying error will be wrapped and re-thrown.
      */
-    protected function loadComments(PropelPDO $con = null)
+    protected function loadRemarks(PropelPDO $con = null)
     {
         $c = $this->buildPkeyCriteria();
-        $c->addSelectColumn(UserPeer::COMMENTS);
+        $c->addSelectColumn(UserPeer::REMARKS);
         try {
             $stmt = UserPeer::doSelectStmt($c, $con);
             $row = $stmt->fetch(PDO::FETCH_NUM);
             $stmt->closeCursor();
-            $this->comments = ($row[0] !== null) ? (string) $row[0] : null;
-            $this->comments_isLoaded = true;
+            $this->remarks = ($row[0] !== null) ? (string) $row[0] : null;
+            $this->remarks_isLoaded = true;
         } catch (Exception $e) {
-            throw new PropelException("Error loading value for [comments] column on demand.", $e);
+            throw new PropelException("Error loading value for [remarks] column on demand.", $e);
         }
     }
     /**
@@ -1393,31 +1393,31 @@ abstract class BaseUser extends BaseObject
     } // setDescription()
 
     /**
-     * Set the value of [comments] column.
+     * Set the value of [remarks] column.
      * 
      * @param      string $v new value
      * @return   User The current object (for fluent API support)
      */
-    public function setComments($v)
+    public function setRemarks($v)
     {
         // explicitly set the is-loaded flag to true for this lazy load col;
         // it doesn't matter if the value is actually set or not (logic below) as
         // any attempt to set the value means that no db lookup should be performed
-        // when the getComments() method is called.
-        $this->comments_isLoaded = true;
+        // when the getRemarks() method is called.
+        $this->remarks_isLoaded = true;
 
         if ($v !== null) {
             $v = (string) $v;
         }
 
-        if ($this->comments !== $v) {
-            $this->comments = $v;
-            $this->modifiedColumns[] = UserPeer::COMMENTS;
+        if ($this->remarks !== $v) {
+            $this->remarks = $v;
+            $this->modifiedColumns[] = UserPeer::REMARKS;
         }
 
 
         return $this;
-    } // setComments()
+    } // setRemarks()
 
     /**
      * Indicates whether the columns in this object are only set to default values.
@@ -1548,14 +1548,14 @@ abstract class BaseUser extends BaseObject
         $this->description = null;
         $this->description_isLoaded = false;
 
-        // Reset the comments lazy-load column
-        $this->comments = null;
-        $this->comments_isLoaded = false;
+        // Reset the remarks lazy-load column
+        $this->remarks = null;
+        $this->remarks_isLoaded = false;
 
         if ($deep) {  // also de-associate any related objects?
 
             $this->aAvatar = null;
-            $this->collCursuss = null;
+            $this->collCursusResponsabilitys = null;
 
             $this->collUsersCursuss = null;
 
@@ -1761,18 +1761,18 @@ abstract class BaseUser extends BaseObject
                 }
             }
 
-            if ($this->cursussScheduledForDeletion !== null) {
-                if (!$this->cursussScheduledForDeletion->isEmpty()) {
-                    foreach ($this->cursussScheduledForDeletion as $cursus) {
+            if ($this->cursusResponsabilitysScheduledForDeletion !== null) {
+                if (!$this->cursusResponsabilitysScheduledForDeletion->isEmpty()) {
+                    foreach ($this->cursusResponsabilitysScheduledForDeletion as $cursusResponsability) {
                         // need to save related object because we set the relation to null
-                        $cursus->save($con);
+                        $cursusResponsability->save($con);
                     }
-                    $this->cursussScheduledForDeletion = null;
+                    $this->cursusResponsabilitysScheduledForDeletion = null;
                 }
             }
 
-            if ($this->collCursuss !== null) {
-                foreach ($this->collCursuss as $referrerFK) {
+            if ($this->collCursusResponsabilitys !== null) {
+                foreach ($this->collCursusResponsabilitys as $referrerFK) {
                     if (!$referrerFK->isDeleted()) {
                         $affectedRows += $referrerFK->save($con);
                     }
@@ -2101,8 +2101,8 @@ abstract class BaseUser extends BaseObject
         if ($this->isColumnModified(UserPeer::DESCRIPTION)) {
             $modifiedColumns[':p' . $index++]  = '`DESCRIPTION`';
         }
-        if ($this->isColumnModified(UserPeer::COMMENTS)) {
-            $modifiedColumns[':p' . $index++]  = '`COMMENTS`';
+        if ($this->isColumnModified(UserPeer::REMARKS)) {
+            $modifiedColumns[':p' . $index++]  = '`REMARKS`';
         }
 
         $sql = sprintf(
@@ -2184,8 +2184,8 @@ abstract class BaseUser extends BaseObject
                     case '`DESCRIPTION`':
 						$stmt->bindValue($identifier, $this->description, PDO::PARAM_STR);
                         break;
-                    case '`COMMENTS`':
-						$stmt->bindValue($identifier, $this->comments, PDO::PARAM_STR);
+                    case '`REMARKS`':
+						$stmt->bindValue($identifier, $this->remarks, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -2298,8 +2298,8 @@ abstract class BaseUser extends BaseObject
             }
 
 
-                if ($this->collCursuss !== null) {
-                    foreach ($this->collCursuss as $referrerFK) {
+                if ($this->collCursusResponsabilitys !== null) {
+                    foreach ($this->collCursusResponsabilitys as $referrerFK) {
                         if (!$referrerFK->validate($columns)) {
                             $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
                         }
@@ -2515,7 +2515,7 @@ abstract class BaseUser extends BaseObject
                 return $this->getDescription();
                 break;
             case 23:
-                return $this->getComments();
+                return $this->getRemarks();
                 break;
             default:
                 return null;
@@ -2569,14 +2569,14 @@ abstract class BaseUser extends BaseObject
             $keys[20] => $this->getIsAStudent(),
             $keys[21] => $this->getAvatarId(),
             $keys[22] => ($includeLazyLoadColumns) ? $this->getDescription() : null,
-            $keys[23] => ($includeLazyLoadColumns) ? $this->getComments() : null,
+            $keys[23] => ($includeLazyLoadColumns) ? $this->getRemarks() : null,
         );
         if ($includeForeignObjects) {
             if (null !== $this->aAvatar) {
                 $result['Avatar'] = $this->aAvatar->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
-            if (null !== $this->collCursuss) {
-                $result['Cursuss'] = $this->collCursuss->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            if (null !== $this->collCursusResponsabilitys) {
+                $result['CursusResponsabilitys'] = $this->collCursusResponsabilitys->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
             if (null !== $this->collUsersCursuss) {
                 $result['UsersCursuss'] = $this->collUsersCursuss->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
@@ -2721,7 +2721,7 @@ abstract class BaseUser extends BaseObject
                 $this->setDescription($value);
                 break;
             case 23:
-                $this->setComments($value);
+                $this->setRemarks($value);
                 break;
         } // switch()
     }
@@ -2770,7 +2770,7 @@ abstract class BaseUser extends BaseObject
         if (array_key_exists($keys[20], $arr)) $this->setIsAStudent($arr[$keys[20]]);
         if (array_key_exists($keys[21], $arr)) $this->setAvatarId($arr[$keys[21]]);
         if (array_key_exists($keys[22], $arr)) $this->setDescription($arr[$keys[22]]);
-        if (array_key_exists($keys[23], $arr)) $this->setComments($arr[$keys[23]]);
+        if (array_key_exists($keys[23], $arr)) $this->setRemarks($arr[$keys[23]]);
     }
 
     /**
@@ -2805,7 +2805,7 @@ abstract class BaseUser extends BaseObject
         if ($this->isColumnModified(UserPeer::IS_A_STUDENT)) $criteria->add(UserPeer::IS_A_STUDENT, $this->is_a_student);
         if ($this->isColumnModified(UserPeer::AVATAR_ID)) $criteria->add(UserPeer::AVATAR_ID, $this->avatar_id);
         if ($this->isColumnModified(UserPeer::DESCRIPTION)) $criteria->add(UserPeer::DESCRIPTION, $this->description);
-        if ($this->isColumnModified(UserPeer::COMMENTS)) $criteria->add(UserPeer::COMMENTS, $this->comments);
+        if ($this->isColumnModified(UserPeer::REMARKS)) $criteria->add(UserPeer::REMARKS, $this->remarks);
 
         return $criteria;
     }
@@ -2891,7 +2891,7 @@ abstract class BaseUser extends BaseObject
         $copyObj->setIsAStudent($this->getIsAStudent());
         $copyObj->setAvatarId($this->getAvatarId());
         $copyObj->setDescription($this->getDescription());
-        $copyObj->setComments($this->getComments());
+        $copyObj->setRemarks($this->getRemarks());
 
         if ($deepCopy && !$this->startCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -2900,9 +2900,9 @@ abstract class BaseUser extends BaseObject
             // store object hash to prevent cycle
             $this->startCopy = true;
 
-            foreach ($this->getCursuss() as $relObj) {
+            foreach ($this->getCursusResponsabilitys() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addCursus($relObj->copy($deepCopy));
+                    $copyObj->addCursusResponsability($relObj->copy($deepCopy));
                 }
             }
 
@@ -3096,8 +3096,8 @@ abstract class BaseUser extends BaseObject
      */
     public function initRelation($relationName)
     {
-        if ('Cursus' == $relationName) {
-            $this->initCursuss();
+        if ('CursusResponsability' == $relationName) {
+            $this->initCursusResponsabilitys();
         }
         if ('UsersCursus' == $relationName) {
             $this->initUsersCursuss();
@@ -3141,23 +3141,23 @@ abstract class BaseUser extends BaseObject
     }
 
     /**
-     * Clears out the collCursuss collection
+     * Clears out the collCursusResponsabilitys collection
      *
      * This does not modify the database; however, it will remove any associated objects, causing
      * them to be refetched by subsequent calls to accessor method.
      *
      * @return void
-     * @see        addCursuss()
+     * @see        addCursusResponsabilitys()
      */
-    public function clearCursuss()
+    public function clearCursusResponsabilitys()
     {
-        $this->collCursuss = null; // important to set this to NULL since that means it is uninitialized
+        $this->collCursusResponsabilitys = null; // important to set this to NULL since that means it is uninitialized
     }
 
     /**
-     * Initializes the collCursuss collection.
+     * Initializes the collCursusResponsabilitys collection.
      *
-     * By default this just sets the collCursuss collection to an empty array (like clearcollCursuss());
+     * By default this just sets the collCursusResponsabilitys collection to an empty array (like clearcollCursusResponsabilitys());
      * however, you may wish to override this method in your stub class to provide setting appropriate
      * to your application -- for example, setting the initial array to the values stored in database.
      *
@@ -3166,13 +3166,13 @@ abstract class BaseUser extends BaseObject
      *
      * @return void
      */
-    public function initCursuss($overrideExisting = true)
+    public function initCursusResponsabilitys($overrideExisting = true)
     {
-        if (null !== $this->collCursuss && !$overrideExisting) {
+        if (null !== $this->collCursusResponsabilitys && !$overrideExisting) {
             return;
         }
-        $this->collCursuss = new PropelObjectCollection();
-        $this->collCursuss->setModel('Cursus');
+        $this->collCursusResponsabilitys = new PropelObjectCollection();
+        $this->collCursusResponsabilitys->setModel('Cursus');
     }
 
     /**
@@ -3189,49 +3189,49 @@ abstract class BaseUser extends BaseObject
      * @return PropelObjectCollection|Cursus[] List of Cursus objects
      * @throws PropelException
      */
-    public function getCursuss($criteria = null, PropelPDO $con = null)
+    public function getCursusResponsabilitys($criteria = null, PropelPDO $con = null)
     {
-        if (null === $this->collCursuss || null !== $criteria) {
-            if ($this->isNew() && null === $this->collCursuss) {
+        if (null === $this->collCursusResponsabilitys || null !== $criteria) {
+            if ($this->isNew() && null === $this->collCursusResponsabilitys) {
                 // return empty collection
-                $this->initCursuss();
+                $this->initCursusResponsabilitys();
             } else {
-                $collCursuss = CursusQuery::create(null, $criteria)
+                $collCursusResponsabilitys = CursusQuery::create(null, $criteria)
                     ->filterByResponsable($this)
                     ->find($con);
                 if (null !== $criteria) {
-                    return $collCursuss;
+                    return $collCursusResponsabilitys;
                 }
-                $this->collCursuss = $collCursuss;
+                $this->collCursusResponsabilitys = $collCursusResponsabilitys;
             }
         }
 
-        return $this->collCursuss;
+        return $this->collCursusResponsabilitys;
     }
 
     /**
-     * Sets a collection of Cursus objects related by a one-to-many relationship
+     * Sets a collection of CursusResponsability objects related by a one-to-many relationship
      * to the current object.
      * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
      * and new objects from the given Propel collection.
      *
-     * @param      PropelCollection $cursuss A Propel collection.
+     * @param      PropelCollection $cursusResponsabilitys A Propel collection.
      * @param      PropelPDO $con Optional connection object
      */
-    public function setCursuss(PropelCollection $cursuss, PropelPDO $con = null)
+    public function setCursusResponsabilitys(PropelCollection $cursusResponsabilitys, PropelPDO $con = null)
     {
-        $this->cursussScheduledForDeletion = $this->getCursuss(new Criteria(), $con)->diff($cursuss);
+        $this->cursusResponsabilitysScheduledForDeletion = $this->getCursusResponsabilitys(new Criteria(), $con)->diff($cursusResponsabilitys);
 
-        foreach ($this->cursussScheduledForDeletion as $cursusRemoved) {
-            $cursusRemoved->setResponsable(null);
+        foreach ($this->cursusResponsabilitysScheduledForDeletion as $cursusResponsabilityRemoved) {
+            $cursusResponsabilityRemoved->setResponsable(null);
         }
 
-        $this->collCursuss = null;
-        foreach ($cursuss as $cursus) {
-            $this->addCursus($cursus);
+        $this->collCursusResponsabilitys = null;
+        foreach ($cursusResponsabilitys as $cursusResponsability) {
+            $this->addCursusResponsability($cursusResponsability);
         }
 
-        $this->collCursuss = $cursuss;
+        $this->collCursusResponsabilitys = $cursusResponsabilitys;
     }
 
     /**
@@ -3243,10 +3243,10 @@ abstract class BaseUser extends BaseObject
      * @return int             Count of related Cursus objects.
      * @throws PropelException
      */
-    public function countCursuss(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    public function countCursusResponsabilitys(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
     {
-        if (null === $this->collCursuss || null !== $criteria) {
-            if ($this->isNew() && null === $this->collCursuss) {
+        if (null === $this->collCursusResponsabilitys || null !== $criteria) {
+            if ($this->isNew() && null === $this->collCursusResponsabilitys) {
                 return 0;
             } else {
                 $query = CursusQuery::create(null, $criteria);
@@ -3259,7 +3259,7 @@ abstract class BaseUser extends BaseObject
                     ->count($con);
             }
         } else {
-            return count($this->collCursuss);
+            return count($this->collCursusResponsabilitys);
         }
     }
 
@@ -3270,40 +3270,40 @@ abstract class BaseUser extends BaseObject
      * @param    Cursus $l Cursus
      * @return   User The current object (for fluent API support)
      */
-    public function addCursus(Cursus $l)
+    public function addCursusResponsability(Cursus $l)
     {
-        if ($this->collCursuss === null) {
-            $this->initCursuss();
+        if ($this->collCursusResponsabilitys === null) {
+            $this->initCursusResponsabilitys();
         }
-        if (!$this->collCursuss->contains($l)) { // only add it if the **same** object is not already associated
-            $this->doAddCursus($l);
+        if (!$this->collCursusResponsabilitys->contains($l)) { // only add it if the **same** object is not already associated
+            $this->doAddCursusResponsability($l);
         }
 
         return $this;
     }
 
     /**
-     * @param	Cursus $cursus The cursus object to add.
+     * @param	CursusResponsability $cursusResponsability The cursusResponsability object to add.
      */
-    protected function doAddCursus($cursus)
+    protected function doAddCursusResponsability($cursusResponsability)
     {
-        $this->collCursuss[]= $cursus;
-        $cursus->setResponsable($this);
+        $this->collCursusResponsabilitys[]= $cursusResponsability;
+        $cursusResponsability->setResponsable($this);
     }
 
     /**
-     * @param	Cursus $cursus The cursus object to remove.
+     * @param	CursusResponsability $cursusResponsability The cursusResponsability object to remove.
      */
-    public function removeCursus($cursus)
+    public function removeCursusResponsability($cursusResponsability)
     {
-        if ($this->getCursuss()->contains($cursus)) {
-            $this->collCursuss->remove($this->collCursuss->search($cursus));
-            if (null === $this->cursussScheduledForDeletion) {
-                $this->cursussScheduledForDeletion = clone $this->collCursuss;
-                $this->cursussScheduledForDeletion->clear();
+        if ($this->getCursusResponsabilitys()->contains($cursusResponsability)) {
+            $this->collCursusResponsabilitys->remove($this->collCursusResponsabilitys->search($cursusResponsability));
+            if (null === $this->cursusResponsabilitysScheduledForDeletion) {
+                $this->cursusResponsabilitysScheduledForDeletion = clone $this->collCursusResponsabilitys;
+                $this->cursusResponsabilitysScheduledForDeletion->clear();
             }
-            $this->cursussScheduledForDeletion[]= $cursus;
-            $cursus->setResponsable(null);
+            $this->cursusResponsabilitysScheduledForDeletion[]= $cursusResponsability;
+            $cursusResponsability->setResponsable(null);
         }
     }
 
@@ -3313,7 +3313,7 @@ abstract class BaseUser extends BaseObject
      * an identical criteria, it returns the collection.
      * Otherwise if this User is new, it will return
      * an empty collection; or if this User has previously
-     * been saved, it will retrieve related Cursuss from storage.
+     * been saved, it will retrieve related CursusResponsabilitys from storage.
      *
      * This method is protected by default in order to keep the public
      * api reasonable.  You can provide public methods for those you
@@ -3324,12 +3324,12 @@ abstract class BaseUser extends BaseObject
      * @param      string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
      * @return PropelObjectCollection|Cursus[] List of Cursus objects
      */
-    public function getCursussJoinNewsletter($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public function getCursusResponsabilitysJoinNewsletter($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
         $query = CursusQuery::create(null, $criteria);
         $query->joinWith('Newsletter', $join_behavior);
 
-        return $this->getCursuss($query, $con);
+        return $this->getCursusResponsabilitys($query, $con);
     }
 
     /**
@@ -6291,8 +6291,8 @@ abstract class BaseUser extends BaseObject
         $this->avatar_id = null;
         $this->description = null;
         $this->description_isLoaded = false;
-        $this->comments = null;
-        $this->comments_isLoaded = false;
+        $this->remarks = null;
+        $this->remarks_isLoaded = false;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->clearAllReferences();
@@ -6314,8 +6314,8 @@ abstract class BaseUser extends BaseObject
     public function clearAllReferences($deep = false)
     {
         if ($deep) {
-            if ($this->collCursuss) {
-                foreach ($this->collCursuss as $o) {
+            if ($this->collCursusResponsabilitys) {
+                foreach ($this->collCursusResponsabilitys as $o) {
                     $o->clearAllReferences($deep);
                 }
             }
@@ -6396,10 +6396,10 @@ abstract class BaseUser extends BaseObject
             }
         } // if ($deep)
 
-        if ($this->collCursuss instanceof PropelCollection) {
-            $this->collCursuss->clearIterator();
+        if ($this->collCursusResponsabilitys instanceof PropelCollection) {
+            $this->collCursusResponsabilitys->clearIterator();
         }
-        $this->collCursuss = null;
+        $this->collCursusResponsabilitys = null;
         if ($this->collUsersCursuss instanceof PropelCollection) {
             $this->collUsersCursuss->clearIterator();
         }

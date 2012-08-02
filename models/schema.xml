@@ -79,7 +79,7 @@
         <column name="description"           type="LONGVARCHAR" size="512" lazyLoad="true" />
 
         <!-- commentaires (pour la trésorerie) -->
-        <column name="comments"              type="VARCHAR" lazyLoad="true" />
+        <column name="remarks"               type="VARCHAR" lazyLoad="true" />
 
 
         <!-- == index & clefs étrangères == -->
@@ -147,7 +147,7 @@
             <unique-column name="name" />
         </unique>
 
-        <foreign-key foreignTable="users" onDelete="SETNULL" onUpdate="CASCADE" phpName="Responsable">
+        <foreign-key foreignTable="users" onDelete="SETNULL" onUpdate="CASCADE" phpName="Responsable" refPhpName="CursusResponsability">
             <reference local="responsable_id" foreign="id" />
         </foreign-key>
 

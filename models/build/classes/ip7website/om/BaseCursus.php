@@ -1390,7 +1390,7 @@ abstract class BaseCursus extends BaseObject
         // Add binding for other direction of this n:n relationship.
         // If this object has already been added to the User object, it will not be re-added.
         if ($v !== null) {
-            $v->addCursus($this);
+            $v->addCursusResponsability($this);
         }
 
 
@@ -1414,7 +1414,7 @@ abstract class BaseCursus extends BaseObject
                 to this object.  This level of coupling may, however, be
                 undesirable since it could result in an only partially populated collection
                 in the referenced object.
-                $this->aResponsable->addCursuss($this);
+                $this->aResponsable->addCursusResponsabilitys($this);
              */
         }
 

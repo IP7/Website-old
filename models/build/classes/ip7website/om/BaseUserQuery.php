@@ -29,7 +29,7 @@
  * @method     UserQuery orderByIsAStudent($order = Criteria::ASC) Order by the is_a_student column
  * @method     UserQuery orderByAvatarId($order = Criteria::ASC) Order by the avatar_id column
  * @method     UserQuery orderByDescription($order = Criteria::ASC) Order by the description column
- * @method     UserQuery orderByComments($order = Criteria::ASC) Order by the comments column
+ * @method     UserQuery orderByRemarks($order = Criteria::ASC) Order by the remarks column
  *
  * @method     UserQuery groupById() Group by the id column
  * @method     UserQuery groupByUsername() Group by the username column
@@ -54,7 +54,7 @@
  * @method     UserQuery groupByIsAStudent() Group by the is_a_student column
  * @method     UserQuery groupByAvatarId() Group by the avatar_id column
  * @method     UserQuery groupByDescription() Group by the description column
- * @method     UserQuery groupByComments() Group by the comments column
+ * @method     UserQuery groupByRemarks() Group by the remarks column
  *
  * @method     UserQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method     UserQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -64,9 +64,9 @@
  * @method     UserQuery rightJoinAvatar($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Avatar relation
  * @method     UserQuery innerJoinAvatar($relationAlias = null) Adds a INNER JOIN clause to the query using the Avatar relation
  *
- * @method     UserQuery leftJoinCursus($relationAlias = null) Adds a LEFT JOIN clause to the query using the Cursus relation
- * @method     UserQuery rightJoinCursus($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Cursus relation
- * @method     UserQuery innerJoinCursus($relationAlias = null) Adds a INNER JOIN clause to the query using the Cursus relation
+ * @method     UserQuery leftJoinCursusResponsability($relationAlias = null) Adds a LEFT JOIN clause to the query using the CursusResponsability relation
+ * @method     UserQuery rightJoinCursusResponsability($relationAlias = null) Adds a RIGHT JOIN clause to the query using the CursusResponsability relation
+ * @method     UserQuery innerJoinCursusResponsability($relationAlias = null) Adds a INNER JOIN clause to the query using the CursusResponsability relation
  *
  * @method     UserQuery leftJoinUsersCursus($relationAlias = null) Adds a LEFT JOIN clause to the query using the UsersCursus relation
  * @method     UserQuery rightJoinUsersCursus($relationAlias = null) Adds a RIGHT JOIN clause to the query using the UsersCursus relation
@@ -146,7 +146,7 @@
  * @method     User findOneByIsAStudent(boolean $is_a_student) Return the first User filtered by the is_a_student column
  * @method     User findOneByAvatarId(int $avatar_id) Return the first User filtered by the avatar_id column
  * @method     User findOneByDescription(string $description) Return the first User filtered by the description column
- * @method     User findOneByComments(string $comments) Return the first User filtered by the comments column
+ * @method     User findOneByRemarks(string $remarks) Return the first User filtered by the remarks column
  *
  * @method     array findById(int $id) Return User objects filtered by the id column
  * @method     array findByUsername(string $username) Return User objects filtered by the username column
@@ -171,7 +171,7 @@
  * @method     array findByIsAStudent(boolean $is_a_student) Return User objects filtered by the is_a_student column
  * @method     array findByAvatarId(int $avatar_id) Return User objects filtered by the avatar_id column
  * @method     array findByDescription(string $description) Return User objects filtered by the description column
- * @method     array findByComments(string $comments) Return User objects filtered by the comments column
+ * @method     array findByRemarks(string $remarks) Return User objects filtered by the remarks column
  *
  * @package    propel.generator.ip7website.om
  */
@@ -1099,32 +1099,32 @@ abstract class BaseUserQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the comments column
+     * Filter the query on the remarks column
      *
      * Example usage:
      * <code>
-     * $query->filterByComments('fooValue');   // WHERE comments = 'fooValue'
-     * $query->filterByComments('%fooValue%'); // WHERE comments LIKE '%fooValue%'
+     * $query->filterByRemarks('fooValue');   // WHERE remarks = 'fooValue'
+     * $query->filterByRemarks('%fooValue%'); // WHERE remarks LIKE '%fooValue%'
      * </code>
      *
-     * @param     string $comments The value to use as filter.
+     * @param     string $remarks The value to use as filter.
      *              Accepts wildcards (* and % trigger a LIKE)
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return UserQuery The current query, for fluid interface
      */
-    public function filterByComments($comments = null, $comparison = null)
+    public function filterByRemarks($remarks = null, $comparison = null)
     {
         if (null === $comparison) {
-            if (is_array($comments)) {
+            if (is_array($remarks)) {
                 $comparison = Criteria::IN;
-            } elseif (preg_match('/[\%\*]/', $comments)) {
-                $comments = str_replace('*', '%', $comments);
+            } elseif (preg_match('/[\%\*]/', $remarks)) {
+                $remarks = str_replace('*', '%', $remarks);
                 $comparison = Criteria::LIKE;
             }
         }
 
-        return $this->addUsingAlias(UserPeer::COMMENTS, $comments, $comparison);
+        return $this->addUsingAlias(UserPeer::REMARKS, $remarks, $comparison);
     }
 
     /**
@@ -1212,33 +1212,33 @@ abstract class BaseUserQuery extends ModelCriteria
      * @return   UserQuery The current query, for fluid interface
      * @throws   PropelException - if the provided filter is invalid.
      */
-    public function filterByCursus($cursus, $comparison = null)
+    public function filterByCursusResponsability($cursus, $comparison = null)
     {
         if ($cursus instanceof Cursus) {
             return $this
                 ->addUsingAlias(UserPeer::ID, $cursus->getResponsableId(), $comparison);
         } elseif ($cursus instanceof PropelObjectCollection) {
             return $this
-                ->useCursusQuery()
+                ->useCursusResponsabilityQuery()
                 ->filterByPrimaryKeys($cursus->getPrimaryKeys())
                 ->endUse();
         } else {
-            throw new PropelException('filterByCursus() only accepts arguments of type Cursus or PropelCollection');
+            throw new PropelException('filterByCursusResponsability() only accepts arguments of type Cursus or PropelCollection');
         }
     }
 
     /**
-     * Adds a JOIN clause to the query using the Cursus relation
+     * Adds a JOIN clause to the query using the CursusResponsability relation
      *
      * @param     string $relationAlias optional alias for the relation
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
      * @return UserQuery The current query, for fluid interface
      */
-    public function joinCursus($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    public function joinCursusResponsability($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('Cursus');
+        $relationMap = $tableMap->getRelation('CursusResponsability');
 
         // create a ModelJoin object for this join
         $join = new ModelJoin();
@@ -1253,14 +1253,14 @@ abstract class BaseUserQuery extends ModelCriteria
             $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
             $this->addJoinObject($join, $relationAlias);
         } else {
-            $this->addJoinObject($join, 'Cursus');
+            $this->addJoinObject($join, 'CursusResponsability');
         }
 
         return $this;
     }
 
     /**
-     * Use the Cursus relation Cursus object
+     * Use the CursusResponsability relation Cursus object
      *
      * @see       useQuery()
      *
@@ -1270,11 +1270,11 @@ abstract class BaseUserQuery extends ModelCriteria
      *
      * @return   CursusQuery A secondary query class using the current class as primary query
      */
-    public function useCursusQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    public function useCursusResponsabilityQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         return $this
-            ->joinCursus($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'Cursus', 'CursusQuery');
+            ->joinCursusResponsability($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'CursusResponsability', 'CursusQuery');
     }
 
     /**
