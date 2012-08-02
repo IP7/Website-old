@@ -2,7 +2,7 @@
 
 	/**
 	*
-	* TODO : Utiliser la variable $_SESSION.
+	* TODO : Utiliser la variable $_SESSION .
 	*
 	*/
 
