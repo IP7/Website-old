@@ -24,11 +24,10 @@
 				if ( !$user->getDeactivated() ){
 					return $user;
 				}
-				else return "Account Deactivated";
+                return DEACTIVED_ACCOUNT;
 			}
-			else return "Wrong Password";
 		}
-		else return "Wrong Username";
+        return WRONG_USERNAME_OR_PASSWORD;
 	}
 	
 ?>
