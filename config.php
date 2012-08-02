@@ -38,6 +38,7 @@ class Config {
     static $tpl;
     static $p_hasher;
     static $default_tpl_values;
+    static $default_twig_env;
 
     private static $initialized = false;
 
@@ -48,12 +49,14 @@ class Config {
 
         $loader = new Twig_Loader_Filesystem(dirname(__FILE__).'/views/templates');
 
-        self::$tpl = new Twig_Environment($loader, array(
+        self::$default_twig_env = array(
             'cache'            => dirname(__FILE__).'/cache/templates',
             'charset'          => 'utf-8',
             'strict_variables' => true,
             'autoescape'       => true
-        ));
+        );
+
+        self::$tpl = new Twig_Environment($loader, self::$default_twig_env);
 
         self::$default_tpl_values = array(
 
