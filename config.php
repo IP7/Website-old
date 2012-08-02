@@ -1,8 +1,26 @@
 <?php
 
-require_once 'lib/vendors/Twig/Autoloader.php';
-require_once 'lib/vendors/limonade/limonade.php';
-require_once 'lib/vendors/phpass/PasswordHash.php';
+require_once dirname(__FILE__).'/lib/vendors/Twig/Autoloader.php';
+require_once dirname(__FILE__).'/lib/vendors/limonade/limonade.php';
+require_once dirname(__FILE__).'/lib/vendors/phpass/PasswordHash.php';
+require_once dirname(__FILE__).'/lib/vendors/propel/runtime/lib/Propel.php';
+
+### Constants ###
+#
+# - login constants
+#
+define('WRONG_USERNAME_OR_PASSWORD' -2);
+define('ACCOUNT_DEACTIVED' -3);
+#
+#
+# - access rights constants
+#   (numbers MUST be between -127 and +127)
+#
+# define('VISITOR_RANK', 0);
+define('MEMBER_RANK', 50);
+define('ADMIN_RANK', 100);
+#
+###
 
 # Usage:
 #
@@ -71,8 +89,6 @@ class Config {
 
     # initialize Propel
     private static function orm_init() {
-        // Include the main Propel script
-        require_once dirname(__FILE__).'/lib/vendors/propel/runtime/lib/Propel.php';
 
         // Initialize Propel with the runtime configuration
         Propel::init(dirname(__FILE__)."/models/build/conf/ip7website-conf.php");
