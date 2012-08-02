@@ -27,7 +27,7 @@
 				if ( !$user->getDeactivated() ){
 					return $user;
 				}
-				return DEACTIVED_ACCOUNT;
+				return DEACTIVATED_ACCOUNT;
 			}
 		}
 		return WRONG_USERNAME_OR_PASSWORD;
