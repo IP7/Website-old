@@ -9,8 +9,8 @@ require_once dirname(__FILE__).'/lib/vendors/propel/runtime/lib/Propel.php';
 #
 # - login constants
 #
-define('WRONG_USERNAME_OR_PASSWORD' -2);
-define('DEACTIVED_ACCOUNT' -3);
+define('WRONG_USERNAME_OR_PASSWORD', -2);
+define('DEACTIVED_ACCOUNT', -3);
 #
 #
 # - access rights constants
