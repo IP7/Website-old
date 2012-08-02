@@ -1,19 +1,13 @@
 <?php
 
-# Lib
-require_once '../lib/vendors/Twig/Autoloader.php';
-require_once 'lib/vendors/limonade/limonade.php';
-
 # Config
-require_once 'config.php';
-Config::init();
-
-# Helpers
-require_once 'helpers/tpl.php';
+require_once 'adminconfig.php';
+AdminConfig::init();
 
 # Routes
 dispatch('/', 'display_admin_home');
-dispatch('/home', 'display_admin_home');
+
+dispatch_post('/', 'post_connection');
 
 run();
 
