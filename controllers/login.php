@@ -17,7 +17,6 @@
 		$query = new UserQuery();
 		$user = new User();
 
-		$password_h = Config::$p_hasher->HashPassword($password);
 		$user = $query->findOneByUsername($username);
 
 		if ( $user instanceof User ){
