@@ -2,3 +2,4 @@
 *.swp
 *.swo
 /cache
+/models/build/classes/docs
