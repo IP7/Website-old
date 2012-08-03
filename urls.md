@@ -92,10 +92,10 @@ Exemple : `infop7.org/~tsalmon`
 Administration 
 --------------
 
-`admin.infop7.org/…` (sous-domaine dédié)
+`infop7.org/admin/…`
 
-- Gérer les membres : `admin.infop7.org/membres`
-- Gérer la trésorerie : `admin.infop7.org/transactions`
+- Gérer les membres : `infop7.org/admin/membres`
+- Gérer la trésorerie : `infop7.org/admin/transactions`
 
 
 Contraintes
