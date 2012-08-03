@@ -95,6 +95,7 @@ Administration
 `infop7.org/admin/…`
 
 - Gérer les membres : `infop7.org/admin/membres`
+- Listes des contenus : `infop7.org/admin/list/:name`
 - Gérer la trésorerie : `infop7.org/admin/transactions`
 
 
