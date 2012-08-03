@@ -9,8 +9,10 @@ require_once dirname(__FILE__).'/lib/vendors/propel/runtime/lib/Propel.php';
 #
 # - login constants
 #
+define('CONNECTION_OK', 2);
 define('WRONG_USERNAME_OR_PASSWORD', -2);
 define('DEACTIVATED_ACCOUNT', -3);
+define('ALREADY_CONNECTED', -4);
 #
 #
 # - access rights constants
@@ -19,6 +21,11 @@ define('DEACTIVATED_ACCOUNT', -3);
 # define('VISITOR_RANK', 0);
 define('MEMBER_RANK', 50);
 define('ADMIN_RANK', 100);
+#
+#
+# - cookie
+define('AUTH_COOKIE', 'ip7_ac');
+define('AUTH_COOKIE_EXPIRE', time()+60*60*24*30);
 #
 ###
 
