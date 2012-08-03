@@ -26,8 +26,14 @@ dispatch('/', 'display_home');
 # dispatch('/search', 'display_search_page');
 # dispatch_post('/search', 'display_search_results_page');
 # 
-# ## admin
+# ## admin home
 # dispatch('/admin', 'display_admin_page');
+# dispatch_post('/admin', 'post_admin_page');
+# ## admin reports
+# dispatch('/admin/reports', 'display_admin_reports');
+# ## list contents
+# dispatch('/admin/list/:name', 'display_admin_content');
+#
 # # ...
 #
 #
