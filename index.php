@@ -11,6 +11,10 @@ require_once 'helpers/login.php';
 # Routes
 # -> uncomment implemented routes
 
+#function before($route) {
+try_autoconnect();
+#}
+
 ## home
 dispatch('/', 'display_home');
 
@@ -27,8 +31,8 @@ dispatch('/', 'display_home');
 # dispatch_post('/search', 'display_search_results_page');
 # 
 # ## admin home
-# dispatch('/admin', 'display_admin_page');
-# dispatch_post('/admin', 'post_admin_page');
+dispatch('/admin', 'display_admin_home');
+# dispatch_post('/admin', 'post_admin_home');
 # ## admin reports
 # dispatch('/admin/reports', 'display_admin_reports');
 # ## list contents
