@@ -9,7 +9,7 @@ PROPEL_DOC_DIR=${PROPEL_BUILD_DIR}/docs
 
 NOOP=@#
 
-all: propel-gen propel-doc
+all: cache propel-gen propel-doc
 
 # Propel generated ORM classes' documentation
 
@@ -26,6 +26,11 @@ propel-gen: ${PROPEL_BUILD_DIR}
 
 clean:
 	find . -name "*~" -delete
+
+cache: ./cache/templates
+	mkdir -p $<
+	chmod -R 777 $<
+	touch $<
 
 # phpunit tests
 
