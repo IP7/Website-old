@@ -52,23 +52,6 @@ class TplHelpersTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals(Config::$default_tpl_values, tpl_array(Config::$default_tpl_values));
     }
 
-    public function test_create_twig_env() {
-        $empty  = create_twig_env(); 
-        $empty2 = create_twig_env(); 
-
-        $this->assertInstanceOf('Twig_Environment', $empty);
-
-        $this->assertSame(Config::$tpl, $empty);
-        $this->assertSame(Config::$tpl, $empty2);
-    }
-
-    /**
-     * @expectedException Twig_Error_Loader
-     **/
-    public function test_create_twig_env_bad_path() {
-        create_twig_env('_dont_exists');
-    }
-
 }
 
 // Call MyClassTest::main() if this source file is executed directly.

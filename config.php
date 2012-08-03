@@ -10,7 +10,7 @@ require_once dirname(__FILE__).'/lib/vendors/propel/runtime/lib/Propel.php';
 # - login constants
 #
 define('WRONG_USERNAME_OR_PASSWORD', -2);
-define('DEACTIVED_ACCOUNT', -3);
+define('DEACTIVATED_ACCOUNT', -3);
 #
 #
 # - access rights constants
@@ -88,6 +88,10 @@ class Config {
 
         # Controllers directory
         option('controllers_dir', dirname(__FILE__).'/controllers');
+
+        # remove for production
+        option('env', ENV_DEVELOPMENT);
+        option('debug', true);
     }
 
     # initialize Propel

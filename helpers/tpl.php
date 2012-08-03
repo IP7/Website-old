@@ -1,6 +1,6 @@
 <?php
 
-require_once '../config.php';
+require_once dirname(__FILE__).'/../config.php';
 Config::init();
 
 # Templates helpers
@@ -35,29 +35,6 @@ function tpl_array($arr=null) {
         return Config::$default_tpl_values;
     }
     return array_merge_recursive_new(Config::$default_tpl_values, $arr);
-}
-
-// create a new Twig Environment object
-function create_twig_env($tpls_dir=null, $options=null) {
-    static $envs = array();
-
-    if (empty($tpls_dir)) {
-        return Config::$tpl;
-    }
-
-    $tpls_dir = (string)$tpls_dir;
-
-    if (isset($envs[$tpls_dir]) && !empty($envs[$tpls_dir])) {
-        return $envs[$tpls_dir];
-    }
-
-    $loader = new Twig_Loader_Filesystem($tpls_dir);
-
-    $tpl = new Twig_Environment($loader, array_merge(Config::$default_twig_env, $options));
-
-    $envs[$tpls_dir] = $tpl;
-
-    return $tpl;
 }
 
 ?>
