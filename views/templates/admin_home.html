@@ -1,0 +1,14 @@
+{% include 'head.html' %}
+{% include 'top.html' %}
+
+{% if is_connected|default(false) %}
+    {% include 'admin_home_connected.html' %}
+{% else %}
+    <form action="{{ page.url }}" method="post">
+        <label for="username">Login&nbsp;:</label><input type="text" name="username" id="username" /><br />
+        <label for="password">Mot de passe&nbsp;:</label><input type="password" name="password" id="password" /><br />
+        <input type="submit" value="Ok" />
+    </form>
+{% endif %}
+
+{% include 'bottom.html' %}

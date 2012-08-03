@@ -4,14 +4,22 @@ require_once dirname(__FILE__).'/../config.php';
 Config::init();
 
 require_once dirname(__FILE__).'/../helpers/login.php';
+require_once dirname(__FILE__).'/../helpers/tpl.php';
 
 function display_admin_home() {
 
     if (!is_connected()) {
-        return 'test:admin_home not connected.'; # TODO
+        return Config::$tpl->render('admin_home.html', tpl_array(array(
+            'page' => array(
+                'url' => '/admin',
+                'title' => 'accueil'
+            )
+        )));
     }
 
-    return "test:admin_home"; # TODO
+    return Config::$tpl->render('admin_home_connected.html', tpl_array(array(
+
+    )));
 }
 
 function post_admin_home() {
