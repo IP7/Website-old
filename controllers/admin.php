@@ -8,6 +8,8 @@ require_once dirname(__FILE__).'/../helpers/tpl.php';
 
 function display_admin_home() {
 
+    # TODO test if is admin
+
     if (!is_connected()) {
         return Config::$tpl->render('admin_home.html', tpl_array(array(
             'page' => array(
