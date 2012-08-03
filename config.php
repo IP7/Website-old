@@ -88,6 +88,10 @@ class Config {
 
         # Controllers directory
         option('controllers_dir', dirname(__FILE__).'/controllers');
+
+        # remove for production
+        option('env', ENV_DEVELOPMENT);
+        option('debug', true);
     }
 
     # initialize Propel
