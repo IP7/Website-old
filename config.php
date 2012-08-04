@@ -112,7 +112,7 @@ class Config {
     }
 
     private static function phpass_init() {
-        self::$p_hasher = new PasswordHash(8, FALSE);
+        self::$p_hasher = new PasswordHash(8, true);
     }
 
     # call others *_init() methods
