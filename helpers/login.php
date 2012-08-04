@@ -64,7 +64,7 @@
         $_SESSION['user'] = $user;
         if ($remember) {
             setcookie(AUTH_COOKIE,
-                      $user->getPseudo().':'.$user->getPasswordHash(),
+                      $user->getUsername().':'.$user->getPasswordHash(),
                       AUTH_COOKIE_EXPIRE,
                       '/',
                       'www.infop7.org');
