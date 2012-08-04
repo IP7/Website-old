@@ -47,6 +47,8 @@ class Config {
     static $default_tpl_values;
     static $default_twig_env;
 
+    static $root_uri = '/';
+
     private static $initialized = false;
 
     # initalize Twig
@@ -68,11 +70,11 @@ class Config {
         self::$default_tpl_values = array(
 
             'site' => array(
-                'root' => '/',
-                'connection_page' => '/',
+                'root' => self::$root_uri,
+                'connection_page' => self::$root_uri,
 
                 'logo' => array(
-                    'src'    => '/views/static/images/logo32.png',
+                    'src'    => self::$root_uri.'views/static/images/logo32.png',
                     'width'  => 32,
                     'height' => 32
                 ),
@@ -94,7 +96,7 @@ class Config {
     # initialize Limonade
     public static function routes_init() {
         option('controllers_dir', dirname(__FILE__).'/controllers');
-        option('base_uri', '/');
+        option('base_uri', self::$root_uri);
 
         # remove for production
         option('env', ENV_DEVELOPMENT);
