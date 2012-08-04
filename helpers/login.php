@@ -22,7 +22,7 @@
 
 		if ( $user instanceof User ){
 			if ( Config::$p_hasher->CheckPassword($password, $user->getPasswordHash()) ){
-				if ( !$user->getDeactivated() ){
+				if ( $user->isActivated() ){
 					return $user;
 				}
 				return DEACTIVATED_ACCOUNT;
@@ -58,6 +58,7 @@
 
     /**
      * Set $_SESSION & $_COOKIE variables to connect the given user.
+     * Returns CONNECTION_OK.
      **/
     function set_connected($user, $remember=false) {
         $_SESSION['user'] = $user;
@@ -67,6 +68,11 @@
                       AUTH_COOKIE_EXPIRE,
                       '/',
                       'www.infop7.org');
+        }
+
+        if (!isset($_SESSION['visit_counted'])) {
+            $user->incrementVisitsNb();
+            $_SESSION['visit_counted'] = true;
         }
 
         return CONNECTION_OK;
