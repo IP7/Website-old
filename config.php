@@ -69,6 +69,7 @@ class Config {
 
             'site' => array(
                 'root' => '/',
+                'connection_page' => '/',
 
                 'logo' => array(
                     'src'    => '/views/static/images/logo32.png',
@@ -91,10 +92,10 @@ class Config {
     }
 
     # initialize Limonade
-    private static function routes_init() {
-
-        # Controllers directory
+    public static function routes_init() {
         option('controllers_dir', dirname(__FILE__).'/controllers');
+        option('gzip', true);
+        option('base_uri', '/');
 
         # remove for production
         option('env', ENV_DEVELOPMENT);
