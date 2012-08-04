@@ -7,8 +7,17 @@ Config::init();
 # Helpers
 require_once 'helpers/tpl.php';
 require_once 'helpers/login.php';
+require_once 'helpers/errors.php';
 
 # Routes
+
+// limonade configuration
+function configure() {
+    Config::routes_init();
+}
+
+#
+#
 # -> uncomment implemented routes
 
 #function before($route) {
@@ -17,6 +26,9 @@ try_autoconnect();
 
 ## home
 dispatch('/', 'display_home');
+
+# ## connection
+dispatch_post('/', 'display_home');
 
 # ## users' profiles
 # dispatch('/~:name', 'display_profile_page');
