@@ -20,4 +20,3 @@ function error_message($code=0) {
 }
 
 ?>
-

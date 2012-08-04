@@ -94,7 +94,6 @@ class Config {
     # initialize Limonade
     public static function routes_init() {
         option('controllers_dir', dirname(__FILE__).'/controllers');
-        option('gzip', true);
         option('base_uri', '/');
 
         # remove for production
@@ -132,4 +131,3 @@ class Config {
 };
 
 ?>
-
