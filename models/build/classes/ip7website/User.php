@@ -1,6 +1,7 @@
 <?php
 
-
+	require_once dirname(__FILE__).'/../../../../config.php';
+	Config::init();	
 
 /**
  * Skeleton subclass for representing a row from the 'users' table.
@@ -73,4 +74,11 @@ class User extends BaseUser {
         $this->save();
     }
 
+	public function setPassword($password){
+		$password = (string)$password;
+		$this->setPasswordHash(Config::$p_hasher->HashPassword($password));
+		$this->save();
+	}
+
 } // User
+
