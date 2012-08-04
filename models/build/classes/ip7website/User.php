@@ -74,6 +74,9 @@ class User extends BaseUser {
         $this->save();
     }
 
+	/**
+	 * Set user's hashed password
+	 **/
 	public function setPassword($password){
 		$password = (string)$password;
 		$this->setPasswordHash(Config::$p_hasher->HashPassword($password));
