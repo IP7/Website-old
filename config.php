@@ -71,9 +71,9 @@ class Config {
                 'root' => '/',
 
                 'logo' => array(
-                    'src'    => '',
-                    'width'  => 0,
-                    'height' => 0
+                    'src'    => '/views/static/images/logo32.png',
+                    'width'  => 32,
+                    'height' => 32
                 ),
 
                 'title' => 'IP7'
