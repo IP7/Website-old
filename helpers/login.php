@@ -119,7 +119,7 @@
         $hash     = $credentials[1];
 
         $user = UserQuery::create()
-                    ->filterByPseudo($username)
+                    ->filterByUsername($username)
                     ->filterByPasswordHash($hash)
                     ->findOne();
 
