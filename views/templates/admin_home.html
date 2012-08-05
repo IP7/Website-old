@@ -1,0 +1,13 @@
+{% include 'head.html' %}
+{% include 'admin_top.html' %}
+{% include 'message.html' %}
+{% if page.actions|default(false) %}
+<nav id="actions">
+<ul>
+    {% for action in page.actions %}
+        <li><a href="{{ action.href }}">{{ action.label }}</a></li>
+    {% endfor %}
+</ul>
+</nav>
+{% endif %}
+{% include 'bottom.html' %}

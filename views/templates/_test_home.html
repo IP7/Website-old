@@ -5,10 +5,7 @@
 
 <h1>Accueil (test)</h1>
 
-{% if page.message %}
-<p class="msg{% if page.message_type %}{{ page.message_type }}_msg{% endif %}">Message: {{ page.message|e }}</p>
-{% endif %}
-
+{% include 'message.html' %}
 {% if page.show_connection_form %}
 <form action="{{ site.connection_page|default('/') }}" method="post" id="connection">
     {{ forms.label_input_tx('Login:', 'text', 'username') }}
@@ -22,4 +19,5 @@
 <a href="?disconnect">Disconnect</a> 
 {% endif %}
 
+<a href="{{ site.admin_page|default('/admin') }}">Admin</a>
 {% include 'bottom.html' %}

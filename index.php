@@ -5,9 +5,9 @@ require_once 'config.php';
 Config::init();
 
 # Helpers
-require_once 'helpers/tpl.php';
-require_once 'helpers/login.php';
-require_once 'helpers/errors.php';
+foreach (glob('helpers/*.php') as $f) {
+    require_once $f;
+}
 
 # Routes
 
@@ -33,7 +33,7 @@ function before($route) {
 ## home
 dispatch('/', 'display_home');
 
-# ## connection
+## connection
 dispatch_post('/', 'display_home');
 
 # ## users' profiles
@@ -47,16 +47,17 @@ dispatch_post('/', 'display_home');
 # ## search
 # dispatch('/search', 'display_search_page');
 # dispatch_post('/search', 'display_search_results_page');
-# 
-# ## admin home
+
+## admin home
 dispatch('/admin', 'display_admin_home');
-# dispatch_post('/admin', 'post_admin_home');
-# ## admin reports
-# dispatch('/admin/reports', 'display_admin_reports');
-# ## list contents
-# dispatch('/admin/list/:name', 'display_admin_content');
-#
-# # ...
+## moderation
+dispatch('/admin/moderation', 'display_admin_moderation');
+## finances
+dispatch('/admin/tresorerie', 'display_admin_finances');
+## maintenance
+dispatch('/admin/maintenance', 'display_admin_maintenance');
+
+# ## ...
 #
 #
 # ## ...
