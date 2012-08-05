@@ -22,6 +22,12 @@ function configure() {
 
 function before($route) {
     try_autoconnect();
+
+    if (stristr($route['callback'], 'admin')) {
+        if (!is_connected() || !user()->isAdmin()) {
+            halt(HTTP_FORBIDDEN, "L'accès à cette page est réservé aux administrateurs.");
+        }
+    }
 }
 
 ## home
@@ -75,7 +81,8 @@ function route_missing($request_method, $request_uri) {
 # @return string "server error" output string
 #
 function server_error($errno, $errstr, $errfile=null, $errline=null) {
-    return 'Oups, erreur 500.'; # TODO
+    #TODO
+    return $errstr ? $errstr : 'Oups, erreur '.$errno.'!';
 }
 
 # Not found error output
