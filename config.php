@@ -97,6 +97,7 @@ class Config {
     public static function routes_init() {
         option('controllers_dir', dirname(__FILE__).'/controllers');
         option('base_uri', self::$root_uri);
+        option('session', 'ip7s');
 
         # remove for production
         option('env', ENV_DEVELOPMENT);
