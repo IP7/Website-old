@@ -29,4 +29,3 @@ function optimize_tables() {
 }
 
 ?>
-

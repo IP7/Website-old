@@ -99,4 +99,3 @@ function display_admin_maintenance() {
 }
 
 ?>
-

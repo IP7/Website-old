@@ -22,4 +22,3 @@ function empty_dir_recur($path) {
 }
 
 ?>
-
