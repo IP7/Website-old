@@ -13,7 +13,7 @@
 <form action="{{ site.connection_page|default('/') }}" method="post" id="connection">
     {{ forms.label_input_tx('Login:', 'text', 'username') }}
     {{ forms.label_input_tx('Password:', 'password', 'password') }}
-    {{ forms.label_input_tx('Rember me:', 'checkbox', 'remember') }}
+    {{ forms.label_input_tx('Remember me:', 'checkbox', 'remember') }}
     {{ forms.submit_input() }}
 </form>
 {% endif %}
