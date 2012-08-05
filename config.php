@@ -49,7 +49,7 @@ class Config {
     static $default_tpl_values;
     static $default_twig_env;
 
-    static $root_uri = '/dev/ip7/Website/';
+    static $root_uri = '/';
     static $app_dir;
 
     private static $initialized = false;
