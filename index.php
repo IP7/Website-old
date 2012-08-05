@@ -20,9 +20,9 @@ function configure() {
 #
 # -> uncomment implemented routes
 
-#function before($route) {
-try_autoconnect();
-#}
+function before($route) {
+    try_autoconnect();
+}
 
 ## home
 dispatch('/', 'display_home');

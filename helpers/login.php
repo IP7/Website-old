@@ -66,8 +66,9 @@
             setcookie(AUTH_COOKIE,
                       $user->getUsername().':'.$user->getPasswordHash(),
                       AUTH_COOKIE_EXPIRE,
-                      '/',
-                      'www.infop7.org');
+                      '/');
+                      # production: use the line below.
+                      # 'wwww.infop7.org');
         }
 
         if (!isset($_SESSION['visit_counted'])) {

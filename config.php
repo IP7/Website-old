@@ -24,8 +24,10 @@ define('ADMIN_RANK', 100);
 #
 #
 # - cookie
-define('AUTH_COOKIE', 'ip7_ac');
+define('AUTH_COOKIE', 'a');
 define('AUTH_COOKIE_EXPIRE', time()+60*60*24*30);
+#
+define('SESSION_COOKIE', 's');
 #
 ###
 
@@ -97,11 +99,7 @@ class Config {
     public static function routes_init() {
         option('controllers_dir', dirname(__FILE__).'/controllers');
         option('base_uri', self::$root_uri);
-        option('session', 'ip7s');
-
-        # remove for production
-        option('env', ENV_DEVELOPMENT);
-        option('debug', true);
+        option('session', SESSION_COOKIE);
     }
 
     # initialize Propel
