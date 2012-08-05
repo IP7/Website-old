@@ -1,0 +1,3 @@
+{% if page.message %}
+<p class="msg{% if page.message_type %}{{ page.message_type }}_msg{% endif %}">Message: {{ page.message|e }}</p>
+{% endif %}
