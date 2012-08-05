@@ -3,6 +3,8 @@
 require_once dirname(__FILE__).'/../config.php';
 Config::init();
 
+# === GENERAL ================================================================ 
+
 function admin_tpl_default() {
     static $init = false;
     static $d;
@@ -24,24 +26,42 @@ function admin_tpl_default() {
     return $d;
 }
 
+# === HOME =====================================================================
+
 function display_admin_home() {
     return Config::$tpl->render('admin_home.html', tpl_array(admin_tpl_default()));
 }
 
+# === MODERATION ===============================================================
+
 function display_admin_moderation() {
     return Config::$tpl->render('admin_home.html', tpl_array(admin_tpl_default(),array(
-
+        'page' => array(
+            'actions' => array(
+                array('label' => 'Contenu signalé', 'href' => Config::$root_uri.'admin/reports'),
+                array('label' => 'Contenu proposé', 'href' => Config::$root_uri.'admin/content/proposed')
+                # add subpages here
+            )
+        )
     )));
 }
+
+# === FINANCES ================================================================
 
 function display_admin_finances() {
     return Config::$tpl->render('admin_home.html', tpl_array(admin_tpl_default(),array(
-
+        'page' => array(
+            'actions' => array(
+                array('label' => 'Gérer les utilisateurs', 'href' => Config::$root_uri.'admin/membres'),
+                array('label' => 'Gérer les transactions', 'href' => Config::$root_uri.'admin/transactions')
+            )
+        )
     )));
 }
 
-function display_admin_maintenance() {
+# === MAINTENANCE =============================================================
 
+function display_admin_maintenance() {
     $message = $message_type = null;
 
     if (isset($_GET['purge_cache'])) {
@@ -55,15 +75,21 @@ function display_admin_maintenance() {
         }
     }
     else if (isset($_GET['optimize_tables'])) {
-        $message = 'Non implémenté.';
-        $message_type = 'notice';
+        if (!optimize_tables()) {
+            $message = 'Erreur lors de l\'optimisation. Consultez les logs.';
+            $message_type = 'error';
+        }
+        else {
+            $message = 'Optimisation effectuée avec succès.';
+            $message_type = 'notice';
+        }
     }
     return Config::$tpl->render('admin_home.html', tpl_array(admin_tpl_default(),array(
         'page' => array(
             'actions' => array(
                 array('label' => 'Purger le cache des templates', 'href' => '?purge_cache'),
-                array('label' => 'Optimiser les tables', 'href' => '?optimize_tables'),
-                array('label' => 'Retour', 'href' => '..')
+                array('label' => 'Optimiser les tables',          'href' => '?optimize_tables'),
+                array('label' => 'Retour',                        'href' => '..')
             ),
 
             'message'      => $message,
