@@ -3,6 +3,13 @@
 	require_once 'config.php';
 	Config::init();
 
+    /**
+     * returns $_SESSION['user']
+     **/
+    function user() {
+        return $_SESSION['user'];
+    }
+
 	/**
      * Verify if user's credentials are valid. If so,
      * return the corresping User object. If the credentials
