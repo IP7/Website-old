@@ -49,7 +49,8 @@ class Config {
     static $default_tpl_values;
     static $default_twig_env;
 
-    static $root_uri = '/';
+    static $root_uri = '/dev/ip7/Website/';
+    static $app_dir;
 
     private static $initialized = false;
 
@@ -58,10 +59,10 @@ class Config {
 
         Twig_Autoloader::register();
 
-        $loader = new Twig_Loader_Filesystem(dirname(__FILE__).'/views/templates');
+        $loader = new Twig_Loader_Filesystem(self::$app_dir.'/views/templates');
 
         self::$default_twig_env = array(
-            'cache'            => dirname(__FILE__).'/cache/templates',
+            'cache'            => self::$app_dir.'/cache/templates',
             'charset'          => 'utf-8',
             'strict_variables' => true,
             'autoescape'       => true
@@ -97,7 +98,12 @@ class Config {
 
     # initialize Limonade
     public static function routes_init() {
-        option('controllers_dir', dirname(__FILE__).'/controllers');
+        option('controllers_dir', self::$app_dir.'/controllers');
+        option('public_dir',      self::$app_dir.'/views/static');
+        option('views_dir',       self::$app_dir.'/views/templates');
+        option('error_views_dir', self::$app_dir.'/views/templates');
+        option('lib_dir',         self::$app_dir.'/lib');
+
         option('base_uri', self::$root_uri);
         option('session', SESSION_COOKIE);
     }
@@ -106,10 +112,10 @@ class Config {
     private static function orm_init() {
 
         // Initialize Propel with the runtime configuration
-        Propel::init(dirname(__FILE__)."/models/build/conf/ip7website-conf.php");
+        Propel::init(self::$app_dir."/models/build/conf/ip7website-conf.php");
 
         // Add the generated 'classes' directory to the include path
-        set_include_path(dirname(__FILE__)."/models/build/classes" . PATH_SEPARATOR . get_include_path());
+        set_include_path(self::$app_dir."/models/build/classes" . PATH_SEPARATOR . get_include_path());
     }
 
     private static function phpass_init() {
@@ -124,11 +130,12 @@ class Config {
         self::$initialized = true;
         
         self::tpl_init();
-        self::routes_init();
+        #self::routes_init();
         self::orm_init();
         self::phpass_init();
     }
 
 };
+Config::$app_dir = dirname(__FILE__);
 
 ?>

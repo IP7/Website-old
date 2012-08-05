@@ -55,6 +55,41 @@ dispatch('/admin', 'display_admin_home');
 #
 # ## ...
 
+
+# Errors handling (functions called by Limonade)
+
+# Called when a route is not found.
+function route_missing($request_method, $request_uri) {
+    # TODO
+  halt(NOT_FOUND, "($request_method) $request_uri"); # by default
+}
+
+ 
+
+# Server error output
+#
+# @param string $errno 
+# @param string $errstr 
+# @param string $errfile 
+# @param string $errline 
+# @return string "server error" output string
+#
+function server_error($errno, $errstr, $errfile=null, $errline=null) {
+    return 'Oups, erreur 500.'; # TODO
+}
+
+# Not found error output
+#
+# @param string $errno 
+# @param string $errstr 
+# @param string $errfile 
+# @param string $errline 
+# @return string "not found" output string
+#
+function not_found($errno, $errstr, $errfile=null, $errline=null) {
+    return 'Rien trouvé :('; # TODO 
+}
+
 run();
 
 ?>
