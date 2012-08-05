@@ -73,8 +73,9 @@ class Config {
         self::$default_tpl_values = array(
 
             'site' => array(
-                'root' => self::$root_uri,
+                'root'            => self::$root_uri,
                 'connection_page' => self::$root_uri,
+                'admin_page'      => self::$root_uri.'admin',
 
                 'logo' => array(
                     'src'    => self::$root_uri.'views/static/images/logo32.png',
