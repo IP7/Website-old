@@ -1,0 +1,7 @@
+<nav id="globalnav">
+    <ul>
+        {% for link in page.navlinks %}
+            <li><a href="{{ link.href|default('#') }}">{{ link.label|e }}</a></li>
+        {% endfor %}
+    </ul>
+</nav>
