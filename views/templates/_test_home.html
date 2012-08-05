@@ -1,0 +1,25 @@
+{% import 'forms_macros.html' as forms %}
+{% include 'head.html' %}
+{% include 'top.html' %}
+{# temporary page #}
+
+<h1>Accueil (test)</h1>
+
+{% if page.message %}
+<p class="msg{% if page.message_type %}{{ page.message_type }}_msg{% endif %}">Message: {{ page.message|e }}</p>
+{% endif %}
+
+{% if page.show_connection_form %}
+<form action="{{ site.connection_page|default('/') }}" method="post" id="connection">
+    {{ forms.label_input_tx('Login:', 'text', 'username') }}
+    {{ forms.label_input_tx('Password:', 'password', 'password') }}
+    {{ forms.label_input_tx('Remember me:', 'checkbox', 'remember') }}
+    {{ forms.submit_input() }}
+</form>
+{% endif %}
+
+{% if page.show_disconnection_link %}
+<a href="?disconnect">Disconnect</a> 
+{% endif %}
+
+{% include 'bottom.html' %}

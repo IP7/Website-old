@@ -3,3 +3,4 @@
 *.swo
 /cache
 /models/build/docs
+/lib/vendors/limonade/docs

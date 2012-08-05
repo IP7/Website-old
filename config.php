@@ -24,8 +24,10 @@ define('ADMIN_RANK', 100);
 #
 #
 # - cookie
-define('AUTH_COOKIE', 'ip7_ac');
+define('AUTH_COOKIE', 'a');
 define('AUTH_COOKIE_EXPIRE', time()+60*60*24*30);
+#
+define('SESSION_COOKIE', 's');
 #
 ###
 
@@ -47,6 +49,9 @@ class Config {
     static $default_tpl_values;
     static $default_twig_env;
 
+    static $root_uri = '/dev/ip7/Website/';
+    static $app_dir;
+
     private static $initialized = false;
 
     # initalize Twig
@@ -54,10 +59,10 @@ class Config {
 
         Twig_Autoloader::register();
 
-        $loader = new Twig_Loader_Filesystem(dirname(__FILE__).'/views/templates');
+        $loader = new Twig_Loader_Filesystem(self::$app_dir.'/views/templates');
 
         self::$default_twig_env = array(
-            'cache'            => dirname(__FILE__).'/cache/templates',
+            'cache'            => self::$app_dir.'/cache/templates',
             'charset'          => 'utf-8',
             'strict_variables' => true,
             'autoescape'       => true
@@ -68,12 +73,13 @@ class Config {
         self::$default_tpl_values = array(
 
             'site' => array(
-                'root' => '/',
+                'root' => self::$root_uri,
+                'connection_page' => self::$root_uri,
 
                 'logo' => array(
-                    'src'    => '',
-                    'width'  => 0,
-                    'height' => 0
+                    'src'    => self::$root_uri.'views/static/images/logo32.png',
+                    'width'  => 32,
+                    'height' => 32
                 ),
 
                 'title' => 'IP7'
@@ -91,28 +97,29 @@ class Config {
     }
 
     # initialize Limonade
-    private static function routes_init() {
+    public static function routes_init() {
+        option('controllers_dir', self::$app_dir.'/controllers');
+        option('public_dir',      self::$app_dir.'/views/static');
+        option('views_dir',       self::$app_dir.'/views/templates');
+        option('error_views_dir', self::$app_dir.'/views/templates');
+        option('lib_dir',         self::$app_dir.'/lib');
 
-        # Controllers directory
-        option('controllers_dir', dirname(__FILE__).'/controllers');
-
-        # remove for production
-        option('env', ENV_DEVELOPMENT);
-        option('debug', true);
+        option('base_uri', self::$root_uri);
+        option('session', SESSION_COOKIE);
     }
 
     # initialize Propel
     private static function orm_init() {
 
         // Initialize Propel with the runtime configuration
-        Propel::init(dirname(__FILE__)."/models/build/conf/ip7website-conf.php");
+        Propel::init(self::$app_dir."/models/build/conf/ip7website-conf.php");
 
         // Add the generated 'classes' directory to the include path
-        set_include_path(dirname(__FILE__)."/models/build/classes" . PATH_SEPARATOR . get_include_path());
+        set_include_path(self::$app_dir."/models/build/classes" . PATH_SEPARATOR . get_include_path());
     }
 
     private static function phpass_init() {
-        self::$p_hasher = new PasswordHash(8, FALSE);
+        self::$p_hasher = new PasswordHash(8, true);
     }
 
     # call others *_init() methods
@@ -123,12 +130,12 @@ class Config {
         self::$initialized = true;
         
         self::tpl_init();
-        self::routes_init();
+        #self::routes_init();
         self::orm_init();
         self::phpass_init();
     }
 
 };
+Config::$app_dir = dirname(__FILE__);
 
 ?>
-

@@ -38,4 +38,3 @@ function tpl_array($arr=null) {
 }
 
 ?>
-
