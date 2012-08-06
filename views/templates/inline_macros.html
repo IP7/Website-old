@@ -1,0 +1,14 @@
+
+{# a #}
+{% macro a(href, value, title, hreflang) %}
+    <a href="{{ href|e('html_attr') }}"{% if title is defined %} title="{{ title|e('html_attr') }}"{% endif %}{% if hreflang is defined %} hreflang="{{ hreflang|e('html_attr') }}"{% endif %}>{{ value | e }}</a>
+{% endmacro %}
+
+{# abbr #}
+{% macro abbr(title, abbr_txt) %}
+    {% if abbr_txt is defined %}
+    <abbr title="{{ title|e('html_attr') }}">{{ abbr_txt |e }}</abbr>
+    {% else %}
+        {{ title | e }}
+    {% endif %}
+{% endmacro %}
