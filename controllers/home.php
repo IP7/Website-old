@@ -21,7 +21,7 @@ function display_home() {
 
             if ($res !== CONNECTION_OK) {
                 $message_type = 'error';
-                $message = error_message($res);
+                $message = app_error_message($res);
             }
     }
     # Disconnection
