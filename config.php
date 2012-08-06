@@ -74,6 +74,17 @@ class Config {
 
             'site' => array(
                 'root'            => self::$root_uri,
+
+                'authorsfile'     => array( 'href' => self::$root_uri.'humans.txt' ),
+
+                # array( array('href' => 'foo.css', 'media' => 'all'), ...)
+                'styles'          => array(),
+
+                'rendering_scripts' => array(),
+                'scripts'           => array(),
+            
+                #TODO remove these 2 config vars, this is useless
+                # to put them here
                 'connection_page' => self::$root_uri,
                 'admin_page'      => self::$root_uri.'admin',
 
@@ -83,16 +94,96 @@ class Config {
                     'height' => 32
                 ),
 
-                'title' => 'IP7'
+                'title' => 'IP7',
+
+                'global_links' => array(
+                    'cursus' => array(
+                        array(
+                            'href'  => self::$root_uri.'cursus/L1',
+                            'title' => 'Licence 1',
+                            'abbr'  => 'L1'
+                        ),
+                        array(
+                            'href'  => self::$root_uri.'cursus/L2',
+                            'title' => 'Licence 2',
+                            'abbr'  => 'L2'
+                        ),
+                        array(
+                            'href'  => self::$root_uri.'cursus/L3',
+                            'title' => 'Licence 3',
+                            'abbr'  => 'L3'
+                        ),
+                        array(
+                            'href'  => self::$root_uri.'cursus/M1',
+                            'title' => 'Master 1',
+                            'abbr'  => 'M1'
+                        ),
+                        array(
+                            'href'  => self::$root_uri.'cursus/M2',
+                            'title' => 'Master 2',
+                            'abbr'  => 'M2'
+                        ),
+                    ),
+                    'others' => array(
+                        #TODO these links must be hidden if the user
+                        # is not connected
+                        array(
+                            'href'  => self::$root_uri.'forum',
+                            'title' => 'Forum'
+                        ),
+
+                        # ...
+
+                        # TODO this link's targer should be /~<pseudo>
+                        array(
+                            'href'  => self::$root_uri.'profil',
+                            'title' => self::$root_uri.'Profil'
+                        ),
+
+                        #TODO this link must be set to 'Déconnexion'
+                        # if the user is connected 
+                        array(
+                            'href'  => self::$root_uri.'connexion',
+                            'title' => 'Connexion'
+                        )
+                    )
+                ),
+
+                'footer_links' => array(
+                    array(
+                        'href'  => self::$root_uri.'plan',
+                        'title' => 'Plan du site'
+                    ),
+                    array(
+                        'href'  => self::$root_uri.'legal',
+                        'title' => 'Mentions légales'
+                    ),
+                    array(
+                        'href'  => self::$root_uri.'contact',
+                        'title' => 'Contact'
+                    ),
+                    array(
+                        'href'  => self::$root_uri.'admin',
+                        'title' => 'Administration'
+                    )
+                ),
+
+                'search' => array(
+                    'action' => self::$root_uri.'recherche',
+                    'method' => 'GET'
+                )
 
             ),
 
             'page' => array(
                 'lang'        => 'fr',
                 'charset'     => 'utf-8',
-                'keywords'    => 'ip7, informatique, paris diderot, association',
+                'keywords'    => array('ip7', 'informatique', 'paris diderot', 'association'),
                 'description' => 'IP7 est une association de filière en Informatique'
                                . ' à l\'Université Paris Diderot.',
+
+                'favicon'     => self::$root_uri.'views/static/images/logo32.png',
+                'apple_icon'  => self::$root_uri.'views/static/images/logo256.png'
             )
         );
     }
