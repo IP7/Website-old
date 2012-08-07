@@ -29,20 +29,54 @@ function display_home() {
         disconnection();
     }
 
+    #TODO make a function which returns global links in function of user's state:
+    # connected or not and use it for every page
+    $others_links = array();
+    if (!is_connected()) {
+        $others_links []= array(
+            'href'  => Config::$root_uri.'connexion',
+            'title' => 'Connexion'
+        );
+    }
+    else {
+
+        $others_links []= array(
+            'href'  => Config::$root_uri.'forum',
+            'title' => 'Forum'
+        );
+
+        $others_links []= array(
+            'href'  => Config::$root_uri.'~'.user()->getUsername(),
+            'title' => 'Mon Profil'
+        );
+
+        $others_links []= array(
+            'href'  => Config::$root_uri.'?disconnect',
+            'title' => 'Déconnexion'
+        );
+    }
+
     # Rendering
-    return Config::$tpl->render('_test_home.html', tpl_array(array(
+    return Config::$tpl->render('home.html', tpl_array(array(
+
+        'site' => array(
+            'global_links' => array(
+                'others' => $others_links
+            )
+        ),
+
         'page' => array(
             'title' => 'Accueil',
 
             'message' => $message,
             'message_type' => $message_type,
 
-            'show_connection_form' => !is_connected(),
-            'show_disconnection_link' => is_connected()
-        ),
+            'intro' => 'Bienvenue sur le site de l\'association IP7.',
 
-        // temporary solution
-        'welcome' => 'Bienvenue sur le site de la future association IP7.'
+            'news' => array(
+                'news' => array()
+            )
+        ),
     )));
 
 }
