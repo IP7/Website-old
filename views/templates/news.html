@@ -5,6 +5,6 @@
     {% for news in page.news.news %}
     <li class="news"><header>[<time datetime="{{ news.datetime_attr|e('html_attr') }}">{{ news.datetime }}</time>] <h6>{{ news.title }}</h6></header><article>{{ news.content }}</article>{% if news.author is defined %}<span class="author">({{ news.author }})</span>{% endif %}</li>
     {% endfor %}
-</ul>
+    </ul>
 {% endautoescape %}
 </section>
