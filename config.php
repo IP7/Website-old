@@ -124,29 +124,29 @@ class Config {
                             'abbr'  => 'M2'
                         ),
                     ),
-                    'others' => array(
-                        #TODO these links must be hidden if the user
-                        # is not connected
-                        array(
-                            'href'  => self::$root_uri.'forum',
-                            'title' => 'Forum'
-                        ),
+                    #'others' => array(
+                    #    #TODO these links must be hidden if the user
+                    #    # is not connected
+                    #    array(
+                    #        'href'  => self::$root_uri.'forum',
+                    #        'title' => 'Forum'
+                    #    ),
 
-                        # ...
+                    #    # ...
 
-                        # TODO this link's targer should be /~<pseudo>
-                        array(
-                            'href'  => self::$root_uri.'profil',
-                            'title' => self::$root_uri.'Profil'
-                        ),
+                    #    # TODO this link's targer should be /~<pseudo>
+                    #    array(
+                    #        'href'  => self::$root_uri.'profil',
+                    #        'title' => self::$root_uri.'Profil'
+                    #    ),
 
-                        #TODO this link must be set to 'Déconnexion'
-                        # if the user is connected 
-                        array(
-                            'href'  => self::$root_uri.'connexion',
-                            'title' => 'Connexion'
-                        )
-                    )
+                    #    #TODO this link must be set to 'Déconnexion'
+                    #    # if the user is connected 
+                    #    array(
+                    #        'href'  => self::$root_uri.'connexion',
+                    #        'title' => 'Connexion'
+                    #    )
+                    #)
                 ),
 
                 'footer_links' => array(
