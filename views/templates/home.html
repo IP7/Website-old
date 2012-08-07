@@ -1,5 +1,8 @@
-{% include 'head.html' %}
-{% include 'top.html' %}
-{# temporary page #}
-<p>{{ welcome }}</p>
-{% include 'bottom.html' %}
+{% extends 'main.html' %}
+{% block content %}
+
+<article id="introduction">{{ page.introduction }}</article>
+
+{% include 'news.html' %}
+
+{% endblock %}

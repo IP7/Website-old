@@ -1,4 +1,4 @@
-{% import 'inline_macros.html' as inline %}
+{% import 'macros/inline.html' as inline %}
 {% autoescape 'html_attr' %}
 <!doctype html>
 <html lang="{{ page.lang }}" dir="ltr">
@@ -46,6 +46,7 @@
                     {% endfor %}
                 {% endif %}
         </head>
+{% flush %}
         <body>
             {# barre du haut #}
             <header id="global_header">
@@ -83,7 +84,16 @@
                 </aside>
             </header>
 
-            {# TODO: fil d'ariane #}
+            {# message (notification) éventuel #}
+            {% if page.message is defined and page.message %}
+            <div class="msg{% if page.message_type is defined and page.message_type %} {{page.message_type}}_msg{% endif %}">{{ page.message|e }}<p></div>
+            {% endif %}
+
+            {# fil d'ariane #}
+            {% if page.breadcrumb is defined %}
+            <div id="breadcrumb">Vous êtes ici&nbsp;: {{ inline.a(site.root, 'Accueil') }}{% if page.breadcrumb is not empty %}{% for b in page.breadcrumb %} &gt; <a href="{{ b.href|e('html_attr') }}>"{{ b.title|e }}</a>{% endfor %}</div>
+            {% endif %}
+
             {# contenu #}
             <section id="main_content">{% block content %}{% endblock %}</section>
 
