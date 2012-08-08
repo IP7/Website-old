@@ -22,7 +22,7 @@ function display_cursus() {
             # TODO
 
         )
-    )))
+    )));
 }
 
 ?>
