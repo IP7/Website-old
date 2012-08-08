@@ -17,7 +17,7 @@
                 <meta name="description" content="{{ page.description }}" />
 
                 {# humans.txt #}
-                <link type="text/plain" rel="author" href="{{ site.authorsfile.href }}">
+                <link type="text/plain" rel="author" href="{{ site.authorsfile.href|e('url') }}">
 
                 {# Accessibilité/Mobile #}
                 <meta name="viewport" content="width=device-width" />
@@ -25,13 +25,13 @@
                 {# Styles globaux #}
                 {% if site.styles is not empty %}
                     {% for style in site.styles %}
-                <link rel="stylesheet" href="{{ style.href }}" media="{{ style.media|default('all') }}" />
+                <link rel="stylesheet" href="{{ style.href|e('url') }}" media="{{ style.media|default('all') }}" />
                     {% endfor %}
                 {% endif %}
                 {# Styles de la page #}
                 {% if page.styles is defined  and page.styles is not empty %}
                     {% for style in page.styles %}
-                <link rel="stylesheet" href="{{ style.href }}" media="{{ style.media|default('all') }}" />
+                <link rel="stylesheet" href="{{ style.href|e('url') }}" media="{{ style.media|default('all') }}" />
                     {% endfor %}
                 {% endif %}
 
@@ -42,7 +42,7 @@
                 {# Scripts pour le rendu #}
                 {% if site.rendering_scripts is not empty %}
                     {% for script in site.rendering_scripts %}
-                <script src="{{ script }}"></script>
+                <script src="{{ script|e('url') }}"></script>
                     {% endfor %}
                 {% endif %}
         </head>
@@ -51,8 +51,8 @@
             {# barre du haut #}
             <header id="global_header">
                 {# logo #}
-                <a href="{{ site.root }}" title="Retour à l’accueil" id="main_logo_link">
-                    <img src="{{ site.logo.src }}" width="{{ site.logo.width }}" height="{{ site.logo.height }}" alt="IP7" class="logo" />
+                <a href="{{ site.root|e('url') }}" title="Retour à l’accueil" id="main_logo_link">
+                    <img src="{{ site.logo.src|e('url') }}" width="{{ site.logo.width }}" height="{{ site.logo.height }}" alt="IP7" class="logo" />
                 </a>
 
 {% endautoescape %}
@@ -62,7 +62,7 @@
                     {# cursus #}
                     <ul id="cursus_nav">
                         {% for cursus in site.global_links.cursus %}
-                        <li class="navlink cursus"><a href="{{ cursus.href|e('html_attr') }}"><abbr title="{{ cursus.title|e('html_attr') }}">{{ cursus.abbr|e }}</abbr></a></li>
+                        <li class="navlink cursus"><a href="{{ cursus.href|e('url') }}"><abbr title="{{ cursus.title|e('html_attr') }}">{{ cursus.abbr|e }}</abbr></a></li>
                         {% endfor %}
                     </ul>
 
@@ -76,7 +76,7 @@
 
                 {# recherche #}
                 <aside id="search">
-                    <form action="{{ site.search.action |e('html_attr') }}" method="{{ site.search.method |e('html_attr') }}">
+                    <form action="{{ site.search.action |e('url') }}" method="{{ site.search.method |e('html_attr') }}">
                         <label for="q">Recherche</label>
                         <input type="search" id="q" name="q" placeholder="Recherche…" />
                         <input type="submit" value="Ok" />
@@ -112,7 +112,7 @@
             {# autres scripts #}
             {% if site.scripts is not empty %}
                 {% for script in site.scripts %}
-            <script src="{{ script.src |e('html_attr') }}"></script>
+            <script src="{{ script.src |e('url') }}"></script>
                 {% endfor %}
             {% endif %}
         </body>
