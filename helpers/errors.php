@@ -24,14 +24,14 @@ function display_http_error($errno, $errstr=null, $errfile=null, $errline=null) 
 
     $err_msgs = include(dirname(__FILE__).'/errors_messages.php');
 
-    #if (empty($errstr)) {
+    if (empty($errstr)) {
         if (array_key_exists($errno, $err_msgs)) {
             $errstr = $err_msgs[$errno];
         }
         else {
             $errstr = 'Oups, erreur '.$errno.'.';
         }
-    #}
+    }
 
     error_log("Error: num='$errno', str='$errstr', file='$errfile', line='$errline'.");
 
