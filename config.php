@@ -62,7 +62,7 @@ class Config {
         $loader = new Twig_Loader_Filesystem(self::$app_dir.'/views/templates');
 
         self::$default_twig_env = array(
-            'cache'            => self::$app_dir.'/cache/templates',
+#            'cache'            => self::$app_dir.'/cache/templates',
             'charset'          => 'utf-8',
             'strict_variables' => true,
             'autoescape'       => true
@@ -82,11 +82,6 @@ class Config {
 
                 'rendering_scripts' => array(),
                 'scripts'           => array(),
-            
-                #TODO remove these 2 config vars, this is useless
-                # to put them here
-                'connection_page' => self::$root_uri,
-                'admin_page'      => self::$root_uri.'admin',
 
                 'logo' => array(
                     'src'    => self::$root_uri.'views/static/images/logo32.png',
@@ -124,29 +119,7 @@ class Config {
                             'abbr'  => 'M2'
                         ),
                     ),
-                    #'others' => array(
-                    #    #TODO these links must be hidden if the user
-                    #    # is not connected
-                    #    array(
-                    #        'href'  => self::$root_uri.'forum',
-                    #        'title' => 'Forum'
-                    #    ),
-
-                    #    # ...
-
-                    #    # TODO this link's targer should be /~<pseudo>
-                    #    array(
-                    #        'href'  => self::$root_uri.'profil',
-                    #        'title' => self::$root_uri.'Profil'
-                    #    ),
-
-                    #    #TODO this link must be set to 'Déconnexion'
-                    #    # if the user is connected 
-                    #    array(
-                    #        'href'  => self::$root_uri.'connexion',
-                    #        'title' => 'Connexion'
-                    #    )
-                    #)
+                    'others' => array()
                 ),
 
                 'footer_links' => array(
