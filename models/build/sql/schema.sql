@@ -29,6 +29,7 @@ CREATE TABLE `users`
     `config_show_email` TINYINT(1) DEFAULT 0,
     `config_show_phone` TINYINT(1) DEFAULT 0,
     `config_show_real_name` TINYINT(1) DEFAULT 1,
+    `config_indexing_profile` TINYINT(1) DEFAULT 0,
     `deactivated` TINYINT(1) DEFAULT 0,
     `is_a_teacher` TINYINT(1) DEFAULT 0,
     `is_a_student` TINYINT(1) DEFAULT 1,

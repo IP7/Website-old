@@ -60,6 +60,8 @@
         <column name="config_show_phone"     type="BOOLEAN" defaultExpr="0" />
         <!-- montrer le vrai nom publiquement (à la place du pseudo) -->
         <column name="config_show_real_name" type="BOOLEAN" defaultExpr="1" />
+		  <!-- permet l'indexation du profil -->
+	     <column name="config_indexing_profile" type="BOOLEAN" defaultExpr="0" />
 
         <!-- désactiver le compte -->
         <column name="deactivated"           type="BOOLEAN" defaultExpr="0" />

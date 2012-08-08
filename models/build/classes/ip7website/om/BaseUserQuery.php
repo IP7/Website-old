@@ -24,6 +24,7 @@
  * @method     UserQuery orderByConfigShowEmail($order = Criteria::ASC) Order by the config_show_email column
  * @method     UserQuery orderByConfigShowPhone($order = Criteria::ASC) Order by the config_show_phone column
  * @method     UserQuery orderByConfigShowRealName($order = Criteria::ASC) Order by the config_show_real_name column
+ * @method     UserQuery orderByConfigIndexingProfile($order = Criteria::ASC) Order by the config_indexing_profile column
  * @method     UserQuery orderByDeactivated($order = Criteria::ASC) Order by the deactivated column
  * @method     UserQuery orderByIsATeacher($order = Criteria::ASC) Order by the is_a_teacher column
  * @method     UserQuery orderByIsAStudent($order = Criteria::ASC) Order by the is_a_student column
@@ -49,6 +50,7 @@
  * @method     UserQuery groupByConfigShowEmail() Group by the config_show_email column
  * @method     UserQuery groupByConfigShowPhone() Group by the config_show_phone column
  * @method     UserQuery groupByConfigShowRealName() Group by the config_show_real_name column
+ * @method     UserQuery groupByConfigIndexingProfile() Group by the config_indexing_profile column
  * @method     UserQuery groupByDeactivated() Group by the deactivated column
  * @method     UserQuery groupByIsATeacher() Group by the is_a_teacher column
  * @method     UserQuery groupByIsAStudent() Group by the is_a_student column
@@ -141,6 +143,7 @@
  * @method     User findOneByConfigShowEmail(boolean $config_show_email) Return the first User filtered by the config_show_email column
  * @method     User findOneByConfigShowPhone(boolean $config_show_phone) Return the first User filtered by the config_show_phone column
  * @method     User findOneByConfigShowRealName(boolean $config_show_real_name) Return the first User filtered by the config_show_real_name column
+ * @method     User findOneByConfigIndexingProfile(boolean $config_indexing_profile) Return the first User filtered by the config_indexing_profile column
  * @method     User findOneByDeactivated(boolean $deactivated) Return the first User filtered by the deactivated column
  * @method     User findOneByIsATeacher(boolean $is_a_teacher) Return the first User filtered by the is_a_teacher column
  * @method     User findOneByIsAStudent(boolean $is_a_student) Return the first User filtered by the is_a_student column
@@ -166,6 +169,7 @@
  * @method     array findByConfigShowEmail(boolean $config_show_email) Return User objects filtered by the config_show_email column
  * @method     array findByConfigShowPhone(boolean $config_show_phone) Return User objects filtered by the config_show_phone column
  * @method     array findByConfigShowRealName(boolean $config_show_real_name) Return User objects filtered by the config_show_real_name column
+ * @method     array findByConfigIndexingProfile(boolean $config_indexing_profile) Return User objects filtered by the config_indexing_profile column
  * @method     array findByDeactivated(boolean $deactivated) Return User objects filtered by the deactivated column
  * @method     array findByIsATeacher(boolean $is_a_teacher) Return User objects filtered by the is_a_teacher column
  * @method     array findByIsAStudent(boolean $is_a_student) Return User objects filtered by the is_a_student column
@@ -262,7 +266,7 @@ abstract class BaseUserQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `ID`, `USERNAME`, `PASSWORD_HASH`, `TYPE`, `FIRSTNAME`, `LASTNAME`, `EMAIL`, `PHONE`, `ADDRESS`, `WEBSITE`, `BIRTH_DATE`, `FIRST_ENTRY`, `LAST_ENTRY`, `LAST_VISIT`, `VISITS_NB`, `CONFIG_SHOW_EMAIL`, `CONFIG_SHOW_PHONE`, `CONFIG_SHOW_REAL_NAME`, `DEACTIVATED`, `IS_A_TEACHER`, `IS_A_STUDENT`, `AVATAR_ID` FROM `users` WHERE `ID` = :p0';
+        $sql = 'SELECT `ID`, `USERNAME`, `PASSWORD_HASH`, `TYPE`, `FIRSTNAME`, `LASTNAME`, `EMAIL`, `PHONE`, `ADDRESS`, `WEBSITE`, `BIRTH_DATE`, `FIRST_ENTRY`, `LAST_ENTRY`, `LAST_VISIT`, `VISITS_NB`, `CONFIG_SHOW_EMAIL`, `CONFIG_SHOW_PHONE`, `CONFIG_SHOW_REAL_NAME`, `CONFIG_INDEXING_PROFILE`, `DEACTIVATED`, `IS_A_TEACHER`, `IS_A_STUDENT`, `AVATAR_ID` FROM `users` WHERE `ID` = :p0';
         try {
             $stmt = $con->prepare($sql);
 			$stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -943,6 +947,33 @@ abstract class BaseUserQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(UserPeer::CONFIG_SHOW_REAL_NAME, $configShowRealName, $comparison);
+    }
+
+    /**
+     * Filter the query on the config_indexing_profile column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByConfigIndexingProfile(true); // WHERE config_indexing_profile = true
+     * $query->filterByConfigIndexingProfile('yes'); // WHERE config_indexing_profile = true
+     * </code>
+     *
+     * @param     boolean|string $configIndexingProfile The value to use as filter.
+     *              Non-boolean arguments are converted using the following rules:
+     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return UserQuery The current query, for fluid interface
+     */
+    public function filterByConfigIndexingProfile($configIndexingProfile = null, $comparison = null)
+    {
+        if (is_string($configIndexingProfile)) {
+            $config_indexing_profile = in_array(strtolower($configIndexingProfile), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+        }
+
+        return $this->addUsingAlias(UserPeer::CONFIG_INDEXING_PROFILE, $configIndexingProfile, $comparison);
     }
 
     /**

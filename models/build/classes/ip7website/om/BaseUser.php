@@ -144,6 +144,13 @@ abstract class BaseUser extends BaseObject
     protected $config_show_real_name;
 
     /**
+     * The value for the config_indexing_profile field.
+     * Note: this column has a database default value of: (expression) 0
+     * @var        boolean
+     */
+    protected $config_indexing_profile;
+
+    /**
      * The value for the deactivated field.
      * Note: this column has a database default value of: (expression) 0
      * @var        boolean
@@ -718,6 +725,17 @@ abstract class BaseUser extends BaseObject
     }
 
     /**
+     * Get the [config_indexing_profile] column value.
+     * 
+     * @return   boolean
+     */
+    public function getConfigIndexingProfile()
+    {
+
+        return $this->config_indexing_profile;
+    }
+
+    /**
      * Get the [deactivated] column value.
      * 
      * @return   boolean
@@ -1254,6 +1272,35 @@ abstract class BaseUser extends BaseObject
     } // setConfigShowRealName()
 
     /**
+     * Sets the value of the [config_indexing_profile] column.
+     * Non-boolean arguments are converted using the following rules:
+     *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     * 
+     * @param      boolean|integer|string $v The new value
+     * @return   User The current object (for fluent API support)
+     */
+    public function setConfigIndexingProfile($v)
+    {
+        if ($v !== null) {
+            if (is_string($v)) {
+                $v = in_array(strtolower($v), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+            } else {
+                $v = (boolean) $v;
+            }
+        }
+
+        if ($this->config_indexing_profile !== $v) {
+            $this->config_indexing_profile = $v;
+            $this->modifiedColumns[] = UserPeer::CONFIG_INDEXING_PROFILE;
+        }
+
+
+        return $this;
+    } // setConfigIndexingProfile()
+
+    /**
      * Sets the value of the [deactivated] column.
      * Non-boolean arguments are converted using the following rules:
      *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
@@ -1469,10 +1516,11 @@ abstract class BaseUser extends BaseObject
             $this->config_show_email = ($row[$startcol + 15] !== null) ? (boolean) $row[$startcol + 15] : null;
             $this->config_show_phone = ($row[$startcol + 16] !== null) ? (boolean) $row[$startcol + 16] : null;
             $this->config_show_real_name = ($row[$startcol + 17] !== null) ? (boolean) $row[$startcol + 17] : null;
-            $this->deactivated = ($row[$startcol + 18] !== null) ? (boolean) $row[$startcol + 18] : null;
-            $this->is_a_teacher = ($row[$startcol + 19] !== null) ? (boolean) $row[$startcol + 19] : null;
-            $this->is_a_student = ($row[$startcol + 20] !== null) ? (boolean) $row[$startcol + 20] : null;
-            $this->avatar_id = ($row[$startcol + 21] !== null) ? (int) $row[$startcol + 21] : null;
+            $this->config_indexing_profile = ($row[$startcol + 18] !== null) ? (boolean) $row[$startcol + 18] : null;
+            $this->deactivated = ($row[$startcol + 19] !== null) ? (boolean) $row[$startcol + 19] : null;
+            $this->is_a_teacher = ($row[$startcol + 20] !== null) ? (boolean) $row[$startcol + 20] : null;
+            $this->is_a_student = ($row[$startcol + 21] !== null) ? (boolean) $row[$startcol + 21] : null;
+            $this->avatar_id = ($row[$startcol + 22] !== null) ? (int) $row[$startcol + 22] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -1481,7 +1529,7 @@ abstract class BaseUser extends BaseObject
                 $this->ensureConsistency();
             }
 
-            return $startcol + 22; // 22 = UserPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 23; // 23 = UserPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating User object", $e);
@@ -2086,6 +2134,9 @@ abstract class BaseUser extends BaseObject
         if ($this->isColumnModified(UserPeer::CONFIG_SHOW_REAL_NAME)) {
             $modifiedColumns[':p' . $index++]  = '`CONFIG_SHOW_REAL_NAME`';
         }
+        if ($this->isColumnModified(UserPeer::CONFIG_INDEXING_PROFILE)) {
+            $modifiedColumns[':p' . $index++]  = '`CONFIG_INDEXING_PROFILE`';
+        }
         if ($this->isColumnModified(UserPeer::DEACTIVATED)) {
             $modifiedColumns[':p' . $index++]  = '`DEACTIVATED`';
         }
@@ -2168,6 +2219,9 @@ abstract class BaseUser extends BaseObject
                         break;
                     case '`CONFIG_SHOW_REAL_NAME`':
 						$stmt->bindValue($identifier, (int) $this->config_show_real_name, PDO::PARAM_INT);
+                        break;
+                    case '`CONFIG_INDEXING_PROFILE`':
+						$stmt->bindValue($identifier, (int) $this->config_indexing_profile, PDO::PARAM_INT);
                         break;
                     case '`DEACTIVATED`':
 						$stmt->bindValue($identifier, (int) $this->deactivated, PDO::PARAM_INT);
@@ -2500,21 +2554,24 @@ abstract class BaseUser extends BaseObject
                 return $this->getConfigShowRealName();
                 break;
             case 18:
-                return $this->getDeactivated();
+                return $this->getConfigIndexingProfile();
                 break;
             case 19:
-                return $this->getIsATeacher();
+                return $this->getDeactivated();
                 break;
             case 20:
-                return $this->getIsAStudent();
+                return $this->getIsATeacher();
                 break;
             case 21:
-                return $this->getAvatarId();
+                return $this->getIsAStudent();
                 break;
             case 22:
-                return $this->getDescription();
+                return $this->getAvatarId();
                 break;
             case 23:
+                return $this->getDescription();
+                break;
+            case 24:
                 return $this->getRemarks();
                 break;
             default:
@@ -2564,12 +2621,13 @@ abstract class BaseUser extends BaseObject
             $keys[15] => $this->getConfigShowEmail(),
             $keys[16] => $this->getConfigShowPhone(),
             $keys[17] => $this->getConfigShowRealName(),
-            $keys[18] => $this->getDeactivated(),
-            $keys[19] => $this->getIsATeacher(),
-            $keys[20] => $this->getIsAStudent(),
-            $keys[21] => $this->getAvatarId(),
-            $keys[22] => ($includeLazyLoadColumns) ? $this->getDescription() : null,
-            $keys[23] => ($includeLazyLoadColumns) ? $this->getRemarks() : null,
+            $keys[18] => $this->getConfigIndexingProfile(),
+            $keys[19] => $this->getDeactivated(),
+            $keys[20] => $this->getIsATeacher(),
+            $keys[21] => $this->getIsAStudent(),
+            $keys[22] => $this->getAvatarId(),
+            $keys[23] => ($includeLazyLoadColumns) ? $this->getDescription() : null,
+            $keys[24] => ($includeLazyLoadColumns) ? $this->getRemarks() : null,
         );
         if ($includeForeignObjects) {
             if (null !== $this->aAvatar) {
@@ -2706,21 +2764,24 @@ abstract class BaseUser extends BaseObject
                 $this->setConfigShowRealName($value);
                 break;
             case 18:
-                $this->setDeactivated($value);
+                $this->setConfigIndexingProfile($value);
                 break;
             case 19:
-                $this->setIsATeacher($value);
+                $this->setDeactivated($value);
                 break;
             case 20:
-                $this->setIsAStudent($value);
+                $this->setIsATeacher($value);
                 break;
             case 21:
-                $this->setAvatarId($value);
+                $this->setIsAStudent($value);
                 break;
             case 22:
-                $this->setDescription($value);
+                $this->setAvatarId($value);
                 break;
             case 23:
+                $this->setDescription($value);
+                break;
+            case 24:
                 $this->setRemarks($value);
                 break;
         } // switch()
@@ -2765,12 +2826,13 @@ abstract class BaseUser extends BaseObject
         if (array_key_exists($keys[15], $arr)) $this->setConfigShowEmail($arr[$keys[15]]);
         if (array_key_exists($keys[16], $arr)) $this->setConfigShowPhone($arr[$keys[16]]);
         if (array_key_exists($keys[17], $arr)) $this->setConfigShowRealName($arr[$keys[17]]);
-        if (array_key_exists($keys[18], $arr)) $this->setDeactivated($arr[$keys[18]]);
-        if (array_key_exists($keys[19], $arr)) $this->setIsATeacher($arr[$keys[19]]);
-        if (array_key_exists($keys[20], $arr)) $this->setIsAStudent($arr[$keys[20]]);
-        if (array_key_exists($keys[21], $arr)) $this->setAvatarId($arr[$keys[21]]);
-        if (array_key_exists($keys[22], $arr)) $this->setDescription($arr[$keys[22]]);
-        if (array_key_exists($keys[23], $arr)) $this->setRemarks($arr[$keys[23]]);
+        if (array_key_exists($keys[18], $arr)) $this->setConfigIndexingProfile($arr[$keys[18]]);
+        if (array_key_exists($keys[19], $arr)) $this->setDeactivated($arr[$keys[19]]);
+        if (array_key_exists($keys[20], $arr)) $this->setIsATeacher($arr[$keys[20]]);
+        if (array_key_exists($keys[21], $arr)) $this->setIsAStudent($arr[$keys[21]]);
+        if (array_key_exists($keys[22], $arr)) $this->setAvatarId($arr[$keys[22]]);
+        if (array_key_exists($keys[23], $arr)) $this->setDescription($arr[$keys[23]]);
+        if (array_key_exists($keys[24], $arr)) $this->setRemarks($arr[$keys[24]]);
     }
 
     /**
@@ -2800,6 +2862,7 @@ abstract class BaseUser extends BaseObject
         if ($this->isColumnModified(UserPeer::CONFIG_SHOW_EMAIL)) $criteria->add(UserPeer::CONFIG_SHOW_EMAIL, $this->config_show_email);
         if ($this->isColumnModified(UserPeer::CONFIG_SHOW_PHONE)) $criteria->add(UserPeer::CONFIG_SHOW_PHONE, $this->config_show_phone);
         if ($this->isColumnModified(UserPeer::CONFIG_SHOW_REAL_NAME)) $criteria->add(UserPeer::CONFIG_SHOW_REAL_NAME, $this->config_show_real_name);
+        if ($this->isColumnModified(UserPeer::CONFIG_INDEXING_PROFILE)) $criteria->add(UserPeer::CONFIG_INDEXING_PROFILE, $this->config_indexing_profile);
         if ($this->isColumnModified(UserPeer::DEACTIVATED)) $criteria->add(UserPeer::DEACTIVATED, $this->deactivated);
         if ($this->isColumnModified(UserPeer::IS_A_TEACHER)) $criteria->add(UserPeer::IS_A_TEACHER, $this->is_a_teacher);
         if ($this->isColumnModified(UserPeer::IS_A_STUDENT)) $criteria->add(UserPeer::IS_A_STUDENT, $this->is_a_student);
@@ -2886,6 +2949,7 @@ abstract class BaseUser extends BaseObject
         $copyObj->setConfigShowEmail($this->getConfigShowEmail());
         $copyObj->setConfigShowPhone($this->getConfigShowPhone());
         $copyObj->setConfigShowRealName($this->getConfigShowRealName());
+        $copyObj->setConfigIndexingProfile($this->getConfigIndexingProfile());
         $copyObj->setDeactivated($this->getDeactivated());
         $copyObj->setIsATeacher($this->getIsATeacher());
         $copyObj->setIsAStudent($this->getIsAStudent());
@@ -6285,6 +6349,7 @@ abstract class BaseUser extends BaseObject
         $this->config_show_email = null;
         $this->config_show_phone = null;
         $this->config_show_real_name = null;
+        $this->config_indexing_profile = null;
         $this->deactivated = null;
         $this->is_a_teacher = null;
         $this->is_a_student = null;

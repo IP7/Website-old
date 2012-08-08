@@ -23,13 +23,13 @@ abstract class BaseUserPeer {
     const TM_CLASS = 'UserTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 24;
+    const NUM_COLUMNS = 25;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 2;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 22;
+    const NUM_HYDRATE_COLUMNS = 23;
 
     /** the column name for the ID field */
     const ID = 'users.ID';
@@ -85,6 +85,9 @@ abstract class BaseUserPeer {
     /** the column name for the CONFIG_SHOW_REAL_NAME field */
     const CONFIG_SHOW_REAL_NAME = 'users.CONFIG_SHOW_REAL_NAME';
 
+    /** the column name for the CONFIG_INDEXING_PROFILE field */
+    const CONFIG_INDEXING_PROFILE = 'users.CONFIG_INDEXING_PROFILE';
+
     /** the column name for the DEACTIVATED field */
     const DEACTIVATED = 'users.DEACTIVATED';
 
@@ -122,12 +125,12 @@ abstract class BaseUserPeer {
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'Username', 'PasswordHash', 'Type', 'Firstname', 'Lastname', 'Email', 'Phone', 'Address', 'Website', 'BirthDate', 'FirstEntry', 'LastEntry', 'LastVisit', 'VisitsNb', 'ConfigShowEmail', 'ConfigShowPhone', 'ConfigShowRealName', 'Deactivated', 'IsATeacher', 'IsAStudent', 'AvatarId', 'Description', 'Remarks', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'username', 'passwordHash', 'type', 'firstname', 'lastname', 'email', 'phone', 'address', 'website', 'birthDate', 'firstEntry', 'lastEntry', 'lastVisit', 'visitsNb', 'configShowEmail', 'configShowPhone', 'configShowRealName', 'deactivated', 'isATeacher', 'isAStudent', 'avatarId', 'description', 'remarks', ),
-        BasePeer::TYPE_COLNAME => array (self::ID, self::USERNAME, self::PASSWORD_HASH, self::TYPE, self::FIRSTNAME, self::LASTNAME, self::EMAIL, self::PHONE, self::ADDRESS, self::WEBSITE, self::BIRTH_DATE, self::FIRST_ENTRY, self::LAST_ENTRY, self::LAST_VISIT, self::VISITS_NB, self::CONFIG_SHOW_EMAIL, self::CONFIG_SHOW_PHONE, self::CONFIG_SHOW_REAL_NAME, self::DEACTIVATED, self::IS_A_TEACHER, self::IS_A_STUDENT, self::AVATAR_ID, self::DESCRIPTION, self::REMARKS, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'USERNAME', 'PASSWORD_HASH', 'TYPE', 'FIRSTNAME', 'LASTNAME', 'EMAIL', 'PHONE', 'ADDRESS', 'WEBSITE', 'BIRTH_DATE', 'FIRST_ENTRY', 'LAST_ENTRY', 'LAST_VISIT', 'VISITS_NB', 'CONFIG_SHOW_EMAIL', 'CONFIG_SHOW_PHONE', 'CONFIG_SHOW_REAL_NAME', 'DEACTIVATED', 'IS_A_TEACHER', 'IS_A_STUDENT', 'AVATAR_ID', 'DESCRIPTION', 'REMARKS', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'username', 'password_hash', 'type', 'firstname', 'lastname', 'email', 'phone', 'address', 'website', 'birth_date', 'first_entry', 'last_entry', 'last_visit', 'visits_nb', 'config_show_email', 'config_show_phone', 'config_show_real_name', 'deactivated', 'is_a_teacher', 'is_a_student', 'avatar_id', 'description', 'remarks', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'Username', 'PasswordHash', 'Type', 'Firstname', 'Lastname', 'Email', 'Phone', 'Address', 'Website', 'BirthDate', 'FirstEntry', 'LastEntry', 'LastVisit', 'VisitsNb', 'ConfigShowEmail', 'ConfigShowPhone', 'ConfigShowRealName', 'ConfigIndexingProfile', 'Deactivated', 'IsATeacher', 'IsAStudent', 'AvatarId', 'Description', 'Remarks', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'username', 'passwordHash', 'type', 'firstname', 'lastname', 'email', 'phone', 'address', 'website', 'birthDate', 'firstEntry', 'lastEntry', 'lastVisit', 'visitsNb', 'configShowEmail', 'configShowPhone', 'configShowRealName', 'configIndexingProfile', 'deactivated', 'isATeacher', 'isAStudent', 'avatarId', 'description', 'remarks', ),
+        BasePeer::TYPE_COLNAME => array (self::ID, self::USERNAME, self::PASSWORD_HASH, self::TYPE, self::FIRSTNAME, self::LASTNAME, self::EMAIL, self::PHONE, self::ADDRESS, self::WEBSITE, self::BIRTH_DATE, self::FIRST_ENTRY, self::LAST_ENTRY, self::LAST_VISIT, self::VISITS_NB, self::CONFIG_SHOW_EMAIL, self::CONFIG_SHOW_PHONE, self::CONFIG_SHOW_REAL_NAME, self::CONFIG_INDEXING_PROFILE, self::DEACTIVATED, self::IS_A_TEACHER, self::IS_A_STUDENT, self::AVATAR_ID, self::DESCRIPTION, self::REMARKS, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'USERNAME', 'PASSWORD_HASH', 'TYPE', 'FIRSTNAME', 'LASTNAME', 'EMAIL', 'PHONE', 'ADDRESS', 'WEBSITE', 'BIRTH_DATE', 'FIRST_ENTRY', 'LAST_ENTRY', 'LAST_VISIT', 'VISITS_NB', 'CONFIG_SHOW_EMAIL', 'CONFIG_SHOW_PHONE', 'CONFIG_SHOW_REAL_NAME', 'CONFIG_INDEXING_PROFILE', 'DEACTIVATED', 'IS_A_TEACHER', 'IS_A_STUDENT', 'AVATAR_ID', 'DESCRIPTION', 'REMARKS', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'username', 'password_hash', 'type', 'firstname', 'lastname', 'email', 'phone', 'address', 'website', 'birth_date', 'first_entry', 'last_entry', 'last_visit', 'visits_nb', 'config_show_email', 'config_show_phone', 'config_show_real_name', 'config_indexing_profile', 'deactivated', 'is_a_teacher', 'is_a_student', 'avatar_id', 'description', 'remarks', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, )
     );
 
     /**
@@ -137,12 +140,12 @@ abstract class BaseUserPeer {
      * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Username' => 1, 'PasswordHash' => 2, 'Type' => 3, 'Firstname' => 4, 'Lastname' => 5, 'Email' => 6, 'Phone' => 7, 'Address' => 8, 'Website' => 9, 'BirthDate' => 10, 'FirstEntry' => 11, 'LastEntry' => 12, 'LastVisit' => 13, 'VisitsNb' => 14, 'ConfigShowEmail' => 15, 'ConfigShowPhone' => 16, 'ConfigShowRealName' => 17, 'Deactivated' => 18, 'IsATeacher' => 19, 'IsAStudent' => 20, 'AvatarId' => 21, 'Description' => 22, 'Remarks' => 23, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'username' => 1, 'passwordHash' => 2, 'type' => 3, 'firstname' => 4, 'lastname' => 5, 'email' => 6, 'phone' => 7, 'address' => 8, 'website' => 9, 'birthDate' => 10, 'firstEntry' => 11, 'lastEntry' => 12, 'lastVisit' => 13, 'visitsNb' => 14, 'configShowEmail' => 15, 'configShowPhone' => 16, 'configShowRealName' => 17, 'deactivated' => 18, 'isATeacher' => 19, 'isAStudent' => 20, 'avatarId' => 21, 'description' => 22, 'remarks' => 23, ),
-        BasePeer::TYPE_COLNAME => array (self::ID => 0, self::USERNAME => 1, self::PASSWORD_HASH => 2, self::TYPE => 3, self::FIRSTNAME => 4, self::LASTNAME => 5, self::EMAIL => 6, self::PHONE => 7, self::ADDRESS => 8, self::WEBSITE => 9, self::BIRTH_DATE => 10, self::FIRST_ENTRY => 11, self::LAST_ENTRY => 12, self::LAST_VISIT => 13, self::VISITS_NB => 14, self::CONFIG_SHOW_EMAIL => 15, self::CONFIG_SHOW_PHONE => 16, self::CONFIG_SHOW_REAL_NAME => 17, self::DEACTIVATED => 18, self::IS_A_TEACHER => 19, self::IS_A_STUDENT => 20, self::AVATAR_ID => 21, self::DESCRIPTION => 22, self::REMARKS => 23, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'USERNAME' => 1, 'PASSWORD_HASH' => 2, 'TYPE' => 3, 'FIRSTNAME' => 4, 'LASTNAME' => 5, 'EMAIL' => 6, 'PHONE' => 7, 'ADDRESS' => 8, 'WEBSITE' => 9, 'BIRTH_DATE' => 10, 'FIRST_ENTRY' => 11, 'LAST_ENTRY' => 12, 'LAST_VISIT' => 13, 'VISITS_NB' => 14, 'CONFIG_SHOW_EMAIL' => 15, 'CONFIG_SHOW_PHONE' => 16, 'CONFIG_SHOW_REAL_NAME' => 17, 'DEACTIVATED' => 18, 'IS_A_TEACHER' => 19, 'IS_A_STUDENT' => 20, 'AVATAR_ID' => 21, 'DESCRIPTION' => 22, 'REMARKS' => 23, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'username' => 1, 'password_hash' => 2, 'type' => 3, 'firstname' => 4, 'lastname' => 5, 'email' => 6, 'phone' => 7, 'address' => 8, 'website' => 9, 'birth_date' => 10, 'first_entry' => 11, 'last_entry' => 12, 'last_visit' => 13, 'visits_nb' => 14, 'config_show_email' => 15, 'config_show_phone' => 16, 'config_show_real_name' => 17, 'deactivated' => 18, 'is_a_teacher' => 19, 'is_a_student' => 20, 'avatar_id' => 21, 'description' => 22, 'remarks' => 23, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Username' => 1, 'PasswordHash' => 2, 'Type' => 3, 'Firstname' => 4, 'Lastname' => 5, 'Email' => 6, 'Phone' => 7, 'Address' => 8, 'Website' => 9, 'BirthDate' => 10, 'FirstEntry' => 11, 'LastEntry' => 12, 'LastVisit' => 13, 'VisitsNb' => 14, 'ConfigShowEmail' => 15, 'ConfigShowPhone' => 16, 'ConfigShowRealName' => 17, 'ConfigIndexingProfile' => 18, 'Deactivated' => 19, 'IsATeacher' => 20, 'IsAStudent' => 21, 'AvatarId' => 22, 'Description' => 23, 'Remarks' => 24, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'username' => 1, 'passwordHash' => 2, 'type' => 3, 'firstname' => 4, 'lastname' => 5, 'email' => 6, 'phone' => 7, 'address' => 8, 'website' => 9, 'birthDate' => 10, 'firstEntry' => 11, 'lastEntry' => 12, 'lastVisit' => 13, 'visitsNb' => 14, 'configShowEmail' => 15, 'configShowPhone' => 16, 'configShowRealName' => 17, 'configIndexingProfile' => 18, 'deactivated' => 19, 'isATeacher' => 20, 'isAStudent' => 21, 'avatarId' => 22, 'description' => 23, 'remarks' => 24, ),
+        BasePeer::TYPE_COLNAME => array (self::ID => 0, self::USERNAME => 1, self::PASSWORD_HASH => 2, self::TYPE => 3, self::FIRSTNAME => 4, self::LASTNAME => 5, self::EMAIL => 6, self::PHONE => 7, self::ADDRESS => 8, self::WEBSITE => 9, self::BIRTH_DATE => 10, self::FIRST_ENTRY => 11, self::LAST_ENTRY => 12, self::LAST_VISIT => 13, self::VISITS_NB => 14, self::CONFIG_SHOW_EMAIL => 15, self::CONFIG_SHOW_PHONE => 16, self::CONFIG_SHOW_REAL_NAME => 17, self::CONFIG_INDEXING_PROFILE => 18, self::DEACTIVATED => 19, self::IS_A_TEACHER => 20, self::IS_A_STUDENT => 21, self::AVATAR_ID => 22, self::DESCRIPTION => 23, self::REMARKS => 24, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'USERNAME' => 1, 'PASSWORD_HASH' => 2, 'TYPE' => 3, 'FIRSTNAME' => 4, 'LASTNAME' => 5, 'EMAIL' => 6, 'PHONE' => 7, 'ADDRESS' => 8, 'WEBSITE' => 9, 'BIRTH_DATE' => 10, 'FIRST_ENTRY' => 11, 'LAST_ENTRY' => 12, 'LAST_VISIT' => 13, 'VISITS_NB' => 14, 'CONFIG_SHOW_EMAIL' => 15, 'CONFIG_SHOW_PHONE' => 16, 'CONFIG_SHOW_REAL_NAME' => 17, 'CONFIG_INDEXING_PROFILE' => 18, 'DEACTIVATED' => 19, 'IS_A_TEACHER' => 20, 'IS_A_STUDENT' => 21, 'AVATAR_ID' => 22, 'DESCRIPTION' => 23, 'REMARKS' => 24, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'username' => 1, 'password_hash' => 2, 'type' => 3, 'firstname' => 4, 'lastname' => 5, 'email' => 6, 'phone' => 7, 'address' => 8, 'website' => 9, 'birth_date' => 10, 'first_entry' => 11, 'last_entry' => 12, 'last_visit' => 13, 'visits_nb' => 14, 'config_show_email' => 15, 'config_show_phone' => 16, 'config_show_real_name' => 17, 'config_indexing_profile' => 18, 'deactivated' => 19, 'is_a_teacher' => 20, 'is_a_student' => 21, 'avatar_id' => 22, 'description' => 23, 'remarks' => 24, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, )
     );
 
     /**
@@ -234,6 +237,7 @@ abstract class BaseUserPeer {
             $criteria->addSelectColumn(UserPeer::CONFIG_SHOW_EMAIL);
             $criteria->addSelectColumn(UserPeer::CONFIG_SHOW_PHONE);
             $criteria->addSelectColumn(UserPeer::CONFIG_SHOW_REAL_NAME);
+            $criteria->addSelectColumn(UserPeer::CONFIG_INDEXING_PROFILE);
             $criteria->addSelectColumn(UserPeer::DEACTIVATED);
             $criteria->addSelectColumn(UserPeer::IS_A_TEACHER);
             $criteria->addSelectColumn(UserPeer::IS_A_STUDENT);
@@ -257,6 +261,7 @@ abstract class BaseUserPeer {
             $criteria->addSelectColumn($alias . '.CONFIG_SHOW_EMAIL');
             $criteria->addSelectColumn($alias . '.CONFIG_SHOW_PHONE');
             $criteria->addSelectColumn($alias . '.CONFIG_SHOW_REAL_NAME');
+            $criteria->addSelectColumn($alias . '.CONFIG_INDEXING_PROFILE');
             $criteria->addSelectColumn($alias . '.DEACTIVATED');
             $criteria->addSelectColumn($alias . '.IS_A_TEACHER');
             $criteria->addSelectColumn($alias . '.IS_A_STUDENT');
