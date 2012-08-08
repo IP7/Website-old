@@ -1,0 +1,10 @@
+{% extends 'main.html' %}
+{% block title %}Erreur {{ page.errno }}{% endblock %}
+{% block metas %}
+<meta name="robots" content="noindex" />
+{{ parent() }}
+{% endblock %}
+{% block content %}
+<h1>Erreur {{ page.errno|e('html') }}</h1>
+<p>{{ page.errstr|e('html') }}</p>
+{% endblock %}
