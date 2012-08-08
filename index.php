@@ -67,7 +67,8 @@ dispatch('/admin/maintenance', 'display_admin_maintenance');
 
 # Called when a route is not found.
 function route_missing($request_method, $request_uri) {
-  halt(NOT_FOUND, "($request_method) $request_uri");
+    error_log("Not found: ($request_method) $request_uri");
+  halt(NOT_FOUND);
 }
 
  
@@ -80,13 +81,13 @@ function route_missing($request_method, $request_uri) {
 # @param string $errline 
 # @return string "server error" output string
 #
-function server_error($errno, $errstr, $errfile=null, $errline=null) {
+function server_error($errno, $errstr=null, $errfile=null, $errline=null) {
     return display_http_error($errno, $errstr, $errfile, $errline);
 }
 
 # Not found error output
 # @see server_error
-function not_found($errno, $errstr, $errfile=null, $errline=null) {
+function not_found($errno, $errstr=null, $errfile=null, $errline=null) {
     return display_http_error($errno, $errstr, $errfile, $errline);
 }
 
