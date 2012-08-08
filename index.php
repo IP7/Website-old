@@ -16,10 +16,6 @@ function configure() {
     Config::routes_init();
 }
 
-#
-#
-# -> uncomment implemented routes
-
 function before($route) {
     try_autoconnect();
 
@@ -30,10 +26,12 @@ function before($route) {
     }
 }
 
-## home
+## (get) home
 dispatch('/', 'display_home');
 
-## connection
+## (get) connection page
+dispatch('/connexion', 'display_connection');
+## (post) connection
 dispatch_post('/', 'display_home');
 
 # ## users' profiles

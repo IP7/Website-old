@@ -29,41 +29,8 @@ function display_home() {
         disconnection();
     }
 
-    #TODO make a function which returns global links in function of user's state:
-    # connected or not and use it for every page
-    $others_links = array();
-    if (!is_connected()) {
-        $others_links []= array(
-            'href'  => Config::$root_uri.'connexion',
-            'title' => 'Connexion'
-        );
-    }
-    else {
-
-        $others_links []= array(
-            'href'  => Config::$root_uri.'forum',
-            'title' => 'Forum'
-        );
-
-        $others_links []= array(
-            'href'  => Config::$root_uri.'~'.user()->getUsername(),
-            'title' => 'Mon Profil'
-        );
-
-        $others_links []= array(
-            'href'  => Config::$root_uri.'?disconnect',
-            'title' => 'Déconnexion'
-        );
-    }
-
     # Rendering
     return Config::$tpl->render('home.html', tpl_array(array(
-
-        'site' => array(
-            'global_links' => array(
-                'others' => $others_links
-            )
-        ),
 
         'page' => array(
             'title' => 'Accueil',
@@ -79,6 +46,18 @@ function display_home() {
         ),
     )));
 
+}
+
+function display_connection() {
+    if (is_connected()) {
+        redirect_to('/');
+    }
+    return Config::$tpl->render('connection.html', tpl_array(array(
+        'page' => array(
+            'title' => 'Connexion',
+            'connection' => array( 'action' => Config::$root_uri )
+        )
+    )));
 }
 
 ?>

@@ -1,0 +1,9 @@
+{% extends 'main.html' %}
+{% block content %}
+<form method="POST" action="{{ page.connection.action }}">
+    <div class="field"><label for="username">Pseudo&nbsp;:</label><input type="text" name="username" id="username" /></div>
+    <div class="field"><label for="password">Mot de passe&nbsp;:</label><input type="password" name="password" id="password" /></div>
+    <div class="field"><input type="checkbox" checked="checked" name="remember" id="remember" /><label for="remember">se rappeler de moi</label></div>
+    <input type="submit" value="Connexion" />
+</form>
+{% endblock %}
