@@ -1,0 +1,28 @@
+
+/* Basic CSS */
+
+#global_nav,
+#cursus_nav,
+#others_nav,
+#search,
+.navlink,
+#global_header .buffer {
+    display: inline-block;
+}
+
+#search label {
+    display:inline-block;
+    width:0;
+    overflow:hidden;
+}
+
+#main_logo_link {
+    padding:0;
+    outline:none;
+    border:none;
+    text-decoration:none;
+}
+
+#logo {
+    margin:0;
+}
