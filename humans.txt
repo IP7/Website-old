@@ -9,6 +9,9 @@ Github: @bfontaine
 Website: bfontaine.net
 Location: Paris, France
  
+HM Sara Alia (logo design)
+Github: @aliouchka
+Location: France
  
 /* SITE */
 
