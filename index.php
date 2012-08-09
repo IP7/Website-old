@@ -55,6 +55,10 @@ dispatch('/admin/tresorerie', 'display_admin_finances');
 ## maintenance
 dispatch('/admin/maintenance', 'display_admin_maintenance');
 
+# test
+# init DB
+dispatch('/test/init_db', 'display_test_init_db');
+
 # ## ...
 #
 #
