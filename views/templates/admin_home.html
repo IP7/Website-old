@@ -1,6 +1,6 @@
-{% include 'head.html' %}
+{% extends 'main.html' %}
+{% block content %}
 {% include 'admin_top.html' %}
-{% include 'message.html' %}
 {% if page.actions|default(false) %}
 <nav id="actions">
 <ul>
@@ -10,5 +10,4 @@
 </ul>
 </nav>
 {% endif %}
-</body>
-</html>
+{% endblock %}
