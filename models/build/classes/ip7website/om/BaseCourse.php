@@ -43,6 +43,13 @@ abstract class BaseCourse extends BaseObject
     protected $cursus_id;
 
     /**
+     * The value for the semester field.
+     * Note: this column has a database default value of: (expression) 0
+     * @var        int
+     */
+    protected $semester;
+
+    /**
      * The value for the optional field.
      * Note: this column has a database default value of: (expression) 0
      * @var        boolean
@@ -189,6 +196,17 @@ abstract class BaseCourse extends BaseObject
     }
 
     /**
+     * Get the [semester] column value.
+     * 
+     * @return   int
+     */
+    public function getSemester()
+    {
+
+        return $this->semester;
+    }
+
+    /**
      * Get the [optional] column value.
      * 
      * @return   boolean
@@ -266,6 +284,27 @@ abstract class BaseCourse extends BaseObject
 
         return $this;
     } // setCursusId()
+
+    /**
+     * Set the value of [semester] column.
+     * 
+     * @param      int $v new value
+     * @return   Course The current object (for fluent API support)
+     */
+    public function setSemester($v)
+    {
+        if ($v !== null) {
+            $v = (int) $v;
+        }
+
+        if ($this->semester !== $v) {
+            $this->semester = $v;
+            $this->modifiedColumns[] = CoursePeer::SEMESTER;
+        }
+
+
+        return $this;
+    } // setSemester()
 
     /**
      * Sets the value of the [optional] column.
@@ -372,9 +411,10 @@ abstract class BaseCourse extends BaseObject
 
             $this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
             $this->cursus_id = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
-            $this->optional = ($row[$startcol + 2] !== null) ? (boolean) $row[$startcol + 2] : null;
-            $this->name = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
-            $this->description = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
+            $this->semester = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
+            $this->optional = ($row[$startcol + 3] !== null) ? (boolean) $row[$startcol + 3] : null;
+            $this->name = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
+            $this->description = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -383,7 +423,7 @@ abstract class BaseCourse extends BaseObject
                 $this->ensureConsistency();
             }
 
-            return $startcol + 5; // 5 = CoursePeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 6; // 6 = CoursePeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating Course object", $e);
@@ -734,6 +774,9 @@ abstract class BaseCourse extends BaseObject
         if ($this->isColumnModified(CoursePeer::CURSUS_ID)) {
             $modifiedColumns[':p' . $index++]  = '`CURSUS_ID`';
         }
+        if ($this->isColumnModified(CoursePeer::SEMESTER)) {
+            $modifiedColumns[':p' . $index++]  = '`SEMESTER`';
+        }
         if ($this->isColumnModified(CoursePeer::OPTIONAL)) {
             $modifiedColumns[':p' . $index++]  = '`OPTIONAL`';
         }
@@ -759,6 +802,9 @@ abstract class BaseCourse extends BaseObject
                         break;
                     case '`CURSUS_ID`':
 						$stmt->bindValue($identifier, $this->cursus_id, PDO::PARAM_INT);
+                        break;
+                    case '`SEMESTER`':
+						$stmt->bindValue($identifier, $this->semester, PDO::PARAM_INT);
                         break;
                     case '`OPTIONAL`':
 						$stmt->bindValue($identifier, (int) $this->optional, PDO::PARAM_INT);
@@ -970,12 +1016,15 @@ abstract class BaseCourse extends BaseObject
                 return $this->getCursusId();
                 break;
             case 2:
-                return $this->getOptional();
+                return $this->getSemester();
                 break;
             case 3:
-                return $this->getName();
+                return $this->getOptional();
                 break;
             case 4:
+                return $this->getName();
+                break;
+            case 5:
                 return $this->getDescription();
                 break;
             default:
@@ -1009,9 +1058,10 @@ abstract class BaseCourse extends BaseObject
         $result = array(
             $keys[0] => $this->getId(),
             $keys[1] => $this->getCursusId(),
-            $keys[2] => $this->getOptional(),
-            $keys[3] => $this->getName(),
-            $keys[4] => $this->getDescription(),
+            $keys[2] => $this->getSemester(),
+            $keys[3] => $this->getOptional(),
+            $keys[4] => $this->getName(),
+            $keys[5] => $this->getDescription(),
         );
         if ($includeForeignObjects) {
             if (null !== $this->aCursus) {
@@ -1076,12 +1126,15 @@ abstract class BaseCourse extends BaseObject
                 $this->setCursusId($value);
                 break;
             case 2:
-                $this->setOptional($value);
+                $this->setSemester($value);
                 break;
             case 3:
-                $this->setName($value);
+                $this->setOptional($value);
                 break;
             case 4:
+                $this->setName($value);
+                break;
+            case 5:
                 $this->setDescription($value);
                 break;
         } // switch()
@@ -1110,9 +1163,10 @@ abstract class BaseCourse extends BaseObject
 
         if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
         if (array_key_exists($keys[1], $arr)) $this->setCursusId($arr[$keys[1]]);
-        if (array_key_exists($keys[2], $arr)) $this->setOptional($arr[$keys[2]]);
-        if (array_key_exists($keys[3], $arr)) $this->setName($arr[$keys[3]]);
-        if (array_key_exists($keys[4], $arr)) $this->setDescription($arr[$keys[4]]);
+        if (array_key_exists($keys[2], $arr)) $this->setSemester($arr[$keys[2]]);
+        if (array_key_exists($keys[3], $arr)) $this->setOptional($arr[$keys[3]]);
+        if (array_key_exists($keys[4], $arr)) $this->setName($arr[$keys[4]]);
+        if (array_key_exists($keys[5], $arr)) $this->setDescription($arr[$keys[5]]);
     }
 
     /**
@@ -1126,6 +1180,7 @@ abstract class BaseCourse extends BaseObject
 
         if ($this->isColumnModified(CoursePeer::ID)) $criteria->add(CoursePeer::ID, $this->id);
         if ($this->isColumnModified(CoursePeer::CURSUS_ID)) $criteria->add(CoursePeer::CURSUS_ID, $this->cursus_id);
+        if ($this->isColumnModified(CoursePeer::SEMESTER)) $criteria->add(CoursePeer::SEMESTER, $this->semester);
         if ($this->isColumnModified(CoursePeer::OPTIONAL)) $criteria->add(CoursePeer::OPTIONAL, $this->optional);
         if ($this->isColumnModified(CoursePeer::NAME)) $criteria->add(CoursePeer::NAME, $this->name);
         if ($this->isColumnModified(CoursePeer::DESCRIPTION)) $criteria->add(CoursePeer::DESCRIPTION, $this->description);
@@ -1193,6 +1248,7 @@ abstract class BaseCourse extends BaseObject
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
         $copyObj->setCursusId($this->getCursusId());
+        $copyObj->setSemester($this->getSemester());
         $copyObj->setOptional($this->getOptional());
         $copyObj->setName($this->getName());
         $copyObj->setDescription($this->getDescription());
@@ -2656,6 +2712,7 @@ abstract class BaseCourse extends BaseObject
     {
         $this->id = null;
         $this->cursus_id = null;
+        $this->semester = null;
         $this->optional = null;
         $this->name = null;
         $this->description = null;

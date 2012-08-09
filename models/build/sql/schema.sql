@@ -108,6 +108,7 @@ CREATE TABLE `courses`
 (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `cursus_id` INTEGER,
+    `semester` TINYINT DEFAULT 0,
     `optional` TINYINT(1) DEFAULT 0 NOT NULL,
     `name` VARCHAR(32) NOT NULL,
     `description` TEXT(1024),

@@ -23,19 +23,22 @@ abstract class BaseCoursePeer {
     const TM_CLASS = 'CourseTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 5;
+    const NUM_COLUMNS = 6;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 5;
+    const NUM_HYDRATE_COLUMNS = 6;
 
     /** the column name for the ID field */
     const ID = 'courses.ID';
 
     /** the column name for the CURSUS_ID field */
     const CURSUS_ID = 'courses.CURSUS_ID';
+
+    /** the column name for the SEMESTER field */
+    const SEMESTER = 'courses.SEMESTER';
 
     /** the column name for the OPTIONAL field */
     const OPTIONAL = 'courses.OPTIONAL';
@@ -65,12 +68,12 @@ abstract class BaseCoursePeer {
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'CursusId', 'Optional', 'Name', 'Description', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'cursusId', 'optional', 'name', 'description', ),
-        BasePeer::TYPE_COLNAME => array (self::ID, self::CURSUS_ID, self::OPTIONAL, self::NAME, self::DESCRIPTION, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'CURSUS_ID', 'OPTIONAL', 'NAME', 'DESCRIPTION', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'cursus_id', 'optional', 'name', 'description', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'CursusId', 'Semester', 'Optional', 'Name', 'Description', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'cursusId', 'semester', 'optional', 'name', 'description', ),
+        BasePeer::TYPE_COLNAME => array (self::ID, self::CURSUS_ID, self::SEMESTER, self::OPTIONAL, self::NAME, self::DESCRIPTION, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'CURSUS_ID', 'SEMESTER', 'OPTIONAL', 'NAME', 'DESCRIPTION', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'cursus_id', 'semester', 'optional', 'name', 'description', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
     );
 
     /**
@@ -80,12 +83,12 @@ abstract class BaseCoursePeer {
      * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'CursusId' => 1, 'Optional' => 2, 'Name' => 3, 'Description' => 4, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'cursusId' => 1, 'optional' => 2, 'name' => 3, 'description' => 4, ),
-        BasePeer::TYPE_COLNAME => array (self::ID => 0, self::CURSUS_ID => 1, self::OPTIONAL => 2, self::NAME => 3, self::DESCRIPTION => 4, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'CURSUS_ID' => 1, 'OPTIONAL' => 2, 'NAME' => 3, 'DESCRIPTION' => 4, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'cursus_id' => 1, 'optional' => 2, 'name' => 3, 'description' => 4, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'CursusId' => 1, 'Semester' => 2, 'Optional' => 3, 'Name' => 4, 'Description' => 5, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'cursusId' => 1, 'semester' => 2, 'optional' => 3, 'name' => 4, 'description' => 5, ),
+        BasePeer::TYPE_COLNAME => array (self::ID => 0, self::CURSUS_ID => 1, self::SEMESTER => 2, self::OPTIONAL => 3, self::NAME => 4, self::DESCRIPTION => 5, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'CURSUS_ID' => 1, 'SEMESTER' => 2, 'OPTIONAL' => 3, 'NAME' => 4, 'DESCRIPTION' => 5, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'cursus_id' => 1, 'semester' => 2, 'optional' => 3, 'name' => 4, 'description' => 5, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
     );
 
     /**
@@ -161,12 +164,14 @@ abstract class BaseCoursePeer {
         if (null === $alias) {
             $criteria->addSelectColumn(CoursePeer::ID);
             $criteria->addSelectColumn(CoursePeer::CURSUS_ID);
+            $criteria->addSelectColumn(CoursePeer::SEMESTER);
             $criteria->addSelectColumn(CoursePeer::OPTIONAL);
             $criteria->addSelectColumn(CoursePeer::NAME);
             $criteria->addSelectColumn(CoursePeer::DESCRIPTION);
         } else {
             $criteria->addSelectColumn($alias . '.ID');
             $criteria->addSelectColumn($alias . '.CURSUS_ID');
+            $criteria->addSelectColumn($alias . '.SEMESTER');
             $criteria->addSelectColumn($alias . '.OPTIONAL');
             $criteria->addSelectColumn($alias . '.NAME');
             $criteria->addSelectColumn($alias . '.DESCRIPTION');
@@ -1033,6 +1038,9 @@ abstract class BaseCoursePeer {
 
         if ($obj->isNew() || $obj->isColumnModified(CoursePeer::NAME))
             $columns[CoursePeer::NAME] = $obj->getName();
+
+        if ($obj->isNew() || $obj->isColumnModified(CoursePeer::SEMESTER))
+            $columns[CoursePeer::SEMESTER] = $obj->getSemester();
 
         }
 

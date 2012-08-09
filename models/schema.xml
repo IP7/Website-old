@@ -189,6 +189,9 @@
         <!-- cursus correspondant -->
         <column name="cursus_id"   type="INTEGER" /> 
 
+        <!-- semestre correspondant -->
+        <column name="semester"    type="TINYINT" defaultExpr="0" />
+
         <!-- si la matière est facultative -->
         <column name="optional"    type="BOOLEAN" required="true" defaultExpr="0" />
 
@@ -211,6 +214,11 @@
 
         <validator column="name">
             <rule name="minLength" value="3" message="Name must be at least ${value} characters." />
+        </validator>
+
+        <validator column="semester">
+            <rule name="minValue"  value="0" message="The semester cannot be negative." />
+            <rule name="maxValue"  value="3" message="The semester cannot be higher than 2." />
         </validator>
     </table>
 

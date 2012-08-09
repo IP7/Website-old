@@ -8,12 +8,14 @@
  *
  * @method     CourseQuery orderById($order = Criteria::ASC) Order by the id column
  * @method     CourseQuery orderByCursusId($order = Criteria::ASC) Order by the cursus_id column
+ * @method     CourseQuery orderBySemester($order = Criteria::ASC) Order by the semester column
  * @method     CourseQuery orderByOptional($order = Criteria::ASC) Order by the optional column
  * @method     CourseQuery orderByName($order = Criteria::ASC) Order by the name column
  * @method     CourseQuery orderByDescription($order = Criteria::ASC) Order by the description column
  *
  * @method     CourseQuery groupById() Group by the id column
  * @method     CourseQuery groupByCursusId() Group by the cursus_id column
+ * @method     CourseQuery groupBySemester() Group by the semester column
  * @method     CourseQuery groupByOptional() Group by the optional column
  * @method     CourseQuery groupByName() Group by the name column
  * @method     CourseQuery groupByDescription() Group by the description column
@@ -55,12 +57,14 @@
  *
  * @method     Course findOneById(int $id) Return the first Course filtered by the id column
  * @method     Course findOneByCursusId(int $cursus_id) Return the first Course filtered by the cursus_id column
+ * @method     Course findOneBySemester(int $semester) Return the first Course filtered by the semester column
  * @method     Course findOneByOptional(boolean $optional) Return the first Course filtered by the optional column
  * @method     Course findOneByName(string $name) Return the first Course filtered by the name column
  * @method     Course findOneByDescription(string $description) Return the first Course filtered by the description column
  *
  * @method     array findById(int $id) Return Course objects filtered by the id column
  * @method     array findByCursusId(int $cursus_id) Return Course objects filtered by the cursus_id column
+ * @method     array findBySemester(int $semester) Return Course objects filtered by the semester column
  * @method     array findByOptional(boolean $optional) Return Course objects filtered by the optional column
  * @method     array findByName(string $name) Return Course objects filtered by the name column
  * @method     array findByDescription(string $description) Return Course objects filtered by the description column
@@ -154,7 +158,7 @@ abstract class BaseCourseQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `ID`, `CURSUS_ID`, `OPTIONAL`, `NAME`, `DESCRIPTION` FROM `courses` WHERE `ID` = :p0';
+        $sql = 'SELECT `ID`, `CURSUS_ID`, `SEMESTER`, `OPTIONAL`, `NAME`, `DESCRIPTION` FROM `courses` WHERE `ID` = :p0';
         try {
             $stmt = $con->prepare($sql);
 			$stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -311,6 +315,47 @@ abstract class BaseCourseQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(CoursePeer::CURSUS_ID, $cursusId, $comparison);
+    }
+
+    /**
+     * Filter the query on the semester column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterBySemester(1234); // WHERE semester = 1234
+     * $query->filterBySemester(array(12, 34)); // WHERE semester IN (12, 34)
+     * $query->filterBySemester(array('min' => 12)); // WHERE semester > 12
+     * </code>
+     *
+     * @param     mixed $semester The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return CourseQuery The current query, for fluid interface
+     */
+    public function filterBySemester($semester = null, $comparison = null)
+    {
+        if (is_array($semester)) {
+            $useMinMax = false;
+            if (isset($semester['min'])) {
+                $this->addUsingAlias(CoursePeer::SEMESTER, $semester['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($semester['max'])) {
+                $this->addUsingAlias(CoursePeer::SEMESTER, $semester['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(CoursePeer::SEMESTER, $semester, $comparison);
     }
 
     /**
