@@ -1,0 +1,17 @@
+/* TEAM */
+
+Loïc Loro’ Runarvot (developer)
+Github: @Aaylor
+Location: France
+
+Baptiste Fontaine (developer)
+Github: @bfontaine
+Website: bfontaine.net
+Location: Paris, France
+ 
+ 
+/* SITE */
+
+Language: French
+Standards: HTML5, CSS3.
+
