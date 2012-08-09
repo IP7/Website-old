@@ -20,6 +20,7 @@ define('ALREADY_CONNECTED', -4);
 #
 # define('VISITOR_RANK', 0);
 define('MEMBER_RANK', 50);
+define('MODERATOR_RANK', 80);
 define('ADMIN_RANK', 100);
 #
 #
@@ -78,7 +79,9 @@ class Config {
                 'authorsfile'     => array( 'href' => self::$root_uri.'humans.txt' ),
 
                 # array( array('href' => 'foo.css', 'media' => 'all'), ...)
-                'styles'          => array(),
+                'styles'          => array(
+                    array( 'href' => self::$root_uri.'views/static/styles/global.css', 'media' => 'all' )
+                ),
 
                 'rendering_scripts' => array(),
                 'scripts'           => array(),
