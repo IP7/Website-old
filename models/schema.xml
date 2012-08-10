@@ -206,10 +206,10 @@
         <column name="optional"    type="BOOLEAN" required="true" defaultExpr="0" />
 
         <!-- nom -->
-        <column name="name"        type="VARCHAR" size="32" required="true" />
+        <column name="name"        type="VARCHAR" size="64" required="true" />
 
         <!-- code -->
-        <column name="code"        type="VARCHAR" size="16" />
+        <column name="code"        type="VARCHAR" size="16" required="true" />
 
         <!-- nb de crédits -->
         <column name="ECTS"        type="TINYINT" defaultExpr="3" />
@@ -224,7 +224,7 @@
         </foreign-key>
 
         <unique>
-            <unique-column name="name" />
+            <unique-column name="code" />
             <unique-column name="semester" />
             <unique-column name="cursus_id" />
         </unique>

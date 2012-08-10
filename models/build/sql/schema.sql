@@ -112,12 +112,12 @@ CREATE TABLE `courses`
     `cursus_id` INTEGER,
     `semester` TINYINT DEFAULT 0,
     `optional` TINYINT(1) DEFAULT 0 NOT NULL,
-    `name` VARCHAR(32) NOT NULL,
-    `code` VARCHAR(16),
+    `name` VARCHAR(64) NOT NULL,
+    `code` VARCHAR(16) NOT NULL,
     `ECTS` TINYINT DEFAULT 3,
     `description` TEXT(1024),
     PRIMARY KEY (`id`),
-    UNIQUE INDEX `courses_U_1` (`name`, `semester`, `cursus_id`),
+    UNIQUE INDEX `courses_U_1` (`code`, `semester`, `cursus_id`),
     INDEX `courses_FI_1` (`cursus_id`),
     CONSTRAINT `courses_FK_1`
         FOREIGN KEY (`cursus_id`)
