@@ -5,7 +5,9 @@
 #cursus_nav,
 #others_nav,
 #search,
-.navlink,
+#breadcrumb .navlink,
+#global_header .navlink,
+#global_footer .navlink,
 #global_header .buffer {
     display: inline-block;
 }
@@ -25,4 +27,8 @@
 
 #logo {
     margin:0;
+}
+
+#breadcrumb .next:before {
+  content: '→';
 }
