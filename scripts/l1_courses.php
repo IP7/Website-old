@@ -7,11 +7,11 @@ $c = array(
 
         // obligatoire
         array(
-            'IF1'      => array(3, 'Initiation à la programmation avec Java.'),
+            'IF1'      => array(6, 'Initiation à la programmation avec Java.'),
             'IS1'      => array(3, 'Initiation aux systèmes d\'exploitation.'),
             'PF1'      => array(3, 'Principe de fonctionnement des machines binaires.'),
             'OBi'      => array(3, 'Outils bureautique et internet : matière commune à tous les étudiants.'),
-            'MI1'      => array(3, 'Mathématiques.')
+            'MI1'      => array(9, 'Mathématiques.')
         ),
 
         // facultatif (UE libres)
@@ -26,9 +26,10 @@ $c = array(
 
         // obligatoire
         array(
-            'TO2'     => array(3, 'Types de données et objets.'),
+            'TO2'     => array(6, 'Types de données et objets.'),
             'CI2'     => array(3, 'Concepts Informatique.'),
-            'IO2'     => array(3, 'Internet et outils : Conception d\'un site Web avec HTML, CSS, PHP et MySQL.'),
+            'IO2'     => array(6, 'Internet et outils : Conception d\'un site Web avec HTML, CSS, PHP et MySQL.'),
+            'MI2'     => array(9, 'Mathématiques.'),
             'Anglais' => array(3, 'Autoformation à l\'anglais.')
         ),
 
