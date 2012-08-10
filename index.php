@@ -35,7 +35,7 @@ dispatch('/connexion', 'display_connection');
 dispatch_post('/', 'display_home');
 
 # ## users' profiles
-# dispatch('/~:name', 'display_profile_page');
+dispatch('/~*', 'display_profile_page');
 # ## my profile
 # dispatch('/profile', 'display_my_profile_page');
 # ## edit my profile
