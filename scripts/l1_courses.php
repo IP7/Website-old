@@ -16,8 +16,12 @@ $c = array(
 
         // facultatif (UE libres)
         array(
-            'LM1' => array(3, 'Langage mathématique'),
-            'SD1' => array(3, 'Statistiques descriptives')
+            'LM1' => array(3, 'Langage mathématique.'),
+            'SD1' => array(3, 'Statistiques descriptives.'),
+            'BC1' => array(6, 'Biologie cellulaire et moléculaire expérimentale.'),
+            'CH1' => array(6, 'Chimie : Atomes et molécules.'),
+            'AR1' => array(3, 'Géosciences : Actualité de la recherche.'),
+            'PA1' => array(3, 'Géosciences : Panorama 1')
         )
     ),
 
