@@ -44,6 +44,24 @@ function display_cursus() {
     
     foreach ($cursus->getNewss() as $n) {
 
+        $a = $n->getAuthor();
+        $author = false;
+
+        if ($a) {
+            $author = array(
+                'href' => Config::$root_uri.'~'.$a->getUsername(),
+                # TODO use $a->getName(), cf issue #43
+                'name' => $a->getFirstName().' '.$a->getLastName()
+            );
+        }
+
+        $news []= array(
+            'datetime_attr' => '',
+            'datetime' => '',
+            'title' => $n->getTitle(),
+            'content' => $n->getText(),
+            'author' => $author
+        );
     }
 
     return Config::$tpl->render('cursus.html', tpl_array(array(
@@ -52,7 +70,7 @@ function display_cursus() {
 
             'breadcrumb' => $breadcrumb,
 
-            'news' => array(),
+            'news' => $news,
 
             'cursus' => array(
                 'name' => $cursus->getName(),
