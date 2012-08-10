@@ -2,56 +2,85 @@
 
 // Cursus
 
-# $l1 = new Cursus();
-# $l1->setName('Licence 1');
-# $l1->setDescription('Première année de licence.');
-# $l1->save();
-# 
-# $l2 = new Cursus();
-# $l2->setName('Licence 2');
-# $l2->setDescription('Deuxième année de licence.');
-# $l2->save();
-# 
-# $l3 = new Cursus();
-# $l3->setName('Licence 3');
-# $l3->setDescription('Troisième et dernière année de licence.');
-# $l3->save();
-# 
-# $m1 = new Cursus();
-# $m1->setName('Master 1');
-# $m1->setDescription('Première année de master');
-# $m1->save();
-# 
-# $m2 = new Cursus();
-# $m2->setName('Master 2');
-# $m2->setDescription('Seconde et dernière année de master.');
-# $m2->save();
-# 
-# // Courses
-# 
-# $pf1 = new Course();
-# $pf1->setCursus($l1);
-# $pf1->setSemester(1);
-# $pf1->setOptional(false);
-# $pf1->setName('PF1');
-# $pf1->setDescription('Principe de Fonctionnement des machines binaires.');
-# $pf1->save();
-# 
-# $if1 = new Course();
-# $if1->setCursus($l1);
-# $if1->setSemester(1);
-# $if1->setOptional(false);
-# $if1->setName('IF1');
-# $if1->setDescription('Initiation à la programmation avec Java.');
-# $if1->save();
-# 
-# $io2 = new Course();
-# $io2->setCursus($l1);
-# $io2->setSemester(2);
-# $io2->setOptional(false);
-# $io2->setName('IO2');
-# $io2->setDescription('Internet et Outils : HTML, CSS, PHP, MySQL');
-# $io2->save();
+$cursus = array(
+    'l1' => array(
+        'Licence 1',
+        'Première année de licence.'
+    ),
+
+    'l2' => array(
+        'Licence 2',
+        'Deuxième année de licence.'
+    ),
+
+    'l3' => array(
+        'Licence 3',
+        'Troisième et dernière année de licence.'
+    ),
+
+    'm1' => array(
+        'Master 1',
+        'Première année de master.'
+    ),
+
+    'm2' => array(
+        'Master 2',
+        'Seconde et dernière année de master.'
+    )
+);
+
+foreach ($cursus as $k => $opts) {
+    $q = CursusQuery::create()->findOneByName($opts[0]);
+
+    if ($q != NULL) {
+        $cursus[$k] = $q;
+        continue;
+    }
+
+    $c = new Cursus();
+    $c->setName($opts[0]);
+    $c->setDescription($opts[1]);
+    $c->save();
+    $cursus[$k] = $c;
+}
+
+// Courses
+
+$d = dirname(__FILE__);
+
+foreach($cursus as $k => $v) {
+
+    $semesters = array(1, 2);
+    $option = array(0,1);
+
+    if (file_exists($d.'/'.$k.'_courses.php')) {
+        include $d.'/'.$k.'_courses.php';
+
+        foreach ($semesters as $n => $s) {
+
+            foreach ($option as $opt) {
+
+                foreach ($c[$n][$opt] as $name => $desc) {
+
+                    $q = CourseQuery::create()->findOneByName($name);
+
+                    if ($q != NULL) {
+                        continue;
+                    }
+
+                    $course = new Course();
+                    $course->setName($name);
+                    //$course->setECTS((int)$desc[0]);
+                    $course->setCursus($cursus[$k]);
+                    $course->setSemester($s);
+                    $course->setOptional((bool)$opt);
+                    $course->setDescription($desc[1]);
+                    $course->save();
+                }
+            }
+        }
+    }
+}
 
 // Users
 
