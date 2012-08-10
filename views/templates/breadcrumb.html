@@ -1,0 +1,17 @@
+{# cf http://coderwall.com/p/p0nvjw #}
+{% if page.breadcrumb is defined %}
+<ol id="breadcrumb">
+    <li itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+        <a href="{{ site.root }}" itemprop="url">
+            <span itemprop="title">Accueil</span>
+        </a>
+    </li>
+    {% for b in page.breadcrumb %}
+    <li itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+        <a href="{{ b.href }}" itemprop="url">
+            <span itemprop="title">{{ b.title }}</span>
+        </a>
+    </li>  
+    {% endfor %}
+</ol>
+{% endif %}

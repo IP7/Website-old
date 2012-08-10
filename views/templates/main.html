@@ -1,4 +1,4 @@
-{% import 'macros/inline.html' as inline %}
+{% import 'macros.html' as _m %}
 {% autoescape 'html_attr' %}
 <!doctype html>
 <html lang="{{ page.lang }}" dir="ltr">
@@ -48,7 +48,7 @@
                     {% endfor %}
                 {% endif %}
         </head>
-        {# {% flush %} #}
+{% flush %}
         <body>
             {# barre du haut #}
             <header id="global_header">
@@ -72,7 +72,7 @@
                     {# autres liens globaux #}
                     <ul id="others_nav">
                         {% for link in site.global_links.others %}
-                        <li class="navlink">{{ inline.a(link.href, link.title) }}</li>
+                        {{ _m.navlink(link.href, link.title) }}
                         {% endfor %}
                     </ul>
                 </nav>
@@ -93,9 +93,7 @@
             {% endif %}
 
             {# fil d'ariane #}
-            {% if page.breadcrumb is defined %}
-            <div id="breadcrumb">Vous êtes ici&nbsp;: {{ inline.a(site.root, 'Accueil') }}{% for b in page.breadcrumb %} &gt; <a href="{{ b.href|e('html_attr') }}>"{{ b.title|e }}</a>{% endfor %}</div>
-            {% endif %}
+            {% include 'breadcrumb.html' %}
 
             {# contenu #}
             <section id="main_content">{% block content %}{% endblock %}</section>
@@ -106,7 +104,7 @@
                 <nav id="footer_nav">
                     <ul>
                         {% for link in site.footer_links %}
-                        <li class="navlink">{{ inline.a(link.href, link.title) }}</li>
+                        {{ _m.navlink(link.href, link.title) }}
                         {% endfor %}
                     </ul>
                 </nav>
