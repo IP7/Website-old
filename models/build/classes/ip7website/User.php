@@ -34,14 +34,14 @@ class User extends BaseUser {
      * Return true if the user is a student.
      **/
     public function isStudent() {
-        return $this->getIsStudent();
+        return $this->getIsAStudent();
     }
 
     /**
      * Return true if the user is a teacher.
      **/
     public function isTeacher() {
-        return $this->getIsTeacher();
+        return $this->getIsATeacher();
     }
 
     /**
