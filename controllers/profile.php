@@ -6,8 +6,8 @@
 	/*
 	
 		#TODO
-		-Cacher ou non les champs : email/addresse/téléphone #DONE
-		-Permettre aux utilisateurs de changer certains champs
+		-Permettre aux utilisateurs de changer certains champs #DONE
+		-Faire la fonction pour changer les données
 		-Afficher toutes les dates en type DD/MM/YYYY
 		-Ajouter les commentaires
 
@@ -22,7 +22,7 @@
 
 		if ( $user instanceof User ){
 
-			$userArray = userInformationToArray($user);
+			$userArray = userInformationToArray($user,false);
 
 			return Config::$tpl->render('profile.html', tpl_array(array(
 							'page' => array(
@@ -32,21 +32,47 @@
 					)));
 
 		}
-		else {
-
-			return Config::$tpl->render('error.html',tpl_array(array(
-							'page' => array(
-								'errno' => '404',
-								'errstr' => 'Profile not found',
-							)
-					)));
-
-		}
-		
+	
+		return Config::$tpl->render('error.html',tpl_array(array(
+						'page' => array(
+							'errno' => '404',
+							'errstr' => 'Profile not found',
+						)
+				)));
 
 	}
 
-	function userInformationToArray(User $user){
+	function display_my_profile_page(){
+
+		$userArray = userInformationToArray(user(),true);
+		
+		return Config::$tpl->render('profile.html', tpl_array(Array(
+						'page' => Array(
+							'title' => 'Profil de ' . user()->getUsername(),
+						),
+						'information' => $userArray,
+						'editButton' => Array(
+							'label' => 'Edit',
+							'href' => Config::$root_uri . 'profile/edit'
+						)
+				)));
+
+	}
+
+	function display_edit_profile_page(){
+
+		$userArray = userInformationToArray(user(),true);
+
+		return Config::$tpl->render('profile_edit.html', tpl_array(Array(
+					'page' => array(
+						'title' => 'Edition du profil de ' . user()->getUsername(),
+					),
+					'information' => $userArray
+			)));
+
+	}
+
+	function userInformationToArray(User $user, $profilPerso){
 
 		if ( $user->isStudent() ) $userStatus = "Étudiant";
 		else $userStatus = "Professeur";
@@ -65,11 +91,13 @@
 				'description' => $user->getDescription(),
 			);
 
-		if ( !$user->getConfigShowEmail() ) unset($userArray['mail']);
-		if ( !$user->getConfigShowPhone() ) unset($userArray['phone']);
-		if ( !$user->getConfigShowRealName() ){
-			unset($userArray['userFirstName']);
-			unset($userArray['userLastName']);
+		if ( !$profilPerso ){
+			if ( !$user->getConfigShowEmail() ) unset($userArray['mail']);
+			if ( !$user->getConfigShowPhone() ) unset($userArray['phone']);
+			if ( !$user->getConfigShowRealName() ){
+				unset($userArray['userFirstName']);
+				unset($userArray['userLastName']);
+			}
 		}
 
 	return $userArray;

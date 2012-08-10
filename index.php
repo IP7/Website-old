@@ -37,9 +37,9 @@ dispatch_post('/', 'display_home');
 # ## users' profiles
 dispatch('/~*', 'display_profile_page');
 # ## my profile
-# dispatch('/profile', 'display_my_profile_page');
+dispatch('/profile', 'display_my_profile_page');
 # ## edit my profile
-# dispatch('/profile/edit', 'display_edit_profile_page');
+dispatch('/profile/edit', 'display_edit_profile_page');
 # dispatch_post('/profile/edit', 'post_edit_profile_page');
 # 
 # ## search
