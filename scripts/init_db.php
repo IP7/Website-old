@@ -61,21 +61,22 @@ foreach($cursus as $k => $v) {
 
             foreach ($option as $opt) {
 
-                foreach ($c[$n][$opt] as $name => $desc) {
+                foreach ($c[$n][$opt] as $code => $desc) {
 
-                    $q = CourseQuery::create()->findOneByName($name);
+                    $q = CourseQuery::create()->findOneByCode($code);
 
                     if ($q != NULL) {
                         continue;
                     }
 
                     $course = new Course();
-                    $course->setName($name);
+                    $course->setCode($code);
+                    $course->setName($desc[1]);
                     $course->setECTS((int)$desc[0]);
                     $course->setCursus($cursus[$k]);
                     $course->setSemester($s);
                     $course->setOptional((bool)$opt);
-                    $course->setDescription($desc[1]);
+                    $course->setDescription($desc[2]);
                     $course->save();
                 }
             }
