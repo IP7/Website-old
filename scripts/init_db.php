@@ -30,7 +30,7 @@ $cursus = array(
 );
 
 foreach ($cursus as $k => $opts) {
-    $q = CursusQuery::create()->findOneByName($opts[0]);
+    $q = CursusQuery::create()->findOneByShortName($k);
 
     if ($q != NULL) {
         $cursus[$k] = $q;
@@ -39,6 +39,7 @@ foreach ($cursus as $k => $opts) {
 
     $c = new Cursus();
     $c->setName($opts[0]);
+    $c->setShortName($k);
     $c->setDescription($opts[1]);
     $c->save();
     $cursus[$k] = $c;
