@@ -1,3 +1,4 @@
+{% if page.news is not empty %}
 <section id="news">
 {% autoescape %}
     <h3>{{ page.news.title|default('Actualités') }}</h3>
@@ -12,3 +13,4 @@
     </ul>
 {% endautoescape %}
 </section>
+{% endif %}
