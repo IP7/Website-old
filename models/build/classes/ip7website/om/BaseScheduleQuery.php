@@ -4,52 +4,51 @@
 /**
  * Base class that represents a query for the 'schedules' table.
  *
- * 
  *
- * @method     ScheduleQuery orderById($order = Criteria::ASC) Order by the id column
- * @method     ScheduleQuery orderByCursusId($order = Criteria::ASC) Order by the cursus_id column
- * @method     ScheduleQuery orderByName($order = Criteria::ASC) Order by the name column
- * @method     ScheduleQuery orderByBeginning($order = Criteria::ASC) Order by the beginning column
- * @method     ScheduleQuery orderByEnd($order = Criteria::ASC) Order by the end column
  *
- * @method     ScheduleQuery groupById() Group by the id column
- * @method     ScheduleQuery groupByCursusId() Group by the cursus_id column
- * @method     ScheduleQuery groupByName() Group by the name column
- * @method     ScheduleQuery groupByBeginning() Group by the beginning column
- * @method     ScheduleQuery groupByEnd() Group by the end column
+ * @method ScheduleQuery orderById($order = Criteria::ASC) Order by the id column
+ * @method ScheduleQuery orderByCursusId($order = Criteria::ASC) Order by the cursus_id column
+ * @method ScheduleQuery orderByName($order = Criteria::ASC) Order by the name column
+ * @method ScheduleQuery orderByBeginning($order = Criteria::ASC) Order by the beginning column
+ * @method ScheduleQuery orderByEnd($order = Criteria::ASC) Order by the end column
  *
- * @method     ScheduleQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
- * @method     ScheduleQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
- * @method     ScheduleQuery innerJoin($relation) Adds a INNER JOIN clause to the query
+ * @method ScheduleQuery groupById() Group by the id column
+ * @method ScheduleQuery groupByCursusId() Group by the cursus_id column
+ * @method ScheduleQuery groupByName() Group by the name column
+ * @method ScheduleQuery groupByBeginning() Group by the beginning column
+ * @method ScheduleQuery groupByEnd() Group by the end column
  *
- * @method     ScheduleQuery leftJoinCursus($relationAlias = null) Adds a LEFT JOIN clause to the query using the Cursus relation
- * @method     ScheduleQuery rightJoinCursus($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Cursus relation
- * @method     ScheduleQuery innerJoinCursus($relationAlias = null) Adds a INNER JOIN clause to the query using the Cursus relation
+ * @method ScheduleQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
+ * @method ScheduleQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
+ * @method ScheduleQuery innerJoin($relation) Adds a INNER JOIN clause to the query
  *
- * @method     ScheduleQuery leftJoinSchedulesCourses($relationAlias = null) Adds a LEFT JOIN clause to the query using the SchedulesCourses relation
- * @method     ScheduleQuery rightJoinSchedulesCourses($relationAlias = null) Adds a RIGHT JOIN clause to the query using the SchedulesCourses relation
- * @method     ScheduleQuery innerJoinSchedulesCourses($relationAlias = null) Adds a INNER JOIN clause to the query using the SchedulesCourses relation
+ * @method ScheduleQuery leftJoinCursus($relationAlias = null) Adds a LEFT JOIN clause to the query using the Cursus relation
+ * @method ScheduleQuery rightJoinCursus($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Cursus relation
+ * @method ScheduleQuery innerJoinCursus($relationAlias = null) Adds a INNER JOIN clause to the query using the Cursus relation
  *
- * @method     Schedule findOne(PropelPDO $con = null) Return the first Schedule matching the query
- * @method     Schedule findOneOrCreate(PropelPDO $con = null) Return the first Schedule matching the query, or a new Schedule object populated from the query conditions when no match is found
+ * @method ScheduleQuery leftJoinSchedulesCourses($relationAlias = null) Adds a LEFT JOIN clause to the query using the SchedulesCourses relation
+ * @method ScheduleQuery rightJoinSchedulesCourses($relationAlias = null) Adds a RIGHT JOIN clause to the query using the SchedulesCourses relation
+ * @method ScheduleQuery innerJoinSchedulesCourses($relationAlias = null) Adds a INNER JOIN clause to the query using the SchedulesCourses relation
  *
- * @method     Schedule findOneById(int $id) Return the first Schedule filtered by the id column
- * @method     Schedule findOneByCursusId(int $cursus_id) Return the first Schedule filtered by the cursus_id column
- * @method     Schedule findOneByName(string $name) Return the first Schedule filtered by the name column
- * @method     Schedule findOneByBeginning(string $beginning) Return the first Schedule filtered by the beginning column
- * @method     Schedule findOneByEnd(string $end) Return the first Schedule filtered by the end column
+ * @method Schedule findOne(PropelPDO $con = null) Return the first Schedule matching the query
+ * @method Schedule findOneOrCreate(PropelPDO $con = null) Return the first Schedule matching the query, or a new Schedule object populated from the query conditions when no match is found
  *
- * @method     array findById(int $id) Return Schedule objects filtered by the id column
- * @method     array findByCursusId(int $cursus_id) Return Schedule objects filtered by the cursus_id column
- * @method     array findByName(string $name) Return Schedule objects filtered by the name column
- * @method     array findByBeginning(string $beginning) Return Schedule objects filtered by the beginning column
- * @method     array findByEnd(string $end) Return Schedule objects filtered by the end column
+ * @method Schedule findOneById(int $id) Return the first Schedule filtered by the id column
+ * @method Schedule findOneByCursusId(int $cursus_id) Return the first Schedule filtered by the cursus_id column
+ * @method Schedule findOneByName(string $name) Return the first Schedule filtered by the name column
+ * @method Schedule findOneByBeginning(string $beginning) Return the first Schedule filtered by the beginning column
+ * @method Schedule findOneByEnd(string $end) Return the first Schedule filtered by the end column
+ *
+ * @method array findById(int $id) Return Schedule objects filtered by the id column
+ * @method array findByCursusId(int $cursus_id) Return Schedule objects filtered by the cursus_id column
+ * @method array findByName(string $name) Return Schedule objects filtered by the name column
+ * @method array findByBeginning(string $beginning) Return Schedule objects filtered by the beginning column
+ * @method array findByEnd(string $end) Return Schedule objects filtered by the end column
  *
  * @package    propel.generator.ip7website.om
  */
 abstract class BaseScheduleQuery extends ModelCriteria
 {
-    
     /**
      * Initializes internal state of BaseScheduleQuery object.
      *
@@ -95,7 +94,7 @@ abstract class BaseScheduleQuery extends ModelCriteria
      * $obj  = $c->findPk(12, $con);
      * </code>
      *
-     * @param mixed $key Primary key to use for the query 
+     * @param mixed $key Primary key to use for the query
      * @param     PropelPDO $con an optional connection object
      *
      * @return   Schedule|Schedule[]|mixed the result, formatted by the current formatter
@@ -137,7 +136,7 @@ abstract class BaseScheduleQuery extends ModelCriteria
         $sql = 'SELECT `ID`, `CURSUS_ID`, `NAME`, `BEGINNING`, `END` FROM `schedules` WHERE `ID` = :p0';
         try {
             $stmt = $con->prepare($sql);
-			$stmt->bindValue(':p0', $key, PDO::PARAM_INT);
+            $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
             $stmt->execute();
         } catch (Exception $e) {
             Propel::log($e->getMessage(), Propel::LOG_ERR);
@@ -591,4 +590,4 @@ abstract class BaseScheduleQuery extends ModelCriteria
         return $this;
     }
 
-} // BaseScheduleQuery
+}

@@ -4,11 +4,12 @@
 /**
  * Base static class for performing query and update operations on the 'users' table.
  *
- * 
  *
- * @package    propel.generator.ip7website.om
+ *
+ * @package propel.generator.ip7website.om
  */
-abstract class BaseUserPeer {
+abstract class BaseUserPeer
+{
 
     /** the default database name for this class */
     const DATABASE_NAME = 'infop7db';
@@ -122,12 +123,12 @@ abstract class BaseUserPeer {
      * holds an array of fieldnames
      *
      * first dimension keys are the type constants
-     * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
+     * e.g. UserPeer::$fieldNames[UserPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
         BasePeer::TYPE_PHPNAME => array ('Id', 'Username', 'PasswordHash', 'Type', 'Firstname', 'Lastname', 'Email', 'Phone', 'Address', 'Website', 'BirthDate', 'FirstEntry', 'LastEntry', 'LastVisit', 'VisitsNb', 'ConfigShowEmail', 'ConfigShowPhone', 'ConfigShowRealName', 'ConfigIndexingProfile', 'Deactivated', 'IsATeacher', 'IsAStudent', 'AvatarId', 'Description', 'Remarks', ),
         BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'username', 'passwordHash', 'type', 'firstname', 'lastname', 'email', 'phone', 'address', 'website', 'birthDate', 'firstEntry', 'lastEntry', 'lastVisit', 'visitsNb', 'configShowEmail', 'configShowPhone', 'configShowRealName', 'configIndexingProfile', 'deactivated', 'isATeacher', 'isAStudent', 'avatarId', 'description', 'remarks', ),
-        BasePeer::TYPE_COLNAME => array (self::ID, self::USERNAME, self::PASSWORD_HASH, self::TYPE, self::FIRSTNAME, self::LASTNAME, self::EMAIL, self::PHONE, self::ADDRESS, self::WEBSITE, self::BIRTH_DATE, self::FIRST_ENTRY, self::LAST_ENTRY, self::LAST_VISIT, self::VISITS_NB, self::CONFIG_SHOW_EMAIL, self::CONFIG_SHOW_PHONE, self::CONFIG_SHOW_REAL_NAME, self::CONFIG_INDEXING_PROFILE, self::DEACTIVATED, self::IS_A_TEACHER, self::IS_A_STUDENT, self::AVATAR_ID, self::DESCRIPTION, self::REMARKS, ),
+        BasePeer::TYPE_COLNAME => array (UserPeer::ID, UserPeer::USERNAME, UserPeer::PASSWORD_HASH, UserPeer::TYPE, UserPeer::FIRSTNAME, UserPeer::LASTNAME, UserPeer::EMAIL, UserPeer::PHONE, UserPeer::ADDRESS, UserPeer::WEBSITE, UserPeer::BIRTH_DATE, UserPeer::FIRST_ENTRY, UserPeer::LAST_ENTRY, UserPeer::LAST_VISIT, UserPeer::VISITS_NB, UserPeer::CONFIG_SHOW_EMAIL, UserPeer::CONFIG_SHOW_PHONE, UserPeer::CONFIG_SHOW_REAL_NAME, UserPeer::CONFIG_INDEXING_PROFILE, UserPeer::DEACTIVATED, UserPeer::IS_A_TEACHER, UserPeer::IS_A_STUDENT, UserPeer::AVATAR_ID, UserPeer::DESCRIPTION, UserPeer::REMARKS, ),
         BasePeer::TYPE_RAW_COLNAME => array ('ID', 'USERNAME', 'PASSWORD_HASH', 'TYPE', 'FIRSTNAME', 'LASTNAME', 'EMAIL', 'PHONE', 'ADDRESS', 'WEBSITE', 'BIRTH_DATE', 'FIRST_ENTRY', 'LAST_ENTRY', 'LAST_VISIT', 'VISITS_NB', 'CONFIG_SHOW_EMAIL', 'CONFIG_SHOW_PHONE', 'CONFIG_SHOW_REAL_NAME', 'CONFIG_INDEXING_PROFILE', 'DEACTIVATED', 'IS_A_TEACHER', 'IS_A_STUDENT', 'AVATAR_ID', 'DESCRIPTION', 'REMARKS', ),
         BasePeer::TYPE_FIELDNAME => array ('id', 'username', 'password_hash', 'type', 'firstname', 'lastname', 'email', 'phone', 'address', 'website', 'birth_date', 'first_entry', 'last_entry', 'last_visit', 'visits_nb', 'config_show_email', 'config_show_phone', 'config_show_real_name', 'config_indexing_profile', 'deactivated', 'is_a_teacher', 'is_a_student', 'avatar_id', 'description', 'remarks', ),
         BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, )
@@ -137,12 +138,12 @@ abstract class BaseUserPeer {
      * holds an array of keys for quick access to the fieldnames array
      *
      * first dimension keys are the type constants
-     * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
+     * e.g. UserPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
         BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Username' => 1, 'PasswordHash' => 2, 'Type' => 3, 'Firstname' => 4, 'Lastname' => 5, 'Email' => 6, 'Phone' => 7, 'Address' => 8, 'Website' => 9, 'BirthDate' => 10, 'FirstEntry' => 11, 'LastEntry' => 12, 'LastVisit' => 13, 'VisitsNb' => 14, 'ConfigShowEmail' => 15, 'ConfigShowPhone' => 16, 'ConfigShowRealName' => 17, 'ConfigIndexingProfile' => 18, 'Deactivated' => 19, 'IsATeacher' => 20, 'IsAStudent' => 21, 'AvatarId' => 22, 'Description' => 23, 'Remarks' => 24, ),
         BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'username' => 1, 'passwordHash' => 2, 'type' => 3, 'firstname' => 4, 'lastname' => 5, 'email' => 6, 'phone' => 7, 'address' => 8, 'website' => 9, 'birthDate' => 10, 'firstEntry' => 11, 'lastEntry' => 12, 'lastVisit' => 13, 'visitsNb' => 14, 'configShowEmail' => 15, 'configShowPhone' => 16, 'configShowRealName' => 17, 'configIndexingProfile' => 18, 'deactivated' => 19, 'isATeacher' => 20, 'isAStudent' => 21, 'avatarId' => 22, 'description' => 23, 'remarks' => 24, ),
-        BasePeer::TYPE_COLNAME => array (self::ID => 0, self::USERNAME => 1, self::PASSWORD_HASH => 2, self::TYPE => 3, self::FIRSTNAME => 4, self::LASTNAME => 5, self::EMAIL => 6, self::PHONE => 7, self::ADDRESS => 8, self::WEBSITE => 9, self::BIRTH_DATE => 10, self::FIRST_ENTRY => 11, self::LAST_ENTRY => 12, self::LAST_VISIT => 13, self::VISITS_NB => 14, self::CONFIG_SHOW_EMAIL => 15, self::CONFIG_SHOW_PHONE => 16, self::CONFIG_SHOW_REAL_NAME => 17, self::CONFIG_INDEXING_PROFILE => 18, self::DEACTIVATED => 19, self::IS_A_TEACHER => 20, self::IS_A_STUDENT => 21, self::AVATAR_ID => 22, self::DESCRIPTION => 23, self::REMARKS => 24, ),
+        BasePeer::TYPE_COLNAME => array (UserPeer::ID => 0, UserPeer::USERNAME => 1, UserPeer::PASSWORD_HASH => 2, UserPeer::TYPE => 3, UserPeer::FIRSTNAME => 4, UserPeer::LASTNAME => 5, UserPeer::EMAIL => 6, UserPeer::PHONE => 7, UserPeer::ADDRESS => 8, UserPeer::WEBSITE => 9, UserPeer::BIRTH_DATE => 10, UserPeer::FIRST_ENTRY => 11, UserPeer::LAST_ENTRY => 12, UserPeer::LAST_VISIT => 13, UserPeer::VISITS_NB => 14, UserPeer::CONFIG_SHOW_EMAIL => 15, UserPeer::CONFIG_SHOW_PHONE => 16, UserPeer::CONFIG_SHOW_REAL_NAME => 17, UserPeer::CONFIG_INDEXING_PROFILE => 18, UserPeer::DEACTIVATED => 19, UserPeer::IS_A_TEACHER => 20, UserPeer::IS_A_STUDENT => 21, UserPeer::AVATAR_ID => 22, UserPeer::DESCRIPTION => 23, UserPeer::REMARKS => 24, ),
         BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'USERNAME' => 1, 'PASSWORD_HASH' => 2, 'TYPE' => 3, 'FIRSTNAME' => 4, 'LASTNAME' => 5, 'EMAIL' => 6, 'PHONE' => 7, 'ADDRESS' => 8, 'WEBSITE' => 9, 'BIRTH_DATE' => 10, 'FIRST_ENTRY' => 11, 'LAST_ENTRY' => 12, 'LAST_VISIT' => 13, 'VISITS_NB' => 14, 'CONFIG_SHOW_EMAIL' => 15, 'CONFIG_SHOW_PHONE' => 16, 'CONFIG_SHOW_REAL_NAME' => 17, 'CONFIG_INDEXING_PROFILE' => 18, 'DEACTIVATED' => 19, 'IS_A_TEACHER' => 20, 'IS_A_STUDENT' => 21, 'AVATAR_ID' => 22, 'DESCRIPTION' => 23, 'REMARKS' => 24, ),
         BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'username' => 1, 'password_hash' => 2, 'type' => 3, 'firstname' => 4, 'lastname' => 5, 'email' => 6, 'phone' => 7, 'address' => 8, 'website' => 9, 'birth_date' => 10, 'first_entry' => 11, 'last_entry' => 12, 'last_visit' => 13, 'visits_nb' => 14, 'config_show_email' => 15, 'config_show_phone' => 16, 'config_show_real_name' => 17, 'config_indexing_profile' => 18, 'deactivated' => 19, 'is_a_teacher' => 20, 'is_a_student' => 21, 'avatar_id' => 22, 'description' => 23, 'remarks' => 24, ),
         BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, )
@@ -160,10 +161,10 @@ abstract class BaseUserPeer {
      */
     public static function translateFieldName($name, $fromType, $toType)
     {
-        $toNames = self::getFieldNames($toType);
-        $key = isset(self::$fieldKeys[$fromType][$name]) ? self::$fieldKeys[$fromType][$name] : null;
+        $toNames = UserPeer::getFieldNames($toType);
+        $key = isset(UserPeer::$fieldKeys[$fromType][$name]) ? UserPeer::$fieldKeys[$fromType][$name] : null;
         if ($key === null) {
-            throw new PropelException("'$name' could not be found in the field names of type '$fromType'. These are: " . print_r(self::$fieldKeys[$fromType], true));
+            throw new PropelException("'$name' could not be found in the field names of type '$fromType'. These are: " . print_r(UserPeer::$fieldKeys[$fromType], true));
         }
 
         return $toNames[$key];
@@ -180,11 +181,11 @@ abstract class BaseUserPeer {
      */
     public static function getFieldNames($type = BasePeer::TYPE_PHPNAME)
     {
-        if (!array_key_exists($type, self::$fieldNames)) {
+        if (!array_key_exists($type, UserPeer::$fieldNames)) {
             throw new PropelException('Method getFieldNames() expects the parameter $type to be one of the class constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME, BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM. ' . $type . ' was given.');
         }
 
-        return self::$fieldNames[$type];
+        return UserPeer::$fieldNames[$type];
     }
 
     /**
@@ -296,7 +297,7 @@ abstract class BaseUserPeer {
         }
 
         $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
-        $criteria->setDbName(self::DATABASE_NAME); // Set the correct dbName
+        $criteria->setDbName(UserPeer::DATABASE_NAME); // Set the correct dbName
 
         if ($con === null) {
             $con = Propel::getConnection(UserPeer::DATABASE_NAME, Propel::CONNECTION_READ);
@@ -371,7 +372,7 @@ abstract class BaseUserPeer {
         }
 
         // Set the correct dbName
-        $criteria->setDbName(self::DATABASE_NAME);
+        $criteria->setDbName(UserPeer::DATABASE_NAME);
 
         // BasePeer returns a PDOStatement
         return BasePeer::doSelect($criteria, $con);
@@ -394,7 +395,7 @@ abstract class BaseUserPeer {
             if ($key === null) {
                 $key = (string) $obj->getId();
             } // if key === null
-            self::$instances[$key] = $obj;
+            UserPeer::$instances[$key] = $obj;
         }
     }
 
@@ -424,7 +425,7 @@ abstract class BaseUserPeer {
                 throw $e;
             }
 
-            unset(self::$instances[$key]);
+            unset(UserPeer::$instances[$key]);
         }
     } // removeInstanceFromPool()
 
@@ -435,20 +436,20 @@ abstract class BaseUserPeer {
      * a multi-column primary key, a serialize()d version of the primary key will be returned.
      *
      * @param      string $key The key (@see getPrimaryKeyHash()) for this instance.
-     * @return   User Found object or NULL if 1) no instance exists for specified key or 2) instance pooling has been disabled.
+     * @return   User Found object or null if 1) no instance exists for specified key or 2) instance pooling has been disabled.
      * @see        getPrimaryKeyHash()
      */
     public static function getInstanceFromPool($key)
     {
         if (Propel::isInstancePoolingEnabled()) {
-            if (isset(self::$instances[$key])) {
-                return self::$instances[$key];
+            if (isset(UserPeer::$instances[$key])) {
+                return UserPeer::$instances[$key];
             }
         }
 
         return null; // just to be explicit
     }
-    
+
     /**
      * Clear the instance pool.
      *
@@ -456,9 +457,9 @@ abstract class BaseUserPeer {
      */
     public static function clearInstancePool()
     {
-        self::$instances = array();
+        UserPeer::$instances = array();
     }
-    
+
     /**
      * Method to invalidate the instance pool of all tables related to users
      * by a foreign key with ON DELETE CASCADE
@@ -517,11 +518,11 @@ abstract class BaseUserPeer {
      *
      * @param      array $row PropelPDO resultset row.
      * @param      int $startcol The 0-based offset for reading from the resultset row.
-     * @return string A string version of PK or NULL if the components of primary key in result array are all null.
+     * @return string A string version of PK or null if the components of primary key in result array are all null.
      */
     public static function getPrimaryKeyHashFromRow($row, $startcol = 0)
     {
-        // If the PK cannot be derived from the row, return NULL.
+        // If the PK cannot be derived from the row, return null.
         if ($row[$startcol] === null) {
             return null;
         }
@@ -543,7 +544,7 @@ abstract class BaseUserPeer {
 
         return (int) $row[$startcol];
     }
-    
+
     /**
      * The returned array will contain objects of the default type or
      * objects that inherit from the default.
@@ -554,7 +555,7 @@ abstract class BaseUserPeer {
     public static function populateObjects(PDOStatement $stmt)
     {
         $results = array();
-    
+
         // set the class once to avoid overhead in the loop
         $cls = UserPeer::getOMClass();
         // populate the object(s)
@@ -634,7 +635,7 @@ abstract class BaseUserPeer {
         $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
 
         // Set the correct dbName
-        $criteria->setDbName(self::DATABASE_NAME);
+        $criteria->setDbName(UserPeer::DATABASE_NAME);
 
         if ($con === null) {
             $con = Propel::getConnection(UserPeer::DATABASE_NAME, Propel::CONNECTION_READ);
@@ -670,7 +671,7 @@ abstract class BaseUserPeer {
 
         // Set the correct dbName if it has not been overridden
         if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(self::DATABASE_NAME);
+            $criteria->setDbName(UserPeer::DATABASE_NAME);
         }
 
         UserPeer::addSelectColumns($criteria);
@@ -752,7 +753,7 @@ abstract class BaseUserPeer {
         $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
 
         // Set the correct dbName
-        $criteria->setDbName(self::DATABASE_NAME);
+        $criteria->setDbName(UserPeer::DATABASE_NAME);
 
         if ($con === null) {
             $con = Propel::getConnection(UserPeer::DATABASE_NAME, Propel::CONNECTION_READ);
@@ -788,7 +789,7 @@ abstract class BaseUserPeer {
 
         // Set the correct dbName if it has not been overridden
         if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(self::DATABASE_NAME);
+            $criteria->setDbName(UserPeer::DATABASE_NAME);
         }
 
         UserPeer::addSelectColumns($criteria);
@@ -850,7 +851,7 @@ abstract class BaseUserPeer {
      */
     public static function getTableMap()
     {
-        return Propel::getDatabaseMap(self::DATABASE_NAME)->getTable(self::TABLE_NAME);
+        return Propel::getDatabaseMap(UserPeer::DATABASE_NAME)->getTable(UserPeer::TABLE_NAME);
     }
 
     /**
@@ -902,7 +903,7 @@ abstract class BaseUserPeer {
 
 
         // Set the correct dbName
-        $criteria->setDbName(self::DATABASE_NAME);
+        $criteria->setDbName(UserPeer::DATABASE_NAME);
 
         try {
             // use transaction because $criteria could contain info
@@ -933,7 +934,7 @@ abstract class BaseUserPeer {
             $con = Propel::getConnection(UserPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
-        $selectCriteria = new Criteria(self::DATABASE_NAME);
+        $selectCriteria = new Criteria(UserPeer::DATABASE_NAME);
 
         if ($values instanceof Criteria) {
             $criteria = clone $values; // rename for clarity
@@ -952,7 +953,7 @@ abstract class BaseUserPeer {
         }
 
         // set the correct dbName
-        $criteria->setDbName(self::DATABASE_NAME);
+        $criteria->setDbName(UserPeer::DATABASE_NAME);
 
         return BasePeer::doUpdate($selectCriteria, $criteria, $con);
     }
@@ -1015,12 +1016,12 @@ abstract class BaseUserPeer {
             // create criteria based on pk values
             $criteria = $values->buildPkeyCriteria();
         } else { // it's a primary key, or an array of pks
-            $criteria = new Criteria(self::DATABASE_NAME);
+            $criteria = new Criteria(UserPeer::DATABASE_NAME);
             $criteria->add(UserPeer::ID, (array) $values, Criteria::IN);
         }
 
         // Set the correct dbName
-        $criteria->setDbName(self::DATABASE_NAME);
+        $criteria->setDbName(UserPeer::DATABASE_NAME);
 
         $affectedRows = 0; // initialize var to track total num of affected rows
 
@@ -1028,15 +1029,15 @@ abstract class BaseUserPeer {
             // use transaction because $criteria could contain info
             // for more than one table or we could emulating ON DELETE CASCADE, etc.
             $con->beginTransaction();
-            
+
             // cloning the Criteria in case it's modified by doSelect() or doSelectStmt()
             $c = clone $criteria;
             $affectedRows += UserPeer::doOnDeleteCascade($c, $con);
-            
+
             // cloning the Criteria in case it's modified by doSelect() or doSelectStmt()
             $c = clone $criteria;
             UserPeer::doOnDeleteSetNull($c, $con);
-            
+
             // Because this db requires some delete cascade/set null emulation, we have to
             // clear the cached instance *after* the emulation has happened (since
             // instances get re-added by the select statement contained therein).
@@ -1049,7 +1050,7 @@ abstract class BaseUserPeer {
                     UserPeer::removeInstanceFromPool($singleval);
                 }
             }
-            
+
             $affectedRows += BasePeer::doDelete($criteria, $con);
             UserPeer::clearRelatedInstancePool();
             $con->commit();
@@ -1086,43 +1087,43 @@ abstract class BaseUserPeer {
 
             // delete related UsersCursus objects
             $criteria = new Criteria(UsersCursusPeer::DATABASE_NAME);
-            
+
             $criteria->add(UsersCursusPeer::USER_ID, $obj->getId());
             $affectedRows += UsersCursusPeer::doDelete($criteria, $con);
 
             // delete related NewslettersSubscribers objects
             $criteria = new Criteria(NewslettersSubscribersPeer::DATABASE_NAME);
-            
+
             $criteria->add(NewslettersSubscribersPeer::SUBSCRIBER_ID, $obj->getId());
             $affectedRows += NewslettersSubscribersPeer::doDelete($criteria, $con);
 
             // delete related Alert objects
             $criteria = new Criteria(AlertPeer::DATABASE_NAME);
-            
+
             $criteria->add(AlertPeer::SUBSCRIBER_ID, $obj->getId());
             $affectedRows += AlertPeer::doDelete($criteria, $con);
 
             // delete related Comment objects
             $criteria = new Criteria(CommentPeer::DATABASE_NAME);
-            
+
             $criteria->add(CommentPeer::AUTHOR_ID, $obj->getId());
             $affectedRows += CommentPeer::doDelete($criteria, $con);
 
             // delete related Note objects
             $criteria = new Criteria(NotePeer::DATABASE_NAME);
-            
+
             $criteria->add(NotePeer::USER_ID, $obj->getId());
             $affectedRows += NotePeer::doDelete($criteria, $con);
 
             // delete related Ad objects
             $criteria = new Criteria(AdPeer::DATABASE_NAME);
-            
+
             $criteria->add(AdPeer::AUTHOR_ID, $obj->getId());
             $affectedRows += AdPeer::doDelete($criteria, $con);
 
             // delete related ForumMessage objects
             $criteria = new Criteria(ForumMessagePeer::DATABASE_NAME);
-            
+
             $criteria->add(ForumMessagePeer::AUTHOR_ID, $obj->getId());
             $affectedRows += ForumMessagePeer::doDelete($criteria, $con);
         }
@@ -1150,7 +1151,7 @@ abstract class BaseUserPeer {
         $objects = UserPeer::doSelect($criteria, $con);
         foreach ($objects as $obj) {
 
-            // set fkey col in related Cursus rows to NULL
+            // set fkey col in related Cursus rows to null
             $selectCriteria = new Criteria(UserPeer::DATABASE_NAME);
             $updateValues = new Criteria(UserPeer::DATABASE_NAME);
             $selectCriteria->add(CursusPeer::RESPONSABLE_ID, $obj->getId());
@@ -1158,7 +1159,7 @@ abstract class BaseUserPeer {
 
             BasePeer::doUpdate($selectCriteria, $updateValues, $con); // use BasePeer because generated Peer doUpdate() methods only update using pkey
 
-            // set fkey col in related File rows to NULL
+            // set fkey col in related File rows to null
             $selectCriteria = new Criteria(UserPeer::DATABASE_NAME);
             $updateValues = new Criteria(UserPeer::DATABASE_NAME);
             $selectCriteria->add(FilePeer::AUTHOR_ID, $obj->getId());
@@ -1166,7 +1167,7 @@ abstract class BaseUserPeer {
 
             BasePeer::doUpdate($selectCriteria, $updateValues, $con); // use BasePeer because generated Peer doUpdate() methods only update using pkey
 
-            // set fkey col in related Content rows to NULL
+            // set fkey col in related Content rows to null
             $selectCriteria = new Criteria(UserPeer::DATABASE_NAME);
             $updateValues = new Criteria(UserPeer::DATABASE_NAME);
             $selectCriteria->add(ContentPeer::AUTHOR_ID, $obj->getId());
@@ -1174,7 +1175,7 @@ abstract class BaseUserPeer {
 
             BasePeer::doUpdate($selectCriteria, $updateValues, $con); // use BasePeer because generated Peer doUpdate() methods only update using pkey
 
-            // set fkey col in related Report rows to NULL
+            // set fkey col in related Report rows to null
             $selectCriteria = new Criteria(UserPeer::DATABASE_NAME);
             $updateValues = new Criteria(UserPeer::DATABASE_NAME);
             $selectCriteria->add(ReportPeer::AUTHOR_ID, $obj->getId());
@@ -1182,7 +1183,7 @@ abstract class BaseUserPeer {
 
             BasePeer::doUpdate($selectCriteria, $updateValues, $con); // use BasePeer because generated Peer doUpdate() methods only update using pkey
 
-            // set fkey col in related News rows to NULL
+            // set fkey col in related News rows to null
             $selectCriteria = new Criteria(UserPeer::DATABASE_NAME);
             $updateValues = new Criteria(UserPeer::DATABASE_NAME);
             $selectCriteria->add(NewsPeer::AUTHOR_ID, $obj->getId());
@@ -1190,7 +1191,7 @@ abstract class BaseUserPeer {
 
             BasePeer::doUpdate($selectCriteria, $updateValues, $con); // use BasePeer because generated Peer doUpdate() methods only update using pkey
 
-            // set fkey col in related Transaction rows to NULL
+            // set fkey col in related Transaction rows to null
             $selectCriteria = new Criteria(UserPeer::DATABASE_NAME);
             $updateValues = new Criteria(UserPeer::DATABASE_NAME);
             $selectCriteria->add(TransactionPeer::USER_ID, $obj->getId());
@@ -1198,7 +1199,7 @@ abstract class BaseUserPeer {
 
             BasePeer::doUpdate($selectCriteria, $updateValues, $con); // use BasePeer because generated Peer doUpdate() methods only update using pkey
 
-            // set fkey col in related ScheduledCourse rows to NULL
+            // set fkey col in related ScheduledCourse rows to null
             $selectCriteria = new Criteria(UserPeer::DATABASE_NAME);
             $updateValues = new Criteria(UserPeer::DATABASE_NAME);
             $selectCriteria->add(ScheduledCoursePeer::TEACHER_ID, $obj->getId());

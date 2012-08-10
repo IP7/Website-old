@@ -4,184 +4,183 @@
 /**
  * Base class that represents a query for the 'users' table.
  *
- * 
  *
- * @method     UserQuery orderById($order = Criteria::ASC) Order by the id column
- * @method     UserQuery orderByUsername($order = Criteria::ASC) Order by the username column
- * @method     UserQuery orderByPasswordHash($order = Criteria::ASC) Order by the password_hash column
- * @method     UserQuery orderByType($order = Criteria::ASC) Order by the type column
- * @method     UserQuery orderByFirstname($order = Criteria::ASC) Order by the firstname column
- * @method     UserQuery orderByLastname($order = Criteria::ASC) Order by the lastname column
- * @method     UserQuery orderByEmail($order = Criteria::ASC) Order by the email column
- * @method     UserQuery orderByPhone($order = Criteria::ASC) Order by the phone column
- * @method     UserQuery orderByAddress($order = Criteria::ASC) Order by the address column
- * @method     UserQuery orderByWebsite($order = Criteria::ASC) Order by the website column
- * @method     UserQuery orderByBirthDate($order = Criteria::ASC) Order by the birth_date column
- * @method     UserQuery orderByFirstEntry($order = Criteria::ASC) Order by the first_entry column
- * @method     UserQuery orderByLastEntry($order = Criteria::ASC) Order by the last_entry column
- * @method     UserQuery orderByLastVisit($order = Criteria::ASC) Order by the last_visit column
- * @method     UserQuery orderByVisitsNb($order = Criteria::ASC) Order by the visits_nb column
- * @method     UserQuery orderByConfigShowEmail($order = Criteria::ASC) Order by the config_show_email column
- * @method     UserQuery orderByConfigShowPhone($order = Criteria::ASC) Order by the config_show_phone column
- * @method     UserQuery orderByConfigShowRealName($order = Criteria::ASC) Order by the config_show_real_name column
- * @method     UserQuery orderByConfigIndexingProfile($order = Criteria::ASC) Order by the config_indexing_profile column
- * @method     UserQuery orderByDeactivated($order = Criteria::ASC) Order by the deactivated column
- * @method     UserQuery orderByIsATeacher($order = Criteria::ASC) Order by the is_a_teacher column
- * @method     UserQuery orderByIsAStudent($order = Criteria::ASC) Order by the is_a_student column
- * @method     UserQuery orderByAvatarId($order = Criteria::ASC) Order by the avatar_id column
- * @method     UserQuery orderByDescription($order = Criteria::ASC) Order by the description column
- * @method     UserQuery orderByRemarks($order = Criteria::ASC) Order by the remarks column
  *
- * @method     UserQuery groupById() Group by the id column
- * @method     UserQuery groupByUsername() Group by the username column
- * @method     UserQuery groupByPasswordHash() Group by the password_hash column
- * @method     UserQuery groupByType() Group by the type column
- * @method     UserQuery groupByFirstname() Group by the firstname column
- * @method     UserQuery groupByLastname() Group by the lastname column
- * @method     UserQuery groupByEmail() Group by the email column
- * @method     UserQuery groupByPhone() Group by the phone column
- * @method     UserQuery groupByAddress() Group by the address column
- * @method     UserQuery groupByWebsite() Group by the website column
- * @method     UserQuery groupByBirthDate() Group by the birth_date column
- * @method     UserQuery groupByFirstEntry() Group by the first_entry column
- * @method     UserQuery groupByLastEntry() Group by the last_entry column
- * @method     UserQuery groupByLastVisit() Group by the last_visit column
- * @method     UserQuery groupByVisitsNb() Group by the visits_nb column
- * @method     UserQuery groupByConfigShowEmail() Group by the config_show_email column
- * @method     UserQuery groupByConfigShowPhone() Group by the config_show_phone column
- * @method     UserQuery groupByConfigShowRealName() Group by the config_show_real_name column
- * @method     UserQuery groupByConfigIndexingProfile() Group by the config_indexing_profile column
- * @method     UserQuery groupByDeactivated() Group by the deactivated column
- * @method     UserQuery groupByIsATeacher() Group by the is_a_teacher column
- * @method     UserQuery groupByIsAStudent() Group by the is_a_student column
- * @method     UserQuery groupByAvatarId() Group by the avatar_id column
- * @method     UserQuery groupByDescription() Group by the description column
- * @method     UserQuery groupByRemarks() Group by the remarks column
+ * @method UserQuery orderById($order = Criteria::ASC) Order by the id column
+ * @method UserQuery orderByUsername($order = Criteria::ASC) Order by the username column
+ * @method UserQuery orderByPasswordHash($order = Criteria::ASC) Order by the password_hash column
+ * @method UserQuery orderByType($order = Criteria::ASC) Order by the type column
+ * @method UserQuery orderByFirstname($order = Criteria::ASC) Order by the firstname column
+ * @method UserQuery orderByLastname($order = Criteria::ASC) Order by the lastname column
+ * @method UserQuery orderByEmail($order = Criteria::ASC) Order by the email column
+ * @method UserQuery orderByPhone($order = Criteria::ASC) Order by the phone column
+ * @method UserQuery orderByAddress($order = Criteria::ASC) Order by the address column
+ * @method UserQuery orderByWebsite($order = Criteria::ASC) Order by the website column
+ * @method UserQuery orderByBirthDate($order = Criteria::ASC) Order by the birth_date column
+ * @method UserQuery orderByFirstEntry($order = Criteria::ASC) Order by the first_entry column
+ * @method UserQuery orderByLastEntry($order = Criteria::ASC) Order by the last_entry column
+ * @method UserQuery orderByLastVisit($order = Criteria::ASC) Order by the last_visit column
+ * @method UserQuery orderByVisitsNb($order = Criteria::ASC) Order by the visits_nb column
+ * @method UserQuery orderByConfigShowEmail($order = Criteria::ASC) Order by the config_show_email column
+ * @method UserQuery orderByConfigShowPhone($order = Criteria::ASC) Order by the config_show_phone column
+ * @method UserQuery orderByConfigShowRealName($order = Criteria::ASC) Order by the config_show_real_name column
+ * @method UserQuery orderByConfigIndexingProfile($order = Criteria::ASC) Order by the config_indexing_profile column
+ * @method UserQuery orderByDeactivated($order = Criteria::ASC) Order by the deactivated column
+ * @method UserQuery orderByIsATeacher($order = Criteria::ASC) Order by the is_a_teacher column
+ * @method UserQuery orderByIsAStudent($order = Criteria::ASC) Order by the is_a_student column
+ * @method UserQuery orderByAvatarId($order = Criteria::ASC) Order by the avatar_id column
+ * @method UserQuery orderByDescription($order = Criteria::ASC) Order by the description column
+ * @method UserQuery orderByRemarks($order = Criteria::ASC) Order by the remarks column
  *
- * @method     UserQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
- * @method     UserQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
- * @method     UserQuery innerJoin($relation) Adds a INNER JOIN clause to the query
+ * @method UserQuery groupById() Group by the id column
+ * @method UserQuery groupByUsername() Group by the username column
+ * @method UserQuery groupByPasswordHash() Group by the password_hash column
+ * @method UserQuery groupByType() Group by the type column
+ * @method UserQuery groupByFirstname() Group by the firstname column
+ * @method UserQuery groupByLastname() Group by the lastname column
+ * @method UserQuery groupByEmail() Group by the email column
+ * @method UserQuery groupByPhone() Group by the phone column
+ * @method UserQuery groupByAddress() Group by the address column
+ * @method UserQuery groupByWebsite() Group by the website column
+ * @method UserQuery groupByBirthDate() Group by the birth_date column
+ * @method UserQuery groupByFirstEntry() Group by the first_entry column
+ * @method UserQuery groupByLastEntry() Group by the last_entry column
+ * @method UserQuery groupByLastVisit() Group by the last_visit column
+ * @method UserQuery groupByVisitsNb() Group by the visits_nb column
+ * @method UserQuery groupByConfigShowEmail() Group by the config_show_email column
+ * @method UserQuery groupByConfigShowPhone() Group by the config_show_phone column
+ * @method UserQuery groupByConfigShowRealName() Group by the config_show_real_name column
+ * @method UserQuery groupByConfigIndexingProfile() Group by the config_indexing_profile column
+ * @method UserQuery groupByDeactivated() Group by the deactivated column
+ * @method UserQuery groupByIsATeacher() Group by the is_a_teacher column
+ * @method UserQuery groupByIsAStudent() Group by the is_a_student column
+ * @method UserQuery groupByAvatarId() Group by the avatar_id column
+ * @method UserQuery groupByDescription() Group by the description column
+ * @method UserQuery groupByRemarks() Group by the remarks column
  *
- * @method     UserQuery leftJoinAvatar($relationAlias = null) Adds a LEFT JOIN clause to the query using the Avatar relation
- * @method     UserQuery rightJoinAvatar($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Avatar relation
- * @method     UserQuery innerJoinAvatar($relationAlias = null) Adds a INNER JOIN clause to the query using the Avatar relation
+ * @method UserQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
+ * @method UserQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
+ * @method UserQuery innerJoin($relation) Adds a INNER JOIN clause to the query
  *
- * @method     UserQuery leftJoinCursusResponsability($relationAlias = null) Adds a LEFT JOIN clause to the query using the CursusResponsability relation
- * @method     UserQuery rightJoinCursusResponsability($relationAlias = null) Adds a RIGHT JOIN clause to the query using the CursusResponsability relation
- * @method     UserQuery innerJoinCursusResponsability($relationAlias = null) Adds a INNER JOIN clause to the query using the CursusResponsability relation
+ * @method UserQuery leftJoinAvatar($relationAlias = null) Adds a LEFT JOIN clause to the query using the Avatar relation
+ * @method UserQuery rightJoinAvatar($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Avatar relation
+ * @method UserQuery innerJoinAvatar($relationAlias = null) Adds a INNER JOIN clause to the query using the Avatar relation
  *
- * @method     UserQuery leftJoinUsersCursus($relationAlias = null) Adds a LEFT JOIN clause to the query using the UsersCursus relation
- * @method     UserQuery rightJoinUsersCursus($relationAlias = null) Adds a RIGHT JOIN clause to the query using the UsersCursus relation
- * @method     UserQuery innerJoinUsersCursus($relationAlias = null) Adds a INNER JOIN clause to the query using the UsersCursus relation
+ * @method UserQuery leftJoinCursusResponsability($relationAlias = null) Adds a LEFT JOIN clause to the query using the CursusResponsability relation
+ * @method UserQuery rightJoinCursusResponsability($relationAlias = null) Adds a RIGHT JOIN clause to the query using the CursusResponsability relation
+ * @method UserQuery innerJoinCursusResponsability($relationAlias = null) Adds a INNER JOIN clause to the query using the CursusResponsability relation
  *
- * @method     UserQuery leftJoinFileRelatedByAuthorId($relationAlias = null) Adds a LEFT JOIN clause to the query using the FileRelatedByAuthorId relation
- * @method     UserQuery rightJoinFileRelatedByAuthorId($relationAlias = null) Adds a RIGHT JOIN clause to the query using the FileRelatedByAuthorId relation
- * @method     UserQuery innerJoinFileRelatedByAuthorId($relationAlias = null) Adds a INNER JOIN clause to the query using the FileRelatedByAuthorId relation
+ * @method UserQuery leftJoinUsersCursus($relationAlias = null) Adds a LEFT JOIN clause to the query using the UsersCursus relation
+ * @method UserQuery rightJoinUsersCursus($relationAlias = null) Adds a RIGHT JOIN clause to the query using the UsersCursus relation
+ * @method UserQuery innerJoinUsersCursus($relationAlias = null) Adds a INNER JOIN clause to the query using the UsersCursus relation
  *
- * @method     UserQuery leftJoinNewslettersSubscribers($relationAlias = null) Adds a LEFT JOIN clause to the query using the NewslettersSubscribers relation
- * @method     UserQuery rightJoinNewslettersSubscribers($relationAlias = null) Adds a RIGHT JOIN clause to the query using the NewslettersSubscribers relation
- * @method     UserQuery innerJoinNewslettersSubscribers($relationAlias = null) Adds a INNER JOIN clause to the query using the NewslettersSubscribers relation
+ * @method UserQuery leftJoinFileRelatedByAuthorId($relationAlias = null) Adds a LEFT JOIN clause to the query using the FileRelatedByAuthorId relation
+ * @method UserQuery rightJoinFileRelatedByAuthorId($relationAlias = null) Adds a RIGHT JOIN clause to the query using the FileRelatedByAuthorId relation
+ * @method UserQuery innerJoinFileRelatedByAuthorId($relationAlias = null) Adds a INNER JOIN clause to the query using the FileRelatedByAuthorId relation
  *
- * @method     UserQuery leftJoinAlert($relationAlias = null) Adds a LEFT JOIN clause to the query using the Alert relation
- * @method     UserQuery rightJoinAlert($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Alert relation
- * @method     UserQuery innerJoinAlert($relationAlias = null) Adds a INNER JOIN clause to the query using the Alert relation
+ * @method UserQuery leftJoinNewslettersSubscribers($relationAlias = null) Adds a LEFT JOIN clause to the query using the NewslettersSubscribers relation
+ * @method UserQuery rightJoinNewslettersSubscribers($relationAlias = null) Adds a RIGHT JOIN clause to the query using the NewslettersSubscribers relation
+ * @method UserQuery innerJoinNewslettersSubscribers($relationAlias = null) Adds a INNER JOIN clause to the query using the NewslettersSubscribers relation
  *
- * @method     UserQuery leftJoinContent($relationAlias = null) Adds a LEFT JOIN clause to the query using the Content relation
- * @method     UserQuery rightJoinContent($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Content relation
- * @method     UserQuery innerJoinContent($relationAlias = null) Adds a INNER JOIN clause to the query using the Content relation
+ * @method UserQuery leftJoinAlert($relationAlias = null) Adds a LEFT JOIN clause to the query using the Alert relation
+ * @method UserQuery rightJoinAlert($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Alert relation
+ * @method UserQuery innerJoinAlert($relationAlias = null) Adds a INNER JOIN clause to the query using the Alert relation
  *
- * @method     UserQuery leftJoinComment($relationAlias = null) Adds a LEFT JOIN clause to the query using the Comment relation
- * @method     UserQuery rightJoinComment($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Comment relation
- * @method     UserQuery innerJoinComment($relationAlias = null) Adds a INNER JOIN clause to the query using the Comment relation
+ * @method UserQuery leftJoinContent($relationAlias = null) Adds a LEFT JOIN clause to the query using the Content relation
+ * @method UserQuery rightJoinContent($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Content relation
+ * @method UserQuery innerJoinContent($relationAlias = null) Adds a INNER JOIN clause to the query using the Content relation
  *
- * @method     UserQuery leftJoinReport($relationAlias = null) Adds a LEFT JOIN clause to the query using the Report relation
- * @method     UserQuery rightJoinReport($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Report relation
- * @method     UserQuery innerJoinReport($relationAlias = null) Adds a INNER JOIN clause to the query using the Report relation
+ * @method UserQuery leftJoinComment($relationAlias = null) Adds a LEFT JOIN clause to the query using the Comment relation
+ * @method UserQuery rightJoinComment($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Comment relation
+ * @method UserQuery innerJoinComment($relationAlias = null) Adds a INNER JOIN clause to the query using the Comment relation
  *
- * @method     UserQuery leftJoinNote($relationAlias = null) Adds a LEFT JOIN clause to the query using the Note relation
- * @method     UserQuery rightJoinNote($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Note relation
- * @method     UserQuery innerJoinNote($relationAlias = null) Adds a INNER JOIN clause to the query using the Note relation
+ * @method UserQuery leftJoinReport($relationAlias = null) Adds a LEFT JOIN clause to the query using the Report relation
+ * @method UserQuery rightJoinReport($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Report relation
+ * @method UserQuery innerJoinReport($relationAlias = null) Adds a INNER JOIN clause to the query using the Report relation
  *
- * @method     UserQuery leftJoinNews($relationAlias = null) Adds a LEFT JOIN clause to the query using the News relation
- * @method     UserQuery rightJoinNews($relationAlias = null) Adds a RIGHT JOIN clause to the query using the News relation
- * @method     UserQuery innerJoinNews($relationAlias = null) Adds a INNER JOIN clause to the query using the News relation
+ * @method UserQuery leftJoinNote($relationAlias = null) Adds a LEFT JOIN clause to the query using the Note relation
+ * @method UserQuery rightJoinNote($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Note relation
+ * @method UserQuery innerJoinNote($relationAlias = null) Adds a INNER JOIN clause to the query using the Note relation
  *
- * @method     UserQuery leftJoinAd($relationAlias = null) Adds a LEFT JOIN clause to the query using the Ad relation
- * @method     UserQuery rightJoinAd($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Ad relation
- * @method     UserQuery innerJoinAd($relationAlias = null) Adds a INNER JOIN clause to the query using the Ad relation
+ * @method UserQuery leftJoinNews($relationAlias = null) Adds a LEFT JOIN clause to the query using the News relation
+ * @method UserQuery rightJoinNews($relationAlias = null) Adds a RIGHT JOIN clause to the query using the News relation
+ * @method UserQuery innerJoinNews($relationAlias = null) Adds a INNER JOIN clause to the query using the News relation
  *
- * @method     UserQuery leftJoinTransaction($relationAlias = null) Adds a LEFT JOIN clause to the query using the Transaction relation
- * @method     UserQuery rightJoinTransaction($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Transaction relation
- * @method     UserQuery innerJoinTransaction($relationAlias = null) Adds a INNER JOIN clause to the query using the Transaction relation
+ * @method UserQuery leftJoinAd($relationAlias = null) Adds a LEFT JOIN clause to the query using the Ad relation
+ * @method UserQuery rightJoinAd($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Ad relation
+ * @method UserQuery innerJoinAd($relationAlias = null) Adds a INNER JOIN clause to the query using the Ad relation
  *
- * @method     UserQuery leftJoinForumMessage($relationAlias = null) Adds a LEFT JOIN clause to the query using the ForumMessage relation
- * @method     UserQuery rightJoinForumMessage($relationAlias = null) Adds a RIGHT JOIN clause to the query using the ForumMessage relation
- * @method     UserQuery innerJoinForumMessage($relationAlias = null) Adds a INNER JOIN clause to the query using the ForumMessage relation
+ * @method UserQuery leftJoinTransaction($relationAlias = null) Adds a LEFT JOIN clause to the query using the Transaction relation
+ * @method UserQuery rightJoinTransaction($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Transaction relation
+ * @method UserQuery innerJoinTransaction($relationAlias = null) Adds a INNER JOIN clause to the query using the Transaction relation
  *
- * @method     UserQuery leftJoinScheduledCourse($relationAlias = null) Adds a LEFT JOIN clause to the query using the ScheduledCourse relation
- * @method     UserQuery rightJoinScheduledCourse($relationAlias = null) Adds a RIGHT JOIN clause to the query using the ScheduledCourse relation
- * @method     UserQuery innerJoinScheduledCourse($relationAlias = null) Adds a INNER JOIN clause to the query using the ScheduledCourse relation
+ * @method UserQuery leftJoinForumMessage($relationAlias = null) Adds a LEFT JOIN clause to the query using the ForumMessage relation
+ * @method UserQuery rightJoinForumMessage($relationAlias = null) Adds a RIGHT JOIN clause to the query using the ForumMessage relation
+ * @method UserQuery innerJoinForumMessage($relationAlias = null) Adds a INNER JOIN clause to the query using the ForumMessage relation
  *
- * @method     User findOne(PropelPDO $con = null) Return the first User matching the query
- * @method     User findOneOrCreate(PropelPDO $con = null) Return the first User matching the query, or a new User object populated from the query conditions when no match is found
+ * @method UserQuery leftJoinScheduledCourse($relationAlias = null) Adds a LEFT JOIN clause to the query using the ScheduledCourse relation
+ * @method UserQuery rightJoinScheduledCourse($relationAlias = null) Adds a RIGHT JOIN clause to the query using the ScheduledCourse relation
+ * @method UserQuery innerJoinScheduledCourse($relationAlias = null) Adds a INNER JOIN clause to the query using the ScheduledCourse relation
  *
- * @method     User findOneById(int $id) Return the first User filtered by the id column
- * @method     User findOneByUsername(string $username) Return the first User filtered by the username column
- * @method     User findOneByPasswordHash(string $password_hash) Return the first User filtered by the password_hash column
- * @method     User findOneByType(int $type) Return the first User filtered by the type column
- * @method     User findOneByFirstname(string $firstname) Return the first User filtered by the firstname column
- * @method     User findOneByLastname(string $lastname) Return the first User filtered by the lastname column
- * @method     User findOneByEmail(string $email) Return the first User filtered by the email column
- * @method     User findOneByPhone(string $phone) Return the first User filtered by the phone column
- * @method     User findOneByAddress(string $address) Return the first User filtered by the address column
- * @method     User findOneByWebsite(string $website) Return the first User filtered by the website column
- * @method     User findOneByBirthDate(string $birth_date) Return the first User filtered by the birth_date column
- * @method     User findOneByFirstEntry(string $first_entry) Return the first User filtered by the first_entry column
- * @method     User findOneByLastEntry(string $last_entry) Return the first User filtered by the last_entry column
- * @method     User findOneByLastVisit(string $last_visit) Return the first User filtered by the last_visit column
- * @method     User findOneByVisitsNb(int $visits_nb) Return the first User filtered by the visits_nb column
- * @method     User findOneByConfigShowEmail(boolean $config_show_email) Return the first User filtered by the config_show_email column
- * @method     User findOneByConfigShowPhone(boolean $config_show_phone) Return the first User filtered by the config_show_phone column
- * @method     User findOneByConfigShowRealName(boolean $config_show_real_name) Return the first User filtered by the config_show_real_name column
- * @method     User findOneByConfigIndexingProfile(boolean $config_indexing_profile) Return the first User filtered by the config_indexing_profile column
- * @method     User findOneByDeactivated(boolean $deactivated) Return the first User filtered by the deactivated column
- * @method     User findOneByIsATeacher(boolean $is_a_teacher) Return the first User filtered by the is_a_teacher column
- * @method     User findOneByIsAStudent(boolean $is_a_student) Return the first User filtered by the is_a_student column
- * @method     User findOneByAvatarId(int $avatar_id) Return the first User filtered by the avatar_id column
- * @method     User findOneByDescription(string $description) Return the first User filtered by the description column
- * @method     User findOneByRemarks(string $remarks) Return the first User filtered by the remarks column
+ * @method User findOne(PropelPDO $con = null) Return the first User matching the query
+ * @method User findOneOrCreate(PropelPDO $con = null) Return the first User matching the query, or a new User object populated from the query conditions when no match is found
  *
- * @method     array findById(int $id) Return User objects filtered by the id column
- * @method     array findByUsername(string $username) Return User objects filtered by the username column
- * @method     array findByPasswordHash(string $password_hash) Return User objects filtered by the password_hash column
- * @method     array findByType(int $type) Return User objects filtered by the type column
- * @method     array findByFirstname(string $firstname) Return User objects filtered by the firstname column
- * @method     array findByLastname(string $lastname) Return User objects filtered by the lastname column
- * @method     array findByEmail(string $email) Return User objects filtered by the email column
- * @method     array findByPhone(string $phone) Return User objects filtered by the phone column
- * @method     array findByAddress(string $address) Return User objects filtered by the address column
- * @method     array findByWebsite(string $website) Return User objects filtered by the website column
- * @method     array findByBirthDate(string $birth_date) Return User objects filtered by the birth_date column
- * @method     array findByFirstEntry(string $first_entry) Return User objects filtered by the first_entry column
- * @method     array findByLastEntry(string $last_entry) Return User objects filtered by the last_entry column
- * @method     array findByLastVisit(string $last_visit) Return User objects filtered by the last_visit column
- * @method     array findByVisitsNb(int $visits_nb) Return User objects filtered by the visits_nb column
- * @method     array findByConfigShowEmail(boolean $config_show_email) Return User objects filtered by the config_show_email column
- * @method     array findByConfigShowPhone(boolean $config_show_phone) Return User objects filtered by the config_show_phone column
- * @method     array findByConfigShowRealName(boolean $config_show_real_name) Return User objects filtered by the config_show_real_name column
- * @method     array findByConfigIndexingProfile(boolean $config_indexing_profile) Return User objects filtered by the config_indexing_profile column
- * @method     array findByDeactivated(boolean $deactivated) Return User objects filtered by the deactivated column
- * @method     array findByIsATeacher(boolean $is_a_teacher) Return User objects filtered by the is_a_teacher column
- * @method     array findByIsAStudent(boolean $is_a_student) Return User objects filtered by the is_a_student column
- * @method     array findByAvatarId(int $avatar_id) Return User objects filtered by the avatar_id column
- * @method     array findByDescription(string $description) Return User objects filtered by the description column
- * @method     array findByRemarks(string $remarks) Return User objects filtered by the remarks column
+ * @method User findOneById(int $id) Return the first User filtered by the id column
+ * @method User findOneByUsername(string $username) Return the first User filtered by the username column
+ * @method User findOneByPasswordHash(string $password_hash) Return the first User filtered by the password_hash column
+ * @method User findOneByType(int $type) Return the first User filtered by the type column
+ * @method User findOneByFirstname(string $firstname) Return the first User filtered by the firstname column
+ * @method User findOneByLastname(string $lastname) Return the first User filtered by the lastname column
+ * @method User findOneByEmail(string $email) Return the first User filtered by the email column
+ * @method User findOneByPhone(string $phone) Return the first User filtered by the phone column
+ * @method User findOneByAddress(string $address) Return the first User filtered by the address column
+ * @method User findOneByWebsite(string $website) Return the first User filtered by the website column
+ * @method User findOneByBirthDate(string $birth_date) Return the first User filtered by the birth_date column
+ * @method User findOneByFirstEntry(string $first_entry) Return the first User filtered by the first_entry column
+ * @method User findOneByLastEntry(string $last_entry) Return the first User filtered by the last_entry column
+ * @method User findOneByLastVisit(string $last_visit) Return the first User filtered by the last_visit column
+ * @method User findOneByVisitsNb(int $visits_nb) Return the first User filtered by the visits_nb column
+ * @method User findOneByConfigShowEmail(boolean $config_show_email) Return the first User filtered by the config_show_email column
+ * @method User findOneByConfigShowPhone(boolean $config_show_phone) Return the first User filtered by the config_show_phone column
+ * @method User findOneByConfigShowRealName(boolean $config_show_real_name) Return the first User filtered by the config_show_real_name column
+ * @method User findOneByConfigIndexingProfile(boolean $config_indexing_profile) Return the first User filtered by the config_indexing_profile column
+ * @method User findOneByDeactivated(boolean $deactivated) Return the first User filtered by the deactivated column
+ * @method User findOneByIsATeacher(boolean $is_a_teacher) Return the first User filtered by the is_a_teacher column
+ * @method User findOneByIsAStudent(boolean $is_a_student) Return the first User filtered by the is_a_student column
+ * @method User findOneByAvatarId(int $avatar_id) Return the first User filtered by the avatar_id column
+ * @method User findOneByDescription(string $description) Return the first User filtered by the description column
+ * @method User findOneByRemarks(string $remarks) Return the first User filtered by the remarks column
+ *
+ * @method array findById(int $id) Return User objects filtered by the id column
+ * @method array findByUsername(string $username) Return User objects filtered by the username column
+ * @method array findByPasswordHash(string $password_hash) Return User objects filtered by the password_hash column
+ * @method array findByType(int $type) Return User objects filtered by the type column
+ * @method array findByFirstname(string $firstname) Return User objects filtered by the firstname column
+ * @method array findByLastname(string $lastname) Return User objects filtered by the lastname column
+ * @method array findByEmail(string $email) Return User objects filtered by the email column
+ * @method array findByPhone(string $phone) Return User objects filtered by the phone column
+ * @method array findByAddress(string $address) Return User objects filtered by the address column
+ * @method array findByWebsite(string $website) Return User objects filtered by the website column
+ * @method array findByBirthDate(string $birth_date) Return User objects filtered by the birth_date column
+ * @method array findByFirstEntry(string $first_entry) Return User objects filtered by the first_entry column
+ * @method array findByLastEntry(string $last_entry) Return User objects filtered by the last_entry column
+ * @method array findByLastVisit(string $last_visit) Return User objects filtered by the last_visit column
+ * @method array findByVisitsNb(int $visits_nb) Return User objects filtered by the visits_nb column
+ * @method array findByConfigShowEmail(boolean $config_show_email) Return User objects filtered by the config_show_email column
+ * @method array findByConfigShowPhone(boolean $config_show_phone) Return User objects filtered by the config_show_phone column
+ * @method array findByConfigShowRealName(boolean $config_show_real_name) Return User objects filtered by the config_show_real_name column
+ * @method array findByConfigIndexingProfile(boolean $config_indexing_profile) Return User objects filtered by the config_indexing_profile column
+ * @method array findByDeactivated(boolean $deactivated) Return User objects filtered by the deactivated column
+ * @method array findByIsATeacher(boolean $is_a_teacher) Return User objects filtered by the is_a_teacher column
+ * @method array findByIsAStudent(boolean $is_a_student) Return User objects filtered by the is_a_student column
+ * @method array findByAvatarId(int $avatar_id) Return User objects filtered by the avatar_id column
+ * @method array findByDescription(string $description) Return User objects filtered by the description column
+ * @method array findByRemarks(string $remarks) Return User objects filtered by the remarks column
  *
  * @package    propel.generator.ip7website.om
  */
 abstract class BaseUserQuery extends ModelCriteria
 {
-    
     /**
      * Initializes internal state of BaseUserQuery object.
      *
@@ -227,7 +226,7 @@ abstract class BaseUserQuery extends ModelCriteria
      * $obj  = $c->findPk(12, $con);
      * </code>
      *
-     * @param mixed $key Primary key to use for the query 
+     * @param mixed $key Primary key to use for the query
      * @param     PropelPDO $con an optional connection object
      *
      * @return   User|User[]|mixed the result, formatted by the current formatter
@@ -269,7 +268,7 @@ abstract class BaseUserQuery extends ModelCriteria
         $sql = 'SELECT `ID`, `USERNAME`, `PASSWORD_HASH`, `TYPE`, `FIRSTNAME`, `LASTNAME`, `EMAIL`, `PHONE`, `ADDRESS`, `WEBSITE`, `BIRTH_DATE`, `FIRST_ENTRY`, `LAST_ENTRY`, `LAST_VISIT`, `VISITS_NB`, `CONFIG_SHOW_EMAIL`, `CONFIG_SHOW_PHONE`, `CONFIG_SHOW_REAL_NAME`, `CONFIG_INDEXING_PROFILE`, `DEACTIVATED`, `IS_A_TEACHER`, `IS_A_STUDENT`, `AVATAR_ID` FROM `users` WHERE `ID` = :p0';
         try {
             $stmt = $con->prepare($sql);
-			$stmt->bindValue(':p0', $key, PDO::PARAM_INT);
+            $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
             $stmt->execute();
         } catch (Exception $e) {
             Propel::log($e->getMessage(), Propel::LOG_ERR);
@@ -2320,4 +2319,4 @@ abstract class BaseUserQuery extends ModelCriteria
         return $this;
     }
 
-} // BaseUserQuery
+}

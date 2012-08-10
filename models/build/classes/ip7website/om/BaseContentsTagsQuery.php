@@ -4,40 +4,39 @@
 /**
  * Base class that represents a query for the 'contents_tags' table.
  *
- * 
  *
- * @method     ContentsTagsQuery orderByTagId($order = Criteria::ASC) Order by the tag_id column
- * @method     ContentsTagsQuery orderByContentId($order = Criteria::ASC) Order by the content_id column
  *
- * @method     ContentsTagsQuery groupByTagId() Group by the tag_id column
- * @method     ContentsTagsQuery groupByContentId() Group by the content_id column
+ * @method ContentsTagsQuery orderByTagId($order = Criteria::ASC) Order by the tag_id column
+ * @method ContentsTagsQuery orderByContentId($order = Criteria::ASC) Order by the content_id column
  *
- * @method     ContentsTagsQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
- * @method     ContentsTagsQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
- * @method     ContentsTagsQuery innerJoin($relation) Adds a INNER JOIN clause to the query
+ * @method ContentsTagsQuery groupByTagId() Group by the tag_id column
+ * @method ContentsTagsQuery groupByContentId() Group by the content_id column
  *
- * @method     ContentsTagsQuery leftJoinTag($relationAlias = null) Adds a LEFT JOIN clause to the query using the Tag relation
- * @method     ContentsTagsQuery rightJoinTag($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Tag relation
- * @method     ContentsTagsQuery innerJoinTag($relationAlias = null) Adds a INNER JOIN clause to the query using the Tag relation
+ * @method ContentsTagsQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
+ * @method ContentsTagsQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
+ * @method ContentsTagsQuery innerJoin($relation) Adds a INNER JOIN clause to the query
  *
- * @method     ContentsTagsQuery leftJoinContent($relationAlias = null) Adds a LEFT JOIN clause to the query using the Content relation
- * @method     ContentsTagsQuery rightJoinContent($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Content relation
- * @method     ContentsTagsQuery innerJoinContent($relationAlias = null) Adds a INNER JOIN clause to the query using the Content relation
+ * @method ContentsTagsQuery leftJoinTag($relationAlias = null) Adds a LEFT JOIN clause to the query using the Tag relation
+ * @method ContentsTagsQuery rightJoinTag($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Tag relation
+ * @method ContentsTagsQuery innerJoinTag($relationAlias = null) Adds a INNER JOIN clause to the query using the Tag relation
  *
- * @method     ContentsTags findOne(PropelPDO $con = null) Return the first ContentsTags matching the query
- * @method     ContentsTags findOneOrCreate(PropelPDO $con = null) Return the first ContentsTags matching the query, or a new ContentsTags object populated from the query conditions when no match is found
+ * @method ContentsTagsQuery leftJoinContent($relationAlias = null) Adds a LEFT JOIN clause to the query using the Content relation
+ * @method ContentsTagsQuery rightJoinContent($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Content relation
+ * @method ContentsTagsQuery innerJoinContent($relationAlias = null) Adds a INNER JOIN clause to the query using the Content relation
  *
- * @method     ContentsTags findOneByTagId(int $tag_id) Return the first ContentsTags filtered by the tag_id column
- * @method     ContentsTags findOneByContentId(int $content_id) Return the first ContentsTags filtered by the content_id column
+ * @method ContentsTags findOne(PropelPDO $con = null) Return the first ContentsTags matching the query
+ * @method ContentsTags findOneOrCreate(PropelPDO $con = null) Return the first ContentsTags matching the query, or a new ContentsTags object populated from the query conditions when no match is found
  *
- * @method     array findByTagId(int $tag_id) Return ContentsTags objects filtered by the tag_id column
- * @method     array findByContentId(int $content_id) Return ContentsTags objects filtered by the content_id column
+ * @method ContentsTags findOneByTagId(int $tag_id) Return the first ContentsTags filtered by the tag_id column
+ * @method ContentsTags findOneByContentId(int $content_id) Return the first ContentsTags filtered by the content_id column
+ *
+ * @method array findByTagId(int $tag_id) Return ContentsTags objects filtered by the tag_id column
+ * @method array findByContentId(int $content_id) Return ContentsTags objects filtered by the content_id column
  *
  * @package    propel.generator.ip7website.om
  */
 abstract class BaseContentsTagsQuery extends ModelCriteria
 {
-    
     /**
      * Initializes internal state of BaseContentsTagsQuery object.
      *
@@ -83,7 +82,7 @@ abstract class BaseContentsTagsQuery extends ModelCriteria
      * $obj = $c->findPk(array(12, 34), $con);
      * </code>
      *
-     * @param array $key Primary key to use for the query 
+     * @param array $key Primary key to use for the query
                          A Primary key composition: [$tag_id, $content_id]
      * @param     PropelPDO $con an optional connection object
      *
@@ -126,8 +125,8 @@ abstract class BaseContentsTagsQuery extends ModelCriteria
         $sql = 'SELECT `TAG_ID`, `CONTENT_ID` FROM `contents_tags` WHERE `TAG_ID` = :p0 AND `CONTENT_ID` = :p1';
         try {
             $stmt = $con->prepare($sql);
-			$stmt->bindValue(':p0', $key[0], PDO::PARAM_INT);
-			$stmt->bindValue(':p1', $key[1], PDO::PARAM_INT);
+            $stmt->bindValue(':p0', $key[0], PDO::PARAM_INT);
+            $stmt->bindValue(':p1', $key[1], PDO::PARAM_INT);
             $stmt->execute();
         } catch (Exception $e) {
             Propel::log($e->getMessage(), Propel::LOG_ERR);
@@ -452,4 +451,4 @@ abstract class BaseContentsTagsQuery extends ModelCriteria
         return $this;
     }
 
-} // BaseContentsTagsQuery
+}

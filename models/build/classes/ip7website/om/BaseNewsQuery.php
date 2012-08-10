@@ -4,68 +4,67 @@
 /**
  * Base class that represents a query for the 'news' table.
  *
- * 
  *
- * @method     NewsQuery orderById($order = Criteria::ASC) Order by the id column
- * @method     NewsQuery orderByAuthorId($order = Criteria::ASC) Order by the author_id column
- * @method     NewsQuery orderByTitle($order = Criteria::ASC) Order by the title column
- * @method     NewsQuery orderByText($order = Criteria::ASC) Order by the text column
- * @method     NewsQuery orderByDate($order = Criteria::ASC) Order by the date column
- * @method     NewsQuery orderByCursusId($order = Criteria::ASC) Order by the cursus_id column
- * @method     NewsQuery orderByCourseId($order = Criteria::ASC) Order by the course_id column
- * @method     NewsQuery orderByAccessRights($order = Criteria::ASC) Order by the access_rights column
  *
- * @method     NewsQuery groupById() Group by the id column
- * @method     NewsQuery groupByAuthorId() Group by the author_id column
- * @method     NewsQuery groupByTitle() Group by the title column
- * @method     NewsQuery groupByText() Group by the text column
- * @method     NewsQuery groupByDate() Group by the date column
- * @method     NewsQuery groupByCursusId() Group by the cursus_id column
- * @method     NewsQuery groupByCourseId() Group by the course_id column
- * @method     NewsQuery groupByAccessRights() Group by the access_rights column
+ * @method NewsQuery orderById($order = Criteria::ASC) Order by the id column
+ * @method NewsQuery orderByAuthorId($order = Criteria::ASC) Order by the author_id column
+ * @method NewsQuery orderByTitle($order = Criteria::ASC) Order by the title column
+ * @method NewsQuery orderByText($order = Criteria::ASC) Order by the text column
+ * @method NewsQuery orderByDate($order = Criteria::ASC) Order by the date column
+ * @method NewsQuery orderByCursusId($order = Criteria::ASC) Order by the cursus_id column
+ * @method NewsQuery orderByCourseId($order = Criteria::ASC) Order by the course_id column
+ * @method NewsQuery orderByAccessRights($order = Criteria::ASC) Order by the access_rights column
  *
- * @method     NewsQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
- * @method     NewsQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
- * @method     NewsQuery innerJoin($relation) Adds a INNER JOIN clause to the query
+ * @method NewsQuery groupById() Group by the id column
+ * @method NewsQuery groupByAuthorId() Group by the author_id column
+ * @method NewsQuery groupByTitle() Group by the title column
+ * @method NewsQuery groupByText() Group by the text column
+ * @method NewsQuery groupByDate() Group by the date column
+ * @method NewsQuery groupByCursusId() Group by the cursus_id column
+ * @method NewsQuery groupByCourseId() Group by the course_id column
+ * @method NewsQuery groupByAccessRights() Group by the access_rights column
  *
- * @method     NewsQuery leftJoinAuthor($relationAlias = null) Adds a LEFT JOIN clause to the query using the Author relation
- * @method     NewsQuery rightJoinAuthor($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Author relation
- * @method     NewsQuery innerJoinAuthor($relationAlias = null) Adds a INNER JOIN clause to the query using the Author relation
+ * @method NewsQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
+ * @method NewsQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
+ * @method NewsQuery innerJoin($relation) Adds a INNER JOIN clause to the query
  *
- * @method     NewsQuery leftJoinCourse($relationAlias = null) Adds a LEFT JOIN clause to the query using the Course relation
- * @method     NewsQuery rightJoinCourse($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Course relation
- * @method     NewsQuery innerJoinCourse($relationAlias = null) Adds a INNER JOIN clause to the query using the Course relation
+ * @method NewsQuery leftJoinAuthor($relationAlias = null) Adds a LEFT JOIN clause to the query using the Author relation
+ * @method NewsQuery rightJoinAuthor($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Author relation
+ * @method NewsQuery innerJoinAuthor($relationAlias = null) Adds a INNER JOIN clause to the query using the Author relation
  *
- * @method     NewsQuery leftJoinCursus($relationAlias = null) Adds a LEFT JOIN clause to the query using the Cursus relation
- * @method     NewsQuery rightJoinCursus($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Cursus relation
- * @method     NewsQuery innerJoinCursus($relationAlias = null) Adds a INNER JOIN clause to the query using the Cursus relation
+ * @method NewsQuery leftJoinCourse($relationAlias = null) Adds a LEFT JOIN clause to the query using the Course relation
+ * @method NewsQuery rightJoinCourse($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Course relation
+ * @method NewsQuery innerJoinCourse($relationAlias = null) Adds a INNER JOIN clause to the query using the Course relation
  *
- * @method     News findOne(PropelPDO $con = null) Return the first News matching the query
- * @method     News findOneOrCreate(PropelPDO $con = null) Return the first News matching the query, or a new News object populated from the query conditions when no match is found
+ * @method NewsQuery leftJoinCursus($relationAlias = null) Adds a LEFT JOIN clause to the query using the Cursus relation
+ * @method NewsQuery rightJoinCursus($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Cursus relation
+ * @method NewsQuery innerJoinCursus($relationAlias = null) Adds a INNER JOIN clause to the query using the Cursus relation
  *
- * @method     News findOneById(int $id) Return the first News filtered by the id column
- * @method     News findOneByAuthorId(int $author_id) Return the first News filtered by the author_id column
- * @method     News findOneByTitle(string $title) Return the first News filtered by the title column
- * @method     News findOneByText(string $text) Return the first News filtered by the text column
- * @method     News findOneByDate(string $date) Return the first News filtered by the date column
- * @method     News findOneByCursusId(int $cursus_id) Return the first News filtered by the cursus_id column
- * @method     News findOneByCourseId(int $course_id) Return the first News filtered by the course_id column
- * @method     News findOneByAccessRights(int $access_rights) Return the first News filtered by the access_rights column
+ * @method News findOne(PropelPDO $con = null) Return the first News matching the query
+ * @method News findOneOrCreate(PropelPDO $con = null) Return the first News matching the query, or a new News object populated from the query conditions when no match is found
  *
- * @method     array findById(int $id) Return News objects filtered by the id column
- * @method     array findByAuthorId(int $author_id) Return News objects filtered by the author_id column
- * @method     array findByTitle(string $title) Return News objects filtered by the title column
- * @method     array findByText(string $text) Return News objects filtered by the text column
- * @method     array findByDate(string $date) Return News objects filtered by the date column
- * @method     array findByCursusId(int $cursus_id) Return News objects filtered by the cursus_id column
- * @method     array findByCourseId(int $course_id) Return News objects filtered by the course_id column
- * @method     array findByAccessRights(int $access_rights) Return News objects filtered by the access_rights column
+ * @method News findOneById(int $id) Return the first News filtered by the id column
+ * @method News findOneByAuthorId(int $author_id) Return the first News filtered by the author_id column
+ * @method News findOneByTitle(string $title) Return the first News filtered by the title column
+ * @method News findOneByText(string $text) Return the first News filtered by the text column
+ * @method News findOneByDate(string $date) Return the first News filtered by the date column
+ * @method News findOneByCursusId(int $cursus_id) Return the first News filtered by the cursus_id column
+ * @method News findOneByCourseId(int $course_id) Return the first News filtered by the course_id column
+ * @method News findOneByAccessRights(int $access_rights) Return the first News filtered by the access_rights column
+ *
+ * @method array findById(int $id) Return News objects filtered by the id column
+ * @method array findByAuthorId(int $author_id) Return News objects filtered by the author_id column
+ * @method array findByTitle(string $title) Return News objects filtered by the title column
+ * @method array findByText(string $text) Return News objects filtered by the text column
+ * @method array findByDate(string $date) Return News objects filtered by the date column
+ * @method array findByCursusId(int $cursus_id) Return News objects filtered by the cursus_id column
+ * @method array findByCourseId(int $course_id) Return News objects filtered by the course_id column
+ * @method array findByAccessRights(int $access_rights) Return News objects filtered by the access_rights column
  *
  * @package    propel.generator.ip7website.om
  */
 abstract class BaseNewsQuery extends ModelCriteria
 {
-    
     /**
      * Initializes internal state of BaseNewsQuery object.
      *
@@ -111,7 +110,7 @@ abstract class BaseNewsQuery extends ModelCriteria
      * $obj  = $c->findPk(12, $con);
      * </code>
      *
-     * @param mixed $key Primary key to use for the query 
+     * @param mixed $key Primary key to use for the query
      * @param     PropelPDO $con an optional connection object
      *
      * @return   News|News[]|mixed the result, formatted by the current formatter
@@ -153,7 +152,7 @@ abstract class BaseNewsQuery extends ModelCriteria
         $sql = 'SELECT `ID`, `AUTHOR_ID`, `TITLE`, `TEXT`, `DATE`, `CURSUS_ID`, `COURSE_ID`, `ACCESS_RIGHTS` FROM `news` WHERE `ID` = :p0';
         try {
             $stmt = $con->prepare($sql);
-			$stmt->bindValue(':p0', $key, PDO::PARAM_INT);
+            $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
             $stmt->execute();
         } catch (Exception $e) {
             Propel::log($e->getMessage(), Propel::LOG_ERR);
@@ -781,4 +780,4 @@ abstract class BaseNewsQuery extends ModelCriteria
         return $this;
     }
 
-} // BaseNewsQuery
+}

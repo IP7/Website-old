@@ -4,40 +4,39 @@
 /**
  * Base class that represents a query for the 'users_cursus' table.
  *
- * 
  *
- * @method     UsersCursusQuery orderByUserId($order = Criteria::ASC) Order by the user_id column
- * @method     UsersCursusQuery orderByCursusId($order = Criteria::ASC) Order by the cursus_id column
  *
- * @method     UsersCursusQuery groupByUserId() Group by the user_id column
- * @method     UsersCursusQuery groupByCursusId() Group by the cursus_id column
+ * @method UsersCursusQuery orderByUserId($order = Criteria::ASC) Order by the user_id column
+ * @method UsersCursusQuery orderByCursusId($order = Criteria::ASC) Order by the cursus_id column
  *
- * @method     UsersCursusQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
- * @method     UsersCursusQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
- * @method     UsersCursusQuery innerJoin($relation) Adds a INNER JOIN clause to the query
+ * @method UsersCursusQuery groupByUserId() Group by the user_id column
+ * @method UsersCursusQuery groupByCursusId() Group by the cursus_id column
  *
- * @method     UsersCursusQuery leftJoinUser($relationAlias = null) Adds a LEFT JOIN clause to the query using the User relation
- * @method     UsersCursusQuery rightJoinUser($relationAlias = null) Adds a RIGHT JOIN clause to the query using the User relation
- * @method     UsersCursusQuery innerJoinUser($relationAlias = null) Adds a INNER JOIN clause to the query using the User relation
+ * @method UsersCursusQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
+ * @method UsersCursusQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
+ * @method UsersCursusQuery innerJoin($relation) Adds a INNER JOIN clause to the query
  *
- * @method     UsersCursusQuery leftJoinCursus($relationAlias = null) Adds a LEFT JOIN clause to the query using the Cursus relation
- * @method     UsersCursusQuery rightJoinCursus($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Cursus relation
- * @method     UsersCursusQuery innerJoinCursus($relationAlias = null) Adds a INNER JOIN clause to the query using the Cursus relation
+ * @method UsersCursusQuery leftJoinUser($relationAlias = null) Adds a LEFT JOIN clause to the query using the User relation
+ * @method UsersCursusQuery rightJoinUser($relationAlias = null) Adds a RIGHT JOIN clause to the query using the User relation
+ * @method UsersCursusQuery innerJoinUser($relationAlias = null) Adds a INNER JOIN clause to the query using the User relation
  *
- * @method     UsersCursus findOne(PropelPDO $con = null) Return the first UsersCursus matching the query
- * @method     UsersCursus findOneOrCreate(PropelPDO $con = null) Return the first UsersCursus matching the query, or a new UsersCursus object populated from the query conditions when no match is found
+ * @method UsersCursusQuery leftJoinCursus($relationAlias = null) Adds a LEFT JOIN clause to the query using the Cursus relation
+ * @method UsersCursusQuery rightJoinCursus($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Cursus relation
+ * @method UsersCursusQuery innerJoinCursus($relationAlias = null) Adds a INNER JOIN clause to the query using the Cursus relation
  *
- * @method     UsersCursus findOneByUserId(int $user_id) Return the first UsersCursus filtered by the user_id column
- * @method     UsersCursus findOneByCursusId(int $cursus_id) Return the first UsersCursus filtered by the cursus_id column
+ * @method UsersCursus findOne(PropelPDO $con = null) Return the first UsersCursus matching the query
+ * @method UsersCursus findOneOrCreate(PropelPDO $con = null) Return the first UsersCursus matching the query, or a new UsersCursus object populated from the query conditions when no match is found
  *
- * @method     array findByUserId(int $user_id) Return UsersCursus objects filtered by the user_id column
- * @method     array findByCursusId(int $cursus_id) Return UsersCursus objects filtered by the cursus_id column
+ * @method UsersCursus findOneByUserId(int $user_id) Return the first UsersCursus filtered by the user_id column
+ * @method UsersCursus findOneByCursusId(int $cursus_id) Return the first UsersCursus filtered by the cursus_id column
+ *
+ * @method array findByUserId(int $user_id) Return UsersCursus objects filtered by the user_id column
+ * @method array findByCursusId(int $cursus_id) Return UsersCursus objects filtered by the cursus_id column
  *
  * @package    propel.generator.ip7website.om
  */
 abstract class BaseUsersCursusQuery extends ModelCriteria
 {
-    
     /**
      * Initializes internal state of BaseUsersCursusQuery object.
      *
@@ -83,7 +82,7 @@ abstract class BaseUsersCursusQuery extends ModelCriteria
      * $obj = $c->findPk(array(12, 34), $con);
      * </code>
      *
-     * @param array $key Primary key to use for the query 
+     * @param array $key Primary key to use for the query
                          A Primary key composition: [$user_id, $cursus_id]
      * @param     PropelPDO $con an optional connection object
      *
@@ -126,8 +125,8 @@ abstract class BaseUsersCursusQuery extends ModelCriteria
         $sql = 'SELECT `USER_ID`, `CURSUS_ID` FROM `users_cursus` WHERE `USER_ID` = :p0 AND `CURSUS_ID` = :p1';
         try {
             $stmt = $con->prepare($sql);
-			$stmt->bindValue(':p0', $key[0], PDO::PARAM_INT);
-			$stmt->bindValue(':p1', $key[1], PDO::PARAM_INT);
+            $stmt->bindValue(':p0', $key[0], PDO::PARAM_INT);
+            $stmt->bindValue(':p1', $key[1], PDO::PARAM_INT);
             $stmt->execute();
         } catch (Exception $e) {
             Propel::log($e->getMessage(), Propel::LOG_ERR);
@@ -452,4 +451,4 @@ abstract class BaseUsersCursusQuery extends ModelCriteria
         return $this;
     }
 
-} // BaseUsersCursusQuery
+}

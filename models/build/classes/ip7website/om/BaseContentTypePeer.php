@@ -4,11 +4,12 @@
 /**
  * Base static class for performing query and update operations on the 'content_types' table.
  *
- * 
  *
- * @package    propel.generator.ip7website.om
+ *
+ * @package propel.generator.ip7website.om
  */
-abstract class BaseContentTypePeer {
+abstract class BaseContentTypePeer
+{
 
     /** the default database name for this class */
     const DATABASE_NAME = 'infop7db';
@@ -53,12 +54,12 @@ abstract class BaseContentTypePeer {
      * holds an array of fieldnames
      *
      * first dimension keys are the type constants
-     * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
+     * e.g. ContentTypePeer::$fieldNames[ContentTypePeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
         BasePeer::TYPE_PHPNAME => array ('Id', 'Name', ),
         BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'name', ),
-        BasePeer::TYPE_COLNAME => array (self::ID, self::NAME, ),
+        BasePeer::TYPE_COLNAME => array (ContentTypePeer::ID, ContentTypePeer::NAME, ),
         BasePeer::TYPE_RAW_COLNAME => array ('ID', 'NAME', ),
         BasePeer::TYPE_FIELDNAME => array ('id', 'name', ),
         BasePeer::TYPE_NUM => array (0, 1, )
@@ -68,12 +69,12 @@ abstract class BaseContentTypePeer {
      * holds an array of keys for quick access to the fieldnames array
      *
      * first dimension keys are the type constants
-     * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
+     * e.g. ContentTypePeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
         BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Name' => 1, ),
         BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'name' => 1, ),
-        BasePeer::TYPE_COLNAME => array (self::ID => 0, self::NAME => 1, ),
+        BasePeer::TYPE_COLNAME => array (ContentTypePeer::ID => 0, ContentTypePeer::NAME => 1, ),
         BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'NAME' => 1, ),
         BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'name' => 1, ),
         BasePeer::TYPE_NUM => array (0, 1, )
@@ -91,10 +92,10 @@ abstract class BaseContentTypePeer {
      */
     public static function translateFieldName($name, $fromType, $toType)
     {
-        $toNames = self::getFieldNames($toType);
-        $key = isset(self::$fieldKeys[$fromType][$name]) ? self::$fieldKeys[$fromType][$name] : null;
+        $toNames = ContentTypePeer::getFieldNames($toType);
+        $key = isset(ContentTypePeer::$fieldKeys[$fromType][$name]) ? ContentTypePeer::$fieldKeys[$fromType][$name] : null;
         if ($key === null) {
-            throw new PropelException("'$name' could not be found in the field names of type '$fromType'. These are: " . print_r(self::$fieldKeys[$fromType], true));
+            throw new PropelException("'$name' could not be found in the field names of type '$fromType'. These are: " . print_r(ContentTypePeer::$fieldKeys[$fromType], true));
         }
 
         return $toNames[$key];
@@ -111,11 +112,11 @@ abstract class BaseContentTypePeer {
      */
     public static function getFieldNames($type = BasePeer::TYPE_PHPNAME)
     {
-        if (!array_key_exists($type, self::$fieldNames)) {
+        if (!array_key_exists($type, ContentTypePeer::$fieldNames)) {
             throw new PropelException('Method getFieldNames() expects the parameter $type to be one of the class constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME, BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM. ' . $type . ' was given.');
         }
 
-        return self::$fieldNames[$type];
+        return ContentTypePeer::$fieldNames[$type];
     }
 
     /**
@@ -185,7 +186,7 @@ abstract class BaseContentTypePeer {
         }
 
         $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
-        $criteria->setDbName(self::DATABASE_NAME); // Set the correct dbName
+        $criteria->setDbName(ContentTypePeer::DATABASE_NAME); // Set the correct dbName
 
         if ($con === null) {
             $con = Propel::getConnection(ContentTypePeer::DATABASE_NAME, Propel::CONNECTION_READ);
@@ -260,7 +261,7 @@ abstract class BaseContentTypePeer {
         }
 
         // Set the correct dbName
-        $criteria->setDbName(self::DATABASE_NAME);
+        $criteria->setDbName(ContentTypePeer::DATABASE_NAME);
 
         // BasePeer returns a PDOStatement
         return BasePeer::doSelect($criteria, $con);
@@ -283,7 +284,7 @@ abstract class BaseContentTypePeer {
             if ($key === null) {
                 $key = (string) $obj->getId();
             } // if key === null
-            self::$instances[$key] = $obj;
+            ContentTypePeer::$instances[$key] = $obj;
         }
     }
 
@@ -313,7 +314,7 @@ abstract class BaseContentTypePeer {
                 throw $e;
             }
 
-            unset(self::$instances[$key]);
+            unset(ContentTypePeer::$instances[$key]);
         }
     } // removeInstanceFromPool()
 
@@ -324,20 +325,20 @@ abstract class BaseContentTypePeer {
      * a multi-column primary key, a serialize()d version of the primary key will be returned.
      *
      * @param      string $key The key (@see getPrimaryKeyHash()) for this instance.
-     * @return   ContentType Found object or NULL if 1) no instance exists for specified key or 2) instance pooling has been disabled.
+     * @return   ContentType Found object or null if 1) no instance exists for specified key or 2) instance pooling has been disabled.
      * @see        getPrimaryKeyHash()
      */
     public static function getInstanceFromPool($key)
     {
         if (Propel::isInstancePoolingEnabled()) {
-            if (isset(self::$instances[$key])) {
-                return self::$instances[$key];
+            if (isset(ContentTypePeer::$instances[$key])) {
+                return ContentTypePeer::$instances[$key];
             }
         }
 
         return null; // just to be explicit
     }
-    
+
     /**
      * Clear the instance pool.
      *
@@ -345,9 +346,9 @@ abstract class BaseContentTypePeer {
      */
     public static function clearInstancePool()
     {
-        self::$instances = array();
+        ContentTypePeer::$instances = array();
     }
-    
+
     /**
      * Method to invalidate the instance pool of all tables related to content_types
      * by a foreign key with ON DELETE CASCADE
@@ -370,11 +371,11 @@ abstract class BaseContentTypePeer {
      *
      * @param      array $row PropelPDO resultset row.
      * @param      int $startcol The 0-based offset for reading from the resultset row.
-     * @return string A string version of PK or NULL if the components of primary key in result array are all null.
+     * @return string A string version of PK or null if the components of primary key in result array are all null.
      */
     public static function getPrimaryKeyHashFromRow($row, $startcol = 0)
     {
-        // If the PK cannot be derived from the row, return NULL.
+        // If the PK cannot be derived from the row, return null.
         if ($row[$startcol] === null) {
             return null;
         }
@@ -396,7 +397,7 @@ abstract class BaseContentTypePeer {
 
         return (int) $row[$startcol];
     }
-    
+
     /**
      * The returned array will contain objects of the default type or
      * objects that inherit from the default.
@@ -407,7 +408,7 @@ abstract class BaseContentTypePeer {
     public static function populateObjects(PDOStatement $stmt)
     {
         $results = array();
-    
+
         // set the class once to avoid overhead in the loop
         $cls = ContentTypePeer::getOMClass();
         // populate the object(s)
@@ -465,7 +466,7 @@ abstract class BaseContentTypePeer {
      */
     public static function getTableMap()
     {
-        return Propel::getDatabaseMap(self::DATABASE_NAME)->getTable(self::TABLE_NAME);
+        return Propel::getDatabaseMap(ContentTypePeer::DATABASE_NAME)->getTable(ContentTypePeer::TABLE_NAME);
     }
 
     /**
@@ -517,7 +518,7 @@ abstract class BaseContentTypePeer {
 
 
         // Set the correct dbName
-        $criteria->setDbName(self::DATABASE_NAME);
+        $criteria->setDbName(ContentTypePeer::DATABASE_NAME);
 
         try {
             // use transaction because $criteria could contain info
@@ -548,7 +549,7 @@ abstract class BaseContentTypePeer {
             $con = Propel::getConnection(ContentTypePeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
-        $selectCriteria = new Criteria(self::DATABASE_NAME);
+        $selectCriteria = new Criteria(ContentTypePeer::DATABASE_NAME);
 
         if ($values instanceof Criteria) {
             $criteria = clone $values; // rename for clarity
@@ -567,7 +568,7 @@ abstract class BaseContentTypePeer {
         }
 
         // set the correct dbName
-        $criteria->setDbName(self::DATABASE_NAME);
+        $criteria->setDbName(ContentTypePeer::DATABASE_NAME);
 
         return BasePeer::doUpdate($selectCriteria, $criteria, $con);
     }
@@ -629,12 +630,12 @@ abstract class BaseContentTypePeer {
             // create criteria based on pk values
             $criteria = $values->buildPkeyCriteria();
         } else { // it's a primary key, or an array of pks
-            $criteria = new Criteria(self::DATABASE_NAME);
+            $criteria = new Criteria(ContentTypePeer::DATABASE_NAME);
             $criteria->add(ContentTypePeer::ID, (array) $values, Criteria::IN);
         }
 
         // Set the correct dbName
-        $criteria->setDbName(self::DATABASE_NAME);
+        $criteria->setDbName(ContentTypePeer::DATABASE_NAME);
 
         $affectedRows = 0; // initialize var to track total num of affected rows
 
@@ -642,11 +643,11 @@ abstract class BaseContentTypePeer {
             // use transaction because $criteria could contain info
             // for more than one table or we could emulating ON DELETE CASCADE, etc.
             $con->beginTransaction();
-            
+
             // cloning the Criteria in case it's modified by doSelect() or doSelectStmt()
             $c = clone $criteria;
             ContentTypePeer::doOnDeleteSetNull($c, $con);
-            
+
             // Because this db requires some delete cascade/set null emulation, we have to
             // clear the cached instance *after* the emulation has happened (since
             // instances get re-added by the select statement contained therein).
@@ -659,7 +660,7 @@ abstract class BaseContentTypePeer {
                     ContentTypePeer::removeInstanceFromPool($singleval);
                 }
             }
-            
+
             $affectedRows += BasePeer::doDelete($criteria, $con);
             ContentTypePeer::clearRelatedInstancePool();
             $con->commit();
@@ -691,7 +692,7 @@ abstract class BaseContentTypePeer {
         $objects = ContentTypePeer::doSelect($criteria, $con);
         foreach ($objects as $obj) {
 
-            // set fkey col in related Alert rows to NULL
+            // set fkey col in related Alert rows to null
             $selectCriteria = new Criteria(ContentTypePeer::DATABASE_NAME);
             $updateValues = new Criteria(ContentTypePeer::DATABASE_NAME);
             $selectCriteria->add(AlertPeer::CONTENT_TYPE_ID, $obj->getId());
@@ -699,7 +700,7 @@ abstract class BaseContentTypePeer {
 
             BasePeer::doUpdate($selectCriteria, $updateValues, $con); // use BasePeer because generated Peer doUpdate() methods only update using pkey
 
-            // set fkey col in related Content rows to NULL
+            // set fkey col in related Content rows to null
             $selectCriteria = new Criteria(ContentTypePeer::DATABASE_NAME);
             $updateValues = new Criteria(ContentTypePeer::DATABASE_NAME);
             $selectCriteria->add(ContentPeer::CONTENT_TYPE_ID, $obj->getId());

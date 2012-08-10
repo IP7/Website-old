@@ -16,7 +16,7 @@
  * configuration can also be retrieved as a nested arrays, flat array or as a
  * PropelConfiguration instance.
  *
- * @author     Veikko MÃ¤kinen <veikko@veikko.fi>
+ * @author     Veikko Mäkinen <veikko@veikko.fi>
  * @version    $Revision$
  * @package    propel.runtime.config
  */

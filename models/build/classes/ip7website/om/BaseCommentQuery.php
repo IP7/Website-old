@@ -4,64 +4,63 @@
 /**
  * Base class that represents a query for the 'content_comments' table.
  *
- * 
  *
- * @method     CommentQuery orderById($order = Criteria::ASC) Order by the id column
- * @method     CommentQuery orderByReplyToId($order = Criteria::ASC) Order by the reply_to_id column
- * @method     CommentQuery orderByContentId($order = Criteria::ASC) Order by the content_id column
- * @method     CommentQuery orderByAuthorId($order = Criteria::ASC) Order by the author_id column
- * @method     CommentQuery orderByDate($order = Criteria::ASC) Order by the date column
- * @method     CommentQuery orderByText($order = Criteria::ASC) Order by the text column
  *
- * @method     CommentQuery groupById() Group by the id column
- * @method     CommentQuery groupByReplyToId() Group by the reply_to_id column
- * @method     CommentQuery groupByContentId() Group by the content_id column
- * @method     CommentQuery groupByAuthorId() Group by the author_id column
- * @method     CommentQuery groupByDate() Group by the date column
- * @method     CommentQuery groupByText() Group by the text column
+ * @method CommentQuery orderById($order = Criteria::ASC) Order by the id column
+ * @method CommentQuery orderByReplyToId($order = Criteria::ASC) Order by the reply_to_id column
+ * @method CommentQuery orderByContentId($order = Criteria::ASC) Order by the content_id column
+ * @method CommentQuery orderByAuthorId($order = Criteria::ASC) Order by the author_id column
+ * @method CommentQuery orderByDate($order = Criteria::ASC) Order by the date column
+ * @method CommentQuery orderByText($order = Criteria::ASC) Order by the text column
  *
- * @method     CommentQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
- * @method     CommentQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
- * @method     CommentQuery innerJoin($relation) Adds a INNER JOIN clause to the query
+ * @method CommentQuery groupById() Group by the id column
+ * @method CommentQuery groupByReplyToId() Group by the reply_to_id column
+ * @method CommentQuery groupByContentId() Group by the content_id column
+ * @method CommentQuery groupByAuthorId() Group by the author_id column
+ * @method CommentQuery groupByDate() Group by the date column
+ * @method CommentQuery groupByText() Group by the text column
  *
- * @method     CommentQuery leftJoinReplyToComment($relationAlias = null) Adds a LEFT JOIN clause to the query using the ReplyToComment relation
- * @method     CommentQuery rightJoinReplyToComment($relationAlias = null) Adds a RIGHT JOIN clause to the query using the ReplyToComment relation
- * @method     CommentQuery innerJoinReplyToComment($relationAlias = null) Adds a INNER JOIN clause to the query using the ReplyToComment relation
+ * @method CommentQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
+ * @method CommentQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
+ * @method CommentQuery innerJoin($relation) Adds a INNER JOIN clause to the query
  *
- * @method     CommentQuery leftJoinContent($relationAlias = null) Adds a LEFT JOIN clause to the query using the Content relation
- * @method     CommentQuery rightJoinContent($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Content relation
- * @method     CommentQuery innerJoinContent($relationAlias = null) Adds a INNER JOIN clause to the query using the Content relation
+ * @method CommentQuery leftJoinReplyToComment($relationAlias = null) Adds a LEFT JOIN clause to the query using the ReplyToComment relation
+ * @method CommentQuery rightJoinReplyToComment($relationAlias = null) Adds a RIGHT JOIN clause to the query using the ReplyToComment relation
+ * @method CommentQuery innerJoinReplyToComment($relationAlias = null) Adds a INNER JOIN clause to the query using the ReplyToComment relation
  *
- * @method     CommentQuery leftJoinAuthor($relationAlias = null) Adds a LEFT JOIN clause to the query using the Author relation
- * @method     CommentQuery rightJoinAuthor($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Author relation
- * @method     CommentQuery innerJoinAuthor($relationAlias = null) Adds a INNER JOIN clause to the query using the Author relation
+ * @method CommentQuery leftJoinContent($relationAlias = null) Adds a LEFT JOIN clause to the query using the Content relation
+ * @method CommentQuery rightJoinContent($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Content relation
+ * @method CommentQuery innerJoinContent($relationAlias = null) Adds a INNER JOIN clause to the query using the Content relation
  *
- * @method     CommentQuery leftJoinCommentRelatedById($relationAlias = null) Adds a LEFT JOIN clause to the query using the CommentRelatedById relation
- * @method     CommentQuery rightJoinCommentRelatedById($relationAlias = null) Adds a RIGHT JOIN clause to the query using the CommentRelatedById relation
- * @method     CommentQuery innerJoinCommentRelatedById($relationAlias = null) Adds a INNER JOIN clause to the query using the CommentRelatedById relation
+ * @method CommentQuery leftJoinAuthor($relationAlias = null) Adds a LEFT JOIN clause to the query using the Author relation
+ * @method CommentQuery rightJoinAuthor($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Author relation
+ * @method CommentQuery innerJoinAuthor($relationAlias = null) Adds a INNER JOIN clause to the query using the Author relation
  *
- * @method     Comment findOne(PropelPDO $con = null) Return the first Comment matching the query
- * @method     Comment findOneOrCreate(PropelPDO $con = null) Return the first Comment matching the query, or a new Comment object populated from the query conditions when no match is found
+ * @method CommentQuery leftJoinCommentRelatedById($relationAlias = null) Adds a LEFT JOIN clause to the query using the CommentRelatedById relation
+ * @method CommentQuery rightJoinCommentRelatedById($relationAlias = null) Adds a RIGHT JOIN clause to the query using the CommentRelatedById relation
+ * @method CommentQuery innerJoinCommentRelatedById($relationAlias = null) Adds a INNER JOIN clause to the query using the CommentRelatedById relation
  *
- * @method     Comment findOneById(int $id) Return the first Comment filtered by the id column
- * @method     Comment findOneByReplyToId(int $reply_to_id) Return the first Comment filtered by the reply_to_id column
- * @method     Comment findOneByContentId(int $content_id) Return the first Comment filtered by the content_id column
- * @method     Comment findOneByAuthorId(int $author_id) Return the first Comment filtered by the author_id column
- * @method     Comment findOneByDate(string $date) Return the first Comment filtered by the date column
- * @method     Comment findOneByText(string $text) Return the first Comment filtered by the text column
+ * @method Comment findOne(PropelPDO $con = null) Return the first Comment matching the query
+ * @method Comment findOneOrCreate(PropelPDO $con = null) Return the first Comment matching the query, or a new Comment object populated from the query conditions when no match is found
  *
- * @method     array findById(int $id) Return Comment objects filtered by the id column
- * @method     array findByReplyToId(int $reply_to_id) Return Comment objects filtered by the reply_to_id column
- * @method     array findByContentId(int $content_id) Return Comment objects filtered by the content_id column
- * @method     array findByAuthorId(int $author_id) Return Comment objects filtered by the author_id column
- * @method     array findByDate(string $date) Return Comment objects filtered by the date column
- * @method     array findByText(string $text) Return Comment objects filtered by the text column
+ * @method Comment findOneById(int $id) Return the first Comment filtered by the id column
+ * @method Comment findOneByReplyToId(int $reply_to_id) Return the first Comment filtered by the reply_to_id column
+ * @method Comment findOneByContentId(int $content_id) Return the first Comment filtered by the content_id column
+ * @method Comment findOneByAuthorId(int $author_id) Return the first Comment filtered by the author_id column
+ * @method Comment findOneByDate(string $date) Return the first Comment filtered by the date column
+ * @method Comment findOneByText(string $text) Return the first Comment filtered by the text column
+ *
+ * @method array findById(int $id) Return Comment objects filtered by the id column
+ * @method array findByReplyToId(int $reply_to_id) Return Comment objects filtered by the reply_to_id column
+ * @method array findByContentId(int $content_id) Return Comment objects filtered by the content_id column
+ * @method array findByAuthorId(int $author_id) Return Comment objects filtered by the author_id column
+ * @method array findByDate(string $date) Return Comment objects filtered by the date column
+ * @method array findByText(string $text) Return Comment objects filtered by the text column
  *
  * @package    propel.generator.ip7website.om
  */
 abstract class BaseCommentQuery extends ModelCriteria
 {
-    
     /**
      * Initializes internal state of BaseCommentQuery object.
      *
@@ -107,7 +106,7 @@ abstract class BaseCommentQuery extends ModelCriteria
      * $obj  = $c->findPk(12, $con);
      * </code>
      *
-     * @param mixed $key Primary key to use for the query 
+     * @param mixed $key Primary key to use for the query
      * @param     PropelPDO $con an optional connection object
      *
      * @return   Comment|Comment[]|mixed the result, formatted by the current formatter
@@ -149,7 +148,7 @@ abstract class BaseCommentQuery extends ModelCriteria
         $sql = 'SELECT `ID`, `REPLY_TO_ID`, `CONTENT_ID`, `AUTHOR_ID`, `DATE` FROM `content_comments` WHERE `ID` = :p0';
         try {
             $stmt = $con->prepare($sql);
-			$stmt->bindValue(':p0', $key, PDO::PARAM_INT);
+            $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
             $stmt->execute();
         } catch (Exception $e) {
             Propel::log($e->getMessage(), Propel::LOG_ERR);
@@ -781,4 +780,4 @@ abstract class BaseCommentQuery extends ModelCriteria
         return $this;
     }
 
-} // BaseCommentQuery
+}

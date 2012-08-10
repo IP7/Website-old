@@ -16,7 +16,6 @@
  */
 class PropelObjectCollection extends PropelCollection
 {
-
     /**
      * Save all the elements in the collection
      *
@@ -211,8 +210,11 @@ class PropelObjectCollection extends PropelCollection
      * <code>
      *   $res = $coll->toKeyValue('Id', 'Name');
      * </code>
+     * <code>
+     *   $res = $coll->toKeyValue(array('RelatedModel', 'Name'), 'Name');
+     * </code>
      *
-     * @param string $keyColumn
+     * @param string|array $keyColumn The name of the column, or a list of columns to call.
      * @param string $valueColumn
      *
      * @return array
@@ -220,13 +222,39 @@ class PropelObjectCollection extends PropelCollection
     public function toKeyValue($keyColumn = 'PrimaryKey', $valueColumn = null)
     {
         $ret = array();
-        $keyGetterMethod = 'get' . $keyColumn;
         $valueGetterMethod = (null === $valueColumn) ? '__toString' : ('get' . $valueColumn);
+
+        if (!is_array($keyColumn)) {
+            $keyColumn = array($keyColumn);
+        }
+
         foreach ($this as $obj) {
-            $ret[$obj->$keyGetterMethod()] = $obj->$valueGetterMethod();
+            $ret[$this->getValueForColumns($obj, $keyColumn)] = $obj->$valueGetterMethod();
         }
 
         return $ret;
+    }
+
+    /**
+     * Return the value for a given set of key columns.
+     *
+     * Each column will be resolved on the value returned by the previous one.
+     *
+     * @param object $object  The object to start with.
+     * @param array  $columns The sequence of key columns.
+     *
+     * @return mixed
+     */
+    protected function getValueForColumns($object, array $columns)
+    {
+        $value = $object;
+
+        foreach ($columns as $eachKeyColumn) {
+            $keyGetterMethod = 'get'.$eachKeyColumn;
+            $value = $value->$keyGetterMethod();
+        }
+
+        return $value;
     }
 
     /**
@@ -287,5 +315,44 @@ class PropelObjectCollection extends PropelCollection
         }
 
         return $relatedObjects;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function search($element)
+    {
+        if ($element instanceof BaseObject) {
+            if (null !== $elt = $this->getIdenticalObject($element)) {
+                $element = $elt;
+            }
+        }
+
+        return parent::search($element);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function contains($element)
+    {
+        if ($element instanceof BaseObject) {
+            if (null !== $elt = $this->getIdenticalObject($element)) {
+                $element = $elt;
+            }
+        }
+
+        return parent::contains($element);
+    }
+
+    private function getIdenticalObject(BaseObject $object)
+    {
+        foreach ($this as $obj) {
+            if ($obj instanceof BaseObject && $obj->hashCode() === $object->hashCode()) {
+                return $obj;
+            }
+        }
+
+        return null;
     }
 }

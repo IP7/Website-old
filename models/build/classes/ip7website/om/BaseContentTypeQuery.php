@@ -4,40 +4,39 @@
 /**
  * Base class that represents a query for the 'content_types' table.
  *
- * 
  *
- * @method     ContentTypeQuery orderById($order = Criteria::ASC) Order by the id column
- * @method     ContentTypeQuery orderByName($order = Criteria::ASC) Order by the name column
  *
- * @method     ContentTypeQuery groupById() Group by the id column
- * @method     ContentTypeQuery groupByName() Group by the name column
+ * @method ContentTypeQuery orderById($order = Criteria::ASC) Order by the id column
+ * @method ContentTypeQuery orderByName($order = Criteria::ASC) Order by the name column
  *
- * @method     ContentTypeQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
- * @method     ContentTypeQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
- * @method     ContentTypeQuery innerJoin($relation) Adds a INNER JOIN clause to the query
+ * @method ContentTypeQuery groupById() Group by the id column
+ * @method ContentTypeQuery groupByName() Group by the name column
  *
- * @method     ContentTypeQuery leftJoinAlert($relationAlias = null) Adds a LEFT JOIN clause to the query using the Alert relation
- * @method     ContentTypeQuery rightJoinAlert($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Alert relation
- * @method     ContentTypeQuery innerJoinAlert($relationAlias = null) Adds a INNER JOIN clause to the query using the Alert relation
+ * @method ContentTypeQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
+ * @method ContentTypeQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
+ * @method ContentTypeQuery innerJoin($relation) Adds a INNER JOIN clause to the query
  *
- * @method     ContentTypeQuery leftJoinContent($relationAlias = null) Adds a LEFT JOIN clause to the query using the Content relation
- * @method     ContentTypeQuery rightJoinContent($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Content relation
- * @method     ContentTypeQuery innerJoinContent($relationAlias = null) Adds a INNER JOIN clause to the query using the Content relation
+ * @method ContentTypeQuery leftJoinAlert($relationAlias = null) Adds a LEFT JOIN clause to the query using the Alert relation
+ * @method ContentTypeQuery rightJoinAlert($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Alert relation
+ * @method ContentTypeQuery innerJoinAlert($relationAlias = null) Adds a INNER JOIN clause to the query using the Alert relation
  *
- * @method     ContentType findOne(PropelPDO $con = null) Return the first ContentType matching the query
- * @method     ContentType findOneOrCreate(PropelPDO $con = null) Return the first ContentType matching the query, or a new ContentType object populated from the query conditions when no match is found
+ * @method ContentTypeQuery leftJoinContent($relationAlias = null) Adds a LEFT JOIN clause to the query using the Content relation
+ * @method ContentTypeQuery rightJoinContent($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Content relation
+ * @method ContentTypeQuery innerJoinContent($relationAlias = null) Adds a INNER JOIN clause to the query using the Content relation
  *
- * @method     ContentType findOneById(int $id) Return the first ContentType filtered by the id column
- * @method     ContentType findOneByName(string $name) Return the first ContentType filtered by the name column
+ * @method ContentType findOne(PropelPDO $con = null) Return the first ContentType matching the query
+ * @method ContentType findOneOrCreate(PropelPDO $con = null) Return the first ContentType matching the query, or a new ContentType object populated from the query conditions when no match is found
  *
- * @method     array findById(int $id) Return ContentType objects filtered by the id column
- * @method     array findByName(string $name) Return ContentType objects filtered by the name column
+ * @method ContentType findOneById(int $id) Return the first ContentType filtered by the id column
+ * @method ContentType findOneByName(string $name) Return the first ContentType filtered by the name column
+ *
+ * @method array findById(int $id) Return ContentType objects filtered by the id column
+ * @method array findByName(string $name) Return ContentType objects filtered by the name column
  *
  * @package    propel.generator.ip7website.om
  */
 abstract class BaseContentTypeQuery extends ModelCriteria
 {
-    
     /**
      * Initializes internal state of BaseContentTypeQuery object.
      *
@@ -83,7 +82,7 @@ abstract class BaseContentTypeQuery extends ModelCriteria
      * $obj  = $c->findPk(12, $con);
      * </code>
      *
-     * @param mixed $key Primary key to use for the query 
+     * @param mixed $key Primary key to use for the query
      * @param     PropelPDO $con an optional connection object
      *
      * @return   ContentType|ContentType[]|mixed the result, formatted by the current formatter
@@ -125,7 +124,7 @@ abstract class BaseContentTypeQuery extends ModelCriteria
         $sql = 'SELECT `ID`, `NAME` FROM `content_types` WHERE `ID` = :p0';
         try {
             $stmt = $con->prepare($sql);
-			$stmt->bindValue(':p0', $key, PDO::PARAM_INT);
+            $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
             $stmt->execute();
         } catch (Exception $e) {
             Propel::log($e->getMessage(), Propel::LOG_ERR);
@@ -431,4 +430,4 @@ abstract class BaseContentTypeQuery extends ModelCriteria
         return $this;
     }
 
-} // BaseContentTypeQuery
+}
