@@ -1,0 +1,21 @@
+{% extends 'main.html' %}
+{% block content %}
+
+	<h2>Profil de : {{page.username}}</h2>
+	<p id="username"><strong>Username : </strong>{{page.username}}</p>
+	<p id="status"><em>{{page.status}}</em></p>
+	<p id="userFirstName"><strong>Prénom : </strong>{{page.userFirstName}}</p>
+	<p id="userLastName"><strong>Nom : </strong>{{page.userLastName}}</p>
+	<p id="birthDate"><strong>Date de naissance : </strong>{{page.birthDate}}</p>
+	<p id="mail"><strong>Mail : </strong>{{page.mail}}</p>
+	<p id="addreiss"><strong>Adresse : </strong>{{page.address}}</p>
+	<p id="phone"><strong>Téléphone : </strong>{{page.phone}}</p>
+	<p id="website"><strong>Website : </strong>{{page.website}}</p>
+	<hr />
+	<p id="firstEntry"><strong>Date d'inscription : </strong>{{page.firstEntry}}</p>
+	<p id="lastVisit"><strong>Dernière visite : </strong>{{page.lastVisit}}</p>
+	<hr />
+	<p><strong>Description : </strong></p>
+			<p id="description">{{page.description}}</p>
+
+{% endblock %}
