@@ -39,6 +39,7 @@ class CursusTableMap extends TableMap
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
+        $this->addColumn('SHORT_NAME', 'ShortName', 'CHAR', true, 2, null);
         $this->addColumn('NAME', 'Name', 'VARCHAR', true, 16, null);
         $this->addColumn('DESCRIPTION', 'Description', 'LONGVARCHAR', false, 1024, null);
         $this->addForeignKey('RESPONSABLE_ID', 'ResponsableId', 'INTEGER', 'users', 'ID', false, null, null);
@@ -46,6 +47,8 @@ class CursusTableMap extends TableMap
         // validators
         $this->addValidator('NAME', 'minLength', 'propel.validator.MinLengthValidator', '1', 'Name must be at least 1 characters.');
         $this->addValidator('NAME', 'unique', 'propel.validator.UniqueValidator', '', 'Name already exists.');
+        $this->addValidator('SHORT_NAME', 'minLength', 'propel.validator.MinLengthValidator', '1', 'Short name must be at least 1 characters.');
+        $this->addValidator('SHORT_NAME', 'unique', 'propel.validator.UniqueValidator', '', 'Short name already exists.');
     } // initialize()
 
     /**

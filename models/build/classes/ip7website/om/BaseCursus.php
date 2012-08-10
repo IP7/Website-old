@@ -36,6 +36,12 @@ abstract class BaseCursus extends BaseObject implements Persistent
     protected $id;
 
     /**
+     * The value for the short_name field.
+     * @var        string
+     */
+    protected $short_name;
+
+    /**
      * The value for the name field.
      * @var        string
      */
@@ -184,6 +190,16 @@ abstract class BaseCursus extends BaseObject implements Persistent
     }
 
     /**
+     * Get the [short_name] column value.
+     *
+     * @return string
+     */
+    public function getShortName()
+    {
+        return $this->short_name;
+    }
+
+    /**
      * Get the [name] column value.
      *
      * @return string
@@ -273,6 +289,27 @@ abstract class BaseCursus extends BaseObject implements Persistent
 
         return $this;
     } // setId()
+
+    /**
+     * Set the value of [short_name] column.
+     *
+     * @param string $v new value
+     * @return Cursus The current object (for fluent API support)
+     */
+    public function setShortName($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->short_name !== $v) {
+            $this->short_name = $v;
+            $this->modifiedColumns[] = CursusPeer::SHORT_NAME;
+        }
+
+
+        return $this;
+    } // setShortName()
 
     /**
      * Set the value of [name] column.
@@ -405,9 +442,10 @@ abstract class BaseCursus extends BaseObject implements Persistent
         try {
 
             $this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
-            $this->name = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
-            $this->responsable_id = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
-            $this->newsletter_id = ($row[$startcol + 3] !== null) ? (int) $row[$startcol + 3] : null;
+            $this->short_name = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
+            $this->name = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
+            $this->responsable_id = ($row[$startcol + 3] !== null) ? (int) $row[$startcol + 3] : null;
+            $this->newsletter_id = ($row[$startcol + 4] !== null) ? (int) $row[$startcol + 4] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -416,7 +454,7 @@ abstract class BaseCursus extends BaseObject implements Persistent
                 $this->ensureConsistency();
             }
 
-            return $startcol + 4; // 4 = CursusPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 5; // 5 = CursusPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating Cursus object", $e);
@@ -802,6 +840,9 @@ abstract class BaseCursus extends BaseObject implements Persistent
         if ($this->isColumnModified(CursusPeer::ID)) {
             $modifiedColumns[':p' . $index++]  = '`ID`';
         }
+        if ($this->isColumnModified(CursusPeer::SHORT_NAME)) {
+            $modifiedColumns[':p' . $index++]  = '`SHORT_NAME`';
+        }
         if ($this->isColumnModified(CursusPeer::NAME)) {
             $modifiedColumns[':p' . $index++]  = '`NAME`';
         }
@@ -827,6 +868,9 @@ abstract class BaseCursus extends BaseObject implements Persistent
                 switch ($columnName) {
                     case '`ID`':
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
+                        break;
+                    case '`SHORT_NAME`':
+                        $stmt->bindValue($identifier, $this->short_name, PDO::PARAM_STR);
                         break;
                     case '`NAME`':
                         $stmt->bindValue($identifier, $this->name, PDO::PARAM_STR);
@@ -1044,15 +1088,18 @@ abstract class BaseCursus extends BaseObject implements Persistent
                 return $this->getId();
                 break;
             case 1:
-                return $this->getName();
+                return $this->getShortName();
                 break;
             case 2:
-                return $this->getDescription();
+                return $this->getName();
                 break;
             case 3:
-                return $this->getResponsableId();
+                return $this->getDescription();
                 break;
             case 4:
+                return $this->getResponsableId();
+                break;
+            case 5:
                 return $this->getNewsletterId();
                 break;
             default:
@@ -1085,10 +1132,11 @@ abstract class BaseCursus extends BaseObject implements Persistent
         $keys = CursusPeer::getFieldNames($keyType);
         $result = array(
             $keys[0] => $this->getId(),
-            $keys[1] => $this->getName(),
-            $keys[2] => ($includeLazyLoadColumns) ? $this->getDescription() : null,
-            $keys[3] => $this->getResponsableId(),
-            $keys[4] => $this->getNewsletterId(),
+            $keys[1] => $this->getShortName(),
+            $keys[2] => $this->getName(),
+            $keys[3] => ($includeLazyLoadColumns) ? $this->getDescription() : null,
+            $keys[4] => $this->getResponsableId(),
+            $keys[5] => $this->getNewsletterId(),
         );
         if ($includeForeignObjects) {
             if (null !== $this->aResponsable) {
@@ -1153,15 +1201,18 @@ abstract class BaseCursus extends BaseObject implements Persistent
                 $this->setId($value);
                 break;
             case 1:
-                $this->setName($value);
+                $this->setShortName($value);
                 break;
             case 2:
-                $this->setDescription($value);
+                $this->setName($value);
                 break;
             case 3:
-                $this->setResponsableId($value);
+                $this->setDescription($value);
                 break;
             case 4:
+                $this->setResponsableId($value);
+                break;
+            case 5:
                 $this->setNewsletterId($value);
                 break;
         } // switch()
@@ -1189,10 +1240,11 @@ abstract class BaseCursus extends BaseObject implements Persistent
         $keys = CursusPeer::getFieldNames($keyType);
 
         if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
-        if (array_key_exists($keys[1], $arr)) $this->setName($arr[$keys[1]]);
-        if (array_key_exists($keys[2], $arr)) $this->setDescription($arr[$keys[2]]);
-        if (array_key_exists($keys[3], $arr)) $this->setResponsableId($arr[$keys[3]]);
-        if (array_key_exists($keys[4], $arr)) $this->setNewsletterId($arr[$keys[4]]);
+        if (array_key_exists($keys[1], $arr)) $this->setShortName($arr[$keys[1]]);
+        if (array_key_exists($keys[2], $arr)) $this->setName($arr[$keys[2]]);
+        if (array_key_exists($keys[3], $arr)) $this->setDescription($arr[$keys[3]]);
+        if (array_key_exists($keys[4], $arr)) $this->setResponsableId($arr[$keys[4]]);
+        if (array_key_exists($keys[5], $arr)) $this->setNewsletterId($arr[$keys[5]]);
     }
 
     /**
@@ -1205,6 +1257,7 @@ abstract class BaseCursus extends BaseObject implements Persistent
         $criteria = new Criteria(CursusPeer::DATABASE_NAME);
 
         if ($this->isColumnModified(CursusPeer::ID)) $criteria->add(CursusPeer::ID, $this->id);
+        if ($this->isColumnModified(CursusPeer::SHORT_NAME)) $criteria->add(CursusPeer::SHORT_NAME, $this->short_name);
         if ($this->isColumnModified(CursusPeer::NAME)) $criteria->add(CursusPeer::NAME, $this->name);
         if ($this->isColumnModified(CursusPeer::DESCRIPTION)) $criteria->add(CursusPeer::DESCRIPTION, $this->description);
         if ($this->isColumnModified(CursusPeer::RESPONSABLE_ID)) $criteria->add(CursusPeer::RESPONSABLE_ID, $this->responsable_id);
@@ -1272,6 +1325,7 @@ abstract class BaseCursus extends BaseObject implements Persistent
      */
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
+        $copyObj->setShortName($this->getShortName());
         $copyObj->setName($this->getName());
         $copyObj->setDescription($this->getDescription());
         $copyObj->setResponsableId($this->getResponsableId());
@@ -3169,6 +3223,7 @@ abstract class BaseCursus extends BaseObject implements Persistent
     public function clear()
     {
         $this->id = null;
+        $this->short_name = null;
         $this->name = null;
         $this->description = null;
         $this->description_isLoaded = false;

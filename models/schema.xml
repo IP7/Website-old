@@ -132,6 +132,7 @@
         <column name="id"             type="INTEGER" required="true" primaryKey="true" autoIncrement="true"/>
 
         <!-- nom -->
+        <column name="short_name"     type="CHAR"    size="2" required="true" />
         <column name="name"           type="VARCHAR" size="16" required="true" />
 
         <!-- description -->
@@ -161,6 +162,15 @@
             <rule name="minLength" value="1" message="Name must be at least ${value} characters." />
             <rule name="unique" message="Name already exists." />
         </validator>
+
+        <validator column="short_name">
+            <rule name="minLength" value="1" message="Short name must be at least ${value} characters." />
+            <rule name="unique" message="Short name already exists." />
+        </validator>
+
+        <index>
+            <index-column name="short_name" />
+        </index>
     </table>
 
     <!-- cursus au(x)quel(s) sont inscrit les utilisateurs -->

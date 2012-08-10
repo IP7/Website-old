@@ -7,12 +7,14 @@
  *
  *
  * @method CursusQuery orderById($order = Criteria::ASC) Order by the id column
+ * @method CursusQuery orderByShortName($order = Criteria::ASC) Order by the short_name column
  * @method CursusQuery orderByName($order = Criteria::ASC) Order by the name column
  * @method CursusQuery orderByDescription($order = Criteria::ASC) Order by the description column
  * @method CursusQuery orderByResponsableId($order = Criteria::ASC) Order by the responsable_id column
  * @method CursusQuery orderByNewsletterId($order = Criteria::ASC) Order by the newsletter_id column
  *
  * @method CursusQuery groupById() Group by the id column
+ * @method CursusQuery groupByShortName() Group by the short_name column
  * @method CursusQuery groupByName() Group by the name column
  * @method CursusQuery groupByDescription() Group by the description column
  * @method CursusQuery groupByResponsableId() Group by the responsable_id column
@@ -58,12 +60,14 @@
  * @method Cursus findOneOrCreate(PropelPDO $con = null) Return the first Cursus matching the query, or a new Cursus object populated from the query conditions when no match is found
  *
  * @method Cursus findOneById(int $id) Return the first Cursus filtered by the id column
+ * @method Cursus findOneByShortName(string $short_name) Return the first Cursus filtered by the short_name column
  * @method Cursus findOneByName(string $name) Return the first Cursus filtered by the name column
  * @method Cursus findOneByDescription(string $description) Return the first Cursus filtered by the description column
  * @method Cursus findOneByResponsableId(int $responsable_id) Return the first Cursus filtered by the responsable_id column
  * @method Cursus findOneByNewsletterId(int $newsletter_id) Return the first Cursus filtered by the newsletter_id column
  *
  * @method array findById(int $id) Return Cursus objects filtered by the id column
+ * @method array findByShortName(string $short_name) Return Cursus objects filtered by the short_name column
  * @method array findByName(string $name) Return Cursus objects filtered by the name column
  * @method array findByDescription(string $description) Return Cursus objects filtered by the description column
  * @method array findByResponsableId(int $responsable_id) Return Cursus objects filtered by the responsable_id column
@@ -157,7 +161,7 @@ abstract class BaseCursusQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `ID`, `NAME`, `RESPONSABLE_ID`, `NEWSLETTER_ID` FROM `cursus` WHERE `ID` = :p0';
+        $sql = 'SELECT `ID`, `SHORT_NAME`, `NAME`, `RESPONSABLE_ID`, `NEWSLETTER_ID` FROM `cursus` WHERE `ID` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -271,6 +275,35 @@ abstract class BaseCursusQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(CursusPeer::ID, $id, $comparison);
+    }
+
+    /**
+     * Filter the query on the short_name column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByShortName('fooValue');   // WHERE short_name = 'fooValue'
+     * $query->filterByShortName('%fooValue%'); // WHERE short_name LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $shortName The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return CursusQuery The current query, for fluid interface
+     */
+    public function filterByShortName($shortName = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($shortName)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $shortName)) {
+                $shortName = str_replace('*', '%', $shortName);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(CursusPeer::SHORT_NAME, $shortName, $comparison);
     }
 
     /**

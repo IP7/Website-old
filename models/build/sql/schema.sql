@@ -54,12 +54,14 @@ DROP TABLE IF EXISTS `cursus`;
 CREATE TABLE `cursus`
 (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `short_name` CHAR(2) NOT NULL,
     `name` VARCHAR(16) NOT NULL,
     `description` TEXT(1024),
     `responsable_id` INTEGER,
     `newsletter_id` INTEGER,
     PRIMARY KEY (`id`),
     UNIQUE INDEX `cursus_U_1` (`name`),
+    INDEX `cursus_I_1` (`short_name`),
     INDEX `cursus_FI_1` (`responsable_id`),
     INDEX `cursus_FI_2` (`newsletter_id`),
     CONSTRAINT `cursus_FK_1`
