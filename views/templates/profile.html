@@ -16,5 +16,10 @@
 	<hr />
 	<p><strong>Description : </strong></p>
 			<p id="description">{{information.description}}</p>
+	{% if editButton is defined %}	
+	<nav id='editButton'>
+		<a href="{{ editButton.href }}"> {{ editButton.label }} </a>
+	</nav>
+	{% endif %}
 
 {% endblock %}
