@@ -62,6 +62,12 @@ abstract class BaseCourse extends BaseObject implements Persistent
     protected $name;
 
     /**
+     * The value for the code field.
+     * @var        string
+     */
+    protected $code;
+
+    /**
      * The value for the ects field.
      * Note: this column has a database default value of: (expression) 3
      * @var        int
@@ -236,6 +242,16 @@ abstract class BaseCourse extends BaseObject implements Persistent
     }
 
     /**
+     * Get the [code] column value.
+     *
+     * @return string
+     */
+    public function getCode()
+    {
+        return $this->code;
+    }
+
+    /**
      * Get the [ects] column value.
      *
      * @return int
@@ -373,6 +389,27 @@ abstract class BaseCourse extends BaseObject implements Persistent
     } // setName()
 
     /**
+     * Set the value of [code] column.
+     *
+     * @param string $v new value
+     * @return Course The current object (for fluent API support)
+     */
+    public function setCode($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->code !== $v) {
+            $this->code = $v;
+            $this->modifiedColumns[] = CoursePeer::CODE;
+        }
+
+
+        return $this;
+    } // setCode()
+
+    /**
      * Set the value of [ects] column.
      *
      * @param int $v new value
@@ -451,8 +488,9 @@ abstract class BaseCourse extends BaseObject implements Persistent
             $this->semester = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
             $this->optional = ($row[$startcol + 3] !== null) ? (boolean) $row[$startcol + 3] : null;
             $this->name = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
-            $this->ects = ($row[$startcol + 5] !== null) ? (int) $row[$startcol + 5] : null;
-            $this->description = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
+            $this->code = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
+            $this->ects = ($row[$startcol + 6] !== null) ? (int) $row[$startcol + 6] : null;
+            $this->description = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -461,7 +499,7 @@ abstract class BaseCourse extends BaseObject implements Persistent
                 $this->ensureConsistency();
             }
 
-            return $startcol + 7; // 7 = CoursePeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 8; // 8 = CoursePeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating Course object", $e);
@@ -821,6 +859,9 @@ abstract class BaseCourse extends BaseObject implements Persistent
         if ($this->isColumnModified(CoursePeer::NAME)) {
             $modifiedColumns[':p' . $index++]  = '`NAME`';
         }
+        if ($this->isColumnModified(CoursePeer::CODE)) {
+            $modifiedColumns[':p' . $index++]  = '`CODE`';
+        }
         if ($this->isColumnModified(CoursePeer::ECTS)) {
             $modifiedColumns[':p' . $index++]  = '`ECTS`';
         }
@@ -852,6 +893,9 @@ abstract class BaseCourse extends BaseObject implements Persistent
                         break;
                     case '`NAME`':
                         $stmt->bindValue($identifier, $this->name, PDO::PARAM_STR);
+                        break;
+                    case '`CODE`':
+                        $stmt->bindValue($identifier, $this->code, PDO::PARAM_STR);
                         break;
                     case '`ECTS`':
                         $stmt->bindValue($identifier, $this->ects, PDO::PARAM_INT);
@@ -1069,9 +1113,12 @@ abstract class BaseCourse extends BaseObject implements Persistent
                 return $this->getName();
                 break;
             case 5:
-                return $this->getEcts();
+                return $this->getCode();
                 break;
             case 6:
+                return $this->getEcts();
+                break;
+            case 7:
                 return $this->getDescription();
                 break;
             default:
@@ -1108,8 +1155,9 @@ abstract class BaseCourse extends BaseObject implements Persistent
             $keys[2] => $this->getSemester(),
             $keys[3] => $this->getOptional(),
             $keys[4] => $this->getName(),
-            $keys[5] => $this->getEcts(),
-            $keys[6] => $this->getDescription(),
+            $keys[5] => $this->getCode(),
+            $keys[6] => $this->getEcts(),
+            $keys[7] => $this->getDescription(),
         );
         if ($includeForeignObjects) {
             if (null !== $this->aCursus) {
@@ -1183,9 +1231,12 @@ abstract class BaseCourse extends BaseObject implements Persistent
                 $this->setName($value);
                 break;
             case 5:
-                $this->setEcts($value);
+                $this->setCode($value);
                 break;
             case 6:
+                $this->setEcts($value);
+                break;
+            case 7:
                 $this->setDescription($value);
                 break;
         } // switch()
@@ -1217,8 +1268,9 @@ abstract class BaseCourse extends BaseObject implements Persistent
         if (array_key_exists($keys[2], $arr)) $this->setSemester($arr[$keys[2]]);
         if (array_key_exists($keys[3], $arr)) $this->setOptional($arr[$keys[3]]);
         if (array_key_exists($keys[4], $arr)) $this->setName($arr[$keys[4]]);
-        if (array_key_exists($keys[5], $arr)) $this->setEcts($arr[$keys[5]]);
-        if (array_key_exists($keys[6], $arr)) $this->setDescription($arr[$keys[6]]);
+        if (array_key_exists($keys[5], $arr)) $this->setCode($arr[$keys[5]]);
+        if (array_key_exists($keys[6], $arr)) $this->setEcts($arr[$keys[6]]);
+        if (array_key_exists($keys[7], $arr)) $this->setDescription($arr[$keys[7]]);
     }
 
     /**
@@ -1235,6 +1287,7 @@ abstract class BaseCourse extends BaseObject implements Persistent
         if ($this->isColumnModified(CoursePeer::SEMESTER)) $criteria->add(CoursePeer::SEMESTER, $this->semester);
         if ($this->isColumnModified(CoursePeer::OPTIONAL)) $criteria->add(CoursePeer::OPTIONAL, $this->optional);
         if ($this->isColumnModified(CoursePeer::NAME)) $criteria->add(CoursePeer::NAME, $this->name);
+        if ($this->isColumnModified(CoursePeer::CODE)) $criteria->add(CoursePeer::CODE, $this->code);
         if ($this->isColumnModified(CoursePeer::ECTS)) $criteria->add(CoursePeer::ECTS, $this->ects);
         if ($this->isColumnModified(CoursePeer::DESCRIPTION)) $criteria->add(CoursePeer::DESCRIPTION, $this->description);
 
@@ -1304,6 +1357,7 @@ abstract class BaseCourse extends BaseObject implements Persistent
         $copyObj->setSemester($this->getSemester());
         $copyObj->setOptional($this->getOptional());
         $copyObj->setName($this->getName());
+        $copyObj->setCode($this->getCode());
         $copyObj->setEcts($this->getEcts());
         $copyObj->setDescription($this->getDescription());
 
@@ -3009,6 +3063,7 @@ abstract class BaseCourse extends BaseObject implements Persistent
         $this->semester = null;
         $this->optional = null;
         $this->name = null;
+        $this->code = null;
         $this->ects = null;
         $this->description = null;
         $this->alreadyInSave = false;

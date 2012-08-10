@@ -208,6 +208,9 @@
         <!-- nom -->
         <column name="name"        type="VARCHAR" size="32" required="true" />
 
+        <!-- code -->
+        <column name="code"        type="VARCHAR" size="16" />
+
         <!-- nb de crédits -->
         <column name="ECTS"        type="TINYINT" defaultExpr="3" />
 
@@ -225,6 +228,11 @@
             <unique-column name="semester" />
             <unique-column name="cursus_id" />
         </unique>
+
+        <validator column="code">
+            <rule name="match" value="/^[a-z0-9]+$/i"
+                                             message="Please enter a valid code." />
+        </validator>
 
         <validator column="name">
             <rule name="minLength" value="3" message="Name must be at least ${value} characters." />

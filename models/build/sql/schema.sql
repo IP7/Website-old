@@ -113,6 +113,7 @@ CREATE TABLE `courses`
     `semester` TINYINT DEFAULT 0,
     `optional` TINYINT(1) DEFAULT 0 NOT NULL,
     `name` VARCHAR(32) NOT NULL,
+    `code` VARCHAR(16),
     `ECTS` TINYINT DEFAULT 3,
     `description` TEXT(1024),
     PRIMARY KEY (`id`),
