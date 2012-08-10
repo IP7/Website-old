@@ -3,7 +3,11 @@
     <h3>{{ page.news.title|default('Actualités') }}</h3>
     <ul>
     {% for news in page.news.news %}
-    <li class="news"><header>[<time datetime="{{ news.datetime_attr|e('html_attr') }}">{{ news.datetime }}</time>] <h6>{{ news.title }}</h6></header><article>{{ news.content }}</article>{% if news.author is defined %}<span class="author">({{ news.author }})</span>{% endif %}</li>
+    <li class="news" itemscope itemptype="http://schema.org/NewsArticle">{#
+        #}<header>[<time datetime="{{ news.datetime_attr }}" itemprop="datePublished">{{ news.datetime }}</time>] <h6 itemprop="name">{{ news.title }}</h6></header>{#
+            #}<article>{{ news.content }}</article>{#
+            #}{% if news.author is defined %}<a rel="author" href="{{ news.author.href }}" itemprop="accountablePerson">({{ news.author.name }})</a>{% endif %}{#
+#}</li>
     {% endfor %}
     </ul>
 {% endautoescape %}
