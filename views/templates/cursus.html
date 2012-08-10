@@ -35,7 +35,7 @@
                 {% for course in page.cursus.courses.s2.mandatory %}
                 <li class="navlink course">{{ _m.a(course.href, course.title) }}</li>
                 {% endfor %}
-                {% if page.cursus.courses.s2.optional is not empty %}
+            {% if page.cursus.courses.s2.optional is not empty %}
             </ul>
             </section>
             <section class="optional">
@@ -44,8 +44,7 @@
                     {% for course in page.cursus.courses.s2.optional %}
                 <li class="navlink course">{{ _m.a(course.href, course.title) }}</li>
                     {% endfor %}
-                {% endif %}
-                </ul>
+            {% endif %}
             </ul>
             </section>
         </nav>

@@ -9,12 +9,48 @@ function display_cursus() {
         halt(NOT_FOUND);
     }
 
-    $courses = $cursus->getCourses();
-    $news = $cursus->getNewss();
+    $base_uri = Config::$root_uri.'cursus/'.strtolower($cursus->getShortName()).'/';
+
+    $breadcrumb = array(
+        array(
+            'href' => $base_uri,
+            'title' => $cursus->getName()
+        )
+    );
+
+    $courses = array(
+        's1' => array(
+            'mandatory' => array(),
+            'optional'  => array()
+        ),
+        's2' => array(
+            'mandatory' => array(),
+            'optional'  => array()
+        )
+    );
+    
+    foreach ($cursus->getCourses() as $c) {
+
+        $type = ($c->getOptional()) ? 'optional' : 'mandatory';
+
+        $courses['s'.$c->getSemester()][$type] []= array(
+            'href' => $base_uri.strtolower($c->getCode()),
+            'title' => $c->getCode()
+        );
+    }
+
+    $news = array();
+    
+    
+    foreach ($cursus->getNewss() as $n) {
+
+    }
 
     return Config::$tpl->render('cursus.html', tpl_array(array(
         'page' => array(
             'title' => $cursus->getName(),
+
+            'breadcrumb' => $breadcrumb,
 
             'news' => array(),
 
@@ -22,9 +58,9 @@ function display_cursus() {
                 'name' => $cursus->getName(),
                 'introduction' => $cursus->getDescription(),
 
-                'courses' => array(),
+                'courses' => $courses,
 
-                'other_links' => array()
+                'other_links' => $news
             )
 
 
