@@ -6,9 +6,10 @@
 	/*
 	
 		#TODO
-		-Cacher ou non les champs : email/addresse/téléphone
+		-Cacher ou non les champs : email/addresse/téléphone #DONE
 		-Permettre aux utilisateurs de changer certains champs
 		-Afficher toutes les dates en type DD/MM/YYYY
+		-Ajouter les commentaires
 
 	*/
 
@@ -21,26 +22,13 @@
 
 		if ( $user instanceof User ){
 
-			if ( $user->isStudent() ) $userStatus = "Étudiant";
-			else $userStatus = "Professeur";
-
+			$userArray = userInformationToArray($user);
 
 			return Config::$tpl->render('profile.html', tpl_array(array(
 							'page' => array(
 								'title' => 'Profil de ' . $user->getUsername(),
-								'username' => $user->getUsername(),
-								'status' => $userStatus,
-								'userFirstName' => $user->getFirstName(),
-								'userLastName' => $user->getLastName(),
-								'birthDate' => $user->getBirthDate(),
-								'mail' => $user->getEmail(),
-								'address' => $user->getAddress(),
-								'phone' => $user->getPhone(),
-								'website' => $user->getWebsite(),
-								'firstEntry' => $user->getFirstEntry(),
-								'lastVisit' => $user->getLastVisit(),
-								'description' => $user->getDescription(),
-							)
+							),
+							'information' => $userArray,
 					)));
 
 		}
@@ -55,6 +43,36 @@
 
 		}
 		
+
+	}
+
+	function userInformationToArray(User $user){
+
+		if ( $user->isStudent() ) $userStatus = "Étudiant";
+		else $userStatus = "Professeur";
+
+		$userArray = Array(
+				'username' => $user->getUsername(),
+				'status' => $userStatus,
+				'userFirstName' => $user->getFirstName(),
+				'userLastName' => $user->getLastName(),
+				'birthDate' => $user->getBirthDate(),
+				'mail' => $user->getEmail(),
+				'phone' => $user->getPhone(),
+				'website' => $user->getWebsite(),
+				'firstEntry' => $user->getFirstEntry(),
+				'lastVisit' => $user->getLastVisit(),
+				'description' => $user->getDescription(),
+			);
+
+		if ( !$user->getConfigShowEmail() ) unset($userArray['mail']);
+		if ( !$user->getConfigShowPhone() ) unset($userArray['phone']);
+		if ( !$user->getConfigShowRealName() ){
+			unset($userArray['userFirstName']);
+			unset($userArray['userLastName']);
+		}
+
+	return $userArray;
 
 	}
 

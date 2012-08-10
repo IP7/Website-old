@@ -1,21 +1,20 @@
 {% extends 'main.html' %}
 {% block content %}
 
-	<h2>Profil de : {{page.username}}</h2>
-	<p id="username"><strong>Username : </strong>{{page.username}}</p>
-	<p id="status"><em>{{page.status}}</em></p>
-	<p id="userFirstName"><strong>Prénom : </strong>{{page.userFirstName}}</p>
-	<p id="userLastName"><strong>Nom : </strong>{{page.userLastName}}</p>
-	<p id="birthDate"><strong>Date de naissance : </strong>{{page.birthDate}}</p>
-	<p id="mail"><strong>Mail : </strong>{{page.mail}}</p>
-	<p id="addreiss"><strong>Adresse : </strong>{{page.address}}</p>
-	<p id="phone"><strong>Téléphone : </strong>{{page.phone}}</p>
-	<p id="website"><strong>Website : </strong>{{page.website}}</p>
+	<h2>Profil de : {{information.username}}</h2>
+	<p id="username"><strong>Username : </strong>{{information.username}}</p>
+	<p id="status"><em>{{information.status}}</em></p>
+	{% if information.userFirstName is defined %}<p id="userFirstName"><strong>Prénom : </strong>{{information.userFirstName}}</p>{% endif %}
+	{% if information.userLastName is defined %}<p id="userLastName"><strong>Nom : </strong>{{information.userLastName}}</p>{% endif %}
+	<p id="birthDate"><strong>Date de naissance : </strong>{{information.birthDate}}</p>
+	{% if information.mail is defined %}<p id="mail"><strong>Mail : </strong>{{information.mail}}</p>{% endif %}
+	{% if information.phone is defined %}<p id="phone"><strong>Téléphone : </strong>{{information.phone}}</p>{% endif %}
+	<p id="website"><strong>Website : </strong>{{information.website}}</p>
 	<hr />
-	<p id="firstEntry"><strong>Date d'inscription : </strong>{{page.firstEntry}}</p>
-	<p id="lastVisit"><strong>Dernière visite : </strong>{{page.lastVisit}}</p>
+	<p id="firstEntry"><strong>Date d'inscription : </strong>{{information.firstEntry}}</p>
+	<p id="lastVisit"><strong>Dernière visite : </strong>{{information.lastVisit}}</p>
 	<hr />
 	<p><strong>Description : </strong></p>
-			<p id="description">{{page.description}}</p>
+			<p id="description">{{information.description}}</p>
 
 {% endblock %}
