@@ -1,0 +1,76 @@
+{% import 'macros.html' as _m %}
+{% extends 'main.html' %}
+{% block content %}
+{# Menu des matières #}
+{% if page.cursus.courses is not empty %}
+<aside class="submenu">
+    <h4>Matières</h4>
+    <section class="semester">
+        <h5>Semestre 1</h5>
+        <nav>
+            <section class="mandatory">
+            <ul>
+                {% for course in page.cursus.courses.s1.mandatory %}
+                <li class="navlink course">{{ _m.a(course.href, course.title) }}</li>
+                {% endfor %}
+                {% if page.cursus.courses.s1.optional is not empty %}
+            </ul>
+            </section>
+            <section class="optional">
+            <h6>Options</h6>
+            <ul>
+                    {% for course in page.cursus.courses.s1.optional %}
+                <li class="navlink course">{{ _m.a(course.href, course.title) }}</li>
+                    {% endfor %}
+                {% endif %}
+            </ul>
+            </section>
+        </nav>
+    </section>
+    <section class="semester">
+        <h5>Semestre 2</h5>
+        <nav>
+            <section class="mandatory">
+            <ul>
+                {% for course in page.cursus.courses.s2.mandatory %}
+                <li class="navlink course">{{ _m.a(course.href, course.title) }}</li>
+                {% endfor %}
+                {% if page.cursus.courses.s2.optional is not empty %}
+            </ul>
+            </section>
+            <section class="optional">
+            <h6>Options</h6>
+            <ul>
+                    {% for course in page.cursus.courses.s2.optional %}
+                <li class="navlink course">{{ _m.a(course.href, course.title) }}</li>
+                    {% endfor %}
+                {% endif %}
+                </ul>
+            </ul>
+            </section>
+        </nav>
+    </section>
+</aside>
+{% endif %}
+<article>
+{# Intro #}
+<h1>{{ page.cursus.name }}</h1>
+<section id="intro">{{ page.cursus.introduction }}</section>
+{# News #}
+{% include 'news.html' %}
+</article>
+{% if page.cursus.other_links is not empty %}
+{# Menu 'Autres ressources' #}
+<aside class="submenu">
+    <h4>Autres ressources</h4>
+    <nav>
+        <ul>
+        {% for link in page.cursus.other_links %}
+            {{ _m.navlink(link.href, link.title) }}
+        {% endfor %}
+        </ul>
+    </nav>
+</aside>
+{% endif %}
+
+{% endblock %}

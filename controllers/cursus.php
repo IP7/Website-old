@@ -1,25 +1,32 @@
 <?php
 
 function display_cursus() {
-    $name = params('cursus');
+    $name = params('name');
 
-    $cursus = CursusQuery::create()->findOneByName($name);
+    $cursus = CursusQuery::create()->findOneByShortName($name);
 
     if ($cursus == null) {
         halt(NOT_FOUND);
     }
 
+    $courses = $cursus->getCourses();
     $news = $cursus->getNewss();
 
     return Config::$tpl->render('cursus.html', tpl_array(array(
         'page' => array(
-            'title' => ucfirst($cursus->getName()),
+            'title' => $cursus->getName(),
 
-            'intro' => $cursus->getDescription(),
+            'news' => array(),
 
-            'news' => $news
+            'cursus' => array(
+                'name' => $cursus->getName(),
+                'introduction' => $cursus->getDescription(),
 
-            # TODO
+                'courses' => array(),
+
+                'other_links' => array()
+            )
+
 
         )
     )));

@@ -46,6 +46,9 @@ dispatch_post('/', 'display_home');
 # dispatch('/search', 'display_search_page');
 # dispatch_post('/search', 'display_search_results_page');
 
+## cursus
+dispatch('/cursus/:name', 'display_cursus');
+
 ## admin home
 dispatch('/admin', 'display_admin_home');
 ## moderation
