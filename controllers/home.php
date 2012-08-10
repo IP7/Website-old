@@ -40,9 +40,7 @@ function display_home() {
 
             'intro' => 'Bienvenue sur le site de l\'association IP7.',
 
-            'news' => array(
-                'news' => array()
-            )
+            'news' => array()
         ),
     )));
 
