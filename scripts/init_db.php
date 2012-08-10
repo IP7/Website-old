@@ -70,7 +70,7 @@ foreach($cursus as $k => $v) {
 
                     $course = new Course();
                     $course->setName($name);
-                    //$course->setECTS((int)$desc[0]);
+                    $course->setECTS((int)$desc[0]);
                     $course->setCursus($cursus[$k]);
                     $course->setSemester($s);
                     $course->setOptional((bool)$opt);
