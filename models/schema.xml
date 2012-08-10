@@ -198,6 +198,9 @@
         <!-- nom -->
         <column name="name"        type="VARCHAR" size="32" required="true" />
 
+        <!-- nb de crédits -->
+        <column name="ECTS"        type="TINYINT" defaultExpr="3" />
+
         <!-- description -->
         <column name="description" type="LONGVARCHAR" size="1024" />
 
@@ -209,6 +212,7 @@
 
         <unique>
             <unique-column name="name" />
+            <unique-column name="semester" />
             <unique-column name="cursus_id" />
         </unique>
 
@@ -219,6 +223,11 @@
         <validator column="semester">
             <rule name="minValue"  value="0" message="The semester cannot be negative." />
             <rule name="maxValue"  value="3" message="The semester cannot be higher than 2." />
+        </validator>
+
+        <validator column="ECTS">
+            <rule name="minValue"  value="0" message="ECTS cannot be negative." />
+            <rule name="maxValue"  value="30" message="ECTS cannot be higher than 30." />
         </validator>
     </table>
 

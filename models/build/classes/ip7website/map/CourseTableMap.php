@@ -43,11 +43,14 @@ class CourseTableMap extends TableMap
         $this->addColumn('SEMESTER', 'Semester', 'TINYINT', false, null, 0);
         $this->addColumn('OPTIONAL', 'Optional', 'BOOLEAN', true, 1, '0');
         $this->addColumn('NAME', 'Name', 'VARCHAR', true, 32, null);
+        $this->addColumn('ECTS', 'Ects', 'TINYINT', false, null, 3);
         $this->addColumn('DESCRIPTION', 'Description', 'LONGVARCHAR', false, 1024, null);
         // validators
         $this->addValidator('NAME', 'minLength', 'propel.validator.MinLengthValidator', '3', 'Name must be at least 3 characters.');
         $this->addValidator('SEMESTER', 'minValue', 'propel.validator.MinValueValidator', '0', 'The semester cannot be negative.');
         $this->addValidator('SEMESTER', 'maxValue', 'propel.validator.MaxValueValidator', '3', 'The semester cannot be higher than 2.');
+        $this->addValidator('ECTS', 'minValue', 'propel.validator.MinValueValidator', '0', 'ECTS cannot be negative.');
+        $this->addValidator('ECTS', 'maxValue', 'propel.validator.MaxValueValidator', '30', 'ECTS cannot be higher than 30.');
     } // initialize()
 
     /**
