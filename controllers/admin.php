@@ -132,6 +132,10 @@ function display_admin_members() {
     )));
 }
 
+function display_admin_member() {
+
+}
+
 # === MAINTENANCE =============================================================
 
 function display_admin_maintenance() {
