@@ -13,9 +13,10 @@
 
         <!-- type d'utilisateur, utilisé pour les droits. Plus le nombre est haut, plus
              l'utilisateur a de droits. Exemples possibles:
-                 0 - visiteur (pas inscrit en BDD)
-                30 - membre
-                80 - admin
+                  0 - visiteur (pas inscrit en BDD)
+                 50 - membre
+                 80 - modérateur
+                100 - admin
              On garde de la place pour d'éventuels futurs ajouts.
              -->
         <column name="type"                  type="TINYINT"  required="true" defaultExpr="0" />
@@ -24,6 +25,9 @@
         <column name="firstname"             type="VARCHAR"  required="true" />
         <!-- nom -->
         <column name="lastname"              type="VARCHAR"  required="true" />
+
+        <!-- genre -->
+        <column name="gender"                type="ENUM" valueSet="M,F" required="true" />
 
         <!-- == coordonnées == -->
 
@@ -46,6 +50,8 @@
         <column name="first_entry"           type="DATE" />
         <!-- date de dernière inscription -->
         <column name="last_entry"            type="DATE" />
+        <!-- date d'expiration (si un membre) -->
+        <column name="expiration_date"       type="DATE" />
 
         <!-- date de dernière visite -->
         <column name="last_visit"            type="TIMESTAMP" />
@@ -60,8 +66,14 @@
         <column name="config_show_phone"     type="BOOLEAN" defaultExpr="0" />
         <!-- montrer le vrai nom publiquement (à la place du pseudo) -->
         <column name="config_show_real_name" type="BOOLEAN" defaultExpr="1" />
-		  <!-- permet l'indexation du profil -->
-	     <column name="config_indexing_profile" type="BOOLEAN" defaultExpr="0" />
+		 <!-- montrer la date de naissance publiquement -->
+	    <column name="config_show_birthdate" type="BOOLEAN" defaultExpr="0" />
+		 <!-- montrer l'age publiquement -->
+	    <column name="config_show_age"       type="BOOLEAN" defaultExpr="1" />
+		 <!-- montrer l'addresse publiquement -->
+	    <column name="config_show_address"   type="BOOLEAN" defaultExpr="0" />
+		 <!-- permet l'indexation du profil -->
+	    <column name="config_index_profile"  type="BOOLEAN" defaultExpr="0" />
 
         <!-- désactiver le compte -->
         <column name="deactivated"           type="BOOLEAN" defaultExpr="0" />
@@ -72,7 +84,7 @@
         <column name="is_a_teacher"          type="BOOLEAN" defaultExpr="0" />
         
         <!-- si c'est actuellement un étudiant -->
-        <column name="is_a_student"          type="BOOLEAN" defaultExpr="1" />
+        <column name="is_a_student"          type="BOOLEAN" defaultExpr="0" />
 
         <!-- avatar (= id de fichier) -->
         <column name="avatar_id"             type="INTEGER" />

@@ -95,13 +95,19 @@ class User extends BaseUser {
 	}
 
 	/**
-    * Return user's last name and first name in a string
+     * Return user's last name and first name in a string
 	 **/
 	public function getName(){
 		$userNameToString = "";
 		$userNameToString .= $this->getFirstName() . " " . $this->getLastName();
 		return $userNameToString;	
 	}
+
+    // deprecated
+    public function getConfigIndexingProfile() {
+        return $this->getConfigIndexProfile();
+    }
+
 
 } // User
 

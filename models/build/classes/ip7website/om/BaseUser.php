@@ -67,6 +67,12 @@ abstract class BaseUser extends BaseObject implements Persistent
     protected $lastname;
 
     /**
+     * The value for the gender field.
+     * @var        int
+     */
+    protected $gender;
+
+    /**
      * The value for the email field.
      * @var        string
      */
@@ -109,6 +115,12 @@ abstract class BaseUser extends BaseObject implements Persistent
     protected $last_entry;
 
     /**
+     * The value for the expiration_date field.
+     * @var        string
+     */
+    protected $expiration_date;
+
+    /**
      * The value for the last_visit field.
      * @var        string
      */
@@ -143,11 +155,32 @@ abstract class BaseUser extends BaseObject implements Persistent
     protected $config_show_real_name;
 
     /**
-     * The value for the config_indexing_profile field.
+     * The value for the config_show_birthdate field.
      * Note: this column has a database default value of: (expression) 0
      * @var        boolean
      */
-    protected $config_indexing_profile;
+    protected $config_show_birthdate;
+
+    /**
+     * The value for the config_show_age field.
+     * Note: this column has a database default value of: (expression) 1
+     * @var        boolean
+     */
+    protected $config_show_age;
+
+    /**
+     * The value for the config_show_address field.
+     * Note: this column has a database default value of: (expression) 0
+     * @var        boolean
+     */
+    protected $config_show_address;
+
+    /**
+     * The value for the config_index_profile field.
+     * Note: this column has a database default value of: (expression) 0
+     * @var        boolean
+     */
+    protected $config_index_profile;
 
     /**
      * The value for the deactivated field.
@@ -165,7 +198,7 @@ abstract class BaseUser extends BaseObject implements Persistent
 
     /**
      * The value for the is_a_student field.
-     * Note: this column has a database default value of: (expression) 1
+     * Note: this column has a database default value of: (expression) 0
      * @var        boolean
      */
     protected $is_a_student;
@@ -492,6 +525,25 @@ abstract class BaseUser extends BaseObject implements Persistent
     }
 
     /**
+     * Get the [gender] column value.
+     *
+     * @return int
+     * @throws PropelException - if the stored enum key is unknown.
+     */
+    public function getGender()
+    {
+        if (null === $this->gender) {
+            return null;
+        }
+        $valueSet = UserPeer::getValueSet(UserPeer::GENDER);
+        if (!isset($valueSet[$this->gender])) {
+            throw new PropelException('Unknown stored enum key: ' . $this->gender);
+        }
+
+        return $valueSet[$this->gender];
+    }
+
+    /**
      * Get the [email] column value.
      *
      * @return string
@@ -643,6 +695,43 @@ abstract class BaseUser extends BaseObject implements Persistent
     }
 
     /**
+     * Get the [optionally formatted] temporal [expiration_date] column value.
+     *
+     *
+     * @param string $format The date/time format string (either date()-style or strftime()-style).
+     *				 If format is null, then the raw DateTime object will be returned.
+     * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00
+     * @throws PropelException - if unable to parse/validate the date/time value.
+     */
+    public function getExpirationDate($format = '%x')
+    {
+        if ($this->expiration_date === null) {
+            return null;
+        }
+
+        if ($this->expiration_date === '0000-00-00') {
+            // while technically this is not a default value of null,
+            // this seems to be closest in meaning.
+            return null;
+        } else {
+            try {
+                $dt = new DateTime($this->expiration_date);
+            } catch (Exception $x) {
+                throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->expiration_date, true), $x);
+            }
+        }
+
+        if ($format === null) {
+            // Because propel.useDateTimeClass is true, we return a DateTime object.
+            return $dt;
+        } elseif (strpos($format, '%') !== false) {
+            return strftime($format, $dt->format('U'));
+        } else {
+            return $dt->format($format);
+        }
+    }
+
+    /**
      * Get the [optionally formatted] temporal [last_visit] column value.
      *
      *
@@ -720,13 +809,43 @@ abstract class BaseUser extends BaseObject implements Persistent
     }
 
     /**
-     * Get the [config_indexing_profile] column value.
+     * Get the [config_show_birthdate] column value.
      *
      * @return boolean
      */
-    public function getConfigIndexingProfile()
+    public function getConfigShowBirthdate()
     {
-        return $this->config_indexing_profile;
+        return $this->config_show_birthdate;
+    }
+
+    /**
+     * Get the [config_show_age] column value.
+     *
+     * @return boolean
+     */
+    public function getConfigShowAge()
+    {
+        return $this->config_show_age;
+    }
+
+    /**
+     * Get the [config_show_address] column value.
+     *
+     * @return boolean
+     */
+    public function getConfigShowAddress()
+    {
+        return $this->config_show_address;
+    }
+
+    /**
+     * Get the [config_index_profile] column value.
+     *
+     * @return boolean
+     */
+    public function getConfigIndexProfile()
+    {
+        return $this->config_index_profile;
     }
 
     /**
@@ -976,6 +1095,32 @@ abstract class BaseUser extends BaseObject implements Persistent
     } // setLastname()
 
     /**
+     * Set the value of [gender] column.
+     *
+     * @param int $v new value
+     * @return User The current object (for fluent API support)
+     * @throws PropelException - if the value is not accepted by this enum.
+     */
+    public function setGender($v)
+    {
+        if ($v !== null) {
+            $valueSet = UserPeer::getValueSet(UserPeer::GENDER);
+            if (!in_array($v, $valueSet)) {
+                throw new PropelException(sprintf('Value "%s" is not accepted in this enumerated column', $v));
+            }
+            $v = array_search($v, $valueSet);
+        }
+
+        if ($this->gender !== $v) {
+            $this->gender = $v;
+            $this->modifiedColumns[] = UserPeer::GENDER;
+        }
+
+
+        return $this;
+    } // setGender()
+
+    /**
      * Set the value of [email] column.
      *
      * @param string $v new value
@@ -1129,6 +1274,29 @@ abstract class BaseUser extends BaseObject implements Persistent
     } // setLastEntry()
 
     /**
+     * Sets the value of [expiration_date] column to a normalized version of the date/time value specified.
+     *
+     * @param mixed $v string, integer (timestamp), or DateTime value.
+     *               Empty strings are treated as null.
+     * @return User The current object (for fluent API support)
+     */
+    public function setExpirationDate($v)
+    {
+        $dt = PropelDateTime::newInstance($v, null, 'DateTime');
+        if ($this->expiration_date !== null || $dt !== null) {
+            $currentDateAsString = ($this->expiration_date !== null && $tmpDt = new DateTime($this->expiration_date)) ? $tmpDt->format('Y-m-d') : null;
+            $newDateAsString = $dt ? $dt->format('Y-m-d') : null;
+            if ($currentDateAsString !== $newDateAsString) {
+                $this->expiration_date = $newDateAsString;
+                $this->modifiedColumns[] = UserPeer::EXPIRATION_DATE;
+            }
+        } // if either are not null
+
+
+        return $this;
+    } // setExpirationDate()
+
+    /**
      * Sets the value of [last_visit] column to a normalized version of the date/time value specified.
      *
      * @param mixed $v string, integer (timestamp), or DateTime value.
@@ -1260,7 +1428,7 @@ abstract class BaseUser extends BaseObject implements Persistent
     } // setConfigShowRealName()
 
     /**
-     * Sets the value of the [config_indexing_profile] column.
+     * Sets the value of the [config_show_birthdate] column.
      * Non-boolean arguments are converted using the following rules:
      *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
      *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
@@ -1269,7 +1437,7 @@ abstract class BaseUser extends BaseObject implements Persistent
      * @param boolean|integer|string $v The new value
      * @return User The current object (for fluent API support)
      */
-    public function setConfigIndexingProfile($v)
+    public function setConfigShowBirthdate($v)
     {
         if ($v !== null) {
             if (is_string($v)) {
@@ -1279,14 +1447,101 @@ abstract class BaseUser extends BaseObject implements Persistent
             }
         }
 
-        if ($this->config_indexing_profile !== $v) {
-            $this->config_indexing_profile = $v;
-            $this->modifiedColumns[] = UserPeer::CONFIG_INDEXING_PROFILE;
+        if ($this->config_show_birthdate !== $v) {
+            $this->config_show_birthdate = $v;
+            $this->modifiedColumns[] = UserPeer::CONFIG_SHOW_BIRTHDATE;
         }
 
 
         return $this;
-    } // setConfigIndexingProfile()
+    } // setConfigShowBirthdate()
+
+    /**
+     * Sets the value of the [config_show_age] column.
+     * Non-boolean arguments are converted using the following rules:
+     *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     *
+     * @param boolean|integer|string $v The new value
+     * @return User The current object (for fluent API support)
+     */
+    public function setConfigShowAge($v)
+    {
+        if ($v !== null) {
+            if (is_string($v)) {
+                $v = in_array(strtolower($v), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+            } else {
+                $v = (boolean) $v;
+            }
+        }
+
+        if ($this->config_show_age !== $v) {
+            $this->config_show_age = $v;
+            $this->modifiedColumns[] = UserPeer::CONFIG_SHOW_AGE;
+        }
+
+
+        return $this;
+    } // setConfigShowAge()
+
+    /**
+     * Sets the value of the [config_show_address] column.
+     * Non-boolean arguments are converted using the following rules:
+     *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     *
+     * @param boolean|integer|string $v The new value
+     * @return User The current object (for fluent API support)
+     */
+    public function setConfigShowAddress($v)
+    {
+        if ($v !== null) {
+            if (is_string($v)) {
+                $v = in_array(strtolower($v), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+            } else {
+                $v = (boolean) $v;
+            }
+        }
+
+        if ($this->config_show_address !== $v) {
+            $this->config_show_address = $v;
+            $this->modifiedColumns[] = UserPeer::CONFIG_SHOW_ADDRESS;
+        }
+
+
+        return $this;
+    } // setConfigShowAddress()
+
+    /**
+     * Sets the value of the [config_index_profile] column.
+     * Non-boolean arguments are converted using the following rules:
+     *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     *
+     * @param boolean|integer|string $v The new value
+     * @return User The current object (for fluent API support)
+     */
+    public function setConfigIndexProfile($v)
+    {
+        if ($v !== null) {
+            if (is_string($v)) {
+                $v = in_array(strtolower($v), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+            } else {
+                $v = (boolean) $v;
+            }
+        }
+
+        if ($this->config_index_profile !== $v) {
+            $this->config_index_profile = $v;
+            $this->modifiedColumns[] = UserPeer::CONFIG_INDEX_PROFILE;
+        }
+
+
+        return $this;
+    } // setConfigIndexProfile()
 
     /**
      * Sets the value of the [deactivated] column.
@@ -1492,23 +1747,28 @@ abstract class BaseUser extends BaseObject implements Persistent
             $this->type = ($row[$startcol + 3] !== null) ? (int) $row[$startcol + 3] : null;
             $this->firstname = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
             $this->lastname = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
-            $this->email = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
-            $this->phone = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
-            $this->address = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
-            $this->website = ($row[$startcol + 9] !== null) ? (string) $row[$startcol + 9] : null;
-            $this->birth_date = ($row[$startcol + 10] !== null) ? (string) $row[$startcol + 10] : null;
-            $this->first_entry = ($row[$startcol + 11] !== null) ? (string) $row[$startcol + 11] : null;
-            $this->last_entry = ($row[$startcol + 12] !== null) ? (string) $row[$startcol + 12] : null;
-            $this->last_visit = ($row[$startcol + 13] !== null) ? (string) $row[$startcol + 13] : null;
-            $this->visits_nb = ($row[$startcol + 14] !== null) ? (int) $row[$startcol + 14] : null;
-            $this->config_show_email = ($row[$startcol + 15] !== null) ? (boolean) $row[$startcol + 15] : null;
-            $this->config_show_phone = ($row[$startcol + 16] !== null) ? (boolean) $row[$startcol + 16] : null;
-            $this->config_show_real_name = ($row[$startcol + 17] !== null) ? (boolean) $row[$startcol + 17] : null;
-            $this->config_indexing_profile = ($row[$startcol + 18] !== null) ? (boolean) $row[$startcol + 18] : null;
-            $this->deactivated = ($row[$startcol + 19] !== null) ? (boolean) $row[$startcol + 19] : null;
-            $this->is_a_teacher = ($row[$startcol + 20] !== null) ? (boolean) $row[$startcol + 20] : null;
-            $this->is_a_student = ($row[$startcol + 21] !== null) ? (boolean) $row[$startcol + 21] : null;
-            $this->avatar_id = ($row[$startcol + 22] !== null) ? (int) $row[$startcol + 22] : null;
+            $this->gender = ($row[$startcol + 6] !== null) ? (int) $row[$startcol + 6] : null;
+            $this->email = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
+            $this->phone = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
+            $this->address = ($row[$startcol + 9] !== null) ? (string) $row[$startcol + 9] : null;
+            $this->website = ($row[$startcol + 10] !== null) ? (string) $row[$startcol + 10] : null;
+            $this->birth_date = ($row[$startcol + 11] !== null) ? (string) $row[$startcol + 11] : null;
+            $this->first_entry = ($row[$startcol + 12] !== null) ? (string) $row[$startcol + 12] : null;
+            $this->last_entry = ($row[$startcol + 13] !== null) ? (string) $row[$startcol + 13] : null;
+            $this->expiration_date = ($row[$startcol + 14] !== null) ? (string) $row[$startcol + 14] : null;
+            $this->last_visit = ($row[$startcol + 15] !== null) ? (string) $row[$startcol + 15] : null;
+            $this->visits_nb = ($row[$startcol + 16] !== null) ? (int) $row[$startcol + 16] : null;
+            $this->config_show_email = ($row[$startcol + 17] !== null) ? (boolean) $row[$startcol + 17] : null;
+            $this->config_show_phone = ($row[$startcol + 18] !== null) ? (boolean) $row[$startcol + 18] : null;
+            $this->config_show_real_name = ($row[$startcol + 19] !== null) ? (boolean) $row[$startcol + 19] : null;
+            $this->config_show_birthdate = ($row[$startcol + 20] !== null) ? (boolean) $row[$startcol + 20] : null;
+            $this->config_show_age = ($row[$startcol + 21] !== null) ? (boolean) $row[$startcol + 21] : null;
+            $this->config_show_address = ($row[$startcol + 22] !== null) ? (boolean) $row[$startcol + 22] : null;
+            $this->config_index_profile = ($row[$startcol + 23] !== null) ? (boolean) $row[$startcol + 23] : null;
+            $this->deactivated = ($row[$startcol + 24] !== null) ? (boolean) $row[$startcol + 24] : null;
+            $this->is_a_teacher = ($row[$startcol + 25] !== null) ? (boolean) $row[$startcol + 25] : null;
+            $this->is_a_student = ($row[$startcol + 26] !== null) ? (boolean) $row[$startcol + 26] : null;
+            $this->avatar_id = ($row[$startcol + 27] !== null) ? (int) $row[$startcol + 27] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -1517,7 +1777,7 @@ abstract class BaseUser extends BaseObject implements Persistent
                 $this->ensureConsistency();
             }
 
-            return $startcol + 23; // 23 = UserPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 28; // 28 = UserPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating User object", $e);
@@ -2086,6 +2346,9 @@ abstract class BaseUser extends BaseObject implements Persistent
         if ($this->isColumnModified(UserPeer::LASTNAME)) {
             $modifiedColumns[':p' . $index++]  = '`LASTNAME`';
         }
+        if ($this->isColumnModified(UserPeer::GENDER)) {
+            $modifiedColumns[':p' . $index++]  = '`GENDER`';
+        }
         if ($this->isColumnModified(UserPeer::EMAIL)) {
             $modifiedColumns[':p' . $index++]  = '`EMAIL`';
         }
@@ -2107,6 +2370,9 @@ abstract class BaseUser extends BaseObject implements Persistent
         if ($this->isColumnModified(UserPeer::LAST_ENTRY)) {
             $modifiedColumns[':p' . $index++]  = '`LAST_ENTRY`';
         }
+        if ($this->isColumnModified(UserPeer::EXPIRATION_DATE)) {
+            $modifiedColumns[':p' . $index++]  = '`EXPIRATION_DATE`';
+        }
         if ($this->isColumnModified(UserPeer::LAST_VISIT)) {
             $modifiedColumns[':p' . $index++]  = '`LAST_VISIT`';
         }
@@ -2122,8 +2388,17 @@ abstract class BaseUser extends BaseObject implements Persistent
         if ($this->isColumnModified(UserPeer::CONFIG_SHOW_REAL_NAME)) {
             $modifiedColumns[':p' . $index++]  = '`CONFIG_SHOW_REAL_NAME`';
         }
-        if ($this->isColumnModified(UserPeer::CONFIG_INDEXING_PROFILE)) {
-            $modifiedColumns[':p' . $index++]  = '`CONFIG_INDEXING_PROFILE`';
+        if ($this->isColumnModified(UserPeer::CONFIG_SHOW_BIRTHDATE)) {
+            $modifiedColumns[':p' . $index++]  = '`CONFIG_SHOW_BIRTHDATE`';
+        }
+        if ($this->isColumnModified(UserPeer::CONFIG_SHOW_AGE)) {
+            $modifiedColumns[':p' . $index++]  = '`CONFIG_SHOW_AGE`';
+        }
+        if ($this->isColumnModified(UserPeer::CONFIG_SHOW_ADDRESS)) {
+            $modifiedColumns[':p' . $index++]  = '`CONFIG_SHOW_ADDRESS`';
+        }
+        if ($this->isColumnModified(UserPeer::CONFIG_INDEX_PROFILE)) {
+            $modifiedColumns[':p' . $index++]  = '`CONFIG_INDEX_PROFILE`';
         }
         if ($this->isColumnModified(UserPeer::DEACTIVATED)) {
             $modifiedColumns[':p' . $index++]  = '`DEACTIVATED`';
@@ -2172,6 +2447,9 @@ abstract class BaseUser extends BaseObject implements Persistent
                     case '`LASTNAME`':
                         $stmt->bindValue($identifier, $this->lastname, PDO::PARAM_STR);
                         break;
+                    case '`GENDER`':
+                        $stmt->bindValue($identifier, $this->gender, PDO::PARAM_INT);
+                        break;
                     case '`EMAIL`':
                         $stmt->bindValue($identifier, $this->email, PDO::PARAM_STR);
                         break;
@@ -2193,6 +2471,9 @@ abstract class BaseUser extends BaseObject implements Persistent
                     case '`LAST_ENTRY`':
                         $stmt->bindValue($identifier, $this->last_entry, PDO::PARAM_STR);
                         break;
+                    case '`EXPIRATION_DATE`':
+                        $stmt->bindValue($identifier, $this->expiration_date, PDO::PARAM_STR);
+                        break;
                     case '`LAST_VISIT`':
                         $stmt->bindValue($identifier, $this->last_visit, PDO::PARAM_STR);
                         break;
@@ -2208,8 +2489,17 @@ abstract class BaseUser extends BaseObject implements Persistent
                     case '`CONFIG_SHOW_REAL_NAME`':
                         $stmt->bindValue($identifier, (int) $this->config_show_real_name, PDO::PARAM_INT);
                         break;
-                    case '`CONFIG_INDEXING_PROFILE`':
-                        $stmt->bindValue($identifier, (int) $this->config_indexing_profile, PDO::PARAM_INT);
+                    case '`CONFIG_SHOW_BIRTHDATE`':
+                        $stmt->bindValue($identifier, (int) $this->config_show_birthdate, PDO::PARAM_INT);
+                        break;
+                    case '`CONFIG_SHOW_AGE`':
+                        $stmt->bindValue($identifier, (int) $this->config_show_age, PDO::PARAM_INT);
+                        break;
+                    case '`CONFIG_SHOW_ADDRESS`':
+                        $stmt->bindValue($identifier, (int) $this->config_show_address, PDO::PARAM_INT);
+                        break;
+                    case '`CONFIG_INDEX_PROFILE`':
+                        $stmt->bindValue($identifier, (int) $this->config_index_profile, PDO::PARAM_INT);
                         break;
                     case '`DEACTIVATED`':
                         $stmt->bindValue($identifier, (int) $this->deactivated, PDO::PARAM_INT);
@@ -2506,60 +2796,75 @@ abstract class BaseUser extends BaseObject implements Persistent
                 return $this->getLastname();
                 break;
             case 6:
-                return $this->getEmail();
+                return $this->getGender();
                 break;
             case 7:
-                return $this->getPhone();
+                return $this->getEmail();
                 break;
             case 8:
-                return $this->getAddress();
+                return $this->getPhone();
                 break;
             case 9:
-                return $this->getWebsite();
+                return $this->getAddress();
                 break;
             case 10:
-                return $this->getBirthDate();
+                return $this->getWebsite();
                 break;
             case 11:
-                return $this->getFirstEntry();
+                return $this->getBirthDate();
                 break;
             case 12:
-                return $this->getLastEntry();
+                return $this->getFirstEntry();
                 break;
             case 13:
-                return $this->getLastVisit();
+                return $this->getLastEntry();
                 break;
             case 14:
-                return $this->getVisitsNb();
+                return $this->getExpirationDate();
                 break;
             case 15:
-                return $this->getConfigShowEmail();
+                return $this->getLastVisit();
                 break;
             case 16:
-                return $this->getConfigShowPhone();
+                return $this->getVisitsNb();
                 break;
             case 17:
-                return $this->getConfigShowRealName();
+                return $this->getConfigShowEmail();
                 break;
             case 18:
-                return $this->getConfigIndexingProfile();
+                return $this->getConfigShowPhone();
                 break;
             case 19:
-                return $this->getDeactivated();
+                return $this->getConfigShowRealName();
                 break;
             case 20:
-                return $this->getIsATeacher();
+                return $this->getConfigShowBirthdate();
                 break;
             case 21:
-                return $this->getIsAStudent();
+                return $this->getConfigShowAge();
                 break;
             case 22:
-                return $this->getAvatarId();
+                return $this->getConfigShowAddress();
                 break;
             case 23:
-                return $this->getDescription();
+                return $this->getConfigIndexProfile();
                 break;
             case 24:
+                return $this->getDeactivated();
+                break;
+            case 25:
+                return $this->getIsATeacher();
+                break;
+            case 26:
+                return $this->getIsAStudent();
+                break;
+            case 27:
+                return $this->getAvatarId();
+                break;
+            case 28:
+                return $this->getDescription();
+                break;
+            case 29:
                 return $this->getRemarks();
                 break;
             default:
@@ -2597,25 +2902,30 @@ abstract class BaseUser extends BaseObject implements Persistent
             $keys[3] => $this->getType(),
             $keys[4] => $this->getFirstname(),
             $keys[5] => $this->getLastname(),
-            $keys[6] => $this->getEmail(),
-            $keys[7] => $this->getPhone(),
-            $keys[8] => $this->getAddress(),
-            $keys[9] => $this->getWebsite(),
-            $keys[10] => $this->getBirthDate(),
-            $keys[11] => $this->getFirstEntry(),
-            $keys[12] => $this->getLastEntry(),
-            $keys[13] => $this->getLastVisit(),
-            $keys[14] => $this->getVisitsNb(),
-            $keys[15] => $this->getConfigShowEmail(),
-            $keys[16] => $this->getConfigShowPhone(),
-            $keys[17] => $this->getConfigShowRealName(),
-            $keys[18] => $this->getConfigIndexingProfile(),
-            $keys[19] => $this->getDeactivated(),
-            $keys[20] => $this->getIsATeacher(),
-            $keys[21] => $this->getIsAStudent(),
-            $keys[22] => $this->getAvatarId(),
-            $keys[23] => ($includeLazyLoadColumns) ? $this->getDescription() : null,
-            $keys[24] => ($includeLazyLoadColumns) ? $this->getRemarks() : null,
+            $keys[6] => $this->getGender(),
+            $keys[7] => $this->getEmail(),
+            $keys[8] => $this->getPhone(),
+            $keys[9] => $this->getAddress(),
+            $keys[10] => $this->getWebsite(),
+            $keys[11] => $this->getBirthDate(),
+            $keys[12] => $this->getFirstEntry(),
+            $keys[13] => $this->getLastEntry(),
+            $keys[14] => $this->getExpirationDate(),
+            $keys[15] => $this->getLastVisit(),
+            $keys[16] => $this->getVisitsNb(),
+            $keys[17] => $this->getConfigShowEmail(),
+            $keys[18] => $this->getConfigShowPhone(),
+            $keys[19] => $this->getConfigShowRealName(),
+            $keys[20] => $this->getConfigShowBirthdate(),
+            $keys[21] => $this->getConfigShowAge(),
+            $keys[22] => $this->getConfigShowAddress(),
+            $keys[23] => $this->getConfigIndexProfile(),
+            $keys[24] => $this->getDeactivated(),
+            $keys[25] => $this->getIsATeacher(),
+            $keys[26] => $this->getIsAStudent(),
+            $keys[27] => $this->getAvatarId(),
+            $keys[28] => ($includeLazyLoadColumns) ? $this->getDescription() : null,
+            $keys[29] => ($includeLazyLoadColumns) ? $this->getRemarks() : null,
         );
         if ($includeForeignObjects) {
             if (null !== $this->aAvatar) {
@@ -2716,60 +3026,79 @@ abstract class BaseUser extends BaseObject implements Persistent
                 $this->setLastname($value);
                 break;
             case 6:
-                $this->setEmail($value);
+                $valueSet = UserPeer::getValueSet(UserPeer::GENDER);
+                if (isset($valueSet[$value])) {
+                    $value = $valueSet[$value];
+                }
+                $this->setGender($value);
                 break;
             case 7:
-                $this->setPhone($value);
+                $this->setEmail($value);
                 break;
             case 8:
-                $this->setAddress($value);
+                $this->setPhone($value);
                 break;
             case 9:
-                $this->setWebsite($value);
+                $this->setAddress($value);
                 break;
             case 10:
-                $this->setBirthDate($value);
+                $this->setWebsite($value);
                 break;
             case 11:
-                $this->setFirstEntry($value);
+                $this->setBirthDate($value);
                 break;
             case 12:
-                $this->setLastEntry($value);
+                $this->setFirstEntry($value);
                 break;
             case 13:
-                $this->setLastVisit($value);
+                $this->setLastEntry($value);
                 break;
             case 14:
-                $this->setVisitsNb($value);
+                $this->setExpirationDate($value);
                 break;
             case 15:
-                $this->setConfigShowEmail($value);
+                $this->setLastVisit($value);
                 break;
             case 16:
-                $this->setConfigShowPhone($value);
+                $this->setVisitsNb($value);
                 break;
             case 17:
-                $this->setConfigShowRealName($value);
+                $this->setConfigShowEmail($value);
                 break;
             case 18:
-                $this->setConfigIndexingProfile($value);
+                $this->setConfigShowPhone($value);
                 break;
             case 19:
-                $this->setDeactivated($value);
+                $this->setConfigShowRealName($value);
                 break;
             case 20:
-                $this->setIsATeacher($value);
+                $this->setConfigShowBirthdate($value);
                 break;
             case 21:
-                $this->setIsAStudent($value);
+                $this->setConfigShowAge($value);
                 break;
             case 22:
-                $this->setAvatarId($value);
+                $this->setConfigShowAddress($value);
                 break;
             case 23:
-                $this->setDescription($value);
+                $this->setConfigIndexProfile($value);
                 break;
             case 24:
+                $this->setDeactivated($value);
+                break;
+            case 25:
+                $this->setIsATeacher($value);
+                break;
+            case 26:
+                $this->setIsAStudent($value);
+                break;
+            case 27:
+                $this->setAvatarId($value);
+                break;
+            case 28:
+                $this->setDescription($value);
+                break;
+            case 29:
                 $this->setRemarks($value);
                 break;
         } // switch()
@@ -2802,25 +3131,30 @@ abstract class BaseUser extends BaseObject implements Persistent
         if (array_key_exists($keys[3], $arr)) $this->setType($arr[$keys[3]]);
         if (array_key_exists($keys[4], $arr)) $this->setFirstname($arr[$keys[4]]);
         if (array_key_exists($keys[5], $arr)) $this->setLastname($arr[$keys[5]]);
-        if (array_key_exists($keys[6], $arr)) $this->setEmail($arr[$keys[6]]);
-        if (array_key_exists($keys[7], $arr)) $this->setPhone($arr[$keys[7]]);
-        if (array_key_exists($keys[8], $arr)) $this->setAddress($arr[$keys[8]]);
-        if (array_key_exists($keys[9], $arr)) $this->setWebsite($arr[$keys[9]]);
-        if (array_key_exists($keys[10], $arr)) $this->setBirthDate($arr[$keys[10]]);
-        if (array_key_exists($keys[11], $arr)) $this->setFirstEntry($arr[$keys[11]]);
-        if (array_key_exists($keys[12], $arr)) $this->setLastEntry($arr[$keys[12]]);
-        if (array_key_exists($keys[13], $arr)) $this->setLastVisit($arr[$keys[13]]);
-        if (array_key_exists($keys[14], $arr)) $this->setVisitsNb($arr[$keys[14]]);
-        if (array_key_exists($keys[15], $arr)) $this->setConfigShowEmail($arr[$keys[15]]);
-        if (array_key_exists($keys[16], $arr)) $this->setConfigShowPhone($arr[$keys[16]]);
-        if (array_key_exists($keys[17], $arr)) $this->setConfigShowRealName($arr[$keys[17]]);
-        if (array_key_exists($keys[18], $arr)) $this->setConfigIndexingProfile($arr[$keys[18]]);
-        if (array_key_exists($keys[19], $arr)) $this->setDeactivated($arr[$keys[19]]);
-        if (array_key_exists($keys[20], $arr)) $this->setIsATeacher($arr[$keys[20]]);
-        if (array_key_exists($keys[21], $arr)) $this->setIsAStudent($arr[$keys[21]]);
-        if (array_key_exists($keys[22], $arr)) $this->setAvatarId($arr[$keys[22]]);
-        if (array_key_exists($keys[23], $arr)) $this->setDescription($arr[$keys[23]]);
-        if (array_key_exists($keys[24], $arr)) $this->setRemarks($arr[$keys[24]]);
+        if (array_key_exists($keys[6], $arr)) $this->setGender($arr[$keys[6]]);
+        if (array_key_exists($keys[7], $arr)) $this->setEmail($arr[$keys[7]]);
+        if (array_key_exists($keys[8], $arr)) $this->setPhone($arr[$keys[8]]);
+        if (array_key_exists($keys[9], $arr)) $this->setAddress($arr[$keys[9]]);
+        if (array_key_exists($keys[10], $arr)) $this->setWebsite($arr[$keys[10]]);
+        if (array_key_exists($keys[11], $arr)) $this->setBirthDate($arr[$keys[11]]);
+        if (array_key_exists($keys[12], $arr)) $this->setFirstEntry($arr[$keys[12]]);
+        if (array_key_exists($keys[13], $arr)) $this->setLastEntry($arr[$keys[13]]);
+        if (array_key_exists($keys[14], $arr)) $this->setExpirationDate($arr[$keys[14]]);
+        if (array_key_exists($keys[15], $arr)) $this->setLastVisit($arr[$keys[15]]);
+        if (array_key_exists($keys[16], $arr)) $this->setVisitsNb($arr[$keys[16]]);
+        if (array_key_exists($keys[17], $arr)) $this->setConfigShowEmail($arr[$keys[17]]);
+        if (array_key_exists($keys[18], $arr)) $this->setConfigShowPhone($arr[$keys[18]]);
+        if (array_key_exists($keys[19], $arr)) $this->setConfigShowRealName($arr[$keys[19]]);
+        if (array_key_exists($keys[20], $arr)) $this->setConfigShowBirthdate($arr[$keys[20]]);
+        if (array_key_exists($keys[21], $arr)) $this->setConfigShowAge($arr[$keys[21]]);
+        if (array_key_exists($keys[22], $arr)) $this->setConfigShowAddress($arr[$keys[22]]);
+        if (array_key_exists($keys[23], $arr)) $this->setConfigIndexProfile($arr[$keys[23]]);
+        if (array_key_exists($keys[24], $arr)) $this->setDeactivated($arr[$keys[24]]);
+        if (array_key_exists($keys[25], $arr)) $this->setIsATeacher($arr[$keys[25]]);
+        if (array_key_exists($keys[26], $arr)) $this->setIsAStudent($arr[$keys[26]]);
+        if (array_key_exists($keys[27], $arr)) $this->setAvatarId($arr[$keys[27]]);
+        if (array_key_exists($keys[28], $arr)) $this->setDescription($arr[$keys[28]]);
+        if (array_key_exists($keys[29], $arr)) $this->setRemarks($arr[$keys[29]]);
     }
 
     /**
@@ -2838,6 +3172,7 @@ abstract class BaseUser extends BaseObject implements Persistent
         if ($this->isColumnModified(UserPeer::TYPE)) $criteria->add(UserPeer::TYPE, $this->type);
         if ($this->isColumnModified(UserPeer::FIRSTNAME)) $criteria->add(UserPeer::FIRSTNAME, $this->firstname);
         if ($this->isColumnModified(UserPeer::LASTNAME)) $criteria->add(UserPeer::LASTNAME, $this->lastname);
+        if ($this->isColumnModified(UserPeer::GENDER)) $criteria->add(UserPeer::GENDER, $this->gender);
         if ($this->isColumnModified(UserPeer::EMAIL)) $criteria->add(UserPeer::EMAIL, $this->email);
         if ($this->isColumnModified(UserPeer::PHONE)) $criteria->add(UserPeer::PHONE, $this->phone);
         if ($this->isColumnModified(UserPeer::ADDRESS)) $criteria->add(UserPeer::ADDRESS, $this->address);
@@ -2845,12 +3180,16 @@ abstract class BaseUser extends BaseObject implements Persistent
         if ($this->isColumnModified(UserPeer::BIRTH_DATE)) $criteria->add(UserPeer::BIRTH_DATE, $this->birth_date);
         if ($this->isColumnModified(UserPeer::FIRST_ENTRY)) $criteria->add(UserPeer::FIRST_ENTRY, $this->first_entry);
         if ($this->isColumnModified(UserPeer::LAST_ENTRY)) $criteria->add(UserPeer::LAST_ENTRY, $this->last_entry);
+        if ($this->isColumnModified(UserPeer::EXPIRATION_DATE)) $criteria->add(UserPeer::EXPIRATION_DATE, $this->expiration_date);
         if ($this->isColumnModified(UserPeer::LAST_VISIT)) $criteria->add(UserPeer::LAST_VISIT, $this->last_visit);
         if ($this->isColumnModified(UserPeer::VISITS_NB)) $criteria->add(UserPeer::VISITS_NB, $this->visits_nb);
         if ($this->isColumnModified(UserPeer::CONFIG_SHOW_EMAIL)) $criteria->add(UserPeer::CONFIG_SHOW_EMAIL, $this->config_show_email);
         if ($this->isColumnModified(UserPeer::CONFIG_SHOW_PHONE)) $criteria->add(UserPeer::CONFIG_SHOW_PHONE, $this->config_show_phone);
         if ($this->isColumnModified(UserPeer::CONFIG_SHOW_REAL_NAME)) $criteria->add(UserPeer::CONFIG_SHOW_REAL_NAME, $this->config_show_real_name);
-        if ($this->isColumnModified(UserPeer::CONFIG_INDEXING_PROFILE)) $criteria->add(UserPeer::CONFIG_INDEXING_PROFILE, $this->config_indexing_profile);
+        if ($this->isColumnModified(UserPeer::CONFIG_SHOW_BIRTHDATE)) $criteria->add(UserPeer::CONFIG_SHOW_BIRTHDATE, $this->config_show_birthdate);
+        if ($this->isColumnModified(UserPeer::CONFIG_SHOW_AGE)) $criteria->add(UserPeer::CONFIG_SHOW_AGE, $this->config_show_age);
+        if ($this->isColumnModified(UserPeer::CONFIG_SHOW_ADDRESS)) $criteria->add(UserPeer::CONFIG_SHOW_ADDRESS, $this->config_show_address);
+        if ($this->isColumnModified(UserPeer::CONFIG_INDEX_PROFILE)) $criteria->add(UserPeer::CONFIG_INDEX_PROFILE, $this->config_index_profile);
         if ($this->isColumnModified(UserPeer::DEACTIVATED)) $criteria->add(UserPeer::DEACTIVATED, $this->deactivated);
         if ($this->isColumnModified(UserPeer::IS_A_TEACHER)) $criteria->add(UserPeer::IS_A_TEACHER, $this->is_a_teacher);
         if ($this->isColumnModified(UserPeer::IS_A_STUDENT)) $criteria->add(UserPeer::IS_A_STUDENT, $this->is_a_student);
@@ -2925,6 +3264,7 @@ abstract class BaseUser extends BaseObject implements Persistent
         $copyObj->setType($this->getType());
         $copyObj->setFirstname($this->getFirstname());
         $copyObj->setLastname($this->getLastname());
+        $copyObj->setGender($this->getGender());
         $copyObj->setEmail($this->getEmail());
         $copyObj->setPhone($this->getPhone());
         $copyObj->setAddress($this->getAddress());
@@ -2932,12 +3272,16 @@ abstract class BaseUser extends BaseObject implements Persistent
         $copyObj->setBirthDate($this->getBirthDate());
         $copyObj->setFirstEntry($this->getFirstEntry());
         $copyObj->setLastEntry($this->getLastEntry());
+        $copyObj->setExpirationDate($this->getExpirationDate());
         $copyObj->setLastVisit($this->getLastVisit());
         $copyObj->setVisitsNb($this->getVisitsNb());
         $copyObj->setConfigShowEmail($this->getConfigShowEmail());
         $copyObj->setConfigShowPhone($this->getConfigShowPhone());
         $copyObj->setConfigShowRealName($this->getConfigShowRealName());
-        $copyObj->setConfigIndexingProfile($this->getConfigIndexingProfile());
+        $copyObj->setConfigShowBirthdate($this->getConfigShowBirthdate());
+        $copyObj->setConfigShowAge($this->getConfigShowAge());
+        $copyObj->setConfigShowAddress($this->getConfigShowAddress());
+        $copyObj->setConfigIndexProfile($this->getConfigIndexProfile());
         $copyObj->setDeactivated($this->getDeactivated());
         $copyObj->setIsATeacher($this->getIsATeacher());
         $copyObj->setIsAStudent($this->getIsAStudent());
@@ -6887,6 +7231,7 @@ abstract class BaseUser extends BaseObject implements Persistent
         $this->type = null;
         $this->firstname = null;
         $this->lastname = null;
+        $this->gender = null;
         $this->email = null;
         $this->phone = null;
         $this->address = null;
@@ -6894,12 +7239,16 @@ abstract class BaseUser extends BaseObject implements Persistent
         $this->birth_date = null;
         $this->first_entry = null;
         $this->last_entry = null;
+        $this->expiration_date = null;
         $this->last_visit = null;
         $this->visits_nb = null;
         $this->config_show_email = null;
         $this->config_show_phone = null;
         $this->config_show_real_name = null;
-        $this->config_indexing_profile = null;
+        $this->config_show_birthdate = null;
+        $this->config_show_age = null;
+        $this->config_show_address = null;
+        $this->config_index_profile = null;
         $this->deactivated = null;
         $this->is_a_teacher = null;
         $this->is_a_student = null;
