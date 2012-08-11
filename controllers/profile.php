@@ -13,22 +13,7 @@
 
 	*/
 
-	function display_profile_page($me=false) {
-
-        if (!$me) {
-            $username = params(0);
-            $user = UserQuery::create()->findOneByUsername($username);
-        } else {
-            if (!is_connected()) {
-                halt(NOT_FOUND);
-            }
-            $user = user();
-        }
-
-		if ( $user == NULL ) {
-            halt(NOT_FOUND);
-        }
-
+    function user2tplarray($user, $only_public=true) {
         $name = ($user->getConfigShowRealName()) ? $user->getName() : $user->getUsername();
         
          $userStatus = '';
@@ -42,7 +27,7 @@
              $userStatus .= ($userStatus=='') ? 'Enseignant' : ' enseignant';
          }
 
-        return Config::$tpl->render('public_profile.html', tpl_array(array(
+         return array(
             'page' => array(
                 'title' => 'Profil de '.$name,
                 'noindex' => !$user->getConfigIndexingProfile(),
@@ -51,11 +36,11 @@
                     'name'        => $name,
                     'pseudo'      => $user->getUsername(),
                     'status'      => $userStatus,
-                    'firstname'   => ($user->getConfigShowRealName()) ? $user->getFirstName() : false,
-                    'lastname'    => ($user->getConfigShowRealName()) ? $user->getLastName() : false,
+                    'firstname'   => (!$only_public || $user->getConfigShowRealName()) ? $user->getFirstName() : false,
+                    'lastname'    => (!$only_public || $user->getConfigShowRealName()) ? $user->getLastName() : false,
                     'birthdate'   => false, #TODO, cf issue #49
                     'age'         => false, #TODO, cf issue #50
-                    'email'       => ($user->getConfigShowEmail()) ? $user->getEmail() : false,
+                    'email'       => (!$only_public || $user->getConfigShowEmail()) ? $user->getEmail() : false,
                     'phone'       => false, #TODO, cf issue #51
                     'address'     => false, #TODO, cf issue #41
                     'website'     => $user->getWebsite(),
@@ -64,28 +49,72 @@
                     'description' => $user->getDescription()
                 ),
 
+            )
+         );
+
+    }
+
+	function display_profile_page($username, $me=false) {
+        if (!$me) {
+            if (empty($username)) {
+                halt(NOT_FOUND);
+            }
+
+            $user = UserQuery::create()->findOneByUsername($username);
+        } else {
+            if (!is_connected()) {
+                halt(NOT_FOUND);
+            }
+            $user = user();
+        }
+
+		if ( $user == NULL ) {
+            halt(NOT_FOUND);
+        }
+
+        $page = array();
+
+        if ($me) {
+            $page['href'] = Config::$root_uri.'profile';
+            $page['title'] = 'Mon profil';
+        }
+        else {
+            $page['href'] = Config::$root_uri.'p/'.$user->getUsername();
+            $page['title'] = 'Profil de '.($user->getConfigShowRealName() ? $user->getName() : $user->getUsername());
+        }
+
+        return Config::$tpl->render('public_profile.html', tpl_array(user2tplarray($user), array(
+            'page' => array(
+                'breadcrumb' => array( $page ),
                 'edit_button' => (!$me ? false : array( 'href' => Config::$root_uri.'profile/edit', 'title' => 'Éditer' ))
             )
-        )));
+        ),
+        ($me? array('page' => array('title' => 'Mon Profil')) : array())));
 	
 	}
 
 	function display_my_profile_page(){
-        return display_profile_page(true);
+        return display_profile_page(null, true);
 	}
 
 	function display_edit_profile_page(){
+        if (!is_connected()) {
+            halt(NOT_FOUND);
+        }
 
-        #FIXME
-		$userArray = userInformationToArray(user(),true);
-
-		return Config::$tpl->render('profile_edit.html', tpl_array(Array(
-					'page' => array(
-						'title' => 'Edition du profil de ' . user()->getUsername(),
-					),
-					'information' => $userArray
-			)));
-
+		return Config::$tpl->render('profile_edit.html', tpl_array(user2tplarray(user(), false), Array(
+            'page' => array(
+                'title' => 'Edition du profil',
+                'edit_form' => array( 'action' => Config::$root_uri.'profile/edit' )
+            )
+        )));
 	}
+
+    # TODO
+    function post_edit_profile_page() {
+        echo('TEST: $_POST=');
+        var_dump($_POST);
+        return "";
+    }
 
 ?>
