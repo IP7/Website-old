@@ -32,3 +32,5 @@
 #breadcrumb .next:before {
   content: '→';
 }
+
+#edit_form label, input[type=submit] { display:block; }
