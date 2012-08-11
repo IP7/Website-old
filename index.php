@@ -24,6 +24,11 @@ function before($route) {
             halt(HTTP_FORBIDDEN, "L'accès à cette page est réservé aux administrateurs.");
         }
     }
+    else if (stristr($route['callback'], 'moderation')) {
+        if (!is_connected() || !user()->isModerator()) {
+            halt(HTTP_FORBIDDEN, "L'accès à cette page est réservé aux modérateurs.");
+        }
+    }
 }
 
 ## (get) home
