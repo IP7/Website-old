@@ -28,6 +28,13 @@
                         #}{% if value is defined and value %} value="{{ value }}"{% endif %} />
 {% endmacro %}
 
+{# - submit #}
+{% macro submit(value, id, classes) %}
+<input type="submit"{% if value is defined and value %} value="{{ value }}"{% endif %}{#
+        #}{% if id is defined and id %} id="{{ id }}"{% endif %}{#
+        #}{% if classes is defined and classes %} class="{{ classes|join(' ') }}"{% endif %} />
+{% endmacro %}
+
 {# meta #}
 
 {# - robots #}
