@@ -70,16 +70,53 @@ function display_admin_members() {
     $members = array();
 
     if ($q != NULL) {
-        # TODO finish it
         foreach ($q as $m) {
+
+            $activated = $m->isActivated();
+            $uri = Config::$root_uri.'admin/membre/'.$m->getUsername();
+
+            $lastentry = $m->getLastEntry();
+
+            if ($lastentry == NULL) {
+                $lastentry = 'jamais';
+            } else {
+                $dt = new DateTime($lastentry);
+                $lastentry = $dt->format('d/m/Y');
+            }
+
+            $type = '-';
+
+            if ($m->isAdmin()) {
+                $type = 'administrateur';
+            }
+            else if ($m->isModerator()) {
+                $type = 'modérateur';
+            }
+            else if ($m->isMember()) {
+                $type = 'membre';
+            }
+
+            $activate_href = $uri.'/'.($activated?'off':'on');
+            $activate_title = 'Désactiver';
+
+            if (!$activated) {
+                $activate_title = ($m->getFirstEntry() != NULL) ? 'Réactiver' : 'Activer';
+            }
+
+            $options = array(
+                array( 'href' => $activate_href, 'title' => $activate_title,),
+                array( 'href' => $uri.'/renew',  'title' => 'Renouveler' ),
+                array( 'href' => $uri.'/edit',   'title' => 'Modifier' )
+            );
+
             $members []= array(
                 'id' => $m->getId(),
-                'href' => Config::$root_uri.'membres/show?members[]='.$m->getId(),
+                'href' => $uri.'/show',
                 'pseudo' => $m->getUsername(),
                 'name' => $m->getName(),
-                'type' => 'TODO', # TODO 'membre', 'modérateur', etc
-
-                'options' => array()
+                'type' => $type,
+                'last_entry' => $lastentry,
+                'options' => $options
             );
         }
     }
@@ -88,7 +125,7 @@ function display_admin_members() {
         'page' => array(
             'title' => 'Membres',
 
-            'members_form' => array( 'action' => Config::$root_uri.'membres/show' ),
+            'members_form' => array( 'action' => Config::$root_uri.'admin/membres/show' ),
 
             'members' => $members
         )
