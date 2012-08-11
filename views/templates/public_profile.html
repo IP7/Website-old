@@ -1,25 +1,7 @@
-{% extends 'main.html' %}
+{% extends 'profile.html' %}
 {% block content %}
-
-	<h2>Profil de : {{information.username}}</h2>
-	<p id="username"><strong>Username : </strong>{{information.username}}</p>
-	<p id="status"><em>{{information.status}}</em></p>
-	{% if information.userFirstName is defined %}<p id="userFirstName"><strong>Prénom : </strong>{{information.userFirstName}}</p>{% endif %}
-	{% if information.userLastName is defined %}<p id="userLastName"><strong>Nom : </strong>{{information.userLastName}}</p>{% endif %}
-	<p id="birthDate"><strong>Date de naissance : </strong>{{information.birthDate}}</p>
-	{% if information.mail is defined %}<p id="mail"><strong>Mail : </strong>{{information.mail}}</p>{% endif %}
-	{% if information.phone is defined %}<p id="phone"><strong>Téléphone : </strong>{{information.phone}}</p>{% endif %}
-	<p id="website"><strong>Website : </strong>{{information.website}}</p>
-	<hr />
-	<p id="firstEntry"><strong>Date d'inscription : </strong>{{information.firstEntry}}</p>
-	<p id="lastVisit"><strong>Dernière visite : </strong>{{information.lastVisit}}</p>
-	<hr />
-	<p><strong>Description : </strong></p>
-			<p id="description">{{information.description}}</p>
-	{% if editButton is defined %}	
-	<nav id='editButton'>
-		<a href="{{ editButton.href }}"> {{ editButton.label }} </a>
-	</nav>
-	{% endif %}
-
+{{ parent() }}
+{% if page.edit_button is defined and page.edit_button %}{#
+    #}<a id="editprofile" class="button" href="{{ page.edit_button.href }}">{{ page.edit_button.label }}</a>{#
+#}{% endif %}
 {% endblock %}
