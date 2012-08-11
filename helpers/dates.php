@@ -17,7 +17,7 @@ function date_fr($d) {
     $today = new DateTime();
 
     if ($today->format('d/m/Y') == $str) {
-        return 'Ajourd\'hui';
+        return 'Aujourd\'hui';
     }
 
     $diff = $d->diff($today);
