@@ -50,6 +50,8 @@ class Config {
     static $default_tpl_values;
     static $default_twig_env;
 
+    #static $timezone = 'Europe/Paris';
+
     static $root_uri = '/';
     static $app_dir;
 
