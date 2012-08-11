@@ -13,48 +13,70 @@
 
 	*/
 
-	function display_profile_page(){
+	function display_profile_page($me=false) {
 
-		$username = params(0);
-		$user = UserQuery::create()
-					->filterByUsername($username)
-					->findOne();
+        if (!$me) {
+            $username = params(0);
+            $user = UserQuery::create()->findOneByUsername($username);
+        } else {
+            if (!is_connected()) {
+                halt(NOT_FOUND);
+            }
+            $user = user();
+        }
 
-		if ( $user instanceof User ){
+		if ( $user == NULL ) {
+            halt(NOT_FOUND);
+        }
 
-			$userArray = userInformationToArray($user,false);
+        $name = ($user->getConfigShowRealName()) ? $user->getName() : $user->getUsername();
+        
+         $userStatus = '';
+ 
+         #TODO adapter au genre, cf issue #48 -> étudiantE, enseignantE
+         if ($user->isStudent()) {
+             $userStatus .= 'Étudiant';
+         }
+ 
+         if ($user->isTeacher()) {
+             $userStatus .= ($userStatus=='') ? 'Enseignant' : ' enseignant';
+         }
 
-			return Config::$tpl->render('public_profile.html', tpl_array(array(
-							'page' => array(
-								'title' => 'Profil de ' . $user->getUsername(),
-							),
-							'information' => $userArray,
-					)));
+        return Config::$tpl->render('public_profile.html', tpl_array(array(
+            'page' => array(
+                'title' => 'Profil de '.$name,
+                'noindex' => !$user->getConfigIndexingProfile(),
 
-		}
+                'user' => array(
+                    'name'        => $name,
+                    'pseudo'      => $user->getUsername(),
+                    'status'      => $userStatus,
+                    'firstname'   => ($user->getConfigShowRealName()) ? $user->getFirstName() : false,
+                    'lastname'    => ($user->getConfigShowRealName()) ? $user->getLastName() : false,
+                    'birthdate'   => false, #TODO, cf issue #49
+                    'age'         => false, #TODO, cf issue #50
+                    'email'       => ($user->getConfigShowEmail()) ? $user->getEmail() : false,
+                    'phone'       => false, #TODO, cf issue #51
+                    'address'     => false, #TODO, cf issue #41
+                    'website'     => $user->getWebsite(),
+                    'entry_date'  => $user->getFirstEntry(),
+                    'last_visit'  => date_fr($user->getLastVisit()),
+                    'description' => $user->getDescription()
+                ),
+
+                'edit_button' => (!$me ? false : array( 'href' => Config::$root_uri.'profile/edit', 'title' => 'Éditer' ))
+            )
+        )));
 	
-        halt(NOT_FOUND);
 	}
 
 	function display_my_profile_page(){
-
-		$userArray = userInformationToArray(user(),true);
-		
-		return Config::$tpl->render('public_profile.html', tpl_array(Array(
-						'page' => Array(
-							'title' => 'Profil de ' . user()->getUsername(),
-						),
-						'information' => $userArray,
-						'editButton' => Array(
-							'label' => 'Edit',
-							'href' => Config::$root_uri . 'profile/edit'
-						)
-				)));
-
+        return display_profile_page(true);
 	}
 
 	function display_edit_profile_page(){
 
+        #FIXME
 		$userArray = userInformationToArray(user(),true);
 
 		return Config::$tpl->render('profile_edit.html', tpl_array(Array(
@@ -63,45 +85,6 @@
 					),
 					'information' => $userArray
 			)));
-
-	}
-
-	function userInformationToArray(User $user, $profilPerso){
-
-        $userStatus = '';
-
-        if ($user->isStudent()) {
-            $userStatus .= 'Étudiant';
-        }
-
-        if ($user->isTeacher()) {
-            $userStatus .= ($userStatus=='') ? 'Enseignant' : ' enseignant';
-        }
-
-		$userArray = array(
-            'username' => $user->getUsername(),
-            'status' => $userStatus,
-            'userFirstName' => $user->getFirstName(),
-            'userLastName' => $user->getLastName(),
-            'birthDate' => $user->getBirthDate(),
-            'mail' => $user->getEmail(),
-            'phone' => $user->getPhone(),
-            'website' => $user->getWebsite(),
-            'firstEntry' => $user->getFirstEntry(),
-            'lastVisit' => $user->getLastVisit(),
-            'description' => $user->getDescription(),
-        );
-
-		if ( !$profilPerso ){
-			if ( !$user->getConfigShowEmail() ) unset($userArray['mail']);
-			if ( !$user->getConfigShowPhone() ) unset($userArray['phone']);
-			if ( !$user->getConfigShowRealName() ){
-				unset($userArray['userFirstName']);
-				unset($userArray['userLastName']);
-			}
-		}
-
-        return $userArray;
 
 	}
 
