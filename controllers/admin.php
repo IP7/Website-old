@@ -5,6 +5,7 @@ Config::init();
 
 # === GENERAL ================================================================ 
 
+# helper
 function admin_tpl_default() {
     static $init = false;
     static $d;
@@ -55,6 +56,41 @@ function display_admin_finances() {
                 array('title' => 'Gérer les utilisateurs', 'href' => Config::$root_uri.'admin/membres'),
                 array('title' => 'Gérer les transactions', 'href' => Config::$root_uri.'admin/transactions')
             )
+        )
+    )));
+}
+
+function display_admin_members() {
+
+    $q = UserQuery::create()
+            ->limit(100)
+            ->orderByUsername()
+            ->find();
+
+    $members = array();
+
+    if ($q != NULL) {
+        # TODO finish it
+        foreach ($q as $m) {
+            $members []= array(
+                'id' => $m->getId(),
+                'href' => Config::$root_uri.'membres/show?members[]='.$m->getId(),
+                'pseudo' => $m->getUsername(),
+                'name' => $m->getName(),
+                'type' => 'TODO', # TODO 'membre', 'modérateur', etc
+
+                'options' => array()
+            );
+        }
+    }
+
+    return Config::$tpl->render('admin_members.html', tpl_array(admin_tpl_default(),array(
+        'page' => array(
+            'title' => 'Membres',
+
+            'members_form' => array( 'action' => Config::$root_uri.'membres/show' ),
+
+            'members' => $members
         )
     )));
 }

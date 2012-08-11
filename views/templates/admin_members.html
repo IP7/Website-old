@@ -1,0 +1,17 @@
+{% extends 'admin_main.html' %}
+{% import 'macros.html' as _m %}
+{% block admin_content %}
+{{ parent() }}
+<form action="{{ page.members_form.action }}" method="GET">
+<table id="members_list">
+    {% for member in page.members %}
+    <tr><td>{{ _m.checkbox('members[]', member.id) }}</td>{#
+      #}<td class="pseudo">{{ _m.a(member.href, member.pseudo) }}</td>{#
+      #}<td class="name">{{ _m.a(member.href, member.name) }}</td>{#
+      #}<td class="type">{{ member.type }}</td>{#
+      #}<td class="options"><ul>{% for opt in member.options %}<li class="option">{{ _m.a(opt.title, opt.href) }}</li>{% endfor %}</ul></td>{#
+  #}</tr>
+    {% endfor %}
+</table>
+</form>
+{% endblock %}

@@ -1,6 +1,5 @@
 <?php
 
-
 # === Maintenance ===
 
 function purge_cache() {
