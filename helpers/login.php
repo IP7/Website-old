@@ -80,6 +80,7 @@
 
         if (!isset($_SESSION['visit_counted'])) {
             $user->incrementVisitsNb();
+            $user->setLastVisit(new DateTime());
             $_SESSION['visit_counted'] = true;
         }
 
