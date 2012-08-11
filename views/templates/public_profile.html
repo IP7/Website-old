@@ -2,6 +2,6 @@
 {% block content %}
 {{ parent() }}
 {% if page.edit_button is defined and page.edit_button %}{#
-    #}<a id="editprofile" class="button" href="{{ page.edit_button.href }}">{{ page.edit_button.label }}</a>{#
+    #}<a id="editprofile" class="button" href="{{ page.edit_button.href }}">{{ page.edit_button.title }}</a>{#
 #}{% endif %}
 {% endblock %}
