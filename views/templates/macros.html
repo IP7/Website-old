@@ -22,17 +22,17 @@
 
 {# - checkbox #}
 {% macro checkbox(name, value, id, checked) %}
-<input type="checkbox"{{ _self.ifdeftrue(' name="', name, '"') }}{#
-                    #}{{ _self.ifdeftrue(' id="', id, '"') }}{#
-                    #}{{ _self.ifdeftrue(' checked="', checked, '"') }}{#
-                    #}{{ _self.ifdeftrue(' value="', value, '"') }} />
+<input type="checkbox"{% if name    is defined and name    %} name="{{ name }}"{%       endif %}{#
+                    #}{% if id      is defined and id      %} id="{{ id }}"{%           endif %}{#
+                    #}{% if checked is defined and checked %} checked="{{ checked }}"{% endif %}{#
+                    #}{% if value   is defined and value   %} value="{{ value }}"{%     endif %} />
 {% endmacro %}
 
 {# - submit #}
 {% macro submit(value, id, classes) %}
-<input type="submit"{{ _self.ifdeftrue(' value="', value, '"') }}{#
-        #}{{ _self.ifdeftrue(' id="', id, '"') }}{#
-        #}{% if classes is defined and classes %} class="{{ classes|join(' ') }}"{% endif %} />
+<input type="submit"{% if value   is defined and value   %} value="{{ value }}"{%             endif %}{#
+                  #}{% if id      is defined and id      %} id="{{ id }}"{%                   endif %}{#
+                  #}{% if classes is defined and classes %} class="{{ classes|join(' ') }}"{% endif %} />
 {% endmacro %}
 
 {# meta #}
@@ -47,16 +47,5 @@
 {# nav link #}
 {% macro navlink(href, value, title, hreflang, external) %}
 <li class="navlink">{{ _self.a(href, value, title, hreflang, false) }}</li>
-{% endmacro %}
-
-{#### Utils ####}
-
-{# print 'expr' between 'before' and 'after' only if 'expr' is defined and not false #}
-{% macro ifdeftrue(before, expr, after) %}
-{% if expr is defined and expr %}{#
-    #}{% if before is defined and before %}{{ before|raw }}{% endif %}{#
-    #}{{ expr|raw }}{#
-    #}{% if after is defined and after %}{{ after|raw }}{% endif %}{#
-#}{% endif %}
 {% endmacro %}
 
