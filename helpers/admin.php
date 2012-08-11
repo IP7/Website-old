@@ -4,6 +4,9 @@
 # === Maintenance ===
 
 function purge_cache() {
+    if (!array_key_exists('cache', Config::$default_twig_env)) {
+        return true;
+    }
     return empty_dir_recur(Config::$default_twig_env['cache']);
 }
 
