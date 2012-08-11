@@ -1,0 +1,32 @@
+{% extends 'main.html' %}
+{% block content %}
+
+{# NOT FINISHED #}
+
+	<form action="" method="">
+	
+		<h2>Profil de : {{information.username}}</h2>
+		<p id="username"><label for="inputUsername"><strong>Username : </strong></label>
+			<input type='name' id='inputUsername' name='inputUsername' placeholder="{{information.username}}" /></p>
+		<p id="status"><em>{{information.status}}</em></p>
+		<p id="userFirstName"><strong>Prénom : </strong>{{information.userFirstName}}</p>
+		<p id="userLastName"><strong>Nom : </strong>{{information.userLastName}}</p>
+		<p id="birthDate"><strong>Date de naissance : </strong>{{information.birthDate}}</p>
+		<p id="mail"><label for='inputEmail'><strong>Mail : </strong></label>
+			<input type='email' id='inputEmail' name='inputEmail' placeholder="{{information.mail}}" /></p>
+		<p id="phone"><label for='inputPhone'><strong>Téléphone : </strong></label>
+			<input type='tel' id='inputPhone' name='inputPhone' placeholder="{{information.phone}}" /></p>
+		<p id="website"><label for='inputWebsite'><strong>Website : </strong></label>
+			<input type='url' id='inputWebsite' name='inputWebsite' placeholder="{{information.website}}" /></p>
+		<hr />
+		<p id="firstEntry"><strong>Date d'inscription : </strong>{{information.firstEntry}}</p>
+		<p id="lastVisit"><strong>Dernière visite : </strong>{{information.lastVisit}}</p>
+		<hr />
+		<p><label for='inputDescription'><strong>Description : </strong></label></p>
+				<p id="description">
+					<textarea id='inputDescription' name='inputDescription'>{{information.description}}</textarea></p>
+
+		<input type='submit' value='Edit' />
+	
+	</form>
+{% endblock %}

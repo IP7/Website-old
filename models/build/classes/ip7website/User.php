@@ -54,6 +54,17 @@ class User extends BaseUser {
         }
         return false;
     }
+	
+	/**
+	 * Return true if the user is a moderator.
+	 * The 'MODERATOR_RANK' constant must be defind.
+	 **/
+	public function isModerator(){
+		if (defined('MODERATOR_RANK')) {
+			return ($this->getType() >= MODERATOR_RANK);
+		}
+		return false;
+	}
 
     /**
      * Return true if the user is a member.
@@ -81,6 +92,15 @@ class User extends BaseUser {
 		$password = (string)$password;
 		$this->setPasswordHash(Config::$p_hasher->HashPassword($password));
 		$this->save();
+	}
+
+	/**
+    * Return user's last name and first name in a string
+	 **/
+	public function getName(){
+		$userNameToString = "";
+		$userNameToString .= $this->getFirstName() . " " . $this->getLastName();
+		return $userNameToString;	
 	}
 
 } // User
