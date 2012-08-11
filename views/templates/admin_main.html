@@ -1,8 +1,6 @@
 {% import 'macros.html' as _m %}
 {% extends 'main.html' %}
-{% block title %}
-<title>{{ site.title }} – Administration{% if page.title is defined and page.title %} – {{ page.title }}{% endif %}</title>
-{% endblock %}
+{% block title %}{{ site.title }} – Administration{% if page.title is defined and page.title %} – {{ page.title }}{% endif %}{% endblock %}
 {% block metas %}
 {{ _m.robots(['noindex', 'nofollow']) }}
 {% endblock %}
@@ -26,5 +24,6 @@
 </aside>
 {% endif %}
 {% block admin_content %}
+<h1>{% if page.title is defined and page.title %}{{ page.title }}{% else %}Administration{% endif %}</h1>
 {% endblock %}
 {% endblock %}
