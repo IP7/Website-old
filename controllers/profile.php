@@ -24,7 +24,7 @@
 
 			$userArray = userInformationToArray($user,false);
 
-			return Config::$tpl->render('profile.html', tpl_array(array(
+			return Config::$tpl->render('public_profile.html', tpl_array(array(
 							'page' => array(
 								'title' => 'Profil de ' . $user->getUsername(),
 							),
@@ -33,20 +33,14 @@
 
 		}
 	
-		return Config::$tpl->render('error.html',tpl_array(array(
-						'page' => array(
-							'errno' => '404',
-							'errstr' => 'Profile not found',
-						)
-				)));
-
+        halt(NOT_FOUND);
 	}
 
 	function display_my_profile_page(){
 
 		$userArray = userInformationToArray(user(),true);
 		
-		return Config::$tpl->render('profile.html', tpl_array(Array(
+		return Config::$tpl->render('public_profile.html', tpl_array(Array(
 						'page' => Array(
 							'title' => 'Profil de ' . user()->getUsername(),
 						),
@@ -74,22 +68,29 @@
 
 	function userInformationToArray(User $user, $profilPerso){
 
-		if ( $user->isStudent() ) $userStatus = "Étudiant";
-		else $userStatus = "Professeur";
+        $userStatus = '';
 
-		$userArray = Array(
-				'username' => $user->getUsername(),
-				'status' => $userStatus,
-				'userFirstName' => $user->getFirstName(),
-				'userLastName' => $user->getLastName(),
-				'birthDate' => $user->getBirthDate(),
-				'mail' => $user->getEmail(),
-				'phone' => $user->getPhone(),
-				'website' => $user->getWebsite(),
-				'firstEntry' => $user->getFirstEntry(),
-				'lastVisit' => $user->getLastVisit(),
-				'description' => $user->getDescription(),
-			);
+        if ($user->isStudent()) {
+            $userStatus .= 'Étudiant';
+        }
+
+        if ($user->isTeacher()) {
+            $userStatus .= ($userStatus=='') ? 'Enseignant' : ' enseignant';
+        }
+
+		$userArray = array(
+            'username' => $user->getUsername(),
+            'status' => $userStatus,
+            'userFirstName' => $user->getFirstName(),
+            'userLastName' => $user->getLastName(),
+            'birthDate' => $user->getBirthDate(),
+            'mail' => $user->getEmail(),
+            'phone' => $user->getPhone(),
+            'website' => $user->getWebsite(),
+            'firstEntry' => $user->getFirstEntry(),
+            'lastVisit' => $user->getLastVisit(),
+            'description' => $user->getDescription(),
+        );
 
 		if ( !$profilPerso ){
 			if ( !$user->getConfigShowEmail() ) unset($userArray['mail']);
@@ -100,7 +101,7 @@
 			}
 		}
 
-	return $userArray;
+        return $userArray;
 
 	}
 
