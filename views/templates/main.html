@@ -8,7 +8,7 @@
 {% endautoescape %}
 
             {# titre_site — titre_page #}
-            <title>{% block title %}{{ site.title }}{% if page.title is defined %} – {{ page.title }}{% endif %}{% endblock %}</title>
+            <title>{% block title %}{{ site.title }}{% if page.title is defined and page.title %} – {{ page.title }}{% endif %}{% endblock %}</title>
 
 
                 {% block metas %}
@@ -59,6 +59,7 @@
 
                 {# navigation #}
                 <nav id="global_nav">
+                    {% block globalnav %}
                     {# cursus #}
                     <ul id="cursus_nav">
                         {% for cursus in site.global_links.cursus %}
@@ -75,9 +76,11 @@
                         {{ _m.navlink(link.href, link.title) }}
                         {% endfor %}
                     </ul>
+                    {% endblock %}
                 </nav>
 
                 {# recherche #}
+                {% if page.no_search is not defined or page.no_search == false %}
                 <aside id="search">
                     <form action="{{ site.search.action |raw }}" method="{{ site.search.method |e('html_attr') }}">
                         <label for="q">Recherche</label>
@@ -85,6 +88,7 @@
                         <input type="submit" value="Ok" />
                     </form>
                 </aside>
+                {% endif %}
             </header>
 
             {# message (notification) éventuel #}

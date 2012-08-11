@@ -1,0 +1,30 @@
+{% import 'macros.html' as _m %}
+{% extends 'main.html' %}
+{% block title %}
+<title>{{ site.title }} – Administration{% if page.title is defined and page.title %} – {{ page.title }}{% endif %}</title>
+{% endblock %}
+{% block metas %}
+{{ _m.robots(['noindex', 'nofollow']) }}
+{% endblock %}
+{% block globalnav %}
+<ul id="admin_nav">
+    {% for link in page.navlinks %}
+    {{ _m.navlink(link.href, link.title) }}
+    {% endfor %}
+</ul>
+{% endblock %}
+{% block content %}
+{% if page.actions is defined and page.actions %}
+<aside id="actions">
+    <nav>
+        <ul>
+        {% for action in page.actions %}
+            {{ _m.navlink(action.href, action.title ) }}
+        {% endfor %}
+        </ul>
+    </nav>
+</aside>
+{% endif %}
+{% block admin_content %}
+{% endblock %}
+{% endblock %}

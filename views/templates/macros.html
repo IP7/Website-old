@@ -15,6 +15,13 @@
     {% endif %}
 {% endmacro %}
 
+{# metas #}
+
+{# - robots #}
+{% macro robots(ct) %}
+<meta name="robots" content="{{ ct|default(['noindex'])|join(',') }}" />
+{% endmacro %}
+
 {#### Navigation ####}
 
 {# nav link #}
