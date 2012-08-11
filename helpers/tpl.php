@@ -47,9 +47,9 @@ function global_menu_links() {
         'site' => array(
             'global_links' => array(
                 'others' => array(
-                    array( 'href' => Config::$root_uri.'forum',                   'title' => 'Forum' ),
-                    array( 'href' => Config::$root_uri.'~'.user()->getUsername(), 'title' => 'Mon Profil'),
-                    array( 'href' => Config::$root_uri.'?disconnect',             'title' => 'Déconnexion')
+                    array( 'href' => Config::$root_uri.'forum',       'title' => 'Forum' ),
+                    array( 'href' => Config::$root_uri.'profile',     'title' => 'Mon Profil'),
+                    array( 'href' => Config::$root_uri.'?disconnect', 'title' => 'Déconnexion')
                 )
             )
         )
