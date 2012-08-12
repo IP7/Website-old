@@ -23,7 +23,7 @@
                 #}<dd><date datetime="{{ page.user.birthdate.datetime_attr }}" itemprop="birthDate" itemscope>{{ page.user.birthdate.date }}</date>{#
                     #}{% if page.user.age is defined and page.user.age %} ({{ page.user.age }} ans)</dd>{% endif %}
             {% else %}{#
-          #}{% if page.user.age is defined and page.user.age %}<dt>Âge&nbsp;:</dt><dd class="age">{{ page.user.age }}</dd>{% endif %}{% endif %}
+          #}{% if page.user.age is defined and page.user.age %}<dt>Âge&nbsp;:</dt><dd class="age">{{ page.user.age }} ans</dd>{% endif %}{% endif %}
             {% if page.user.email is defined and page.user.email %}<dt>E-mail&nbsp;:</dt><dd itemprop="email" itemscope>{{ page.user.email }}</dd>{% endif %}
             {% if page.user.phone is defined and page.user.phone %}<dt>Téléphone&nbsp;:</dt><dd itemprop="telephone" itemscope>{{ page.user.phone }}</dd>{% endif %}
             {% if page.user.address is defined and page.user.address %}<dt>Adresse&nbsp;:</dt><dd itemprop="address" itemscope>{{ page.user.address }}</dd>{% endif %}
