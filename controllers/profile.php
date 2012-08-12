@@ -28,7 +28,7 @@
          return array(
             'page' => array(
                 'title' => 'Profil de '.$name,
-                'noindex' => !$user->getConfigIndexingProfile(),
+                'noindex' => !$user->getConfigIndexProfile(),
 
                 'user' => array(
                     'name'        => $name,
@@ -44,7 +44,45 @@
                     'website'     => $user->getWebsite(),
                     'entry_date'  => $user->getFirstEntry(),
                     'last_visit'  => date_fr($user->getLastVisit()),
-                    'description' => $user->getDescription()
+                    'description' => $user->getDescription(),
+
+                    'options' => array(
+                        array(
+                            'name'  => 'opt_show_real_name',
+                            'value' =>  $user->getConfigShowRealName(),
+                            'title' => 'Montrer mon vrai nom'
+                        ),
+                        array(
+                            'name'  => 'opt_show_birthdate',
+                            'value' => $user->getConfigShowBirthdate(),
+                            'title' => 'Montrer ma date de naissance'
+                        ),
+                        array(
+                            'name'  => 'opt_show_age',
+                            'value' => $user->getConfigShowAge(),
+                            'title' => 'Montrer mon âge'
+                        ),
+                        array(
+                            'name'  => 'opt_show_email',
+                            'value' => $user->getConfigShowEmail(),
+                            'title' => 'Montrer mon e-mail'
+                        ),
+                        array(
+                            'name'  => 'opt_show_phone',
+                            'value' => $user->getConfigShowPhone(),
+                            'title' => 'Montrer mon téléphone'
+                        ),
+                        array(
+                            'name'  => 'opt_show_address',
+                            'value' => $user->getConfigShowAddress(),
+                            'title' => 'Montrer mon adresse'
+                        ),
+                        array(
+                            'name'  => 'opt_index_profile',
+                            'value' => $user->getConfigIndexProfile(),
+                            'title' => 'Indexer mon profil dans les moteurs de recherche'
+                        )
+                    )
                 ),
 
             )
