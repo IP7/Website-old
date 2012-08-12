@@ -7,7 +7,7 @@
  *       adapt_to_gender($u, 'etudiant') -> 'etudiant'  // male
  */
 function adapt_to_gender($user, $s, $female_suffix='e', $male_suffix='') {
-    return $s . (($user->getGender() == 'F') ? $female_suffix : $male_suffix;
+    return $s . (($user->getGender() == 'F') ? $female_suffix : $male_suffix);
 }
 
 ?>

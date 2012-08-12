@@ -11,7 +11,7 @@ function get_datetime($s) {
             /* Propel seems to return some dates surrounded by curly brackets,
                e.g.: '{ 2010-08-04 }'. Using substr(X, 1, -1) deletes these curly
                brackets from X. */
-            return new DateTime(substr($d, 1, -1));
+            return new DateTime(substr($s, 1, -1));
         }
     }
     return $s;
@@ -19,7 +19,7 @@ function get_datetime($s) {
 
 // format a date for French output
 function date_fr($d) {
-    $d get_datetime($d);
+    $d = get_datetime($d);
 
     $str = $d->format('d/m/Y'); 
 
