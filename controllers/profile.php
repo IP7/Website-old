@@ -8,8 +8,6 @@
 		#TODO
 		-Permettre aux utilisateurs de changer certains champs #DONE
 		-Faire la fonction pour changer les données
-		-Afficher toutes les dates en type DD/MM/YYYY
-		-Ajouter les commentaires
 
 	*/
 
@@ -18,13 +16,13 @@
         
          $userStatus = '';
  
-         #TODO adapter au genre, cf issue #48 -> étudiantE, enseignantE
          if ($user->isStudent()) {
-             $userStatus .= 'Étudiant';
+             $userStatus .= adapt_to_gender($user, 'Étudiant');
          }
  
          if ($user->isTeacher()) {
-             $userStatus .= ($userStatus=='') ? 'Enseignant' : ' enseignant';
+             $userStatus .= ($userStatus=='') ? 'E' : ' e';
+             $userStatus .= adapt_to_gender($user, 'nseignant');
          }
 
          return array(
@@ -38,11 +36,11 @@
                     'status'      => $userStatus,
                     'firstname'   => (!$only_public || $user->getConfigShowRealName()) ? $user->getFirstName() : false,
                     'lastname'    => (!$only_public || $user->getConfigShowRealName()) ? $user->getLastName() : false,
-                    'birthdate'   => false, #TODO, cf issue #49
-                    'age'         => false, #TODO, cf issue #50
+                    'birthdate'   => (!$only_public || $user->getConfigShowBirthdate())? $user->getBirthdate() : false,
+                    'age'         => (!$only_public || $user->getConfigShowAge()) ? $user->getAge() : false,
                     'email'       => (!$only_public || $user->getConfigShowEmail()) ? $user->getEmail() : false,
-                    'phone'       => false, #TODO, cf issue #51
-                    'address'     => false, #TODO, cf issue #41
+                    'phone'       => (!$only_public || $user->getConfigShowPhone()) ? $user->getPhone() : false,
+                    'address'     => (!$only_public || $user->getConfigShowAddress()) ? $user->getAddress() : false,
                     'website'     => $user->getWebsite(),
                     'entry_date'  => $user->getFirstEntry(),
                     'last_visit'  => date_fr($user->getLastVisit()),
