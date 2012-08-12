@@ -88,7 +88,7 @@ class User extends BaseUser {
 	/**
 	 * Set user's hashed password
 	 **/
-	public function setPassword($password){
+	public function setPassword($password) {
 		$password = (string)$password;
 		$this->setPasswordHash(Config::$p_hasher->HashPassword($password));
 		$this->save();
@@ -97,11 +97,19 @@ class User extends BaseUser {
 	/**
      * Return user's last name and first name in a string
 	 **/
-	public function getName(){
-		$userNameToString = "";
-		$userNameToString .= $this->getFirstName() . " " . $this->getLastName();
-		return $userNameToString;	
+	public function getName($sep=' ') {
+		return $this->getFirstName() . $sep . $this->getLastName();
 	}
+
+    /**
+     * Return user's age
+     **/
+    public function getAge() {
+       $today = new DateTime(); 
+       $birthdate = get_datetime($this->getBirthdate());
+
+       return intval($birthdate->diff($today)->format('%Y'));
+    }
 
     // deprecated
     public function getConfigIndexingProfile() {
