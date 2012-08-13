@@ -30,6 +30,16 @@
                 <link rel="stylesheet" href="{{ style.href|raw }}" media="{{ style.media|default('all') }}" />
                     {% endfor %}
                 {% endif %}
+
+                {# Styles pour IE #}
+                {% if site.ie_styles is defined and site.ie_styles is not empty %}
+                <!--[if lt IE 8]>
+                    {% for style in site.ie_styles %}
+                    <link rel="stylesheet" href="{{ style.href|raw }}" media="{{style.media|default('screen,projection') }}" />
+                    {% endfor %}
+                <![endif]-->
+                {% endif %}
+
                 {# Styles de la page #}
                 {% if page.styles is defined  and page.styles is not empty %}
                     {% for style in page.styles %}
@@ -44,7 +54,7 @@
                 {# Scripts pour le rendu #}
                 {% if site.rendering_scripts is not empty %}
                     {% for script in site.rendering_scripts %}
-                <script src="{{ script|raw }}"></script>
+                <script src="{{ script.href|raw }}"></script>
                     {% endfor %}
                 {% endif %}
         </head>

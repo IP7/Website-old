@@ -60,6 +60,9 @@ class Config {
     # initalize Twig
     private static function tpl_init() {
 
+            $styles = self::$root_uri.'views/static/styles';
+            $scripts = self::$root_uri.'views/static/js';
+
         Twig_Autoloader::register();
 
         $loader = new Twig_Loader_Filesystem(self::$app_dir.'/views/templates');
@@ -80,13 +83,22 @@ class Config {
 
                 'authorsfile'     => array( 'href' => self::$root_uri.'humans.txt' ),
 
-                # array( array('href' => 'foo.css', 'media' => 'all'), ...)
+                # Styles
                 'styles'          => array(
-                    array( 'href' => self::$root_uri.'views/static/styles/global.css', 'media' => 'all' )
+                    array( 'href' => $styles.'/global.css',           'media' => 'all' )
                 ),
 
-                'rendering_scripts' => array(),
-                'scripts'           => array(),
+                # IE Styles
+                'ie_styles'       => array(
+                    array( 'href' => $styles.'/ie.css', 'media' => 'all' )
+                ),
+
+                # Scripts
+                'rendering_scripts' => array(
+                    array( 'href' => $scripts.'/jquery-1.8.0.min.js' )
+                ),
+                'scripts'           => array(
+                ),
 
                 'logo' => array(
                     'src'    => self::$root_uri.'views/static/images/logo32.png',
