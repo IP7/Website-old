@@ -141,7 +141,7 @@ class Config {
 
                 'footer_links' => array(
                     array(
-                        'href'  => self::$root_uri.'plan',
+                        'href'  => self::$root_uri.'sitemap',
                         'title' => 'Plan du site'
                     ),
                     array(
