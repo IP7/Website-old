@@ -224,7 +224,7 @@
         <column name="code"        type="VARCHAR" size="16" required="true" />
 
         <!-- nb de crédits -->
-        <column name="ECTS"        type="TINYINT" defaultExpr="3" />
+        <column name="ECTS"        type="FLOAT" defaultExpr="3" />
 
         <!-- description -->
         <column name="description" type="LONGVARCHAR" size="1024" />

@@ -70,7 +70,7 @@ abstract class BaseCourse extends BaseObject implements Persistent
     /**
      * The value for the ects field.
      * Note: this column has a database default value of: (expression) 3
-     * @var        int
+     * @var        double
      */
     protected $ects;
 
@@ -254,7 +254,7 @@ abstract class BaseCourse extends BaseObject implements Persistent
     /**
      * Get the [ects] column value.
      *
-     * @return int
+     * @return double
      */
     public function getEcts()
     {
@@ -412,13 +412,13 @@ abstract class BaseCourse extends BaseObject implements Persistent
     /**
      * Set the value of [ects] column.
      *
-     * @param int $v new value
+     * @param double $v new value
      * @return Course The current object (for fluent API support)
      */
     public function setEcts($v)
     {
         if ($v !== null) {
-            $v = (int) $v;
+            $v = (double) $v;
         }
 
         if ($this->ects !== $v) {
@@ -489,7 +489,7 @@ abstract class BaseCourse extends BaseObject implements Persistent
             $this->optional = ($row[$startcol + 3] !== null) ? (boolean) $row[$startcol + 3] : null;
             $this->name = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
             $this->code = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
-            $this->ects = ($row[$startcol + 6] !== null) ? (int) $row[$startcol + 6] : null;
+            $this->ects = ($row[$startcol + 6] !== null) ? (double) $row[$startcol + 6] : null;
             $this->description = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
             $this->resetModified();
 
@@ -898,7 +898,7 @@ abstract class BaseCourse extends BaseObject implements Persistent
                         $stmt->bindValue($identifier, $this->code, PDO::PARAM_STR);
                         break;
                     case '`ECTS`':
-                        $stmt->bindValue($identifier, $this->ects, PDO::PARAM_INT);
+                        $stmt->bindValue($identifier, $this->ects, PDO::PARAM_STR);
                         break;
                     case '`DESCRIPTION`':
                         $stmt->bindValue($identifier, $this->description, PDO::PARAM_STR);

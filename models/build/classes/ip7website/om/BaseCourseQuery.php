@@ -65,7 +65,7 @@
  * @method Course findOneByOptional(boolean $optional) Return the first Course filtered by the optional column
  * @method Course findOneByName(string $name) Return the first Course filtered by the name column
  * @method Course findOneByCode(string $code) Return the first Course filtered by the code column
- * @method Course findOneByEcts(int $ECTS) Return the first Course filtered by the ECTS column
+ * @method Course findOneByEcts(double $ECTS) Return the first Course filtered by the ECTS column
  * @method Course findOneByDescription(string $description) Return the first Course filtered by the description column
  *
  * @method array findById(int $id) Return Course objects filtered by the id column
@@ -74,7 +74,7 @@
  * @method array findByOptional(boolean $optional) Return Course objects filtered by the optional column
  * @method array findByName(string $name) Return Course objects filtered by the name column
  * @method array findByCode(string $code) Return Course objects filtered by the code column
- * @method array findByEcts(int $ECTS) Return Course objects filtered by the ECTS column
+ * @method array findByEcts(double $ECTS) Return Course objects filtered by the ECTS column
  * @method array findByDescription(string $description) Return Course objects filtered by the description column
  *
  * @package    propel.generator.ip7website.om

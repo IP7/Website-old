@@ -119,7 +119,7 @@ CREATE TABLE `courses`
     `optional` TINYINT(1) DEFAULT 0 NOT NULL,
     `name` VARCHAR(64) NOT NULL,
     `code` VARCHAR(16) NOT NULL,
-    `ECTS` TINYINT DEFAULT 3,
+    `ECTS` FLOAT DEFAULT 3,
     `description` TEXT(1024),
     PRIMARY KEY (`id`),
     UNIQUE INDEX `courses_U_1` (`code`, `semester`, `cursus_id`),
