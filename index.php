@@ -74,6 +74,7 @@ dispatch('/admin/maintenance', 'display_admin_maintenance');
 ## (almost-)static pages
 #
 dispatch('/contact', 'display_contact_page');
+dispatch('/sitemap', 'display_sitemap_page');
 
 # test
 # init DB
