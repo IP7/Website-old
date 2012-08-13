@@ -50,7 +50,6 @@ dispatch_post('/profile/edit', 'post_edit_profile_page');
 # 
 # ## search
 # dispatch('/search', 'display_search_page');
-# dispatch_post('/search', 'display_search_results_page');
 
 ## cursus
 dispatch('/cursus/:name', 'display_cursus');
@@ -59,6 +58,10 @@ dispatch('/cursus/:name/edit', 'display_moderation_edit_cursus');
 ## - news
 #dispatch('/cursus/:name/add_news',      'display_add_cursus_news');
 #dispatch_post('/cursus/:name/add_news', 'display_add_cursus_news');
+
+## course
+dispatch('/cursus/:cursus/:course', 'display_course');
+
 
 ## admin home
 dispatch('/admin', 'display_admin_home');
