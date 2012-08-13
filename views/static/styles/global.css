@@ -1,4 +1,8 @@
 
+.bar li {
+    display:inline-block;
+}
+
 /* Basic CSS */
 
 #global_nav,
@@ -33,4 +37,10 @@
   content: '→';
 }
 
-#edit_form label, input[type=submit] { display:block; }
+#edit_form label, #edit_form input[type=submit] { display:block; }
+
+#main_content { display:table; }
+#main_content > aside,
+#main_content > article {
+    display:table-cell;
+}

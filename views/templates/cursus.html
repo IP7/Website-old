@@ -51,6 +51,13 @@
     </section>
 </aside>
 {% endif %}
+{% if page.moderation_bar is defined and page.moderation_bar %}
+<ul class="moderation bar">
+    {% for el in page.moderation_bar %}
+    <li>{{ _m.a(el.href, el.title) }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
 <article>
 {# Intro #}
 <h1>{{ page.cursus.name }}</h1>
@@ -58,7 +65,7 @@
 {# News #}
 {% include 'news.html' %}
 </article>
-{% if page.cursus.other_links is not empty %}
+{% if page.cursus.other_links is defined and page.cursus.other_links is not empty %}
 {# Menu 'Autres ressources' #}
 <aside class="submenu">
     <h4>Autres ressources</h4>

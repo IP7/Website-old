@@ -2,11 +2,18 @@
 {### Inline HTML tags ####}
 
 {# a #}
-{% macro a(href, value, title, hreflang, external) %}
+{% macro a(href, value, title, hreflang, external, class, id) %}
 <a href="{{ href|raw }}"{% if title is defined and title is not empty %} title="{{ title|raw }}"{% endif %}{#
                             #}{% if hreflang is defined and hreflang is not empty %} hreflang="{{ hreflang|e('html_attr') }}"{% endif %}{#
                             #}{% if external is defined and external %} rel="external"{% endif %}{#
-                                #}>{{ value | e }}</a>
+                            #}{% if class is defined and class %} class="{{ class|join(' ')}}"{% endif %}{#
+                            #}{% if id is defined and id %} id="{{ id|raw}}"{% endif %}{#
+                            #}>{{ value | e }}</a>
+{% endmacro %}
+
+{# a.button #}
+{% macro a_button(href, value, title, hreflang, external) %}
+{{ _self.a(href, value, title, hreflang, external, ['button']) }}
 {% endmacro %}
 
 {# abbr #}

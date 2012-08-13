@@ -1,0 +1,9 @@
+{% extends "main.html" %}
+{% import 'macros.html' as _m %}
+{% block content %}
+<h1>Édition de «&nbsp;{{ page.cursus.name }}&nbsp;»</h1>
+<form method="POST" action="{{ page.cursus_edit_post_url }}">
+    <textarea cols="80" rows="24" name="content">{{ page.cursus.intro }}</textarea>
+    {{ _m.submit('Ok') }}
+</form>
+{% endblock %}
