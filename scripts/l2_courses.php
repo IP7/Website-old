@@ -28,7 +28,7 @@ $c = array(
             'LC4'      => array(6, 'Langage C',''),
             'AF4'      => array(6, 'Automates finis',''),
             'EA4'      => array(3, 'Éléments d\'algorithmique',''),
-            'LS4'      => array(3, 'Langage de scripts : Python',''),
+            'LS4'      => array(3, 'Langage de scripts', 'Python'),
             'EP4'      => array(3, 'Éléments de probabilités',''),
             'MI4'      => array(6, 'Mathématiques','')
         ),
