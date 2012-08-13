@@ -54,6 +54,11 @@ dispatch_post('/profile/edit', 'post_edit_profile_page');
 
 ## cursus
 dispatch('/cursus/:name', 'display_cursus');
+dispatch_post('/cursus/:name', 'display_cursus');
+dispatch('/cursus/:name/edit', 'display_moderation_edit_cursus');
+## - news
+#dispatch('/cursus/:name/add_news',      'display_add_cursus_news');
+#dispatch_post('/cursus/:name/add_news', 'display_add_cursus_news');
 
 ## admin home
 dispatch('/admin', 'display_admin_home');
@@ -66,15 +71,13 @@ dispatch('/admin/membres', 'display_admin_members');
 ## maintenance
 dispatch('/admin/maintenance', 'display_admin_maintenance');
 
+## (almost-)static pages
+#
+dispatch('/contact', 'display_contact_page');
+
 # test
 # init DB
 dispatch('/test/init_db', 'display_test_init_db');
-
-# ## ...
-#
-#
-# ## ...
-
 
 # Errors handling (functions called by Limonade)
 
