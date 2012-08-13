@@ -105,6 +105,16 @@ function display_cursus() {
         );
     }
 
+    $resp_q = $cursus->getResponsable();
+    $responsable = false;
+
+    if ($resp_q != null) {
+        $responsable = array(
+            'href'  => Config::$root_uri.'/p/'.$resp_q->getUsername(),
+            'title' => ($resp_q->getConfigShowRealName() ? $resp_q->getName() : $resp_q->getUsername())
+        );
+    }
+
     return Config::$tpl->render('cursus.html', tpl_array(array(
         'page' => array(
             'title' => $cursus->getName(),

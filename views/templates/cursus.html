@@ -76,6 +76,10 @@
         {% endfor %}
         </ul>
     </nav>
+    {% if page.cursus.reponsable is defined and page.cursus.responsable %}
+    <h4>Responsable</h4>
+    <span class="person">{{ _m.a(page.cursus.responsable.href, page.cursus.responsable.title )}}</span>
+    {% endif %}
 </aside>
 {% endif %}
 
