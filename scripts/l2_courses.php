@@ -8,11 +8,11 @@ $c = array(
         // obligatoire
         array(
             'OL3'     => array(6, 'Outils logiques',''),
-            'PI3'     => array(6, 'Projet de programmation',''),
+            'PI3'     => array(6, 'Projet informatique','Projet de programmation.'),
             'EC3'     => array(3, 'Éléments de combinatoire',''),
             'MI3'     => array(9, 'Mathématiques',''),
             'Anglais' => array(3, 'Anglais', ''),
-            'PPP'     => array(3, 'Projet professionel','')
+            'PPP'     => array(3, 'Projet professionel personnalisé','')
         ),
 
         // facultatif (UE libres)
