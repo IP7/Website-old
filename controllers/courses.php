@@ -18,12 +18,12 @@ function display_course() {
         halt(NOT_FOUND);
     }
 
-    $base_uri  = Config::$root_uri.'/cursus/'.$cursus->getShortName().'/';
+    $base_uri  = Config::$root_uri.'cursus/'.$cursus->getShortName().'/';
     $base_uri .= $course->getCode();
 
     $breadcrumbs = array(
         array(
-            'href'  => Config::$root_uri.'/cursus/'.$cursus->getShortName(),
+            'href'  => Config::$root_uri.'cursus/'.$cursus->getShortName(),
             'title' => $cursus->getName()
         ),
         array(
