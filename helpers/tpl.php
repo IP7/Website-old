@@ -65,4 +65,10 @@ function tpl_array() {
     return call_user_func_array('array_merge_recursive_new', $arrays);
 }
 
+
+// shortcut
+function tpl_render($tp, $values) {
+    return Config::$tpl->render($tp, tpl_array($values));
+}
+
 ?>
