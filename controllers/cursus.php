@@ -59,26 +59,38 @@ function display_cursus() {
     }
 
     $news = array();
+
+    $cursus_news = NewsQuery::create()
+                    ->filterByCursus($cursus)
+                    ->filterByDate(array(
+                        'max' => time(),
+                        'min' => time() - 3600 * 24 * 20
+                    ))
+                    ->orderByDate('desc')
+                    ->limit(10)
+                    ->find();
     
-    foreach ($cursus->getNewss() as $n) {
+    if ($cursus_news != NULL) {
+        foreach ($cursus_news as $n) {
 
-        $a = $n->getAuthor();
-        $author = false;
+            $a = $n->getAuthor();
+            $author = false;
 
-        if ($a) {
-            $author = array(
-                'href' => Config::$root_uri.'p/'.$a->getUsername(),
-                'name' => ($a->getConfigShowRealName() ? $a->getName() : $a->getUsername())
+            if ($a) {
+                $author = array(
+                    'href' => Config::$root_uri.'p/'.$a->getUsername(),
+                    'name' => ($a->getConfigShowRealName() ? $a->getName() : $a->getUsername())
+                );
+            }
+
+            $news []= array(
+                'datetime_attr' => '',
+                'datetime' => '',
+                'title' => $n->getTitle(),
+                'content' => $n->getText(),
+                'author' => $author
             );
         }
-
-        $news []= array(
-            'datetime_attr' => '',
-            'datetime' => '',
-            'title' => $n->getTitle(),
-            'content' => $n->getText(),
-            'author' => $author
-        );
     }
 
     $other_links = array();
