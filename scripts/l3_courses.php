@@ -27,11 +27,18 @@ $c = array(
             'LO6' => array(5, 'Logique', ''),
             'BD6' => array(5, 'Base de données', 'PostgreSQL.'),
             'PR6' => array(5, 'Programmation réseau', 'Programmation réseau en Java.'),
-            'AS6' => array(5, 'Analyse Syntaxique', '')
+            'AS6' => array(5, 'Analyse Syntaxique', ''),
+            'Anglais' => array(3, 'Anglais')
         ),
 
         array(
-            // TODO
+            'CN6' => array(3.5, 'Calcul numérique', ''),
+            'GL6' => array(3.5, 'Génie logiciel', ''),
+            'ED6' => array(3.5, 'Environnements de développement', ''),
+            'MV6' => array(3.5, 'Machines virtuelles', ''),
+            'TE6' => array(3.5, 'Techniques d\'expressions', ''),
+            'LI6' => array(3.5, 'Linguistique informatique', ''),
+            #'?' => array(7, 'Probabilités', '')
         )
     )
 
