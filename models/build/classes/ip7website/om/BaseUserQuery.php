@@ -33,6 +33,7 @@
  * @method UserQuery orderByDeactivated($order = Criteria::ASC) Order by the deactivated column
  * @method UserQuery orderByIsATeacher($order = Criteria::ASC) Order by the is_a_teacher column
  * @method UserQuery orderByIsAStudent($order = Criteria::ASC) Order by the is_a_student column
+ * @method UserQuery orderByIsAnAlumni($order = Criteria::ASC) Order by the is_an_alumni column
  * @method UserQuery orderByAvatarId($order = Criteria::ASC) Order by the avatar_id column
  * @method UserQuery orderByDescription($order = Criteria::ASC) Order by the description column
  * @method UserQuery orderByRemarks($order = Criteria::ASC) Order by the remarks column
@@ -64,6 +65,7 @@
  * @method UserQuery groupByDeactivated() Group by the deactivated column
  * @method UserQuery groupByIsATeacher() Group by the is_a_teacher column
  * @method UserQuery groupByIsAStudent() Group by the is_a_student column
+ * @method UserQuery groupByIsAnAlumni() Group by the is_an_alumni column
  * @method UserQuery groupByAvatarId() Group by the avatar_id column
  * @method UserQuery groupByDescription() Group by the description column
  * @method UserQuery groupByRemarks() Group by the remarks column
@@ -162,6 +164,7 @@
  * @method User findOneByDeactivated(boolean $deactivated) Return the first User filtered by the deactivated column
  * @method User findOneByIsATeacher(boolean $is_a_teacher) Return the first User filtered by the is_a_teacher column
  * @method User findOneByIsAStudent(boolean $is_a_student) Return the first User filtered by the is_a_student column
+ * @method User findOneByIsAnAlumni(boolean $is_an_alumni) Return the first User filtered by the is_an_alumni column
  * @method User findOneByAvatarId(int $avatar_id) Return the first User filtered by the avatar_id column
  * @method User findOneByDescription(string $description) Return the first User filtered by the description column
  * @method User findOneByRemarks(string $remarks) Return the first User filtered by the remarks column
@@ -193,6 +196,7 @@
  * @method array findByDeactivated(boolean $deactivated) Return User objects filtered by the deactivated column
  * @method array findByIsATeacher(boolean $is_a_teacher) Return User objects filtered by the is_a_teacher column
  * @method array findByIsAStudent(boolean $is_a_student) Return User objects filtered by the is_a_student column
+ * @method array findByIsAnAlumni(boolean $is_an_alumni) Return User objects filtered by the is_an_alumni column
  * @method array findByAvatarId(int $avatar_id) Return User objects filtered by the avatar_id column
  * @method array findByDescription(string $description) Return User objects filtered by the description column
  * @method array findByRemarks(string $remarks) Return User objects filtered by the remarks column
@@ -285,7 +289,7 @@ abstract class BaseUserQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `ID`, `USERNAME`, `PASSWORD_HASH`, `TYPE`, `FIRSTNAME`, `LASTNAME`, `GENDER`, `EMAIL`, `PHONE`, `ADDRESS`, `WEBSITE`, `BIRTH_DATE`, `FIRST_ENTRY`, `LAST_ENTRY`, `EXPIRATION_DATE`, `LAST_VISIT`, `VISITS_NB`, `CONFIG_SHOW_EMAIL`, `CONFIG_SHOW_PHONE`, `CONFIG_SHOW_REAL_NAME`, `CONFIG_SHOW_BIRTHDATE`, `CONFIG_SHOW_AGE`, `CONFIG_SHOW_ADDRESS`, `CONFIG_INDEX_PROFILE`, `DEACTIVATED`, `IS_A_TEACHER`, `IS_A_STUDENT`, `AVATAR_ID` FROM `users` WHERE `ID` = :p0';
+        $sql = 'SELECT `ID`, `USERNAME`, `PASSWORD_HASH`, `TYPE`, `FIRSTNAME`, `LASTNAME`, `GENDER`, `EMAIL`, `PHONE`, `ADDRESS`, `WEBSITE`, `BIRTH_DATE`, `FIRST_ENTRY`, `LAST_ENTRY`, `EXPIRATION_DATE`, `LAST_VISIT`, `VISITS_NB`, `CONFIG_SHOW_EMAIL`, `CONFIG_SHOW_PHONE`, `CONFIG_SHOW_REAL_NAME`, `CONFIG_SHOW_BIRTHDATE`, `CONFIG_SHOW_AGE`, `CONFIG_SHOW_ADDRESS`, `CONFIG_INDEX_PROFILE`, `DEACTIVATED`, `IS_A_TEACHER`, `IS_A_STUDENT`, `IS_AN_ALUMNI`, `AVATAR_ID` FROM `users` WHERE `ID` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -1232,6 +1236,33 @@ abstract class BaseUserQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(UserPeer::IS_A_STUDENT, $isAStudent, $comparison);
+    }
+
+    /**
+     * Filter the query on the is_an_alumni column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByIsAnAlumni(true); // WHERE is_an_alumni = true
+     * $query->filterByIsAnAlumni('yes'); // WHERE is_an_alumni = true
+     * </code>
+     *
+     * @param     boolean|string $isAnAlumni The value to use as filter.
+     *              Non-boolean arguments are converted using the following rules:
+     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return UserQuery The current query, for fluid interface
+     */
+    public function filterByIsAnAlumni($isAnAlumni = null, $comparison = null)
+    {
+        if (is_string($isAnAlumni)) {
+            $is_an_alumni = in_array(strtolower($isAnAlumni), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+        }
+
+        return $this->addUsingAlias(UserPeer::IS_AN_ALUMNI, $isAnAlumni, $comparison);
     }
 
     /**

@@ -69,6 +69,7 @@ class UserTableMap extends TableMap
         $this->addColumn('DEACTIVATED', 'Deactivated', 'BOOLEAN', false, 1, '0');
         $this->addColumn('IS_A_TEACHER', 'IsATeacher', 'BOOLEAN', false, 1, '0');
         $this->addColumn('IS_A_STUDENT', 'IsAStudent', 'BOOLEAN', false, 1, '0');
+        $this->addColumn('IS_AN_ALUMNI', 'IsAnAlumni', 'BOOLEAN', false, 1, '0');
         $this->addForeignKey('AVATAR_ID', 'AvatarId', 'INTEGER', 'files', 'ID', false, null, null);
         $this->addColumn('DESCRIPTION', 'Description', 'LONGVARCHAR', false, 512, null);
         $this->addColumn('REMARKS', 'Remarks', 'VARCHAR', false, 255, null);

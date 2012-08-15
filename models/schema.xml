@@ -86,6 +86,9 @@
         <!-- si c'est actuellement un étudiant -->
         <column name="is_a_student"          type="BOOLEAN" defaultExpr="0" />
 
+        <!-- si c'est un ancien étudiant -->
+        <column name="is_an_alumni"          type="BOOLEAN" defaultExpr="0" />
+
         <!-- avatar (= id de fichier) -->
         <column name="avatar_id"             type="INTEGER" />
 

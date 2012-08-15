@@ -204,6 +204,13 @@ abstract class BaseUser extends BaseObject implements Persistent
     protected $is_a_student;
 
     /**
+     * The value for the is_an_alumni field.
+     * Note: this column has a database default value of: (expression) 0
+     * @var        boolean
+     */
+    protected $is_an_alumni;
+
+    /**
      * The value for the avatar_id field.
      * @var        int
      */
@@ -876,6 +883,16 @@ abstract class BaseUser extends BaseObject implements Persistent
     public function getIsAStudent()
     {
         return $this->is_a_student;
+    }
+
+    /**
+     * Get the [is_an_alumni] column value.
+     *
+     * @return boolean
+     */
+    public function getIsAnAlumni()
+    {
+        return $this->is_an_alumni;
     }
 
     /**
@@ -1631,6 +1648,35 @@ abstract class BaseUser extends BaseObject implements Persistent
     } // setIsAStudent()
 
     /**
+     * Sets the value of the [is_an_alumni] column.
+     * Non-boolean arguments are converted using the following rules:
+     *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     *
+     * @param boolean|integer|string $v The new value
+     * @return User The current object (for fluent API support)
+     */
+    public function setIsAnAlumni($v)
+    {
+        if ($v !== null) {
+            if (is_string($v)) {
+                $v = in_array(strtolower($v), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+            } else {
+                $v = (boolean) $v;
+            }
+        }
+
+        if ($this->is_an_alumni !== $v) {
+            $this->is_an_alumni = $v;
+            $this->modifiedColumns[] = UserPeer::IS_AN_ALUMNI;
+        }
+
+
+        return $this;
+    } // setIsAnAlumni()
+
+    /**
      * Set the value of [avatar_id] column.
      *
      * @param int $v new value
@@ -1768,7 +1814,8 @@ abstract class BaseUser extends BaseObject implements Persistent
             $this->deactivated = ($row[$startcol + 24] !== null) ? (boolean) $row[$startcol + 24] : null;
             $this->is_a_teacher = ($row[$startcol + 25] !== null) ? (boolean) $row[$startcol + 25] : null;
             $this->is_a_student = ($row[$startcol + 26] !== null) ? (boolean) $row[$startcol + 26] : null;
-            $this->avatar_id = ($row[$startcol + 27] !== null) ? (int) $row[$startcol + 27] : null;
+            $this->is_an_alumni = ($row[$startcol + 27] !== null) ? (boolean) $row[$startcol + 27] : null;
+            $this->avatar_id = ($row[$startcol + 28] !== null) ? (int) $row[$startcol + 28] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -1777,7 +1824,7 @@ abstract class BaseUser extends BaseObject implements Persistent
                 $this->ensureConsistency();
             }
 
-            return $startcol + 28; // 28 = UserPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 29; // 29 = UserPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating User object", $e);
@@ -2409,6 +2456,9 @@ abstract class BaseUser extends BaseObject implements Persistent
         if ($this->isColumnModified(UserPeer::IS_A_STUDENT)) {
             $modifiedColumns[':p' . $index++]  = '`IS_A_STUDENT`';
         }
+        if ($this->isColumnModified(UserPeer::IS_AN_ALUMNI)) {
+            $modifiedColumns[':p' . $index++]  = '`IS_AN_ALUMNI`';
+        }
         if ($this->isColumnModified(UserPeer::AVATAR_ID)) {
             $modifiedColumns[':p' . $index++]  = '`AVATAR_ID`';
         }
@@ -2509,6 +2559,9 @@ abstract class BaseUser extends BaseObject implements Persistent
                         break;
                     case '`IS_A_STUDENT`':
                         $stmt->bindValue($identifier, (int) $this->is_a_student, PDO::PARAM_INT);
+                        break;
+                    case '`IS_AN_ALUMNI`':
+                        $stmt->bindValue($identifier, (int) $this->is_an_alumni, PDO::PARAM_INT);
                         break;
                     case '`AVATAR_ID`':
                         $stmt->bindValue($identifier, $this->avatar_id, PDO::PARAM_INT);
@@ -2859,12 +2912,15 @@ abstract class BaseUser extends BaseObject implements Persistent
                 return $this->getIsAStudent();
                 break;
             case 27:
-                return $this->getAvatarId();
+                return $this->getIsAnAlumni();
                 break;
             case 28:
-                return $this->getDescription();
+                return $this->getAvatarId();
                 break;
             case 29:
+                return $this->getDescription();
+                break;
+            case 30:
                 return $this->getRemarks();
                 break;
             default:
@@ -2923,9 +2979,10 @@ abstract class BaseUser extends BaseObject implements Persistent
             $keys[24] => $this->getDeactivated(),
             $keys[25] => $this->getIsATeacher(),
             $keys[26] => $this->getIsAStudent(),
-            $keys[27] => $this->getAvatarId(),
-            $keys[28] => ($includeLazyLoadColumns) ? $this->getDescription() : null,
-            $keys[29] => ($includeLazyLoadColumns) ? $this->getRemarks() : null,
+            $keys[27] => $this->getIsAnAlumni(),
+            $keys[28] => $this->getAvatarId(),
+            $keys[29] => ($includeLazyLoadColumns) ? $this->getDescription() : null,
+            $keys[30] => ($includeLazyLoadColumns) ? $this->getRemarks() : null,
         );
         if ($includeForeignObjects) {
             if (null !== $this->aAvatar) {
@@ -3093,12 +3150,15 @@ abstract class BaseUser extends BaseObject implements Persistent
                 $this->setIsAStudent($value);
                 break;
             case 27:
-                $this->setAvatarId($value);
+                $this->setIsAnAlumni($value);
                 break;
             case 28:
-                $this->setDescription($value);
+                $this->setAvatarId($value);
                 break;
             case 29:
+                $this->setDescription($value);
+                break;
+            case 30:
                 $this->setRemarks($value);
                 break;
         } // switch()
@@ -3152,9 +3212,10 @@ abstract class BaseUser extends BaseObject implements Persistent
         if (array_key_exists($keys[24], $arr)) $this->setDeactivated($arr[$keys[24]]);
         if (array_key_exists($keys[25], $arr)) $this->setIsATeacher($arr[$keys[25]]);
         if (array_key_exists($keys[26], $arr)) $this->setIsAStudent($arr[$keys[26]]);
-        if (array_key_exists($keys[27], $arr)) $this->setAvatarId($arr[$keys[27]]);
-        if (array_key_exists($keys[28], $arr)) $this->setDescription($arr[$keys[28]]);
-        if (array_key_exists($keys[29], $arr)) $this->setRemarks($arr[$keys[29]]);
+        if (array_key_exists($keys[27], $arr)) $this->setIsAnAlumni($arr[$keys[27]]);
+        if (array_key_exists($keys[28], $arr)) $this->setAvatarId($arr[$keys[28]]);
+        if (array_key_exists($keys[29], $arr)) $this->setDescription($arr[$keys[29]]);
+        if (array_key_exists($keys[30], $arr)) $this->setRemarks($arr[$keys[30]]);
     }
 
     /**
@@ -3193,6 +3254,7 @@ abstract class BaseUser extends BaseObject implements Persistent
         if ($this->isColumnModified(UserPeer::DEACTIVATED)) $criteria->add(UserPeer::DEACTIVATED, $this->deactivated);
         if ($this->isColumnModified(UserPeer::IS_A_TEACHER)) $criteria->add(UserPeer::IS_A_TEACHER, $this->is_a_teacher);
         if ($this->isColumnModified(UserPeer::IS_A_STUDENT)) $criteria->add(UserPeer::IS_A_STUDENT, $this->is_a_student);
+        if ($this->isColumnModified(UserPeer::IS_AN_ALUMNI)) $criteria->add(UserPeer::IS_AN_ALUMNI, $this->is_an_alumni);
         if ($this->isColumnModified(UserPeer::AVATAR_ID)) $criteria->add(UserPeer::AVATAR_ID, $this->avatar_id);
         if ($this->isColumnModified(UserPeer::DESCRIPTION)) $criteria->add(UserPeer::DESCRIPTION, $this->description);
         if ($this->isColumnModified(UserPeer::REMARKS)) $criteria->add(UserPeer::REMARKS, $this->remarks);
@@ -3285,6 +3347,7 @@ abstract class BaseUser extends BaseObject implements Persistent
         $copyObj->setDeactivated($this->getDeactivated());
         $copyObj->setIsATeacher($this->getIsATeacher());
         $copyObj->setIsAStudent($this->getIsAStudent());
+        $copyObj->setIsAnAlumni($this->getIsAnAlumni());
         $copyObj->setAvatarId($this->getAvatarId());
         $copyObj->setDescription($this->getDescription());
         $copyObj->setRemarks($this->getRemarks());
@@ -7252,6 +7315,7 @@ abstract class BaseUser extends BaseObject implements Persistent
         $this->deactivated = null;
         $this->is_a_teacher = null;
         $this->is_a_student = null;
+        $this->is_an_alumni = null;
         $this->avatar_id = null;
         $this->description = null;
         $this->description_isLoaded = false;

@@ -38,6 +38,7 @@ CREATE TABLE `users`
     `deactivated` TINYINT(1) DEFAULT 0,
     `is_a_teacher` TINYINT(1) DEFAULT 0,
     `is_a_student` TINYINT(1) DEFAULT 0,
+    `is_an_alumni` TINYINT(1) DEFAULT 0,
     `avatar_id` INTEGER,
     `description` TEXT(512),
     `remarks` VARCHAR(255),
