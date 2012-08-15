@@ -164,7 +164,7 @@ function display_moderation_edit_cursus() {
 
     $base_uri = Config::$root_uri.'cursus/'.strtoupper($cursus->getShortName()).'/';
 
-    return tpl_render("edit_cursus.html", array(
+    return tpl_render("cursus_edit.html", array(
         'page' => array(
             'title' => 'Édition de « '.$cursus->getName().' »',
 
