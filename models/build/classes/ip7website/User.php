@@ -45,6 +45,13 @@ class User extends BaseUser {
     }
 
     /**
+     * Return true if the user is an alumni
+     **/
+    public function isAlumni() {
+        return $this->getIsAnAlumni();
+    }
+
+    /**
      * Return true if the user is an admin.
      * The 'ADMIN_RANK' constant must be defined.
      **/
