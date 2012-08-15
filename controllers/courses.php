@@ -48,4 +48,3 @@ function display_course() {
 }
 
 ?>
-

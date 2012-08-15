@@ -194,4 +194,3 @@ function display_moderation_add_cursus_news() {
 }
 
 ?>
-

@@ -42,4 +42,3 @@ function date_fr($d) {
 }
 
 ?>
-

@@ -11,4 +11,3 @@ function adapt_to_gender($user, $s, $female_suffix='e', $male_suffix='') {
 }
 
 ?>
-

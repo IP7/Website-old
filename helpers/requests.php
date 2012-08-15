@@ -6,4 +6,3 @@ function has_post($name, $allow_empty=false) {
 }
 
 ?>
-

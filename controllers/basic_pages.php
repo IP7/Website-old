@@ -13,4 +13,3 @@ function display_sitemap_page() {
 }
 
 ?>
-

@@ -6,4 +6,3 @@ function display_test_init_db() {
 }
 
 ?>
-
