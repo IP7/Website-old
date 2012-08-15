@@ -31,7 +31,7 @@
 {% macro checkbox(name, value, id, checked) %}
 <input type="checkbox"{% if name    is defined and name    %} name="{{ name }}"{%       endif %}{#
                     #}{% if id      is defined and id      %} id="{{ id }}"{%           endif %}{#
-                    #}{% if checked is defined and checked %} checked="{{ checked }}"{% endif %}{#
+                    #}{% if checked is defined and checked %} checked="checked"{%       endif %}{#
                     #}{% if value   is defined and value   %} value="{{ value }}"{%     endif %} />
 {% endmacro %}
 

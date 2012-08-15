@@ -7,8 +7,8 @@
 
     {# <label>Avatar&nbsp;:<input type="file" name="avatar" accept="image/gif,image/jpeg,image/png" /></label> #}
     <label>Site Web&nbsp;:<input type="url" name="website" placeholder="http://"{% if page.user.website is defined and page.user.website %} value="{{ page.user.website }}"{% endif %} /></label>
-    <label>Nouveau mot de passe&nbsp;:<input type="password" name="password" /></label>
-    <label>Retapez le mot de passe&nbsp;:<input type="password" name="password1" /></label>
+    <label>Ancien mot de passe&nbsp;:<input type="password" name="old_password" /></label>
+    <label>Nouveau mot de passe&nbsp;:<input type="password" name="new_password" /></label>
 
     <label class="explicit" for="desc">Présentation&nbsp;:</label>
     <textarea id="desc" name="description" cols="80" rows="25">{{ page.user.description }}</textarea>
