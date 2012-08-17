@@ -27,7 +27,7 @@
             {% if page.user.email is defined and page.user.email %}<dt>E-mail&nbsp;:</dt><dd itemprop="email" itemscope>{{ page.user.email }}</dd>{% endif %}
             {% if page.user.phone is defined and page.user.phone %}<dt>Téléphone&nbsp;:</dt><dd itemprop="telephone" itemscope>{{ page.user.phone }}</dd>{% endif %}
             {% if page.user.address is defined and page.user.address %}<dt>Adresse&nbsp;:</dt><dd itemprop="address" itemscope>{{ page.user.address }}</dd>{% endif %}
-            {% if page.user.website is defined and page.user.website %}<dt>Site Web&nbsp;:</dt><dd><a rel="external nofollow">{{ page.user.website }}</a></dd>{% endif %}
+            {% if page.user.website is defined and page.user.website %}<dt>Site Web&nbsp;:</dt><dd><a rel="external nofollow" href="{{ page.user.website }}">{{ page.user.website }}</a></dd>{% endif %}
             {% if page.user.entry_date is defined and page.user.entry_date %}<dt>Date d'inscription&nbsp;:</dt><dd>{{ page.user.entry_date }}</dd>{% endif %}
             {% if page.user.last_entry_date is defined and page.user.last_entry_date %}<dt>Date de dernière inscription&nbsp;:</dt><dd>{{ page.user.last_entry_date }}</dd>{% endif %}
             {% if page.user.last_visit is defined and page.user.last_visit %}<dt>Dernière visite&nbsp;:</dt><dd>{{ page.user.last_visit }}</dd>{% endif %}
