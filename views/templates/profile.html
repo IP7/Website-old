@@ -8,36 +8,64 @@
     {% block profile_title %}<h1>Profil de {{ page.user.name }}</h1>{% endblock %}
 
     <section class="profile" itemtype="http://schema.org/Person" itemscope>
+        {% block profile %}
         {% if page.user.avatar is defined and page.user.avatar %}{#
           #}<img itemprop="image" itemscope class="avatar" href="{{ page.user.avatar.href }}" {#
                                          #}height="{{ page.user.avatar.height }}" width="{{ page.user.avatar.width }}" />{#
       #}{% endif %}
         <dl>
-            {# TODO indent for better readability #}
-
-            {% if page.user.pseudo is defined and page.user.pseudo %}<dt>Pseudo&nbsp;:</dt><dd class="pseudo">{{ page.user.pseudo }}</dd>{% endif %}
-            {% if page.user.firstname is defined and page.user.firstname %}<dt>Prénom&nbsp;:</dt><dd itemprop="givenName" itemscope>{{ page.user.firstname }}</dd>{% endif %}
-            {% if page.user.lastname is defined and page.user.lastname %}<dt>Nom&nbsp;:</dt><dd itemprop="familyName" itemscope>{{ page.user.lastname }}</dd>{% endif %}
-            {% if page.user.status is defined and page.user.status %}<dt>Statut&nbsp;:</dt><dd class="status">{{ page.user.status }}</dd>{% endif %}
-            {% if page.user.birthdate is defined and page.user.birthdate %}<dt>Date de naissance&nbsp;:</dt>{#
+            {% if page.user.pseudo is defined and page.user.pseudo %}{#
+                #}<dt>Pseudo&nbsp;:</dt><dd class="pseudo">{{ page.user.pseudo }}</dd>{#
+          #}{% endif %}
+            {% if page.user.firstname is defined and page.user.firstname %}{#
+                #}<dt>Prénom&nbsp;:</dt><dd itemprop="givenName" itemscope>{{ page.user.firstname }}</dd>{#
+          #}{% endif %}
+            {% if page.user.lastname is defined and page.user.lastname %}{#
+                #}<dt>Nom&nbsp;:</dt><dd itemprop="familyName" itemscope>{{ page.user.lastname }}</dd>{#
+          #}{% endif %}
+            {% if page.user.status is defined and page.user.status %}{#
+                #}<dt>Statut&nbsp;:</dt><dd class="status">{{ page.user.status }}</dd>{#
+          #}{% endif %}
+            {% if page.user.birthdate is defined and page.user.birthdate %}{#
+                #}<dt>Date de naissance&nbsp;:</dt>{#
                 #}<dd><date datetime="{{ page.user.birthdate.datetime_attr }}" itemprop="birthDate" itemscope>{{ page.user.birthdate.date }}</date>{#
                     #}{% if page.user.age is defined and page.user.age %} ({{ page.user.age }} ans)</dd>{% endif %}
             {% else %}{#
-          #}{% if page.user.age is defined and page.user.age %}<dt>Âge&nbsp;:</dt><dd class="age">{{ page.user.age }} ans</dd>{% endif %}{% endif %}
-            {% if page.user.email is defined and page.user.email %}<dt>E-mail&nbsp;:</dt><dd itemprop="email" itemscope>{{ page.user.email }}</dd>{% endif %}
-            {% if page.user.phone is defined and page.user.phone %}<dt>Téléphone&nbsp;:</dt><dd itemprop="telephone" itemscope>{{ page.user.phone }}</dd>{% endif %}
-            {% if page.user.address is defined and page.user.address %}<dt>Adresse&nbsp;:</dt><dd itemprop="address" itemscope>{{ page.user.address }}</dd>{% endif %}
-            {% if page.user.website is defined and page.user.website %}<dt>Site Web&nbsp;:</dt><dd><a rel="external nofollow" href="{{ page.user.website }}">{{ page.user.website }}</a></dd>{% endif %}
-            {% if page.user.entry_date is defined and page.user.entry_date %}<dt>Date d'inscription&nbsp;:</dt><dd>{{ page.user.entry_date }}</dd>{% endif %}
-            {% if page.user.last_entry_date is defined and page.user.last_entry_date %}<dt>Date de dernière inscription&nbsp;:</dt><dd>{{ page.user.last_entry_date }}</dd>{% endif %}
-            {% if page.user.last_visit is defined and page.user.last_visit %}<dt>Dernière visite&nbsp;:</dt><dd>{{ page.user.last_visit }}</dd>{% endif %}
-            {% if page.user.visits_number is defined and page.user.visits_number %}<dt>Nombre de visites&nbsp;:</dt><dd>{{ page.user.visits_number }}</dd>{% endif %}
+              #}{% if page.user.age is defined and page.user.age %}{#
+                    #}<dt>Âge&nbsp;:</dt><dd class="age">{{ page.user.age }} ans</dd>{#
+              #}{% endif %}{#
+          #}{% endif %}
+            {% if page.user.email is defined and page.user.email %}{#
+                #}<dt>E-mail&nbsp;:</dt><dd itemprop="email" itemscope>{{ page.user.email }}</dd>{#
+          #}{% endif %}
+            {% if page.user.phone is defined and page.user.phone %}{#
+                #}<dt>Téléphone&nbsp;:</dt><dd itemprop="telephone" itemscope>{{ page.user.phone }}</dd>{#
+          #}{% endif %}
+            {% if page.user.address is defined and page.user.address %}{#
+                #}<dt>Adresse&nbsp;:</dt><dd itemprop="address" itemscope>{{ page.user.address }}</dd>{#
+          #}{% endif %}
+            {% if page.user.website is defined and page.user.website %}{#
+                #}<dt>Site Web&nbsp;:</dt><dd><a rel="external nofollow" href="{{ page.user.website }}">{{ page.user.website }}</a></dd>{#
+          #}{% endif %}
+            {% if page.user.entry_date is defined and page.user.entry_date %}{#
+                #}<dt>Date d'inscription&nbsp;:</dt><dd>{{ page.user.entry_date }}</dd>{#
+          #}{% endif %}
+            {% if page.user.last_entry_date is defined and page.user.last_entry_date %}{#
+                #}<dt>Date de dernière inscription&nbsp;:</dt><dd>{{ page.user.last_entry_date }}</dd>{#
+          #}{% endif %}
+            {% if page.user.last_visit is defined and page.user.last_visit %}{#
+                #}<dt>Dernière visite&nbsp;:</dt><dd>{{ page.user.last_visit }}</dd>{#
+          #}{% endif %}
+            {% if page.user.visits_number is defined and page.user.visits_number %}{#
+                #}<dt>Nombre de visites&nbsp;:</dt><dd>{{ page.user.visits_number }}</dd>{#
+          #}{% endif %}
 
         </dl>
 
         {% if page.user.description is defined and page.user.description %}{#
             #}<section itemprop="description" itemscope>{{ page.user.description }}</section>{#
       #}{% endif %}
+      {% endblock %}
     </section>
 
 {% endblock %}
