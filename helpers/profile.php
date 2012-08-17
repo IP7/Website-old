@@ -38,44 +38,46 @@ function tpl_user($user, $extended=false) {
         'last_visit'  => tpl_date($user->getLastVisit()),
         'expiration'  => tpl_date($user->getExpirationDate()),
 
+        'noindex'     => !$user->getConfigIndexProfile(),
+
         'options' => array(
             array(
-                'name'  => 'opt_show_real_name',
+                'name'  => 'show_real_name',
                 'value' =>  $user->getConfigShowRealName(),
                 'title' => 'Montrer mon vrai nom'
             ),
             array(
-                'name'  => 'opt_show_birthdate',
+                'name'  => 'show_birthdate',
                 'value' => $user->getConfigShowBirthdate(),
                 'title' => 'Montrer ma date de naissance'
             ),
             array(
-                'name'  => 'opt_show_age',
+                'name'  => 'show_age',
                 'value' => $user->getConfigShowAge(),
                 'title' => 'Montrer mon âge'
             ),
             array(
-                'name'  => 'opt_show_email',
+                'name'  => 'show_email',
                 'value' => $user->getConfigShowEmail(),
                 'title' => 'Montrer mon e-mail'
             ),
             array(
-                'name'  => 'opt_show_phone',
+                'name'  => 'show_phone',
                 'value' => $user->getConfigShowPhone(),
                 'title' => 'Montrer mon téléphone'
             ),
             array(
-                'name'  => 'opt_show_address',
+                'name'  => 'show_address',
                 'value' => $user->getConfigShowAddress(),
                 'title' => 'Montrer mon adresse'
             ),
             array(
-                'name'  => 'opt_private_profile',
+                'name'  => 'private_profile',
                 'value' => $user->getConfigPrivateProfile(),
                 'title' => 'Cacher mon profil aux non-membres'
             ),
             array(
-                'name'  => 'opt_index_profile',
+                'name'  => 'index_profile',
                 'value' => $user->getConfigIndexProfile(),
                 'title' => 'Indexer mon profil dans les moteurs de recherche'
             )
