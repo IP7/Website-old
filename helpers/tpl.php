@@ -49,7 +49,7 @@ function global_menu_links() {
                 'others' => array(
                     array( 'href' => Config::$root_uri.'forum',       'title' => 'Forum' ),
                     array( 'href' => Config::$root_uri.'profile',     'title' => 'Mon Profil'),
-                    array( 'href' => Config::$root_uri.'?disconnect', 'title' => 'Déconnexion')
+                    array( 'href' => '?disconnect=1',                 'title' => 'Déconnexion')
                 )
             )
         )
