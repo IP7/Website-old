@@ -71,4 +71,9 @@ function tpl_render($tp, $values) {
     return Config::$tpl->render($tp, tpl_array($values));
 }
 
+// return an array which represents a date
+function tpl_date($d) {
+  return array( 'date' => date_fr($d), 'datetime_attr' => datetime_attr($d));
+}
+
 ?>
