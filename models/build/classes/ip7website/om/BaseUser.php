@@ -183,6 +183,13 @@ abstract class BaseUser extends BaseObject implements Persistent
     protected $config_index_profile;
 
     /**
+     * The value for the config_private_profile field.
+     * Note: this column has a database default value of: (expression) 0
+     * @var        boolean
+     */
+    protected $config_private_profile;
+
+    /**
      * The value for the deactivated field.
      * Note: this column has a database default value of: (expression) 0
      * @var        boolean
@@ -853,6 +860,16 @@ abstract class BaseUser extends BaseObject implements Persistent
     public function getConfigIndexProfile()
     {
         return $this->config_index_profile;
+    }
+
+    /**
+     * Get the [config_private_profile] column value.
+     *
+     * @return boolean
+     */
+    public function getConfigPrivateProfile()
+    {
+        return $this->config_private_profile;
     }
 
     /**
@@ -1561,6 +1578,35 @@ abstract class BaseUser extends BaseObject implements Persistent
     } // setConfigIndexProfile()
 
     /**
+     * Sets the value of the [config_private_profile] column.
+     * Non-boolean arguments are converted using the following rules:
+     *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     *
+     * @param boolean|integer|string $v The new value
+     * @return User The current object (for fluent API support)
+     */
+    public function setConfigPrivateProfile($v)
+    {
+        if ($v !== null) {
+            if (is_string($v)) {
+                $v = in_array(strtolower($v), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+            } else {
+                $v = (boolean) $v;
+            }
+        }
+
+        if ($this->config_private_profile !== $v) {
+            $this->config_private_profile = $v;
+            $this->modifiedColumns[] = UserPeer::CONFIG_PRIVATE_PROFILE;
+        }
+
+
+        return $this;
+    } // setConfigPrivateProfile()
+
+    /**
      * Sets the value of the [deactivated] column.
      * Non-boolean arguments are converted using the following rules:
      *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
@@ -1811,11 +1857,12 @@ abstract class BaseUser extends BaseObject implements Persistent
             $this->config_show_age = ($row[$startcol + 21] !== null) ? (boolean) $row[$startcol + 21] : null;
             $this->config_show_address = ($row[$startcol + 22] !== null) ? (boolean) $row[$startcol + 22] : null;
             $this->config_index_profile = ($row[$startcol + 23] !== null) ? (boolean) $row[$startcol + 23] : null;
-            $this->deactivated = ($row[$startcol + 24] !== null) ? (boolean) $row[$startcol + 24] : null;
-            $this->is_a_teacher = ($row[$startcol + 25] !== null) ? (boolean) $row[$startcol + 25] : null;
-            $this->is_a_student = ($row[$startcol + 26] !== null) ? (boolean) $row[$startcol + 26] : null;
-            $this->is_an_alumni = ($row[$startcol + 27] !== null) ? (boolean) $row[$startcol + 27] : null;
-            $this->avatar_id = ($row[$startcol + 28] !== null) ? (int) $row[$startcol + 28] : null;
+            $this->config_private_profile = ($row[$startcol + 24] !== null) ? (boolean) $row[$startcol + 24] : null;
+            $this->deactivated = ($row[$startcol + 25] !== null) ? (boolean) $row[$startcol + 25] : null;
+            $this->is_a_teacher = ($row[$startcol + 26] !== null) ? (boolean) $row[$startcol + 26] : null;
+            $this->is_a_student = ($row[$startcol + 27] !== null) ? (boolean) $row[$startcol + 27] : null;
+            $this->is_an_alumni = ($row[$startcol + 28] !== null) ? (boolean) $row[$startcol + 28] : null;
+            $this->avatar_id = ($row[$startcol + 29] !== null) ? (int) $row[$startcol + 29] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -1824,7 +1871,7 @@ abstract class BaseUser extends BaseObject implements Persistent
                 $this->ensureConsistency();
             }
 
-            return $startcol + 29; // 29 = UserPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 30; // 30 = UserPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating User object", $e);
@@ -2447,6 +2494,9 @@ abstract class BaseUser extends BaseObject implements Persistent
         if ($this->isColumnModified(UserPeer::CONFIG_INDEX_PROFILE)) {
             $modifiedColumns[':p' . $index++]  = '`CONFIG_INDEX_PROFILE`';
         }
+        if ($this->isColumnModified(UserPeer::CONFIG_PRIVATE_PROFILE)) {
+            $modifiedColumns[':p' . $index++]  = '`CONFIG_PRIVATE_PROFILE`';
+        }
         if ($this->isColumnModified(UserPeer::DEACTIVATED)) {
             $modifiedColumns[':p' . $index++]  = '`DEACTIVATED`';
         }
@@ -2550,6 +2600,9 @@ abstract class BaseUser extends BaseObject implements Persistent
                         break;
                     case '`CONFIG_INDEX_PROFILE`':
                         $stmt->bindValue($identifier, (int) $this->config_index_profile, PDO::PARAM_INT);
+                        break;
+                    case '`CONFIG_PRIVATE_PROFILE`':
+                        $stmt->bindValue($identifier, (int) $this->config_private_profile, PDO::PARAM_INT);
                         break;
                     case '`DEACTIVATED`':
                         $stmt->bindValue($identifier, (int) $this->deactivated, PDO::PARAM_INT);
@@ -2903,24 +2956,27 @@ abstract class BaseUser extends BaseObject implements Persistent
                 return $this->getConfigIndexProfile();
                 break;
             case 24:
-                return $this->getDeactivated();
+                return $this->getConfigPrivateProfile();
                 break;
             case 25:
-                return $this->getIsATeacher();
+                return $this->getDeactivated();
                 break;
             case 26:
-                return $this->getIsAStudent();
+                return $this->getIsATeacher();
                 break;
             case 27:
-                return $this->getIsAnAlumni();
+                return $this->getIsAStudent();
                 break;
             case 28:
-                return $this->getAvatarId();
+                return $this->getIsAnAlumni();
                 break;
             case 29:
-                return $this->getDescription();
+                return $this->getAvatarId();
                 break;
             case 30:
+                return $this->getDescription();
+                break;
+            case 31:
                 return $this->getRemarks();
                 break;
             default:
@@ -2976,13 +3032,14 @@ abstract class BaseUser extends BaseObject implements Persistent
             $keys[21] => $this->getConfigShowAge(),
             $keys[22] => $this->getConfigShowAddress(),
             $keys[23] => $this->getConfigIndexProfile(),
-            $keys[24] => $this->getDeactivated(),
-            $keys[25] => $this->getIsATeacher(),
-            $keys[26] => $this->getIsAStudent(),
-            $keys[27] => $this->getIsAnAlumni(),
-            $keys[28] => $this->getAvatarId(),
-            $keys[29] => ($includeLazyLoadColumns) ? $this->getDescription() : null,
-            $keys[30] => ($includeLazyLoadColumns) ? $this->getRemarks() : null,
+            $keys[24] => $this->getConfigPrivateProfile(),
+            $keys[25] => $this->getDeactivated(),
+            $keys[26] => $this->getIsATeacher(),
+            $keys[27] => $this->getIsAStudent(),
+            $keys[28] => $this->getIsAnAlumni(),
+            $keys[29] => $this->getAvatarId(),
+            $keys[30] => ($includeLazyLoadColumns) ? $this->getDescription() : null,
+            $keys[31] => ($includeLazyLoadColumns) ? $this->getRemarks() : null,
         );
         if ($includeForeignObjects) {
             if (null !== $this->aAvatar) {
@@ -3141,24 +3198,27 @@ abstract class BaseUser extends BaseObject implements Persistent
                 $this->setConfigIndexProfile($value);
                 break;
             case 24:
-                $this->setDeactivated($value);
+                $this->setConfigPrivateProfile($value);
                 break;
             case 25:
-                $this->setIsATeacher($value);
+                $this->setDeactivated($value);
                 break;
             case 26:
-                $this->setIsAStudent($value);
+                $this->setIsATeacher($value);
                 break;
             case 27:
-                $this->setIsAnAlumni($value);
+                $this->setIsAStudent($value);
                 break;
             case 28:
-                $this->setAvatarId($value);
+                $this->setIsAnAlumni($value);
                 break;
             case 29:
-                $this->setDescription($value);
+                $this->setAvatarId($value);
                 break;
             case 30:
+                $this->setDescription($value);
+                break;
+            case 31:
                 $this->setRemarks($value);
                 break;
         } // switch()
@@ -3209,13 +3269,14 @@ abstract class BaseUser extends BaseObject implements Persistent
         if (array_key_exists($keys[21], $arr)) $this->setConfigShowAge($arr[$keys[21]]);
         if (array_key_exists($keys[22], $arr)) $this->setConfigShowAddress($arr[$keys[22]]);
         if (array_key_exists($keys[23], $arr)) $this->setConfigIndexProfile($arr[$keys[23]]);
-        if (array_key_exists($keys[24], $arr)) $this->setDeactivated($arr[$keys[24]]);
-        if (array_key_exists($keys[25], $arr)) $this->setIsATeacher($arr[$keys[25]]);
-        if (array_key_exists($keys[26], $arr)) $this->setIsAStudent($arr[$keys[26]]);
-        if (array_key_exists($keys[27], $arr)) $this->setIsAnAlumni($arr[$keys[27]]);
-        if (array_key_exists($keys[28], $arr)) $this->setAvatarId($arr[$keys[28]]);
-        if (array_key_exists($keys[29], $arr)) $this->setDescription($arr[$keys[29]]);
-        if (array_key_exists($keys[30], $arr)) $this->setRemarks($arr[$keys[30]]);
+        if (array_key_exists($keys[24], $arr)) $this->setConfigPrivateProfile($arr[$keys[24]]);
+        if (array_key_exists($keys[25], $arr)) $this->setDeactivated($arr[$keys[25]]);
+        if (array_key_exists($keys[26], $arr)) $this->setIsATeacher($arr[$keys[26]]);
+        if (array_key_exists($keys[27], $arr)) $this->setIsAStudent($arr[$keys[27]]);
+        if (array_key_exists($keys[28], $arr)) $this->setIsAnAlumni($arr[$keys[28]]);
+        if (array_key_exists($keys[29], $arr)) $this->setAvatarId($arr[$keys[29]]);
+        if (array_key_exists($keys[30], $arr)) $this->setDescription($arr[$keys[30]]);
+        if (array_key_exists($keys[31], $arr)) $this->setRemarks($arr[$keys[31]]);
     }
 
     /**
@@ -3251,6 +3312,7 @@ abstract class BaseUser extends BaseObject implements Persistent
         if ($this->isColumnModified(UserPeer::CONFIG_SHOW_AGE)) $criteria->add(UserPeer::CONFIG_SHOW_AGE, $this->config_show_age);
         if ($this->isColumnModified(UserPeer::CONFIG_SHOW_ADDRESS)) $criteria->add(UserPeer::CONFIG_SHOW_ADDRESS, $this->config_show_address);
         if ($this->isColumnModified(UserPeer::CONFIG_INDEX_PROFILE)) $criteria->add(UserPeer::CONFIG_INDEX_PROFILE, $this->config_index_profile);
+        if ($this->isColumnModified(UserPeer::CONFIG_PRIVATE_PROFILE)) $criteria->add(UserPeer::CONFIG_PRIVATE_PROFILE, $this->config_private_profile);
         if ($this->isColumnModified(UserPeer::DEACTIVATED)) $criteria->add(UserPeer::DEACTIVATED, $this->deactivated);
         if ($this->isColumnModified(UserPeer::IS_A_TEACHER)) $criteria->add(UserPeer::IS_A_TEACHER, $this->is_a_teacher);
         if ($this->isColumnModified(UserPeer::IS_A_STUDENT)) $criteria->add(UserPeer::IS_A_STUDENT, $this->is_a_student);
@@ -3344,6 +3406,7 @@ abstract class BaseUser extends BaseObject implements Persistent
         $copyObj->setConfigShowAge($this->getConfigShowAge());
         $copyObj->setConfigShowAddress($this->getConfigShowAddress());
         $copyObj->setConfigIndexProfile($this->getConfigIndexProfile());
+        $copyObj->setConfigPrivateProfile($this->getConfigPrivateProfile());
         $copyObj->setDeactivated($this->getDeactivated());
         $copyObj->setIsATeacher($this->getIsATeacher());
         $copyObj->setIsAStudent($this->getIsAStudent());
@@ -7312,6 +7375,7 @@ abstract class BaseUser extends BaseObject implements Persistent
         $this->config_show_age = null;
         $this->config_show_address = null;
         $this->config_index_profile = null;
+        $this->config_private_profile = null;
         $this->deactivated = null;
         $this->is_a_teacher = null;
         $this->is_a_student = null;
