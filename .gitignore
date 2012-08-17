@@ -8,3 +8,5 @@ doc
 .bundle
 .sass-cache
 .DS_Store
+/tests/local_config.php
+
