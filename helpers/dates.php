@@ -21,6 +21,10 @@ function get_datetime($s) {
 function date_fr($d) {
     $d = get_datetime($d);
 
+    if ($d == NULL) {
+      return 'Jamais';
+    }
+
     $str = $d->format('d/m/Y'); 
 
     $today = new DateTime();
@@ -39,6 +43,12 @@ function date_fr($d) {
     }
 
     return $str;
+}
+
+function datetime_attr($d) {
+  $d = get_datetime($d);
+
+  return ($d == NULL) ? '' : $d->format('c');
 }
 
 ?>

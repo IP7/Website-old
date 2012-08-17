@@ -37,6 +37,10 @@ function display_http_error($errno, $errstr=null, $errfile=null, $errline=null) 
 
     return Config::$tpl->render('error.html', tpl_array(array(
         'page' => array(
+            'title'  => $errstr,
+
+            'breadcrumbs' => false,
+
             'errno'  => $errno,
             'errstr' => $errstr
         )

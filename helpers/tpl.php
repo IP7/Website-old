@@ -49,7 +49,7 @@ function global_menu_links() {
                 'others' => array(
                     array( 'href' => Config::$root_uri.'forum',       'title' => 'Forum' ),
                     array( 'href' => Config::$root_uri.'profile',     'title' => 'Mon Profil'),
-                    array( 'href' => Config::$root_uri.'?disconnect', 'title' => 'Déconnexion')
+                    array( 'href' => '?disconnect=1',                 'title' => 'Déconnexion')
                 )
             )
         )
@@ -69,6 +69,11 @@ function tpl_array() {
 // shortcut
 function tpl_render($tp, $values) {
     return Config::$tpl->render($tp, tpl_array($values));
+}
+
+// return an array which represents a date
+function tpl_date($d) {
+  return array( 'date' => date_fr($d), 'datetime_attr' => datetime_attr($d));
 }
 
 ?>

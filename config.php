@@ -172,6 +172,9 @@ class Config {
                 'description' => 'IP7 est une association de filière en Informatique'
                                . ' à l\'Université Paris Diderot.',
 
+                'breadcrumbs' => 'default',
+                'url'         => $_SERVER['REQUEST_URI'],
+
                 'favicon'     => self::$root_uri.'views/static/images/logo32.png',
                 'apple_icon'  => self::$root_uri.'views/static/images/logo256.png'
             )

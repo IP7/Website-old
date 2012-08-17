@@ -88,7 +88,7 @@ class User extends BaseUser {
   private static $config_vars = array(
     'show_email'      => 'ConfigShowEmail',
     'show_phone'      => 'ConfigShowPhone',
-    'show_real_name'  => 'ConfigShowReal_name',
+    'show_real_name'  => 'ConfigShowRealName',
     'show_birthdate'  => 'ConfigShowBirthdate',
     'show_age'        => 'ConfigShowAge',
     'show_address'    => 'ConfigShowAddress',
@@ -96,12 +96,16 @@ class User extends BaseUser {
     'private_profile' => 'ConfigPrivateProfile'
   );
 
+  public static function getConfigVars() {
+    return array_keys(self::$config_vars);
+  }
+
   public function getConfig() {
     $opts = self::$config_vars;
     $config = array();
 
     foreach ($opts as $o => $m) {
-      $config[$o] = call_user_func('$this->get'.$m);
+      $config[$o] = call_user_func(array($this, 'get'.$m));
     }
 
     return $config;
@@ -112,7 +116,7 @@ class User extends BaseUser {
   public function setConfig($c) {
     foreach (self::$config_vars as $o =>$m) {
       if (array_key_exists($o, $c)) {
-        call_user_func('$this->set'.$m, !!$c[$o]);
+        call_user_func(array($this, 'set'.$m), $c[$o]);
       }
     }
   }
