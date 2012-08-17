@@ -5,7 +5,7 @@
 {% endblock %}
 {% block content %}
 
-    {% block profile_title %}<h1>Profil de {{ page.user.name }}</h1>{% endblock %}
+    {% block profile_title %}<h1>Profil de {{ page.user.displayed_name }}</h1>{% endblock %}
 
     <section class="profile" itemtype="http://schema.org/Person" itemscope>
         {% block profile %}
@@ -48,13 +48,13 @@
                 #}<dt>Site Web&nbsp;:</dt><dd><a rel="external nofollow" href="{{ page.user.website }}">{{ page.user.website }}</a></dd>{#
           #}{% endif %}
             {% if page.user.entry_date is defined and page.user.entry_date %}{#
-                #}<dt>Date d'inscription&nbsp;:</dt><dd>{{ page.user.entry_date }}</dd>{#
+            #}<dt>Date d'inscription&nbsp;:</dt><dd>{{ _m.date(page.user.entry_date) }}</dd>{#
           #}{% endif %}
             {% if page.user.last_entry_date is defined and page.user.last_entry_date %}{#
-                #}<dt>Date de dernière inscription&nbsp;:</dt><dd>{{ page.user.last_entry_date }}</dd>{#
+                #}<dt>Date de dernière inscription&nbsp;:</dt><dd>{{ _m.date(page.user.last_entry_date) }}</dd>{#
           #}{% endif %}
             {% if page.user.last_visit is defined and page.user.last_visit %}{#
-                #}<dt>Dernière visite&nbsp;:</dt><dd>{{ page.user.last_visit }}</dd>{#
+                #}<dt>Dernière visite&nbsp;:</dt><dd>{{ _m.date(page.user.last_visit) }}</dd>{#
           #}{% endif %}
             {% if page.user.visits_number is defined and page.user.visits_number %}{#
                 #}<dt>Nombre de visites&nbsp;:</dt><dd>{{ page.user.visits_number }}</dd>{#
