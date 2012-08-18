@@ -77,8 +77,9 @@ dispatch('/admin', 'display_admin_home');
 dispatch('/admin/moderation', 'display_admin_moderation');
 ## finances
 dispatch('/admin/tresorerie', 'display_admin_finances');
+dispatch('/admin/membre/:name', 'display_admin_membre');
+dispatch('/admin/membre/:name/edit', 'display_admin_edit_membre');
 dispatch('/admin/membres', 'display_admin_members');
-# dispatch('/admin/membres/show', 'display_admin_show_members');
 ## maintenance
 dispatch('/admin/maintenance', 'display_admin_maintenance');
 
