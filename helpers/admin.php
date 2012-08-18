@@ -8,6 +8,10 @@ function admin_tpl_default() {
     if (!$init) {
         $d = array(
             'page' => array(
+
+                'title' => 'Accueil',
+                'breadcrumbs' => false,
+
                 'navlinks' => array(
                     array('title' => 'Modération',  'href' => Config::$root_uri.'admin/moderation'),
                     array('title' => 'Trésorerie',  'href' => Config::$root_uri.'admin/tresorerie'),
