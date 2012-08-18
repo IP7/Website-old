@@ -1,4 +1,4 @@
-{% extends (admin is defined and admin) ? 'admin_main.html' : 'main.html' %}
+{% extends 'main.html' %}
 {% import 'macros.html' as _m %}
 {% block metas %}
 {% if page.user.noindex is defined and page.user.noindex %}{{ _m.robots(['noindex']) }}{% else %}{{ parent() }}{% endif %}

@@ -40,7 +40,6 @@ function display_admin_home() {
                                                             array(
         'page' => array(
             'title'        => 'Accueil',
-            'breadcrumbs'  => false,
 
             'message'      => $message,
             'message_type' => $message_type,
@@ -128,7 +127,7 @@ function display_admin_members() {
 
             $members []= array(
                 'id' => $m->getId(),
-                'href' => $uri.'/show',
+                'href' => Config::$root_uri.'p/'.$m->getUsername(),
                 'pseudo' => $m->getUsername(),
                 'name' => $m->getName(),
                 'type' => $type,
@@ -141,34 +140,9 @@ function display_admin_members() {
     return Config::$tpl->render('admin_members.html', tpl_array(admin_tpl_default(),array(
         'page' => array(
             'title' => 'Membres',
-            'members_form' => array( 'action' => Config::$root_uri.'admin/membres/show' ),
             'members' => $members
         )
     )));
-}
-
-function display_admin_member() {
-    $username = params('name');
-
-    if (!$username) {
-        halt(NOT_FOUND);
-    }
-
-    $user = UserQuery::create()->findOneByUsername($username);
-
-    if ($user == NULL) {
-        halt(NOT_FOUND);
-    }
-
-    $tpl_user = tpl_user($user);
-
-    return tpl_render('profile.html', array(
-        'admin' => true,
-        'page' => array(
-            'title' => 'Profil de '.$tpl_user['displayed_name'],
-            'user' => $tpl_user
-        )
-    ));
 }
 
 ?>
