@@ -12,6 +12,7 @@
  * @method UserQuery orderByType($order = Criteria::ASC) Order by the type column
  * @method UserQuery orderByFirstname($order = Criteria::ASC) Order by the firstname column
  * @method UserQuery orderByLastname($order = Criteria::ASC) Order by the lastname column
+ * @method UserQuery orderByGender($order = Criteria::ASC) Order by the gender column
  * @method UserQuery orderByEmail($order = Criteria::ASC) Order by the email column
  * @method UserQuery orderByPhone($order = Criteria::ASC) Order by the phone column
  * @method UserQuery orderByAddress($order = Criteria::ASC) Order by the address column
@@ -19,15 +20,21 @@
  * @method UserQuery orderByBirthDate($order = Criteria::ASC) Order by the birth_date column
  * @method UserQuery orderByFirstEntry($order = Criteria::ASC) Order by the first_entry column
  * @method UserQuery orderByLastEntry($order = Criteria::ASC) Order by the last_entry column
+ * @method UserQuery orderByExpirationDate($order = Criteria::ASC) Order by the expiration_date column
  * @method UserQuery orderByLastVisit($order = Criteria::ASC) Order by the last_visit column
  * @method UserQuery orderByVisitsNb($order = Criteria::ASC) Order by the visits_nb column
  * @method UserQuery orderByConfigShowEmail($order = Criteria::ASC) Order by the config_show_email column
  * @method UserQuery orderByConfigShowPhone($order = Criteria::ASC) Order by the config_show_phone column
  * @method UserQuery orderByConfigShowRealName($order = Criteria::ASC) Order by the config_show_real_name column
- * @method UserQuery orderByConfigIndexingProfile($order = Criteria::ASC) Order by the config_indexing_profile column
+ * @method UserQuery orderByConfigShowBirthdate($order = Criteria::ASC) Order by the config_show_birthdate column
+ * @method UserQuery orderByConfigShowAge($order = Criteria::ASC) Order by the config_show_age column
+ * @method UserQuery orderByConfigShowAddress($order = Criteria::ASC) Order by the config_show_address column
+ * @method UserQuery orderByConfigIndexProfile($order = Criteria::ASC) Order by the config_index_profile column
+ * @method UserQuery orderByConfigPrivateProfile($order = Criteria::ASC) Order by the config_private_profile column
  * @method UserQuery orderByDeactivated($order = Criteria::ASC) Order by the deactivated column
  * @method UserQuery orderByIsATeacher($order = Criteria::ASC) Order by the is_a_teacher column
  * @method UserQuery orderByIsAStudent($order = Criteria::ASC) Order by the is_a_student column
+ * @method UserQuery orderByIsAnAlumni($order = Criteria::ASC) Order by the is_an_alumni column
  * @method UserQuery orderByAvatarId($order = Criteria::ASC) Order by the avatar_id column
  * @method UserQuery orderByDescription($order = Criteria::ASC) Order by the description column
  * @method UserQuery orderByRemarks($order = Criteria::ASC) Order by the remarks column
@@ -38,6 +45,7 @@
  * @method UserQuery groupByType() Group by the type column
  * @method UserQuery groupByFirstname() Group by the firstname column
  * @method UserQuery groupByLastname() Group by the lastname column
+ * @method UserQuery groupByGender() Group by the gender column
  * @method UserQuery groupByEmail() Group by the email column
  * @method UserQuery groupByPhone() Group by the phone column
  * @method UserQuery groupByAddress() Group by the address column
@@ -45,15 +53,21 @@
  * @method UserQuery groupByBirthDate() Group by the birth_date column
  * @method UserQuery groupByFirstEntry() Group by the first_entry column
  * @method UserQuery groupByLastEntry() Group by the last_entry column
+ * @method UserQuery groupByExpirationDate() Group by the expiration_date column
  * @method UserQuery groupByLastVisit() Group by the last_visit column
  * @method UserQuery groupByVisitsNb() Group by the visits_nb column
  * @method UserQuery groupByConfigShowEmail() Group by the config_show_email column
  * @method UserQuery groupByConfigShowPhone() Group by the config_show_phone column
  * @method UserQuery groupByConfigShowRealName() Group by the config_show_real_name column
- * @method UserQuery groupByConfigIndexingProfile() Group by the config_indexing_profile column
+ * @method UserQuery groupByConfigShowBirthdate() Group by the config_show_birthdate column
+ * @method UserQuery groupByConfigShowAge() Group by the config_show_age column
+ * @method UserQuery groupByConfigShowAddress() Group by the config_show_address column
+ * @method UserQuery groupByConfigIndexProfile() Group by the config_index_profile column
+ * @method UserQuery groupByConfigPrivateProfile() Group by the config_private_profile column
  * @method UserQuery groupByDeactivated() Group by the deactivated column
  * @method UserQuery groupByIsATeacher() Group by the is_a_teacher column
  * @method UserQuery groupByIsAStudent() Group by the is_a_student column
+ * @method UserQuery groupByIsAnAlumni() Group by the is_an_alumni column
  * @method UserQuery groupByAvatarId() Group by the avatar_id column
  * @method UserQuery groupByDescription() Group by the description column
  * @method UserQuery groupByRemarks() Group by the remarks column
@@ -131,6 +145,7 @@
  * @method User findOneByType(int $type) Return the first User filtered by the type column
  * @method User findOneByFirstname(string $firstname) Return the first User filtered by the firstname column
  * @method User findOneByLastname(string $lastname) Return the first User filtered by the lastname column
+ * @method User findOneByGender(int $gender) Return the first User filtered by the gender column
  * @method User findOneByEmail(string $email) Return the first User filtered by the email column
  * @method User findOneByPhone(string $phone) Return the first User filtered by the phone column
  * @method User findOneByAddress(string $address) Return the first User filtered by the address column
@@ -138,15 +153,21 @@
  * @method User findOneByBirthDate(string $birth_date) Return the first User filtered by the birth_date column
  * @method User findOneByFirstEntry(string $first_entry) Return the first User filtered by the first_entry column
  * @method User findOneByLastEntry(string $last_entry) Return the first User filtered by the last_entry column
+ * @method User findOneByExpirationDate(string $expiration_date) Return the first User filtered by the expiration_date column
  * @method User findOneByLastVisit(string $last_visit) Return the first User filtered by the last_visit column
  * @method User findOneByVisitsNb(int $visits_nb) Return the first User filtered by the visits_nb column
  * @method User findOneByConfigShowEmail(boolean $config_show_email) Return the first User filtered by the config_show_email column
  * @method User findOneByConfigShowPhone(boolean $config_show_phone) Return the first User filtered by the config_show_phone column
  * @method User findOneByConfigShowRealName(boolean $config_show_real_name) Return the first User filtered by the config_show_real_name column
- * @method User findOneByConfigIndexingProfile(boolean $config_indexing_profile) Return the first User filtered by the config_indexing_profile column
+ * @method User findOneByConfigShowBirthdate(boolean $config_show_birthdate) Return the first User filtered by the config_show_birthdate column
+ * @method User findOneByConfigShowAge(boolean $config_show_age) Return the first User filtered by the config_show_age column
+ * @method User findOneByConfigShowAddress(boolean $config_show_address) Return the first User filtered by the config_show_address column
+ * @method User findOneByConfigIndexProfile(boolean $config_index_profile) Return the first User filtered by the config_index_profile column
+ * @method User findOneByConfigPrivateProfile(boolean $config_private_profile) Return the first User filtered by the config_private_profile column
  * @method User findOneByDeactivated(boolean $deactivated) Return the first User filtered by the deactivated column
  * @method User findOneByIsATeacher(boolean $is_a_teacher) Return the first User filtered by the is_a_teacher column
  * @method User findOneByIsAStudent(boolean $is_a_student) Return the first User filtered by the is_a_student column
+ * @method User findOneByIsAnAlumni(boolean $is_an_alumni) Return the first User filtered by the is_an_alumni column
  * @method User findOneByAvatarId(int $avatar_id) Return the first User filtered by the avatar_id column
  * @method User findOneByDescription(string $description) Return the first User filtered by the description column
  * @method User findOneByRemarks(string $remarks) Return the first User filtered by the remarks column
@@ -157,6 +178,7 @@
  * @method array findByType(int $type) Return User objects filtered by the type column
  * @method array findByFirstname(string $firstname) Return User objects filtered by the firstname column
  * @method array findByLastname(string $lastname) Return User objects filtered by the lastname column
+ * @method array findByGender(int $gender) Return User objects filtered by the gender column
  * @method array findByEmail(string $email) Return User objects filtered by the email column
  * @method array findByPhone(string $phone) Return User objects filtered by the phone column
  * @method array findByAddress(string $address) Return User objects filtered by the address column
@@ -164,15 +186,21 @@
  * @method array findByBirthDate(string $birth_date) Return User objects filtered by the birth_date column
  * @method array findByFirstEntry(string $first_entry) Return User objects filtered by the first_entry column
  * @method array findByLastEntry(string $last_entry) Return User objects filtered by the last_entry column
+ * @method array findByExpirationDate(string $expiration_date) Return User objects filtered by the expiration_date column
  * @method array findByLastVisit(string $last_visit) Return User objects filtered by the last_visit column
  * @method array findByVisitsNb(int $visits_nb) Return User objects filtered by the visits_nb column
  * @method array findByConfigShowEmail(boolean $config_show_email) Return User objects filtered by the config_show_email column
  * @method array findByConfigShowPhone(boolean $config_show_phone) Return User objects filtered by the config_show_phone column
  * @method array findByConfigShowRealName(boolean $config_show_real_name) Return User objects filtered by the config_show_real_name column
- * @method array findByConfigIndexingProfile(boolean $config_indexing_profile) Return User objects filtered by the config_indexing_profile column
+ * @method array findByConfigShowBirthdate(boolean $config_show_birthdate) Return User objects filtered by the config_show_birthdate column
+ * @method array findByConfigShowAge(boolean $config_show_age) Return User objects filtered by the config_show_age column
+ * @method array findByConfigShowAddress(boolean $config_show_address) Return User objects filtered by the config_show_address column
+ * @method array findByConfigIndexProfile(boolean $config_index_profile) Return User objects filtered by the config_index_profile column
+ * @method array findByConfigPrivateProfile(boolean $config_private_profile) Return User objects filtered by the config_private_profile column
  * @method array findByDeactivated(boolean $deactivated) Return User objects filtered by the deactivated column
  * @method array findByIsATeacher(boolean $is_a_teacher) Return User objects filtered by the is_a_teacher column
  * @method array findByIsAStudent(boolean $is_a_student) Return User objects filtered by the is_a_student column
+ * @method array findByIsAnAlumni(boolean $is_an_alumni) Return User objects filtered by the is_an_alumni column
  * @method array findByAvatarId(int $avatar_id) Return User objects filtered by the avatar_id column
  * @method array findByDescription(string $description) Return User objects filtered by the description column
  * @method array findByRemarks(string $remarks) Return User objects filtered by the remarks column
@@ -265,7 +293,7 @@ abstract class BaseUserQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `ID`, `USERNAME`, `PASSWORD_HASH`, `TYPE`, `FIRSTNAME`, `LASTNAME`, `EMAIL`, `PHONE`, `ADDRESS`, `WEBSITE`, `BIRTH_DATE`, `FIRST_ENTRY`, `LAST_ENTRY`, `LAST_VISIT`, `VISITS_NB`, `CONFIG_SHOW_EMAIL`, `CONFIG_SHOW_PHONE`, `CONFIG_SHOW_REAL_NAME`, `CONFIG_INDEXING_PROFILE`, `DEACTIVATED`, `IS_A_TEACHER`, `IS_A_STUDENT`, `AVATAR_ID` FROM `users` WHERE `ID` = :p0';
+        $sql = 'SELECT `ID`, `USERNAME`, `PASSWORD_HASH`, `TYPE`, `FIRSTNAME`, `LASTNAME`, `GENDER`, `EMAIL`, `PHONE`, `ADDRESS`, `WEBSITE`, `BIRTH_DATE`, `FIRST_ENTRY`, `LAST_ENTRY`, `EXPIRATION_DATE`, `LAST_VISIT`, `VISITS_NB`, `CONFIG_SHOW_EMAIL`, `CONFIG_SHOW_PHONE`, `CONFIG_SHOW_REAL_NAME`, `CONFIG_SHOW_BIRTHDATE`, `CONFIG_SHOW_AGE`, `CONFIG_SHOW_ADDRESS`, `CONFIG_INDEX_PROFILE`, `CONFIG_PRIVATE_PROFILE`, `DEACTIVATED`, `IS_A_TEACHER`, `IS_A_STUDENT`, `IS_AN_ALUMNI`, `AVATAR_ID` FROM `users` WHERE `ID` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -539,6 +567,40 @@ abstract class BaseUserQuery extends ModelCriteria
     }
 
     /**
+     * Filter the query on the gender column
+     *
+     * @param     mixed $gender The value to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return UserQuery The current query, for fluid interface
+     * @throws PropelException - if the value is not accepted by the enum.
+     */
+    public function filterByGender($gender = null, $comparison = null)
+    {
+        $valueSet = UserPeer::getValueSet(UserPeer::GENDER);
+        if (is_scalar($gender)) {
+            if (!in_array($gender, $valueSet)) {
+                throw new PropelException(sprintf('Value "%s" is not accepted in this enumerated column', $gender));
+            }
+            $gender = array_search($gender, $valueSet);
+        } elseif (is_array($gender)) {
+            $convertedValues = array();
+            foreach ($gender as $value) {
+                if (!in_array($value, $valueSet)) {
+                    throw new PropelException(sprintf('Value "%s" is not accepted in this enumerated column', $value));
+                }
+                $convertedValues []= array_search($value, $valueSet);
+            }
+            $gender = $convertedValues;
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(UserPeer::GENDER, $gender, $comparison);
+    }
+
+    /**
      * Filter the query on the email column
      *
      * Example usage:
@@ -784,6 +846,49 @@ abstract class BaseUserQuery extends ModelCriteria
     }
 
     /**
+     * Filter the query on the expiration_date column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByExpirationDate('2011-03-14'); // WHERE expiration_date = '2011-03-14'
+     * $query->filterByExpirationDate('now'); // WHERE expiration_date = '2011-03-14'
+     * $query->filterByExpirationDate(array('max' => 'yesterday')); // WHERE expiration_date > '2011-03-13'
+     * </code>
+     *
+     * @param     mixed $expirationDate The value to use as filter.
+     *              Values can be integers (unix timestamps), DateTime objects, or strings.
+     *              Empty strings are treated as NULL.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return UserQuery The current query, for fluid interface
+     */
+    public function filterByExpirationDate($expirationDate = null, $comparison = null)
+    {
+        if (is_array($expirationDate)) {
+            $useMinMax = false;
+            if (isset($expirationDate['min'])) {
+                $this->addUsingAlias(UserPeer::EXPIRATION_DATE, $expirationDate['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($expirationDate['max'])) {
+                $this->addUsingAlias(UserPeer::EXPIRATION_DATE, $expirationDate['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(UserPeer::EXPIRATION_DATE, $expirationDate, $comparison);
+    }
+
+    /**
      * Filter the query on the last_visit column
      *
      * Example usage:
@@ -949,15 +1054,15 @@ abstract class BaseUserQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the config_indexing_profile column
+     * Filter the query on the config_show_birthdate column
      *
      * Example usage:
      * <code>
-     * $query->filterByConfigIndexingProfile(true); // WHERE config_indexing_profile = true
-     * $query->filterByConfigIndexingProfile('yes'); // WHERE config_indexing_profile = true
+     * $query->filterByConfigShowBirthdate(true); // WHERE config_show_birthdate = true
+     * $query->filterByConfigShowBirthdate('yes'); // WHERE config_show_birthdate = true
      * </code>
      *
-     * @param     boolean|string $configIndexingProfile The value to use as filter.
+     * @param     boolean|string $configShowBirthdate The value to use as filter.
      *              Non-boolean arguments are converted using the following rules:
      *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
      *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
@@ -966,13 +1071,121 @@ abstract class BaseUserQuery extends ModelCriteria
      *
      * @return UserQuery The current query, for fluid interface
      */
-    public function filterByConfigIndexingProfile($configIndexingProfile = null, $comparison = null)
+    public function filterByConfigShowBirthdate($configShowBirthdate = null, $comparison = null)
     {
-        if (is_string($configIndexingProfile)) {
-            $config_indexing_profile = in_array(strtolower($configIndexingProfile), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+        if (is_string($configShowBirthdate)) {
+            $config_show_birthdate = in_array(strtolower($configShowBirthdate), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
         }
 
-        return $this->addUsingAlias(UserPeer::CONFIG_INDEXING_PROFILE, $configIndexingProfile, $comparison);
+        return $this->addUsingAlias(UserPeer::CONFIG_SHOW_BIRTHDATE, $configShowBirthdate, $comparison);
+    }
+
+    /**
+     * Filter the query on the config_show_age column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByConfigShowAge(true); // WHERE config_show_age = true
+     * $query->filterByConfigShowAge('yes'); // WHERE config_show_age = true
+     * </code>
+     *
+     * @param     boolean|string $configShowAge The value to use as filter.
+     *              Non-boolean arguments are converted using the following rules:
+     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return UserQuery The current query, for fluid interface
+     */
+    public function filterByConfigShowAge($configShowAge = null, $comparison = null)
+    {
+        if (is_string($configShowAge)) {
+            $config_show_age = in_array(strtolower($configShowAge), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+        }
+
+        return $this->addUsingAlias(UserPeer::CONFIG_SHOW_AGE, $configShowAge, $comparison);
+    }
+
+    /**
+     * Filter the query on the config_show_address column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByConfigShowAddress(true); // WHERE config_show_address = true
+     * $query->filterByConfigShowAddress('yes'); // WHERE config_show_address = true
+     * </code>
+     *
+     * @param     boolean|string $configShowAddress The value to use as filter.
+     *              Non-boolean arguments are converted using the following rules:
+     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return UserQuery The current query, for fluid interface
+     */
+    public function filterByConfigShowAddress($configShowAddress = null, $comparison = null)
+    {
+        if (is_string($configShowAddress)) {
+            $config_show_address = in_array(strtolower($configShowAddress), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+        }
+
+        return $this->addUsingAlias(UserPeer::CONFIG_SHOW_ADDRESS, $configShowAddress, $comparison);
+    }
+
+    /**
+     * Filter the query on the config_index_profile column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByConfigIndexProfile(true); // WHERE config_index_profile = true
+     * $query->filterByConfigIndexProfile('yes'); // WHERE config_index_profile = true
+     * </code>
+     *
+     * @param     boolean|string $configIndexProfile The value to use as filter.
+     *              Non-boolean arguments are converted using the following rules:
+     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return UserQuery The current query, for fluid interface
+     */
+    public function filterByConfigIndexProfile($configIndexProfile = null, $comparison = null)
+    {
+        if (is_string($configIndexProfile)) {
+            $config_index_profile = in_array(strtolower($configIndexProfile), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+        }
+
+        return $this->addUsingAlias(UserPeer::CONFIG_INDEX_PROFILE, $configIndexProfile, $comparison);
+    }
+
+    /**
+     * Filter the query on the config_private_profile column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByConfigPrivateProfile(true); // WHERE config_private_profile = true
+     * $query->filterByConfigPrivateProfile('yes'); // WHERE config_private_profile = true
+     * </code>
+     *
+     * @param     boolean|string $configPrivateProfile The value to use as filter.
+     *              Non-boolean arguments are converted using the following rules:
+     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return UserQuery The current query, for fluid interface
+     */
+    public function filterByConfigPrivateProfile($configPrivateProfile = null, $comparison = null)
+    {
+        if (is_string($configPrivateProfile)) {
+            $config_private_profile = in_array(strtolower($configPrivateProfile), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+        }
+
+        return $this->addUsingAlias(UserPeer::CONFIG_PRIVATE_PROFILE, $configPrivateProfile, $comparison);
     }
 
     /**
@@ -1054,6 +1267,33 @@ abstract class BaseUserQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(UserPeer::IS_A_STUDENT, $isAStudent, $comparison);
+    }
+
+    /**
+     * Filter the query on the is_an_alumni column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByIsAnAlumni(true); // WHERE is_an_alumni = true
+     * $query->filterByIsAnAlumni('yes'); // WHERE is_an_alumni = true
+     * </code>
+     *
+     * @param     boolean|string $isAnAlumni The value to use as filter.
+     *              Non-boolean arguments are converted using the following rules:
+     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return UserQuery The current query, for fluid interface
+     */
+    public function filterByIsAnAlumni($isAnAlumni = null, $comparison = null)
+    {
+        if (is_string($isAnAlumni)) {
+            $is_an_alumni = in_array(strtolower($isAnAlumni), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+        }
+
+        return $this->addUsingAlias(UserPeer::IS_AN_ALUMNI, $isAnAlumni, $comparison);
     }
 
     /**

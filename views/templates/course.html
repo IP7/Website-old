@@ -1,0 +1,27 @@
+{% extends "main.html" %}
+{% block content %}
+<article class="course">
+    <h1>{{ page.course.name }}</h1>
+    <section class="intro">{{ page.course.intro }}</section>
+    {% include "news.html" %}
+    {% if page.course.content_types is defined and page.course.content_types is not empty %}
+    <div class="tabbed contents">
+        <ul class="tabs">
+            {% for ct_type in page.course.content_types %}
+            <li class="tab">{{ _m.a('#tb_' ~ ct_type, ct_type.title) }}</li>
+            {% endfor %}
+        </ul>
+        <div class="tabs_contents">
+            {% for ct_type in page.course.content_types %}
+            <div class="tab_content" id="#tb_{{ ct_type }}">{#
+                #}{% if ct_type.intro is defined and ct_type.intro %}<p>{{ ct_type.intro }}</p>{% endif %}<ul>{#
+                #}{% for ct in ct_type.contents %}
+                    <li>{{ _m.a(ct.href, ct.title) }}</li>
+                {% endfor %}{#
+            #}</ul></div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+</article>
+{% endblock %}

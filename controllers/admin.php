@@ -3,30 +3,6 @@
 require_once dirname(__FILE__).'/../config.php';
 Config::init();
 
-# === GENERAL ================================================================ 
-
-# helper
-function admin_tpl_default() {
-    static $init = false;
-    static $d;
-
-    if (!$init) {
-        $d = array(
-            'page' => array(
-                'navlinks' => array(
-                    array('title' => 'Modération',  'href' => Config::$root_uri.'admin/moderation'),
-                    array('title' => 'Trésorerie',  'href' => Config::$root_uri.'admin/tresorerie'),
-                    array('title' => 'Maintenance', 'href' => Config::$root_uri.'admin/maintenance'),
-
-                    array('title' => 'Retour au site', 'href' => Config::$root_uri)
-                )
-            )
-        );
-        $init = true;
-    }
-    return $d;
-}
-
 # === HOME =====================================================================
 
 function display_admin_home() {

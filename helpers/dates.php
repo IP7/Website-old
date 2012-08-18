@@ -1,15 +1,28 @@
 <?php
 
-# format a date for French output
-function date_fr($d) {
-    if (is_string($d)) {
+// return a DateTime object from a string
+function get_datetime($s) {
+    if (is_string($s)) {
         try {
-        $d = new DateTime($d);
+            return new DateTime($s);
         }
         catch (Exception $e) {
             error_log($e);
-            $d = new DateTime(substr($d, 1, -1));
+            /* Propel seems to return some dates surrounded by curly brackets,
+               e.g.: '{ 2010-08-04 }'. Using substr(X, 1, -1) deletes these curly
+               brackets from X. */
+            return new DateTime(substr($s, 1, -1));
         }
+    }
+    return $s;
+}
+
+// format a date for French output
+function date_fr($d) {
+    $d = get_datetime($d);
+
+    if ($d == NULL) {
+      return 'Jamais';
     }
 
     $str = $d->format('d/m/Y'); 
@@ -32,5 +45,10 @@ function date_fr($d) {
     return $str;
 }
 
-?>
+function datetime_attr($d) {
+  $d = get_datetime($d);
 
+  return ($d == NULL) ? '' : $d->format('c');
+}
+
+?>

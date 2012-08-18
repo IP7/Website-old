@@ -5,6 +5,40 @@ Config::init();
 
 function display_home() {
 
+    # Disconnection
+    if (isset($_GET['disconnect'])) {
+        disconnection();
+    }
+
+    # Rendering
+    return Config::$tpl->render('home.html', tpl_array(array(
+
+        'page' => array(
+            'title' => 'Accueil',
+
+            'breadcrumbs' => false,
+
+            'intro' => 'Bienvenue sur le site de l\'association IP7.',
+
+            'news' => array()
+        ),
+    )));
+
+}
+
+function display_connection() {
+    if (is_connected()) {
+        redirect_to('/');
+    }
+    return tpl_render('connection.html', array(
+        'page' => array(
+            'title' => 'Connexion',
+            'connection' => array( 'action' => Config::$root_uri.'connexion' )
+        )
+    ));
+}
+
+function post_connection() {
     $message = false;
     $message_type = '';
 
@@ -24,38 +58,21 @@ function display_home() {
                 $message = app_error_message($res);
             }
     }
-    # Disconnection
-    else if (isset($_GET['disconnect'])) {
-        disconnection();
+
+    if (!$message) {
+        redirect_to('/', array('status' => HTTP_SEE_OTHER));
     }
 
-    # Rendering
-    return Config::$tpl->render('home.html', tpl_array(array(
-
-        'page' => array(
-            'title' => 'Accueil',
-
-            'message' => $message,
-            'message_type' => $message_type,
-
-            'intro' => 'Bienvenue sur le site de l\'association IP7.',
-
-            'news' => array()
-        ),
-    )));
-
-}
-
-function display_connection() {
-    if (is_connected()) {
-        redirect_to('/');
-    }
-    return Config::$tpl->render('connection.html', tpl_array(array(
+    return tpl_render('connection.html', array(
         'page' => array(
             'title' => 'Connexion',
-            'connection' => array( 'action' => Config::$root_uri )
+            'connection' => array( 'action' => Config::$root_uri ),
+
+            'message' => $message,
+            'message_type' => $message_type
         )
-    )));
+    ));
+
 }
 
 ?>

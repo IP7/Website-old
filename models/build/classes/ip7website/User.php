@@ -1,7 +1,7 @@
 <?php
 
-	require_once dirname(__FILE__).'/../../../../config.php';
-	Config::init();	
+require_once dirname(__FILE__).'/../../../../config.php';
+Config::init();	
 
 /**
  * Skeleton subclass for representing a row from the 'users' table.
@@ -16,92 +16,147 @@
  */
 class User extends BaseUser {
 
-    /**
-     * Alias of getType()
-     **/
-    public function getRank() {
-        return $this->getType();
+  /* == Types ================================================ */
+
+  /**
+   * Return true if the user is a student.
+   **/
+  public function isStudent() {
+    return $this->getIsAStudent();
+  }
+
+  /**
+   * Return true if the user is a teacher.
+   **/
+  public function isTeacher() {
+    return $this->getIsATeacher();
+  }
+
+  /**
+   * Return true if the user is an alumni
+   **/
+  public function isAlumni() {
+    return $this->getIsAnAlumni();
+  }
+
+  /* == Ranks ================================================ */
+
+  /**
+   * Return true if the user is an admin.
+   * The 'ADMIN_RANK' constant must be defined.
+   **/
+  public function isAdmin() {
+    if (defined('ADMIN_RANK')) {
+      return ($this->getType() >= ADMIN_RANK);
+    }
+    return false;
+  }
+
+  /**
+   * Return true if the user is a moderator.
+   * The 'MODERATOR_RANK' constant must be defind.
+   **/
+  public function isModerator(){
+    if (defined('MODERATOR_RANK')) {
+      return ($this->getType() >= MODERATOR_RANK);
+    }
+    return false;
+  }
+
+  /**
+   * Return true if the user is a member.
+   * The 'MEMBER_RANK' constant must be defined.
+   **/
+  public function isMember() {
+    if (defined('MEMBER_RANK')) {
+      return ($this->getType() >= MEMBER_RANK);
+    }
+    return false;
+  }
+
+  /* == Settings ============================================= */
+
+  /**
+   * Return true if the user's account is activated.
+   **/
+  public function isActivated() {
+    return !$this->getDeactivated();
+  }
+
+  /* -- Config ----------------------------------------------- */
+
+  private static $config_vars = array(
+    'show_email'      => 'ConfigShowEmail',
+    'show_phone'      => 'ConfigShowPhone',
+    'show_real_name'  => 'ConfigShowRealName',
+    'show_birthdate'  => 'ConfigShowBirthdate',
+    'show_age'        => 'ConfigShowAge',
+    'show_address'    => 'ConfigShowAddress',
+    'index_profile'   => 'ConfigIndexProfile',
+    'private_profile' => 'ConfigPrivateProfile'
+  );
+
+  public static function getConfigVars() {
+    return array_keys(self::$config_vars);
+  }
+
+  public function getConfig() {
+    $opts = self::$config_vars;
+    $config = array();
+
+    foreach ($opts as $o => $m) {
+      $config[$o] = call_user_func(array($this, 'get'.$m));
     }
 
-    /**
-     * Return true if the user's account is activated.
-     **/
-    public function isActivated() {
-        return !$this->getDeactivated();
+    return $config;
+  }
+
+  // set the user's config. The argument must be an array
+  // of options
+  public function setConfig($c) {
+    foreach (self::$config_vars as $o =>$m) {
+      if (array_key_exists($o, $c)) {
+        call_user_func(array($this, 'set'.$m), $c[$o]);
+      }
     }
+  }
 
-    /**
-     * Return true if the user is a student.
-     **/
-    public function isStudent() {
-        return $this->getIsAStudent();
-    }
+  /* == Helpers ============================================== */
 
-    /**
-     * Return true if the user is a teacher.
-     **/
-    public function isTeacher() {
-        return $this->getIsATeacher();
-    }
+  /**
+   * Set user's hashed password
+   **/
+  public function setPassword($password) {
+    $password = (string)$password;
+    $this->setPasswordHash(Config::$p_hasher->HashPassword($password));
+    $this->save();
+  }
 
-    /**
-     * Return true if the user is an admin.
-     * The 'ADMIN_RANK' constant must be defined.
-     **/
-    public function isAdmin() {
-        if (defined('ADMIN_RANK')) {
-            return ($this->getType() >= ADMIN_RANK);
-        }
-        return false;
-    }
-	
-	/**
-	 * Return true if the user is a moderator.
-	 * The 'MODERATOR_RANK' constant must be defind.
-	 **/
-	public function isModerator(){
-		if (defined('MODERATOR_RANK')) {
-			return ($this->getType() >= MODERATOR_RANK);
-		}
-		return false;
-	}
+  /**
+   * Return user's last name and first name in a string
+   **/
+  public function getName($sep=' ') {
+    return $this->getFirstName() . $sep . $this->getLastName();
+  }
 
-    /**
-     * Return true if the user is a member.
-     * The 'MEMBER_RANK' constant must be defined.
-     **/
-    public function isMember() {
-        if (defined('MEMBER_RANK')) {
-            return ($this->getType() >= MEMBER_RANK);
-        }
-        return false;
-    }
+  /**
+   * Return user's age
+   **/
+  public function getAge() {
+    $today = new DateTime(); 
+    $birthdate = get_datetime($this->getBirthdate());
 
-    /**
-     * Increment the number of visits
-     **/
-    public function incrementVisitsNb() {
-        $this->setVisitsNb($this->getVisitsNb()+1);
-        $this->save();
-    }
+    return intval($birthdate->diff($today)->format('%Y'));
+  }
 
-	/**
-	 * Set user's hashed password
-	 **/
-	public function setPassword($password){
-		$password = (string)$password;
-		$this->setPasswordHash(Config::$p_hasher->HashPassword($password));
-		$this->save();
-	}
+  /* == Misc ================================================= */
 
-	/**
-    * Return user's last name and first name in a string
-	 **/
-	public function getName(){
-		$userNameToString = "";
-		$userNameToString .= $this->getFirstName() . " " . $this->getLastName();
-		return $userNameToString;	
-	}
-
-} // User
+  /**
+   * Increment the number of visits
+   **/
+  public function incrementVisitsNb() {
+    $this->setVisitsNb($this->getVisitsNb()+1);
+    $this->save();
+  }
+}
 

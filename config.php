@@ -60,6 +60,9 @@ class Config {
     # initalize Twig
     private static function tpl_init() {
 
+            $styles = self::$root_uri.'views/static/styles';
+            $scripts = self::$root_uri.'views/static/js';
+
         Twig_Autoloader::register();
 
         $loader = new Twig_Loader_Filesystem(self::$app_dir.'/views/templates');
@@ -80,13 +83,22 @@ class Config {
 
                 'authorsfile'     => array( 'href' => self::$root_uri.'humans.txt' ),
 
-                # array( array('href' => 'foo.css', 'media' => 'all'), ...)
+                # Styles
                 'styles'          => array(
-                    array( 'href' => self::$root_uri.'views/static/styles/global.css', 'media' => 'all' )
+                    array( 'href' => $styles.'/global.css',           'media' => 'all' )
                 ),
 
-                'rendering_scripts' => array(),
-                'scripts'           => array(),
+                # IE Styles
+                'ie_styles'       => array(
+                    array( 'href' => $styles.'/ie.css', 'media' => 'all' )
+                ),
+
+                # Scripts
+                'rendering_scripts' => array(
+                    array( 'href' => $scripts.'/jquery-1.8.0.min.js' )
+                ),
+                'scripts'           => array(
+                ),
 
                 'logo' => array(
                     'src'    => self::$root_uri.'views/static/images/logo32.png',
@@ -129,7 +141,7 @@ class Config {
 
                 'footer_links' => array(
                     array(
-                        'href'  => self::$root_uri.'plan',
+                        'href'  => self::$root_uri.'sitemap',
                         'title' => 'Plan du site'
                     ),
                     array(
@@ -159,6 +171,9 @@ class Config {
                 'keywords'    => array('ip7', 'informatique', 'paris diderot', 'association'),
                 'description' => 'IP7 est une association de filière en Informatique'
                                . ' à l\'Université Paris Diderot.',
+
+                'breadcrumbs' => 'default',
+                'url'         => $_SERVER['REQUEST_URI'],
 
                 'favicon'     => self::$root_uri.'views/static/images/logo32.png',
                 'apple_icon'  => self::$root_uri.'views/static/images/logo256.png'
@@ -207,5 +222,9 @@ class Config {
 
 };
 Config::$app_dir = dirname(__FILE__);
+
+if (file_exists(dirname(__FILE__).'/tests/local_config.php')) {
+    require_once dirname(__FILE__).'/tests/local_config.php';
+}
 
 ?>

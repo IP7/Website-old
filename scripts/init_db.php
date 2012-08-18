@@ -85,24 +85,25 @@ foreach($cursus as $k => $v) {
 }
 
 // Users
-
-$admin = new User();
-$admin->setUsername('admin');
-$admin->setPassword('infop7');
-$admin->setType(ADMIN_RANK);
-$admin->setFirstName('Admin');
-$admin->setLastName('Istrateur');
-$admin->setEmail('batifon@yahoo.fr');
-$admin->setPhone('0102030405');
-$admin->setAddress('12 rue des Universités, 75016 Paris');
-$admin->setWebsite('http://www.google.com');
-$admin->setBirthDate('1994-04-23');
-$admin->setFirstEntry('2012-08-09');
-$admin->setLastEntry('2012-08-09');
-$admin->setLastVisit(time());
-$admin->setDescription('Utilisateur administrateur de test');
-$admin->setRemarks('tralala');
-$admin->save();
-
+$q = UserQuery::create()->findOneByUsername('admin');
+if (!$q) {
+    $admin = new User();
+    $admin->setUsername('admin');
+    $admin->setPassword('infop7');
+    $admin->setGender('M');
+    $admin->setType(ADMIN_RANK);
+    $admin->setFirstName('Admin');
+    $admin->setLastName('Istrateur');
+    $admin->setEmail('batifon@yahoo.fr');
+    $admin->setPhone('0102030405');
+    $admin->setAddress('12 rue des Universités, 75016 Paris');
+    $admin->setWebsite('http://www.google.com');
+    $admin->setBirthDate('1994-04-23');
+    $admin->setFirstEntry('2012-08-09');
+    $admin->setLastEntry('2012-08-09');
+    $admin->setLastVisit(time());
+    $admin->setDescription('Utilisateur administrateur de test');
+    $admin->setRemarks('tralala');
+    $admin->save();
+}
 ?>
-

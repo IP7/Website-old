@@ -44,6 +44,11 @@ class UserTableMap extends TableMap
         $this->addColumn('TYPE', 'Type', 'TINYINT', true, null, 0);
         $this->addColumn('FIRSTNAME', 'Firstname', 'VARCHAR', true, 255, null);
         $this->addColumn('LASTNAME', 'Lastname', 'VARCHAR', true, 255, null);
+        $this->addColumn('GENDER', 'Gender', 'ENUM', true, null, null);
+        $this->getColumn('GENDER', false)->setValueSet(array (
+  0 => 'M',
+  1 => 'F',
+));
         $this->addColumn('EMAIL', 'Email', 'VARCHAR', true, 255, null);
         $this->addColumn('PHONE', 'Phone', 'VARCHAR', false, 20, null);
         $this->addColumn('ADDRESS', 'Address', 'VARCHAR', false, 255, null);
@@ -51,15 +56,21 @@ class UserTableMap extends TableMap
         $this->addColumn('BIRTH_DATE', 'BirthDate', 'DATE', false, null, null);
         $this->addColumn('FIRST_ENTRY', 'FirstEntry', 'DATE', false, null, null);
         $this->addColumn('LAST_ENTRY', 'LastEntry', 'DATE', false, null, null);
+        $this->addColumn('EXPIRATION_DATE', 'ExpirationDate', 'DATE', false, null, null);
         $this->addColumn('LAST_VISIT', 'LastVisit', 'TIMESTAMP', false, null, null);
         $this->addColumn('VISITS_NB', 'VisitsNb', 'INTEGER', false, null, 0);
         $this->addColumn('CONFIG_SHOW_EMAIL', 'ConfigShowEmail', 'BOOLEAN', false, 1, '0');
         $this->addColumn('CONFIG_SHOW_PHONE', 'ConfigShowPhone', 'BOOLEAN', false, 1, '0');
         $this->addColumn('CONFIG_SHOW_REAL_NAME', 'ConfigShowRealName', 'BOOLEAN', false, 1, '1');
-        $this->addColumn('CONFIG_INDEXING_PROFILE', 'ConfigIndexingProfile', 'BOOLEAN', false, 1, '0');
+        $this->addColumn('CONFIG_SHOW_BIRTHDATE', 'ConfigShowBirthdate', 'BOOLEAN', false, 1, '0');
+        $this->addColumn('CONFIG_SHOW_AGE', 'ConfigShowAge', 'BOOLEAN', false, 1, '1');
+        $this->addColumn('CONFIG_SHOW_ADDRESS', 'ConfigShowAddress', 'BOOLEAN', false, 1, '0');
+        $this->addColumn('CONFIG_INDEX_PROFILE', 'ConfigIndexProfile', 'BOOLEAN', false, 1, '0');
+        $this->addColumn('CONFIG_PRIVATE_PROFILE', 'ConfigPrivateProfile', 'BOOLEAN', false, 1, '0');
         $this->addColumn('DEACTIVATED', 'Deactivated', 'BOOLEAN', false, 1, '0');
         $this->addColumn('IS_A_TEACHER', 'IsATeacher', 'BOOLEAN', false, 1, '0');
-        $this->addColumn('IS_A_STUDENT', 'IsAStudent', 'BOOLEAN', false, 1, '1');
+        $this->addColumn('IS_A_STUDENT', 'IsAStudent', 'BOOLEAN', false, 1, '0');
+        $this->addColumn('IS_AN_ALUMNI', 'IsAnAlumni', 'BOOLEAN', false, 1, '0');
         $this->addForeignKey('AVATAR_ID', 'AvatarId', 'INTEGER', 'files', 'ID', false, null, null);
         $this->addColumn('DESCRIPTION', 'Description', 'LONGVARCHAR', false, 512, null);
         $this->addColumn('REMARKS', 'Remarks', 'VARCHAR', false, 255, null);

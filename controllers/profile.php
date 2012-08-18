@@ -1,120 +1,245 @@
 <?php
 
-	require_once dirname(__FILE__).'/../config.php'; 
-	Config::init();
+require_once dirname(__FILE__).'/../config.php'; 
+Config::init();
 
-	/*
-	
-		#TODO
-		-Permettre aux utilisateurs de changer certains champs #DONE
-		-Faire la fonction pour changer les données
-		-Afficher toutes les dates en type DD/MM/YYYY
-		-Ajouter les commentaires
+// -- (GET) Display profile pages --
 
-	*/
+// $is_my_profile : true if the page is acceded through /profile
+function display_profile_page($username=NULL, $is_my_profile=false) {
 
-    function user2tplarray($user, $only_public=true) {
-        $name = ($user->getConfigShowRealName()) ? $user->getName() : $user->getUsername();
-        
-         $userStatus = '';
- 
-         #TODO adapter au genre, cf issue #48 -> étudiantE, enseignantE
-         if ($user->isStudent()) {
-             $userStatus .= 'Étudiant';
-         }
- 
-         if ($user->isTeacher()) {
-             $userStatus .= ($userStatus=='') ? 'Enseignant' : ' enseignant';
-         }
-
-         return array(
-            'page' => array(
-                'title' => 'Profil de '.$name,
-                'noindex' => !$user->getConfigIndexingProfile(),
-
-                'user' => array(
-                    'name'        => $name,
-                    'pseudo'      => $user->getUsername(),
-                    'status'      => $userStatus,
-                    'firstname'   => (!$only_public || $user->getConfigShowRealName()) ? $user->getFirstName() : false,
-                    'lastname'    => (!$only_public || $user->getConfigShowRealName()) ? $user->getLastName() : false,
-                    'birthdate'   => false, #TODO, cf issue #49
-                    'age'         => false, #TODO, cf issue #50
-                    'email'       => (!$only_public || $user->getConfigShowEmail()) ? $user->getEmail() : false,
-                    'phone'       => false, #TODO, cf issue #51
-                    'address'     => false, #TODO, cf issue #41
-                    'website'     => $user->getWebsite(),
-                    'entry_date'  => $user->getFirstEntry(),
-                    'last_visit'  => date_fr($user->getLastVisit()),
-                    'description' => $user->getDescription()
-                ),
-
-            )
-         );
-
+    // if there is no username
+    if (empty($username)) {
+        halt(NOT_FOUND);
     }
 
-	function display_profile_page($username, $me=false) {
-        if (!$me) {
-            if (empty($username)) {
-                halt(NOT_FOUND);
-            }
+    // if the URL is /p/<my_username> or /profile, this is me
+    $me = (is_connected() && user()->getUsername() === $username);
+    $user = $me ? user() : UserQuery::create()->findOneByUsername($username);
 
-            $user = UserQuery::create()->findOneByUsername($username);
-        } else {
-            if (!is_connected()) {
-                halt(NOT_FOUND);
-            }
-            $user = user();
+    // if I try to access to my profile using /p/<my_username>, redirect
+    // me to /profile
+    if (!$is_my_profile && $me) {
+        redirect_to('/profile', array( 'status' => HTTP_MOVED_PERMANENTLY));
+    }
+
+    // if the username is not correct
+    if ($user == NULL) {
+        halt(NOT_FOUND);
+    }
+
+    // if the visitor is not connected and this is a private profile
+    if (!is_connected() && $user->getConfigPrivateProfile()) {
+        halt(NOT_FOUND);
+    }
+
+    $tpl_user = tpl_user($user, true);
+
+    // if the accound is deactivated
+    if (!$user->isActivated()) {
+        return tpl_render('deactivated_profile.html', array(
+            'page' => array(
+                'user' => $tpl_user,
+                'title' => 'Profil de '.$tpl_user['displayed_name']
+            )
+        ));
+    }
+
+    $can_edit = ($me || (is_connected() && user()->isAdmin()));
+
+    $edit_button = false;
+
+    if ($can_edit) {
+        $edit_button = array( 'title' => 'Éditer' );
+        // if this is me, go to /profile/edit to edit the profile, else
+        // go to /p/the_username/edit
+        $edit_button['href'] = Config::$root_uri.( $me ? 'profile/edit' : 'p/'.$user->getUsername().'/edit');
+    }
+
+    // options
+
+    if (!$user->getConfigShowEmail()) {
+        $tpl_user['email'] = false;
+    }
+
+    if (!$user->getConfigShowPhone()) {
+        $tpl_user['phone'] = false;
+    }
+
+    if (!$user->getConfigShowRealName()) {
+        $tpl_user['firstname'] = $tpl_user['lastname'] = false;
+    }
+
+    if (!$user->getConfigShowBirthdate()) {
+        $tpl_user['birthdate'] = false;
+    }
+
+    if (!$user->getConfigShowAge()) {
+        $tpl_user['age'] = false;
+    }
+
+    if (!$user->getConfigShowAddress()) {
+        $tpl_user['address'] = false;
+    }
+
+    $profile = array(
+        'page' => array(
+            'edit_button' => $edit_button,
+
+            'title' => $me ? 'Mon profil' : 'Profil de '.$tpl_user['displayed_name'],
+
+            'user' => $tpl_user
+        )
+    );
+
+    return tpl_render('public_profile.html', $profile);
+
+}
+
+function display_my_profile_page(){
+    if (!is_connected()) { halt(NOT_FOUND); }
+    // don't put the second argument to 'false', it would cause
+    // an infinite loop
+    return display_profile_page(user()->getUsername(), true);
+}
+
+// -- (GET) Edit profile pages --
+
+function display_edit_profile_page($username=NULL, $is_my_profile=false) {
+
+    $me = (is_connected() && user()->getUsername() == $username);
+
+    // if I'm not connected or this is not me or I'm not an admin
+    if (!is_connected()
+        || empty($username)
+        || ((user()->getUsername() != $username) && (!user()->isAdmin()))) {
+        halt(NOT_FOUND);
+    }
+    
+    $user = ((user()->getUsername() == $username)
+                ? user()
+                : UserQuery::create()->findOneByUsername($username));
+
+    $tpl_user = tpl_user($user, true);
+
+    return tpl_render('profile_edit.html', array(
+        'page' => array(
+            'title' => 'Édition du profil'.($me ? '' : ' de '.$tpl_user['displayed_name']),
+
+            'user' => $tpl_user,
+
+            'edit_form' => array( 'action' => url() )
+        )
+    ));
+}
+
+function display_edit_my_profile_page() {
+    if (!is_connected()) { halt(NOT_FOUND); }
+    // don't put the second argument to 'false', it would cause
+    // an infinite loop
+    return display_edit_profile_page(user()->getUsername(), true);
+}
+
+
+// -- (POST) Edit profile pages
+
+function post_edit_profile_page($username=NULL) {
+    if (!is_connected() || (($username != user()->getUsername()) && (!user()->isAdmin()))) {
+        halt(NOT_FOUND);
+    }
+
+    $me = ($username == user()->getUsername());
+
+    $user = $me ? user() : UserQuery::create()->findOneByUsername($username);
+
+    if ($user == NULL) {
+        halt(NOT_FOUND);
+    }
+
+    $msgstr = '';
+    $msgtype = false;
+
+    if (has_post('new_password')) {
+        if (!has_post('old_password')) {
+            $msgstr = 'Veuillez entrer votre ancien mot de passe pour le changer.';
+            $msgtype = 'error';
         }
-
-		if ( $user == NULL ) {
-            halt(NOT_FOUND);
-        }
-
-        $page = array();
-
-        if ($me) {
-            $page['href'] = Config::$root_uri.'profile';
-            $page['title'] = 'Mon profil';
+        else if (!Config::$p_hasher->CheckPassword($_POST['old_password'],
+                                                   user()->getPasswordHash())) {
+                $msgstr = 'L\'ancien mot de passe est incorrect.';
+                $msgtype = 'error';
         }
         else {
-            $page['href'] = Config::$root_uri.'p/'.$user->getUsername();
-            $page['title'] = 'Profil de '.($user->getConfigShowRealName() ? $user->getName() : $user->getUsername());
+
+            $p = $_POST['new_password'];
+
+            if (strlen($p) < 3) {
+                $msgstr = 'Le nouveau mot de passe est trop court.';
+                $msgtype = 'error';
+            }
+            else {
+                $user->setPassword($p);
+            }    
         }
-
-        return Config::$tpl->render('public_profile.html', tpl_array(user2tplarray($user), array(
-            'page' => array(
-                'breadcrumb' => array( $page ),
-                'edit_button' => (!$me ? false : array( 'href' => Config::$root_uri.'profile/edit', 'title' => 'Éditer' ))
-            )
-        ),
-        ($me? array('page' => array('title' => 'Mon Profil')) : array())));
-	
-	}
-
-	function display_my_profile_page(){
-        return display_profile_page(null, true);
-	}
-
-	function display_edit_profile_page(){
-        if (!is_connected()) {
-            halt(NOT_FOUND);
-        }
-
-		return Config::$tpl->render('profile_edit.html', tpl_array(user2tplarray(user(), false), Array(
-            'page' => array(
-                'title' => 'Edition du profil',
-                'edit_form' => array( 'action' => Config::$root_uri.'profile/edit' )
-            )
-        )));
-	}
-
-    # TODO
-    function post_edit_profile_page() {
-        echo('TEST: $_POST=');
-        var_dump($_POST);
-        return "";
     }
+
+    if (has_post('website')) {
+        $website = $_POST['website'];
+        if (!filter_website($website)) {
+            $msgstr .= ($msgstr?' ':'').'Le site Web est incorrect.';
+            $msgtype = 'error';
+        }
+        else {
+            $user->setWebsite($website);
+        }
+    }
+
+    if (has_post('description')) {
+        $desc = trim($_POST['description']);
+
+        if (strlen($desc) > 512) {
+            $desc = mb_substr($desc, 0, 509).'...';
+            $msgstr .= ($msgstr?' ':'').'La présentation est trop longue, elle a été tronquée à 512 caractères.';
+            $msgtype = $msgtype || 'notice';
+        }
+
+        $user->setDescription($desc);
+    }
+
+    $opts_names = User::getConfigVars();
+    $opts = array();
+
+    foreach ($opts_names as $k => $opt) {
+        $opts[$opt] = has_post($opt);
+    }
+
+    $user->setConfig($opts);
+
+    $user->save();
+
+    if (!$msgstr) {
+        $redirect = $me ? '/profile' : '/p/'.$user->getUsername();
+        redirect_to($redirect, array('status' => HTTP_SEE_OTHER));
+    }
+
+
+    return tpl_render('profile_edit.html', array(
+        'page' => array(
+            'title' => 'Edition du profil',
+            'edit_form' => array( 'action' => Config::$root_uri.'profile/edit' ),
+
+            'user' => tpl_user($user, true),
+
+            'message' => $msgstr,
+            'message_type' => $msgtype
+        )
+    ));
+
+}
+
+function post_edit_my_profile_page() {
+    if (!is_connected()) { halt(NOT_FOUND); }
+    return post_edit_profile_page(user()->getUsername());
+}
 
 ?>

@@ -1,0 +1,21 @@
+{% extends "main.html" %}
+{% block content %}
+<h1>Plan du site</h1>
+
+<dl>
+    <dt>{{ _m.a("/", "Accueil") }}</dt>
+    <dd>
+    <dl>
+        <dt>{{ _m.a("/L1", "Licence 1") }}</dt>
+        <dt>{{ _m.a("/L2", "Licence 2") }}</dt>
+        <dt>{{ _m.a("/L3", "Licence 3") }}</dt>
+        <dt>{{ _m.a("/M1", "Master 1") }}</dt>
+        <dt>{{ _m.a("/M2", "Master 2") }}</dt>
+        <dt>{{ _m.a("/sitemap", "Plan du site") }}</dt>
+        <dt>{{ _m.a("/legal",   "Mentions légales") }}</dt>
+        <dt>{{ _m.a("/contact", "Contact") }}</dt>
+    </dl>
+    </dd>
+</dl>
+
+{% endblock %}

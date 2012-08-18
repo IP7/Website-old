@@ -44,7 +44,7 @@ class CourseTableMap extends TableMap
         $this->addColumn('OPTIONAL', 'Optional', 'BOOLEAN', true, 1, '0');
         $this->addColumn('NAME', 'Name', 'VARCHAR', true, 64, null);
         $this->addColumn('CODE', 'Code', 'VARCHAR', true, 16, null);
-        $this->addColumn('ECTS', 'Ects', 'TINYINT', false, null, 3);
+        $this->addColumn('ECTS', 'Ects', 'FLOAT', false, null, 3);
         $this->addColumn('DESCRIPTION', 'Description', 'LONGVARCHAR', false, 1024, null);
         // validators
         $this->addValidator('CODE', 'match', 'propel.validator.MatchValidator', '/^[a-z0-9]+$/i', 'Please enter a valid code.');
