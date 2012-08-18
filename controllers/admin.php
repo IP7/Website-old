@@ -76,6 +76,18 @@ function display_admin_home() {
 
 # === FINANCES ================================================================
 
+function display_admin_add_member() {
+
+    return Config::$tpl->render('admin_add_member.html', tpl_array(admin_tpl_default(), array(
+        'page' => array(
+            'title' => 'Ajouter un membre',
+            'breadcrumbs' => array(
+                array( 'title' => 'Ajouter un membre', 'href' => Config::$root_uri.'admin/members/add' )
+            ),
+        )
+    )));
+}
+
 function display_admin_members() {
 
     $q = UserQuery::create()
@@ -140,7 +152,8 @@ function display_admin_members() {
     return Config::$tpl->render('admin_members.html', tpl_array(admin_tpl_default(),array(
         'page' => array(
             'title' => 'Membres',
-            'members' => $members
+            'members' => $members,
+            'add_member_link' => Config::$root_uri.'admin/membres/add'
         )
     )));
 }
