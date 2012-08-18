@@ -9,13 +9,10 @@ function admin_tpl_default() {
         $d = array(
             'page' => array(
 
-                'title' => 'Accueil',
-                'breadcrumbs' => false,
-
                 'navlinks' => array(
-                    array('title' => 'Modération',  'href' => Config::$root_uri.'admin/moderation'),
-                    array('title' => 'Trésorerie',  'href' => Config::$root_uri.'admin/tresorerie'),
-                    array('title' => 'Maintenance', 'href' => Config::$root_uri.'admin/maintenance'),
+                    array('title' => 'Modération',  'href' => Config::$root_uri.'admin/#mod'),
+                    array('title' => 'Trésorerie',  'href' => Config::$root_uri.'admin/#tres'),
+                    array('title' => 'Maintenance', 'href' => Config::$root_uri.'admin/#mnt'),
 
                     array('title' => 'Retour au site', 'href' => Config::$root_uri)
                 )

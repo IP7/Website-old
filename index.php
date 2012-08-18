@@ -74,9 +74,7 @@ dispatch('/cursus/:cursus/:course', 'display_course');
 ## admin home
 dispatch('/admin', 'display_admin_home');
 ## moderation
-dispatch('/admin/moderation', 'display_admin_moderation');
 ## finances
-dispatch('/admin/tresorerie', 'display_admin_finances');
 dispatch('/admin/membre/:name', 'display_admin_membre');
 dispatch('/admin/membre/:name/edit', 'display_admin_edit_membre');
 dispatch('/admin/membres', 'display_admin_members');

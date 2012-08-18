@@ -6,37 +6,76 @@ Config::init();
 # === HOME =====================================================================
 
 function display_admin_home() {
-    return Config::$tpl->render('admin_main.html', tpl_array(admin_tpl_default()));
-}
+    $message = $message_type = null;
 
-# === MODERATION ===============================================================
+    $admin_uri = Config::$root_uri.'admin';
 
-function display_admin_moderation() {
-    return Config::$tpl->render('admin_main.html', tpl_array(admin_tpl_default(),array(
+    # ---- Maintenance ---------------------------------------------------------
+
+    if (isset($_GET['purge_cache'])) {
+        if (!purge_cache()) {
+            $message = 'Erreur lors de la purge. Consultez les logs.';
+            $message_type = 'error';
+        }
+        else {
+            $message = 'Purge effectuée avec succès.';
+            $message_type = 'notice';
+        }
+    }
+    else if (isset($_GET['optimize_tables'])) {
+        if (!optimize_tables()) {
+            $message = 'Erreur lors de l\'optimisation. Consultez les logs.';
+            $message_type = 'error';
+        }
+        else {
+            $message = 'Optimisation effectuée avec succès.';
+            $message_type = 'notice';
+        }
+    }
+
+    # ---- Rendering ----------------------------------------------------------
+
+    return Config::$tpl->render('admin_main.html', tpl_array(
+                                                            admin_tpl_default(),
+                                                            array(
         'page' => array(
-            'title' => 'Modération',
-            'actions' => array(
-                array('title' => 'Contenu signalé', 'href' => Config::$root_uri.'admin/reports'),
-                array('title' => 'Contenu proposé', 'href' => Config::$root_uri.'admin/content/proposed')
-                # add subpages here
+            'title'        => 'Accueil',
+            'breadcrumbs'  => false,
+
+            'message'      => $message,
+            'message_type' => $message_type,
+
+            'sections'     => array(
+                array(
+                    'title'   => 'Modération',
+                    'id'      => 'mod',
+                    'actions' => array(
+                        array('title' => 'Contenu signalé', 'href' => $admin_uri.'/reports'),
+                        array('title' => 'Contenu proposé', 'href' => $admin_uri.'/content/proposed')
+                    )
+                ),
+                array(
+                    'title'   => 'Trésorerie',
+                    'id'      => 'tres',
+                    'actions' => array (
+                        array('title' => 'Gérer les utilisateurs', 'href' => $admin_uri.'/membres'),
+                        array('title' => 'Gérer les transactions', 'href' => $admin_uri.'/transactions')
+                    )
+                ),
+                array(
+                    'title'   => 'Maintenance',
+                    'id'      => 'mnt',
+                    'actions' => array(
+                        array('title' => 'Purger le cache des templates', 'href' => $admin_uri.'?purge_cache'),
+                        array('title' => 'Optimiser les tables',          'href' => $admin_uri.'?optimize_tables')
+                    )
+                )
             )
         )
     )));
 }
 
 # === FINANCES ================================================================
-
-function display_admin_finances() {
-    return Config::$tpl->render('admin_main.html', tpl_array(admin_tpl_default(),array(
-        'page' => array(
-            'title' => 'Trésorerie',
-            'actions' => array(
-                array('title' => 'Gérer les utilisateurs', 'href' => Config::$root_uri.'admin/membres'),
-                array('title' => 'Gérer les transactions', 'href' => Config::$root_uri.'admin/transactions')
-            )
-        )
-    )));
-}
 
 function display_admin_members() {
 
@@ -102,9 +141,7 @@ function display_admin_members() {
     return Config::$tpl->render('admin_members.html', tpl_array(admin_tpl_default(),array(
         'page' => array(
             'title' => 'Membres',
-
             'members_form' => array( 'action' => Config::$root_uri.'admin/membres/show' ),
-
             'members' => $members
         )
     )));
@@ -132,45 +169,6 @@ function display_admin_member() {
             'user' => $tpl_user
         )
     ));
-}
-
-# === MAINTENANCE =============================================================
-
-function display_admin_maintenance() {
-    $message = $message_type = null;
-
-    if (isset($_GET['purge_cache'])) {
-        if (!purge_cache()) {
-            $message = 'Erreur lors de la purge. Consultez les logs.';
-            $message_type = 'error';
-        }
-        else {
-            $message = 'Purge effectuée avec succès.';
-            $message_type = 'notice';
-        }
-    }
-    else if (isset($_GET['optimize_tables'])) {
-        if (!optimize_tables()) {
-            $message = 'Erreur lors de l\'optimisation. Consultez les logs.';
-            $message_type = 'error';
-        }
-        else {
-            $message = 'Optimisation effectuée avec succès.';
-            $message_type = 'notice';
-        }
-    }
-    return Config::$tpl->render('admin_main.html', tpl_array(admin_tpl_default(),array(
-        'page' => array(
-            'actions' => array(
-                array('title' => 'Purger le cache des templates', 'href' => '?purge_cache'),
-                array('title' => 'Optimiser les tables',          'href' => '?optimize_tables'),
-                array('title' => 'Retour',                        'href' => '..')
-            ),
-
-            'message'      => $message,
-            'message_type' => $message_type
-        )
-    )));
 }
 
 ?>
