@@ -62,7 +62,11 @@ function display_admin_add_member() {
                 1 => array( 'title' => 'Ajouter un membre', 'href' => Config::$root_uri.'admin/membres/add' )
             ),
 
-            'add_form' => array( 'action' => Config::$root_uri.'admin/membres/add' )
+            'add_form' => array( 'action' => Config::$root_uri.'admin/membres/add' ),
+
+            'scripts' => array(
+                array( 'src' => Config::$root_uri.'views/static/js/admin_enhancements.js' )
+            )
         )
     )));
 }

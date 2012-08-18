@@ -37,7 +37,11 @@
   content: '›';
 }
 
-#edit_form label, #edit_form input[type=submit] { display:block; }
+form label,
+#edit_form input[type=submit] { display:block; }
+
+input.valid {border:1px solid green;}
+input.invalid {border:1px solid red;}
 
 #main_content { display:table; }
 #main_content > aside,
