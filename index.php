@@ -77,6 +77,7 @@ dispatch('/admin', 'display_admin_home');
 ## finances
 dispatch('/admin/membres', 'display_admin_members');
 dispatch('/admin/membres/add', 'display_admin_add_member');
+dispatch('/admin/membres/check.json', 'json_admin_check_username');
 ## maintenance
 dispatch('/admin/maintenance', 'display_admin_maintenance');
 

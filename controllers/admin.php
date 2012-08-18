@@ -10,30 +10,7 @@ function display_admin_home() {
 
     $admin_uri = Config::$root_uri.'admin';
 
-    # ---- Maintenance ---------------------------------------------------------
-
-    if (isset($_GET['purge_cache'])) {
-        if (!purge_cache()) {
-            $message = 'Erreur lors de la purge. Consultez les logs.';
-            $message_type = 'error';
-        }
-        else {
-            $message = 'Purge effectuée avec succès.';
-            $message_type = 'notice';
-        }
-    }
-    else if (isset($_GET['optimize_tables'])) {
-        if (!optimize_tables()) {
-            $message = 'Erreur lors de l\'optimisation. Consultez les logs.';
-            $message_type = 'error';
-        }
-        else {
-            $message = 'Optimisation effectuée avec succès.';
-            $message_type = 'notice';
-        }
-    }
-
-    # ---- Rendering ----------------------------------------------------------
+    do_maintenance(&$message, &$message_type);
 
     return Config::$tpl->render('admin_main.html', tpl_array(
                                                             admin_tpl_default(),
@@ -82,10 +59,21 @@ function display_admin_add_member() {
         'page' => array(
             'title' => 'Ajouter un membre',
             'breadcrumbs' => array(
-                array( 'title' => 'Ajouter un membre', 'href' => Config::$root_uri.'admin/members/add' )
+                1 => array( 'title' => 'Ajouter un membre', 'href' => Config::$root_uri.'admin/membres/add' )
             ),
+
+            'add_form' => array( 'action' => Config::$root_uri.'admin/membres/add' )
         )
     )));
+}
+
+function post_admin_add_member() {
+    /*
+     * TODO 
+     *  - add new User
+     *  - if the 'cotisation' checkbox is check,
+     *      add a new Transaction and activate the account
+     */
 }
 
 function display_admin_members() {
@@ -156,6 +144,19 @@ function display_admin_members() {
             'add_member_link' => Config::$root_uri.'admin/membres/add'
         )
     )));
+}
+
+// check if an username already exists,
+// and return the response with JSON
+function json_admin_check_username() {
+    if (!has_get('username')) {
+        return '';
+    }
+    $u = trim($_GET['username']);
+
+    $user = UserQuery::create()->findOneByUsername($u);
+
+    return json(array('response' => ($user ? 'fail' : 'ok')));
 }
 
 ?>

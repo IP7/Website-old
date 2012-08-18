@@ -57,4 +57,31 @@ function optimize_tables() {
         return $success;
 }
 
+function do_maintenance(&$message, &$message_type) {
+    if (isset($_GET['purge_cache'])) {
+        if (!purge_cache()) {
+            $message = 'Erreur lors de la purge. Consultez les logs.';
+            $message_type = 'error';
+        }
+        else {
+            $message = 'Purge effectuée avec succès.';
+            $message_type = 'notice';
+        }
+    }
+    else if (isset($_GET['optimize_tables'])) {
+        if (!optimize_tables()) {
+            $message = 'Erreur lors de l\'optimisation. Consultez les logs.';
+            $message_type = 'error';
+        }
+        else {
+            $message = 'Optimisation effectuée avec succès.';
+            $message_type = 'notice';
+        }
+    }
+    else {
+        return false;
+    }
+    return true;
+}
+
 ?>
