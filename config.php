@@ -95,7 +95,7 @@ class Config {
 
                 # Scripts
                 'rendering_scripts' => array(
-                    array( 'href' => $scripts.'/jquery-1.8.0.min.js' )
+#                    array( 'href' => $scripts.'/jquery-1.8.0.min.js' )
                 ),
                 'scripts'           => array(
                 ),
