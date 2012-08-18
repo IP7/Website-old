@@ -9,6 +9,10 @@ function admin_tpl_default() {
         $d = array(
             'page' => array(
 
+                'breadcrumbs' => array(
+                    array( 'title' => 'Administration', 'href' => Config::$root_uri.'admin' )
+                ),
+
                 'navlinks' => array(
                     array('title' => 'Modération',  'href' => Config::$root_uri.'admin/#mod'),
                     array('title' => 'Trésorerie',  'href' => Config::$root_uri.'admin/#tres'),
