@@ -130,5 +130,10 @@
             <script src="{{ script.src |raw }}"></script>
                 {% endfor %}
             {% endif %}
+            {% if page.scripts is defined and page.scripts is not empty %}
+                {% for script in page.scripts %}
+            <script src="{{ script.src |raw }}"></script>
+                {% endfor %}
+            {% endif %}
         </body>
 </html>

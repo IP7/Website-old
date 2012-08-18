@@ -2,12 +2,11 @@
 {% import 'macros.html' as _m %}
 {% block admin_content %}
 {{ parent() }}
-<form action="{{ page.members_form.action }}" method="GET">
-{{ _m.submit('Voir', null, ['show_members']) }}
+<p>{{ _m.a(page.add_member_link, "Ajouter un membre") }}</p>
 <table id="members_list" border="1">
-    <tr><td class="empty"></td><th>Pseudo</th><th>Nom</th><th>Type</th><th>Dernière inscription</th><td class="empty"></td></tr>
+    <tr>{#<td class="empty"></td>#}<th>Pseudo</th><th>Nom</th><th>Type</th><th>Dernière inscription</th><td class="empty"></td></tr>
     {% for member in page.members %}
-    <tr><td>{{ _m.checkbox('members[]', member.id) }}</td>{#
+    <tr>{#<td>{{ _m.checkbox('members[]', member.id) }}#}</td>{#
       #}<td class="pseudo">{{ _m.a(member.href, member.pseudo) }}</td>{#
       #}<td class="name">{{ _m.a(member.href, member.name) }}</td>{#
       #}<td class="type">{{ member.type }}</td>{#
@@ -16,6 +15,4 @@
   #}</tr>
     {% endfor %}
 </table>
-{{ _m.submit('Voir', null, ['show_members']) }}
-</form>
 {% endblock %}

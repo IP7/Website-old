@@ -12,18 +12,29 @@
 </ul>
 {% endblock %}
 {% block content %}
-{% if page.actions is defined and page.actions %}
-<aside id="actions">
-    <nav>
-        <ul>
-        {% for action in page.actions %}
-            {{ _m.navlink(action.href, action.title ) }}
-        {% endfor %}
-        </ul>
-    </nav>
-</aside>
-{% endif %}
-{% block admin_content %}
+    {% block admin_content %}
 <h1>{% if page.title is defined and page.title %}{{ page.title }}{% else %}Administration{% endif %}</h1>
-{% endblock %}
+        {% if page.sections is defined and page.sections %}
+    <ul id="sections">
+            {% for s in page.sections %}
+        {{ _m.navlink('#' ~ s.id, s.title) }}    
+            {% endfor %}
+    </ul>
+            {% for s in page.sections %}
+<section id="{{ s.id }}">
+    <h2 id="{{s.id}}">{{ s.title }}</h2>
+                {% if s.intro is defined and s.intro %}
+        <p>{{ s.intro }}</p>
+                {% endif %}
+                {% if s.actions is defined and s.actions %}
+        <ul class="actions">
+                    {% for a in s.actions %}
+            {{ _m.navlink(a.href, a.title) }}
+                    {% endfor %}
+        </ul>
+                {% endif %}
+</section>
+            {% endfor %}
+        {% endif %}
+    {% endblock %}
 {% endblock %}

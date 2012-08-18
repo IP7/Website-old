@@ -74,11 +74,10 @@ dispatch('/cursus/:cursus/:course', 'display_course');
 ## admin home
 dispatch('/admin', 'display_admin_home');
 ## moderation
-dispatch('/admin/moderation', 'display_admin_moderation');
 ## finances
-dispatch('/admin/tresorerie', 'display_admin_finances');
 dispatch('/admin/membres', 'display_admin_members');
-# dispatch('/admin/membres/show', 'display_admin_show_members');
+dispatch('/admin/membres/add', 'display_admin_add_member');
+dispatch('/admin/membres/check.json', 'json_admin_check_username');
 ## maintenance
 dispatch('/admin/maintenance', 'display_admin_maintenance');
 

@@ -6,18 +6,46 @@ Config::init();
 # === HOME =====================================================================
 
 function display_admin_home() {
-    return Config::$tpl->render('admin_main.html', tpl_array(admin_tpl_default()));
-}
+    $message = $message_type = null;
 
-# === MODERATION ===============================================================
+    $admin_uri = Config::$root_uri.'admin';
 
-function display_admin_moderation() {
-    return Config::$tpl->render('admin_main.html', tpl_array(admin_tpl_default(),array(
+    do_maintenance(&$message, &$message_type);
+
+    return Config::$tpl->render('admin_main.html', tpl_array(
+                                                            admin_tpl_default(),
+                                                            array(
         'page' => array(
-            'actions' => array(
-                array('title' => 'Contenu signalé', 'href' => Config::$root_uri.'admin/reports'),
-                array('title' => 'Contenu proposé', 'href' => Config::$root_uri.'admin/content/proposed')
-                # add subpages here
+            'title'        => 'Accueil',
+
+            'message'      => $message,
+            'message_type' => $message_type,
+
+            'sections'     => array(
+                array(
+                    'title'   => 'Modération',
+                    'id'      => 'mod',
+                    'actions' => array(
+                        array('title' => 'Contenu signalé', 'href' => $admin_uri.'/reports'),
+                        array('title' => 'Contenu proposé', 'href' => $admin_uri.'/content/proposed')
+                    )
+                ),
+                array(
+                    'title'   => 'Trésorerie',
+                    'id'      => 'tres',
+                    'actions' => array (
+                        array('title' => 'Gérer les utilisateurs', 'href' => $admin_uri.'/membres'),
+                        array('title' => 'Gérer les transactions', 'href' => $admin_uri.'/transactions')
+                    )
+                ),
+                array(
+                    'title'   => 'Maintenance',
+                    'id'      => 'mnt',
+                    'actions' => array(
+                        array('title' => 'Purger le cache des templates', 'href' => $admin_uri.'?purge_cache'),
+                        array('title' => 'Optimiser les tables',          'href' => $admin_uri.'?optimize_tables')
+                    )
+                )
             )
         )
     )));
@@ -25,15 +53,31 @@ function display_admin_moderation() {
 
 # === FINANCES ================================================================
 
-function display_admin_finances() {
-    return Config::$tpl->render('admin_main.html', tpl_array(admin_tpl_default(),array(
+function display_admin_add_member() {
+
+    return Config::$tpl->render('admin_add_member.html', tpl_array(admin_tpl_default(), array(
         'page' => array(
-            'actions' => array(
-                array('title' => 'Gérer les utilisateurs', 'href' => Config::$root_uri.'admin/membres'),
-                array('title' => 'Gérer les transactions', 'href' => Config::$root_uri.'admin/transactions')
+            'title' => 'Ajouter un membre',
+            'breadcrumbs' => array(
+                1 => array( 'title' => 'Ajouter un membre', 'href' => Config::$root_uri.'admin/membres/add' )
+            ),
+
+            'add_form' => array( 'action' => Config::$root_uri.'admin/membres/add' ),
+
+            'scripts' => array(
+                array( 'src' => Config::$root_uri.'views/static/js/admin_enhancements.js' )
             )
         )
     )));
+}
+
+function post_admin_add_member() {
+    /*
+     * TODO 
+     *  - add new User
+     *  - if the 'cotisation' checkbox is check,
+     *      add a new Transaction and activate the account
+     */
 }
 
 function display_admin_members() {
@@ -87,7 +131,7 @@ function display_admin_members() {
 
             $members []= array(
                 'id' => $m->getId(),
-                'href' => $uri.'/show',
+                'href' => Config::$root_uri.'p/'.$m->getUsername(),
                 'pseudo' => $m->getUsername(),
                 'name' => $m->getName(),
                 'type' => $type,
@@ -100,51 +144,23 @@ function display_admin_members() {
     return Config::$tpl->render('admin_members.html', tpl_array(admin_tpl_default(),array(
         'page' => array(
             'title' => 'Membres',
-
-            'members_form' => array( 'action' => Config::$root_uri.'admin/membres/show' ),
-
-            'members' => $members
+            'members' => $members,
+            'add_member_link' => Config::$root_uri.'admin/membres/add'
         )
     )));
 }
 
-# === MAINTENANCE =============================================================
-
-function display_admin_maintenance() {
-    $message = $message_type = null;
-
-    if (isset($_GET['purge_cache'])) {
-        if (!purge_cache()) {
-            $message = 'Erreur lors de la purge. Consultez les logs.';
-            $message_type = 'error';
-        }
-        else {
-            $message = 'Purge effectuée avec succès.';
-            $message_type = 'notice';
-        }
+// check if an username already exists,
+// and return the response with JSON
+function json_admin_check_username() {
+    if (!has_get('username')) {
+        return '';
     }
-    else if (isset($_GET['optimize_tables'])) {
-        if (!optimize_tables()) {
-            $message = 'Erreur lors de l\'optimisation. Consultez les logs.';
-            $message_type = 'error';
-        }
-        else {
-            $message = 'Optimisation effectuée avec succès.';
-            $message_type = 'notice';
-        }
-    }
-    return Config::$tpl->render('admin_main.html', tpl_array(admin_tpl_default(),array(
-        'page' => array(
-            'actions' => array(
-                array('title' => 'Purger le cache des templates', 'href' => '?purge_cache'),
-                array('title' => 'Optimiser les tables',          'href' => '?optimize_tables'),
-                array('title' => 'Retour',                        'href' => '..')
-            ),
+    $u = trim($_GET['username']);
 
-            'message'      => $message,
-            'message_type' => $message_type
-        )
-    )));
+    $user = UserQuery::create()->findOneByUsername($u);
+
+    return json(array('response' => ($user ? 'fail' : 'ok')));
 }
 
 ?>

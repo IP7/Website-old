@@ -8,10 +8,15 @@ function admin_tpl_default() {
     if (!$init) {
         $d = array(
             'page' => array(
+
+                'breadcrumbs' => array(
+                    array( 'title' => 'Administration', 'href' => Config::$root_uri.'admin' )
+                ),
+
                 'navlinks' => array(
-                    array('title' => 'Modération',  'href' => Config::$root_uri.'admin/moderation'),
-                    array('title' => 'Trésorerie',  'href' => Config::$root_uri.'admin/tresorerie'),
-                    array('title' => 'Maintenance', 'href' => Config::$root_uri.'admin/maintenance'),
+                    array('title' => 'Modération',  'href' => Config::$root_uri.'admin/#mod'),
+                    array('title' => 'Trésorerie',  'href' => Config::$root_uri.'admin/#tres'),
+                    array('title' => 'Maintenance', 'href' => Config::$root_uri.'admin/#mnt'),
 
                     array('title' => 'Retour au site', 'href' => Config::$root_uri)
                 )
@@ -50,6 +55,33 @@ function optimize_tables() {
 
         $dbh = null;
         return $success;
+}
+
+function do_maintenance(&$message, &$message_type) {
+    if (isset($_GET['purge_cache'])) {
+        if (!purge_cache()) {
+            $message = 'Erreur lors de la purge. Consultez les logs.';
+            $message_type = 'error';
+        }
+        else {
+            $message = 'Purge effectuée avec succès.';
+            $message_type = 'notice';
+        }
+    }
+    else if (isset($_GET['optimize_tables'])) {
+        if (!optimize_tables()) {
+            $message = 'Erreur lors de l\'optimisation. Consultez les logs.';
+            $message_type = 'error';
+        }
+        else {
+            $message = 'Optimisation effectuée avec succès.';
+            $message_type = 'notice';
+        }
+    }
+    else {
+        return false;
+    }
+    return true;
 }
 
 ?>
