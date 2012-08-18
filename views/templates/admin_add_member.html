@@ -12,6 +12,9 @@
 
     <label>Nom&nbsp;:<input type="text" name="lastname" autofocus required /></label>
     <label>Prénom&nbsp;:<input type="text" name="firstname" required /></label>
+    <p class="label">Genre&nbsp;:{#
+            #}<label class="inline"><input type="radio" name="gender" value="M" />M</label>{#
+            #}<label class="inline"><input type="radio" name="gender" value="F" />F</label></p>
     <label>Pseudo&nbsp;:<input type="text" name="username" required /></label>
     {# generate min/max dynamically? #}
     <label>Date de naissance&nbsp;:<input type="date" name="birthdate" min="1920-01-01" max="2000-01-01" /></label>
