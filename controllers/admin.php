@@ -14,6 +14,7 @@ function display_admin_home() {
 function display_admin_moderation() {
     return Config::$tpl->render('admin_main.html', tpl_array(admin_tpl_default(),array(
         'page' => array(
+            'title' => 'Modération',
             'actions' => array(
                 array('title' => 'Contenu signalé', 'href' => Config::$root_uri.'admin/reports'),
                 array('title' => 'Contenu proposé', 'href' => Config::$root_uri.'admin/content/proposed')
@@ -28,6 +29,7 @@ function display_admin_moderation() {
 function display_admin_finances() {
     return Config::$tpl->render('admin_main.html', tpl_array(admin_tpl_default(),array(
         'page' => array(
+            'title' => 'Trésorerie',
             'actions' => array(
                 array('title' => 'Gérer les utilisateurs', 'href' => Config::$root_uri.'admin/membres'),
                 array('title' => 'Gérer les transactions', 'href' => Config::$root_uri.'admin/transactions')
@@ -109,7 +111,27 @@ function display_admin_members() {
 }
 
 function display_admin_member() {
+    $username = params('name');
 
+    if (!$username) {
+        halt(NOT_FOUND);
+    }
+
+    $user = UserQuery::create()->findOneByUsername($username);
+
+    if ($user == NULL) {
+        halt(NOT_FOUND);
+    }
+
+    $tpl_user = tpl_user($user);
+
+    return tpl_render('profile.html', array(
+        'admin' => true,
+        'page' => array(
+            'title' => 'Profil de '.$tpl_user['displayed_name'],
+            'user' => $tpl_user
+        )
+    ));
 }
 
 # === MAINTENANCE =============================================================
