@@ -1,4 +1,27 @@
 {% extends 'admin_main.html' %}
+{% import 'macros.html' as _m %}
 {% block admin_content %}
-<p>Bientôt…</p>
+
+<form action="{{ page.add_form.action }}" method="POST">
+    {#
+        TODO:
+            - champs du profil
+            - ajouter du JS pour vérier en AJAX que le pseudo est pas déjà
+              pris (cf #76)
+    #}
+
+    <label>Nom&nbsp;:<input type="text" name="lastname" autofocus required /></label>
+    <label>Prénom&nbsp;:<input type="text" name="firstname" required /></label>
+    <label>Pseudo&nbsp;:<input type="text" name="username" required /></label>
+    {# generate min/max dynamically? #}
+    <label>Date de naissance&nbsp;:<input type="date" name="birthdate" min="1920-01-01" max="2000-01-01" /></label>
+
+
+    <label>{{ _m.checkbox("fee") }} Cotisation payée</label>
+
+    <p>(Pas fini)</p>
+
+    {{ _m.submit("Ajouter") }}
+</form>
+
 {% endblock %}
