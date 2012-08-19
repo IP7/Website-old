@@ -1,9 +1,22 @@
 <?php
 
+// basic filter
+function get_string($s, $from=null) {
+    if ($from == 'post') {
+        $s = has_post($s) ? $_POST[$s] : '';
+    } else if ($from == 'get') {
+        $s = has_get($s) ? $_GET[$s] : '';
+    }
+
+    return trim($s);
+}
+
 // filter an URL. If the URL is correct,
 // the variable may be modified to add a missing protocol
 // The function returns true or false.
-function filter_website(&$ws) {
+function filter_website(&$ws, $from=null) {
+
+    $ws = get_string($ws, $from);
 
     $ws = trim($ws);
 
@@ -35,6 +48,13 @@ function filter_website(&$ws) {
     }
 
     return true;
+}
+
+// filter username
+function filter_username($username, $from=null) {
+    $username = get_string($username, $from);
+
+    return preg_match('/[a-z0-9]{3,}[_a-z0-9]+/i', $username);
 }
 
 ?>

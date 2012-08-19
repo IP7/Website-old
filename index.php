@@ -34,6 +34,11 @@ function before($route) {
             halt(HTTP_FORBIDDEN, "L'accès à cette page est réservé aux modérateurs.");
         }
     }
+    else if (stristr($route['callback'], 'member')) {
+        if (!is_connected() || !user()->isMember()) {
+            halt(HTTP_FORBIDDEN, "L'accès à cette page est réservé aux membres.");
+        }
+    }
 }
 
 ## (get/post) home
@@ -77,6 +82,7 @@ dispatch('/admin', 'display_admin_home');
 ## finances
 dispatch('/admin/membres', 'display_admin_members');
 dispatch('/admin/membres/add', 'display_admin_add_member');
+dispatch_post('/admin/membres/add', 'post_admin_add_member');
 dispatch('/admin/membres/check.json', 'json_admin_check_username');
 ## maintenance
 dispatch('/admin/maintenance', 'display_admin_maintenance');
@@ -97,8 +103,6 @@ function route_missing($request_method, $request_uri) {
   error_log("Not found: ($request_method) $request_uri");
   halt(NOT_FOUND);
 }
-
- 
 
 # Server error output
 #
