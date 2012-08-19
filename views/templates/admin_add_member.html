@@ -3,26 +3,31 @@
 {% block admin_content %}
 
 <form action="{{ page.add_form.action }}" method="POST">
-    {#
-        TODO:
-            - champs du profil
-            - ajouter du JS pour vérier en AJAX que le pseudo est pas déjà
-              pris (cf #76)
-    #}
-
     <label>Nom&nbsp;:<input type="text" name="lastname" autofocus required /></label>
     <label>Prénom&nbsp;:<input type="text" name="firstname" required /></label>
     <p class="label">Genre&nbsp;:{#
-            #}<label class="inline"><input type="radio" name="gender" value="M" />M</label>{#
-            #}<label class="inline"><input type="radio" name="gender" value="F" />F</label></p>
+            #}<label class="inline"><input type="radio" name="gender" value="M" checked />Homme</label>{#
+            #}<label class="inline"><input type="radio" name="gender" value="F" />Femme</label></p>
+    <label>Adresse email&nbsp;:<input type="email" name="email" required /></label>
     <label>Pseudo&nbsp;:<input type="text" name="username" required /></label>
     {# generate min/max dynamically? #}
-    <label>Date de naissance&nbsp;:<input type="date" name="birthdate" min="1920-01-01" max="2000-01-01" /></label>
+    <label>Date de naissance&nbsp;:<input type="date" name="birthdate" min="{{ page.add_form.birthdate.min }}" max="{{ page.add_form.birthdate.max }}" /></label>
+    <label>Adresse&nbsp;:<input type="text" name="address" /></label>
+    <label>Téléphone&nbsp;:<input type="phone" name="phone" /></label>
+    <p class="label">Status&nbsp;:{#
+        #}<label class="inline">{{ _m.checkbox("student", '1', null, true) }} Étudiant</label>{#
+        #}<label class="inline">{{ _m.checkbox("alumni", '1') }} Ancien étudiant</label>{#
+        #}<label class="inline">{{ _m.checkbox("teacher", '1') }} Enseignant</label>{#
+        #}</p>
 
-
-    <label>{{ _m.checkbox("fee") }} Cotisation payée</label>
-
-    <p>(Pas fini)</p>
+    <label>Remarques&nbsp;:<input type="text" name="remarks" maxlength="255" /></label>
+    <label>Rang&nbsp;:<select name="rank">
+        <option value="none">–</option>
+        <option value="member" selected>Membre</option>
+        <option value="moderator">Modérateur</option>
+        <option value="admin">Administrateur</option>
+    </select></label>
+    <label>{{ _m.checkbox("fee", '1') }} Cotisation payée</label>
 
     {{ _m.submit("Ajouter") }}
 </form>
