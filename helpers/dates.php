@@ -51,4 +51,12 @@ function datetime_attr($d) {
   return ($d == NULL) ? '' : $d->format('c');
 }
 
+// return the timestamp of the next 31 july,
+// for member account expiration date
+function next_expiration_date() {
+    $year = date('Y');
+    if (intval(date('m')) > 7) { $year += 1; }
+    return $year.'07-31T00:00:00+01:00';
+}
+
 ?>
