@@ -145,7 +145,7 @@ class Config {
                         'title' => 'Plan du site'
                     ),
                     array(
-                        'href'  => self::$root_uri.'legal',
+                        'href'  => self::$root_uri.'legals',
                         'title' => 'Mentions légales'
                     ),
                     array(

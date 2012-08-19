@@ -12,4 +12,10 @@ function display_sitemap_page() {
     ));
 }
 
+function display_legals_page() {
+    return tpl_render('legals.html', array(
+        'page' => array( 'title' => 'Mentions légales' )
+    ));
+}
+
 ?>

@@ -91,6 +91,7 @@ dispatch('/admin/maintenance', 'display_admin_maintenance');
 #
 dispatch('/contact', 'display_contact_page');
 dispatch('/sitemap', 'display_sitemap_page');
+dispatch('/legals',   'display_legals_page');
 
 # test
 # init DB
