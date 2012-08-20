@@ -54,7 +54,12 @@ function filter_website(&$ws, $from=null) {
 function filter_username($username, $from=null) {
     $username = get_string($username, $from);
 
-    return preg_match('/[a-z0-9]{3,}[_a-z0-9]+/i', $username);
+    return preg_match('/[a-z0-9][_a-z0-9]{2,}/i', $username);
+}
+
+// (re)format a phone number given by an user
+function format_phone($phone) {
+    return implode('', preg_split('/\D+/', trim($phone)));
 }
 
 ?>
