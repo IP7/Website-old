@@ -131,11 +131,6 @@
                                              message="L'adresse e-mail n'est pas valide." />
         </validator>
 
-        <validator column="website">
-            <rule name="match"     value="/^https?/"
-                                             message="Le protocole du site Web n'est pas valide." />
-        </validator>
-
         <validator column="visits_nb">
             <rule name="minValue"  value="0" message="Le nombre de visites ne peut pas être négatif." />
         </validator>
