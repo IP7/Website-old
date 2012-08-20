@@ -1,10 +1,10 @@
 <?php
 
-function send_email_to($users, $from, $subject, $message) {
+function send_email_to($user, $from, $subject, $message) {
 
-    if (is_array($users)) {
-        foreach ($users as $k => $user) {
-            if (!send_email_to($user, $from, $subject, $message)) {
+    if (is_array($user)) {
+        foreach ($user as $k => $u) {
+            if (!send_email_to($u, $from, $subject, $message)) {
                 return false;
             }
         }
