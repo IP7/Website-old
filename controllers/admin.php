@@ -259,6 +259,7 @@ function post_admin_add_member() {
     $user->setUsername(get_string('username', 'post'));
     $user->setPassword($password);
     $user->setGender($gender);
+    $user->setAddress(get_string('address', 'post'));
     $user->setWebsite('');
     $user->setEmail(get_string('email', 'post'));
     $user->setPhone($phone);
