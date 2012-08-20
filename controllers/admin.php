@@ -178,6 +178,20 @@ function display_admin_content_view(){
 
 function display_admin_add_member($values=null, $msg=null, $msg_type=null) {
 
+    $cursus = CursusQuery::create()
+        ->limit(10) // should not be so high
+        ->orderByShortName()
+        ->find();
+
+    $tpl_cursus = array();
+
+    foreach ($cursus as $k => $c) {
+        $tpl_cursus []= array(
+            'id'   => $c->getId(),
+            'name' => $c->getShortName()
+        );
+    }
+
     return Config::$tpl->render('admin_add_member.html', tpl_array(admin_tpl_default(), array(
         'page' => array(
             'title' => 'Ajouter un membre',
@@ -196,6 +210,8 @@ function display_admin_add_member($values=null, $msg=null, $msg_type=null) {
                     'min' => date('Y-m-d', time() - 3153600000) // 100 years ago
                 ),
 
+                'cursus' => $cursus,
+
                 'values' => $values
             ),
 
@@ -209,6 +225,8 @@ function display_admin_add_member($values=null, $msg=null, $msg_type=null) {
 function post_admin_add_member() {
 
     $message = $message_type = null;
+
+    // required fields
 
     $required_fields = array(
         'lastname' => 'Le nom',
@@ -227,6 +245,10 @@ function post_admin_add_member() {
         return display_admin_add_member($_POST, $message, $message_type);
     }
 
+
+    // filters
+
+    // - username
     if (!filter_username($_POST['username'])) {
         return display_admin_add_member($_POST, "Le pseudo est incorrect.", 'error');
     }
@@ -246,8 +268,11 @@ function post_admin_add_member() {
                             : VISITOR_RANK));
 
     $gender = (has_post('gender') && $_POST['gender'] == 'F') ? 'F' : 'M';
-
     $password = get_random_password();
+    $phone = format_phone(get_string('phone', 'post'));
+    $birthdate = get_date_from_input(get_string('birthdate', 'post'));
+    $firstname = get_string('firstname', 'post');
+    $lastname = get_string('lastname', 'post');
 
     $user = new User();
     $user->setType($type);
@@ -258,14 +283,27 @@ function post_admin_add_member() {
     $user->setGender($gender);
     $user->setWebsite('');
     $user->setEmail(get_string('email', 'post'));
-    $user->setPhone(get_string('phone', 'post'));
-    $user->setBirthDate(get_string('birthdate', 'post'));
+    $user->setPhone($phone);
+    $user->setBirthDate($birthdate);
 
     $user->setIsATeacher(has_post('teacher') && $_POST['teacher']);
     $user->setIsAStudent(has_post('student') && $_POST['student']);
     $user->setIsAnAlumni(has_post('alumni')  && $_POST['alumni']);
 
     $user->setRemarks(get_string('remarks', 'post'));
+
+    $cursus = array();
+
+    if (has_post('cursus')) {
+        foreach ($_POST['cursus'] as $id) {
+            $c = CursusQuery::create()->findOneById($id);
+            if ($c != NULL) {
+                $cursus [] = $c;
+            }
+        }
+    }
+
+    $fee = null;
 
     if (get_string('fee', 'post') != '1') {
         $user->setFirstEntry(time());
@@ -277,18 +315,35 @@ function post_admin_add_member() {
         $fee->setAmount(5.0);
         $fee->setUser($user);
         $fee->setValidated(true);
-        $fee->save();
-
-        send_welcome_message($user, $password);
     }
     else {
         $user->setDeactivated(1);
     }
 
-    $user->save();
+    if ($user->validate()) {
+        if(!$user->save()) {
+            return 'error'; // TODO
+        }
 
-    //TODO test if everything is fine
-    return 'ok';
+        if ($fee) {
+            $fee->save();
+        }
+
+        foreach ($cursus as $c) {
+            $user->addCursus($c);
+        }
+
+        send_welcome_message($user, $password);
+
+        return 'ok'; //TODO
+    }
+
+    foreach ($user->getValidationFailures() as $failure) {
+        $message .= (($message=='')?' ':'') . $failure->getMessage();
+        $message_type = $message_type || 'error';
+    }
+
+    return display_admin_add_member($_POST, $message, $message_type);
 }
 
 function display_admin_members() {
