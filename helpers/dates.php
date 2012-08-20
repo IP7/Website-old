@@ -59,4 +59,42 @@ function next_expiration_date() {
     return $year.'07-31T00:00:00+01:00';
 }
 
+// return a date from an user input
+function get_date_from_input($inp) {
+    $tokens = preg_split('/\D+/', trim($inp));
+
+    if (count($tokens) < 3) {
+        return NULL;
+    }
+
+    $year = $month = $day = NULL;
+
+    if (intval($tokens[0]) > 50) {
+        // YYYY-MM-DD
+        $year  = $tokens[0];
+        $month = $tokens[1];
+        $day   = $tokens[2];
+    }
+    else {
+        $year  = $tokens[2];
+        $month = $tokens[1];
+        $day   = $tokens[0];
+    }
+
+    if ($year < 1900) {
+        // if year is only on 2-digits
+        $year += 1900;
+    }
+
+    if ($month > 12) {
+        // if $month > 12, we assume that
+        // the month and the day have been inverted
+        $tmp = $month;
+        $month = $day;
+        $day = $tmp;
+    }
+
+    return new DateTime($year.'-'.$month.'-'.$day);
+}
+
 ?>
