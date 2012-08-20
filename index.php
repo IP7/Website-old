@@ -79,6 +79,10 @@ dispatch('/cursus/:cursus/:course', 'display_course');
 ## admin home
 dispatch('/admin', 'display_admin_home');
 ## moderation
+dispatch('/admin/moderation', 'display_admin_moderation');
+dispatch('/admin/reports', 'display_admin_content_report');
+dispatch('/admin/content/proposed', 'display_admin_content_proposed');
+dispatch('/admin/content/proposed/:id', 'display_admin_content_view');
 ## finances
 dispatch('/admin/membres', 'display_admin_members');
 dispatch('/admin/membres/add', 'display_admin_add_member');

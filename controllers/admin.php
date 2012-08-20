@@ -51,6 +51,128 @@ function display_admin_home() {
     )));
 }
 
+# === MODERATION ===============================================================
+
+function display_admin_moderation() {
+    return Config::$tpl->render('admin_main.html', tpl_array(admin_tpl_default(),array(
+        'page' => array(
+            'actions' => array(
+                array('title' => 'Contenu signalé', 'href' => Config::$root_uri.'admin/reports'),
+                array('title' => 'Contenu proposé', 'href' => Config::$root_uri.'admin/content/proposed')
+                # add subpages here
+            )
+        )
+    )));
+}
+
+function display_admin_content_report(){
+
+	$query = ReportQuery::create()
+									->limit(50)
+									->orderById()
+									->find();
+
+	$contentReport = Array();
+
+	if ( $query != null ){
+
+		foreach ( $query as $cR ){
+
+			$user = UserQuery::create()
+									->findOneById($cR->getAuthorId());
+
+			$content = ContentQuery::create()
+									->findOneById($cR->getContentId());
+	
+			$uri = Config::$root_uri . 'admin/reports/' . $cR->getId();
+			$option = Array(
+					Array( 'href' => $uri . '/deleteContent',
+							 'title' => 'Supprimer le contenu' ),
+					Array( 'href' => $uri . '/deleteReport',
+							 'title' => 'Supprimer le report')
+				);	
+
+			$contentReport []= Array(
+                'id' => $cR->getId(),
+                'href' => $uri,
+					 'hrefUser' => Config::$root_uri . 'p/' . $user->getUsername(),
+                'pseudo' => $user->getUsername(),
+                'title' => $content->getTitle(),
+                'reportDate' => $cR->getDate(),
+                'reason' => $cR->getText(),
+					 'option' => $option
+            );
+
+		}
+
+	}
+
+	return Config::$tpl->render('admin_content_report.html', tpl_array(admin_tpl_default(),array(
+					'page' => array(
+						'title' => 'Contenu reporté',
+						'reports' => $contentReport
+					)
+			)));
+
+}
+
+function display_admin_content_proposed(){
+
+	$query = ContentQuery::create()
+							->limit(50)
+							->orderById()
+							->findByValidated(0);
+
+	$contentProposed = Array();
+
+	if ( $query != null ){
+
+		foreach ( $query as $cP ){
+
+			$user = UserQuery::create()
+								->findOneById($cP->getAuthorId());
+
+			$cursus = CursusQuery::create()
+								->findOneById($cP->getCursusId());
+
+			$course = CourseQuery::create()
+								->findOneById($cP->getCourseId());
+
+			$uri = Config::$root_uri . "admin/content/proposed/" . $cP->getId();
+
+			$contentProposed []=	Array(
+						'id' => $cP->getId(),
+						'title' => $cP->getTitle(),
+						'href' => $uri,
+						'cursus' => $cursus->getShortName(),
+						'course' => $course->getCode(),
+						'pseudo' => $user->getUsername(),
+						'proposedDate' => $cP->getDate()
+					);
+
+		}
+			
+		return Config::$tpl->render('admin_content_proposed.html', tpl_array(admin_tpl_default(),array(
+						'page' => Array(
+							'title' => 'Contenu proposé',
+							'proposed' => $contentProposed
+						)
+				)));
+
+	}
+
+}
+
+function display_admin_content_view(){
+
+	return Config::$tpl->render('admin_content_proposed.html', tpl_array(admin_tpl_default(),array(
+					'page' => Array(
+						'title' => 'Contenu proposé'
+					)
+		)));
+
+}
+
 # === FINANCES ================================================================
 
 function display_admin_add_member($values=null, $msg=null, $msg_type=null) {
