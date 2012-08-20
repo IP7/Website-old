@@ -1,6 +1,4 @@
 (function(root_uri){
-    root_uri = document.location.pathname.split(/\/admin\//)[0]; 
-    
     (function /* check_username */($inp) {
         if (!window.$ || !($inp = $('input[name=username]'))) {return;}
 
@@ -18,4 +16,4 @@
         });
     })();
 
-})();
+})(document.location.pathname.split(/\/admin/)[0]);
