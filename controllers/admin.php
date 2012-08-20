@@ -34,7 +34,8 @@ function display_admin_home() {
                     'title'   => 'Trésorerie',
                     'id'      => 'tres',
                     'actions' => array (
-                        array('title' => 'Gérer les utilisateurs', 'href' => $admin_uri.'/membres'),
+                        array('title' => 'Ajouter un membre',      'href' => $admin_uri.'/membres/add'),
+                        array('title' => 'Gérer les membres',      'href' => $admin_uri.'/membres'),
                         array('title' => 'Gérer les transactions', 'href' => $admin_uri.'/transactions')
                     )
                 ),
