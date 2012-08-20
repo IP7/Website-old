@@ -43,7 +43,7 @@ class NoteTableMap extends TableMap
         $this->addForeignKey('COURSE_ID', 'CourseId', 'INTEGER', 'courses', 'ID', true, null, null);
         $this->addColumn('SCORE', 'Score', 'FLOAT', true, null, null);
         // validators
-        $this->addValidator('SCORE', 'minValue', 'propel.validator.MinValueValidator', '0', 'Score cannot be negative.');
+        $this->addValidator('SCORE', 'minValue', 'propel.validator.MinValueValidator', '0', 'La note ne peut être négative.');
     } // initialize()
 
     /**

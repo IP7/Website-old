@@ -47,8 +47,8 @@ class NewsTableMap extends TableMap
         $this->addForeignKey('COURSE_ID', 'CourseId', 'INTEGER', 'courses', 'ID', false, null, null);
         $this->addColumn('ACCESS_RIGHTS', 'AccessRights', 'TINYINT', false, null, 0);
         // validators
-        $this->addValidator('TITLE', 'minLength', 'propel.validator.MinLengthValidator', '1', 'Title must be at least 1 characters.');
-        $this->addValidator('TEXT', 'minLength', 'propel.validator.MinLengthValidator', '1', 'Text must be at least 1 characters.');
+        $this->addValidator('TITLE', 'minLength', 'propel.validator.MinLengthValidator', '1', 'Le titre doit faire au moins 1 caractère.');
+        $this->addValidator('TEXT', 'minLength', 'propel.validator.MinLengthValidator', '1', 'Le texte doit faire au moins 1 caractère.');
     } // initialize()
 
     /**

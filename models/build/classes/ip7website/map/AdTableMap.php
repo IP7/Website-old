@@ -46,7 +46,7 @@ class AdTableMap extends TableMap
         $this->addColumn('VALIDATED', 'Validated', 'BOOLEAN', false, 1, '1');
         $this->addColumn('ACCESS_RIGHTS', 'AccessRights', 'TINYINT', false, null, 0);
         // validators
-        $this->addValidator('TITLE', 'minLength', 'propel.validator.MinLengthValidator', '1', 'Title must be at least 1 characters.');
+        $this->addValidator('TITLE', 'minLength', 'propel.validator.MinLengthValidator', '1', 'Le titre doit faire au moins 1 caractère.');
     } // initialize()
 
     /**

@@ -48,7 +48,7 @@ class EventTableMap extends TableMap
         $this->addColumn('PLACE', 'Place', 'VARCHAR', false, 255, null);
         $this->addColumn('ACCESS_RIGHTS', 'AccessRights', 'TINYINT', false, null, 0);
         // validators
-        $this->addValidator('NAME', 'minLength', 'propel.validator.MinLengthValidator', '3', 'Name must be at least 3 characters.');
+        $this->addValidator('NAME', 'minLength', 'propel.validator.MinLengthValidator', '3', 'Le nom doit faire au moins 3 caractères.');
     } // initialize()
 
     /**

@@ -45,10 +45,10 @@ class CursusTableMap extends TableMap
         $this->addForeignKey('RESPONSABLE_ID', 'ResponsableId', 'INTEGER', 'users', 'ID', false, null, null);
         $this->addForeignKey('NEWSLETTER_ID', 'NewsletterId', 'INTEGER', 'newsletters', 'ID', false, null, null);
         // validators
-        $this->addValidator('NAME', 'minLength', 'propel.validator.MinLengthValidator', '1', 'Name must be at least 1 characters.');
-        $this->addValidator('NAME', 'unique', 'propel.validator.UniqueValidator', '', 'Name already exists.');
-        $this->addValidator('SHORT_NAME', 'minLength', 'propel.validator.MinLengthValidator', '1', 'Short name must be at least 1 characters.');
-        $this->addValidator('SHORT_NAME', 'unique', 'propel.validator.UniqueValidator', '', 'Short name already exists.');
+        $this->addValidator('NAME', 'minLength', 'propel.validator.MinLengthValidator', '1', 'Le nom doit faire au moins 1 caractère.');
+        $this->addValidator('NAME', 'unique', 'propel.validator.UniqueValidator', '', 'Le nom existe déjà.');
+        $this->addValidator('SHORT_NAME', 'minLength', 'propel.validator.MinLengthValidator', '1', 'Le nom court doit faire au moins 1 caractère.');
+        $this->addValidator('SHORT_NAME', 'unique', 'propel.validator.UniqueValidator', '', 'Le nom court existe déjà.');
     } // initialize()
 
     /**

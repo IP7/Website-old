@@ -108,36 +108,36 @@
         </foreign-key>
 
         <validator column="username">
-            <rule name="minLength" value="4" message="Username must be at least ${value} characters." />
-            <rule name="match"     value="/^[a-z](?:[-_]?[a-z0-9]+)+$/i"
-                                             message="Please enter a valid username." />
-            <rule name="unique"              message="Username already exists." />
+            <rule name="minLength" value="3" message="Le pseudo doit faire au moins ${value} caractères." />
+            <rule name="match"     value="/^[a-z][_a-z0-9]+$/i"
+                                             message="Le pseudo n'est pas valide (Doit commencer par une lettre, et être uniquement composé de caractères alphanumériques)." />
+            <rule name="unique"              message="Le pseudo est déjà pris." />
         </validator>
 
         <validator column="firstname">
-            <rule name="minLength" value="1" message="First name must be at least ${value} characters." />
+            <rule name="minLength" value="1" message="Le prénom doit faire au moins ${value} caractère." />
         </validator>
 
         <validator column="lastname">
-            <rule name="minLength" value="1" message="Last name must be at least ${value} characters." />
+            <rule name="minLength" value="1" message="Le nom doit faire au moins ${value} caractère." />
         </validator>
 
         <validator column="email">
-            <rule name="minLength" value="6" message="Email must be at least ${value} characters." />
+            <rule name="minLength" value="6" message="L'e-mail doit faire au moins ${value} caractères." />
             <!-- Volontairement laxiste, il est plus facile d'accepter de mauvaises adresses que
                  d'éviter d'en exclure de bonnes. L'adresse est de toute façon validée autrement
                  (e-mail de validation). -->
             <rule name="match"     value="/^[-+\w\.]+@[-\.\w]+\.[a-z]{2,4}$/"
-                                             message="Please enter a valid email address." />
+                                             message="L'adresse e-mail n'est pas valide." />
         </validator>
 
         <validator column="website">
             <rule name="match"     value="/^https?/"
-                                             message="Please use a valid protocol" />
+                                             message="Le protocole du site Web n'est pas valide." />
         </validator>
 
         <validator column="visits_nb">
-            <rule name="minValue"  value="0" message="The number of visits cannot be negative." />
+            <rule name="minValue"  value="0" message="Le nombre de visites ne peut pas être négatif." />
         </validator>
 
     </table>
@@ -176,13 +176,13 @@
         </foreign-key>
 
         <validator column="name">
-            <rule name="minLength" value="1" message="Name must be at least ${value} characters." />
-            <rule name="unique" message="Name already exists." />
+            <rule name="minLength" value="1" message="Le nom doit faire au moins ${value} caractère." />
+            <rule name="unique" message="Le nom existe déjà." />
         </validator>
 
         <validator column="short_name">
-            <rule name="minLength" value="1" message="Short name must be at least ${value} characters." />
-            <rule name="unique" message="Short name already exists." />
+            <rule name="minLength" value="1" message="Le nom court doit faire au moins ${value} caractère." />
+            <rule name="unique" message="Le nom court existe déjà." />
         </validator>
 
         <index>
@@ -248,21 +248,21 @@
 
         <validator column="code">
             <rule name="match" value="/^[a-z0-9]+$/i"
-                                             message="Please enter a valid code." />
+                                             message="Le code n'est pas valide (caractères alphanumériques uniquement)." />
         </validator>
 
         <validator column="name">
-            <rule name="minLength" value="3" message="Name must be at least ${value} characters." />
+            <rule name="minLength" value="3" message="Le nom doit faire au moins ${value} caractères." />
         </validator>
 
         <validator column="semester">
-            <rule name="minValue"  value="0" message="The semester cannot be negative." />
-            <rule name="maxValue"  value="3" message="The semester cannot be higher than 2." />
+            <rule name="minValue"  value="0" message="Le semestre doit être 1 ou 2." />
+            <rule name="maxValue"  value="3" message="Le semestre doit être 1 ou 2." />
         </validator>
 
         <validator column="ECTS">
-            <rule name="minValue"  value="0" message="ECTS cannot be negative." />
-            <rule name="maxValue"  value="30" message="ECTS cannot be higher than 30." />
+            <rule name="minValue"  value="0" message="Le nombre d'ECTS ne peut pas être négatif." />
+            <rule name="maxValue"  value="30" message="Le nombre d'ECTS ne peut pas être supérieur à 30." />
         </validator>
     </table>
 
@@ -315,13 +315,13 @@
         </foreign-key>
 
         <validator column="name">
-            <rule name="minLength" value="3" message="Name must be at least ${value} characters." />
+            <rule name="minLength" value="3" message="Le nom doit faire au moins ${value} caractères." />
         </validator>
 
         <validator column="path">
-            <rule name="minLength" value="3" message="Path must be at least ${value} characters." />
+            <rule name="minLength" value="3" message="Le chemin doit faire au moins ${value} caractères." />
             <rule name="notMatch"  value="/^[a-z]:\/\//i"
-                                             message="Path must be local." />
+                                             message="Le fichier ne peut être distant." />
         </validator>
     </table>
 
@@ -463,7 +463,7 @@
         </foreign-key>
 
         <validator column="name">
-            <rule name="minLength" value="3" message="Name must be at least ${value} characters." />
+            <rule name="minLength" value="3" message="Le nom doit faire au moins ${value} caractères." />
         </validator>
     </table>
 
@@ -598,7 +598,7 @@
         </foreign-key>
 
         <validator column="text">
-            <rule name="minLength" value="1" message="Text must be at least ${value} characters." />
+            <rule name="minLength" value="2" message="Le texte doit faire au moins ${value} caractères." />
         </validator>
     </table>
 
@@ -612,8 +612,8 @@
         <!-- == index & clefs étrangères == -->
 
         <validator column="name">
-            <rule name="minLength" value="1" message="Name must be at least ${value} characters." />
-            <rule name="unique" message="Name must be unique." />
+            <rule name="minLength" value="1" message="Le nom doit faire au moins ${value} caractère." />
+            <rule name="unique" message="Le nom existe déjà." />
         </validator>
 
         <index>
@@ -714,7 +714,7 @@
         </foreign-key>
 
         <validator column="score">
-            <rule name="minValue" value="0" message="Score cannot be negative." />
+            <rule name="minValue" value="0" message="La note ne peut être négative." />
         </validator>
     </table>
 
@@ -759,11 +759,11 @@
         </foreign-key>
 
         <validator column="title">
-            <rule name="minLength" value="1" message="Title must be at least ${value} characters." />
+            <rule name="minLength" value="1" message="Le titre doit faire au moins ${value} caractère." />
         </validator>
 
         <validator column="text">
-            <rule name="minLength" value="1" message="Text must be at least ${value} characters." />
+            <rule name="minLength" value="1" message="Le texte doit faire au moins ${value} caractère." />
         </validator>
 
     </table>
@@ -798,7 +798,7 @@
         </foreign-key>
 
         <validator column="title">
-            <rule name="minLength" value="1" message="Title must be at least ${value} characters." />
+            <rule name="minLength" value="1" message="Le titre doit faire au moins ${value} caractère." />
         </validator>
 
     </table>
@@ -827,7 +827,7 @@
         </foreign-key>
 
         <validator column="description">
-            <rule name="minLength" value="1" message="Description must be at least ${value} characters." />
+            <rule name="minLength" value="1" message="La description doit faire au moins ${value} caractère." />
         </validator>
     </table>
 
@@ -852,7 +852,7 @@
         </foreign-key>
 
         <validator column="name">
-            <rule name="minLength" value="1" message="Name must be at least ${value} characters." />
+            <rule name="minLength" value="1" message="Le nom doit faire au moins ${value} caractère." />
         </validator>
     </table>
 
@@ -880,7 +880,7 @@
         </foreign-key>
 
         <validator column="title">
-            <rule name="minLength" value="1" message="Title must be at least ${value} characters." />
+            <rule name="minLength" value="1" message="Le titre doit faire au moins ${value} caractère." />
         </validator>
     </table>
 
@@ -912,7 +912,7 @@
         </foreign-key>
 
         <validator column="text">
-            <rule name="minLength" value="1" message="Texte must be at least ${value} characters." />
+            <rule name="minLength" value="1" message="Le texte doit faire au moins ${value} caractère." />
         </validator>
     </table>
 

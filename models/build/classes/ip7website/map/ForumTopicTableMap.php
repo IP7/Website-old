@@ -44,7 +44,7 @@ class ForumTopicTableMap extends TableMap
         $this->addColumn('IS_LOCKED', 'IsLocked', 'BOOLEAN', false, 1, '0');
         $this->addColumn('IS_ANNOUNCEMENT', 'IsAnnouncement', 'BOOLEAN', false, 1, '0');
         // validators
-        $this->addValidator('TITLE', 'minLength', 'propel.validator.MinLengthValidator', '1', 'Title must be at least 1 characters.');
+        $this->addValidator('TITLE', 'minLength', 'propel.validator.MinLengthValidator', '1', 'Le titre doit faire au moins 1 caractère.');
     } // initialize()
 
     /**

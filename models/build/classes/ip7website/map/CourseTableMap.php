@@ -47,12 +47,12 @@ class CourseTableMap extends TableMap
         $this->addColumn('ECTS', 'Ects', 'FLOAT', false, null, 3);
         $this->addColumn('DESCRIPTION', 'Description', 'LONGVARCHAR', false, 1024, null);
         // validators
-        $this->addValidator('CODE', 'match', 'propel.validator.MatchValidator', '/^[a-z0-9]+$/i', 'Please enter a valid code.');
-        $this->addValidator('NAME', 'minLength', 'propel.validator.MinLengthValidator', '3', 'Name must be at least 3 characters.');
-        $this->addValidator('SEMESTER', 'minValue', 'propel.validator.MinValueValidator', '0', 'The semester cannot be negative.');
-        $this->addValidator('SEMESTER', 'maxValue', 'propel.validator.MaxValueValidator', '3', 'The semester cannot be higher than 2.');
-        $this->addValidator('ECTS', 'minValue', 'propel.validator.MinValueValidator', '0', 'ECTS cannot be negative.');
-        $this->addValidator('ECTS', 'maxValue', 'propel.validator.MaxValueValidator', '30', 'ECTS cannot be higher than 30.');
+        $this->addValidator('CODE', 'match', 'propel.validator.MatchValidator', '/^[a-z0-9]+$/i', 'Le code n\'est pas valide (caractères alphanumériques uniquement).');
+        $this->addValidator('NAME', 'minLength', 'propel.validator.MinLengthValidator', '3', 'Le nom doit faire au moins 3 caractères.');
+        $this->addValidator('SEMESTER', 'minValue', 'propel.validator.MinValueValidator', '0', 'Le semestre doit être 1 ou 2.');
+        $this->addValidator('SEMESTER', 'maxValue', 'propel.validator.MaxValueValidator', '3', 'Le semestre doit être 1 ou 2.');
+        $this->addValidator('ECTS', 'minValue', 'propel.validator.MinValueValidator', '0', 'Le nombre d\'ECTS ne peut pas être négatif.');
+        $this->addValidator('ECTS', 'maxValue', 'propel.validator.MaxValueValidator', '30', 'Le nombre d\'ECTS ne peut pas être supérieur à 30.');
     } // initialize()
 
     /**

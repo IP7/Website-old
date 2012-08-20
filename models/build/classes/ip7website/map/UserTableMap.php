@@ -75,15 +75,15 @@ class UserTableMap extends TableMap
         $this->addColumn('DESCRIPTION', 'Description', 'LONGVARCHAR', false, 512, null);
         $this->addColumn('REMARKS', 'Remarks', 'VARCHAR', false, 255, null);
         // validators
-        $this->addValidator('USERNAME', 'minLength', 'propel.validator.MinLengthValidator', '4', 'Username must be at least 4 characters.');
-        $this->addValidator('USERNAME', 'match', 'propel.validator.MatchValidator', '/^[a-z](?:[-_]?[a-z0-9]+)+$/i', 'Please enter a valid username.');
-        $this->addValidator('USERNAME', 'unique', 'propel.validator.UniqueValidator', '', 'Username already exists.');
-        $this->addValidator('FIRSTNAME', 'minLength', 'propel.validator.MinLengthValidator', '1', 'First name must be at least 1 characters.');
-        $this->addValidator('LASTNAME', 'minLength', 'propel.validator.MinLengthValidator', '1', 'Last name must be at least 1 characters.');
-        $this->addValidator('EMAIL', 'minLength', 'propel.validator.MinLengthValidator', '6', 'Email must be at least 6 characters.');
-        $this->addValidator('EMAIL', 'match', 'propel.validator.MatchValidator', '/^[-+\w\.]+@[-\.\w]+\.[a-z]{2,4}$/', 'Please enter a valid email address.');
-        $this->addValidator('WEBSITE', 'match', 'propel.validator.MatchValidator', '/^https?/', 'Please use a valid protocol');
-        $this->addValidator('VISITS_NB', 'minValue', 'propel.validator.MinValueValidator', '0', 'The number of visits cannot be negative.');
+        $this->addValidator('USERNAME', 'minLength', 'propel.validator.MinLengthValidator', '3', 'Le pseudo doit faire au moins 3 caractères.');
+        $this->addValidator('USERNAME', 'match', 'propel.validator.MatchValidator', '/^[a-z][_a-z0-9]+$/i', 'Le pseudo n\'est pas valide (Doit commencer par une lettre, et être uniquement composé de caractères alphanumériques).');
+        $this->addValidator('USERNAME', 'unique', 'propel.validator.UniqueValidator', '', 'Le pseudo est déjà pris.');
+        $this->addValidator('FIRSTNAME', 'minLength', 'propel.validator.MinLengthValidator', '1', 'Le prénom doit faire au moins 1 caractère.');
+        $this->addValidator('LASTNAME', 'minLength', 'propel.validator.MinLengthValidator', '1', 'Le nom doit faire au moins 1 caractère.');
+        $this->addValidator('EMAIL', 'minLength', 'propel.validator.MinLengthValidator', '6', 'L\'e-mail doit faire au moins 6 caractères.');
+        $this->addValidator('EMAIL', 'match', 'propel.validator.MatchValidator', '/^[-+\w\.]+@[-\.\w]+\.[a-z]{2,4}$/', 'L\'adresse e-mail n\'est pas valide.');
+        $this->addValidator('WEBSITE', 'match', 'propel.validator.MatchValidator', '/^https?/', 'Le protocole du site Web n\'est pas valide.');
+        $this->addValidator('VISITS_NB', 'minValue', 'propel.validator.MinValueValidator', '0', 'Le nombre de visites ne peut pas être négatif.');
     } // initialize()
 
     /**
