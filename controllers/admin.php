@@ -5,50 +5,48 @@ Config::init();
 
 # === HOME =====================================================================
 
-function display_admin_home() {
-    $message = $message_type = null;
-
+function display_admin_home($message, $message_type) {
     $admin_uri = Config::$root_uri.'admin';
 
     do_maintenance(&$message, &$message_type);
 
     return Config::$tpl->render('admin_main.html', tpl_array(
-                                                            admin_tpl_default(),
-                                                            array(
-        'page' => array(
-            'title'        => 'Accueil',
+        admin_tpl_default(),
+        array(
+            'page' => array(
+                'title'        => 'Accueil',
 
-            'message'      => $message,
-            'message_type' => $message_type,
+                'message'      => $message,
+                'message_type' => $message_type,
 
-            'sections'     => array(
-                array(
-                    'title'   => 'Modération',
-                    'id'      => 'mod',
-                    'actions' => array(
-                        array('title' => 'Contenu signalé', 'href' => $admin_uri.'/reports'),
-                        array('title' => 'Contenu proposé', 'href' => $admin_uri.'/content/proposed')
-                    )
-                ),
-                array(
-                    'title'   => 'Trésorerie',
-                    'id'      => 'tres',
-                    'actions' => array (
-                        array('title' => 'Ajouter un membre',      'href' => $admin_uri.'/membres/add'),
-                        array('title' => 'Gérer les membres',      'href' => $admin_uri.'/membres'),
-                        array('title' => 'Gérer les transactions', 'href' => $admin_uri.'/transactions')
-                    )
-                ),
-                array(
-                    'title'   => 'Maintenance',
-                    'id'      => 'mnt',
-                    'actions' => array(
-                        array('title' => 'Purger le cache des templates', 'href' => $admin_uri.'?purge_cache'),
-                        array('title' => 'Optimiser les tables',          'href' => $admin_uri.'?optimize_tables')
+                'sections'     => array(
+                    array(
+                        'title'   => 'Modération',
+                        'id'      => 'mod',
+                        'actions' => array(
+                            array('title' => 'Contenu signalé', 'href' => $admin_uri.'/reports'),
+                            array('title' => 'Contenu proposé', 'href' => $admin_uri.'/content/proposed')
+                        )
+                    ),
+                    array(
+                        'title'   => 'Trésorerie',
+                        'id'      => 'tres',
+                        'actions' => array (
+                            array('title' => 'Ajouter un membre',      'href' => $admin_uri.'/membres/add'),
+                            array('title' => 'Gérer les membres',      'href' => $admin_uri.'/membres'),
+                            array('title' => 'Gérer les transactions', 'href' => $admin_uri.'/transactions')
+                        )
+                    ),
+                    array(
+                        'title'   => 'Maintenance',
+                        'id'      => 'mnt',
+                        'actions' => array(
+                            array('title' => 'Purger le cache des templates', 'href' => $admin_uri.'?purge_cache'),
+                            array('title' => 'Optimiser les tables',          'href' => $admin_uri.'?optimize_tables')
+                        )
                     )
                 )
             )
-        )
     )));
 }
 
@@ -211,7 +209,6 @@ function display_admin_add_member($values=null, $msg=null, $msg_type=null) {
                 ),
 
                 'cursus' => $cursus,
-
                 'values' => $values
             ),
 
@@ -322,7 +319,11 @@ function post_admin_add_member() {
 
     if ($user->validate()) {
         if(!$user->save()) {
-            return 'error'; // TODO
+            return display_admin_add_member(
+                $_POST,
+                'Une erreur est survenue lors de l\'enregistrement dans la base de données.',
+                'error'
+            );
         }
 
         if ($fee) {
@@ -335,7 +336,7 @@ function post_admin_add_member() {
 
         send_welcome_message($user, $password);
 
-        return 'ok'; //TODO
+        redirect_to(Config::$root_uri.'admin/', array( 'status' => HTTP_SEE_OTHER ));
     }
 
     foreach ($user->getValidationFailures() as $failure) {
