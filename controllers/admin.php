@@ -52,24 +52,12 @@ function display_admin_home($message, $message_type) {
 
 # === MODERATION ===============================================================
 
-function display_admin_moderation() {
-    return Config::$tpl->render('admin_main.html', tpl_array(admin_tpl_default(),array(
-        'page' => array(
-            'actions' => array(
-                array('title' => 'Contenu signalé', 'href' => Config::$root_uri.'admin/reports'),
-                array('title' => 'Contenu proposé', 'href' => Config::$root_uri.'admin/content/proposed')
-                # add subpages here
-            )
-        )
-    )));
-}
-
 function display_admin_content_report(){
 
 	$query = ReportQuery::create()
-									->limit(50)
-									->orderById()
-									->find();
+                ->limit(50)
+                ->orderById()
+                ->find();
 
 	$contentReport = Array();
 
@@ -77,19 +65,16 @@ function display_admin_content_report(){
 
 		foreach ( $query as $cR ){
 
-			$user = UserQuery::create()
-									->findOneById($cR->getAuthorId());
-
-			$content = ContentQuery::create()
-									->findOneById($cR->getContentId());
+			$user = $cR->getAuthor();
+			$content = $cR->getContent();
 	
 			$uri = Config::$root_uri . 'admin/reports/' . $cR->getId();
 			$option = Array(
-					Array( 'href' => $uri . '/deleteContent',
-							 'title' => 'Supprimer le contenu' ),
-					Array( 'href' => $uri . '/deleteReport',
-							 'title' => 'Supprimer le report')
-				);	
+					Array( 'href'  => $uri . '/deleteContent',
+                           'title' => 'Supprimer le contenu' ),
+					Array( 'href'  => $uri . '/deleteReport',
+                           'title' => 'Supprimer le report')
+            );
 
 			$contentReport []= Array(
                 'id' => $cR->getId(),
@@ -128,14 +113,9 @@ function display_admin_content_proposed(){
 
 		foreach ( $query as $cP ){
 
-			$user = UserQuery::create()
-								->findOneById($cP->getAuthorId());
-
-			$cursus = CursusQuery::create()
-								->findOneById($cP->getCursusId());
-
-			$course = CourseQuery::create()
-								->findOneById($cP->getCourseId());
+			$user   = $cP->getAuthor();
+			$cursus = $cP->getCursus();
+			$course = $cp->getCourse();
 
 			$uri = Config::$root_uri . "admin/content/proposed/" . $cP->getId();
 
@@ -194,7 +174,8 @@ function display_admin_add_member($values=null, $msg=null, $msg_type=null) {
         'page' => array(
             'title' => 'Ajouter un membre',
             'breadcrumbs' => array(
-                1 => array( 'title' => 'Ajouter un membre', 'href' => Config::$root_uri.'admin/membres/add' )
+                1 => array( 'title' => 'Membres', 'href' => Config::$root_uri.'admin/membres'),
+                2 => array( 'title' => 'Ajouter un membre', 'href' => Config::$root_uri.'admin/membres/add' )
             ),
 
             'message' => $msg,
