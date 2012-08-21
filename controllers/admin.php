@@ -42,7 +42,8 @@ function display_admin_home($message, $message_type) {
                         'id'      => 'mnt',
                         'actions' => array(
                             array('title' => 'Purger le cache des templates', 'href' => $admin_uri.'?purge_cache'),
-                            array('title' => 'Optimiser les tables',          'href' => $admin_uri.'?optimize_tables')
+                            array('title' => 'Optimiser les tables',          'href' => $admin_uri.'?optimize_tables'),
+                            array('title' => 'Migrer la base de données',     'href' => $admin_uri.'/migrate')
                         )
                     )
                 )
