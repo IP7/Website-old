@@ -1,25 +1,42 @@
-
-.bar li {
-    display:inline-block;
+html {
+    font-family: helvetica, sans-serif;
 }
 
-/* Basic CSS */
+* {
+    -webkit-box-sizing: border-box;
+       -moz-box-sizing: border-box;
+        -ms-box-sizing: border-box;
+         -o-box-sizing: border-box;
+            box-sizing: border-box;
+}
 
-#global_nav,
-#cursus_nav,
-#others_nav,
-#search,
-#breadcrumb .navlink,
-#global_header .navlink,
-#global_footer .navlink,
-#global_header .buffer {
+.inline-block { display:inline-block; }
+
+/* Nav bars */
+
+.bar ul,
+.bar li,
+.bar {
     display: inline-block;
 }
 
-#search label {
+/* Breadcrumbs */
+
+#breadcrumbs .next:before {
+    content: '›';
+}
+
+#breadcrumbs li {
+    display:inline-block;
+}
+
+/* Forms */
+
+label.hidden.explicit {
     display:inline-block;
     width:0;
     overflow:hidden;
+    margin:0;
 }
 
 #main_logo_link {
@@ -31,10 +48,6 @@
 
 #logo {
     margin:0;
-}
-
-#breadcrumb .next:before {
-  content: '›';
 }
 
 form label,

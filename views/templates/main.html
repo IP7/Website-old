@@ -61,7 +61,7 @@
 {% flush %}
         <body>
             {# barre du haut #}
-            <header id="global_header">
+            <header id="global_header" class="bar">
                 {# logo #}
                 <a href="{{ site.root|raw }}" title="Retour à l’accueil" id="main_logo_link">
                     <img src="{{ site.logo.src|raw }}" width="{{ site.logo.width }}" height="{{ site.logo.height }}" alt="IP7" class="logo" />
@@ -78,7 +78,7 @@
                     </ul>
 
                     {# sert de "tampon" entre les deux listes de liens #}
-                    <div class="buffer"></div>
+                    <div class="buffer inline-block"></div>
 
                     {# autres liens globaux #}
                     <ul id="others_nav">
@@ -91,9 +91,9 @@
 
                 {# recherche #}
                 {% if page.no_search is not defined or page.no_search == false %}
-                <aside id="search">
+                <aside id="search" class="inline-block">
                     <form action="{{ site.search.action |raw }}" method="{{ site.search.method |e('html_attr') }}">
-                        <label for="q">Recherche</label>
+                        <label for="q" class="hidden explicit">Recherche</label>
                         <input type="search" id="q" name="q" placeholder="Recherche…" />
                         <input type="submit" value="Ok" />
                     </form>
@@ -114,7 +114,7 @@
 
             {# footer #}
 
-            <footer id="global_footer">
+            <footer id="global_footer" class="bar">
                 <nav id="footer_nav">
                     <ul>
                         {% for link in site.footer_links %}
