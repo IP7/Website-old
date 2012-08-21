@@ -52,7 +52,11 @@ function display_profile_page($username=NULL, $is_my_profile=false) {
         ));
     }
 
+    // I can edit if it's me or an admin
     $can_edit = ($me || (is_connected() && user()->isAdmin()));
+
+    // I can see the options if it's me or an admin
+    $can_see_options = $can_edit;
 
     $edit_button = false;
 
@@ -63,7 +67,20 @@ function display_profile_page($username=NULL, $is_my_profile=false) {
         $edit_button['href'] = Config::$root_uri.( $me ? 'profile/edit' : 'p/'.$user->getUsername().'/edit');
     }
 
-    // options
+    // displaying options
+    if ($can_see_options) {
+        foreach ($tpl_user['options'] as $k => $opt) {
+            $tpl_user['options'][$k] = array(
+                'title' => $opt['title'],
+                'value' => bool_to_fr($opt['value'])
+            );
+        }
+    }
+    else {
+        $tpl_user['options'] = null;
+    }
+
+    // displayed options
 
     if (!$user->getConfigShowEmail()) {
         $tpl_user['email'] = false;
