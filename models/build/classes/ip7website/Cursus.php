@@ -15,4 +15,8 @@
  */
 class Cursus extends BaseCursus {
 
+    public function getShortName() {
+        return strtoupper(parent::getShortName());
+    }
+
 } // Cursus
