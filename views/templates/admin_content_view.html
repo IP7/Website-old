@@ -1,0 +1,23 @@
+{% extends 'admin_main.html' %}
+{% import 'macros.html' as _m %}
+
+{% block admin_content %}
+{{ parent() }}
+
+	{% if page.content.reportText is defined and page.content.reportText %}
+		<p><em>Reporté par {{ page.content.usernameReport }} le {{ page.content.reportDate }}<br />
+		Raison :<br />
+		{{ page.content.reportText }}</em></p>
+	{% endif %}
+
+	<p><h3> {{ page.content.title }} </h3></p>
+	<p> {{ page.content.cursus }} -- {{ page.content.courseName }} ( {{ page.content.courseCode }} ) </p>
+	<p><em> Posté par : {#{ page.content.username }#} le {{ page.content.date }} </em></p>
+	<p> {{ page.content.contentText }} </p>
+	<p>
+		{% for option in page.options %}
+			{{ _m.a(option.href, option.title) }}
+		{% endfor %}
+		
+{% endblock %}	
+

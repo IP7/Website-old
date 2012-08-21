@@ -81,6 +81,7 @@ dispatch('/admin', 'display_admin_home');
 ## moderation
 dispatch('/admin/moderation', 'display_admin_moderation');
 dispatch('/admin/reports', 'display_admin_content_report');
+dispatch('/admin/reports/:id', 'display_admin_content_report_view');
 dispatch('/admin/content/proposed', 'display_admin_content_proposed');
 dispatch('/admin/content/proposed/:id', 'display_admin_content_view');
 ## finances
