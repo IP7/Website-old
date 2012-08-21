@@ -3,6 +3,7 @@
 
 html {
     font-family: helvetica, sans-serif;
+    font-size: 1em;
 }
 
 * {
@@ -15,12 +16,37 @@ html {
 
 .inline-block { display:inline-block; }
 
+a {
+    outline:none;
+    border:none;
+}
+
 /* == Main content ======================================== */
 
 #main_content { display:table; }
 #main_content > aside,
 #main_content > article {
     display:table-cell;
+}
+
+/* == Code ================================================ */
+
+.filepath,
+code,
+pre {
+    font-family: 'dejavu sans mono', monospace;
+}
+
+.filepath, code {
+    -webkit-border-radius: 2px;
+       -moz-border-radius: 2px;
+        -ms-border-radius: 2px;
+         -o-border-radius: 2px;
+            border-radius: 2px;
+   background: #EEE; 
+   padding-left: 2px;
+   padding-right: 2px;
+   font-size:small;
 }
 
 /* == Nav bars ============================================ */
@@ -30,6 +56,11 @@ html {
 .bar nav,
 .bar {
     display: inline-block;
+}
+
+.navlink abbr {
+    outline:none;
+    border:none;
 }
 
 /* == Breadcrumbs ========================================= */
