@@ -10,3 +10,4 @@ doc
 .DS_Store
 /tests/local_config.php
 /models/build/migrations
+migration.sql
