@@ -45,7 +45,7 @@ class CommentTableMap extends TableMap
         $this->addColumn('DATE', 'Date', 'TIMESTAMP', true, null, null);
         $this->addColumn('TEXT', 'Text', 'LONGVARCHAR', true, 2048, null);
         // validators
-        $this->addValidator('TEXT', 'minLength', 'propel.validator.MinLengthValidator', '1', 'Text must be at least 1 characters.');
+        $this->addValidator('TEXT', 'minLength', 'propel.validator.MinLengthValidator', '2', 'Le texte doit faire au moins 2 caractères.');
     } // initialize()
 
     /**

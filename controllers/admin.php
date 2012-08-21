@@ -5,72 +5,59 @@ Config::init();
 
 # === HOME =====================================================================
 
-function display_admin_home() {
-    $message = $message_type = null;
-
+function display_admin_home($message, $message_type) {
     $admin_uri = Config::$root_uri.'admin';
 
     do_maintenance(&$message, &$message_type);
 
     return Config::$tpl->render('admin_main.html', tpl_array(
-                                                            admin_tpl_default(),
-                                                            array(
-        'page' => array(
-            'title'        => 'Accueil',
+        admin_tpl_default(),
+        array(
+            'page' => array(
+                'title'        => 'Accueil',
 
-            'message'      => $message,
-            'message_type' => $message_type,
+                'message'      => $message,
+                'message_type' => $message_type,
 
-            'sections'     => array(
-                array(
-                    'title'   => 'Modération',
-                    'id'      => 'mod',
-                    'actions' => array(
-                        array('title' => 'Contenu signalé', 'href' => $admin_uri.'/reports'),
-                        array('title' => 'Contenu proposé', 'href' => $admin_uri.'/content/proposed')
-                    )
-                ),
-                array(
-                    'title'   => 'Trésorerie',
-                    'id'      => 'tres',
-                    'actions' => array (
-                        array('title' => 'Gérer les utilisateurs', 'href' => $admin_uri.'/membres'),
-                        array('title' => 'Gérer les transactions', 'href' => $admin_uri.'/transactions')
-                    )
-                ),
-                array(
-                    'title'   => 'Maintenance',
-                    'id'      => 'mnt',
-                    'actions' => array(
-                        array('title' => 'Purger le cache des templates', 'href' => $admin_uri.'?purge_cache'),
-                        array('title' => 'Optimiser les tables',          'href' => $admin_uri.'?optimize_tables')
+                'sections'     => array(
+                    array(
+                        'title'   => 'Modération',
+                        'id'      => 'mod',
+                        'actions' => array(
+                            array('title' => 'Contenu signalé', 'href' => $admin_uri.'/reports'),
+                            array('title' => 'Contenu proposé', 'href' => $admin_uri.'/content/proposed')
+                        )
+                    ),
+                    array(
+                        'title'   => 'Trésorerie',
+                        'id'      => 'tres',
+                        'actions' => array (
+                            array('title' => 'Ajouter un membre',      'href' => $admin_uri.'/membres/add'),
+                            array('title' => 'Gérer les membres',      'href' => $admin_uri.'/membres'),
+                            array('title' => 'Gérer les transactions', 'href' => $admin_uri.'/transactions')
+                        )
+                    ),
+                    array(
+                        'title'   => 'Maintenance',
+                        'id'      => 'mnt',
+                        'actions' => array(
+                            array('title' => 'Purger le cache des templates', 'href' => $admin_uri.'?purge_cache'),
+                            array('title' => 'Optimiser les tables',          'href' => $admin_uri.'?optimize_tables')
+                        )
                     )
                 )
             )
-        )
     )));
 }
 
 # === MODERATION ===============================================================
 
-function display_admin_moderation() {
-    return Config::$tpl->render('admin_main.html', tpl_array(admin_tpl_default(),array(
-        'page' => array(
-            'actions' => array(
-                array('title' => 'Contenu signalé', 'href' => Config::$root_uri.'admin/reports'),
-                array('title' => 'Contenu proposé', 'href' => Config::$root_uri.'admin/content/proposed')
-                # add subpages here
-            )
-        )
-    )));
-}
-
 function display_admin_content_report(){
 
 	$query = ReportQuery::create()
-									->limit(50)
-									->orderById()
-									->find();
+                ->limit(50)
+                ->orderById()
+                ->find();
 
 	$contentReport = Array();
 
@@ -78,19 +65,16 @@ function display_admin_content_report(){
 
 		foreach ( $query as $cR ){
 
-			$user = UserQuery::create()
-									->findOneById($cR->getAuthorId());
-
-			$content = ContentQuery::create()
-									->findOneById($cR->getContentId());
+			$user = $cR->getAuthor();
+			$content = $cR->getContent();
 	
 			$uri = Config::$root_uri . 'admin/reports/' . $cR->getId();
 			$option = Array(
-					Array( 'href' => $uri . '/deleteContent',
-							 'title' => 'Supprimer le contenu' ),
-					Array( 'href' => $uri . '/deleteReport',
-							 'title' => 'Supprimer le report')
-				);	
+					Array( 'href'  => $uri . '/deleteContent',
+                           'title' => 'Supprimer le contenu' ),
+					Array( 'href'  => $uri . '/deleteReport',
+                           'title' => 'Supprimer le report')
+            );
 
 			$contentReport []= Array(
                 'id' => $cR->getId(),
@@ -129,14 +113,9 @@ function display_admin_content_proposed(){
 
 		foreach ( $query as $cP ){
 
-			$user = UserQuery::create()
-								->findOneById($cP->getAuthorId());
-
-			$cursus = CursusQuery::create()
-								->findOneById($cP->getCursusId());
-
-			$course = CourseQuery::create()
-								->findOneById($cP->getCourseId());
+			$user   = $cP->getAuthor();
+			$cursus = $cP->getCursus();
+			$course = $cp->getCourse();
 
 			$uri = Config::$root_uri . "admin/content/proposed/" . $cP->getId();
 
@@ -177,11 +156,26 @@ function display_admin_content_view(){
 
 function display_admin_add_member($values=null, $msg=null, $msg_type=null) {
 
+    $cursus = CursusQuery::create()
+        ->limit(10) // should not be so high
+        ->orderByShortName()
+        ->find();
+
+    $tpl_cursus = array();
+
+    foreach ($cursus as $k => $c) {
+        $tpl_cursus []= array(
+            'id'   => $c->getId(),
+            'name' => $c->getShortName()
+        );
+    }
+
     return Config::$tpl->render('admin_add_member.html', tpl_array(admin_tpl_default(), array(
         'page' => array(
             'title' => 'Ajouter un membre',
             'breadcrumbs' => array(
-                1 => array( 'title' => 'Ajouter un membre', 'href' => Config::$root_uri.'admin/membres/add' )
+                1 => array( 'title' => 'Membres', 'href' => Config::$root_uri.'admin/membres'),
+                2 => array( 'title' => 'Ajouter un membre', 'href' => Config::$root_uri.'admin/membres/add' )
             ),
 
             'message' => $msg,
@@ -195,6 +189,7 @@ function display_admin_add_member($values=null, $msg=null, $msg_type=null) {
                     'min' => date('Y-m-d', time() - 3153600000) // 100 years ago
                 ),
 
+                'cursus' => $cursus,
                 'values' => $values
             ),
 
@@ -208,6 +203,8 @@ function display_admin_add_member($values=null, $msg=null, $msg_type=null) {
 function post_admin_add_member() {
 
     $message = $message_type = null;
+
+    // required fields
 
     $required_fields = array(
         'lastname' => 'Le nom',
@@ -226,6 +223,10 @@ function post_admin_add_member() {
         return display_admin_add_member($_POST, $message, $message_type);
     }
 
+
+    // filters
+
+    // - username
     if (!filter_username($_POST['username'])) {
         return display_admin_add_member($_POST, "Le pseudo est incorrect.", 'error');
     }
@@ -245,8 +246,11 @@ function post_admin_add_member() {
                             : VISITOR_RANK));
 
     $gender = (has_post('gender') && $_POST['gender'] == 'F') ? 'F' : 'M';
-
     $password = get_random_password();
+    $phone = format_phone(get_string('phone', 'post'));
+    $birthdate = get_date_from_input(get_string('birthdate', 'post'));
+    $firstname = get_string('firstname', 'post');
+    $lastname = get_string('lastname', 'post');
 
     $user = new User();
     $user->setType($type);
@@ -255,16 +259,30 @@ function post_admin_add_member() {
     $user->setUsername(get_string('username', 'post'));
     $user->setPassword($password);
     $user->setGender($gender);
+    $user->setAddress(get_string('address', 'post'));
     $user->setWebsite('');
     $user->setEmail(get_string('email', 'post'));
-    $user->setPhone(get_string('phone', 'post'));
-    $user->setBirthDate(get_string('birthdate', 'post'));
+    $user->setPhone($phone);
+    $user->setBirthDate($birthdate);
 
     $user->setIsATeacher(has_post('teacher') && $_POST['teacher']);
     $user->setIsAStudent(has_post('student') && $_POST['student']);
     $user->setIsAnAlumni(has_post('alumni')  && $_POST['alumni']);
 
     $user->setRemarks(get_string('remarks', 'post'));
+
+    $cursus = array();
+
+    if (has_post('cursus')) {
+        foreach ($_POST['cursus'] as $id) {
+            $c = CursusQuery::create()->findOneById($id);
+            if ($c != NULL) {
+                $cursus [] = $c;
+            }
+        }
+    }
+
+    $fee = null;
 
     if (get_string('fee', 'post') != '1') {
         $user->setFirstEntry(time());
@@ -276,18 +294,39 @@ function post_admin_add_member() {
         $fee->setAmount(5.0);
         $fee->setUser($user);
         $fee->setValidated(true);
-        $fee->save();
-
-        send_welcome_message($user, $password);
     }
     else {
         $user->setDeactivated(1);
     }
 
-    $user->save();
+    if ($user->validate()) {
+        if(!$user->save()) {
+            return display_admin_add_member(
+                $_POST,
+                'Une erreur est survenue lors de l\'enregistrement dans la base de données.',
+                'error'
+            );
+        }
 
-    //TODO test if everything is fine
-    return 'ok';
+        if ($fee) {
+            $fee->save();
+        }
+
+        foreach ($cursus as $c) {
+            $user->addCursus($c);
+        }
+
+        send_welcome_message($user, $password);
+
+        redirect_to(Config::$root_uri.'admin/', array( 'status' => HTTP_SEE_OTHER ));
+    }
+
+    foreach ($user->getValidationFailures() as $failure) {
+        $message .= (($message=='')?' ':'') . $failure->getMessage();
+        $message_type = $message_type || 'error';
+    }
+
+    return display_admin_add_member($_POST, $message, $message_type);
 }
 
 function display_admin_members() {

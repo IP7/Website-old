@@ -43,7 +43,7 @@ class ForumCategoryTableMap extends TableMap
         $this->addForeignKey('PARENT_ID', 'ParentId', 'INTEGER', 'forum_categories', 'ID', false, null, null);
         $this->addColumn('ACCESS_RIGHTS', 'AccessRights', 'TINYINT', false, null, 0);
         // validators
-        $this->addValidator('NAME', 'minLength', 'propel.validator.MinLengthValidator', '1', 'Name must be at least 1 characters.');
+        $this->addValidator('NAME', 'minLength', 'propel.validator.MinLengthValidator', '1', 'Le nom doit faire au moins 1 caractère.');
     } // initialize()
 
     /**

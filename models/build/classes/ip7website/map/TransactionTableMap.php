@@ -44,7 +44,7 @@ class TransactionTableMap extends TableMap
         $this->addForeignKey('USER_ID', 'UserId', 'INTEGER', 'users', 'ID', false, null, null);
         $this->addColumn('VALIDATED', 'Validated', 'BOOLEAN', false, 1, '0');
         // validators
-        $this->addValidator('DESCRIPTION', 'minLength', 'propel.validator.MinLengthValidator', '1', 'Description must be at least 1 characters.');
+        $this->addValidator('DESCRIPTION', 'minLength', 'propel.validator.MinLengthValidator', '1', 'La description doit faire au moins 1 caractère.');
     } // initialize()
 
     /**

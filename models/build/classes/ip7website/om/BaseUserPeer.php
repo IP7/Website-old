@@ -1324,9 +1324,6 @@ abstract class BaseUserPeer
         if ($obj->isNew() || $obj->isColumnModified(UserPeer::EMAIL))
             $columns[UserPeer::EMAIL] = $obj->getEmail();
 
-        if ($obj->isNew() || $obj->isColumnModified(UserPeer::WEBSITE))
-            $columns[UserPeer::WEBSITE] = $obj->getWebsite();
-
         if ($obj->isNew() || $obj->isColumnModified(UserPeer::VISITS_NB))
             $columns[UserPeer::VISITS_NB] = $obj->getVisitsNb();
 

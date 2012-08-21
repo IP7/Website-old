@@ -1,10 +1,10 @@
 <?php
 
-function send_email_to($users, $from, $subject, $message) {
+function send_email_to($user, $from, $subject, $message) {
 
-    if (is_array($users)) {
-        foreach ($users as $k => $user) {
-            if (!send_email_to($user, $from, $subject, $message)) {
+    if (is_array($user)) {
+        foreach ($user as $k => $u) {
+            if (!send_email_to($u, $from, $subject, $message)) {
                 return false;
             }
         }
@@ -15,7 +15,7 @@ function send_email_to($users, $from, $subject, $message) {
     $subject = trim($subject);
     $message = trim($message);
 
-    $headers = 'From '.trim($from)."\r\n";
+    $headers = 'From: IP7 <'.trim($from).">\r\n";
 
     return mail($to, $subject, $message, $headers);
 }
@@ -31,7 +31,7 @@ function send_welcome_message($user, $password) {
 
     $message  = $bonjour.' et bienvenue sur le site de l\'association IP7,';
     $message .= "\r\n\r\nVotre inscription s'est bien déroulée, voici vos";
-    $message .= " identifiants :\r\n\tPseudonyme : ".$user->getUsername()."\r\n";
+    $message .= " identifiants :\r\n\r\n\tPseudonyme : ".$user->getUsername()."\r\n";
     $message .= "\tMot de passe : ".$password."\r\n\r\n";
     $message .= 'Ce mot de passe a été généré aléatoirement et est chiffré';
     $message .= ' dans notre base de données. Il est cependant recommandé de';
@@ -43,4 +43,3 @@ function send_welcome_message($user, $password) {
 }
 
 ?>
-

@@ -44,7 +44,7 @@ class ForumMessageTableMap extends TableMap
         $this->addColumn('LAST_MODIFICATION', 'LastModification', 'TIMESTAMP', true, null, null);
         $this->addColumn('TEXT', 'Text', 'LONGVARCHAR', true, null, null);
         // validators
-        $this->addValidator('TEXT', 'minLength', 'propel.validator.MinLengthValidator', '1', 'Texte must be at least 1 characters.');
+        $this->addValidator('TEXT', 'minLength', 'propel.validator.MinLengthValidator', '1', 'Le texte doit faire au moins 1 caractère.');
     } // initialize()
 
     /**

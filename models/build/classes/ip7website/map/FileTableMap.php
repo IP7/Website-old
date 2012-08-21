@@ -55,9 +55,9 @@ class FileTableMap extends TableMap
         $this->addColumn('PATH', 'Path', 'VARCHAR', true, 255, null);
         $this->addColumn('ACCESS_RIGHTS', 'AccessRights', 'TINYINT', false, null, 0);
         // validators
-        $this->addValidator('NAME', 'minLength', 'propel.validator.MinLengthValidator', '3', 'Name must be at least 3 characters.');
-        $this->addValidator('PATH', 'minLength', 'propel.validator.MinLengthValidator', '3', 'Path must be at least 3 characters.');
-        $this->addValidator('PATH', 'notMatch', 'propel.validator.NotMatchValidator', '/^[a-z]:\/\//i', 'Path must be local.');
+        $this->addValidator('NAME', 'minLength', 'propel.validator.MinLengthValidator', '3', 'Le nom doit faire au moins 3 caractères.');
+        $this->addValidator('PATH', 'minLength', 'propel.validator.MinLengthValidator', '3', 'Le chemin doit faire au moins 3 caractères.');
+        $this->addValidator('PATH', 'notMatch', 'propel.validator.NotMatchValidator', '/^[a-z]:\/\//i', 'Le fichier ne peut être distant.');
     } // initialize()
 
     /**
