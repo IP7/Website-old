@@ -63,8 +63,17 @@
         </dl>
 
         {% if page.user.description is defined and page.user.description %}{#
-            #}<section itemprop="description" itemscope>{{ page.user.description }}</section>{#
-      #}{% endif %}
+            #}<section class="description" itemprop="description" itemscope>{{ page.user.description }}</section>{#
+        #}{% endif %}
+
+        {% if page.user.options is defined and page.user.options is not empty %}
+        <ul class="options">
+            {% for o in page.user.options %}
+            <li><span class="option-title">{{ o.title }}</span>&nbsp;: <span class="option-value">{{ o.value }}</span></li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+
       {% endblock %}
     </section>
 
