@@ -1,3 +1,6 @@
+
+/* == General ============================================= */
+
 html {
     font-family: helvetica, sans-serif;
 }
@@ -12,15 +15,24 @@ html {
 
 .inline-block { display:inline-block; }
 
-/* Nav bars */
+/* == Main content ======================================== */
+
+#main_content { display:table; }
+#main_content > aside,
+#main_content > article {
+    display:table-cell;
+}
+
+/* == Nav bars ============================================ */
 
 .bar ul,
 .bar li,
+.bar nav,
 .bar {
     display: inline-block;
 }
 
-/* Breadcrumbs */
+/* == Breadcrumbs ========================================= */
 
 #breadcrumbs .next:before {
     content: '›';
@@ -30,7 +42,7 @@ html {
     display:inline-block;
 }
 
-/* Forms */
+/* == Forms =============================================== */
 
 label.hidden.explicit {
     display:inline-block;
@@ -38,6 +50,14 @@ label.hidden.explicit {
     overflow:hidden;
     margin:0;
 }
+
+input.valid {border-color: green;}
+input.invalid {border-color: red;}
+
+form label,
+#edit_form input[type=submit] { display:block; }
+
+/* == Headers ============================================= */
 
 #main_logo_link {
     padding:0;
@@ -48,16 +68,4 @@ label.hidden.explicit {
 
 #logo {
     margin:0;
-}
-
-form label,
-#edit_form input[type=submit] { display:block; }
-
-input.valid {border:1px solid green;}
-input.invalid {border:1px solid red;}
-
-#main_content { display:table; }
-#main_content > aside,
-#main_content > article {
-    display:table-cell;
 }
