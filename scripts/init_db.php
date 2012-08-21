@@ -106,4 +106,32 @@ if (!$q) {
     $admin->setRemarks('tralala');
     $admin->save();
 }
+
+// Content Proposed
+$q = ContentQuery::create()->findOneById(1);
+if (!$q){
+	$content = new Content();
+	$content->setAuthorId(1);
+	$content->setDate('2012-08-15 10:10:10');
+	$content->setValidated(false);
+	$content->setTitle('Test de proposition');
+	$content->setText('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent gravida cursus risus. Curabitur pellentesque diam nisi. Maecenas pharetra urna eu enim aliquet sit amet congue metus facilisis. Vestibulum et augue arcu. Aliquam bibendum diam sed tortor auctor vitae dapibus lacus rutrum. Vivamus diam ligula, congue vitae pharetra ac, lobortis quis lorem. In vel nisi eu metus auctor tincidunt. Vestibulum accumsan diam diam, ut euismod magna. Pellentesque eu erat vitae tellus vestibulum fermentum. Quisque vitae tempus nulla.
+
+Nunc eget tristique nisl. Suspendisse cursus, orci id consectetur euismod, neque leo dignissim urna, a faucibus erat neque at dolor. Phasellus eget placerat sapien. Morbi ornare lectus sit amet turpis tristique volutpat. Nulla facilisi. Etiam hendrerit, massa at vulputate tempor, ante lorem lacinia odio, a lobortis orci metus sit amet erat. Pellentesque ut mauris in dui tempor hendrerit eget a massa. Ut mattis lacus quis lorem mollis pretium.
+
+Vestibulum est odio, ornare eget adipiscing a, vehicula at mi. Donec pretium sagittis tortor, non rutrum velit elementum eu. Nullam pretium eleifend metus, ut adipiscing mi convallis nec. Aenean nec justo lacus. Cras venenatis nisl ac lacus aliquam ultricies. Nulla est urna, faucibus at placerat vitae, mattis in odio. In gravida, nunc at feugiat tempus, felis purus porta nisl, nec facilisis nisl magna vitae metus. Donec laoreet nulla et erat volutpat non mattis turpis molestie. Fusce nec arcu id nunc varius bibendum.');
+	$content->setCursusId(1);
+	$content->setCourseId(1);
+	$content->save();
+}
+
+$q = ReportQuery::create()->findOneById(1);
+if (!$q){
+	$report = new Report();
+	$report->setContentId(1);
+	$report->setAuthorId(1);
+	$report->setDate('2012-08-15 10:10:11');
+	$report->setText('Reporté car tout est écrit en latin. Et que le latin c\'le mal !');
+	$report->save();
+}
 ?>
