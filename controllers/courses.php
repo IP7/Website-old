@@ -35,7 +35,7 @@ function display_course() {
     return tpl_render('course.html', array(
         'page' => array(
             'title' => $course->getName().' ('.$course->getCode().')',
-            'breadcrumb' => $breadcrumbs,
+            'breadcrumbs' => $breadcrumbs,
 
             'news' => false,
 
