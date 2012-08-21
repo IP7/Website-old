@@ -10,4 +10,11 @@ function adapt_to_gender($user, $s, $female_suffix='e', $male_suffix='') {
     return $s . (($user->getGender() == 'F') ? $female_suffix : $male_suffix);
 }
 
+/* convert boolean into words, e.g.:
+    true -> oui
+    false -> non */
+function bool_to_fr($b) {
+    return $b ? 'oui' : 'non';
+}
+
 ?>
