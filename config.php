@@ -85,6 +85,7 @@ class Config {
 
                 # Styles
                 'styles'          => array(
+                    array( 'href' => $styles.'/normalize.min.css',    'media' => 'screen' ),
                     array( 'href' => $styles.'/global.css',           'media' => 'all' )
                 ),
 
