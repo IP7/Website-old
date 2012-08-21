@@ -37,10 +37,17 @@ function display_profile_page($username=NULL, $is_my_profile=false) {
 
     // if the accound is deactivated
     if (!$user->isActivated()) {
+
+        $title = 'Profil de '.$tpl_user['displayed_name'];
+
         return tpl_render('deactivated_profile.html', array(
             'page' => array(
                 'user' => $tpl_user,
-                'title' => 'Profil de '.$tpl_user['displayed_name']
+                'title' => $title,
+
+                'breadcrumbs' => array(
+                    1 => array( 'title' => $title, 'href' => url() )
+                )
             )
         ));
     }
