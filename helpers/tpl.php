@@ -31,27 +31,53 @@ function array_merge_recursive_new() {
 # i.e. connected or not
 function global_menu_links() {
 
-    if (!is_connected()) {
-        return array(
-            'site' => array(
-                'global_links' => array(
-                    'others' => array(
-                        array( 'href' => Config::$root_uri.'connexion', 'title' => 'Connexion' )
-                    )
-                )
+    $others_links = (!is_connected()
+        ? array(array( 'href' => Config::$root_uri.'connexion', 'title' => 'Connexion' ))
+        : array(
+                array( 'href' => Config::$root_uri.'forum',     'title' => 'Forum' ),
+                array( 'href' => Config::$root_uri.'profile',   'title' => 'Mon Profil'),
+                array( 'href' => '?disconnect=1',               'title' => 'Déconnexion')
+        )
+    );
+
+    return array(
+        'site' => array(
+            'global_links' => array(
+                'others' => $others_links
             )
+        )
+    );
+}
+
+# Returns an array for site.footer_links in function of user's state,
+# i.e. connected or not, and admin or not
+function global_footer_links() {
+
+    $footer_links = array(
+        array(
+            'href'  => Config::$root_uri.'sitemap',
+            'title' => 'Plan du site'
+        ),
+        array(
+            'href'  => Config::$root_uri.'legals',
+            'title' => 'Mentions légales'
+        ),
+        array(
+            'href'  => Config::$root_uri.'contact',
+            'title' => 'Contact'
+        )
+    );
+
+    if (is_connected() && user()->isAdmin()) {
+        $footer_links []= array(
+            'href'  => Config::$root_uri.'admin',
+            'title' => 'Administration'
         );
     }
 
     return array(
         'site' => array(
-            'global_links' => array(
-                'others' => array(
-                    array( 'href' => Config::$root_uri.'forum',       'title' => 'Forum' ),
-                    array( 'href' => Config::$root_uri.'profile',     'title' => 'Mon Profil'),
-                    array( 'href' => '?disconnect=1',                 'title' => 'Déconnexion')
-                )
-            )
+            'footer_links' => $footer_links
         )
     );
 }
@@ -61,6 +87,7 @@ function global_menu_links() {
 function tpl_array() {
     $arrays = func_get_args();
     array_unshift(&$arrays, global_menu_links());
+    array_unshift(&$arrays, global_footer_links());
     array_unshift(&$arrays, Config::$default_tpl_values);
     return call_user_func_array('array_merge_recursive_new', $arrays);
 }

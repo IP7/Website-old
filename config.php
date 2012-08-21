@@ -140,24 +140,7 @@ class Config {
                     'others' => array()
                 ),
 
-                'footer_links' => array(
-                    array(
-                        'href'  => self::$root_uri.'sitemap',
-                        'title' => 'Plan du site'
-                    ),
-                    array(
-                        'href'  => self::$root_uri.'legals',
-                        'title' => 'Mentions légales'
-                    ),
-                    array(
-                        'href'  => self::$root_uri.'contact',
-                        'title' => 'Contact'
-                    ),
-                    array(
-                        'href'  => self::$root_uri.'admin',
-                        'title' => 'Administration'
-                    )
-                ),
+                'footer_links' => array(),
 
                 'search' => array(
                     'action' => self::$root_uri.'recherche',
