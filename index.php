@@ -90,7 +90,7 @@ dispatch('/admin/membres/add', 'display_admin_add_member');
 dispatch_post('/admin/membres/add', 'post_admin_add_member');
 dispatch('/admin/membres/check.json', 'json_admin_check_username');
 ## maintenance
-dispatch('/admin/maintenance', 'display_admin_maintenance');
+dispatch('/admin/migrate', 'display_admin_migrate_db_page');
 
 ## (almost-)static pages
 #
