@@ -101,52 +101,6 @@ function display_admin_content_report(){
 
 }
 
-function display_admin_content_report_view(){
-	
-	$reportId = (int)params('id');
-	$report = ReportQuery::create()->findOneById($reportId);
-
-	$content		= $report->getContent();
-	$userReport = $report->getAuthor();
-
-	$userContent	= $content->getAuthor();
-	$cursusContent	= $content->getCursus();
-	$courseContent	= $content->getCourse();
-
-	$uri = Config::$root_uri . 'admin/reports/' . $reportId;
-
-	$contentArray = Array(
-				'title' => $content->getTitle(),
-				'cursus' => $cursusContent->getName(),
-				'contentText' => $content->getText(),
-				'courseName' => $courseContent->getName(),
-				'courseCode' => $courseContent->getCode(),
-				'date' => $content->getDate(),
-				'usernameContent' => $userContent->getUsername(),
-				'usernameReport' => $userReport->getUsername(),
-				'reportText' => $report->getText(),
-				'reportDate' => $report->getDate()
-			);
-
-	$option = Array(
-			Array(	'href' => $uri . '/deleteContent',
-						'title' => 'Valider le report'),
-			Array(	'href' => $uri . '/deleteReport',
-						'title' => 'Supprimer le report')
-		);
-		
-
-
-	return Config::$tpl->render('admin_content_view.html', tpl_array(admin_tpl_default(),Array(
-					'page' => Array(
-						'title' => 'Contenu reporté',
-						'content' => $contentArray,
-						'options' => $option
-					)
-			)));
-
-}
-
 function display_admin_content_proposed(){
 
 	$query = ContentQuery::create()
@@ -201,23 +155,27 @@ function display_admin_content_view(){
 
 	$uri = Config::$root_uri . 'admin/content/proposed/' . $contentId;
 
-	$contentArray = Array(
-				'title' => $content->getTitle(),
-				'cursus' => $cursus->getName(),
-				'contentText' => $content->getText(),
-				'courseName' => $course->getName(),
-				'courseCode' => $course->getCode(),
-				'date' => $content->getDate(),
-				'username' => $user->getUsername()
-			);
+	if ( $content->getValidated() )
+		halt(NOT_FOUND;
 
-	$option = Array(
-			Array(	'href' => $uri . '/validate',
-						'title' => 'Valider'),
-			Array(	'href' => $uri . '/delete',
-						'title' => 'Supprimer')
-		);
-		
+	else{
+		$contentArray = Array(
+					'title' => $content->getTitle(),
+					'cursus' => $cursus->getName(),
+					'contentText' => $content->getText(),
+					'courseName' => $course->getName(),
+					'courseCode' => $course->getCode(),
+					'date' => $content->getDate(),
+					'username' => $user->getUsername()
+				);
+
+		$option = Array(
+				Array(	'href' => $uri . '/validate',
+							'title' => 'Valider'),
+				Array(	'href' => $uri . '/delete',
+							'title' => 'Supprimer')
+			);
+	}
 
 	return Config::$tpl->render('admin_content_view.html', tpl_array(admin_tpl_default(),array(
 					'page' => Array(
@@ -226,6 +184,34 @@ function display_admin_content_view(){
 						'options' => $option
 					)
 		)));
+
+}
+
+function post_admin_content_action(){
+
+	$id = (int)params('id');
+	$action = (string)params('action');
+
+	$content = ContentQuery::create()
+							->findOneById($id);
+
+	if ( ($content instanceOf Content) && !$content->getValidated() ){
+
+		if ( $action == 'validate' ){
+			$content->setValidated(true);
+			$content->save();
+		}	
+
+		else if ( $action == 'delete' )
+			$content->delete();
+
+		else
+			halt(NOT_FOUND);
+
+	}
+
+	else
+		halt(NOT_FOUND);
 
 }
 

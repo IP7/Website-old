@@ -79,18 +79,18 @@ dispatch('/cursus/:cursus/:course', 'display_course');
 ## admin home
 dispatch('/admin', 'display_admin_home');
 ## moderation
+dispatch('/admin/moderation', 'display_admin_moderation');
 dispatch('/admin/reports', 'display_admin_content_report');
-dispatch('/admin/reports/:id', 'display_admin_content_report_view');
 dispatch('/admin/content/proposed', 'display_admin_content_proposed');
 dispatch('/admin/content/proposed/:id', 'display_admin_content_view');
+dispatch('/admin/content/proposed/:id/:action', 'post_admin_content_action');
 ## finances
 dispatch('/admin/membres', 'display_admin_members');
 dispatch('/admin/membres/add', 'display_admin_add_member');
 dispatch_post('/admin/membres/add', 'post_admin_add_member');
 dispatch('/admin/membres/check.json', 'json_admin_check_username');
-
 ## maintenance
-dispatch('/admin/migrate', 'display_admin_migrate_db_page');
+dispatch('/admin/maintenance', 'display_admin_maintenance');
 
 ## (almost-)static pages
 #
