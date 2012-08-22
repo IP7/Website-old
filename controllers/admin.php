@@ -156,7 +156,7 @@ function display_admin_content_view(){
 	$uri = Config::$root_uri . 'admin/content/proposed/' . $contentId;
 
 	if ( $content->getValidated() )
-		halt(NOT_FOUND;
+		halt(NOT_FOUND);
 
 	else{
 		$contentArray = Array(
