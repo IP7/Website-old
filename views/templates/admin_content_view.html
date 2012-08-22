@@ -4,12 +4,6 @@
 {% block admin_content %}
 {{ parent() }}
 
-	{% if page.content.reportText is defined and page.content.reportText %}
-		<p><em>Reporté par {{ page.content.usernameReport }} le {{ page.content.reportDate }}<br />
-		Raison :<br />
-		{{ page.content.reportText }}</em></p>
-	{% endif %}
-
 	<p><h3> {{ page.content.title }} </h3></p>
 	<p> {{ page.content.cursus }} -- {{ page.content.courseName }} ( {{ page.content.courseCode }} ) </p>
 	<p><em> Posté par : {#{ page.content.username }#} le {{ page.content.date }} </em></p>
