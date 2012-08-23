@@ -5,23 +5,28 @@
    $rights rights. $rights must be an array:
 
    array(
-        [ Token::canConnect, ]
-        [ Token::canChangeUsername, ]
-        [ Token::canChangeName, ]
-        [ Token::canChangeEmail, ]
-        [ Token::canChangeTel, ]
-        [ Token::canChangeWholeProfile ]
+        [
+            [ Token::canConnect, ]
+            [ Token::canChangeUsername, ]
+            [ Token::canChangeName, ]
+            [ Token::canChangeEmail, ]
+            [ Token::canChangeTel ]
+        | Token::canChangeWholeProfile ]
    )
 */
 function generate_token($user, $rights_array, $expiration_date=null, $post_method=false) {
 
     $rights = 0;
 
-    foreach ($rights_array as $k => $v) {
-        $rights |= $v;
+    if (is_array($rights_array)) {
+        foreach ($rights_array as $k => $v) {
+            $rights |= $v;
+        }
+    } else {
+        $rights = $rights_array;
     }
 
-    if (($rights == 0) || ($user == 0)) {
+    if (($rights == 0) || ($user == NULL)) {
         return NULL;
     }
 
