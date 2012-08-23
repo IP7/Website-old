@@ -288,11 +288,65 @@ function display_init_my_profile_page() {
     }
 
     $token = $_SESSION['token'];
+    $user = $token['user'];
+    $rights = $token['rights'];
 
-    $post_token = generate_token($token['user'], $token['rights'], time() + 3600*24, 'POST');
+    $post_token = generate_token($user, $rights, time() + 3600*24, 'POST');
 
-    // TODO
-    return "TEST init profile";
+    $fields = array();
+
+    if ($rights & Token::canChangeUsername) {
+        $fields []= array(
+            'label' => 'Pseudo',
+            'name'  => 'username',
+            'type'  => 'text'
+        );
+    }
+
+    if ($rights & Token::canChangeName) {
+        $fields []= array(
+            'label' => 'Nom',
+            'name'  => 'lastname',
+            'type'  => 'text'
+        );
+        $fields []= array(
+            'label' => 'Prénom',
+            'name'  => 'firstname',
+            'type'  => 'text'
+        );
+    }
+
+    if ($rights & Token::canChangeEmail) {
+        $fields []= array(
+            'label' => 'Email',
+            'name'  => 'email',
+            'type'  => 'email'
+        );
+    }
+
+    if ($rights & Token::canChangePhone) {
+        $fields []= array(
+            'label' => 'Téléphone',
+            'name'  => 'phone',
+            'type'  => 'phone'
+        );
+    }
+
+    unset($_SESSION['token']);
+
+    return tpl_render('profile/init.html', array(
+        'page' => array(
+            'title' => 'Initialisation du profil',
+            'user' => tpl_user($user),
+            'form' => array(
+                'action' => Config::$root_uri.'profile/init',
+
+                'post_token' => $post_token,
+
+                'fields' => $fields
+            )
+        )
+    ));
 }
 
 ?>
