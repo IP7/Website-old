@@ -1,0 +1,11 @@
+{% extends 'main.html' %}
+{% import 'macros.html' as _m %}
+{% block content %}
+<h1>{{ page.title }}</h1>
+<form action="{{ page.form.action }}" method="POST">
+{% for field in page.form.fields %}
+<label>{{ field.label }}&nbsp;:<input type="{{ field.type|default('text') }}" name="{{ field.name }}" />{#
+    #}{% if field.microcopy is defined and field.microcopy %}<p class="microcopy">{{ field.microcopy }}</p>{% endif %}</label>
+{% endfor %}
+</form>
+{% endblock %}

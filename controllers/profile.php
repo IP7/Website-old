@@ -282,4 +282,17 @@ function post_edit_my_profile_page() {
     return post_edit_profile_page(user()->getUsername());
 }
 
+function display_init_my_profile_page() {
+    if (!isset($_SESSION) || !isset($_SESSION['token'])) {
+        halt(HTTP_FORBIDDEN);
+    }
+
+    $token = $_SESSION['token'];
+
+    $post_token = generate_token($token['user'], $token['rights'], time() + 3600*24, 'POST');
+
+    // TODO
+    return "TEST init profile";
+}
+
 ?>
