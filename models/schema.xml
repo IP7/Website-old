@@ -1040,6 +1040,10 @@
         <foreign-key foreignTable="users" onDelete="CASCADE" onUpdate="CASCADE" phpName="User">
             <reference local="user_id" foreign="id" />
         </foreign-key>
+
+        <unique>
+            <unique-column name="value" />
+        </unique>
     </table>
 
 </database>

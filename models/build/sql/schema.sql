@@ -808,6 +808,7 @@ CREATE TABLE `tokens`
     `rights` TINYINT DEFAULT 0,
     `value` VARCHAR(255) NOT NULL,
     PRIMARY KEY (`id`),
+    UNIQUE INDEX `tokens_U_1` (`value`),
     INDEX `tokens_FI_1` (`user_id`),
     CONSTRAINT `tokens_FK_1`
         FOREIGN KEY (`user_id`)

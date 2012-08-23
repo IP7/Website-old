@@ -15,4 +15,13 @@
  */
 class Token extends BaseToken
 {
+
+    const canConnect           = 1;
+    const canChangeUsername    = 2;
+    const canChangeName        = 4;
+    const canChangeEmail       = 8;
+    const canChangeTel         = 16;
+    const canChangeWholeProfil = 32;
+
+    const size = 64;
 }
