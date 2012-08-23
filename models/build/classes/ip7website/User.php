@@ -39,6 +39,16 @@ class User extends BaseUser {
     return $this->getIsAnAlumni();
   }
 
+  /* == Genders ============================================== */
+
+  public function isMale() {
+      return $this->getGender() == 'M';
+  }
+
+  public function isFemale() {
+      return $this->getGender() == 'F';
+  }
+
   /* == Ranks ================================================ */
 
   /**
