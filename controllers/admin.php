@@ -357,9 +357,10 @@ function post_admin_add_member() {
         $fee->setAmount(5.0);
         $fee->setUser($user);
         $fee->setValidated(true);
+        $user->setDeactivated(0);
     }
     else {
-        $user->setDeactivated(1);
+        $user->setDeactivated(1); // default, but to be sure
     }
 
     if ($user->validate()) {

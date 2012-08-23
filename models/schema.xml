@@ -7,9 +7,9 @@
         <!-- == identification == -->
         <column name="id"                    type="INTEGER"  required="true" primaryKey="true" autoIncrement="true"/>
         <!-- login -->
-        <column name="username"              type="VARCHAR"  size="16" required="true" />
+        <column name="username"              type="VARCHAR"  size="16" />
         <!-- mot de passe (hash bcrypt) -->
-        <column name="password_hash"         type="VARCHAR"  required="true" />
+        <column name="password_hash"         type="VARCHAR" />
 
         <!-- type d'utilisateur, utilisé pour les droits. Plus le nombre est haut, plus
              l'utilisateur a de droits. Exemples possibles:
@@ -22,12 +22,12 @@
         <column name="type"                  type="TINYINT"  required="true" defaultExpr="0" />
 
         <!-- prénom -->
-        <column name="firstname"             type="VARCHAR"  required="true" />
+        <column name="firstname"             type="VARCHAR"  size="64" required="true" />
         <!-- nom -->
-        <column name="lastname"              type="VARCHAR"  required="true" />
+        <column name="lastname"              type="VARCHAR"  size="128" required="true" />
 
         <!-- genre -->
-        <column name="gender"                type="ENUM" valueSet="M,F" required="true" />
+        <column name="gender"                type="ENUM" valueSet="N,M,F" defaultExpr="N" />
 
         <!-- == coordonnées == -->
 
@@ -78,7 +78,7 @@
         <column name="config_private_profile" type="BOOLEAN" defaultExpr="0" />
 
         <!-- désactiver le compte -->
-        <column name="deactivated"           type="BOOLEAN" defaultExpr="0" />
+        <column name="deactivated"           type="BOOLEAN" defaultExpr="1" />
 
         <!-- == autres informations == -->
 
@@ -109,7 +109,7 @@
 
         <validator column="username">
             <rule name="minLength" value="3" message="Le pseudo doit faire au moins ${value} caractères." />
-            <rule name="match"     value="/^[a-z][_a-z0-9]+$/i"
+            <rule name="match"     value="/^[_a-z][_a-z0-9]+$/i"
                                              message="Le pseudo n'est pas valide (Doit commencer par une lettre, et être uniquement composé de caractères alphanumériques)." />
             <rule name="unique"              message="Le pseudo est déjà pris." />
         </validator>

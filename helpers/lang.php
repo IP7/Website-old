@@ -1,13 +1,21 @@
 <?php
 
 /* adapt a string to the gender of the user
- * if $gender is 'F', $female_suffix is appended, $male_suffix if not
+ * if $gender is 'F', $female_suffix is appended, $male_suffix if it's 'M', and
+ * nothing if $gender is 'N' (= none)
  *
  * e.g.: adapt_to_gender($u, 'etudiant') -> 'etudiante' // female
- *       adapt_to_gender($u, 'etudiant') -> 'etudiant'  // male
+ *       adapt_to_gender($u, 'etudiant') -> 'etudiant'  // male (or none)
  */
 function adapt_to_gender($user, $s, $female_suffix='e', $male_suffix='') {
-    return $s . (($user->getGender() == 'F') ? $female_suffix : $male_suffix);
+    if ($user->isFemale()) {
+        return $s.$female_suffix;
+    }
+    if ($user->isMale()) {
+        return $s.$male_suffix;
+    }
+    
+    return $s;
 }
 
 /* convert boolean into words, e.g.:

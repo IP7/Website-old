@@ -71,10 +71,10 @@ function set_connected($user, $remember=false) {
     $_SESSION['user'] = $user;
     if ($remember) {
         setcookie(AUTH_COOKIE,
-                  $user->getUsername().':'.$user->getPasswordHash(),
+                  '1:'.$user->getId().':'.$user->getPasswordHash(),
                   AUTH_COOKIE_EXPIRE,
                   '/');
-                  # production: use the line below.
+                  # production: add the line below.
                   # 'wwww.infop7.org');
     }
 
@@ -122,13 +122,13 @@ function try_autoconnect() {
 
     $credentials = explode(':', $_COOKIE[AUTH_COOKIE]);
 
-    if (count($credentials) < 2) { return false; }
+    if (count($credentials) < 3) { return false; }
 
-    $username = $credentials[0];
-    $hash     = $credentials[1];
+    $id   = $credentials[1];
+    $hash = $credentials[2];
 
     $user = UserQuery::create()
-                ->filterByUsername($username)
+                ->filterById($id)
                 ->filterByPasswordHash($hash)
                 ->findOne();
 
@@ -139,8 +139,8 @@ function try_autoconnect() {
     return false;
 }
 
-// generate a random password
-function get_random_password($length=10) {
+// generate a random string
+function get_random_string($length=10) {
     // without 'l' and 'I', and 'o', 'O', '0' to avoid confusion
     $c = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz123456789";
     $c_len = strlen($c)-1;
@@ -150,6 +150,21 @@ function get_random_password($length=10) {
         $s .= $c[rand(0, $c_len)];
     }
     return str_shuffle($s);
+}
+
+// generate a random password
+function get_random_password($length=10) {
+    return get_random_string($length);
+}
+
+// generate a temporary username
+function get_temp_username() {
+   return '_tmp_'.get_random_string(9);
+}
+
+// test if an username is temporary
+function is_temp_username($u) {
+    return ((strlen($u) == 14) && (substr($u, 0, 4) == '_tmp_'));
 }
 
 ?>
