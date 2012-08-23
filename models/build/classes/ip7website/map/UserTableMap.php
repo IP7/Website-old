@@ -106,6 +106,7 @@ class UserTableMap extends TableMap
         $this->addRelation('Transaction', 'Transaction', RelationMap::ONE_TO_MANY, array('id' => 'user_id', ), 'SET NULL', 'CASCADE', 'Transactions');
         $this->addRelation('ForumMessage', 'ForumMessage', RelationMap::ONE_TO_MANY, array('id' => 'author_id', ), 'CASCADE', 'CASCADE', 'ForumMessages');
         $this->addRelation('ScheduledCourse', 'ScheduledCourse', RelationMap::ONE_TO_MANY, array('id' => 'teacher_id', ), 'SET NULL', 'CASCADE', 'ScheduledCourses');
+        $this->addRelation('Token', 'Token', RelationMap::ONE_TO_MANY, array('id' => 'user_id', ), 'CASCADE', 'CASCADE', 'Tokens');
         $this->addRelation('Cursus', 'Cursus', RelationMap::MANY_TO_MANY, array(), 'CASCADE', 'CASCADE', 'Cursuss');
         $this->addRelation('Newsletter', 'Newsletter', RelationMap::MANY_TO_MANY, array(), 'CASCADE', 'CASCADE', 'Newsletters');
     } // buildRelations()

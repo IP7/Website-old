@@ -51,6 +51,7 @@ new ScheduledCourseQuery();
 new ScheduledCourse();
 new TagQuery();
 new Tag();
+new Token();
 new TransactionQuery();
 new Transaction();
 new UserQuery();

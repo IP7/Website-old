@@ -580,6 +580,9 @@ abstract class BaseUserPeer
         // Invalidate objects in ScheduledCoursePeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         ScheduledCoursePeer::clearInstancePool();
+        // Invalidate objects in TokenPeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        TokenPeer::clearInstancePool();
     }
 
     /**
@@ -1198,6 +1201,12 @@ abstract class BaseUserPeer
 
             $criteria->add(ForumMessagePeer::AUTHOR_ID, $obj->getId());
             $affectedRows += ForumMessagePeer::doDelete($criteria, $con);
+
+            // delete related Token objects
+            $criteria = new Criteria(TokenPeer::DATABASE_NAME);
+
+            $criteria->add(TokenPeer::USER_ID, $obj->getId());
+            $affectedRows += TokenPeer::doDelete($criteria, $con);
         }
 
         return $affectedRows;

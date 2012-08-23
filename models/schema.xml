@@ -1018,4 +1018,28 @@
         </foreign-key>
     </table>
 
+    <!-- === jetons uniques pour authentifications === -->
+    <table name="tokens" phpName="Token">
+        <!-- id -->
+        <column name="id" type="INTEGER" required="true" primaryKey="true" autoIncrement="true"/>
+
+        <!-- id de l'utilisateur concerné -->
+        <column name="user_id" type="INTEGER" required="true" />
+
+        <!-- date d'expiration éventuelle -->
+        <column name="expiration_date" type="TIMESTAMP" />
+
+        <!-- droits accordés à l'utilisateur avec ce jeton -->
+        <column name="rights" type="TINYINT" defaultExpr="0" />
+
+        <!-- valeur -->
+        <column name="value" type="VARCHAR" required="true" />
+
+        <!-- == index & clefs étrangères == -->
+
+        <foreign-key foreignTable="users" onDelete="CASCADE" onUpdate="CASCADE" phpName="User">
+            <reference local="user_id" foreign="id" />
+        </foreign-key>
+    </table>
+
 </database>

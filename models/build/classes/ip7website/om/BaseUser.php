@@ -340,6 +340,12 @@ abstract class BaseUser extends BaseObject implements Persistent
     protected $collScheduledCoursesPartial;
 
     /**
+     * @var        PropelObjectCollection|Token[] Collection to store aggregation of Token objects.
+     */
+    protected $collTokens;
+    protected $collTokensPartial;
+
+    /**
      * @var        PropelObjectCollection|Cursus[] Collection to store aggregation of Cursus objects.
      */
     protected $collCursuss;
@@ -458,6 +464,12 @@ abstract class BaseUser extends BaseObject implements Persistent
      * @var		PropelObjectCollection
      */
     protected $scheduledCoursesScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $tokensScheduledForDeletion = null;
 
     /**
      * Applies default values to this object.
@@ -1979,6 +1991,8 @@ abstract class BaseUser extends BaseObject implements Persistent
 
             $this->collScheduledCourses = null;
 
+            $this->collTokens = null;
+
             $this->collCursuss = null;
             $this->collNewsletters = null;
         } // if (deep)
@@ -2396,6 +2410,23 @@ abstract class BaseUser extends BaseObject implements Persistent
 
             if ($this->collScheduledCourses !== null) {
                 foreach ($this->collScheduledCourses as $referrerFK) {
+                    if (!$referrerFK->isDeleted()) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
+            if ($this->tokensScheduledForDeletion !== null) {
+                if (!$this->tokensScheduledForDeletion->isEmpty()) {
+                    TokenQuery::create()
+                        ->filterByPrimaryKeys($this->tokensScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->tokensScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collTokens !== null) {
+                foreach ($this->collTokens as $referrerFK) {
                     if (!$referrerFK->isDeleted()) {
                         $affectedRows += $referrerFK->save($con);
                     }
@@ -2854,6 +2885,14 @@ abstract class BaseUser extends BaseObject implements Persistent
                     }
                 }
 
+                if ($this->collTokens !== null) {
+                    foreach ($this->collTokens as $referrerFK) {
+                        if (!$referrerFK->validate($columns)) {
+                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+                        }
+                    }
+                }
+
 
             $this->alreadyInValidation = false;
         }
@@ -3092,6 +3131,9 @@ abstract class BaseUser extends BaseObject implements Persistent
             }
             if (null !== $this->collScheduledCourses) {
                 $result['ScheduledCourses'] = $this->collScheduledCourses->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
+            if (null !== $this->collTokens) {
+                $result['Tokens'] = $this->collTokens->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
         }
 
@@ -3512,6 +3554,12 @@ abstract class BaseUser extends BaseObject implements Persistent
                 }
             }
 
+            foreach ($this->getTokens() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addToken($relObj->copy($deepCopy));
+                }
+            }
+
             //unflag object copy
             $this->startCopy = false;
         } // if ($deepCopy)
@@ -3665,6 +3713,9 @@ abstract class BaseUser extends BaseObject implements Persistent
         }
         if ('ScheduledCourse' == $relationName) {
             $this->initScheduledCourses();
+        }
+        if ('Token' == $relationName) {
+            $this->initTokens();
         }
     }
 
@@ -7017,6 +7068,213 @@ abstract class BaseUser extends BaseObject implements Persistent
     }
 
     /**
+     * Clears out the collTokens collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return void
+     * @see        addTokens()
+     */
+    public function clearTokens()
+    {
+        $this->collTokens = null; // important to set this to null since that means it is uninitialized
+        $this->collTokensPartial = null;
+    }
+
+    /**
+     * reset is the collTokens collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialTokens($v = true)
+    {
+        $this->collTokensPartial = $v;
+    }
+
+    /**
+     * Initializes the collTokens collection.
+     *
+     * By default this just sets the collTokens collection to an empty array (like clearcollTokens());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initTokens($overrideExisting = true)
+    {
+        if (null !== $this->collTokens && !$overrideExisting) {
+            return;
+        }
+        $this->collTokens = new PropelObjectCollection();
+        $this->collTokens->setModel('Token');
+    }
+
+    /**
+     * Gets an array of Token objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this User is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @return PropelObjectCollection|Token[] List of Token objects
+     * @throws PropelException
+     */
+    public function getTokens($criteria = null, PropelPDO $con = null)
+    {
+        $partial = $this->collTokensPartial && !$this->isNew();
+        if (null === $this->collTokens || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collTokens) {
+                // return empty collection
+                $this->initTokens();
+            } else {
+                $collTokens = TokenQuery::create(null, $criteria)
+                    ->filterByUser($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collTokensPartial && count($collTokens)) {
+                      $this->initTokens(false);
+
+                      foreach($collTokens as $obj) {
+                        if (false == $this->collTokens->contains($obj)) {
+                          $this->collTokens->append($obj);
+                        }
+                      }
+
+                      $this->collTokensPartial = true;
+                    }
+
+                    return $collTokens;
+                }
+
+                if($partial && $this->collTokens) {
+                    foreach($this->collTokens as $obj) {
+                        if($obj->isNew()) {
+                            $collTokens[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collTokens = $collTokens;
+                $this->collTokensPartial = false;
+            }
+        }
+
+        return $this->collTokens;
+    }
+
+    /**
+     * Sets a collection of Token objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $tokens A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     */
+    public function setTokens(PropelCollection $tokens, PropelPDO $con = null)
+    {
+        $this->tokensScheduledForDeletion = $this->getTokens(new Criteria(), $con)->diff($tokens);
+
+        foreach ($this->tokensScheduledForDeletion as $tokenRemoved) {
+            $tokenRemoved->setUser(null);
+        }
+
+        $this->collTokens = null;
+        foreach ($tokens as $token) {
+            $this->addToken($token);
+        }
+
+        $this->collTokens = $tokens;
+        $this->collTokensPartial = false;
+    }
+
+    /**
+     * Returns the number of related Token objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related Token objects.
+     * @throws PropelException
+     */
+    public function countTokens(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collTokensPartial && !$this->isNew();
+        if (null === $this->collTokens || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collTokens) {
+                return 0;
+            } else {
+                if($partial && !$criteria) {
+                    return count($this->getTokens());
+                }
+                $query = TokenQuery::create(null, $criteria);
+                if ($distinct) {
+                    $query->distinct();
+                }
+
+                return $query
+                    ->filterByUser($this)
+                    ->count($con);
+            }
+        } else {
+            return count($this->collTokens);
+        }
+    }
+
+    /**
+     * Method called to associate a Token object to this object
+     * through the Token foreign key attribute.
+     *
+     * @param    Token $l Token
+     * @return User The current object (for fluent API support)
+     */
+    public function addToken(Token $l)
+    {
+        if ($this->collTokens === null) {
+            $this->initTokens();
+            $this->collTokensPartial = true;
+        }
+        if (!$this->collTokens->contains($l)) { // only add it if the **same** object is not already associated
+            $this->doAddToken($l);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	Token $token The token object to add.
+     */
+    protected function doAddToken($token)
+    {
+        $this->collTokens[]= $token;
+        $token->setUser($this);
+    }
+
+    /**
+     * @param	Token $token The token object to remove.
+     */
+    public function removeToken($token)
+    {
+        if ($this->getTokens()->contains($token)) {
+            $this->collTokens->remove($this->collTokens->search($token));
+            if (null === $this->tokensScheduledForDeletion) {
+                $this->tokensScheduledForDeletion = clone $this->collTokens;
+                $this->tokensScheduledForDeletion->clear();
+            }
+            $this->tokensScheduledForDeletion[]= $token;
+            $token->setUser(null);
+        }
+    }
+
+    /**
      * Clears out the collCursuss collection
      *
      * This does not modify the database; however, it will remove any associated objects, causing
@@ -7482,6 +7740,11 @@ abstract class BaseUser extends BaseObject implements Persistent
                     $o->clearAllReferences($deep);
                 }
             }
+            if ($this->collTokens) {
+                foreach ($this->collTokens as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
             if ($this->collCursuss) {
                 foreach ($this->collCursuss as $o) {
                     $o->clearAllReferences($deep);
@@ -7550,6 +7813,10 @@ abstract class BaseUser extends BaseObject implements Persistent
             $this->collScheduledCourses->clearIterator();
         }
         $this->collScheduledCourses = null;
+        if ($this->collTokens instanceof PropelCollection) {
+            $this->collTokens->clearIterator();
+        }
+        $this->collTokens = null;
         if ($this->collCursuss instanceof PropelCollection) {
             $this->collCursuss->clearIterator();
         }

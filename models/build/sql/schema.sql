@@ -794,5 +794,27 @@ CREATE TABLE `schedules_courses`
         ON DELETE CASCADE
 ) ENGINE=MyISAM;
 
+-- ---------------------------------------------------------------------
+-- tokens
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `tokens`;
+
+CREATE TABLE `tokens`
+(
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `user_id` INTEGER NOT NULL,
+    `expiration_date` DATETIME,
+    `rights` TINYINT DEFAULT 0,
+    `value` VARCHAR(255) NOT NULL,
+    PRIMARY KEY (`id`),
+    INDEX `tokens_FI_1` (`user_id`),
+    CONSTRAINT `tokens_FK_1`
+        FOREIGN KEY (`user_id`)
+        REFERENCES `users` (`id`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+) ENGINE=MyISAM;
+
 # This restores the fkey checks, after having unset them earlier
 SET FOREIGN_KEY_CHECKS = 1;

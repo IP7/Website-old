@@ -136,6 +136,10 @@
  * @method UserQuery rightJoinScheduledCourse($relationAlias = null) Adds a RIGHT JOIN clause to the query using the ScheduledCourse relation
  * @method UserQuery innerJoinScheduledCourse($relationAlias = null) Adds a INNER JOIN clause to the query using the ScheduledCourse relation
  *
+ * @method UserQuery leftJoinToken($relationAlias = null) Adds a LEFT JOIN clause to the query using the Token relation
+ * @method UserQuery rightJoinToken($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Token relation
+ * @method UserQuery innerJoinToken($relationAlias = null) Adds a INNER JOIN clause to the query using the Token relation
+ *
  * @method User findOne(PropelPDO $con = null) Return the first User matching the query
  * @method User findOneOrCreate(PropelPDO $con = null) Return the first User matching the query, or a new User object populated from the query conditions when no match is found
  *
@@ -2507,6 +2511,80 @@ abstract class BaseUserQuery extends ModelCriteria
         return $this
             ->joinScheduledCourse($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'ScheduledCourse', 'ScheduledCourseQuery');
+    }
+
+    /**
+     * Filter the query by a related Token object
+     *
+     * @param   Token|PropelObjectCollection $token  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return   UserQuery The current query, for fluid interface
+     * @throws   PropelException - if the provided filter is invalid.
+     */
+    public function filterByToken($token, $comparison = null)
+    {
+        if ($token instanceof Token) {
+            return $this
+                ->addUsingAlias(UserPeer::ID, $token->getUserId(), $comparison);
+        } elseif ($token instanceof PropelObjectCollection) {
+            return $this
+                ->useTokenQuery()
+                ->filterByPrimaryKeys($token->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByToken() only accepts arguments of type Token or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the Token relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return UserQuery The current query, for fluid interface
+     */
+    public function joinToken($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('Token');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'Token');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the Token relation Token object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   TokenQuery A secondary query class using the current class as primary query
+     */
+    public function useTokenQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinToken($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Token', 'TokenQuery');
     }
 
     /**
