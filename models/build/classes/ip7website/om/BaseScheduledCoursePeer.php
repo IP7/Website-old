@@ -57,7 +57,12 @@ abstract class BaseScheduledCoursePeer
     const PLACE = 'scheduled_courses.PLACE';
 
     /** The enumerated values for the WEEKDAY field */
-    const WEEKDAY_MONDAY_TUESDAY_WEDNESDAY_THURSDAY_FRIDAY_SATURDAY = 'monday|tuesday|wednesday|thursday|friday|saturday';
+    const WEEKDAY_MONDAY = 'monday';
+    const WEEKDAY_TUESDAY = 'tuesday';
+    const WEEKDAY_WEDNESDAY = 'wednesday';
+    const WEEKDAY_THURSDAY = 'thursday';
+    const WEEKDAY_FRIDAY = 'friday';
+    const WEEKDAY_SATURDAY = 'saturday';
 
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -104,7 +109,12 @@ abstract class BaseScheduledCoursePeer
     /** The enumerated values for this table */
     protected static $enumValueSets = array(
         ScheduledCoursePeer::WEEKDAY => array(
-            ScheduledCoursePeer::WEEKDAY_MONDAY_TUESDAY_WEDNESDAY_THURSDAY_FRIDAY_SATURDAY,
+            ScheduledCoursePeer::WEEKDAY_MONDAY,
+            ScheduledCoursePeer::WEEKDAY_TUESDAY,
+            ScheduledCoursePeer::WEEKDAY_WEDNESDAY,
+            ScheduledCoursePeer::WEEKDAY_THURSDAY,
+            ScheduledCoursePeer::WEEKDAY_FRIDAY,
+            ScheduledCoursePeer::WEEKDAY_SATURDAY,
         ),
     );
 

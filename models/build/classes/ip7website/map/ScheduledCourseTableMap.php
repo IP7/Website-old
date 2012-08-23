@@ -44,7 +44,12 @@ class ScheduledCourseTableMap extends TableMap
         $this->addColumn('TEACHER_NAME', 'TeacherName', 'VARCHAR', false, 32, null);
         $this->addColumn('WEEKDAY', 'Weekday', 'ENUM', false, null, null);
         $this->getColumn('WEEKDAY', false)->setValueSet(array (
-  0 => 'monday|tuesday|wednesday|thursday|friday|saturday',
+  0 => 'monday',
+  1 => 'tuesday',
+  2 => 'wednesday',
+  3 => 'thursday',
+  4 => 'friday',
+  5 => 'saturday',
 ));
         $this->addColumn('BEGINNING', 'Beginning', 'TIME', false, null, null);
         $this->addColumn('END', 'End', 'TIME', false, null, null);

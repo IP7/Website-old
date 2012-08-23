@@ -17,7 +17,7 @@ CREATE TABLE `users`
     `type` TINYINT DEFAULT 0 NOT NULL,
     `firstname` VARCHAR(64) NOT NULL,
     `lastname` VARCHAR(128) NOT NULL,
-    `gender` TINYINT DEFAULT N,
+    `gender` TINYINT DEFAULT 0,
     `email` VARCHAR(255) NOT NULL,
     `phone` VARCHAR(20),
     `address` VARCHAR(255),

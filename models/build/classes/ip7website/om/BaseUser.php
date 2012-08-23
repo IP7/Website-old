@@ -68,7 +68,7 @@ abstract class BaseUser extends BaseObject implements Persistent
 
     /**
      * The value for the gender field.
-     * Note: this column has a database default value of: (expression) N
+     * Note: this column has a database default value of: 0
      * @var        int
      */
     protected $gender;
@@ -467,6 +467,7 @@ abstract class BaseUser extends BaseObject implements Persistent
      */
     public function applyDefaultValues()
     {
+        $this->gender = 0;
     }
 
     /**
@@ -1812,6 +1813,10 @@ abstract class BaseUser extends BaseObject implements Persistent
      */
     public function hasOnlyDefaultValues()
     {
+            if ($this->gender !== 0) {
+                return false;
+            }
+
         // otherwise, everything was equal, so return true
         return true;
     } // hasOnlyDefaultValues()

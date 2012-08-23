@@ -230,6 +230,22 @@ function post_edit_profile_page($username=NULL) {
         $user->setDescription($desc);
     }
 
+    if (has_post('gender')) {
+        $gender = trim($_POST['gender']);
+        if (in_array($gender, array('M', 'F', 'N'))) {
+            $user->setGender($gender);
+        }
+    }
+    else {
+        $user->setGender('N');
+    }
+
+    if (has_post('address')) {
+        $address = trim($_POST['address']);
+
+        $user->setAddress($address);
+    }
+
     $opts_names = User::getConfigVars();
     $opts = array();
 

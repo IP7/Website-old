@@ -27,7 +27,7 @@
         <column name="lastname"              type="VARCHAR"  size="128" required="true" />
 
         <!-- genre -->
-        <column name="gender"                type="ENUM" valueSet="N,M,F" defaultExpr="N" />
+        <column name="gender"                type="ENUM" valueSet="N,M,F" defaultValue="N" />
 
         <!-- == coordonnées == -->
 
@@ -979,7 +979,7 @@
         <column name="teacher_name" type="VARCHAR" size="32" />
         
         <!-- jour de la semaine -->
-        <column name="weekday"      type="ENUM" valueSet="monday|tuesday|wednesday|thursday|friday|saturday" />
+        <column name="weekday"      type="ENUM" valueSet="monday,tuesday,wednesday,thursday,friday,saturday" />
         
         <!-- heure de début -->
         <column name="beginning"    type="TIME" />
