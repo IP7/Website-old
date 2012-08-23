@@ -11,6 +11,8 @@ function get_string($s, $from=null) {
     return trim($s);
 }
 
+/* -- Filters -- */
+
 // filter an URL. If the URL is correct,
 // the variable may be modified to add a missing protocol
 // The function returns true or false.
@@ -39,11 +41,11 @@ function filter_website(&$ws, $from=null) {
     }
 
     if (!preg_match('@^https?\://@', $ws)) {
-        if (!preg_match('@^\://@')) {
+        if (!preg_match('@^//@')) {
             $ws = 'http://'.$ws;
         }
         else {
-            $ws = 'http'.$ws;
+            $ws = 'http:'.$ws;
         }
     }
 
@@ -54,8 +56,26 @@ function filter_website(&$ws, $from=null) {
 function filter_username($username, $from=null) {
     $username = get_string($username, $from);
 
-    return preg_match('/[a-z0-9][_a-z0-9]{2,}/i', $username);
+    return preg_match('/^[a-z0-9][_a-z0-9]{2,}$/i', $username);
 }
+
+// filter a name
+function filter_name($name, $from=null) {
+    $name = get_string($name, $from);
+
+    // basic sample of forbidden chars
+    return !preg_match('/[_<>\/[\]?!;%&*$:]/i', $name);
+}
+
+// filter an email
+function filter_email($email, $from=null) {
+    $email = get_string($email, $from);
+
+    // may be changed to be more accurate
+    return preg_match('/^[-+.a-zA-Z0-9]+@[-a-zA-Z0-9]+\.[a-z]{2,4}$/', $email);
+}
+
+/* -- Formats -- */
 
 // (re)format a phone number given by an user
 function format_phone($phone) {
