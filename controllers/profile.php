@@ -376,18 +376,14 @@ function post_init_my_profile_page() {
         halt(HTTP_FORBIDDEN);
     }
 
-    $token = TokenQuery::create()
-                ->filterByMethod('POST')
-                ->findOneByValue($_POST['t']);
-
-    if (!$token) {
+    if (!use_token($_POST['t'], 'POST')) {
         halt(HTTP_FORBIDDEN);
     }
 
     $message = $message_type = null;
 
-    $user = $token->getUser();
-    $rights = $token->getRights();
+    $user = $_SESSION['token']['user'];
+    $rights = $_SESSION['token']['rights'];
 
     if (has_post('username') && ($rights & Token::canChangeUsername)) {
 

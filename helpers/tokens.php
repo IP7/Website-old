@@ -46,7 +46,9 @@ function generate_token($user, $rights_array, $expiration_date=null, $post_metho
 
 function use_token($token_string, $used_method='GET') {
 
-    $token = TokenQuery::create()->findOneByValue($token_string);
+    $token = TokenQuery::create()
+                ->filterByMethod($used_method)
+                ->findOneByValue($token_string);
 
     // if there is no such token
     if (!$token) {
@@ -62,10 +64,6 @@ function use_token($token_string, $used_method='GET') {
     $user   = $token->getUser();
     $rights = $token->getRights();
     $method = $token->getMethod();
-
-    if ($method != $used_method) {
-        return false;
-    }
 
     $token->delete();
 
