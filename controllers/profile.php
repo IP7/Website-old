@@ -384,7 +384,73 @@ function post_init_my_profile_page() {
         halt(HTTP_FORBIDDEN);
     }
 
-    var_dump($_POST);
+    $message = $message_type = null;
+
+    $user = $token->getUser();
+    $rights = $token->getRights();
+
+    if (has_post('username') && ($rights & Token::canChangeUsername)) {
+
+        $username = get_string('username', 'post');
+
+        if (!filter_username($username)) {
+            $message = 'Le pseudo n\'est pas valide.';
+            $message_type = 'error';
+        }
+        else if (UserQuery::create()->findOneByUsername($username)) {
+            $message = 'Le pseudo est déjà pris.';
+            $message_type = 'error';
+        }
+        else {
+            $user->setUsername($username);
+        }
+    }
+
+    if (has_post('firstname') && ($rights & Token::canChangeName)) {
+        $firstname = get_string('firstname', 'post');
+
+        if (!filter_name($firstname)) {
+            $message .= ($message ? ' ' : '') . 'Le prénom n\'est pas valide.';
+            $message_type = $message_type || 'error';
+        }
+        else {
+            $user->setFirstName($firstname);
+        }
+    }
+
+    if (has_post('lastname') && ($rights & Token::canChangeName)) {
+        $lastname = get_string('lastname', 'post');
+
+        if (!filter_name($lastname)) {
+            $message .= ($message ? ' ' : '') . 'Le nom n\'est pas valide.';
+            $message_type = $message_type || 'error';
+        }
+        else {
+            $user->setLastName($lastname);
+        }
+    }
+
+    if (has_post('email') && ($rights & Token::canChangeEmail)) {
+        $email = get_string('email', 'post');
+
+        if (!filter_email($email)) {
+            $message .= ($message ? ' ' : '') . 'L\'email n\'est pas valide.';
+            $message_type = $message_type || 'error';
+        }
+        else {
+            $user->setEmail($email);
+        }
+    }
+
+    if (has_post('phone') && ($rights & Token::canChangePhone)) {
+        $phone = format_phone(get_string('phone', 'post'));
+        $user->setPhone($phone);
+    }
+
+    $user->save();
+
+    //TODO is $message is set, generate another POST token,
+    //and display again the form, with only the bad fields
 }
 
 ?>
