@@ -129,6 +129,7 @@ abstract class BaseUserPeer
     const REMARKS = 'users.REMARKS';
 
     /** The enumerated values for the GENDER field */
+    const GENDER_N = 'N';
     const GENDER_M = 'M';
     const GENDER_F = 'F';
 
@@ -177,6 +178,7 @@ abstract class BaseUserPeer
     /** The enumerated values for this table */
     protected static $enumValueSets = array(
         UserPeer::GENDER => array(
+            UserPeer::GENDER_N,
             UserPeer::GENDER_M,
             UserPeer::GENDER_F,
         ),

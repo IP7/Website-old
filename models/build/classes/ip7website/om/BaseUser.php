@@ -68,6 +68,7 @@ abstract class BaseUser extends BaseObject implements Persistent
 
     /**
      * The value for the gender field.
+     * Note: this column has a database default value of: (expression) N
      * @var        int
      */
     protected $gender;
@@ -191,7 +192,7 @@ abstract class BaseUser extends BaseObject implements Persistent
 
     /**
      * The value for the deactivated field.
-     * Note: this column has a database default value of: (expression) 0
+     * Note: this column has a database default value of: (expression) 1
      * @var        boolean
      */
     protected $deactivated;

@@ -39,15 +39,16 @@ class UserTableMap extends TableMap
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
-        $this->addColumn('USERNAME', 'Username', 'VARCHAR', true, 16, null);
-        $this->addColumn('PASSWORD_HASH', 'PasswordHash', 'VARCHAR', true, 255, null);
+        $this->addColumn('USERNAME', 'Username', 'VARCHAR', false, 16, null);
+        $this->addColumn('PASSWORD_HASH', 'PasswordHash', 'VARCHAR', false, 255, null);
         $this->addColumn('TYPE', 'Type', 'TINYINT', true, null, 0);
-        $this->addColumn('FIRSTNAME', 'Firstname', 'VARCHAR', true, 255, null);
-        $this->addColumn('LASTNAME', 'Lastname', 'VARCHAR', true, 255, null);
-        $this->addColumn('GENDER', 'Gender', 'ENUM', true, null, null);
+        $this->addColumn('FIRSTNAME', 'Firstname', 'VARCHAR', true, 64, null);
+        $this->addColumn('LASTNAME', 'Lastname', 'VARCHAR', true, 128, null);
+        $this->addColumn('GENDER', 'Gender', 'ENUM', false, null, 'N');
         $this->getColumn('GENDER', false)->setValueSet(array (
-  0 => 'M',
-  1 => 'F',
+  0 => 'N',
+  1 => 'M',
+  2 => 'F',
 ));
         $this->addColumn('EMAIL', 'Email', 'VARCHAR', true, 255, null);
         $this->addColumn('PHONE', 'Phone', 'VARCHAR', false, 20, null);
@@ -67,7 +68,7 @@ class UserTableMap extends TableMap
         $this->addColumn('CONFIG_SHOW_ADDRESS', 'ConfigShowAddress', 'BOOLEAN', false, 1, '0');
         $this->addColumn('CONFIG_INDEX_PROFILE', 'ConfigIndexProfile', 'BOOLEAN', false, 1, '0');
         $this->addColumn('CONFIG_PRIVATE_PROFILE', 'ConfigPrivateProfile', 'BOOLEAN', false, 1, '0');
-        $this->addColumn('DEACTIVATED', 'Deactivated', 'BOOLEAN', false, 1, '0');
+        $this->addColumn('DEACTIVATED', 'Deactivated', 'BOOLEAN', false, 1, '1');
         $this->addColumn('IS_A_TEACHER', 'IsATeacher', 'BOOLEAN', false, 1, '0');
         $this->addColumn('IS_A_STUDENT', 'IsAStudent', 'BOOLEAN', false, 1, '0');
         $this->addColumn('IS_AN_ALUMNI', 'IsAnAlumni', 'BOOLEAN', false, 1, '0');
@@ -76,7 +77,7 @@ class UserTableMap extends TableMap
         $this->addColumn('REMARKS', 'Remarks', 'VARCHAR', false, 255, null);
         // validators
         $this->addValidator('USERNAME', 'minLength', 'propel.validator.MinLengthValidator', '3', 'Le pseudo doit faire au moins 3 caractères.');
-        $this->addValidator('USERNAME', 'match', 'propel.validator.MatchValidator', '/^[a-z][_a-z0-9]+$/i', 'Le pseudo n\'est pas valide (Doit commencer par une lettre, et être uniquement composé de caractères alphanumériques).');
+        $this->addValidator('USERNAME', 'match', 'propel.validator.MatchValidator', '/^[_a-z][_a-z0-9]+$/i', 'Le pseudo n\'est pas valide (Doit commencer par une lettre, et être uniquement composé de caractères alphanumériques).');
         $this->addValidator('USERNAME', 'unique', 'propel.validator.UniqueValidator', '', 'Le pseudo est déjà pris.');
         $this->addValidator('FIRSTNAME', 'minLength', 'propel.validator.MinLengthValidator', '1', 'Le prénom doit faire au moins 1 caractère.');
         $this->addValidator('LASTNAME', 'minLength', 'propel.validator.MinLengthValidator', '1', 'Le nom doit faire au moins 1 caractère.');
