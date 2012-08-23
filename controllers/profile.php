@@ -291,15 +291,25 @@ function display_init_my_profile_page() {
     $user = $token['user'];
     $rights = $token['rights'];
 
-    $post_token = generate_token($user, $rights, time() + 3600*24, 'POST');
+    $post_token = generate_token($user, $rights, time() + 3600 * 24, true);
 
     $fields = array();
+    $infos = array();
 
     if ($rights & Token::canChangeUsername) {
+
+        $username = $user->getUsername();
+
         $fields []= array(
             'label' => 'Pseudo',
             'name'  => 'username',
-            'type'  => 'text'
+            'type'  => 'text',
+            'value' => is_temp_username($username) ? '' : $username
+        );
+    } else {
+        $infos []= array(
+            'name' => 'Pseudo',
+            'value' => is_temp_username($username) ? '' : $username
         );
     }
 
@@ -307,29 +317,40 @@ function display_init_my_profile_page() {
         $fields []= array(
             'label' => 'Nom',
             'name'  => 'lastname',
-            'type'  => 'text'
+            'type'  => 'text',
+            'value' => $user->getLastName()
         );
         $fields []= array(
             'label' => 'Prénom',
             'name'  => 'firstname',
-            'type'  => 'text'
+            'type'  => 'text',
+            'value' => $user->getFirstName()
         );
+    } else {
+        $infos []= array( 'name' => 'Nom', 'value' => $user->getLastName());
+        $infos []= array( 'name' => 'Prénom','value'=>$user->getFirstName());
     }
 
     if ($rights & Token::canChangeEmail) {
         $fields []= array(
             'label' => 'Email',
             'name'  => 'email',
-            'type'  => 'email'
+            'type'  => 'email',
+            'value' => $user->getEmail()
         );
+    } else {
+        $infos []= array( 'name' => 'Email', 'value' => $user->getEmail() );
     }
 
     if ($rights & Token::canChangePhone) {
         $fields []= array(
             'label' => 'Téléphone',
             'name'  => 'phone',
-            'type'  => 'phone'
+            'type'  => 'phone',
+            'value' => $user->getPhone()
         );
+    } else {
+        $infos []= array( 'name' => 'Téléphone', 'value' => $user->getPhone() );
     }
 
     unset($_SESSION['token']);
@@ -344,9 +365,26 @@ function display_init_my_profile_page() {
                 'post_token' => $post_token,
 
                 'fields' => $fields
-            )
+            ),
+            'infos' => $infos
         )
     ));
+}
+
+function post_init_my_profile_page() {
+    if (!has_post('t')) {
+        halt(HTTP_FORBIDDEN);
+    }
+
+    $token = TokenQuery::create()
+                ->filterByMethod('POST')
+                ->findOneByValue($_POST['t']);
+
+    if (!$token) {
+        halt(HTTP_FORBIDDEN);
+    }
+
+    var_dump($_POST);
 }
 
 ?>

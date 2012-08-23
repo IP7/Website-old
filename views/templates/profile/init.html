@@ -2,15 +2,16 @@
 {% import 'macros.html' as _m %}
 {% block content %}
 <h1>{{ page.title }}</h1>
+{% if page.infos is defined %}
 <ul>
-    <li>Nom&nbsp;: {{ page.user.lastname }}</li>
-    <li>Prénom&nbsp;: {{ page.user.firstname }}</li>
-    <li>Email&nbsp;: {{ page.user.email }}</li>
-    <li>Tél&nbsp;: {{ page.user.phone }}</li>
+    {% for field in page.infos %}
+    <li>{{ field.name }}&nbsp;: {{ field.value }}</li>
+    {% endfor %}
 </ul>
+{% endif %}
 <form action="{{ page.form.action }}" method="POST">
 {% for field in page.form.fields %}
-<label>{{ field.label }}&nbsp;:<input type="{{ field.type|default('text') }}" name="{{ field.name }}" required />{#
+<label>{{ field.label }}&nbsp;:<input type="{{ field.type|default('text') }}" name="{{ field.name }}" value="{{ field.value }}" required />{#
     #}{% if field.microcopy is defined and field.microcopy %}<p class="microcopy">{{ field.microcopy }}</p>{% endif %}</label>
 {% endfor %}
 <input type="hidden" name="t" value="{{ page.form.post_token }}" />
