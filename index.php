@@ -61,7 +61,7 @@ dispatch_post('/profile', 'display_my_profile_page');
 dispatch('/profile/edit', 'display_edit_my_profile_page');
 dispatch_post('/profile/edit', 'post_edit_my_profile_page');
 dispatch('/profile/init', 'display_init_my_profile_page');
-dispatch_post('/profile/init', 'display_init_my_profile_page');
+dispatch_post('/profile/init', 'post_init_my_profile_page');
 # 
 # ## search
 # dispatch('/search', 'display_search_page');
