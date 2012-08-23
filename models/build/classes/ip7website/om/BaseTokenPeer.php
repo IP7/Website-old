@@ -24,13 +24,13 @@ abstract class BaseTokenPeer
     const TM_CLASS = 'TokenTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 5;
+    const NUM_COLUMNS = 6;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 5;
+    const NUM_HYDRATE_COLUMNS = 6;
 
     /** the column name for the ID field */
     const ID = 'tokens.ID';
@@ -46,6 +46,13 @@ abstract class BaseTokenPeer
 
     /** the column name for the VALUE field */
     const VALUE = 'tokens.VALUE';
+
+    /** the column name for the METHOD field */
+    const METHOD = 'tokens.METHOD';
+
+    /** The enumerated values for the METHOD field */
+    const METHOD_GET = 'GET';
+    const METHOD_POST = 'POST';
 
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -66,12 +73,12 @@ abstract class BaseTokenPeer
      * e.g. TokenPeer::$fieldNames[TokenPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'UserId', 'ExpirationDate', 'Rights', 'Value', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'userId', 'expirationDate', 'rights', 'value', ),
-        BasePeer::TYPE_COLNAME => array (TokenPeer::ID, TokenPeer::USER_ID, TokenPeer::EXPIRATION_DATE, TokenPeer::RIGHTS, TokenPeer::VALUE, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'USER_ID', 'EXPIRATION_DATE', 'RIGHTS', 'VALUE', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'user_id', 'expiration_date', 'rights', 'value', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'UserId', 'ExpirationDate', 'Rights', 'Value', 'Method', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'userId', 'expirationDate', 'rights', 'value', 'method', ),
+        BasePeer::TYPE_COLNAME => array (TokenPeer::ID, TokenPeer::USER_ID, TokenPeer::EXPIRATION_DATE, TokenPeer::RIGHTS, TokenPeer::VALUE, TokenPeer::METHOD, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'USER_ID', 'EXPIRATION_DATE', 'RIGHTS', 'VALUE', 'METHOD', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'user_id', 'expiration_date', 'rights', 'value', 'method', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
     );
 
     /**
@@ -81,12 +88,20 @@ abstract class BaseTokenPeer
      * e.g. TokenPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'UserId' => 1, 'ExpirationDate' => 2, 'Rights' => 3, 'Value' => 4, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'userId' => 1, 'expirationDate' => 2, 'rights' => 3, 'value' => 4, ),
-        BasePeer::TYPE_COLNAME => array (TokenPeer::ID => 0, TokenPeer::USER_ID => 1, TokenPeer::EXPIRATION_DATE => 2, TokenPeer::RIGHTS => 3, TokenPeer::VALUE => 4, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'USER_ID' => 1, 'EXPIRATION_DATE' => 2, 'RIGHTS' => 3, 'VALUE' => 4, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'user_id' => 1, 'expiration_date' => 2, 'rights' => 3, 'value' => 4, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'UserId' => 1, 'ExpirationDate' => 2, 'Rights' => 3, 'Value' => 4, 'Method' => 5, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'userId' => 1, 'expirationDate' => 2, 'rights' => 3, 'value' => 4, 'method' => 5, ),
+        BasePeer::TYPE_COLNAME => array (TokenPeer::ID => 0, TokenPeer::USER_ID => 1, TokenPeer::EXPIRATION_DATE => 2, TokenPeer::RIGHTS => 3, TokenPeer::VALUE => 4, TokenPeer::METHOD => 5, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'USER_ID' => 1, 'EXPIRATION_DATE' => 2, 'RIGHTS' => 3, 'VALUE' => 4, 'METHOD' => 5, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'user_id' => 1, 'expiration_date' => 2, 'rights' => 3, 'value' => 4, 'method' => 5, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
+    );
+
+    /** The enumerated values for this table */
+    protected static $enumValueSets = array(
+        TokenPeer::METHOD => array(
+            TokenPeer::METHOD_GET,
+            TokenPeer::METHOD_POST,
+        ),
     );
 
     /**
@@ -129,6 +144,29 @@ abstract class BaseTokenPeer
     }
 
     /**
+     * Gets the list of values for all ENUM columns
+     * @return array
+     */
+    public static function getValueSets()
+    {
+      return TokenPeer::$enumValueSets;
+    }
+
+    /**
+     * Gets the list of values for an ENUM column
+     *
+     * @param string $colname The ENUM column name.
+     *
+     * @return array list of possible values for the column
+     */
+    public static function getValueSet($colname)
+    {
+        $valueSets = TokenPeer::getValueSets();
+
+        return $valueSets[$colname];
+    }
+
+    /**
      * Convenience method which changes table.column to alias.column.
      *
      * Using this method you can maintain SQL abstraction while using column aliases.
@@ -165,12 +203,14 @@ abstract class BaseTokenPeer
             $criteria->addSelectColumn(TokenPeer::EXPIRATION_DATE);
             $criteria->addSelectColumn(TokenPeer::RIGHTS);
             $criteria->addSelectColumn(TokenPeer::VALUE);
+            $criteria->addSelectColumn(TokenPeer::METHOD);
         } else {
             $criteria->addSelectColumn($alias . '.ID');
             $criteria->addSelectColumn($alias . '.USER_ID');
             $criteria->addSelectColumn($alias . '.EXPIRATION_DATE');
             $criteria->addSelectColumn($alias . '.RIGHTS');
             $criteria->addSelectColumn($alias . '.VALUE');
+            $criteria->addSelectColumn($alias . '.METHOD');
         }
     }
 

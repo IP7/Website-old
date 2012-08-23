@@ -16,12 +16,17 @@
 class Token extends BaseToken
 {
 
+    // if a const is > 64 (except for 'size'), the field size MUST be
+    // changed in the schema, from TINYINT to INTEGER.
     const canConnect           = 1;
     const canChangeUsername    = 2;
     const canChangeName        = 4;
     const canChangeEmail       = 8;
     const canChangeTel         = 16;
     const canChangeWholeProfil = 32;
+
+    // can make post requests
+    const canPost = 64;
 
     const size = 64;
 }

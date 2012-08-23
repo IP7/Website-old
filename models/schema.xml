@@ -1035,6 +1035,9 @@
         <!-- valeur -->
         <column name="value" type="VARCHAR" required="true" />
 
+        <!-- pour une requête GET ou POST -->
+        <column name="method" type="ENUM" valueSet="GET,POST" defaultValue="GET" />
+
         <!-- == index & clefs étrangères == -->
 
         <foreign-key foreignTable="users" onDelete="CASCADE" onUpdate="CASCADE" phpName="User">

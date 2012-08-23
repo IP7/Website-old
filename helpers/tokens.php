@@ -13,7 +13,7 @@
         [ Token::canChangeWholeProfile ]
    )
 */
-function generate_token($user, $rights_array, $expiration_date=0) {
+function generate_token($user, $rights_array, $expiration_date=null, $post_method=false) {
 
     $rights = 0;
 
@@ -31,14 +31,15 @@ function generate_token($user, $rights_array, $expiration_date=0) {
     if ($expiration_date > time()) {
         $token->setExpirationDate($expiration_date);
     }
-    
+
+    $token->setMethod($post_method ? 'POST' : 'GET');
     $token->setValue(get_random_string(Token::size));
     $token->save();
 
     return $token->getValue();
 }
 
-function use_token($token_string) {
+function use_token($token_string, $used_method='GET') {
 
     $token = TokenQuery::create()->findOneByValue($token_string);
 
@@ -55,6 +56,11 @@ function use_token($token_string) {
 
     $user   = $token->getUser();
     $rights = $token->getRights();
+    $method = $token->getMethod();
+
+    if ($method != $used_method) {
+        return false;
+    }
 
     $token->delete();
 
@@ -62,8 +68,10 @@ function use_token($token_string) {
         return false;
     }
 
-    $_SESSION['token'] = array( 'value' => $token->getValue(),
-                                'rights' => $rights );
+    $_SESSION['token'] = array( 'value'  => $token->getValue(),
+                                'rights' => $rights,
+                                'user'   => $user,
+                                'method' => $method );
 
     if ($rights & Token::canConnect) {
         set_connected($user, false);

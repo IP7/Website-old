@@ -807,6 +807,7 @@ CREATE TABLE `tokens`
     `expiration_date` DATETIME,
     `rights` TINYINT DEFAULT 0,
     `value` VARCHAR(255) NOT NULL,
+    `method` TINYINT DEFAULT 0,
     PRIMARY KEY (`id`),
     UNIQUE INDEX `tokens_U_1` (`value`),
     INDEX `tokens_FI_1` (`user_id`),

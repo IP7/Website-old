@@ -61,6 +61,13 @@ abstract class BaseToken extends BaseObject implements Persistent
     protected $value;
 
     /**
+     * The value for the method field.
+     * Note: this column has a database default value of: 0
+     * @var        int
+     */
+    protected $method;
+
+    /**
      * @var        User
      */
     protected $aUser;
@@ -87,6 +94,7 @@ abstract class BaseToken extends BaseObject implements Persistent
      */
     public function applyDefaultValues()
     {
+        $this->method = 0;
     }
 
     /**
@@ -174,6 +182,25 @@ abstract class BaseToken extends BaseObject implements Persistent
     public function getValue()
     {
         return $this->value;
+    }
+
+    /**
+     * Get the [method] column value.
+     *
+     * @return int
+     * @throws PropelException - if the stored enum key is unknown.
+     */
+    public function getMethod()
+    {
+        if (null === $this->method) {
+            return null;
+        }
+        $valueSet = TokenPeer::getValueSet(TokenPeer::METHOD);
+        if (!isset($valueSet[$this->method])) {
+            throw new PropelException('Unknown stored enum key: ' . $this->method);
+        }
+
+        return $valueSet[$this->method];
     }
 
     /**
@@ -288,6 +315,32 @@ abstract class BaseToken extends BaseObject implements Persistent
     } // setValue()
 
     /**
+     * Set the value of [method] column.
+     *
+     * @param int $v new value
+     * @return Token The current object (for fluent API support)
+     * @throws PropelException - if the value is not accepted by this enum.
+     */
+    public function setMethod($v)
+    {
+        if ($v !== null) {
+            $valueSet = TokenPeer::getValueSet(TokenPeer::METHOD);
+            if (!in_array($v, $valueSet)) {
+                throw new PropelException(sprintf('Value "%s" is not accepted in this enumerated column', $v));
+            }
+            $v = array_search($v, $valueSet);
+        }
+
+        if ($this->method !== $v) {
+            $this->method = $v;
+            $this->modifiedColumns[] = TokenPeer::METHOD;
+        }
+
+
+        return $this;
+    } // setMethod()
+
+    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -297,6 +350,10 @@ abstract class BaseToken extends BaseObject implements Persistent
      */
     public function hasOnlyDefaultValues()
     {
+            if ($this->method !== 0) {
+                return false;
+            }
+
         // otherwise, everything was equal, so return true
         return true;
     } // hasOnlyDefaultValues()
@@ -324,6 +381,7 @@ abstract class BaseToken extends BaseObject implements Persistent
             $this->expiration_date = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
             $this->rights = ($row[$startcol + 3] !== null) ? (int) $row[$startcol + 3] : null;
             $this->value = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
+            $this->method = ($row[$startcol + 5] !== null) ? (int) $row[$startcol + 5] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -332,7 +390,7 @@ abstract class BaseToken extends BaseObject implements Persistent
                 $this->ensureConsistency();
             }
 
-            return $startcol + 5; // 5 = TokenPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 6; // 6 = TokenPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating Token object", $e);
@@ -575,6 +633,9 @@ abstract class BaseToken extends BaseObject implements Persistent
         if ($this->isColumnModified(TokenPeer::VALUE)) {
             $modifiedColumns[':p' . $index++]  = '`VALUE`';
         }
+        if ($this->isColumnModified(TokenPeer::METHOD)) {
+            $modifiedColumns[':p' . $index++]  = '`METHOD`';
+        }
 
         $sql = sprintf(
             'INSERT INTO `tokens` (%s) VALUES (%s)',
@@ -600,6 +661,9 @@ abstract class BaseToken extends BaseObject implements Persistent
                         break;
                     case '`VALUE`':
                         $stmt->bindValue($identifier, $this->value, PDO::PARAM_STR);
+                        break;
+                    case '`METHOD`':
+                        $stmt->bindValue($identifier, $this->method, PDO::PARAM_INT);
                         break;
                 }
             }
@@ -762,6 +826,9 @@ abstract class BaseToken extends BaseObject implements Persistent
             case 4:
                 return $this->getValue();
                 break;
+            case 5:
+                return $this->getMethod();
+                break;
             default:
                 return null;
                 break;
@@ -796,6 +863,7 @@ abstract class BaseToken extends BaseObject implements Persistent
             $keys[2] => $this->getExpirationDate(),
             $keys[3] => $this->getRights(),
             $keys[4] => $this->getValue(),
+            $keys[5] => $this->getMethod(),
         );
         if ($includeForeignObjects) {
             if (null !== $this->aUser) {
@@ -850,6 +918,13 @@ abstract class BaseToken extends BaseObject implements Persistent
             case 4:
                 $this->setValue($value);
                 break;
+            case 5:
+                $valueSet = TokenPeer::getValueSet(TokenPeer::METHOD);
+                if (isset($valueSet[$value])) {
+                    $value = $valueSet[$value];
+                }
+                $this->setMethod($value);
+                break;
         } // switch()
     }
 
@@ -879,6 +954,7 @@ abstract class BaseToken extends BaseObject implements Persistent
         if (array_key_exists($keys[2], $arr)) $this->setExpirationDate($arr[$keys[2]]);
         if (array_key_exists($keys[3], $arr)) $this->setRights($arr[$keys[3]]);
         if (array_key_exists($keys[4], $arr)) $this->setValue($arr[$keys[4]]);
+        if (array_key_exists($keys[5], $arr)) $this->setMethod($arr[$keys[5]]);
     }
 
     /**
@@ -895,6 +971,7 @@ abstract class BaseToken extends BaseObject implements Persistent
         if ($this->isColumnModified(TokenPeer::EXPIRATION_DATE)) $criteria->add(TokenPeer::EXPIRATION_DATE, $this->expiration_date);
         if ($this->isColumnModified(TokenPeer::RIGHTS)) $criteria->add(TokenPeer::RIGHTS, $this->rights);
         if ($this->isColumnModified(TokenPeer::VALUE)) $criteria->add(TokenPeer::VALUE, $this->value);
+        if ($this->isColumnModified(TokenPeer::METHOD)) $criteria->add(TokenPeer::METHOD, $this->method);
 
         return $criteria;
     }
@@ -962,6 +1039,7 @@ abstract class BaseToken extends BaseObject implements Persistent
         $copyObj->setExpirationDate($this->getExpirationDate());
         $copyObj->setRights($this->getRights());
         $copyObj->setValue($this->getValue());
+        $copyObj->setMethod($this->getMethod());
 
         if ($deepCopy && !$this->startCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -1081,6 +1159,7 @@ abstract class BaseToken extends BaseObject implements Persistent
         $this->expiration_date = null;
         $this->rights = null;
         $this->value = null;
+        $this->method = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->clearAllReferences();

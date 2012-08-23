@@ -43,6 +43,11 @@ class TokenTableMap extends TableMap
         $this->addColumn('EXPIRATION_DATE', 'ExpirationDate', 'TIMESTAMP', false, null, null);
         $this->addColumn('RIGHTS', 'Rights', 'TINYINT', false, null, 0);
         $this->addColumn('VALUE', 'Value', 'VARCHAR', true, 255, null);
+        $this->addColumn('METHOD', 'Method', 'ENUM', false, null, 'GET');
+        $this->getColumn('METHOD', false)->setValueSet(array (
+  0 => 'GET',
+  1 => 'POST',
+));
         // validators
     } // initialize()
 

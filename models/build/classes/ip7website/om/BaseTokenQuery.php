@@ -11,12 +11,14 @@
  * @method TokenQuery orderByExpirationDate($order = Criteria::ASC) Order by the expiration_date column
  * @method TokenQuery orderByRights($order = Criteria::ASC) Order by the rights column
  * @method TokenQuery orderByValue($order = Criteria::ASC) Order by the value column
+ * @method TokenQuery orderByMethod($order = Criteria::ASC) Order by the method column
  *
  * @method TokenQuery groupById() Group by the id column
  * @method TokenQuery groupByUserId() Group by the user_id column
  * @method TokenQuery groupByExpirationDate() Group by the expiration_date column
  * @method TokenQuery groupByRights() Group by the rights column
  * @method TokenQuery groupByValue() Group by the value column
+ * @method TokenQuery groupByMethod() Group by the method column
  *
  * @method TokenQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method TokenQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -34,12 +36,14 @@
  * @method Token findOneByExpirationDate(string $expiration_date) Return the first Token filtered by the expiration_date column
  * @method Token findOneByRights(int $rights) Return the first Token filtered by the rights column
  * @method Token findOneByValue(string $value) Return the first Token filtered by the value column
+ * @method Token findOneByMethod(int $method) Return the first Token filtered by the method column
  *
  * @method array findById(int $id) Return Token objects filtered by the id column
  * @method array findByUserId(int $user_id) Return Token objects filtered by the user_id column
  * @method array findByExpirationDate(string $expiration_date) Return Token objects filtered by the expiration_date column
  * @method array findByRights(int $rights) Return Token objects filtered by the rights column
  * @method array findByValue(string $value) Return Token objects filtered by the value column
+ * @method array findByMethod(int $method) Return Token objects filtered by the method column
  *
  * @package    propel.generator.ip7website.om
  */
@@ -129,7 +133,7 @@ abstract class BaseTokenQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `ID`, `USER_ID`, `EXPIRATION_DATE`, `RIGHTS`, `VALUE` FROM `tokens` WHERE `ID` = :p0';
+        $sql = 'SELECT `ID`, `USER_ID`, `EXPIRATION_DATE`, `RIGHTS`, `VALUE`, `METHOD` FROM `tokens` WHERE `ID` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -399,6 +403,40 @@ abstract class BaseTokenQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(TokenPeer::VALUE, $value, $comparison);
+    }
+
+    /**
+     * Filter the query on the method column
+     *
+     * @param     mixed $method The value to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return TokenQuery The current query, for fluid interface
+     * @throws PropelException - if the value is not accepted by the enum.
+     */
+    public function filterByMethod($method = null, $comparison = null)
+    {
+        $valueSet = TokenPeer::getValueSet(TokenPeer::METHOD);
+        if (is_scalar($method)) {
+            if (!in_array($method, $valueSet)) {
+                throw new PropelException(sprintf('Value "%s" is not accepted in this enumerated column', $method));
+            }
+            $method = array_search($method, $valueSet);
+        } elseif (is_array($method)) {
+            $convertedValues = array();
+            foreach ($method as $value) {
+                if (!in_array($value, $valueSet)) {
+                    throw new PropelException(sprintf('Value "%s" is not accepted in this enumerated column', $value));
+                }
+                $convertedValues []= array_search($value, $valueSet);
+            }
+            $method = $convertedValues;
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(TokenPeer::METHOD, $method, $comparison);
     }
 
     /**
