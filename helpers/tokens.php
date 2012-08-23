@@ -17,7 +17,7 @@ function generate_token($user, $rights_array, $expiration_date=null, $post_metho
 
     $rights = 0;
 
-    foreach ($right_array as $k => $v) {
+    foreach ($rights_array as $k => $v) {
         $rights |= $v;
     }
 

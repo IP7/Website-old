@@ -283,7 +283,7 @@ function post_edit_my_profile_page() {
 }
 
 function display_init_my_profile_page() {
-    if (!isset($_SESSION) || !isset($_SESSION['token'])) {
+    if (!isset($_SESSION) || !isset($_SESSION['token']) || empty($_SESSION['token'])) {
         halt(HTTP_FORBIDDEN);
     }
 
