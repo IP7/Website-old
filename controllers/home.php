@@ -30,6 +30,14 @@ function display_connection() {
     if (is_connected()) {
         redirect_to('/');
     }
+
+    # Tokens
+    if (has_get('t')
+        && use_token(''.$_GET['t'])
+        && ($_SESSION['token']['rights'] > 1)) {
+            redirect_to('/profile/init', array('status' => HTTP_SEE_OTHER));
+    }
+
     return tpl_render('connection.html', array(
         'page' => array(
             'title' => 'Connexion',
@@ -48,8 +56,8 @@ function post_connection() {
 
             # sanitization made by Propel
             $res = connection(
-                $_POST['username'],
-                $_POST['password'],
+                ''.$_POST['username'],
+                ''.$_POST['password'],
                 (isset($_POST['remember']) ? (bool)$_POST['remember'] : false)
             );
 
