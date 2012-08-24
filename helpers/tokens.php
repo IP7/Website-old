@@ -14,7 +14,11 @@
         | Token::canChangeWholeProfile ]
    )
 */
-function generate_token($user, $rights_array, $expiration_date=null, $post_method=false) {
+function generate_token($user, $rights_array=0, $expiration_date=null, $post_method=false) {
+
+    if ($user == NULL) {
+        return NULL;
+    }
 
     $rights = 0;
 
@@ -24,10 +28,6 @@ function generate_token($user, $rights_array, $expiration_date=null, $post_metho
         }
     } else {
         $rights = $rights_array;
-    }
-
-    if (($rights == 0) || ($user == NULL)) {
-        return NULL;
     }
 
     $token = new Token();
@@ -67,7 +67,7 @@ function use_token($token_string, $used_method='GET') {
 
     $token->delete();
 
-    if ($rights <= 0) {
+    if ($rights < 0) {
         return false;
     }
 
