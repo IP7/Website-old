@@ -49,6 +49,11 @@
                   #}{% if classes is defined and classes %} class="{{ classes|join(' ') }}"{% endif %} />
 {% endmacro %}
 
+{# - token #}
+{% macro token(value) %}
+<input type="hidden" name="t" value="{{ value }}" />
+{% endmacro %}
+
 {# meta #}
 
 {# - robots #}
@@ -62,4 +67,5 @@
 {% macro navlink(href, value, title, hreflang, external) %}
 <li class="navlink">{{ _self.a(href, value, title, hreflang, false) }}</li>
 {% endmacro %}
+
 
