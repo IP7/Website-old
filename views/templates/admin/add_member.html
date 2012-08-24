@@ -5,14 +5,9 @@
 <form action="{{ page.add_form.action }}" method="POST">
     <label>Nom&nbsp;:<input type="text" name="lastname" autofocus required /></label>
     <label>Prénom&nbsp;:<input type="text" name="firstname" required /></label>
-    <p class="label">Genre&nbsp;:{#
-            #}<label class="inline"><input type="radio" name="gender" value="M" checked />Homme</label>{#
-            #}<label class="inline"><input type="radio" name="gender" value="F" />Femme</label></p>
     <label>Adresse email&nbsp;:<input type="email" name="email" required /></label>
-    <label>Pseudo&nbsp;:<input type="text" name="username" required /><p class="microcopy">Au moins 3 caractères alphanumériques</p></label>
     <label>Date de naissance&nbsp;:<input type="date" name="birthdate" min="{{ page.add_form.birthdate.min }}" max="{{ page.add_form.birthdate.max }}" />{#
         #}<p class="microcopy">De la forme JJ/MM/AAAA</p></label>
-    <label>Adresse&nbsp;:<input type="text" name="address" /></label>
     <label>Téléphone&nbsp;:<input type="phone" name="phone" /></label>
     <p class="label">Status&nbsp;:{#
         #}<label class="inline">{{ _m.checkbox("student", '1', null, true) }} Étudiant</label>{#
@@ -31,7 +26,10 @@
         <option value="moderator">Modérateur</option>
         <option value="admin">Administrateur</option>
     </select></label>
-    <label>{{ _m.checkbox("fee", '1') }} Cotisation payée</label>
+    <label>{{ _m.checkbox("activated", '1') }} Compte activé</label>
+    <label>{{ _m.checkbox("fee",       '1') }} Cotisation payée</label>
+
+    {{ _m.token(page.add_form.post_token) }}
 
     {{ _m.submit("Ajouter") }}
 </form>

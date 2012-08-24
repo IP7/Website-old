@@ -240,7 +240,7 @@ function post_admin_content_action(){
 function display_admin_add_member($values=null, $msg=null, $msg_type=null) {
 
     $cursus = CursusQuery::create()
-        ->limit(10) // should not be so high
+        ->limit(10) // should not be so high, so this limit is ok
         ->orderByShortName()
         ->find();
 
@@ -253,7 +253,7 @@ function display_admin_add_member($values=null, $msg=null, $msg_type=null) {
         );
     }
 
-    return Config::$tpl->render('admin_add_member.html', tpl_array(admin_tpl_default(), array(
+    return Config::$tpl->render('admin/add_member.html', tpl_array(admin_tpl_default(), array(
         'page' => array(
             'title' => 'Ajouter un membre',
             'breadcrumbs' => array(
@@ -272,12 +272,10 @@ function display_admin_add_member($values=null, $msg=null, $msg_type=null) {
                     'min' => date('Y-m-d', time() - Durations::ONE_YEAR*100) // 100 years ago
                 ),
 
+                'post_token' => generate_post_token(null, 0, time()+Durations::ONE_MINUTE*20),
+
                 'cursus' => $cursus,
                 'values' => $values
-            ),
-
-            'scripts' => array(
-                array( 'src' => Config::$root_uri.'views/static/js/admin_enhancements.js' )
             )
         )
     )));
@@ -287,12 +285,23 @@ function post_admin_add_member() {
 
     $message = $message_type = null;
 
+    if (!has_post('t')) {
+        return display_admin_add_member();
+    }
+    
+    if (!use_token($_POST['t'])) {
+        return display_admin_add_member(
+            $_POST,
+            'Le token a expiré. Veuillez réessayer',
+            'error'
+        );
+    }
+
     // required fields
 
     $required_fields = array(
         'lastname' => 'Le nom',
         'firstname' => 'Le prénom',
-        'username' => 'Le pseudo',
         'email' => 'L\'email'
     );
 
@@ -309,15 +318,6 @@ function post_admin_add_member() {
 
     // filters
 
-    // - username
-    if (!filter_username($_POST['username'])) {
-        return display_admin_add_member($_POST, "Le pseudo est incorrect.", 'error');
-    }
-
-    if (UserQuery::create()->findOneByUsername(trim($_POST['username']))) {
-        return display_admin_add_member($_POST, "Ce pseudo est déjà pris.", 'error');
-    }
-
     $rank = has_post('rank') ? $_POST['rank'] : 'member';
 
     $type = ($rank == 'member')
@@ -328,7 +328,6 @@ function post_admin_add_member() {
                             ? ADMIN_RANK
                             : VISITOR_RANK));
 
-    $gender = (has_post('gender') && $_POST['gender'] == 'F') ? 'F' : 'M';
     $password = get_random_password();
     $phone = format_phone(get_string('phone', 'post'));
     $birthdate = get_date_from_input(get_string('birthdate', 'post'));
@@ -339,14 +338,11 @@ function post_admin_add_member() {
     $user->setType($type);
     $user->setFirstname(get_string('firstname', 'post'));
     $user->setLastname(get_string('lastname', 'post'));
-    $user->setUsername(get_string('username', 'post'));
+    $user->setUsername(get_temp_username());
     $user->setPassword($password);
-    $user->setGender($gender);
-    $user->setAddress(get_string('address', 'post'));
-    $user->setWebsite('');
+    $user->setGender('N');
     $user->setEmail(get_string('email', 'post'));
     $user->setPhone($phone);
-    $user->setBirthDate($birthdate);
 
     $user->setIsATeacher(has_post('teacher') && $_POST['teacher']);
     $user->setIsAStudent(has_post('student') && $_POST['student']);
@@ -367,7 +363,7 @@ function post_admin_add_member() {
 
     $fee = null;
 
-    if (get_string('fee', 'post') != '1') {
+    if (get_string('fee', 'post') != '1') { // TODO why is there `!= '1'` here??
         $user->setFirstEntry(time());
         $user->setLastEntry(time());
         $user->setExpirationDate(next_expiration_date());
@@ -377,10 +373,10 @@ function post_admin_add_member() {
         $fee->setAmount(5.0);
         $fee->setUser($user);
         $fee->setValidated(true);
-        $user->setDeactivated(0);
     }
-    else {
-        $user->setDeactivated(1); // default, but to be sure
+
+    if (get_string('activate', 'post')) {
+        $user->setDeactivated(0);
     }
 
     if ($user->validate()) {
@@ -400,7 +396,7 @@ function post_admin_add_member() {
             $user->addCursus($c);
         }
 
-        send_welcome_message($user, $password);
+        send_welcome_message($user);
 
         redirect_to(Config::$root_uri.'admin/', array( 'status' => HTTP_SEE_OTHER ));
     }
