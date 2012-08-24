@@ -104,6 +104,7 @@ class Durations {
     const ONE_MINUTE = 60;
     const ONE_HOUR   = 3600;
     const ONE_DAY    = 86400; // 3600 * 24
+    const ONE_YEAR   = 31536000; // 3600 * 24 * 365
 }
 
 ?>
