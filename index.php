@@ -93,7 +93,6 @@ dispatch('/admin/content/proposed/:id/:action', 'post_admin_content_action');
 dispatch('/admin/membres', 'display_admin_members');
 dispatch('/admin/membres/add', 'display_admin_add_member');
 dispatch_post('/admin/membres/add', 'post_admin_add_member');
-dispatch('/admin/membres/check.json', 'json_admin_check_username');
 ## maintenance
 dispatch('/admin/migrate', 'display_admin_migrate_db_page');
 
@@ -102,6 +101,8 @@ dispatch('/contact', 'display_contact_page');
 dispatch('/sitemap', 'display_sitemap_page');
 dispatch('/legals',   'display_legals_page');
 
+## API
+dispatch('/api/1/users/exists.json', 'json_check_username');
 
 # Errors handling (functions called by Limonade)
 

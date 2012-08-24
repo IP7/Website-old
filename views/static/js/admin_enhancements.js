@@ -7,10 +7,10 @@
         })
 
         $inp.blur(function(){
-            $.ajax(root_uri+'/admin/membres/check.json', {
+            $.ajax(root_uri+'/api/1/users/exists.json', {
                 data: { username: $inp.val() },
                 success: function(resp) {
-                    $inp.addClass((resp['response'] == 'ok') ? 'valid' : 'invalid');
+                    $inp.addClass(resp['response'] ? 'invalid' : 'valid');
                 }
             });
         });

@@ -266,8 +266,8 @@ function display_admin_add_member($values=null, $msg=null, $msg_type=null) {
                 'action' => Config::$root_uri.'admin/membres/add',
 
                 'birthdate' => array(
-                    'max' => date('Y-m-d', time() -  473040000), // 15 years ago
-                    'min' => date('Y-m-d', time() - 3153600000) // 100 years ago
+                    'max' => date('Y-m-d', time() - Durations::ONE_YEAR*15), // 15 years ago
+                    'min' => date('Y-m-d', time() - Durations::ONE_YEAR*100) // 100 years ago
                 ),
 
                 'cursus' => $cursus,
@@ -479,19 +479,6 @@ function display_admin_members() {
             'add_member_link' => Config::$root_uri.'admin/membres/add'
         )
     )));
-}
-
-// check if an username already exists,
-// and return the response with JSON
-function json_admin_check_username() {
-    if (!has_get('username')) {
-        return '';
-    }
-    $u = trim($_GET['username']);
-
-    $user = UserQuery::create()->findOneByUsername($u);
-
-    return json(array('response' => ($user ? 'fail' : 'ok')));
 }
 
 ?>
