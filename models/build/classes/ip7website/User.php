@@ -156,7 +156,7 @@ class User extends BaseUser {
     $today = new DateTime(); 
     $birthdate = get_datetime($this->getBirthdate());
 
-    return intval($birthdate->diff($today)->format('%Y'));
+    return ($birthdate ? intval($birthdate->diff($today)->format('%Y')) : NULL);
   }
 
   /* == Misc ================================================= */
