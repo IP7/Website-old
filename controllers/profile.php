@@ -116,7 +116,7 @@ function display_profile_page($username=NULL, $is_my_profile=false) {
         )
     );
 
-    return tpl_render('public_profile.html', $profile);
+    return tpl_render('profile/public.html', $profile);
 
 }
 
@@ -146,7 +146,7 @@ function display_edit_profile_page($username=NULL, $is_my_profile=false) {
 
     $tpl_user = tpl_user($user, true);
 
-    return tpl_render('profile_edit.html', array(
+    return tpl_render('profile/edit.html', array(
         'page' => array(
             'title' => 'Édition du profil'.($me ? '' : ' de '.$tpl_user['displayed_name']),
 
@@ -263,7 +263,7 @@ function post_edit_profile_page($username=NULL) {
     }
 
 
-    return tpl_render('profile_edit.html', array(
+    return tpl_render('profile/edit.html', array(
         'page' => array(
             'title' => 'Edition du profil',
             'edit_form' => array( 'action' => Config::$root_uri.'profile/edit' ),
@@ -282,8 +282,14 @@ function post_edit_my_profile_page() {
     return post_edit_profile_page(user()->getUsername());
 }
 
-function display_init_my_profile_page() {
-    if (!isset($_SESSION) || !isset($_SESSION['token']) || empty($_SESSION['token'])) {
+function display_init_my_profile_page($token=null, $message=null, $message_type=null) {
+
+    if (!$token) {
+        if (!isset($_SESSION) || !isset($_SESSION['token']) || empty($_SESSION['token'])) {
+            halt(HTTP_FORBIDDEN);
+        }
+    }
+    else if (!use_token($token, 'GET')) {
         halt(HTTP_FORBIDDEN);
     }
 
@@ -358,6 +364,8 @@ function display_init_my_profile_page() {
     return tpl_render('profile/init.html', array(
         'page' => array(
             'title' => 'Initialisation du profil',
+            'message' => $message,
+            'message_type' => $message_type,
             'user' => tpl_user($user),
             'form' => array(
                 'action' => Config::$root_uri.'profile/init',
@@ -385,6 +393,8 @@ function post_init_my_profile_page() {
     $user = $_SESSION['token']['user'];
     $rights = $_SESSION['token']['rights'];
 
+    $invalid_fields = 0;
+
     if (has_post('username') && ($rights & Token::canChangeUsername)) {
 
         $username = get_string('username', 'post');
@@ -392,10 +402,12 @@ function post_init_my_profile_page() {
         if (!filter_username($username)) {
             $message = 'Le pseudo n\'est pas valide.';
             $message_type = 'error';
+            $invalid_fields |= Token::canChangeUsername;
         }
         else if (UserQuery::create()->findOneByUsername($username)) {
             $message = 'Le pseudo est déjà pris.';
             $message_type = 'error';
+            $invalid_fields |= Token::canChangeUsername;
         }
         else {
             $user->setUsername($username);
@@ -408,6 +420,7 @@ function post_init_my_profile_page() {
         if (!filter_name($firstname)) {
             $message .= ($message ? ' ' : '') . 'Le prénom n\'est pas valide.';
             $message_type = $message_type || 'error';
+            $invalid_fields |= Token::canChangeName;
         }
         else {
             $user->setFirstName($firstname);
@@ -420,6 +433,7 @@ function post_init_my_profile_page() {
         if (!filter_name($lastname)) {
             $message .= ($message ? ' ' : '') . 'Le nom n\'est pas valide.';
             $message_type = $message_type || 'error';
+            $invalid_fields |= Token::canChangeName;
         }
         else {
             $user->setLastName($lastname);
@@ -432,6 +446,7 @@ function post_init_my_profile_page() {
         if (!filter_email($email)) {
             $message .= ($message ? ' ' : '') . 'L\'email n\'est pas valide.';
             $message_type = $message_type || 'error';
+            $invalid_fields |= Token::canChangeEmail;
         }
         else {
             $user->setEmail($email);
@@ -440,13 +455,25 @@ function post_init_my_profile_page() {
 
     if (has_post('phone') && ($rights & Token::canChangePhone)) {
         $phone = format_phone(get_string('phone', 'post'));
-        $user->setPhone($phone);
+        if (!filter_phone($phone)) {
+            $message .= ($message ? ' ' : '') . 'Le téléphone n\'est pas valide.';
+            $message_type = $message_type || 'error';
+            $invalid_fields |= Token::canChangePhone;
+        }
+        else {
+            $user->setPhone($phone);
+        }
     }
 
     $user->save();
 
-    //TODO is $message is set, generate another POST token,
-    //and display again the form, with only the bad fields
+    if (!$message) {
+        redirect_to('/connexion', array( 'status' => HTTP_SEE_OTHER ));
+    }
+
+    $new_token = generate_token($user, $invalid_fields, time() + 3600 * 24, false);
+
+    return display_init_my_profile_page($new_token, $message, $message_type);
 }
 
 ?>
