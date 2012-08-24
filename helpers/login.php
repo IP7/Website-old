@@ -29,7 +29,7 @@ function check_user_credentials($username, $password){
 
     if ( $user instanceof User ){
         if ( Config::$p_hasher->CheckPassword($password, $user->getPasswordHash()) ){
-            if ( $user->isActivated() ){
+            if ( $user->isActivated() && !is_temp_username($user->getUsername()) ){
                 return $user;
             }
             return DEACTIVATED_ACCOUNT;
