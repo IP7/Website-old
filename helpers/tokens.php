@@ -42,6 +42,12 @@ function generate_token($user=null, $rights_array=0, $expiration_date=null, $pos
     return $token->getValue();
 }
 
+// shortcut for generate_token($user, $rights_array, $expiration_date, true)
+function generate_post_token($user=null, $rights_array=0, $expiration_date=null) {
+    return generate_token($user, $rights_array, $expiration_date);
+}
+
+// if the given token is valid, set $_SESSION['token'] and returns true
 function use_token($token_string, $used_method='GET') {
 
     $token = TokenQuery::create()
