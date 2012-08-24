@@ -359,6 +359,15 @@ function display_init_my_profile_page($token=null, $message=null, $message_type=
         $infos []= array( 'name' => 'Téléphone', 'value' => $user->getPhone() );
     }
 
+    if ($rights & Token::canChangePassword) {
+        $fields []= array(
+            'label' => 'Nouveau mot de passe',
+            'name'  => 'password',
+            'type'  => 'password',
+            'value' => ''
+        );
+    }
+
     unset($_SESSION['token']);
 
     return tpl_render('profile/init.html', array(
@@ -463,6 +472,10 @@ function post_init_my_profile_page() {
         else {
             $user->setPhone($phone);
         }
+    }
+
+    if (has_post('password') && ($rights & Token::canChangePassword)) {
+        $user->setPassword(get_string('password', 'post', false));
     }
 
     $user->save();
