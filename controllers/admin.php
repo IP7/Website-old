@@ -197,13 +197,24 @@ function post_admin_content_action(){
 
 	if ( ($content instanceOf Content) && !$content->getValidated() ){
 
+		$msg = 'Le contenu a bien été ';
+		$uri = 'admin/content/proposed';
+
 		if ( $action == 'validate' ){
 			$content->setValidated(true);
 			$content->save();
+
+			$idMessage = set_message($msg . 'validé.');
+
+			redirect_to($uri. '?n='. $idMessage);
 		}	
 
-		else if ( $action == 'delete' )
+		else if ( $action == 'delete' ){
 			$content->delete();
+			
+			$idMessage = set_message($msg . 'supprimé.');
+			redirect_to($uri. '?n=' . $idMessage);
+		}	
 
 		else
 			halt(NOT_FOUND);
