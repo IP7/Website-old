@@ -1,14 +1,14 @@
 <?php
 
 // basic filter
-function get_string($s, $from=null) {
+function get_string($s, $from=null, $trim=true) {
     if ($from == 'post') {
         $s = has_post($s) ? $_POST[$s] : '';
     } else if ($from == 'get') {
         $s = has_get($s) ? $_GET[$s] : '';
     }
 
-    return trim($s);
+    return $trim ? trim($s) : $s;
 }
 
 /* -- Filters -- */

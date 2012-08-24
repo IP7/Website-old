@@ -51,30 +51,30 @@ function post_connection() {
     $message_type = '';
 
     # Connection
-    if (   (isset($_POST['username']) && !empty($_POST['username']))
-        && (isset($_POST['password']) && !empty($_POST['password']))) {
+    if (isset($_POST['username']) && !empty($_POST['username'])) {
 
-            # sanitization made by Propel
-            $res = connection(
-                ''.$_POST['username'],
-                ''.$_POST['password'],
-                (isset($_POST['remember']) ? (bool)$_POST['remember'] : false)
-            );
+        $password = get_string('password', 'post', false);
 
-            if ($res !== CONNECTION_OK) {
-                $message_type = 'error';
-                $message = app_error_message($res);
-            }
-    }
+        # sanitization made by Propel
+        $res = connection(
+            get_string('username', 'post'),
+            $password,
+            (isset($_POST['remember']) ? (bool)$_POST['remember'] : false)
+        );
 
-    if (!$message) {
-        redirect_to('/', array('status' => HTTP_SEE_OTHER));
+        if ($res !== CONNECTION_OK) {
+            $message_type = 'error';
+            $message = app_error_message($res);
+        }
+        else {
+            redirect_to('/', array('status' => HTTP_SEE_OTHER));
+        }
     }
 
     return tpl_render('connection.html', array(
         'page' => array(
             'title' => 'Connexion',
-            'connection' => array( 'action' => Config::$root_uri ),
+            'connection' => array( 'action' => Config::$root_uri.'/connexion' ),
 
             'message' => $message,
             'message_type' => $message_type

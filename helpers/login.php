@@ -27,15 +27,20 @@ function check_user_credentials($username, $password){
     $user = UserQuery::create()
                 ->findOneByUsername($username);
 
-    if ( $user instanceof User ){
-        if ( Config::$p_hasher->CheckPassword($password, $user->getPasswordHash()) ){
-            if ( $user->isActivated() && !is_temp_username($user->getUsername()) ){
-                return $user;
-            }
-            return DEACTIVATED_ACCOUNT;
-        }
+    // Bad username
+    if ($user == NULL) { return WRONG_USERNAME_OR_PASSWORD; }
+
+    // Bad password
+    if (Config::$p_hasher->CheckPassword($password, $user->getPasswordHash())) {
+        return WRONG_USERNAME_OR_PASSWORD;
     }
-    return WRONG_USERNAME_OR_PASSWORD;
+
+    // Deactivated user
+    if ( !$user->isActivated() || is_temp_username($user->getUsername()) ){
+        return DEACTIVATED_ACCOUNT;
+    }
+
+    return $user;
 }
 
 
@@ -49,13 +54,13 @@ function check_user_credentials($username, $password){
  **/
 function connection($username, $password, $remember=false) {
 
-    if (is_connected()) {
+    if (is_connected() && user()->getUsername() == $username) {
         return ALREADY_CONNECTED;
     }
 
     $user = check_user_credentials($username, $password);
 
-    if (!( $user instanceof User )) {
+    if (!($user instanceof User)) {
         return $user; // error code
     }
 
@@ -105,7 +110,9 @@ function disconnection() {
  * Test if an user is already connected, and return true or false.
  **/
 function is_connected() {
-    return (isset($_SESSION['user']) && ($_SESSION['user'] instanceof User));
+    return (isset($_SESSION['user'])
+                && (user() instanceof User)
+                && user()->isActivated());
 }
 
 /**
