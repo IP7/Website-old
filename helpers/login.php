@@ -88,6 +88,7 @@ function set_connected($user, $remember=false) {
         $user->setLastVisit(new DateTime());
         $_SESSION['visit_counted'] = true;
     }
+    $_SESSION['message'] = array();
 
     return CONNECTION_OK;
 }
