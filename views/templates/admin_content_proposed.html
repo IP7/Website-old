@@ -3,6 +3,8 @@
 {% block admin_content %}
 {{ parent() }}
 
+	{% if page.msg is not empty %}<p> {{ page.msg }} </p> {% endif %}
+
 	<table id="proposedList" border="1">
 		<tr><th>Titre</th><th>Année</th><th>Cours</th><th>Pseudo</th><th>Date</th><th class="empty"</th></tr>
 
