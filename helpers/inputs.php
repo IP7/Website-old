@@ -2,6 +2,8 @@
 
 // basic filter
 function get_string($s, $from=null, $trim=true) {
+    $from = strtolower($from);
+
     if ($from == 'post') {
         $s = has_post($s) ? $_POST[$s] : '';
     } else if ($from == 'get') {

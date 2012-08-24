@@ -97,4 +97,13 @@ function get_date_from_input($inp) {
     return new DateTime($year.'-'.$month.'-'.$day);
 }
 
+// Use it like that:
+//      $in_24_hours = time() + Durations::ONE_DAY
+//
+class Durations {
+    const ONE_MINUTE = 60;
+    const ONE_HOUR   = 3600;
+    const ONE_DAY    = 86400; // 3600 * 24
+}
+
 ?>

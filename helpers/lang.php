@@ -25,4 +25,10 @@ function bool_to_fr($b) {
     return $b ? 'oui' : 'non';
 }
 
+// Returns 'Bonjour' or 'Bonsoir'
+function bonjour() {
+    $hours = intval(date('G'));
+    return ($hours > 4 && $hours < 19) ? 'Bonjour' : 'Bonsoir';
+}
+
 ?>

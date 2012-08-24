@@ -44,7 +44,9 @@ function display_connection($message=null, $message_type=null) {
     return tpl_render('connection.html', array(
         'page' => array(
             'title' => 'Connexion',
-            'connection' => array( 'action' => Config::$root_uri.'connexion' ),
+            'form' => array( 'action' => Config::$root_uri.'connexion' ),
+
+            'forgotten_password_url' => Config::$root_uri.'oubli',
 
             'message' => $message,
             'message_type' => $message_type
@@ -78,6 +80,61 @@ function post_connection() {
     }
 
     return display_connection($message, $message_type);
+}
+
+function display_forgotten_password($message=null, $message_type=null) {
+
+    return tpl_render('forgotten_password.html', array(
+        'page' => array(
+            'title' => 'Mot de passe oublié',
+            'form' => array(
+                'action' => Config::$root_uri.'oubli',
+                'post_token' => generate_post_token()
+            ),
+            'message' => $message,
+            'message_type' => $message_type
+        )
+    ));
+}
+
+function post_forgotten_password() {
+    if (!has_post('email') || !has_post('t')) {
+        return display_forgotten_password();
+    }
+
+    $email = get_string('email', 'POST');
+
+    $user = UserQuery::create()->findOneByEmail($email);
+
+    // bad email
+    if (!$user) {
+        return display_forgotten_password(
+            'Aucun utilisateur n\'a cette adresse email.',
+            'error'
+        );
+    }
+
+    // bad token
+    if (!use_token($_POST['t'])) {
+        return display_forgotten_password();
+    }
+
+    if (!send_connection_token_email($user)) {
+        return display_forgotten_password(
+            'Une erreur est survenue lors de l\'envoi du mail. Merci de contacter un responsable.',
+            'error'
+        );
+    }
+
+    return tpl_render('forgotten_password.html', array(
+        'page' => array(
+            'title'        => 'Email envoyé',
+            'breadcrumbs'  => false,
+            'mail_url'     => get_mail_provider_url($user),
+            'confirmation' =>  'Vous allez bientôt recevoir un mail vous permettant'
+                             . ' de modifier votre mot de passe.'
+        )
+    ));
 }
 
 ?>

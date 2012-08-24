@@ -50,21 +50,25 @@ dispatch('/connexion', 'display_connection');
 ## (post) connection
 dispatch_post('/connexion', 'post_connection');
 
-# ## users' profiles
+## forgotten password
+dispatch('/oubli', 'display_forgotten_password');
+dispatch_post('/oubli', 'post_forgotten_password');
+
+## users' profiles
 dispatch('/p/*', 'display_profile_page');
 dispatch('/p/*/edit', 'display_edit_profile_page');
 dispatch_post('/p/*/edit', 'post_edit_profile_page');
-# ## my profile
+## my profile
 dispatch('/profile', 'display_my_profile_page');
 dispatch_post('/profile', 'display_my_profile_page');
-# ## edit my profile
+## edit my profile
 dispatch('/profile/edit', 'display_edit_my_profile_page');
 dispatch_post('/profile/edit', 'post_edit_my_profile_page');
 dispatch('/profile/init', 'display_init_my_profile_page');
 dispatch_post('/profile/init', 'post_init_my_profile_page');
 # 
 # ## search
-# dispatch('/search', 'display_search_page');
+# dispatch('/recherche', 'display_search_page');
 
 ## cursus
 dispatch('/cursus/:name', 'display_cursus');
@@ -76,7 +80,6 @@ dispatch('/cursus/:name/edit', 'display_moderation_edit_cursus');
 
 ## course
 dispatch('/cursus/:cursus/:course', 'display_course');
-
 
 ## admin home
 dispatch('/admin', 'display_admin_home');
@@ -95,14 +98,10 @@ dispatch('/admin/membres/check.json', 'json_admin_check_username');
 dispatch('/admin/migrate', 'display_admin_migrate_db_page');
 
 ## (almost-)static pages
-#
 dispatch('/contact', 'display_contact_page');
 dispatch('/sitemap', 'display_sitemap_page');
 dispatch('/legals',   'display_legals_page');
 
-# test
-# init DB
-dispatch('/test/init_db', 'display_test_init_db');
 
 # Errors handling (functions called by Limonade)
 
