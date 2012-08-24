@@ -109,6 +109,7 @@ function display_admin_content_proposed(){
 							->findByValidated(0);
 
 	$contentProposed = Array();
+	$msg = '';
 
 	if ( $query != null ){
 
@@ -132,10 +133,16 @@ function display_admin_content_proposed(){
 
 
 		}
+
+		if ( has_get('n',false) ){
+			if ( array_key_exists($_GET['n'],$_SESSION['message']) )
+				$msg = get_message($_GET['n']);
+		}
 			
 		return Config::$tpl->render('admin_content_proposed.html', tpl_array(admin_tpl_default(),array(
 						'page' => Array(
 							'title' => 'Contenu proposé',
+							'msg' => $msg,
 							'proposed' => $contentProposed
 						)
 				)));
