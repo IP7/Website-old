@@ -171,7 +171,7 @@ function get_temp_username() {
 
 // test if an username is temporary
 function is_temp_username($u) {
-    return ((strlen($u) == 14) && (substr($u, 0, 4) == '_tmp_'));
+    return ((strlen($u) == 14) && (substr($u, 0, 5) == '_tmp_'));
 }
 
 ?>
