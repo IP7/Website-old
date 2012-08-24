@@ -55,9 +55,11 @@ function use_token($token_string, $used_method='GET') {
         return false;
     }
 
+    // delete the token in the DB, but the PHP object still exists
+    $token->delete();
+
     // if the token's expiration date is over
     if ($token->getExpirationDate() > 0 && $token->getExpirationDate() < time()) {
-        $token->delete();
         return false;
     }
 
@@ -65,16 +67,16 @@ function use_token($token_string, $used_method='GET') {
     $rights = $token->getRights();
     $method = $token->getMethod();
 
-    $token->delete();
-
     if ($rights < 0) {
         return false;
     }
 
-    $_SESSION['token'] = array( 'value'  => $token->getValue(),
-                                'rights' => $rights,
-                                'user'   => $user,
-                                'method' => $method );
+    $_SESSION['token'] = array(
+        'value'  => $token->getValue(),
+        'rights' => $rights,
+        'user'   => $user,
+        'method' => $method
+    );
 
     if ($rights & Token::canConnect) {
         set_connected($user, false);
