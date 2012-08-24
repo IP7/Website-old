@@ -58,7 +58,14 @@ function optimize_tables() {
 }
 
 function do_maintenance(&$message, &$message_type) {
-    if (isset($_GET['purge_cache'])) {
+    if (has_get('purge_cache')) {
+
+        if (!use_token($_GET['purge_cache'])) {
+            $message = 'Le token a expiré, veuillez réessayer.';
+            $message_type = 'error';
+            return false;
+        }
+
         if (!purge_cache()) {
             $message = 'Erreur lors de la purge. Consultez les logs.';
             $message_type = 'error';
@@ -68,7 +75,14 @@ function do_maintenance(&$message, &$message_type) {
             $message_type = 'notice';
         }
     }
-    else if (isset($_GET['optimize_tables'])) {
+    else if (has_get('optimize_tables')) {
+
+        if (!use_token($_GET['optimize_tables'])) {
+            $message = 'Le token a expiré, veuillez réessayer.';
+            $message_type = 'error';
+            return false;
+        }
+
         if (!optimize_tables()) {
             $message = 'Erreur lors de l\'optimisation. Consultez les logs.';
             $message_type = 'error';

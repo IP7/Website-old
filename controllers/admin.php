@@ -10,6 +10,8 @@ function display_admin_home($message, $message_type) {
 
     do_maintenance(&$message, &$message_type);
 
+    $token = generate_token(null, 0, time() + Durations::ONE_MINUTE*2);
+
     return Config::$tpl->render('admin_main.html', tpl_array(
         admin_tpl_default(),
         array(
@@ -41,8 +43,8 @@ function display_admin_home($message, $message_type) {
                         'title'   => 'Maintenance',
                         'id'      => 'mnt',
                         'actions' => array(
-                            array('title' => 'Purger le cache des templates', 'href' => $admin_uri.'?purge_cache'),
-                            array('title' => 'Optimiser les tables',          'href' => $admin_uri.'?optimize_tables'),
+                            array('title' => 'Purger le cache des templates', 'href' => $admin_uri.'?purge_cache='.$token),
+                            array('title' => 'Optimiser les tables',          'href' => $admin_uri.'?optimize_tables='.$token),
                             array('title' => 'Migrer la base de données',     'href' => $admin_uri.'/migrate')
                         )
                     )
