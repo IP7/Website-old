@@ -206,14 +206,14 @@ function post_admin_content_action(){
 
 			$idMessage = set_message($msg . 'validé.');
 
-			redirect_to($uri. '?n='. $idMessage);
+			redirect_to($uri, Array('n' => $idMessage));
 		}	
 
 		else if ( $action == 'delete' ){
 			$content->delete();
 			
 			$idMessage = set_message($msg . 'supprimé.');
-			redirect_to($uri. '?n=' . $idMessage);
+			redirect_to($uri, Array('n' => $idMessage));
 		}	
 
 		else
