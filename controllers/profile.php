@@ -295,6 +295,7 @@ function display_init_my_profile_page($token=null, $message=null, $message_type=
 
     $token = $_SESSION['token'];
     $user = $token['user'];
+    $username = $user->getUsername();
     $rights = $token['rights'];
 
     $post_token = generate_token($user, $rights, time() + 3600 * 24, true);
