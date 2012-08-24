@@ -26,22 +26,28 @@ function display_home() {
 
 }
 
-function display_connection() {
-    if (is_connected()) {
-        redirect_to('/');
-    }
+function display_connection($message=null, $message_type=null) {
 
-    # Tokens
-    if (has_get('t')
-        && use_token(''.$_GET['t'])
-        && ($_SESSION['token']['rights'] > 1)) {
-            redirect_to('/profile/init', array('status' => HTTP_SEE_OTHER));
+    if (!$message) {
+        if (is_connected()) {
+            redirect_to('/');
+        }
+
+        # Tokens
+        if (has_get('t')
+            && use_token(''.$_GET['t'])
+            && ($_SESSION['token']['rights'] > 1)) {
+                redirect_to('/profile/init', array('status' => HTTP_SEE_OTHER));
+        }
     }
 
     return tpl_render('connection.html', array(
         'page' => array(
             'title' => 'Connexion',
-            'connection' => array( 'action' => Config::$root_uri.'connexion' )
+            'connection' => array( 'action' => Config::$root_uri.'connexion' ),
+
+            'message' => $message,
+            'message_type' => $message_type
         )
     ));
 }
@@ -71,16 +77,7 @@ function post_connection() {
         }
     }
 
-    return tpl_render('connection.html', array(
-        'page' => array(
-            'title' => 'Connexion',
-            'connection' => array( 'action' => Config::$root_uri.'/connexion' ),
-
-            'message' => $message,
-            'message_type' => $message_type
-        )
-    ));
-
+    return display_connection($message, $message_type);
 }
 
 ?>
