@@ -25,7 +25,8 @@ class Token extends BaseToken
     const canChangeName        = 4;
     const canChangeEmail       = 8;
     const canChangePhone       = 16;
+    const canChangePassword    = 32;
 
-    const canChangeWholeProfil = 31; // 16|8|4|2|
+    const canChangeWholeProfil = 63; // 32|16|8|4|2|
 
 }

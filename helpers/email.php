@@ -42,7 +42,7 @@ function send_welcome_message($user, $password) {
 function send_connection_token_email($user) {
 
     $subject = 'Mot de passe oublié';
-    $token   = generate_token($user, Token::canConnect, time()+Durations::ONE_DAY);
+    $token   = generate_token($user, Token::canChangePassword, time()+Durations::ONE_DAY);
 
     $message = bonjour().', vous trouverez ci-dessous un lien vous'
              . ' permettant de vous connecter à votre compte pour réinitialiser'
@@ -60,6 +60,7 @@ function get_mail_provider_url($user) {
         'gmail.com'          => 'mail.google.com/mail',
         'hotmail.fr'         => 'www.hotmail.fr',
         'hotmail.com'        => 'www.hotmail.com',
+        'orange.fr'          => 'webmail.orange.fr/webmail',
         'voila.fr'           => 'mail.voila.fr',
         'yahoo.com'          => 'mail.yahoo.com',
         'yahoo.fr'           => 'fr.mail.yahoo.com'

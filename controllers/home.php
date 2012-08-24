@@ -34,10 +34,17 @@ function display_connection($message=null, $message_type=null) {
         }
 
         # Tokens
-        if (has_get('t')
-            && use_token(''.$_GET['t'])
-            && ($_SESSION['token']['rights'] > 1)) {
+        if (has_get('t') && use_token(''.$_GET['t'])) {
+
+            // Token::canChange*
+            if ($_SESSION['token']['rights'] > 1) {
                 redirect_to('/profile/init', array('status' => HTTP_SEE_OTHER));
+            }
+
+            // Token::canConnect
+            if ($_SESSION['token']['rights'] > 0) {
+                redirect_to('/', array('status' => HTTP_SEE_OTHER));
+            }
         }
     }
 
