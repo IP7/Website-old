@@ -22,7 +22,12 @@ function display_admin_migrate_db_page() {
     return Config::$tpl->render('admin_db_migration.html', tpl_array(
         admin_tpl_default(),
         array(
-            'page' => array( 'title' => 'Migration de la base de données' )
+            'page' => array(
+                'title' => 'Migration de la base de données',
+                'breadcrumbs' => array(
+                    1 => array( 'title' => 'Migration de la base de données', 'href' => url())
+                )
+            )
         )
     ));
 }
