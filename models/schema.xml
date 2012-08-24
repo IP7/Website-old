@@ -1024,7 +1024,7 @@
         <column name="id" type="INTEGER" required="true" primaryKey="true" autoIncrement="true"/>
 
         <!-- id de l'utilisateur concerné -->
-        <column name="user_id" type="INTEGER" required="true" />
+        <column name="user_id" type="INTEGER" />
 
         <!-- date d'expiration éventuelle -->
         <column name="expiration_date" type="TIMESTAMP" />

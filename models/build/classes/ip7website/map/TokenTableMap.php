@@ -39,7 +39,7 @@ class TokenTableMap extends TableMap
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
-        $this->addForeignKey('USER_ID', 'UserId', 'INTEGER', 'users', 'ID', true, null, null);
+        $this->addForeignKey('USER_ID', 'UserId', 'INTEGER', 'users', 'ID', false, null, null);
         $this->addColumn('EXPIRATION_DATE', 'ExpirationDate', 'TIMESTAMP', false, null, null);
         $this->addColumn('RIGHTS', 'Rights', 'TINYINT', false, null, 0);
         $this->addColumn('VALUE', 'Value', 'VARCHAR', true, 255, null);

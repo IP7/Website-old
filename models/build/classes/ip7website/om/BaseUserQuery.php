@@ -2545,7 +2545,7 @@ abstract class BaseUserQuery extends ModelCriteria
      *
      * @return UserQuery The current query, for fluid interface
      */
-    public function joinToken($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function joinToken($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         $tableMap = $this->getTableMap();
         $relationMap = $tableMap->getRelation('Token');
@@ -2580,7 +2580,7 @@ abstract class BaseUserQuery extends ModelCriteria
      *
      * @return   TokenQuery A secondary query class using the current class as primary query
      */
-    public function useTokenQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function useTokenQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         return $this
             ->joinToken($relationAlias, $joinType)

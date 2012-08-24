@@ -2418,9 +2418,10 @@ abstract class BaseUser extends BaseObject implements Persistent
 
             if ($this->tokensScheduledForDeletion !== null) {
                 if (!$this->tokensScheduledForDeletion->isEmpty()) {
-                    TokenQuery::create()
-                        ->filterByPrimaryKeys($this->tokensScheduledForDeletion->getPrimaryKeys(false))
-                        ->delete($con);
+                    foreach ($this->tokensScheduledForDeletion as $token) {
+                        // need to save related object because we set the relation to null
+                        $token->save($con);
+                    }
                     $this->tokensScheduledForDeletion = null;
                 }
             }

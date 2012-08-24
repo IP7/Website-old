@@ -14,20 +14,18 @@
         | Token::canChangeWholeProfile ]
    )
 */
-function generate_token($user, $rights_array=0, $expiration_date=null, $post_method=false) {
-
-    if ($user == NULL) {
-        return NULL;
-    }
+function generate_token($user=null, $rights_array=0, $expiration_date=null, $post_method=false) {
 
     $rights = 0;
 
-    if (is_array($rights_array)) {
-        foreach ($rights_array as $k => $v) {
-            $rights |= $v;
+    if ($user) {
+        if (is_array($rights_array)) {
+            foreach ($rights_array as $k => $v) {
+                $rights |= $v;
+            }
+        } else {
+            $rights = $rights_array;
         }
-    } else {
-        $rights = $rights_array;
     }
 
     $token = new Token();
@@ -78,7 +76,7 @@ function use_token($token_string, $used_method='GET') {
         'method' => $method
     );
 
-    if ($rights & Token::canConnect) {
+    if ($user && ($rights & Token::canConnect)) {
         set_connected($user, false);
     }
 

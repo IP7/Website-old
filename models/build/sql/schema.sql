@@ -803,7 +803,7 @@ DROP TABLE IF EXISTS `tokens`;
 CREATE TABLE `tokens`
 (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `user_id` INTEGER NOT NULL,
+    `user_id` INTEGER,
     `expiration_date` DATETIME,
     `rights` TINYINT DEFAULT 0,
     `value` VARCHAR(255) NOT NULL,
