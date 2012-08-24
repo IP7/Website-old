@@ -75,6 +75,24 @@ function filter_email($email, $from=null) {
     return preg_match('/^[-+.a-zA-Z0-9]+@[-a-zA-Z0-9]+\.[a-z]{2,4}$/', $email);
 }
 
+// filter a French phone number
+function filter_phone($phone, $from=null) {
+    $phone = get_string($phone, $from);
+
+    $len = strlen($phone);
+
+    switch ($len) {
+    case 10: // 06xxxxxxxx
+        return ($phone[0] == '0');
+    case 11: // 33xxxxxxxx
+        return (($phone[0] == 3) && ($phone[1] == 3));
+    case 13: // 0033xxxxxxxx
+        return ($phone[0] + $phone[1] == 0);
+    }
+
+    return false;
+}
+
 /* -- Formats -- */
 
 // (re)format a phone number given by an user
