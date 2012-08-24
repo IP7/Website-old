@@ -102,6 +102,7 @@ if (!$q) {
     $admin->setFirstEntry('2012-08-09');
     $admin->setLastEntry('2012-08-09');
     $admin->setLastVisit(time());
+	 $admin->setDeactivated(0);
     $admin->setDescription('Utilisateur administrateur de test');
     $admin->setRemarks('tralala');
     $admin->save();

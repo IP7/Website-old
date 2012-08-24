@@ -31,7 +31,7 @@ function check_user_credentials($username, $password){
     if ($user == NULL) { return WRONG_USERNAME_OR_PASSWORD; }
 
     // Bad password
-    if (Config::$p_hasher->CheckPassword($password, $user->getPasswordHash())) {
+    if (!Config::$p_hasher->CheckPassword($password, $user->getPasswordHash())) {
         return WRONG_USERNAME_OR_PASSWORD;
     }
 
