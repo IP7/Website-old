@@ -19,4 +19,10 @@ class Cursus extends BaseCursus {
         return strtoupper(parent::getShortName());
     }
 
+    // return the first educational path
+    public function getEducationalPath() {
+        $p = $this->getEducationalPaths();
+        return (count($p) ? $p[0] : NULL);
+    }
+
 } // Cursus
