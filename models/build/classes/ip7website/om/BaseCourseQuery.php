@@ -9,7 +9,6 @@
  * @method CourseQuery orderById($order = Criteria::ASC) Order by the id column
  * @method CourseQuery orderByCursusId($order = Criteria::ASC) Order by the cursus_id column
  * @method CourseQuery orderBySemester($order = Criteria::ASC) Order by the semester column
- * @method CourseQuery orderByOptional($order = Criteria::ASC) Order by the optional column
  * @method CourseQuery orderByName($order = Criteria::ASC) Order by the name column
  * @method CourseQuery orderByCode($order = Criteria::ASC) Order by the code column
  * @method CourseQuery orderByEcts($order = Criteria::ASC) Order by the ECTS column
@@ -18,7 +17,6 @@
  * @method CourseQuery groupById() Group by the id column
  * @method CourseQuery groupByCursusId() Group by the cursus_id column
  * @method CourseQuery groupBySemester() Group by the semester column
- * @method CourseQuery groupByOptional() Group by the optional column
  * @method CourseQuery groupByName() Group by the name column
  * @method CourseQuery groupByCode() Group by the code column
  * @method CourseQuery groupByEcts() Group by the ECTS column
@@ -31,6 +29,14 @@
  * @method CourseQuery leftJoinCursus($relationAlias = null) Adds a LEFT JOIN clause to the query using the Cursus relation
  * @method CourseQuery rightJoinCursus($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Cursus relation
  * @method CourseQuery innerJoinCursus($relationAlias = null) Adds a INNER JOIN clause to the query using the Cursus relation
+ *
+ * @method CourseQuery leftJoinEducationalPathsOptionalCourses($relationAlias = null) Adds a LEFT JOIN clause to the query using the EducationalPathsOptionalCourses relation
+ * @method CourseQuery rightJoinEducationalPathsOptionalCourses($relationAlias = null) Adds a RIGHT JOIN clause to the query using the EducationalPathsOptionalCourses relation
+ * @method CourseQuery innerJoinEducationalPathsOptionalCourses($relationAlias = null) Adds a INNER JOIN clause to the query using the EducationalPathsOptionalCourses relation
+ *
+ * @method CourseQuery leftJoinEducationalPathsMandatoryCourses($relationAlias = null) Adds a LEFT JOIN clause to the query using the EducationalPathsMandatoryCourses relation
+ * @method CourseQuery rightJoinEducationalPathsMandatoryCourses($relationAlias = null) Adds a RIGHT JOIN clause to the query using the EducationalPathsMandatoryCourses relation
+ * @method CourseQuery innerJoinEducationalPathsMandatoryCourses($relationAlias = null) Adds a INNER JOIN clause to the query using the EducationalPathsMandatoryCourses relation
  *
  * @method CourseQuery leftJoinAlert($relationAlias = null) Adds a LEFT JOIN clause to the query using the Alert relation
  * @method CourseQuery rightJoinAlert($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Alert relation
@@ -62,7 +68,6 @@
  * @method Course findOneById(int $id) Return the first Course filtered by the id column
  * @method Course findOneByCursusId(int $cursus_id) Return the first Course filtered by the cursus_id column
  * @method Course findOneBySemester(int $semester) Return the first Course filtered by the semester column
- * @method Course findOneByOptional(boolean $optional) Return the first Course filtered by the optional column
  * @method Course findOneByName(string $name) Return the first Course filtered by the name column
  * @method Course findOneByCode(string $code) Return the first Course filtered by the code column
  * @method Course findOneByEcts(double $ECTS) Return the first Course filtered by the ECTS column
@@ -71,7 +76,6 @@
  * @method array findById(int $id) Return Course objects filtered by the id column
  * @method array findByCursusId(int $cursus_id) Return Course objects filtered by the cursus_id column
  * @method array findBySemester(int $semester) Return Course objects filtered by the semester column
- * @method array findByOptional(boolean $optional) Return Course objects filtered by the optional column
  * @method array findByName(string $name) Return Course objects filtered by the name column
  * @method array findByCode(string $code) Return Course objects filtered by the code column
  * @method array findByEcts(double $ECTS) Return Course objects filtered by the ECTS column
@@ -165,7 +169,7 @@ abstract class BaseCourseQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `ID`, `CURSUS_ID`, `SEMESTER`, `OPTIONAL`, `NAME`, `CODE`, `ECTS`, `DESCRIPTION` FROM `courses` WHERE `ID` = :p0';
+        $sql = 'SELECT `ID`, `CURSUS_ID`, `SEMESTER`, `NAME`, `CODE`, `ECTS`, `DESCRIPTION` FROM `courses` WHERE `ID` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -363,33 +367,6 @@ abstract class BaseCourseQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(CoursePeer::SEMESTER, $semester, $comparison);
-    }
-
-    /**
-     * Filter the query on the optional column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByOptional(true); // WHERE optional = true
-     * $query->filterByOptional('yes'); // WHERE optional = true
-     * </code>
-     *
-     * @param     boolean|string $optional The value to use as filter.
-     *              Non-boolean arguments are converted using the following rules:
-     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
-     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
-     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return CourseQuery The current query, for fluid interface
-     */
-    public function filterByOptional($optional = null, $comparison = null)
-    {
-        if (is_string($optional)) {
-            $optional = in_array(strtolower($optional), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
-        }
-
-        return $this->addUsingAlias(CoursePeer::OPTIONAL, $optional, $comparison);
     }
 
     /**
@@ -594,6 +571,154 @@ abstract class BaseCourseQuery extends ModelCriteria
         return $this
             ->joinCursus($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'Cursus', 'CursusQuery');
+    }
+
+    /**
+     * Filter the query by a related EducationalPathsOptionalCourses object
+     *
+     * @param   EducationalPathsOptionalCourses|PropelObjectCollection $educationalPathsOptionalCourses  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return   CourseQuery The current query, for fluid interface
+     * @throws   PropelException - if the provided filter is invalid.
+     */
+    public function filterByEducationalPathsOptionalCourses($educationalPathsOptionalCourses, $comparison = null)
+    {
+        if ($educationalPathsOptionalCourses instanceof EducationalPathsOptionalCourses) {
+            return $this
+                ->addUsingAlias(CoursePeer::ID, $educationalPathsOptionalCourses->getCourseId(), $comparison);
+        } elseif ($educationalPathsOptionalCourses instanceof PropelObjectCollection) {
+            return $this
+                ->useEducationalPathsOptionalCoursesQuery()
+                ->filterByPrimaryKeys($educationalPathsOptionalCourses->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByEducationalPathsOptionalCourses() only accepts arguments of type EducationalPathsOptionalCourses or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the EducationalPathsOptionalCourses relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return CourseQuery The current query, for fluid interface
+     */
+    public function joinEducationalPathsOptionalCourses($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('EducationalPathsOptionalCourses');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'EducationalPathsOptionalCourses');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the EducationalPathsOptionalCourses relation EducationalPathsOptionalCourses object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   EducationalPathsOptionalCoursesQuery A secondary query class using the current class as primary query
+     */
+    public function useEducationalPathsOptionalCoursesQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinEducationalPathsOptionalCourses($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'EducationalPathsOptionalCourses', 'EducationalPathsOptionalCoursesQuery');
+    }
+
+    /**
+     * Filter the query by a related EducationalPathsMandatoryCourses object
+     *
+     * @param   EducationalPathsMandatoryCourses|PropelObjectCollection $educationalPathsMandatoryCourses  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return   CourseQuery The current query, for fluid interface
+     * @throws   PropelException - if the provided filter is invalid.
+     */
+    public function filterByEducationalPathsMandatoryCourses($educationalPathsMandatoryCourses, $comparison = null)
+    {
+        if ($educationalPathsMandatoryCourses instanceof EducationalPathsMandatoryCourses) {
+            return $this
+                ->addUsingAlias(CoursePeer::ID, $educationalPathsMandatoryCourses->getCourseId(), $comparison);
+        } elseif ($educationalPathsMandatoryCourses instanceof PropelObjectCollection) {
+            return $this
+                ->useEducationalPathsMandatoryCoursesQuery()
+                ->filterByPrimaryKeys($educationalPathsMandatoryCourses->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByEducationalPathsMandatoryCourses() only accepts arguments of type EducationalPathsMandatoryCourses or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the EducationalPathsMandatoryCourses relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return CourseQuery The current query, for fluid interface
+     */
+    public function joinEducationalPathsMandatoryCourses($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('EducationalPathsMandatoryCourses');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'EducationalPathsMandatoryCourses');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the EducationalPathsMandatoryCourses relation EducationalPathsMandatoryCourses object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   EducationalPathsMandatoryCoursesQuery A secondary query class using the current class as primary query
+     */
+    public function useEducationalPathsMandatoryCoursesQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinEducationalPathsMandatoryCourses($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'EducationalPathsMandatoryCourses', 'EducationalPathsMandatoryCoursesQuery');
     }
 
     /**
@@ -1038,6 +1163,40 @@ abstract class BaseCourseQuery extends ModelCriteria
         return $this
             ->joinScheduledCourse($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'ScheduledCourse', 'ScheduledCourseQuery');
+    }
+
+    /**
+     * Filter the query by a related EducationalPath object
+     * using the educational_paths_optional_courses table as cross reference
+     *
+     * @param   EducationalPath $educationalPath the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return   CourseQuery The current query, for fluid interface
+     */
+    public function filterByOptionalEducationalPath($educationalPath, $comparison = Criteria::EQUAL)
+    {
+        return $this
+            ->useEducationalPathsOptionalCoursesQuery()
+            ->filterByOptionalEducationalPath($educationalPath, $comparison)
+            ->endUse();
+    }
+
+    /**
+     * Filter the query by a related EducationalPath object
+     * using the educational_paths_mandatory_courses table as cross reference
+     *
+     * @param   EducationalPath $educationalPath the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return   CourseQuery The current query, for fluid interface
+     */
+    public function filterByMandatoryEducationalPath($educationalPath, $comparison = Criteria::EQUAL)
+    {
+        return $this
+            ->useEducationalPathsMandatoryCoursesQuery()
+            ->filterByMandatoryEducationalPath($educationalPath, $comparison)
+            ->endUse();
     }
 
     /**

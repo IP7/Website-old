@@ -32,13 +32,13 @@
  * @method CursusQuery rightJoinNewsletter($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Newsletter relation
  * @method CursusQuery innerJoinNewsletter($relationAlias = null) Adds a INNER JOIN clause to the query using the Newsletter relation
  *
- * @method CursusQuery leftJoinUsersCursus($relationAlias = null) Adds a LEFT JOIN clause to the query using the UsersCursus relation
- * @method CursusQuery rightJoinUsersCursus($relationAlias = null) Adds a RIGHT JOIN clause to the query using the UsersCursus relation
- * @method CursusQuery innerJoinUsersCursus($relationAlias = null) Adds a INNER JOIN clause to the query using the UsersCursus relation
- *
  * @method CursusQuery leftJoinCourse($relationAlias = null) Adds a LEFT JOIN clause to the query using the Course relation
  * @method CursusQuery rightJoinCourse($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Course relation
  * @method CursusQuery innerJoinCourse($relationAlias = null) Adds a INNER JOIN clause to the query using the Course relation
+ *
+ * @method CursusQuery leftJoinEducationalPath($relationAlias = null) Adds a LEFT JOIN clause to the query using the EducationalPath relation
+ * @method CursusQuery rightJoinEducationalPath($relationAlias = null) Adds a RIGHT JOIN clause to the query using the EducationalPath relation
+ * @method CursusQuery innerJoinEducationalPath($relationAlias = null) Adds a INNER JOIN clause to the query using the EducationalPath relation
  *
  * @method CursusQuery leftJoinAlert($relationAlias = null) Adds a LEFT JOIN clause to the query using the Alert relation
  * @method CursusQuery rightJoinAlert($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Alert relation
@@ -603,80 +603,6 @@ abstract class BaseCursusQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query by a related UsersCursus object
-     *
-     * @param   UsersCursus|PropelObjectCollection $usersCursus  the related object to use as filter
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return   CursusQuery The current query, for fluid interface
-     * @throws   PropelException - if the provided filter is invalid.
-     */
-    public function filterByUsersCursus($usersCursus, $comparison = null)
-    {
-        if ($usersCursus instanceof UsersCursus) {
-            return $this
-                ->addUsingAlias(CursusPeer::ID, $usersCursus->getCursusId(), $comparison);
-        } elseif ($usersCursus instanceof PropelObjectCollection) {
-            return $this
-                ->useUsersCursusQuery()
-                ->filterByPrimaryKeys($usersCursus->getPrimaryKeys())
-                ->endUse();
-        } else {
-            throw new PropelException('filterByUsersCursus() only accepts arguments of type UsersCursus or PropelCollection');
-        }
-    }
-
-    /**
-     * Adds a JOIN clause to the query using the UsersCursus relation
-     *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return CursusQuery The current query, for fluid interface
-     */
-    public function joinUsersCursus($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-    {
-        $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('UsersCursus');
-
-        // create a ModelJoin object for this join
-        $join = new ModelJoin();
-        $join->setJoinType($joinType);
-        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
-        if ($previousJoin = $this->getPreviousJoin()) {
-            $join->setPreviousJoin($previousJoin);
-        }
-
-        // add the ModelJoin to the current object
-        if ($relationAlias) {
-            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
-            $this->addJoinObject($join, $relationAlias);
-        } else {
-            $this->addJoinObject($join, 'UsersCursus');
-        }
-
-        return $this;
-    }
-
-    /**
-     * Use the UsersCursus relation UsersCursus object
-     *
-     * @see       useQuery()
-     *
-     * @param     string $relationAlias optional alias for the relation,
-     *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return   UsersCursusQuery A secondary query class using the current class as primary query
-     */
-    public function useUsersCursusQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-    {
-        return $this
-            ->joinUsersCursus($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'UsersCursus', 'UsersCursusQuery');
-    }
-
-    /**
      * Filter the query by a related Course object
      *
      * @param   Course|PropelObjectCollection $course  the related object to use as filter
@@ -748,6 +674,80 @@ abstract class BaseCursusQuery extends ModelCriteria
         return $this
             ->joinCourse($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'Course', 'CourseQuery');
+    }
+
+    /**
+     * Filter the query by a related EducationalPath object
+     *
+     * @param   EducationalPath|PropelObjectCollection $educationalPath  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return   CursusQuery The current query, for fluid interface
+     * @throws   PropelException - if the provided filter is invalid.
+     */
+    public function filterByEducationalPath($educationalPath, $comparison = null)
+    {
+        if ($educationalPath instanceof EducationalPath) {
+            return $this
+                ->addUsingAlias(CursusPeer::ID, $educationalPath->getCursusId(), $comparison);
+        } elseif ($educationalPath instanceof PropelObjectCollection) {
+            return $this
+                ->useEducationalPathQuery()
+                ->filterByPrimaryKeys($educationalPath->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByEducationalPath() only accepts arguments of type EducationalPath or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the EducationalPath relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return CursusQuery The current query, for fluid interface
+     */
+    public function joinEducationalPath($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('EducationalPath');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'EducationalPath');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the EducationalPath relation EducationalPath object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   EducationalPathQuery A secondary query class using the current class as primary query
+     */
+    public function useEducationalPathQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinEducationalPath($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'EducationalPath', 'EducationalPathQuery');
     }
 
     /**
@@ -1044,23 +1044,6 @@ abstract class BaseCursusQuery extends ModelCriteria
         return $this
             ->joinSchedule($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'Schedule', 'ScheduleQuery');
-    }
-
-    /**
-     * Filter the query by a related User object
-     * using the users_cursus table as cross reference
-     *
-     * @param   User $user the related object to use as filter
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return   CursusQuery The current query, for fluid interface
-     */
-    public function filterByUser($user, $comparison = Criteria::EQUAL)
-    {
-        return $this
-            ->useUsersCursusQuery()
-            ->filterByUser($user, $comparison)
-            ->endUse();
     }
 
     /**

@@ -185,23 +185,6 @@
         </index>
     </table>
 
-    <!-- cursus au(x)quel(s) sont inscrit les utilisateurs -->
-    <table name="users_cursus" isCrossRef="true">
-        <!-- id de l'utilisateur -->
-        <column name="user_id"   type="INTEGER" primaryKey="true" />
-        <!-- id du cursus -->
-        <column name="cursus_id" type="INTEGER" primaryKey="true" />
-
-        <!-- == index & clefs étrangères == -->
-
-        <foreign-key foreignTable="users" onDelete="CASCADE" onUpdate="CASCADE">
-            <reference local="user_id" foreign="id"/>
-        </foreign-key>
-        <foreign-key foreignTable="cursus" onDelete="CASCADE" onUpdate="CASCADE">
-            <reference local="cursus_id" foreign="id"/>
-        </foreign-key>
-    </table>
-
     <!-- === matières === -->
     <table name="courses" phpName="Course">
 
@@ -213,9 +196,6 @@
 
         <!-- semestre correspondant -->
         <column name="semester"    type="TINYINT" defaultExpr="0" />
-
-        <!-- si la matière est facultative -->
-        <column name="optional"    type="BOOLEAN" required="true" defaultExpr="0" />
 
         <!-- nom -->
         <column name="name"        type="VARCHAR" size="64" required="true" />
@@ -259,6 +239,94 @@
             <rule name="minValue"  value="0" message="Le nombre d'ECTS ne peut pas être négatif." />
             <rule name="maxValue"  value="30" message="Le nombre d'ECTS ne peut pas être supérieur à 30." />
         </validator>
+    </table>
+
+    <!-- === parcours pédagogiques === -->
+    <table name="educational_paths" phpName="EducationalPath">
+
+        <!-- id -->
+        <column name="id"         type="INTEGER" required="true" primaryKey="true" autoIncrement="true"/>
+
+        <!-- nom -->
+        <column name="short_name" type="VARCHAR"    size="8" required="true" />
+        <column name="name"       type="VARCHAR" size="32" required="true" />
+
+        <!-- description -->
+        <column name="description"    type="LONGVARCHAR" size="1024" lazyLoad="true" />
+
+        <!-- cursus -->
+        <column name="cursus_id"  type="INTEGER" required="true" />
+
+        <!-- id du responsable -->
+        <column name="responsable_id" type="INTEGER" />
+
+        <!-- == index & clefs étrangères == -->
+
+        <foreign-key foreignTable="cursus" onDelete="CASCADE" onUpdate="CASCADE" phpName="Cursus">
+            <reference local="cursus_id" foreign="id" />
+        </foreign-key>
+
+        <foreign-key foreignTable="users" onDelete="SETNULL" onUpdate="CASCADE" phpName="Responsable" refPhpName="EducationalPathResponsability">
+            <reference local="responsable_id" foreign="id" />
+        </foreign-key>
+
+        <unique>
+            <unique-column name="short_name" />
+            <unique-column name="cursus_id" />
+        </unique>
+    </table>
+
+    <!-- parcours au(x)quel(s) sont inscrit les utilisateurs -->
+    <table name="users_paths" isCrossRef="true">
+        <!-- id de l'utilisateur -->
+        <column name="user_id" type="INTEGER" primaryKey="true" />
+        <!-- id du parcours -->
+        <column name="path_id" type="INTEGER" primaryKey="true" />
+
+        <!-- == index & clefs étrangères == -->
+
+        <foreign-key foreignTable="users" onDelete="CASCADE" onUpdate="CASCADE">
+            <reference local="user_id" foreign="id"/>
+        </foreign-key>
+        <foreign-key foreignTable="educational_paths" onDelete="CASCADE" onUpdate="CASCADE">
+            <reference local="path_id" foreign="id"/>
+        </foreign-key>
+    </table>
+
+    <!-- liens matières/parcours (facultatives) -->
+    <table name="educational_paths_optional_courses" isCrossRef="true">
+        <!-- id de la matière -->
+        <column name="course_id" type="INTEGER" primaryKey="true" />
+        <!-- id du parcours -->
+        <column name="path_id"    type="INTEGER" primaryKey="true" />
+
+        <!-- == index & clefs étrangères == -->
+
+        <foreign-key foreignTable="courses" onDelete="CASCADE" onUpdate="CASCADE" phpName="OptionalCourse">
+            <reference local="course_id" foreign="id" />
+        </foreign-key>
+
+        <foreign-key foreignTable="educational_paths" onDelete="CASCADE" onUpdate="CASCADE" phpName="OptionalEducationalPath">
+            <reference local="path_id" foreign="id" />
+        </foreign-key>
+    </table>
+
+    <!-- liens matières/parcours (obligatoires) -->
+    <table name="educational_paths_mandatory_courses" isCrossRef="true">
+        <!-- id de la matière -->
+        <column name="course_id" type="INTEGER" primaryKey="true" />
+        <!-- id du parcours -->
+        <column name="path_id"    type="INTEGER" primaryKey="true" />
+
+        <!-- == index & clefs étrangères == -->
+
+        <foreign-key foreignTable="courses" onDelete="CASCADE" onUpdate="CASCADE" phpName="MandatoryCourse">
+            <reference local="course_id" foreign="id" />
+        </foreign-key>
+
+        <foreign-key foreignTable="educational_paths" onDelete="CASCADE" onUpdate="CASCADE" phpName="MandatoryEducationalPath">
+            <reference local="path_id" foreign="id" />
+        </foreign-key>
     </table>
 
     <!-- === fichiers === -->

@@ -93,7 +93,8 @@ class UserTableMap extends TableMap
     {
         $this->addRelation('Avatar', 'File', RelationMap::MANY_TO_ONE, array('avatar_id' => 'id', ), 'SET NULL', 'CASCADE');
         $this->addRelation('CursusResponsability', 'Cursus', RelationMap::ONE_TO_MANY, array('id' => 'responsable_id', ), 'SET NULL', 'CASCADE', 'CursusResponsabilitys');
-        $this->addRelation('UsersCursus', 'UsersCursus', RelationMap::ONE_TO_MANY, array('id' => 'user_id', ), 'CASCADE', 'CASCADE', 'UsersCursuss');
+        $this->addRelation('EducationalPathResponsability', 'EducationalPath', RelationMap::ONE_TO_MANY, array('id' => 'responsable_id', ), 'SET NULL', 'CASCADE', 'EducationalPathResponsabilitys');
+        $this->addRelation('UsersPaths', 'UsersPaths', RelationMap::ONE_TO_MANY, array('id' => 'user_id', ), 'CASCADE', 'CASCADE', 'UsersPathss');
         $this->addRelation('FileRelatedByAuthorId', 'File', RelationMap::ONE_TO_MANY, array('id' => 'author_id', ), 'SET NULL', 'CASCADE', 'FilesRelatedByAuthorId');
         $this->addRelation('NewslettersSubscribers', 'NewslettersSubscribers', RelationMap::ONE_TO_MANY, array('id' => 'subscriber_id', ), 'CASCADE', 'CASCADE', 'NewslettersSubscriberss');
         $this->addRelation('Alert', 'Alert', RelationMap::ONE_TO_MANY, array('id' => 'subscriber_id', ), 'CASCADE', 'CASCADE', 'Alerts');
@@ -107,7 +108,7 @@ class UserTableMap extends TableMap
         $this->addRelation('ForumMessage', 'ForumMessage', RelationMap::ONE_TO_MANY, array('id' => 'author_id', ), 'CASCADE', 'CASCADE', 'ForumMessages');
         $this->addRelation('ScheduledCourse', 'ScheduledCourse', RelationMap::ONE_TO_MANY, array('id' => 'teacher_id', ), 'SET NULL', 'CASCADE', 'ScheduledCourses');
         $this->addRelation('Token', 'Token', RelationMap::ONE_TO_MANY, array('id' => 'user_id', ), 'CASCADE', 'CASCADE', 'Tokens');
-        $this->addRelation('Cursus', 'Cursus', RelationMap::MANY_TO_MANY, array(), 'CASCADE', 'CASCADE', 'Cursuss');
+        $this->addRelation('EducationalPath', 'EducationalPath', RelationMap::MANY_TO_MANY, array(), 'CASCADE', 'CASCADE', 'EducationalPaths');
         $this->addRelation('Newsletter', 'Newsletter', RelationMap::MANY_TO_MANY, array(), 'CASCADE', 'CASCADE', 'Newsletters');
     } // buildRelations()
 
