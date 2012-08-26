@@ -74,8 +74,8 @@ dispatch_post('/profile/init', 'post_init_my_profile_page');
 dispatch('/cursus/:name', 'display_cursus');
 dispatch_post('/cursus/:name', 'display_cursus');
 dispatch('/cursus/:name/edit', 'display_moderation_edit_cursus');
-## paths
-dispatch('/cursus/:cursus/parcours/:path', 'display_path');
+## educational paths
+dispatch('/cursus/:cursus/parcours/:path', 'display_educational_path');
 ## - news
 #dispatch('/cursus/:name/add_news',      'display_add_cursus_news');
 #dispatch_post('/cursus/:name/add_news', 'display_add_cursus_news');
