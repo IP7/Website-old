@@ -175,9 +175,9 @@ function display_cursus_with_multiple_educational_paths($cursus, $msg_str, $msg_
 
     foreach ($paths as $p) {
         $tpl_paths []= array(
-            'name' => $p->getName(),
-            'short_name' => $p->getShortName(),
-            'href' => $base_uri.'parcours/'.$p->getShortName()
+            'name'  => $p->getName(),
+            'title' => $p->getShortName(),
+            'href'  => $base_uri.'parcours/'.$p->getShortName()
         );
     }
 
@@ -188,10 +188,13 @@ function display_cursus_with_multiple_educational_paths($cursus, $msg_str, $msg_
             'message'      => $msg_str,
             'message_type' => $msg_type,
 
+            'news' => false,
+
             'cursus' => array(
                 'name' => $cursus->getName(),
+                'introduction' => $cursus->getDescription(),
 
-                'paths' => $tpl_paths
+                'educational_paths' => $tpl_paths
             )
         )
     ));
