@@ -60,7 +60,9 @@ foreach($cursus as $k => $v) {
 
         foreach ($paths as $s => $p) {
 
-            $p_query = EducationalPathQuery::create()->findOneByShortName($s);
+            $p_query = EducationalPathQuery::create()
+                        ->filterByCursus($cursus[$k])
+                        ->findOneByShortName($s);
 
             if ($p_query) {
                 $paths_refs[$s] = $p_query;
