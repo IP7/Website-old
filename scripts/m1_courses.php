@@ -86,7 +86,7 @@ $c = array(
             'AlgAv' => array(
                 6, 'Algorithmique avancée', '',
                 array(), array( 'LC', 'MPRI' )
-            )
+            ),
             'AnPerf' => array(
                 6, 'Analyse de performance et simulation', '',
                 array(), array()
