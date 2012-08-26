@@ -232,7 +232,7 @@
 
         <validator column="semester">
             <rule name="minValue"  value="0" message="Le semestre doit être 1 ou 2." />
-            <rule name="maxValue"  value="3" message="Le semestre doit être 1 ou 2." />
+            <rule name="maxValue"  value="2" message="Le semestre doit être 1 ou 2." />
         </validator>
 
         <validator column="ECTS">
