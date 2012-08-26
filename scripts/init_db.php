@@ -85,17 +85,17 @@ foreach($cursus as $k => $v) {
             $s_n = $n + 1;
 
             foreach ($s as $code => $course) {
-                $c_query = CourseQuery::create()->findOneByCode($code);
+                $c = CourseQuery::create()->findOneByCode($code);
 
-                if ($c_query) {continue;}
-
-                $c = new Course();
-                $c->setCode($code);
-                $c->setECTS((float)($course[0]));
-                $c->setCursus($cursus[$k]);
-                $c->setName($course[1]);
-                $c->setDescription($course[2]);
-                $c->setSemester($s_n);
+                if (!$c) {
+                    $c = new Course();
+                    $c->setCode($code);
+                    $c->setECTS((float)($course[0]));
+                    $c->setCursus($cursus[$k]);
+                    $c->setName($course[1]);
+                    $c->setDescription($course[2]);
+                    $c->setSemester($s_n);
+                }
 
                 foreach ($course[3] as $_ => $mandatory_for) {
                     $c->addMandatoryEducationalPath($paths_refs[$mandatory_for]);
