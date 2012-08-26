@@ -45,40 +45,66 @@ foreach ($cursus as $k => $opts) {
     $cursus[$k] = $c;
 }
 
-// Courses
-
 $d = dirname(__FILE__);
+
+$semesters = array(1,2);
 
 foreach($cursus as $k => $v) {
 
-    $semesters = array(1, 2);
-    $option = array(0,1);
+    $paths_refs = array();
 
     if (file_exists($d.'/'.$k.'_courses.php')) {
         include $d.'/'.$k.'_courses.php';
 
-        foreach ($semesters as $n => $s) {
+        $paths = $c['educational_paths'];
 
-            foreach ($option as $opt) {
+        foreach ($paths as $s => $p) {
 
-                foreach ($c[$n][$opt] as $code => $desc) {
+            $p_query = EducationalPathQuery::create()->findOneByShortName($s);
 
-                    $q = CourseQuery::create()->findOneByCode($code);
+            if ($p_query) {
+                $paths_refs[$s] = $p_query;
+                continue;
+            }
 
-                    if ($q != NULL) {
-                        continue;
-                    }
+            $path = new EducationalPath();
+            $path->setShortName($s);
+            $path->setName($p[0]);
+            $path->setDescription($p[1]);
+            $path->setCursus($cursus[$k]);
+            $path->save();
 
-                    $course = new Course();
-                    $course->setCode($code);
-                    $course->setName($desc[1]);
-                    $course->setECTS((int)$desc[0]);
-                    $course->setCursus($cursus[$k]);
-                    $course->setSemester($s);
-                    $course->setOptional((bool)$opt);
-                    $course->setDescription($desc[2]);
-                    $course->save();
+            $paths_refs[$s] = $path;
+        }
+
+        $courses = $c['courses'];
+
+        foreach ($courses as $n => $s) {
+
+            // semester number
+            $s_n = $n + 1;
+
+            foreach ($s as $code => $course) {
+                $c_query = CourseQuery::create()->findOneByCode($code);
+
+                if ($c_query) {continue;}
+
+                $c = new Course();
+                $c->setCode($code);
+                $c->setECTS((float)($course[0]));
+                $c->setName($course[1]);
+                $c->setDescription($course[2]);
+                $c->setSemester($s_n);
+
+                foreach ($course[3] as $_ => $mandatory_for) {
+                    $c->addMandatoryEducationalPath($paths_refs[$mandatory_for]);
                 }
+
+                foreach ($course[4] as $_ => $optional_for) {
+                    $c->addOptionalEducationalPath($paths_refs[$optional_for]);
+                }
+
+                $c->save();
             }
         }
     }
@@ -116,13 +142,7 @@ if (!$q){
 	$content->setDate('2012-08-15 10:10:10');
 	$content->setValidated(false);
 	$content->setTitle('Test de proposition');
-	$content->setText('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent gravida cursus risus. Curabitur pellentesque diam nisi. Maecenas pharetra urna eu enim aliquet sit amet congue metus facilisis. Vestibulum et augue arcu. Aliquam bibendum diam sed tortor auctor vitae dapibus lacus rutrum. Vivamus diam ligula, congue vitae pharetra ac, lobortis quis lorem. In vel nisi eu metus auctor tincidunt. Vestibulum accumsan diam diam, ut euismod magna. Pellentesque eu erat vitae tellus vestibulum fermentum. Quisque vitae tempus nulla.
-
-Nunc eget tristique nisl. Suspendisse cursus, orci id consectetur euismod, neque leo dignissim urna, a faucibus erat neque at dolor. Phasellus eget placerat sapien. Morbi ornare lectus sit amet turpis tristique volutpat. Nulla facilisi. Etiam hendrerit, massa at vulputate tempor, ante lorem lacinia odio, a lobortis orci metus sit amet erat. Pellentesque ut mauris in dui tempor hendrerit eget a massa. Ut mattis lacus quis lorem mollis pretium.
-
-Vestibulum est odio, ornare eget adipiscing a, vehicula at mi. Donec pretium sagittis tortor, non rutrum velit elementum eu. Nullam pretium eleifend metus, ut adipiscing mi convallis nec. Aenean nec justo lacus. Cras venenatis nisl ac lacus aliquam ultricies. Nulla est urna, faucibus at placerat vitae, mattis in odio. In gravida, nunc at feugiat tempus, felis purus porta nisl, nec facilisis nisl magna vitae metus. Donec laoreet nulla et erat volutpat non mattis turpis molestie. Fusce nec arcu id nunc varius bibendum.');
-	$content->setCursusId(1);
-	$content->setCourseId(1);
+	$content->setText('Lorem ipsum dolor sit amet');
 	$content->save();
 }
 
