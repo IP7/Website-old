@@ -170,6 +170,7 @@ function display_cursus() {
 
 function display_cursus_with_multiple_paths($cursus, $msg_str, $msg_type, $base_uri, $breadcrumb) {
     //TODO
+    return 'Test : cursus '.$cursus->getName();
 }
 
 function display_empty_cursus($cursus, $base_uri, $breadcrumb) {
