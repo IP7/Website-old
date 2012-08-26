@@ -38,7 +38,7 @@ function display_cursus() {
     );
 
     if ($cursus->countEducationalPaths() > 1) {
-        return display_cursus_with_multiple_paths($cursus, $msg_str, $msg_type, $base_uri, $breadcrumb);
+        return display_cursus_with_multiple_educational_paths($cursus, $msg_str, $msg_type, $base_uri, $breadcrumb);
     }
 
     $path = $cursus->getEducationalPath();
@@ -168,9 +168,33 @@ function display_cursus() {
     )));
 }
 
-function display_cursus_with_multiple_paths($cursus, $msg_str, $msg_type, $base_uri, $breadcrumb) {
-    //TODO
-    return 'Test : cursus '.$cursus->getName();
+function display_cursus_with_multiple_educational_paths($cursus, $msg_str, $msg_type, $base_uri, $breadcrumb) {
+
+    $paths = $cursus->getEducationalPaths();
+    $tpl_paths = array();
+
+    foreach ($paths as $p) {
+        $tpl_paths []= array(
+            'name' => $p->getName(),
+            'short_name' => $p->getShortName(),
+            'href' => $base_uri.'parcours/'.$p->getShortName()
+        );
+    }
+
+    return tpl_render('cursus/multiple_paths.html', array(
+        'page' => array(
+            'title'        => $cursus->getName(),
+            'breadcrumb'   => $breadcrumb,
+            'message'      => $msg_str,
+            'message_type' => $msg_type,
+
+            'cursus' => array(
+                'name' => $cursus->getName(),
+
+                'paths' => $tpl_paths
+            )
+        )
+    ));
 }
 
 function display_empty_cursus($cursus, $base_uri, $breadcrumb) {
