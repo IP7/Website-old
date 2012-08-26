@@ -12,7 +12,7 @@ function display_admin_home($message, $message_type) {
 
     $token = generate_token(null, 0, time() + Durations::ONE_MINUTE*2);
 
-    return Config::$tpl->render('admin_main.html', tpl_array(
+    return Config::$tpl->render('admin/main.html', tpl_array(
         admin_tpl_default(),
         array(
             'page' => array(
@@ -94,7 +94,7 @@ function display_admin_content_report(){
 
 	}
 
-	return Config::$tpl->render('admin_content_report.html', tpl_array(admin_tpl_default(),array(
+	return Config::$tpl->render('admin/content_report.html', tpl_array(admin_tpl_default(),array(
 					'page' => array(
 						'title' => 'Contenu reporté',
 						'reports' => $contentReport
@@ -141,7 +141,7 @@ function display_admin_content_proposed(){
 				$msg = get_message($_GET['n']);
 		}
 			
-		return Config::$tpl->render('admin_content_proposed.html', tpl_array(admin_tpl_default(),array(
+		return Config::$tpl->render('admin/content_proposed.html', tpl_array(admin_tpl_default(),array(
 						'page' => Array(
 							'title' => 'Contenu proposé',
 							'msg' => $msg,
@@ -186,7 +186,7 @@ function display_admin_content_view(){
 			);
 	}
 
-	return Config::$tpl->render('admin_content_view.html', tpl_array(admin_tpl_default(),array(
+	return Config::$tpl->render('admin/content_view.html', tpl_array(admin_tpl_default(),array(
 					'page' => Array(
 						'title' => 'Contenu proposé',
 						'content' => $contentArray,
@@ -470,7 +470,7 @@ function display_admin_members() {
         }
     }
 
-    return Config::$tpl->render('admin_members.html', tpl_array(admin_tpl_default(),array(
+    return Config::$tpl->render('admin/members.html', tpl_array(admin_tpl_default(),array(
         'page' => array(
             'title' => 'Membres',
             'members' => $members,
