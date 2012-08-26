@@ -141,7 +141,7 @@ function display_cursus() {
         );
     }
 
-    return Config::$tpl->render('cursus.html', tpl_array(array(
+    return Config::$tpl->render('cursus/base.html', tpl_array(array(
         'page' => array(
             'title' => $cursus->getName(),
 
