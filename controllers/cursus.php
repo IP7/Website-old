@@ -37,6 +37,16 @@ function display_cursus() {
         )
     );
 
+    if ($cursus->countEducationalPaths() > 1) {
+        return display_cursus_with_multiple_paths($cursus, $msg_str, $msg_type, $base_uri, $breadcrumb);
+    }
+
+    $path = $cursus->getEducationalPath();
+
+    if (!$path) {
+        return display_empty_cursus($cursus, $base_uri, $breadcrumb);
+    }
+
     $courses = array(
         's1' => array(
             'mandatory' => array(),
@@ -48,12 +58,16 @@ function display_cursus() {
         )
     );
     
-    foreach ($cursus->getCourses() as $c) {
-
-        $type = ($c->getOptional()) ? 'optional' : 'mandatory';
-
-        $courses['s'.$c->getSemester()][$type] []= array(
-            'href' => $base_uri./*strtoupper(*/$c->getCode()/*)*/,
+    foreach ($path->getOptionalCourses() as $c) {
+        $courses['s'.$c->getSemester()]['optional'] []= array(
+            'href' => $base_uri.$c->getCode(),
+            'title' => $c->getCode()
+        );
+    }
+    
+    foreach ($path->getMandatoryCourses() as $c) {
+        $courses['s'.$c->getSemester()]['mandatory'] []= array(
+            'href' => $base_uri.$c->getCode(),
             'title' => $c->getCode()
         );
     }
@@ -139,6 +153,8 @@ function display_cursus() {
                 'name' => $cursus->getName(),
                 'introduction' => $cursus->getDescription(),
 
+                'path_name' => $path->getName(),
+
                 'courses' => $courses,
                 'news' => $news,
                 'other_links' => $other_links
@@ -150,6 +166,28 @@ function display_cursus() {
 
         )
     )));
+}
+
+function display_cursus_with_multiple_paths($cursus, $msg_str, $msg_type, $base_uri, $breadcrumb) {
+    //TODO
+}
+
+function display_empty_cursus($cursus, $base_uri, $breadcrumb) {
+    return tpl_render('cursus/empty.html', array(
+        'page' => array(
+            'title' => $cursus->getName(),
+            'breadcrumb' => $breadcrumb,
+
+            'cursus' => array(
+                'name' => $cursus->getName(),
+                'introduction' => $cursus->getDescription(),
+            ),
+
+            'message' => 'Ce cursus n\'est lié à aucun parcours pédagogique.',
+            'message_type' => 'error'
+
+        )
+    ));
 }
 
 function display_moderation_edit_cursus() {
