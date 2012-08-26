@@ -84,9 +84,13 @@
  * @method UserQuery rightJoinCursusResponsability($relationAlias = null) Adds a RIGHT JOIN clause to the query using the CursusResponsability relation
  * @method UserQuery innerJoinCursusResponsability($relationAlias = null) Adds a INNER JOIN clause to the query using the CursusResponsability relation
  *
- * @method UserQuery leftJoinUsersCursus($relationAlias = null) Adds a LEFT JOIN clause to the query using the UsersCursus relation
- * @method UserQuery rightJoinUsersCursus($relationAlias = null) Adds a RIGHT JOIN clause to the query using the UsersCursus relation
- * @method UserQuery innerJoinUsersCursus($relationAlias = null) Adds a INNER JOIN clause to the query using the UsersCursus relation
+ * @method UserQuery leftJoinEducationalPathResponsability($relationAlias = null) Adds a LEFT JOIN clause to the query using the EducationalPathResponsability relation
+ * @method UserQuery rightJoinEducationalPathResponsability($relationAlias = null) Adds a RIGHT JOIN clause to the query using the EducationalPathResponsability relation
+ * @method UserQuery innerJoinEducationalPathResponsability($relationAlias = null) Adds a INNER JOIN clause to the query using the EducationalPathResponsability relation
+ *
+ * @method UserQuery leftJoinUsersPaths($relationAlias = null) Adds a LEFT JOIN clause to the query using the UsersPaths relation
+ * @method UserQuery rightJoinUsersPaths($relationAlias = null) Adds a RIGHT JOIN clause to the query using the UsersPaths relation
+ * @method UserQuery innerJoinUsersPaths($relationAlias = null) Adds a INNER JOIN clause to the query using the UsersPaths relation
  *
  * @method UserQuery leftJoinFileRelatedByAuthorId($relationAlias = null) Adds a LEFT JOIN clause to the query using the FileRelatedByAuthorId relation
  * @method UserQuery rightJoinFileRelatedByAuthorId($relationAlias = null) Adds a RIGHT JOIN clause to the query using the FileRelatedByAuthorId relation
@@ -1552,41 +1556,41 @@ abstract class BaseUserQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query by a related UsersCursus object
+     * Filter the query by a related EducationalPath object
      *
-     * @param   UsersCursus|PropelObjectCollection $usersCursus  the related object to use as filter
+     * @param   EducationalPath|PropelObjectCollection $educationalPath  the related object to use as filter
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return   UserQuery The current query, for fluid interface
      * @throws   PropelException - if the provided filter is invalid.
      */
-    public function filterByUsersCursus($usersCursus, $comparison = null)
+    public function filterByEducationalPathResponsability($educationalPath, $comparison = null)
     {
-        if ($usersCursus instanceof UsersCursus) {
+        if ($educationalPath instanceof EducationalPath) {
             return $this
-                ->addUsingAlias(UserPeer::ID, $usersCursus->getUserId(), $comparison);
-        } elseif ($usersCursus instanceof PropelObjectCollection) {
+                ->addUsingAlias(UserPeer::ID, $educationalPath->getResponsableId(), $comparison);
+        } elseif ($educationalPath instanceof PropelObjectCollection) {
             return $this
-                ->useUsersCursusQuery()
-                ->filterByPrimaryKeys($usersCursus->getPrimaryKeys())
+                ->useEducationalPathResponsabilityQuery()
+                ->filterByPrimaryKeys($educationalPath->getPrimaryKeys())
                 ->endUse();
         } else {
-            throw new PropelException('filterByUsersCursus() only accepts arguments of type UsersCursus or PropelCollection');
+            throw new PropelException('filterByEducationalPathResponsability() only accepts arguments of type EducationalPath or PropelCollection');
         }
     }
 
     /**
-     * Adds a JOIN clause to the query using the UsersCursus relation
+     * Adds a JOIN clause to the query using the EducationalPathResponsability relation
      *
      * @param     string $relationAlias optional alias for the relation
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
      * @return UserQuery The current query, for fluid interface
      */
-    public function joinUsersCursus($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function joinEducationalPathResponsability($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('UsersCursus');
+        $relationMap = $tableMap->getRelation('EducationalPathResponsability');
 
         // create a ModelJoin object for this join
         $join = new ModelJoin();
@@ -1601,14 +1605,14 @@ abstract class BaseUserQuery extends ModelCriteria
             $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
             $this->addJoinObject($join, $relationAlias);
         } else {
-            $this->addJoinObject($join, 'UsersCursus');
+            $this->addJoinObject($join, 'EducationalPathResponsability');
         }
 
         return $this;
     }
 
     /**
-     * Use the UsersCursus relation UsersCursus object
+     * Use the EducationalPathResponsability relation EducationalPath object
      *
      * @see       useQuery()
      *
@@ -1616,13 +1620,87 @@ abstract class BaseUserQuery extends ModelCriteria
      *                                   to be used as main alias in the secondary query
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
-     * @return   UsersCursusQuery A secondary query class using the current class as primary query
+     * @return   EducationalPathQuery A secondary query class using the current class as primary query
      */
-    public function useUsersCursusQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function useEducationalPathResponsabilityQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         return $this
-            ->joinUsersCursus($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'UsersCursus', 'UsersCursusQuery');
+            ->joinEducationalPathResponsability($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'EducationalPathResponsability', 'EducationalPathQuery');
+    }
+
+    /**
+     * Filter the query by a related UsersPaths object
+     *
+     * @param   UsersPaths|PropelObjectCollection $usersPaths  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return   UserQuery The current query, for fluid interface
+     * @throws   PropelException - if the provided filter is invalid.
+     */
+    public function filterByUsersPaths($usersPaths, $comparison = null)
+    {
+        if ($usersPaths instanceof UsersPaths) {
+            return $this
+                ->addUsingAlias(UserPeer::ID, $usersPaths->getUserId(), $comparison);
+        } elseif ($usersPaths instanceof PropelObjectCollection) {
+            return $this
+                ->useUsersPathsQuery()
+                ->filterByPrimaryKeys($usersPaths->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByUsersPaths() only accepts arguments of type UsersPaths or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the UsersPaths relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return UserQuery The current query, for fluid interface
+     */
+    public function joinUsersPaths($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('UsersPaths');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'UsersPaths');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the UsersPaths relation UsersPaths object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   UsersPathsQuery A secondary query class using the current class as primary query
+     */
+    public function useUsersPathsQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinUsersPaths($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'UsersPaths', 'UsersPathsQuery');
     }
 
     /**
@@ -2588,19 +2666,19 @@ abstract class BaseUserQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query by a related Cursus object
-     * using the users_cursus table as cross reference
+     * Filter the query by a related EducationalPath object
+     * using the users_paths table as cross reference
      *
-     * @param   Cursus $cursus the related object to use as filter
+     * @param   EducationalPath $educationalPath the related object to use as filter
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return   UserQuery The current query, for fluid interface
      */
-    public function filterByCursus($cursus, $comparison = Criteria::EQUAL)
+    public function filterByEducationalPath($educationalPath, $comparison = Criteria::EQUAL)
     {
         return $this
-            ->useUsersCursusQuery()
-            ->filterByCursus($cursus, $comparison)
+            ->useUsersPathsQuery()
+            ->filterByEducationalPath($educationalPath, $comparison)
             ->endUse();
     }
 

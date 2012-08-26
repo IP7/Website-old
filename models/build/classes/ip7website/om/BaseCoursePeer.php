@@ -24,13 +24,13 @@ abstract class BaseCoursePeer
     const TM_CLASS = 'CourseTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 8;
+    const NUM_COLUMNS = 7;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 8;
+    const NUM_HYDRATE_COLUMNS = 7;
 
     /** the column name for the ID field */
     const ID = 'courses.ID';
@@ -40,9 +40,6 @@ abstract class BaseCoursePeer
 
     /** the column name for the SEMESTER field */
     const SEMESTER = 'courses.SEMESTER';
-
-    /** the column name for the OPTIONAL field */
-    const OPTIONAL = 'courses.OPTIONAL';
 
     /** the column name for the NAME field */
     const NAME = 'courses.NAME';
@@ -75,12 +72,12 @@ abstract class BaseCoursePeer
      * e.g. CoursePeer::$fieldNames[CoursePeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'CursusId', 'Semester', 'Optional', 'Name', 'Code', 'Ects', 'Description', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'cursusId', 'semester', 'optional', 'name', 'code', 'ects', 'description', ),
-        BasePeer::TYPE_COLNAME => array (CoursePeer::ID, CoursePeer::CURSUS_ID, CoursePeer::SEMESTER, CoursePeer::OPTIONAL, CoursePeer::NAME, CoursePeer::CODE, CoursePeer::ECTS, CoursePeer::DESCRIPTION, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'CURSUS_ID', 'SEMESTER', 'OPTIONAL', 'NAME', 'CODE', 'ECTS', 'DESCRIPTION', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'cursus_id', 'semester', 'optional', 'name', 'code', 'ECTS', 'description', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'CursusId', 'Semester', 'Name', 'Code', 'Ects', 'Description', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'cursusId', 'semester', 'name', 'code', 'ects', 'description', ),
+        BasePeer::TYPE_COLNAME => array (CoursePeer::ID, CoursePeer::CURSUS_ID, CoursePeer::SEMESTER, CoursePeer::NAME, CoursePeer::CODE, CoursePeer::ECTS, CoursePeer::DESCRIPTION, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'CURSUS_ID', 'SEMESTER', 'NAME', 'CODE', 'ECTS', 'DESCRIPTION', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'cursus_id', 'semester', 'name', 'code', 'ECTS', 'description', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
     );
 
     /**
@@ -90,12 +87,12 @@ abstract class BaseCoursePeer
      * e.g. CoursePeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'CursusId' => 1, 'Semester' => 2, 'Optional' => 3, 'Name' => 4, 'Code' => 5, 'Ects' => 6, 'Description' => 7, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'cursusId' => 1, 'semester' => 2, 'optional' => 3, 'name' => 4, 'code' => 5, 'ects' => 6, 'description' => 7, ),
-        BasePeer::TYPE_COLNAME => array (CoursePeer::ID => 0, CoursePeer::CURSUS_ID => 1, CoursePeer::SEMESTER => 2, CoursePeer::OPTIONAL => 3, CoursePeer::NAME => 4, CoursePeer::CODE => 5, CoursePeer::ECTS => 6, CoursePeer::DESCRIPTION => 7, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'CURSUS_ID' => 1, 'SEMESTER' => 2, 'OPTIONAL' => 3, 'NAME' => 4, 'CODE' => 5, 'ECTS' => 6, 'DESCRIPTION' => 7, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'cursus_id' => 1, 'semester' => 2, 'optional' => 3, 'name' => 4, 'code' => 5, 'ECTS' => 6, 'description' => 7, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'CursusId' => 1, 'Semester' => 2, 'Name' => 3, 'Code' => 4, 'Ects' => 5, 'Description' => 6, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'cursusId' => 1, 'semester' => 2, 'name' => 3, 'code' => 4, 'ects' => 5, 'description' => 6, ),
+        BasePeer::TYPE_COLNAME => array (CoursePeer::ID => 0, CoursePeer::CURSUS_ID => 1, CoursePeer::SEMESTER => 2, CoursePeer::NAME => 3, CoursePeer::CODE => 4, CoursePeer::ECTS => 5, CoursePeer::DESCRIPTION => 6, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'CURSUS_ID' => 1, 'SEMESTER' => 2, 'NAME' => 3, 'CODE' => 4, 'ECTS' => 5, 'DESCRIPTION' => 6, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'cursus_id' => 1, 'semester' => 2, 'name' => 3, 'code' => 4, 'ECTS' => 5, 'description' => 6, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
     );
 
     /**
@@ -172,7 +169,6 @@ abstract class BaseCoursePeer
             $criteria->addSelectColumn(CoursePeer::ID);
             $criteria->addSelectColumn(CoursePeer::CURSUS_ID);
             $criteria->addSelectColumn(CoursePeer::SEMESTER);
-            $criteria->addSelectColumn(CoursePeer::OPTIONAL);
             $criteria->addSelectColumn(CoursePeer::NAME);
             $criteria->addSelectColumn(CoursePeer::CODE);
             $criteria->addSelectColumn(CoursePeer::ECTS);
@@ -181,7 +177,6 @@ abstract class BaseCoursePeer
             $criteria->addSelectColumn($alias . '.ID');
             $criteria->addSelectColumn($alias . '.CURSUS_ID');
             $criteria->addSelectColumn($alias . '.SEMESTER');
-            $criteria->addSelectColumn($alias . '.OPTIONAL');
             $criteria->addSelectColumn($alias . '.NAME');
             $criteria->addSelectColumn($alias . '.CODE');
             $criteria->addSelectColumn($alias . '.ECTS');
@@ -385,6 +380,12 @@ abstract class BaseCoursePeer
      */
     public static function clearRelatedInstancePool()
     {
+        // Invalidate objects in EducationalPathsOptionalCoursesPeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        EducationalPathsOptionalCoursesPeer::clearInstancePool();
+        // Invalidate objects in EducationalPathsMandatoryCoursesPeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        EducationalPathsMandatoryCoursesPeer::clearInstancePool();
         // Invalidate objects in AlertPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         AlertPeer::clearInstancePool();
@@ -974,6 +975,18 @@ abstract class BaseCoursePeer
         $objects = CoursePeer::doSelect($criteria, $con);
         foreach ($objects as $obj) {
 
+
+            // delete related EducationalPathsOptionalCourses objects
+            $criteria = new Criteria(EducationalPathsOptionalCoursesPeer::DATABASE_NAME);
+
+            $criteria->add(EducationalPathsOptionalCoursesPeer::COURSE_ID, $obj->getId());
+            $affectedRows += EducationalPathsOptionalCoursesPeer::doDelete($criteria, $con);
+
+            // delete related EducationalPathsMandatoryCourses objects
+            $criteria = new Criteria(EducationalPathsMandatoryCoursesPeer::DATABASE_NAME);
+
+            $criteria->add(EducationalPathsMandatoryCoursesPeer::COURSE_ID, $obj->getId());
+            $affectedRows += EducationalPathsMandatoryCoursesPeer::doDelete($criteria, $con);
 
             // delete related Alert objects
             $criteria = new Criteria(AlertPeer::DATABASE_NAME);

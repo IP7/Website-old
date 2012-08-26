@@ -74,6 +74,8 @@ dispatch_post('/profile/init', 'post_init_my_profile_page');
 dispatch('/cursus/:name', 'display_cursus');
 dispatch_post('/cursus/:name', 'display_cursus');
 dispatch('/cursus/:name/edit', 'display_moderation_edit_cursus');
+## paths
+dispatch('/cursus/:cursus/parcours/:path', 'display_path');
 ## - news
 #dispatch('/cursus/:name/add_news',      'display_add_cursus_news');
 #dispatch_post('/cursus/:name/add_news', 'display_add_cursus_news');
@@ -103,6 +105,9 @@ dispatch('/legals',   'display_legals_page');
 
 ## API
 dispatch('/api/1/users/exists.json', 'json_check_username');
+
+## tests
+dispatch('/test/init_db', 'display_test_init_db');
 
 # Errors handling (functions called by Limonade)
 

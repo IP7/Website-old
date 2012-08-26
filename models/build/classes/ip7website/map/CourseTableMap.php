@@ -41,7 +41,6 @@ class CourseTableMap extends TableMap
         $this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
         $this->addForeignKey('CURSUS_ID', 'CursusId', 'INTEGER', 'cursus', 'ID', false, null, null);
         $this->addColumn('SEMESTER', 'Semester', 'TINYINT', false, null, 0);
-        $this->addColumn('OPTIONAL', 'Optional', 'BOOLEAN', true, 1, '0');
         $this->addColumn('NAME', 'Name', 'VARCHAR', true, 64, null);
         $this->addColumn('CODE', 'Code', 'VARCHAR', true, 16, null);
         $this->addColumn('ECTS', 'Ects', 'FLOAT', false, null, 3);
@@ -61,12 +60,16 @@ class CourseTableMap extends TableMap
     public function buildRelations()
     {
         $this->addRelation('Cursus', 'Cursus', RelationMap::MANY_TO_ONE, array('cursus_id' => 'id', ), 'CASCADE', 'CASCADE');
+        $this->addRelation('EducationalPathsOptionalCourses', 'EducationalPathsOptionalCourses', RelationMap::ONE_TO_MANY, array('id' => 'course_id', ), 'CASCADE', 'CASCADE', 'EducationalPathsOptionalCoursess');
+        $this->addRelation('EducationalPathsMandatoryCourses', 'EducationalPathsMandatoryCourses', RelationMap::ONE_TO_MANY, array('id' => 'course_id', ), 'CASCADE', 'CASCADE', 'EducationalPathsMandatoryCoursess');
         $this->addRelation('Alert', 'Alert', RelationMap::ONE_TO_MANY, array('id' => 'course_id', ), 'CASCADE', 'CASCADE', 'Alerts');
         $this->addRelation('Content', 'Content', RelationMap::ONE_TO_MANY, array('id' => 'course_id', ), 'CASCADE', 'CASCADE', 'Contents');
         $this->addRelation('Note', 'Note', RelationMap::ONE_TO_MANY, array('id' => 'course_id', ), 'CASCADE', 'CASCADE', 'Notes');
         $this->addRelation('News', 'News', RelationMap::ONE_TO_MANY, array('id' => 'course_id', ), 'CASCADE', 'CASCADE', 'Newss');
         $this->addRelation('Exam', 'Exam', RelationMap::ONE_TO_MANY, array('id' => 'course_id', ), 'CASCADE', 'CASCADE', 'Exams');
         $this->addRelation('ScheduledCourse', 'ScheduledCourse', RelationMap::ONE_TO_MANY, array('id' => 'course_id', ), 'CASCADE', 'CASCADE', 'ScheduledCourses');
+        $this->addRelation('OptionalEducationalPath', 'EducationalPath', RelationMap::MANY_TO_MANY, array(), 'CASCADE', 'CASCADE', 'OptionalEducationalPaths');
+        $this->addRelation('MandatoryEducationalPath', 'EducationalPath', RelationMap::MANY_TO_MANY, array(), 'CASCADE', 'CASCADE', 'MandatoryEducationalPaths');
     } // buildRelations()
 
 } // CourseTableMap

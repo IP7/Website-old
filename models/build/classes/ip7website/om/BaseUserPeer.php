@@ -541,9 +541,12 @@ abstract class BaseUserPeer
         // Invalidate objects in CursusPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         CursusPeer::clearInstancePool();
-        // Invalidate objects in UsersCursusPeer instance pool,
+        // Invalidate objects in EducationalPathPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-        UsersCursusPeer::clearInstancePool();
+        EducationalPathPeer::clearInstancePool();
+        // Invalidate objects in UsersPathsPeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        UsersPathsPeer::clearInstancePool();
         // Invalidate objects in FilePeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         FilePeer::clearInstancePool();
@@ -1160,11 +1163,11 @@ abstract class BaseUserPeer
         foreach ($objects as $obj) {
 
 
-            // delete related UsersCursus objects
-            $criteria = new Criteria(UsersCursusPeer::DATABASE_NAME);
+            // delete related UsersPaths objects
+            $criteria = new Criteria(UsersPathsPeer::DATABASE_NAME);
 
-            $criteria->add(UsersCursusPeer::USER_ID, $obj->getId());
-            $affectedRows += UsersCursusPeer::doDelete($criteria, $con);
+            $criteria->add(UsersPathsPeer::USER_ID, $obj->getId());
+            $affectedRows += UsersPathsPeer::doDelete($criteria, $con);
 
             // delete related NewslettersSubscribers objects
             $criteria = new Criteria(NewslettersSubscribersPeer::DATABASE_NAME);
@@ -1237,6 +1240,14 @@ abstract class BaseUserPeer
             $updateValues = new Criteria(UserPeer::DATABASE_NAME);
             $selectCriteria->add(CursusPeer::RESPONSABLE_ID, $obj->getId());
             $updateValues->add(CursusPeer::RESPONSABLE_ID, null);
+
+            BasePeer::doUpdate($selectCriteria, $updateValues, $con); // use BasePeer because generated Peer doUpdate() methods only update using pkey
+
+            // set fkey col in related EducationalPath rows to null
+            $selectCriteria = new Criteria(UserPeer::DATABASE_NAME);
+            $updateValues = new Criteria(UserPeer::DATABASE_NAME);
+            $selectCriteria->add(EducationalPathPeer::RESPONSABLE_ID, $obj->getId());
+            $updateValues->add(EducationalPathPeer::RESPONSABLE_ID, null);
 
             BasePeer::doUpdate($selectCriteria, $updateValues, $con); // use BasePeer because generated Peer doUpdate() methods only update using pkey
 

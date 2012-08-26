@@ -37,6 +37,16 @@ function display_cursus() {
         )
     );
 
+    if ($cursus->countEducationalPaths() > 1) {
+        return display_cursus_with_multiple_educational_paths($cursus, $msg_str, $msg_type, $base_uri, $breadcrumb);
+    }
+
+    $path = $cursus->getEducationalPath();
+
+    if (!$path) {
+        return display_empty_cursus($cursus, $base_uri, $breadcrumb);
+    }
+
     $courses = array(
         's1' => array(
             'mandatory' => array(),
@@ -48,12 +58,16 @@ function display_cursus() {
         )
     );
     
-    foreach ($cursus->getCourses() as $c) {
-
-        $type = ($c->getOptional()) ? 'optional' : 'mandatory';
-
-        $courses['s'.$c->getSemester()][$type] []= array(
-            'href' => $base_uri./*strtoupper(*/$c->getCode()/*)*/,
+    foreach ($path->getOptionalCourses() as $c) {
+        $courses['s'.$c->getSemester()]['optional'] []= array(
+            'href' => $base_uri.$c->getCode(),
+            'title' => $c->getCode()
+        );
+    }
+    
+    foreach ($path->getMandatoryCourses() as $c) {
+        $courses['s'.$c->getSemester()]['mandatory'] []= array(
+            'href' => $base_uri.$c->getCode(),
             'title' => $c->getCode()
         );
     }
@@ -127,7 +141,7 @@ function display_cursus() {
         );
     }
 
-    return Config::$tpl->render('cursus.html', tpl_array(array(
+    return Config::$tpl->render('cursus/base.html', tpl_array(array(
         'page' => array(
             'title' => $cursus->getName(),
 
@@ -138,6 +152,8 @@ function display_cursus() {
             'cursus' => array(
                 'name' => $cursus->getName(),
                 'introduction' => $cursus->getDescription(),
+
+                'path_name' => $path->getName(),
 
                 'courses' => $courses,
                 'news' => $news,
@@ -152,6 +168,53 @@ function display_cursus() {
     )));
 }
 
+function display_cursus_with_multiple_educational_paths($cursus, $msg_str, $msg_type, $base_uri, $breadcrumb) {
+
+    $paths = $cursus->getEducationalPaths();
+    $tpl_paths = array();
+
+    foreach ($paths as $p) {
+        $tpl_paths []= array(
+            'name' => $p->getName(),
+            'short_name' => $p->getShortName(),
+            'href' => $base_uri.'parcours/'.$p->getShortName()
+        );
+    }
+
+    return tpl_render('cursus/multiple_paths.html', array(
+        'page' => array(
+            'title'        => $cursus->getName(),
+            'breadcrumb'   => $breadcrumb,
+            'message'      => $msg_str,
+            'message_type' => $msg_type,
+
+            'cursus' => array(
+                'name' => $cursus->getName(),
+
+                'paths' => $tpl_paths
+            )
+        )
+    ));
+}
+
+function display_empty_cursus($cursus, $base_uri, $breadcrumb) {
+    return tpl_render('cursus/empty.html', array(
+        'page' => array(
+            'title' => $cursus->getName(),
+            'breadcrumb' => $breadcrumb,
+
+            'cursus' => array(
+                'name' => $cursus->getName(),
+                'introduction' => $cursus->getDescription(),
+            ),
+
+            'message' => 'Ce cursus n\'est lié à aucun parcours pédagogique.',
+            'message_type' => 'error'
+
+        )
+    ));
+}
+
 function display_moderation_edit_cursus() {
 
     $name = params('name');
@@ -164,7 +227,7 @@ function display_moderation_edit_cursus() {
 
     $base_uri = Config::$root_uri.'cursus/'.strtoupper($cursus->getShortName()).'/';
 
-    return tpl_render("cursus_edit.html", array(
+    return tpl_render("cursus/edit.html", array(
         'page' => array(
             'title' => 'Édition de « '.$cursus->getName().' »',
 

@@ -84,30 +84,6 @@ CREATE TABLE `cursus`
 ) ENGINE=MyISAM;
 
 -- ---------------------------------------------------------------------
--- users_cursus
--- ---------------------------------------------------------------------
-
-DROP TABLE IF EXISTS `users_cursus`;
-
-CREATE TABLE `users_cursus`
-(
-    `user_id` INTEGER NOT NULL,
-    `cursus_id` INTEGER NOT NULL,
-    PRIMARY KEY (`user_id`,`cursus_id`),
-    INDEX `users_cursus_FI_2` (`cursus_id`),
-    CONSTRAINT `users_cursus_FK_1`
-        FOREIGN KEY (`user_id`)
-        REFERENCES `users` (`id`)
-        ON UPDATE CASCADE
-        ON DELETE CASCADE,
-    CONSTRAINT `users_cursus_FK_2`
-        FOREIGN KEY (`cursus_id`)
-        REFERENCES `cursus` (`id`)
-        ON UPDATE CASCADE
-        ON DELETE CASCADE
-) ENGINE=MyISAM;
-
--- ---------------------------------------------------------------------
 -- courses
 -- ---------------------------------------------------------------------
 
@@ -118,7 +94,6 @@ CREATE TABLE `courses`
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `cursus_id` INTEGER,
     `semester` TINYINT DEFAULT 0,
-    `optional` TINYINT(1) DEFAULT 0 NOT NULL,
     `name` VARCHAR(64) NOT NULL,
     `code` VARCHAR(16) NOT NULL,
     `ECTS` FLOAT DEFAULT 3,
@@ -129,6 +104,108 @@ CREATE TABLE `courses`
     CONSTRAINT `courses_FK_1`
         FOREIGN KEY (`cursus_id`)
         REFERENCES `cursus` (`id`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+) ENGINE=MyISAM;
+
+-- ---------------------------------------------------------------------
+-- educational_paths
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `educational_paths`;
+
+CREATE TABLE `educational_paths`
+(
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `short_name` VARCHAR(8) NOT NULL,
+    `name` VARCHAR(32) NOT NULL,
+    `description` TEXT(1024),
+    `cursus_id` INTEGER NOT NULL,
+    `responsable_id` INTEGER,
+    PRIMARY KEY (`id`),
+    UNIQUE INDEX `educational_paths_U_1` (`short_name`, `cursus_id`),
+    INDEX `educational_paths_FI_1` (`cursus_id`),
+    INDEX `educational_paths_FI_2` (`responsable_id`),
+    CONSTRAINT `educational_paths_FK_1`
+        FOREIGN KEY (`cursus_id`)
+        REFERENCES `cursus` (`id`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    CONSTRAINT `educational_paths_FK_2`
+        FOREIGN KEY (`responsable_id`)
+        REFERENCES `users` (`id`)
+        ON UPDATE CASCADE
+        ON DELETE SET NULL
+) ENGINE=MyISAM;
+
+-- ---------------------------------------------------------------------
+-- users_paths
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `users_paths`;
+
+CREATE TABLE `users_paths`
+(
+    `user_id` INTEGER NOT NULL,
+    `path_id` INTEGER NOT NULL,
+    PRIMARY KEY (`user_id`,`path_id`),
+    INDEX `users_paths_FI_2` (`path_id`),
+    CONSTRAINT `users_paths_FK_1`
+        FOREIGN KEY (`user_id`)
+        REFERENCES `users` (`id`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    CONSTRAINT `users_paths_FK_2`
+        FOREIGN KEY (`path_id`)
+        REFERENCES `educational_paths` (`id`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+) ENGINE=MyISAM;
+
+-- ---------------------------------------------------------------------
+-- educational_paths_optional_courses
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `educational_paths_optional_courses`;
+
+CREATE TABLE `educational_paths_optional_courses`
+(
+    `course_id` INTEGER NOT NULL,
+    `path_id` INTEGER NOT NULL,
+    PRIMARY KEY (`course_id`,`path_id`),
+    INDEX `educational_paths_optional_courses_FI_2` (`path_id`),
+    CONSTRAINT `educational_paths_optional_courses_FK_1`
+        FOREIGN KEY (`course_id`)
+        REFERENCES `courses` (`id`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    CONSTRAINT `educational_paths_optional_courses_FK_2`
+        FOREIGN KEY (`path_id`)
+        REFERENCES `educational_paths` (`id`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+) ENGINE=MyISAM;
+
+-- ---------------------------------------------------------------------
+-- educational_paths_mandatory_courses
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `educational_paths_mandatory_courses`;
+
+CREATE TABLE `educational_paths_mandatory_courses`
+(
+    `course_id` INTEGER NOT NULL,
+    `path_id` INTEGER NOT NULL,
+    PRIMARY KEY (`course_id`,`path_id`),
+    INDEX `educational_paths_mandatory_courses_FI_2` (`path_id`),
+    CONSTRAINT `educational_paths_mandatory_courses_FK_1`
+        FOREIGN KEY (`course_id`)
+        REFERENCES `courses` (`id`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    CONSTRAINT `educational_paths_mandatory_courses_FK_2`
+        FOREIGN KEY (`path_id`)
+        REFERENCES `educational_paths` (`id`)
         ON UPDATE CASCADE
         ON DELETE CASCADE
 ) ENGINE=MyISAM;
