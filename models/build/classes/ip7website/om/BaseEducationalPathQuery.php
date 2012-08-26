@@ -44,6 +44,10 @@
  * @method EducationalPathQuery rightJoinEducationalPathsMandatoryCourses($relationAlias = null) Adds a RIGHT JOIN clause to the query using the EducationalPathsMandatoryCourses relation
  * @method EducationalPathQuery innerJoinEducationalPathsMandatoryCourses($relationAlias = null) Adds a INNER JOIN clause to the query using the EducationalPathsMandatoryCourses relation
  *
+ * @method EducationalPathQuery leftJoinSchedule($relationAlias = null) Adds a LEFT JOIN clause to the query using the Schedule relation
+ * @method EducationalPathQuery rightJoinSchedule($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Schedule relation
+ * @method EducationalPathQuery innerJoinSchedule($relationAlias = null) Adds a INNER JOIN clause to the query using the Schedule relation
+ *
  * @method EducationalPath findOne(PropelPDO $con = null) Return the first EducationalPath matching the query
  * @method EducationalPath findOneOrCreate(PropelPDO $con = null) Return the first EducationalPath matching the query, or a new EducationalPath object populated from the query conditions when no match is found
  *
@@ -810,6 +814,80 @@ abstract class BaseEducationalPathQuery extends ModelCriteria
         return $this
             ->joinEducationalPathsMandatoryCourses($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'EducationalPathsMandatoryCourses', 'EducationalPathsMandatoryCoursesQuery');
+    }
+
+    /**
+     * Filter the query by a related Schedule object
+     *
+     * @param   Schedule|PropelObjectCollection $schedule  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return   EducationalPathQuery The current query, for fluid interface
+     * @throws   PropelException - if the provided filter is invalid.
+     */
+    public function filterBySchedule($schedule, $comparison = null)
+    {
+        if ($schedule instanceof Schedule) {
+            return $this
+                ->addUsingAlias(EducationalPathPeer::ID, $schedule->getPathId(), $comparison);
+        } elseif ($schedule instanceof PropelObjectCollection) {
+            return $this
+                ->useScheduleQuery()
+                ->filterByPrimaryKeys($schedule->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterBySchedule() only accepts arguments of type Schedule or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the Schedule relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return EducationalPathQuery The current query, for fluid interface
+     */
+    public function joinSchedule($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('Schedule');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'Schedule');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the Schedule relation Schedule object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   ScheduleQuery A secondary query class using the current class as primary query
+     */
+    public function useScheduleQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        return $this
+            ->joinSchedule($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Schedule', 'ScheduleQuery');
     }
 
     /**

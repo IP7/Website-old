@@ -42,6 +42,12 @@ abstract class BaseSchedule extends BaseObject implements Persistent
     protected $cursus_id;
 
     /**
+     * The value for the path_id field.
+     * @var        int
+     */
+    protected $path_id;
+
+    /**
      * The value for the name field.
      * @var        string
      */
@@ -63,6 +69,11 @@ abstract class BaseSchedule extends BaseObject implements Persistent
      * @var        Cursus
      */
     protected $aCursus;
+
+    /**
+     * @var        EducationalPath
+     */
+    protected $aEducationalPath;
 
     /**
      * @var        PropelObjectCollection|SchedulesCourses[] Collection to store aggregation of SchedulesCourses objects.
@@ -119,6 +130,16 @@ abstract class BaseSchedule extends BaseObject implements Persistent
     public function getCursusId()
     {
         return $this->cursus_id;
+    }
+
+    /**
+     * Get the [path_id] column value.
+     *
+     * @return int
+     */
+    public function getPathId()
+    {
+        return $this->path_id;
     }
 
     /**
@@ -252,6 +273,31 @@ abstract class BaseSchedule extends BaseObject implements Persistent
     } // setCursusId()
 
     /**
+     * Set the value of [path_id] column.
+     *
+     * @param int $v new value
+     * @return Schedule The current object (for fluent API support)
+     */
+    public function setPathId($v)
+    {
+        if ($v !== null) {
+            $v = (int) $v;
+        }
+
+        if ($this->path_id !== $v) {
+            $this->path_id = $v;
+            $this->modifiedColumns[] = SchedulePeer::PATH_ID;
+        }
+
+        if ($this->aEducationalPath !== null && $this->aEducationalPath->getId() !== $v) {
+            $this->aEducationalPath = null;
+        }
+
+
+        return $this;
+    } // setPathId()
+
+    /**
      * Set the value of [name] column.
      *
      * @param string $v new value
@@ -352,9 +398,10 @@ abstract class BaseSchedule extends BaseObject implements Persistent
 
             $this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
             $this->cursus_id = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
-            $this->name = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
-            $this->beginning = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
-            $this->end = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
+            $this->path_id = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
+            $this->name = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
+            $this->beginning = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
+            $this->end = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -363,7 +410,7 @@ abstract class BaseSchedule extends BaseObject implements Persistent
                 $this->ensureConsistency();
             }
 
-            return $startcol + 5; // 5 = SchedulePeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 6; // 6 = SchedulePeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating Schedule object", $e);
@@ -388,6 +435,9 @@ abstract class BaseSchedule extends BaseObject implements Persistent
 
         if ($this->aCursus !== null && $this->cursus_id !== $this->aCursus->getId()) {
             $this->aCursus = null;
+        }
+        if ($this->aEducationalPath !== null && $this->path_id !== $this->aEducationalPath->getId()) {
+            $this->aEducationalPath = null;
         }
     } // ensureConsistency
 
@@ -429,6 +479,7 @@ abstract class BaseSchedule extends BaseObject implements Persistent
         if ($deep) {  // also de-associate any related objects?
 
             $this->aCursus = null;
+            $this->aEducationalPath = null;
             $this->collSchedulesCoursess = null;
 
             $this->collScheduledCourses = null;
@@ -557,6 +608,13 @@ abstract class BaseSchedule extends BaseObject implements Persistent
                 $this->setCursus($this->aCursus);
             }
 
+            if ($this->aEducationalPath !== null) {
+                if ($this->aEducationalPath->isModified() || $this->aEducationalPath->isNew()) {
+                    $affectedRows += $this->aEducationalPath->save($con);
+                }
+                $this->setEducationalPath($this->aEducationalPath);
+            }
+
             if ($this->isNew() || $this->isModified()) {
                 // persist changes
                 if ($this->isNew()) {
@@ -637,6 +695,9 @@ abstract class BaseSchedule extends BaseObject implements Persistent
         if ($this->isColumnModified(SchedulePeer::CURSUS_ID)) {
             $modifiedColumns[':p' . $index++]  = '`CURSUS_ID`';
         }
+        if ($this->isColumnModified(SchedulePeer::PATH_ID)) {
+            $modifiedColumns[':p' . $index++]  = '`PATH_ID`';
+        }
         if ($this->isColumnModified(SchedulePeer::NAME)) {
             $modifiedColumns[':p' . $index++]  = '`NAME`';
         }
@@ -662,6 +723,9 @@ abstract class BaseSchedule extends BaseObject implements Persistent
                         break;
                     case '`CURSUS_ID`':
                         $stmt->bindValue($identifier, $this->cursus_id, PDO::PARAM_INT);
+                        break;
+                    case '`PATH_ID`':
+                        $stmt->bindValue($identifier, $this->path_id, PDO::PARAM_INT);
                         break;
                     case '`NAME`':
                         $stmt->bindValue($identifier, $this->name, PDO::PARAM_STR);
@@ -777,6 +841,12 @@ abstract class BaseSchedule extends BaseObject implements Persistent
                 }
             }
 
+            if ($this->aEducationalPath !== null) {
+                if (!$this->aEducationalPath->validate($columns)) {
+                    $failureMap = array_merge($failureMap, $this->aEducationalPath->getValidationFailures());
+                }
+            }
+
 
             if (($retval = SchedulePeer::doValidate($this, $columns)) !== true) {
                 $failureMap = array_merge($failureMap, $retval);
@@ -833,12 +903,15 @@ abstract class BaseSchedule extends BaseObject implements Persistent
                 return $this->getCursusId();
                 break;
             case 2:
-                return $this->getName();
+                return $this->getPathId();
                 break;
             case 3:
-                return $this->getBeginning();
+                return $this->getName();
                 break;
             case 4:
+                return $this->getBeginning();
+                break;
+            case 5:
                 return $this->getEnd();
                 break;
             default:
@@ -872,13 +945,17 @@ abstract class BaseSchedule extends BaseObject implements Persistent
         $result = array(
             $keys[0] => $this->getId(),
             $keys[1] => $this->getCursusId(),
-            $keys[2] => $this->getName(),
-            $keys[3] => $this->getBeginning(),
-            $keys[4] => $this->getEnd(),
+            $keys[2] => $this->getPathId(),
+            $keys[3] => $this->getName(),
+            $keys[4] => $this->getBeginning(),
+            $keys[5] => $this->getEnd(),
         );
         if ($includeForeignObjects) {
             if (null !== $this->aCursus) {
                 $result['Cursus'] = $this->aCursus->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            }
+            if (null !== $this->aEducationalPath) {
+                $result['EducationalPath'] = $this->aEducationalPath->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
             if (null !== $this->collSchedulesCoursess) {
                 $result['SchedulesCoursess'] = $this->collSchedulesCoursess->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
@@ -924,12 +1001,15 @@ abstract class BaseSchedule extends BaseObject implements Persistent
                 $this->setCursusId($value);
                 break;
             case 2:
-                $this->setName($value);
+                $this->setPathId($value);
                 break;
             case 3:
-                $this->setBeginning($value);
+                $this->setName($value);
                 break;
             case 4:
+                $this->setBeginning($value);
+                break;
+            case 5:
                 $this->setEnd($value);
                 break;
         } // switch()
@@ -958,9 +1038,10 @@ abstract class BaseSchedule extends BaseObject implements Persistent
 
         if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
         if (array_key_exists($keys[1], $arr)) $this->setCursusId($arr[$keys[1]]);
-        if (array_key_exists($keys[2], $arr)) $this->setName($arr[$keys[2]]);
-        if (array_key_exists($keys[3], $arr)) $this->setBeginning($arr[$keys[3]]);
-        if (array_key_exists($keys[4], $arr)) $this->setEnd($arr[$keys[4]]);
+        if (array_key_exists($keys[2], $arr)) $this->setPathId($arr[$keys[2]]);
+        if (array_key_exists($keys[3], $arr)) $this->setName($arr[$keys[3]]);
+        if (array_key_exists($keys[4], $arr)) $this->setBeginning($arr[$keys[4]]);
+        if (array_key_exists($keys[5], $arr)) $this->setEnd($arr[$keys[5]]);
     }
 
     /**
@@ -974,6 +1055,7 @@ abstract class BaseSchedule extends BaseObject implements Persistent
 
         if ($this->isColumnModified(SchedulePeer::ID)) $criteria->add(SchedulePeer::ID, $this->id);
         if ($this->isColumnModified(SchedulePeer::CURSUS_ID)) $criteria->add(SchedulePeer::CURSUS_ID, $this->cursus_id);
+        if ($this->isColumnModified(SchedulePeer::PATH_ID)) $criteria->add(SchedulePeer::PATH_ID, $this->path_id);
         if ($this->isColumnModified(SchedulePeer::NAME)) $criteria->add(SchedulePeer::NAME, $this->name);
         if ($this->isColumnModified(SchedulePeer::BEGINNING)) $criteria->add(SchedulePeer::BEGINNING, $this->beginning);
         if ($this->isColumnModified(SchedulePeer::END)) $criteria->add(SchedulePeer::END, $this->end);
@@ -1041,6 +1123,7 @@ abstract class BaseSchedule extends BaseObject implements Persistent
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
         $copyObj->setCursusId($this->getCursusId());
+        $copyObj->setPathId($this->getPathId());
         $copyObj->setName($this->getName());
         $copyObj->setBeginning($this->getBeginning());
         $copyObj->setEnd($this->getEnd());
@@ -1157,6 +1240,57 @@ abstract class BaseSchedule extends BaseObject implements Persistent
         }
 
         return $this->aCursus;
+    }
+
+    /**
+     * Declares an association between this object and a EducationalPath object.
+     *
+     * @param             EducationalPath $v
+     * @return Schedule The current object (for fluent API support)
+     * @throws PropelException
+     */
+    public function setEducationalPath(EducationalPath $v = null)
+    {
+        if ($v === null) {
+            $this->setPathId(NULL);
+        } else {
+            $this->setPathId($v->getId());
+        }
+
+        $this->aEducationalPath = $v;
+
+        // Add binding for other direction of this n:n relationship.
+        // If this object has already been added to the EducationalPath object, it will not be re-added.
+        if ($v !== null) {
+            $v->addSchedule($this);
+        }
+
+
+        return $this;
+    }
+
+
+    /**
+     * Get the associated EducationalPath object
+     *
+     * @param PropelPDO $con Optional Connection object.
+     * @return EducationalPath The associated EducationalPath object.
+     * @throws PropelException
+     */
+    public function getEducationalPath(PropelPDO $con = null)
+    {
+        if ($this->aEducationalPath === null && ($this->path_id !== null)) {
+            $this->aEducationalPath = EducationalPathQuery::create()->findPk($this->path_id, $con);
+            /* The following can be used additionally to
+                guarantee the related object contains a reference
+                to this object.  This level of coupling may, however, be
+                undesirable since it could result in an only partially populated collection
+                in the referenced object.
+                $this->aEducationalPath->addSchedules($this);
+             */
+        }
+
+        return $this->aEducationalPath;
     }
 
 
@@ -1582,6 +1716,7 @@ abstract class BaseSchedule extends BaseObject implements Persistent
     {
         $this->id = null;
         $this->cursus_id = null;
+        $this->path_id = null;
         $this->name = null;
         $this->beginning = null;
         $this->end = null;
@@ -1626,6 +1761,7 @@ abstract class BaseSchedule extends BaseObject implements Persistent
         }
         $this->collScheduledCourses = null;
         $this->aCursus = null;
+        $this->aEducationalPath = null;
     }
 
     /**

@@ -40,6 +40,7 @@ class ScheduleTableMap extends TableMap
         // columns
         $this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
         $this->addForeignKey('CURSUS_ID', 'CursusId', 'INTEGER', 'cursus', 'ID', false, null, null);
+        $this->addForeignKey('PATH_ID', 'PathId', 'INTEGER', 'educational_paths', 'ID', false, null, null);
         $this->addColumn('NAME', 'Name', 'VARCHAR', true, 32, null);
         $this->addColumn('BEGINNING', 'Beginning', 'DATE', false, null, null);
         $this->addColumn('END', 'End', 'DATE', false, null, null);
@@ -52,6 +53,7 @@ class ScheduleTableMap extends TableMap
     public function buildRelations()
     {
         $this->addRelation('Cursus', 'Cursus', RelationMap::MANY_TO_ONE, array('cursus_id' => 'id', ), 'CASCADE', 'CASCADE');
+        $this->addRelation('EducationalPath', 'EducationalPath', RelationMap::MANY_TO_ONE, array('path_id' => 'id', ), 'CASCADE', 'CASCADE');
         $this->addRelation('SchedulesCourses', 'SchedulesCourses', RelationMap::ONE_TO_MANY, array('id' => 'schedule_id', ), 'CASCADE', 'CASCADE', 'SchedulesCoursess');
         $this->addRelation('ScheduledCourse', 'ScheduledCourse', RelationMap::MANY_TO_MANY, array(), 'CASCADE', 'CASCADE', 'ScheduledCourses');
     } // buildRelations()

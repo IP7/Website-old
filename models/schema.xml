@@ -249,7 +249,7 @@
 
         <!-- nom -->
         <column name="short_name" type="VARCHAR"    size="8" required="true" />
-        <column name="name"       type="VARCHAR" size="32" required="true" />
+        <column name="name"       type="VARCHAR" size="50" required="true" />
 
         <!-- description -->
         <column name="description"    type="LONGVARCHAR" size="1024" lazyLoad="true" />
@@ -1014,6 +1014,9 @@
 
         <!-- id du cursus concerné -->
         <column name="cursus_id" type="INTEGER" />
+
+        <!-- id du parcours concerné s'il y en a un -->
+        <column name="path_id" type="INTEGER" />
         
         <!-- nom -->
         <column name="name"      type="VARCHAR" size="32" required="true" />
@@ -1028,6 +1031,10 @@
 
         <foreign-key foreignTable="cursus" onDelete="CASCADE" onUpdate="CASCADE" phpName="Cursus">
             <reference local="cursus_id" foreign="id"/>
+        </foreign-key>
+
+        <foreign-key foreignTable="educational_paths" onDelete="CASCADE" onUpdate="CASCADE" phpName="EducationalPath">
+            <reference local="path_id" foreign="id" />
         </foreign-key>
     
     </table>

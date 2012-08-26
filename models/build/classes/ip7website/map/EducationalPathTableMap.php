@@ -40,7 +40,7 @@ class EducationalPathTableMap extends TableMap
         // columns
         $this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
         $this->addColumn('SHORT_NAME', 'ShortName', 'VARCHAR', true, 8, null);
-        $this->addColumn('NAME', 'Name', 'VARCHAR', true, 32, null);
+        $this->addColumn('NAME', 'Name', 'VARCHAR', true, 50, null);
         $this->addColumn('DESCRIPTION', 'Description', 'LONGVARCHAR', false, 1024, null);
         $this->addForeignKey('CURSUS_ID', 'CursusId', 'INTEGER', 'cursus', 'ID', true, null, null);
         $this->addForeignKey('RESPONSABLE_ID', 'ResponsableId', 'INTEGER', 'users', 'ID', false, null, null);
@@ -57,6 +57,7 @@ class EducationalPathTableMap extends TableMap
         $this->addRelation('UsersPaths', 'UsersPaths', RelationMap::ONE_TO_MANY, array('id' => 'path_id', ), 'CASCADE', 'CASCADE', 'UsersPathss');
         $this->addRelation('EducationalPathsOptionalCourses', 'EducationalPathsOptionalCourses', RelationMap::ONE_TO_MANY, array('id' => 'path_id', ), 'CASCADE', 'CASCADE', 'EducationalPathsOptionalCoursess');
         $this->addRelation('EducationalPathsMandatoryCourses', 'EducationalPathsMandatoryCourses', RelationMap::ONE_TO_MANY, array('id' => 'path_id', ), 'CASCADE', 'CASCADE', 'EducationalPathsMandatoryCoursess');
+        $this->addRelation('Schedule', 'Schedule', RelationMap::ONE_TO_MANY, array('id' => 'path_id', ), 'CASCADE', 'CASCADE', 'Schedules');
         $this->addRelation('User', 'User', RelationMap::MANY_TO_MANY, array(), 'CASCADE', 'CASCADE', 'Users');
         $this->addRelation('OptionalCourse', 'Course', RelationMap::MANY_TO_MANY, array(), 'CASCADE', 'CASCADE', 'OptionalCourses');
         $this->addRelation('MandatoryCourse', 'Course', RelationMap::MANY_TO_MANY, array(), 'CASCADE', 'CASCADE', 'MandatoryCourses');

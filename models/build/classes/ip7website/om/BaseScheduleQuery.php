@@ -8,12 +8,14 @@
  *
  * @method ScheduleQuery orderById($order = Criteria::ASC) Order by the id column
  * @method ScheduleQuery orderByCursusId($order = Criteria::ASC) Order by the cursus_id column
+ * @method ScheduleQuery orderByPathId($order = Criteria::ASC) Order by the path_id column
  * @method ScheduleQuery orderByName($order = Criteria::ASC) Order by the name column
  * @method ScheduleQuery orderByBeginning($order = Criteria::ASC) Order by the beginning column
  * @method ScheduleQuery orderByEnd($order = Criteria::ASC) Order by the end column
  *
  * @method ScheduleQuery groupById() Group by the id column
  * @method ScheduleQuery groupByCursusId() Group by the cursus_id column
+ * @method ScheduleQuery groupByPathId() Group by the path_id column
  * @method ScheduleQuery groupByName() Group by the name column
  * @method ScheduleQuery groupByBeginning() Group by the beginning column
  * @method ScheduleQuery groupByEnd() Group by the end column
@@ -26,6 +28,10 @@
  * @method ScheduleQuery rightJoinCursus($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Cursus relation
  * @method ScheduleQuery innerJoinCursus($relationAlias = null) Adds a INNER JOIN clause to the query using the Cursus relation
  *
+ * @method ScheduleQuery leftJoinEducationalPath($relationAlias = null) Adds a LEFT JOIN clause to the query using the EducationalPath relation
+ * @method ScheduleQuery rightJoinEducationalPath($relationAlias = null) Adds a RIGHT JOIN clause to the query using the EducationalPath relation
+ * @method ScheduleQuery innerJoinEducationalPath($relationAlias = null) Adds a INNER JOIN clause to the query using the EducationalPath relation
+ *
  * @method ScheduleQuery leftJoinSchedulesCourses($relationAlias = null) Adds a LEFT JOIN clause to the query using the SchedulesCourses relation
  * @method ScheduleQuery rightJoinSchedulesCourses($relationAlias = null) Adds a RIGHT JOIN clause to the query using the SchedulesCourses relation
  * @method ScheduleQuery innerJoinSchedulesCourses($relationAlias = null) Adds a INNER JOIN clause to the query using the SchedulesCourses relation
@@ -35,12 +41,14 @@
  *
  * @method Schedule findOneById(int $id) Return the first Schedule filtered by the id column
  * @method Schedule findOneByCursusId(int $cursus_id) Return the first Schedule filtered by the cursus_id column
+ * @method Schedule findOneByPathId(int $path_id) Return the first Schedule filtered by the path_id column
  * @method Schedule findOneByName(string $name) Return the first Schedule filtered by the name column
  * @method Schedule findOneByBeginning(string $beginning) Return the first Schedule filtered by the beginning column
  * @method Schedule findOneByEnd(string $end) Return the first Schedule filtered by the end column
  *
  * @method array findById(int $id) Return Schedule objects filtered by the id column
  * @method array findByCursusId(int $cursus_id) Return Schedule objects filtered by the cursus_id column
+ * @method array findByPathId(int $path_id) Return Schedule objects filtered by the path_id column
  * @method array findByName(string $name) Return Schedule objects filtered by the name column
  * @method array findByBeginning(string $beginning) Return Schedule objects filtered by the beginning column
  * @method array findByEnd(string $end) Return Schedule objects filtered by the end column
@@ -133,7 +141,7 @@ abstract class BaseScheduleQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `ID`, `CURSUS_ID`, `NAME`, `BEGINNING`, `END` FROM `schedules` WHERE `ID` = :p0';
+        $sql = 'SELECT `ID`, `CURSUS_ID`, `PATH_ID`, `NAME`, `BEGINNING`, `END` FROM `schedules` WHERE `ID` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -290,6 +298,49 @@ abstract class BaseScheduleQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(SchedulePeer::CURSUS_ID, $cursusId, $comparison);
+    }
+
+    /**
+     * Filter the query on the path_id column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByPathId(1234); // WHERE path_id = 1234
+     * $query->filterByPathId(array(12, 34)); // WHERE path_id IN (12, 34)
+     * $query->filterByPathId(array('min' => 12)); // WHERE path_id > 12
+     * </code>
+     *
+     * @see       filterByEducationalPath()
+     *
+     * @param     mixed $pathId The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ScheduleQuery The current query, for fluid interface
+     */
+    public function filterByPathId($pathId = null, $comparison = null)
+    {
+        if (is_array($pathId)) {
+            $useMinMax = false;
+            if (isset($pathId['min'])) {
+                $this->addUsingAlias(SchedulePeer::PATH_ID, $pathId['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($pathId['max'])) {
+                $this->addUsingAlias(SchedulePeer::PATH_ID, $pathId['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(SchedulePeer::PATH_ID, $pathId, $comparison);
     }
 
     /**
@@ -481,6 +532,82 @@ abstract class BaseScheduleQuery extends ModelCriteria
         return $this
             ->joinCursus($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'Cursus', 'CursusQuery');
+    }
+
+    /**
+     * Filter the query by a related EducationalPath object
+     *
+     * @param   EducationalPath|PropelObjectCollection $educationalPath The related object(s) to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return   ScheduleQuery The current query, for fluid interface
+     * @throws   PropelException - if the provided filter is invalid.
+     */
+    public function filterByEducationalPath($educationalPath, $comparison = null)
+    {
+        if ($educationalPath instanceof EducationalPath) {
+            return $this
+                ->addUsingAlias(SchedulePeer::PATH_ID, $educationalPath->getId(), $comparison);
+        } elseif ($educationalPath instanceof PropelObjectCollection) {
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+
+            return $this
+                ->addUsingAlias(SchedulePeer::PATH_ID, $educationalPath->toKeyValue('PrimaryKey', 'Id'), $comparison);
+        } else {
+            throw new PropelException('filterByEducationalPath() only accepts arguments of type EducationalPath or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the EducationalPath relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return ScheduleQuery The current query, for fluid interface
+     */
+    public function joinEducationalPath($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('EducationalPath');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'EducationalPath');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the EducationalPath relation EducationalPath object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   EducationalPathQuery A secondary query class using the current class as primary query
+     */
+    public function useEducationalPathQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        return $this
+            ->joinEducationalPath($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'EducationalPath', 'EducationalPathQuery');
     }
 
     /**

@@ -101,6 +101,12 @@ abstract class BaseEducationalPath extends BaseObject implements Persistent
     protected $collEducationalPathsMandatoryCoursessPartial;
 
     /**
+     * @var        PropelObjectCollection|Schedule[] Collection to store aggregation of Schedule objects.
+     */
+    protected $collSchedules;
+    protected $collSchedulesPartial;
+
+    /**
      * @var        PropelObjectCollection|User[] Collection to store aggregation of User objects.
      */
     protected $collUsers;
@@ -164,6 +170,12 @@ abstract class BaseEducationalPath extends BaseObject implements Persistent
      * @var		PropelObjectCollection
      */
     protected $educationalPathsMandatoryCoursessScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $schedulesScheduledForDeletion = null;
 
     /**
      * Get the [id] column value.
@@ -520,6 +532,8 @@ abstract class BaseEducationalPath extends BaseObject implements Persistent
 
             $this->collEducationalPathsMandatoryCoursess = null;
 
+            $this->collSchedules = null;
+
             $this->collUsers = null;
             $this->collOptionalCourses = null;
             $this->collMandatoryCourses = null;
@@ -777,6 +791,24 @@ abstract class BaseEducationalPath extends BaseObject implements Persistent
                 }
             }
 
+            if ($this->schedulesScheduledForDeletion !== null) {
+                if (!$this->schedulesScheduledForDeletion->isEmpty()) {
+                    foreach ($this->schedulesScheduledForDeletion as $schedule) {
+                        // need to save related object because we set the relation to null
+                        $schedule->save($con);
+                    }
+                    $this->schedulesScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collSchedules !== null) {
+                foreach ($this->collSchedules as $referrerFK) {
+                    if (!$referrerFK->isDeleted()) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
             $this->alreadyInSave = false;
 
         }
@@ -991,6 +1023,14 @@ abstract class BaseEducationalPath extends BaseObject implements Persistent
                     }
                 }
 
+                if ($this->collSchedules !== null) {
+                    foreach ($this->collSchedules as $referrerFK) {
+                        if (!$referrerFK->validate($columns)) {
+                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+                        }
+                    }
+                }
+
 
             $this->alreadyInValidation = false;
         }
@@ -1095,6 +1135,9 @@ abstract class BaseEducationalPath extends BaseObject implements Persistent
             }
             if (null !== $this->collEducationalPathsMandatoryCoursess) {
                 $result['EducationalPathsMandatoryCoursess'] = $this->collEducationalPathsMandatoryCoursess->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
+            if (null !== $this->collSchedules) {
+                $result['Schedules'] = $this->collSchedules->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
         }
 
@@ -1289,6 +1332,12 @@ abstract class BaseEducationalPath extends BaseObject implements Persistent
                 }
             }
 
+            foreach ($this->getSchedules() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addSchedule($relObj->copy($deepCopy));
+                }
+            }
+
             //unflag object copy
             $this->startCopy = false;
         } // if ($deepCopy)
@@ -1460,6 +1509,9 @@ abstract class BaseEducationalPath extends BaseObject implements Persistent
         }
         if ('EducationalPathsMandatoryCourses' == $relationName) {
             $this->initEducationalPathsMandatoryCoursess();
+        }
+        if ('Schedule' == $relationName) {
+            $this->initSchedules();
         }
     }
 
@@ -2160,6 +2212,238 @@ abstract class BaseEducationalPath extends BaseObject implements Persistent
     }
 
     /**
+     * Clears out the collSchedules collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return void
+     * @see        addSchedules()
+     */
+    public function clearSchedules()
+    {
+        $this->collSchedules = null; // important to set this to null since that means it is uninitialized
+        $this->collSchedulesPartial = null;
+    }
+
+    /**
+     * reset is the collSchedules collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialSchedules($v = true)
+    {
+        $this->collSchedulesPartial = $v;
+    }
+
+    /**
+     * Initializes the collSchedules collection.
+     *
+     * By default this just sets the collSchedules collection to an empty array (like clearcollSchedules());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initSchedules($overrideExisting = true)
+    {
+        if (null !== $this->collSchedules && !$overrideExisting) {
+            return;
+        }
+        $this->collSchedules = new PropelObjectCollection();
+        $this->collSchedules->setModel('Schedule');
+    }
+
+    /**
+     * Gets an array of Schedule objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this EducationalPath is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @return PropelObjectCollection|Schedule[] List of Schedule objects
+     * @throws PropelException
+     */
+    public function getSchedules($criteria = null, PropelPDO $con = null)
+    {
+        $partial = $this->collSchedulesPartial && !$this->isNew();
+        if (null === $this->collSchedules || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collSchedules) {
+                // return empty collection
+                $this->initSchedules();
+            } else {
+                $collSchedules = ScheduleQuery::create(null, $criteria)
+                    ->filterByEducationalPath($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collSchedulesPartial && count($collSchedules)) {
+                      $this->initSchedules(false);
+
+                      foreach($collSchedules as $obj) {
+                        if (false == $this->collSchedules->contains($obj)) {
+                          $this->collSchedules->append($obj);
+                        }
+                      }
+
+                      $this->collSchedulesPartial = true;
+                    }
+
+                    return $collSchedules;
+                }
+
+                if($partial && $this->collSchedules) {
+                    foreach($this->collSchedules as $obj) {
+                        if($obj->isNew()) {
+                            $collSchedules[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collSchedules = $collSchedules;
+                $this->collSchedulesPartial = false;
+            }
+        }
+
+        return $this->collSchedules;
+    }
+
+    /**
+     * Sets a collection of Schedule objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $schedules A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     */
+    public function setSchedules(PropelCollection $schedules, PropelPDO $con = null)
+    {
+        $this->schedulesScheduledForDeletion = $this->getSchedules(new Criteria(), $con)->diff($schedules);
+
+        foreach ($this->schedulesScheduledForDeletion as $scheduleRemoved) {
+            $scheduleRemoved->setEducationalPath(null);
+        }
+
+        $this->collSchedules = null;
+        foreach ($schedules as $schedule) {
+            $this->addSchedule($schedule);
+        }
+
+        $this->collSchedules = $schedules;
+        $this->collSchedulesPartial = false;
+    }
+
+    /**
+     * Returns the number of related Schedule objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related Schedule objects.
+     * @throws PropelException
+     */
+    public function countSchedules(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collSchedulesPartial && !$this->isNew();
+        if (null === $this->collSchedules || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collSchedules) {
+                return 0;
+            } else {
+                if($partial && !$criteria) {
+                    return count($this->getSchedules());
+                }
+                $query = ScheduleQuery::create(null, $criteria);
+                if ($distinct) {
+                    $query->distinct();
+                }
+
+                return $query
+                    ->filterByEducationalPath($this)
+                    ->count($con);
+            }
+        } else {
+            return count($this->collSchedules);
+        }
+    }
+
+    /**
+     * Method called to associate a Schedule object to this object
+     * through the Schedule foreign key attribute.
+     *
+     * @param    Schedule $l Schedule
+     * @return EducationalPath The current object (for fluent API support)
+     */
+    public function addSchedule(Schedule $l)
+    {
+        if ($this->collSchedules === null) {
+            $this->initSchedules();
+            $this->collSchedulesPartial = true;
+        }
+        if (!$this->collSchedules->contains($l)) { // only add it if the **same** object is not already associated
+            $this->doAddSchedule($l);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	Schedule $schedule The schedule object to add.
+     */
+    protected function doAddSchedule($schedule)
+    {
+        $this->collSchedules[]= $schedule;
+        $schedule->setEducationalPath($this);
+    }
+
+    /**
+     * @param	Schedule $schedule The schedule object to remove.
+     */
+    public function removeSchedule($schedule)
+    {
+        if ($this->getSchedules()->contains($schedule)) {
+            $this->collSchedules->remove($this->collSchedules->search($schedule));
+            if (null === $this->schedulesScheduledForDeletion) {
+                $this->schedulesScheduledForDeletion = clone $this->collSchedules;
+                $this->schedulesScheduledForDeletion->clear();
+            }
+            $this->schedulesScheduledForDeletion[]= $schedule;
+            $schedule->setEducationalPath(null);
+        }
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this EducationalPath is new, it will return
+     * an empty collection; or if this EducationalPath has previously
+     * been saved, it will retrieve related Schedules from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in EducationalPath.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|Schedule[] List of Schedule objects
+     */
+    public function getSchedulesJoinCursus($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = ScheduleQuery::create(null, $criteria);
+        $query->joinWith('Cursus', $join_behavior);
+
+        return $this->getSchedules($query, $con);
+    }
+
+    /**
      * Clears out the collUsers collection
      *
      * This does not modify the database; however, it will remove any associated objects, causing
@@ -2710,6 +2994,11 @@ abstract class BaseEducationalPath extends BaseObject implements Persistent
                     $o->clearAllReferences($deep);
                 }
             }
+            if ($this->collSchedules) {
+                foreach ($this->collSchedules as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
             if ($this->collUsers) {
                 foreach ($this->collUsers as $o) {
                     $o->clearAllReferences($deep);
@@ -2739,6 +3028,10 @@ abstract class BaseEducationalPath extends BaseObject implements Persistent
             $this->collEducationalPathsMandatoryCoursess->clearIterator();
         }
         $this->collEducationalPathsMandatoryCoursess = null;
+        if ($this->collSchedules instanceof PropelCollection) {
+            $this->collSchedules->clearIterator();
+        }
+        $this->collSchedules = null;
         if ($this->collUsers instanceof PropelCollection) {
             $this->collUsers->clearIterator();
         }

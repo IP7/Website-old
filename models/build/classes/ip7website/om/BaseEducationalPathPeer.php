@@ -382,6 +382,9 @@ abstract class BaseEducationalPathPeer
         // Invalidate objects in EducationalPathsMandatoryCoursesPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         EducationalPathsMandatoryCoursesPeer::clearInstancePool();
+        // Invalidate objects in SchedulePeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        SchedulePeer::clearInstancePool();
     }
 
     /**
@@ -1364,6 +1367,12 @@ abstract class BaseEducationalPathPeer
 
             $criteria->add(EducationalPathsMandatoryCoursesPeer::PATH_ID, $obj->getId());
             $affectedRows += EducationalPathsMandatoryCoursesPeer::doDelete($criteria, $con);
+
+            // delete related Schedule objects
+            $criteria = new Criteria(SchedulePeer::DATABASE_NAME);
+
+            $criteria->add(SchedulePeer::PATH_ID, $obj->getId());
+            $affectedRows += SchedulePeer::doDelete($criteria, $con);
         }
 
         return $affectedRows;

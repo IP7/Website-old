@@ -24,19 +24,22 @@ abstract class BaseSchedulePeer
     const TM_CLASS = 'ScheduleTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 5;
+    const NUM_COLUMNS = 6;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 5;
+    const NUM_HYDRATE_COLUMNS = 6;
 
     /** the column name for the ID field */
     const ID = 'schedules.ID';
 
     /** the column name for the CURSUS_ID field */
     const CURSUS_ID = 'schedules.CURSUS_ID';
+
+    /** the column name for the PATH_ID field */
+    const PATH_ID = 'schedules.PATH_ID';
 
     /** the column name for the NAME field */
     const NAME = 'schedules.NAME';
@@ -66,12 +69,12 @@ abstract class BaseSchedulePeer
      * e.g. SchedulePeer::$fieldNames[SchedulePeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'CursusId', 'Name', 'Beginning', 'End', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'cursusId', 'name', 'beginning', 'end', ),
-        BasePeer::TYPE_COLNAME => array (SchedulePeer::ID, SchedulePeer::CURSUS_ID, SchedulePeer::NAME, SchedulePeer::BEGINNING, SchedulePeer::END, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'CURSUS_ID', 'NAME', 'BEGINNING', 'END', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'cursus_id', 'name', 'beginning', 'end', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'CursusId', 'PathId', 'Name', 'Beginning', 'End', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'cursusId', 'pathId', 'name', 'beginning', 'end', ),
+        BasePeer::TYPE_COLNAME => array (SchedulePeer::ID, SchedulePeer::CURSUS_ID, SchedulePeer::PATH_ID, SchedulePeer::NAME, SchedulePeer::BEGINNING, SchedulePeer::END, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'CURSUS_ID', 'PATH_ID', 'NAME', 'BEGINNING', 'END', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'cursus_id', 'path_id', 'name', 'beginning', 'end', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
     );
 
     /**
@@ -81,12 +84,12 @@ abstract class BaseSchedulePeer
      * e.g. SchedulePeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'CursusId' => 1, 'Name' => 2, 'Beginning' => 3, 'End' => 4, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'cursusId' => 1, 'name' => 2, 'beginning' => 3, 'end' => 4, ),
-        BasePeer::TYPE_COLNAME => array (SchedulePeer::ID => 0, SchedulePeer::CURSUS_ID => 1, SchedulePeer::NAME => 2, SchedulePeer::BEGINNING => 3, SchedulePeer::END => 4, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'CURSUS_ID' => 1, 'NAME' => 2, 'BEGINNING' => 3, 'END' => 4, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'cursus_id' => 1, 'name' => 2, 'beginning' => 3, 'end' => 4, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'CursusId' => 1, 'PathId' => 2, 'Name' => 3, 'Beginning' => 4, 'End' => 5, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'cursusId' => 1, 'pathId' => 2, 'name' => 3, 'beginning' => 4, 'end' => 5, ),
+        BasePeer::TYPE_COLNAME => array (SchedulePeer::ID => 0, SchedulePeer::CURSUS_ID => 1, SchedulePeer::PATH_ID => 2, SchedulePeer::NAME => 3, SchedulePeer::BEGINNING => 4, SchedulePeer::END => 5, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'CURSUS_ID' => 1, 'PATH_ID' => 2, 'NAME' => 3, 'BEGINNING' => 4, 'END' => 5, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'cursus_id' => 1, 'path_id' => 2, 'name' => 3, 'beginning' => 4, 'end' => 5, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
     );
 
     /**
@@ -162,12 +165,14 @@ abstract class BaseSchedulePeer
         if (null === $alias) {
             $criteria->addSelectColumn(SchedulePeer::ID);
             $criteria->addSelectColumn(SchedulePeer::CURSUS_ID);
+            $criteria->addSelectColumn(SchedulePeer::PATH_ID);
             $criteria->addSelectColumn(SchedulePeer::NAME);
             $criteria->addSelectColumn(SchedulePeer::BEGINNING);
             $criteria->addSelectColumn(SchedulePeer::END);
         } else {
             $criteria->addSelectColumn($alias . '.ID');
             $criteria->addSelectColumn($alias . '.CURSUS_ID');
+            $criteria->addSelectColumn($alias . '.PATH_ID');
             $criteria->addSelectColumn($alias . '.NAME');
             $criteria->addSelectColumn($alias . '.BEGINNING');
             $criteria->addSelectColumn($alias . '.END');
@@ -522,6 +527,57 @@ abstract class BaseSchedulePeer
 
 
     /**
+     * Returns the number of rows matching criteria, joining the related EducationalPath table
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return int Number of matching rows.
+     */
+    public static function doCountJoinEducationalPath(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        // we're going to modify criteria, so copy it first
+        $criteria = clone $criteria;
+
+        // We need to set the primary table name, since in the case that there are no WHERE columns
+        // it will be impossible for the BasePeer::createSelectSql() method to determine which
+        // tables go into the FROM clause.
+        $criteria->setPrimaryTableName(SchedulePeer::TABLE_NAME);
+
+        if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+            $criteria->setDistinct();
+        }
+
+        if (!$criteria->hasSelectClause()) {
+            SchedulePeer::addSelectColumns($criteria);
+        }
+
+        $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
+
+        // Set the correct dbName
+        $criteria->setDbName(SchedulePeer::DATABASE_NAME);
+
+        if ($con === null) {
+            $con = Propel::getConnection(SchedulePeer::DATABASE_NAME, Propel::CONNECTION_READ);
+        }
+
+        $criteria->addJoin(SchedulePeer::PATH_ID, EducationalPathPeer::ID, $join_behavior);
+
+        $stmt = BasePeer::doCount($criteria, $con);
+
+        if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $count = (int) $row[0];
+        } else {
+            $count = 0; // no rows returned; we infer that means 0 matches.
+        }
+        $stmt->closeCursor();
+
+        return $count;
+    }
+
+
+    /**
      * Selects a collection of Schedule objects pre-filled with their Cursus objects.
      * @param      Criteria  $criteria
      * @param      PropelPDO $con
@@ -589,6 +645,73 @@ abstract class BaseSchedulePeer
 
 
     /**
+     * Selects a collection of Schedule objects pre-filled with their EducationalPath objects.
+     * @param      Criteria  $criteria
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return array           Array of Schedule objects.
+     * @throws PropelException Any exceptions caught during processing will be
+     *		 rethrown wrapped into a PropelException.
+     */
+    public static function doSelectJoinEducationalPath(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $criteria = clone $criteria;
+
+        // Set the correct dbName if it has not been overridden
+        if ($criteria->getDbName() == Propel::getDefaultDB()) {
+            $criteria->setDbName(SchedulePeer::DATABASE_NAME);
+        }
+
+        SchedulePeer::addSelectColumns($criteria);
+        $startcol = SchedulePeer::NUM_HYDRATE_COLUMNS;
+        EducationalPathPeer::addSelectColumns($criteria);
+
+        $criteria->addJoin(SchedulePeer::PATH_ID, EducationalPathPeer::ID, $join_behavior);
+
+        $stmt = BasePeer::doSelect($criteria, $con);
+        $results = array();
+
+        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $key1 = SchedulePeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj1 = SchedulePeer::getInstanceFromPool($key1))) {
+                // We no longer rehydrate the object, since this can cause data loss.
+                // See http://www.propelorm.org/ticket/509
+                // $obj1->hydrate($row, 0, true); // rehydrate
+            } else {
+
+                $cls = SchedulePeer::getOMClass();
+
+                $obj1 = new $cls();
+                $obj1->hydrate($row);
+                SchedulePeer::addInstanceToPool($obj1, $key1);
+            } // if $obj1 already loaded
+
+            $key2 = EducationalPathPeer::getPrimaryKeyHashFromRow($row, $startcol);
+            if ($key2 !== null) {
+                $obj2 = EducationalPathPeer::getInstanceFromPool($key2);
+                if (!$obj2) {
+
+                    $cls = EducationalPathPeer::getOMClass();
+
+                    $obj2 = new $cls();
+                    $obj2->hydrate($row, $startcol);
+                    EducationalPathPeer::addInstanceToPool($obj2, $key2);
+                } // if obj2 already loaded
+
+                // Add the $obj1 (Schedule) to $obj2 (EducationalPath)
+                $obj2->addSchedule($obj1);
+
+            } // if joined row was not null
+
+            $results[] = $obj1;
+        }
+        $stmt->closeCursor();
+
+        return $results;
+    }
+
+
+    /**
      * Returns the number of rows matching criteria, joining all related tables
      *
      * @param      Criteria $criteria
@@ -625,6 +748,8 @@ abstract class BaseSchedulePeer
         }
 
         $criteria->addJoin(SchedulePeer::CURSUS_ID, CursusPeer::ID, $join_behavior);
+
+        $criteria->addJoin(SchedulePeer::PATH_ID, EducationalPathPeer::ID, $join_behavior);
 
         $stmt = BasePeer::doCount($criteria, $con);
 
@@ -663,7 +788,12 @@ abstract class BaseSchedulePeer
         CursusPeer::addSelectColumns($criteria);
         $startcol3 = $startcol2 + CursusPeer::NUM_HYDRATE_COLUMNS;
 
+        EducationalPathPeer::addSelectColumns($criteria);
+        $startcol4 = $startcol3 + EducationalPathPeer::NUM_HYDRATE_COLUMNS;
+
         $criteria->addJoin(SchedulePeer::CURSUS_ID, CursusPeer::ID, $join_behavior);
+
+        $criteria->addJoin(SchedulePeer::PATH_ID, EducationalPathPeer::ID, $join_behavior);
 
         $stmt = BasePeer::doSelect($criteria, $con);
         $results = array();
@@ -699,6 +829,274 @@ abstract class BaseSchedulePeer
                 // Add the $obj1 (Schedule) to the collection in $obj2 (Cursus)
                 $obj2->addSchedule($obj1);
             } // if joined row not null
+
+            // Add objects for joined EducationalPath rows
+
+            $key3 = EducationalPathPeer::getPrimaryKeyHashFromRow($row, $startcol3);
+            if ($key3 !== null) {
+                $obj3 = EducationalPathPeer::getInstanceFromPool($key3);
+                if (!$obj3) {
+
+                    $cls = EducationalPathPeer::getOMClass();
+
+                    $obj3 = new $cls();
+                    $obj3->hydrate($row, $startcol3);
+                    EducationalPathPeer::addInstanceToPool($obj3, $key3);
+                } // if obj3 loaded
+
+                // Add the $obj1 (Schedule) to the collection in $obj3 (EducationalPath)
+                $obj3->addSchedule($obj1);
+            } // if joined row not null
+
+            $results[] = $obj1;
+        }
+        $stmt->closeCursor();
+
+        return $results;
+    }
+
+
+    /**
+     * Returns the number of rows matching criteria, joining the related Cursus table
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return int Number of matching rows.
+     */
+    public static function doCountJoinAllExceptCursus(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        // we're going to modify criteria, so copy it first
+        $criteria = clone $criteria;
+
+        // We need to set the primary table name, since in the case that there are no WHERE columns
+        // it will be impossible for the BasePeer::createSelectSql() method to determine which
+        // tables go into the FROM clause.
+        $criteria->setPrimaryTableName(SchedulePeer::TABLE_NAME);
+
+        if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+            $criteria->setDistinct();
+        }
+
+        if (!$criteria->hasSelectClause()) {
+            SchedulePeer::addSelectColumns($criteria);
+        }
+
+        $criteria->clearOrderByColumns(); // ORDER BY should not affect count
+
+        // Set the correct dbName
+        $criteria->setDbName(SchedulePeer::DATABASE_NAME);
+
+        if ($con === null) {
+            $con = Propel::getConnection(SchedulePeer::DATABASE_NAME, Propel::CONNECTION_READ);
+        }
+
+        $criteria->addJoin(SchedulePeer::PATH_ID, EducationalPathPeer::ID, $join_behavior);
+
+        $stmt = BasePeer::doCount($criteria, $con);
+
+        if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $count = (int) $row[0];
+        } else {
+            $count = 0; // no rows returned; we infer that means 0 matches.
+        }
+        $stmt->closeCursor();
+
+        return $count;
+    }
+
+
+    /**
+     * Returns the number of rows matching criteria, joining the related EducationalPath table
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return int Number of matching rows.
+     */
+    public static function doCountJoinAllExceptEducationalPath(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        // we're going to modify criteria, so copy it first
+        $criteria = clone $criteria;
+
+        // We need to set the primary table name, since in the case that there are no WHERE columns
+        // it will be impossible for the BasePeer::createSelectSql() method to determine which
+        // tables go into the FROM clause.
+        $criteria->setPrimaryTableName(SchedulePeer::TABLE_NAME);
+
+        if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+            $criteria->setDistinct();
+        }
+
+        if (!$criteria->hasSelectClause()) {
+            SchedulePeer::addSelectColumns($criteria);
+        }
+
+        $criteria->clearOrderByColumns(); // ORDER BY should not affect count
+
+        // Set the correct dbName
+        $criteria->setDbName(SchedulePeer::DATABASE_NAME);
+
+        if ($con === null) {
+            $con = Propel::getConnection(SchedulePeer::DATABASE_NAME, Propel::CONNECTION_READ);
+        }
+
+        $criteria->addJoin(SchedulePeer::CURSUS_ID, CursusPeer::ID, $join_behavior);
+
+        $stmt = BasePeer::doCount($criteria, $con);
+
+        if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $count = (int) $row[0];
+        } else {
+            $count = 0; // no rows returned; we infer that means 0 matches.
+        }
+        $stmt->closeCursor();
+
+        return $count;
+    }
+
+
+    /**
+     * Selects a collection of Schedule objects pre-filled with all related objects except Cursus.
+     *
+     * @param      Criteria  $criteria
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return array           Array of Schedule objects.
+     * @throws PropelException Any exceptions caught during processing will be
+     *		 rethrown wrapped into a PropelException.
+     */
+    public static function doSelectJoinAllExceptCursus(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $criteria = clone $criteria;
+
+        // Set the correct dbName if it has not been overridden
+        // $criteria->getDbName() will return the same object if not set to another value
+        // so == check is okay and faster
+        if ($criteria->getDbName() == Propel::getDefaultDB()) {
+            $criteria->setDbName(SchedulePeer::DATABASE_NAME);
+        }
+
+        SchedulePeer::addSelectColumns($criteria);
+        $startcol2 = SchedulePeer::NUM_HYDRATE_COLUMNS;
+
+        EducationalPathPeer::addSelectColumns($criteria);
+        $startcol3 = $startcol2 + EducationalPathPeer::NUM_HYDRATE_COLUMNS;
+
+        $criteria->addJoin(SchedulePeer::PATH_ID, EducationalPathPeer::ID, $join_behavior);
+
+
+        $stmt = BasePeer::doSelect($criteria, $con);
+        $results = array();
+
+        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $key1 = SchedulePeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj1 = SchedulePeer::getInstanceFromPool($key1))) {
+                // We no longer rehydrate the object, since this can cause data loss.
+                // See http://www.propelorm.org/ticket/509
+                // $obj1->hydrate($row, 0, true); // rehydrate
+            } else {
+                $cls = SchedulePeer::getOMClass();
+
+                $obj1 = new $cls();
+                $obj1->hydrate($row);
+                SchedulePeer::addInstanceToPool($obj1, $key1);
+            } // if obj1 already loaded
+
+                // Add objects for joined EducationalPath rows
+
+                $key2 = EducationalPathPeer::getPrimaryKeyHashFromRow($row, $startcol2);
+                if ($key2 !== null) {
+                    $obj2 = EducationalPathPeer::getInstanceFromPool($key2);
+                    if (!$obj2) {
+
+                        $cls = EducationalPathPeer::getOMClass();
+
+                    $obj2 = new $cls();
+                    $obj2->hydrate($row, $startcol2);
+                    EducationalPathPeer::addInstanceToPool($obj2, $key2);
+                } // if $obj2 already loaded
+
+                // Add the $obj1 (Schedule) to the collection in $obj2 (EducationalPath)
+                $obj2->addSchedule($obj1);
+
+            } // if joined row is not null
+
+            $results[] = $obj1;
+        }
+        $stmt->closeCursor();
+
+        return $results;
+    }
+
+
+    /**
+     * Selects a collection of Schedule objects pre-filled with all related objects except EducationalPath.
+     *
+     * @param      Criteria  $criteria
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return array           Array of Schedule objects.
+     * @throws PropelException Any exceptions caught during processing will be
+     *		 rethrown wrapped into a PropelException.
+     */
+    public static function doSelectJoinAllExceptEducationalPath(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $criteria = clone $criteria;
+
+        // Set the correct dbName if it has not been overridden
+        // $criteria->getDbName() will return the same object if not set to another value
+        // so == check is okay and faster
+        if ($criteria->getDbName() == Propel::getDefaultDB()) {
+            $criteria->setDbName(SchedulePeer::DATABASE_NAME);
+        }
+
+        SchedulePeer::addSelectColumns($criteria);
+        $startcol2 = SchedulePeer::NUM_HYDRATE_COLUMNS;
+
+        CursusPeer::addSelectColumns($criteria);
+        $startcol3 = $startcol2 + CursusPeer::NUM_HYDRATE_COLUMNS;
+
+        $criteria->addJoin(SchedulePeer::CURSUS_ID, CursusPeer::ID, $join_behavior);
+
+
+        $stmt = BasePeer::doSelect($criteria, $con);
+        $results = array();
+
+        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $key1 = SchedulePeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj1 = SchedulePeer::getInstanceFromPool($key1))) {
+                // We no longer rehydrate the object, since this can cause data loss.
+                // See http://www.propelorm.org/ticket/509
+                // $obj1->hydrate($row, 0, true); // rehydrate
+            } else {
+                $cls = SchedulePeer::getOMClass();
+
+                $obj1 = new $cls();
+                $obj1->hydrate($row);
+                SchedulePeer::addInstanceToPool($obj1, $key1);
+            } // if obj1 already loaded
+
+                // Add objects for joined Cursus rows
+
+                $key2 = CursusPeer::getPrimaryKeyHashFromRow($row, $startcol2);
+                if ($key2 !== null) {
+                    $obj2 = CursusPeer::getInstanceFromPool($key2);
+                    if (!$obj2) {
+
+                        $cls = CursusPeer::getOMClass();
+
+                    $obj2 = new $cls();
+                    $obj2->hydrate($row, $startcol2);
+                    CursusPeer::addInstanceToPool($obj2, $key2);
+                } // if $obj2 already loaded
+
+                // Add the $obj1 (Schedule) to the collection in $obj2 (Cursus)
+                $obj2->addSchedule($obj1);
+
+            } // if joined row is not null
 
             $results[] = $obj1;
         }

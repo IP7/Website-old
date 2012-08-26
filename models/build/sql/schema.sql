@@ -118,7 +118,7 @@ CREATE TABLE `educational_paths`
 (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `short_name` VARCHAR(8) NOT NULL,
-    `name` VARCHAR(32) NOT NULL,
+    `name` VARCHAR(50) NOT NULL,
     `description` TEXT(1024),
     `cursus_id` INTEGER NOT NULL,
     `responsable_id` INTEGER,
@@ -804,14 +804,21 @@ CREATE TABLE `schedules`
 (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `cursus_id` INTEGER,
+    `path_id` INTEGER,
     `name` VARCHAR(32) NOT NULL,
     `beginning` DATE,
     `end` DATE,
     PRIMARY KEY (`id`),
     INDEX `schedules_FI_1` (`cursus_id`),
+    INDEX `schedules_FI_2` (`path_id`),
     CONSTRAINT `schedules_FK_1`
         FOREIGN KEY (`cursus_id`)
         REFERENCES `cursus` (`id`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    CONSTRAINT `schedules_FK_2`
+        FOREIGN KEY (`path_id`)
+        REFERENCES `educational_paths` (`id`)
         ON UPDATE CASCADE
         ON DELETE CASCADE
 ) ENGINE=MyISAM;
