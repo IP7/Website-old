@@ -92,6 +92,7 @@ foreach($cursus as $k => $v) {
                 $c = new Course();
                 $c->setCode($code);
                 $c->setECTS((float)($course[0]));
+                $c->setCursus($cursus[$k]);
                 $c->setName($course[1]);
                 $c->setDescription($course[2]);
                 $c->setSemester($s_n);
