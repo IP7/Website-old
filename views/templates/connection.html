@@ -1,10 +1,10 @@
 {% extends 'main.html' %}
 {% block content %}
 <form method="POST" action="{{ page.form.action }}" id="connection">
-    <label class="field">Pseudo&nbsp;:<input type="text" name="username" /></label>
-    <label class="field">Mot de passe&nbsp;:<input type="password" name="password" id="password" /></label>
+    <label class="field"><span class="label">Pseudo</span><input type="text" name="username" /></label>
+    <label class="field"><span class="label">Mot de passe</span><input type="password" name="password" id="password" /></label>
     <label class="field"><input type="checkbox" checked="checked" name="remember" id="remember" />Se rappeler de moi</label>
-    <a href="{{ page.forgotten_password_url }}">Mot de passe oublié</a>
+    <a href="{{ page.forgotten_password_url }}" class="helplink">Mot de passe oublié</a>
     <input type="submit" value="Connexion" />
 </form>
 {% endblock %}
