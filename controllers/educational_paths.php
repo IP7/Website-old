@@ -140,7 +140,7 @@ function display_educational_path() {
         'page' => array(
             'title' => $path->getName(),
 
-            'breadcrumb' => $breadcrumbs,
+            'breadcrumbs' => $breadcrumbs,
 
             'news' => $news,
 
