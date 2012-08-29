@@ -60,8 +60,8 @@ class Config {
     # initalize Twig
     private static function tpl_init() {
 
-            $styles = self::$root_uri.'views/static/styles';
-            $scripts = self::$root_uri.'views/static/js';
+        $styles = self::$root_uri.'views/static/styles';
+        $scripts = self::$root_uri.'views/static/js';
 
         Twig_Autoloader::register();
 
