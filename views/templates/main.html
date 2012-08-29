@@ -21,15 +21,7 @@
 
                 {# Accessibilité/Mobile #}
                 <meta name="viewport" content="width=device-width" />
-
                 {% endblock %}
-
-                {# Styles globaux #}
-                {% if site.styles is not empty %}
-                    {% for style in site.styles %}
-                <link rel="stylesheet" href="{{ style.href|raw }}" media="{{ style.media|default('all') }}" />
-                    {% endfor %}
-                {% endif %}
 
                 {# Styles pour IE #}
                 {% if site.ie_styles is defined and site.ie_styles is not empty %}
@@ -38,6 +30,13 @@
                     <link rel="stylesheet" href="{{ style.href|raw }}" media="{{style.media|default('screen,projection') }}" />
                     {% endfor %}
                 <![endif]-->
+                {% endif %}
+
+                {# Styles globaux #}
+                {% if site.styles is not empty %}
+                    {% for style in site.styles %}
+                <link rel="stylesheet" href="{{ style.href|raw }}" media="{{ style.media|default('all') }}" />
+                    {% endfor %}
                 {% endif %}
 
                 {# Styles de la page #}

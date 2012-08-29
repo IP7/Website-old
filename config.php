@@ -90,9 +90,7 @@ class Config {
                 ),
 
                 # IE Styles
-                'ie_styles'       => array(
-                    array( 'href' => $styles.'/ie.css', 'media' => 'all' )
-                ),
+                'ie_styles'       => array(),
 
                 # Scripts
                 'rendering_scripts' => array(

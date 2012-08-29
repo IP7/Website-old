@@ -5,11 +5,6 @@ Config::init();
 
 function display_home() {
 
-    # Disconnection
-    if (isset($_GET['disconnect'])) {
-        disconnection();
-    }
-
     # Rendering
     return Config::$tpl->render('home.html', tpl_array(array(
 
@@ -52,8 +47,13 @@ function display_connection($message=null, $message_type=null) {
         'page' => array(
             'title' => 'Connexion',
             'form' => array( 'action' => Config::$root_uri.'connexion' ),
+            'breadcrumbs' => false,
 
             'forgotten_password_url' => Config::$root_uri.'oubli',
+
+            'styles' => array(
+                array( 'href' => '/views/static/styles/connection.css', 'media' => 'all' )
+            ),
 
             'message' => $message,
             'message_type' => $message_type
