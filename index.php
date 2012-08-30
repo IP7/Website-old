@@ -82,12 +82,15 @@ dispatch('/cursus/:cursus/parcours/:path', 'display_educational_path');
 
 ## course
 dispatch('/cursus/:cursus/:course', 'display_course');
+## content view
+dispatch('/cursus/:cursus/:course/:id', 'display_content_view');
 
 ## admin home
 dispatch('/admin', 'display_admin_home');
 ## moderation
 dispatch('/admin/moderation', 'display_admin_moderation');
 dispatch('/admin/reports', 'display_admin_content_report');
+dispatch_post('/admin/reports', 'post_admin_content_report');
 dispatch('/admin/content/proposed', 'display_admin_content_proposed');
 dispatch('/admin/content/proposed/:id', 'display_admin_content_view');
 dispatch('/admin/content/proposed/:id/:action', 'post_admin_content_action');
