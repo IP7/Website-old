@@ -55,7 +55,7 @@ function display_admin_home($message, $message_type) {
 
 # === MODERATION ===============================================================
 
-function display_admin_content_report(){
+function display_admin_content_report($msg = null){
 
 	$query = ReportQuery::create()
                 ->limit(50)
@@ -97,9 +97,38 @@ function display_admin_content_report(){
 	return Config::$tpl->render('admin/content_report.html', tpl_array(admin_tpl_default(),array(
 					'page' => array(
 						'title' => 'Contenu reporté',
+						'msg' => $msg,
 						'reports' => $contentReport
 					)
 			)));
+
+}
+
+function post_admin_content_report(){
+
+	$msg = null;
+	$content = ContentQuery::create()->findOneById((int)$_POST['content']);
+	$report = ReportQuery::create()->findOneById((int)$_POST['report']);	
+
+	if ( !has_post('Valider') && !has_post('Supprimer') )
+		return display_admin_content_report();
+
+	if ( has_post('Valider') ){
+	
+		$content->delete();
+		$report->delete();
+		$msg = "Le contenu et le report ont bien été supprimé";	
+
+	}
+		
+	if ( has_post('Supprimer') ){
+	
+		$report->delete();
+		$msg = 'Le report a bien été supprimé';
+
+	}
+
+	return display_admin_content_report($msg);
 
 }
 
