@@ -43,15 +43,21 @@
 {% endmacro %}
 
 {# - submit #}
-{% macro submit(value, id, classes) %}
+{% macro submit(value, id, classes, name) %}
 <input type="submit"{% if value   is defined and value   %} value="{{ value }}"{%             endif %}{#
                   #}{% if id      is defined and id      %} id="{{ id }}"{%                   endif %}{#
-                  #}{% if classes is defined and classes %} class="{{ classes|join(' ') }}"{% endif %} />
+                  #}{% if classes is defined and classes %} class="{{ classes|join(' ') }}"{% endif %}{#
+		  #}{% if name 	  is defined and name	 %} name ="{{ name }}"{%	      endif %} />
 {% endmacro %}
 
 {# - token #}
 {% macro token(value) %}
 <input type="hidden" name="t" value="{{ value }}" />
+{% endmacro %}
+
+{# hidden id #}
+{% macro hiddenId(name, value) %}
+<input type="hidden" name="{{ name }}" value="{{ value }}" />
 {% endmacro %}
 
 {# meta #}
