@@ -71,13 +71,7 @@ function display_admin_content_report($msg = null){
 			$user = $cR->getAuthor();
 			$content = $cR->getContent();
 	
-			$uri = Config::$root_uri . 'admin/reports/' . $cR->getId();
-			$option = Array(
-					Array( 'href'  => $uri . '/deleteContent',
-                      'title' => 'Supprimer le contenu' ),
-					Array( 'href'  => $uri . '/deleteReport',
-                      'title' => 'Supprimer le report')
-            );
+			$uri = Config::$root_uri . 'cursus/' . $content->getCursus()->getShortName() . '/' . $content->getCourse()->getCode() . '/' . $content->getId();
 
 			$contentReport []= Array(
                 'id' => $cR->getId(),
@@ -87,7 +81,6 @@ function display_admin_content_report($msg = null){
                 'title' => $content->getTitle(),
                 'reportDate' => $cR->getDate(),
                 'reason' => $cR->getText(),
-					 'option' => $option
             );
 
 		}
