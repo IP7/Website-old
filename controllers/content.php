@@ -14,7 +14,7 @@ function display_content_view(){
 	$report = ReportQuery::create()->findOneByContentId($contentId);
 	$reportArray = Array();
 
-	if ( (strtoupper($cursusSN) != $cursus->getShortName()) && (strtoupper($courseCode) != $course->getCode()) )
+	if ( ((strtoupper($cursusSN) != $cursus->getShortName()) && (strtoupper($courseCode) != $course->getCode())) || !$content->isValidate() )
 		halt(NOT_FOUND);
 
 	if ( user()->isAdmin() && $report instanceof Report ){

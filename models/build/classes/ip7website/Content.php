@@ -15,4 +15,8 @@
  */
 class Content extends BaseContent {
 
+  public function isValidate(){
+	return $this->getValidated();
+  }
+
 } // Content
