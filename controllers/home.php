@@ -5,6 +5,14 @@ Config::init();
 
 function display_home() {
 
+    if (has_post('disconnect')) {
+        disconnection();
+
+        if (has_post('u')) {
+            redirect_to($_POST['u'], array('status' => HTTP_SEE_OTHER));
+        }
+    }
+
     # Rendering
     return Config::$tpl->render('home.html', tpl_array(array(
 

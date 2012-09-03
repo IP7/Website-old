@@ -64,6 +64,7 @@ pre {
 
 .bar ul,
 .bar li,
+.bar form,
 .bar nav {
     display: inline-block;
 }

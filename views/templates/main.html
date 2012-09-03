@@ -81,6 +81,9 @@
                         {% for link in site.global_links.others %}
                         {{ _m.navlink(link.href, link.title) }}
                         {% endfor %}
+                        {% if site.connection_button is defined and site.connection_button %}
+                        {{ _m.connection_button(site.connection_button) }}
+                        {% endif %}
                     </ul>
                     {% endblock %}
 
