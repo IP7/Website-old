@@ -4,67 +4,68 @@
 /**
  * Base class that represents a query for the 'alerts' table.
  *
+ * 
  *
+ * @method     AlertQuery orderById($order = Criteria::ASC) Order by the id column
+ * @method     AlertQuery orderBySubscriberId($order = Criteria::ASC) Order by the subscriber_id column
+ * @method     AlertQuery orderByCursusId($order = Criteria::ASC) Order by the cursus_id column
+ * @method     AlertQuery orderByCourseId($order = Criteria::ASC) Order by the course_id column
+ * @method     AlertQuery orderByTagId($order = Criteria::ASC) Order by the tag_id column
+ * @method     AlertQuery orderByContentTypeId($order = Criteria::ASC) Order by the content_type_id column
  *
- * @method AlertQuery orderById($order = Criteria::ASC) Order by the id column
- * @method AlertQuery orderBySubscriberId($order = Criteria::ASC) Order by the subscriber_id column
- * @method AlertQuery orderByCursusId($order = Criteria::ASC) Order by the cursus_id column
- * @method AlertQuery orderByCourseId($order = Criteria::ASC) Order by the course_id column
- * @method AlertQuery orderByTagId($order = Criteria::ASC) Order by the tag_id column
- * @method AlertQuery orderByContentTypeId($order = Criteria::ASC) Order by the content_type_id column
+ * @method     AlertQuery groupById() Group by the id column
+ * @method     AlertQuery groupBySubscriberId() Group by the subscriber_id column
+ * @method     AlertQuery groupByCursusId() Group by the cursus_id column
+ * @method     AlertQuery groupByCourseId() Group by the course_id column
+ * @method     AlertQuery groupByTagId() Group by the tag_id column
+ * @method     AlertQuery groupByContentTypeId() Group by the content_type_id column
  *
- * @method AlertQuery groupById() Group by the id column
- * @method AlertQuery groupBySubscriberId() Group by the subscriber_id column
- * @method AlertQuery groupByCursusId() Group by the cursus_id column
- * @method AlertQuery groupByCourseId() Group by the course_id column
- * @method AlertQuery groupByTagId() Group by the tag_id column
- * @method AlertQuery groupByContentTypeId() Group by the content_type_id column
+ * @method     AlertQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
+ * @method     AlertQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
+ * @method     AlertQuery innerJoin($relation) Adds a INNER JOIN clause to the query
  *
- * @method AlertQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
- * @method AlertQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
- * @method AlertQuery innerJoin($relation) Adds a INNER JOIN clause to the query
+ * @method     AlertQuery leftJoinSubscriber($relationAlias = null) Adds a LEFT JOIN clause to the query using the Subscriber relation
+ * @method     AlertQuery rightJoinSubscriber($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Subscriber relation
+ * @method     AlertQuery innerJoinSubscriber($relationAlias = null) Adds a INNER JOIN clause to the query using the Subscriber relation
  *
- * @method AlertQuery leftJoinSubscriber($relationAlias = null) Adds a LEFT JOIN clause to the query using the Subscriber relation
- * @method AlertQuery rightJoinSubscriber($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Subscriber relation
- * @method AlertQuery innerJoinSubscriber($relationAlias = null) Adds a INNER JOIN clause to the query using the Subscriber relation
+ * @method     AlertQuery leftJoinCursus($relationAlias = null) Adds a LEFT JOIN clause to the query using the Cursus relation
+ * @method     AlertQuery rightJoinCursus($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Cursus relation
+ * @method     AlertQuery innerJoinCursus($relationAlias = null) Adds a INNER JOIN clause to the query using the Cursus relation
  *
- * @method AlertQuery leftJoinCursus($relationAlias = null) Adds a LEFT JOIN clause to the query using the Cursus relation
- * @method AlertQuery rightJoinCursus($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Cursus relation
- * @method AlertQuery innerJoinCursus($relationAlias = null) Adds a INNER JOIN clause to the query using the Cursus relation
+ * @method     AlertQuery leftJoinCourse($relationAlias = null) Adds a LEFT JOIN clause to the query using the Course relation
+ * @method     AlertQuery rightJoinCourse($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Course relation
+ * @method     AlertQuery innerJoinCourse($relationAlias = null) Adds a INNER JOIN clause to the query using the Course relation
  *
- * @method AlertQuery leftJoinCourse($relationAlias = null) Adds a LEFT JOIN clause to the query using the Course relation
- * @method AlertQuery rightJoinCourse($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Course relation
- * @method AlertQuery innerJoinCourse($relationAlias = null) Adds a INNER JOIN clause to the query using the Course relation
+ * @method     AlertQuery leftJoinTag($relationAlias = null) Adds a LEFT JOIN clause to the query using the Tag relation
+ * @method     AlertQuery rightJoinTag($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Tag relation
+ * @method     AlertQuery innerJoinTag($relationAlias = null) Adds a INNER JOIN clause to the query using the Tag relation
  *
- * @method AlertQuery leftJoinTag($relationAlias = null) Adds a LEFT JOIN clause to the query using the Tag relation
- * @method AlertQuery rightJoinTag($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Tag relation
- * @method AlertQuery innerJoinTag($relationAlias = null) Adds a INNER JOIN clause to the query using the Tag relation
+ * @method     AlertQuery leftJoinContentType($relationAlias = null) Adds a LEFT JOIN clause to the query using the ContentType relation
+ * @method     AlertQuery rightJoinContentType($relationAlias = null) Adds a RIGHT JOIN clause to the query using the ContentType relation
+ * @method     AlertQuery innerJoinContentType($relationAlias = null) Adds a INNER JOIN clause to the query using the ContentType relation
  *
- * @method AlertQuery leftJoinContentType($relationAlias = null) Adds a LEFT JOIN clause to the query using the ContentType relation
- * @method AlertQuery rightJoinContentType($relationAlias = null) Adds a RIGHT JOIN clause to the query using the ContentType relation
- * @method AlertQuery innerJoinContentType($relationAlias = null) Adds a INNER JOIN clause to the query using the ContentType relation
+ * @method     Alert findOne(PropelPDO $con = null) Return the first Alert matching the query
+ * @method     Alert findOneOrCreate(PropelPDO $con = null) Return the first Alert matching the query, or a new Alert object populated from the query conditions when no match is found
  *
- * @method Alert findOne(PropelPDO $con = null) Return the first Alert matching the query
- * @method Alert findOneOrCreate(PropelPDO $con = null) Return the first Alert matching the query, or a new Alert object populated from the query conditions when no match is found
+ * @method     Alert findOneById(int $id) Return the first Alert filtered by the id column
+ * @method     Alert findOneBySubscriberId(int $subscriber_id) Return the first Alert filtered by the subscriber_id column
+ * @method     Alert findOneByCursusId(int $cursus_id) Return the first Alert filtered by the cursus_id column
+ * @method     Alert findOneByCourseId(int $course_id) Return the first Alert filtered by the course_id column
+ * @method     Alert findOneByTagId(int $tag_id) Return the first Alert filtered by the tag_id column
+ * @method     Alert findOneByContentTypeId(int $content_type_id) Return the first Alert filtered by the content_type_id column
  *
- * @method Alert findOneById(int $id) Return the first Alert filtered by the id column
- * @method Alert findOneBySubscriberId(int $subscriber_id) Return the first Alert filtered by the subscriber_id column
- * @method Alert findOneByCursusId(int $cursus_id) Return the first Alert filtered by the cursus_id column
- * @method Alert findOneByCourseId(int $course_id) Return the first Alert filtered by the course_id column
- * @method Alert findOneByTagId(int $tag_id) Return the first Alert filtered by the tag_id column
- * @method Alert findOneByContentTypeId(int $content_type_id) Return the first Alert filtered by the content_type_id column
- *
- * @method array findById(int $id) Return Alert objects filtered by the id column
- * @method array findBySubscriberId(int $subscriber_id) Return Alert objects filtered by the subscriber_id column
- * @method array findByCursusId(int $cursus_id) Return Alert objects filtered by the cursus_id column
- * @method array findByCourseId(int $course_id) Return Alert objects filtered by the course_id column
- * @method array findByTagId(int $tag_id) Return Alert objects filtered by the tag_id column
- * @method array findByContentTypeId(int $content_type_id) Return Alert objects filtered by the content_type_id column
+ * @method     array findById(int $id) Return Alert objects filtered by the id column
+ * @method     array findBySubscriberId(int $subscriber_id) Return Alert objects filtered by the subscriber_id column
+ * @method     array findByCursusId(int $cursus_id) Return Alert objects filtered by the cursus_id column
+ * @method     array findByCourseId(int $course_id) Return Alert objects filtered by the course_id column
+ * @method     array findByTagId(int $tag_id) Return Alert objects filtered by the tag_id column
+ * @method     array findByContentTypeId(int $content_type_id) Return Alert objects filtered by the content_type_id column
  *
  * @package    propel.generator.ip7website.om
  */
 abstract class BaseAlertQuery extends ModelCriteria
 {
+    
     /**
      * Initializes internal state of BaseAlertQuery object.
      *
@@ -110,7 +111,7 @@ abstract class BaseAlertQuery extends ModelCriteria
      * $obj  = $c->findPk(12, $con);
      * </code>
      *
-     * @param mixed $key Primary key to use for the query
+     * @param mixed $key Primary key to use for the query 
      * @param     PropelPDO $con an optional connection object
      *
      * @return   Alert|Alert[]|mixed the result, formatted by the current formatter
@@ -152,7 +153,7 @@ abstract class BaseAlertQuery extends ModelCriteria
         $sql = 'SELECT `ID`, `SUBSCRIBER_ID`, `CURSUS_ID`, `COURSE_ID`, `TAG_ID`, `CONTENT_TYPE_ID` FROM `alerts` WHERE `ID` = :p0';
         try {
             $stmt = $con->prepare($sql);
-            $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
+			$stmt->bindValue(':p0', $key, PDO::PARAM_INT);
             $stmt->execute();
         } catch (Exception $e) {
             Propel::log($e->getMessage(), Propel::LOG_ERR);
@@ -876,4 +877,4 @@ abstract class BaseAlertQuery extends ModelCriteria
         return $this;
     }
 
-}
+} // BaseAlertQuery

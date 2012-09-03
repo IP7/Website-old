@@ -4,39 +4,40 @@
 /**
  * Base class that represents a query for the 'contents_files' table.
  *
+ * 
  *
+ * @method     ContentsFilesQuery orderByContentId($order = Criteria::ASC) Order by the content_id column
+ * @method     ContentsFilesQuery orderByFileId($order = Criteria::ASC) Order by the file_id column
  *
- * @method ContentsFilesQuery orderByContentId($order = Criteria::ASC) Order by the content_id column
- * @method ContentsFilesQuery orderByFileId($order = Criteria::ASC) Order by the file_id column
+ * @method     ContentsFilesQuery groupByContentId() Group by the content_id column
+ * @method     ContentsFilesQuery groupByFileId() Group by the file_id column
  *
- * @method ContentsFilesQuery groupByContentId() Group by the content_id column
- * @method ContentsFilesQuery groupByFileId() Group by the file_id column
+ * @method     ContentsFilesQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
+ * @method     ContentsFilesQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
+ * @method     ContentsFilesQuery innerJoin($relation) Adds a INNER JOIN clause to the query
  *
- * @method ContentsFilesQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
- * @method ContentsFilesQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
- * @method ContentsFilesQuery innerJoin($relation) Adds a INNER JOIN clause to the query
+ * @method     ContentsFilesQuery leftJoinContent($relationAlias = null) Adds a LEFT JOIN clause to the query using the Content relation
+ * @method     ContentsFilesQuery rightJoinContent($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Content relation
+ * @method     ContentsFilesQuery innerJoinContent($relationAlias = null) Adds a INNER JOIN clause to the query using the Content relation
  *
- * @method ContentsFilesQuery leftJoinContent($relationAlias = null) Adds a LEFT JOIN clause to the query using the Content relation
- * @method ContentsFilesQuery rightJoinContent($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Content relation
- * @method ContentsFilesQuery innerJoinContent($relationAlias = null) Adds a INNER JOIN clause to the query using the Content relation
+ * @method     ContentsFilesQuery leftJoinFile($relationAlias = null) Adds a LEFT JOIN clause to the query using the File relation
+ * @method     ContentsFilesQuery rightJoinFile($relationAlias = null) Adds a RIGHT JOIN clause to the query using the File relation
+ * @method     ContentsFilesQuery innerJoinFile($relationAlias = null) Adds a INNER JOIN clause to the query using the File relation
  *
- * @method ContentsFilesQuery leftJoinFile($relationAlias = null) Adds a LEFT JOIN clause to the query using the File relation
- * @method ContentsFilesQuery rightJoinFile($relationAlias = null) Adds a RIGHT JOIN clause to the query using the File relation
- * @method ContentsFilesQuery innerJoinFile($relationAlias = null) Adds a INNER JOIN clause to the query using the File relation
+ * @method     ContentsFiles findOne(PropelPDO $con = null) Return the first ContentsFiles matching the query
+ * @method     ContentsFiles findOneOrCreate(PropelPDO $con = null) Return the first ContentsFiles matching the query, or a new ContentsFiles object populated from the query conditions when no match is found
  *
- * @method ContentsFiles findOne(PropelPDO $con = null) Return the first ContentsFiles matching the query
- * @method ContentsFiles findOneOrCreate(PropelPDO $con = null) Return the first ContentsFiles matching the query, or a new ContentsFiles object populated from the query conditions when no match is found
+ * @method     ContentsFiles findOneByContentId(int $content_id) Return the first ContentsFiles filtered by the content_id column
+ * @method     ContentsFiles findOneByFileId(int $file_id) Return the first ContentsFiles filtered by the file_id column
  *
- * @method ContentsFiles findOneByContentId(int $content_id) Return the first ContentsFiles filtered by the content_id column
- * @method ContentsFiles findOneByFileId(int $file_id) Return the first ContentsFiles filtered by the file_id column
- *
- * @method array findByContentId(int $content_id) Return ContentsFiles objects filtered by the content_id column
- * @method array findByFileId(int $file_id) Return ContentsFiles objects filtered by the file_id column
+ * @method     array findByContentId(int $content_id) Return ContentsFiles objects filtered by the content_id column
+ * @method     array findByFileId(int $file_id) Return ContentsFiles objects filtered by the file_id column
  *
  * @package    propel.generator.ip7website.om
  */
 abstract class BaseContentsFilesQuery extends ModelCriteria
 {
+    
     /**
      * Initializes internal state of BaseContentsFilesQuery object.
      *
@@ -82,7 +83,7 @@ abstract class BaseContentsFilesQuery extends ModelCriteria
      * $obj = $c->findPk(array(12, 34), $con);
      * </code>
      *
-     * @param array $key Primary key to use for the query
+     * @param array $key Primary key to use for the query 
                          A Primary key composition: [$content_id, $file_id]
      * @param     PropelPDO $con an optional connection object
      *
@@ -125,8 +126,8 @@ abstract class BaseContentsFilesQuery extends ModelCriteria
         $sql = 'SELECT `CONTENT_ID`, `FILE_ID` FROM `contents_files` WHERE `CONTENT_ID` = :p0 AND `FILE_ID` = :p1';
         try {
             $stmt = $con->prepare($sql);
-            $stmt->bindValue(':p0', $key[0], PDO::PARAM_INT);
-            $stmt->bindValue(':p1', $key[1], PDO::PARAM_INT);
+			$stmt->bindValue(':p0', $key[0], PDO::PARAM_INT);
+			$stmt->bindValue(':p1', $key[1], PDO::PARAM_INT);
             $stmt->execute();
         } catch (Exception $e) {
             Propel::log($e->getMessage(), Propel::LOG_ERR);
@@ -451,4 +452,4 @@ abstract class BaseContentsFilesQuery extends ModelCriteria
         return $this;
     }
 
-}
+} // BaseContentsFilesQuery

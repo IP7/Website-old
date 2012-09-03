@@ -4,79 +4,80 @@
 /**
  * Base class that represents a query for the 'cursus' table.
  *
+ * 
  *
+ * @method     CursusQuery orderById($order = Criteria::ASC) Order by the id column
+ * @method     CursusQuery orderByShortName($order = Criteria::ASC) Order by the short_name column
+ * @method     CursusQuery orderByName($order = Criteria::ASC) Order by the name column
+ * @method     CursusQuery orderByDescription($order = Criteria::ASC) Order by the description column
+ * @method     CursusQuery orderByResponsableId($order = Criteria::ASC) Order by the responsable_id column
+ * @method     CursusQuery orderByNewsletterId($order = Criteria::ASC) Order by the newsletter_id column
  *
- * @method CursusQuery orderById($order = Criteria::ASC) Order by the id column
- * @method CursusQuery orderByShortName($order = Criteria::ASC) Order by the short_name column
- * @method CursusQuery orderByName($order = Criteria::ASC) Order by the name column
- * @method CursusQuery orderByDescription($order = Criteria::ASC) Order by the description column
- * @method CursusQuery orderByResponsableId($order = Criteria::ASC) Order by the responsable_id column
- * @method CursusQuery orderByNewsletterId($order = Criteria::ASC) Order by the newsletter_id column
+ * @method     CursusQuery groupById() Group by the id column
+ * @method     CursusQuery groupByShortName() Group by the short_name column
+ * @method     CursusQuery groupByName() Group by the name column
+ * @method     CursusQuery groupByDescription() Group by the description column
+ * @method     CursusQuery groupByResponsableId() Group by the responsable_id column
+ * @method     CursusQuery groupByNewsletterId() Group by the newsletter_id column
  *
- * @method CursusQuery groupById() Group by the id column
- * @method CursusQuery groupByShortName() Group by the short_name column
- * @method CursusQuery groupByName() Group by the name column
- * @method CursusQuery groupByDescription() Group by the description column
- * @method CursusQuery groupByResponsableId() Group by the responsable_id column
- * @method CursusQuery groupByNewsletterId() Group by the newsletter_id column
+ * @method     CursusQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
+ * @method     CursusQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
+ * @method     CursusQuery innerJoin($relation) Adds a INNER JOIN clause to the query
  *
- * @method CursusQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
- * @method CursusQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
- * @method CursusQuery innerJoin($relation) Adds a INNER JOIN clause to the query
+ * @method     CursusQuery leftJoinResponsable($relationAlias = null) Adds a LEFT JOIN clause to the query using the Responsable relation
+ * @method     CursusQuery rightJoinResponsable($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Responsable relation
+ * @method     CursusQuery innerJoinResponsable($relationAlias = null) Adds a INNER JOIN clause to the query using the Responsable relation
  *
- * @method CursusQuery leftJoinResponsable($relationAlias = null) Adds a LEFT JOIN clause to the query using the Responsable relation
- * @method CursusQuery rightJoinResponsable($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Responsable relation
- * @method CursusQuery innerJoinResponsable($relationAlias = null) Adds a INNER JOIN clause to the query using the Responsable relation
+ * @method     CursusQuery leftJoinNewsletter($relationAlias = null) Adds a LEFT JOIN clause to the query using the Newsletter relation
+ * @method     CursusQuery rightJoinNewsletter($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Newsletter relation
+ * @method     CursusQuery innerJoinNewsletter($relationAlias = null) Adds a INNER JOIN clause to the query using the Newsletter relation
  *
- * @method CursusQuery leftJoinNewsletter($relationAlias = null) Adds a LEFT JOIN clause to the query using the Newsletter relation
- * @method CursusQuery rightJoinNewsletter($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Newsletter relation
- * @method CursusQuery innerJoinNewsletter($relationAlias = null) Adds a INNER JOIN clause to the query using the Newsletter relation
+ * @method     CursusQuery leftJoinCourse($relationAlias = null) Adds a LEFT JOIN clause to the query using the Course relation
+ * @method     CursusQuery rightJoinCourse($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Course relation
+ * @method     CursusQuery innerJoinCourse($relationAlias = null) Adds a INNER JOIN clause to the query using the Course relation
  *
- * @method CursusQuery leftJoinCourse($relationAlias = null) Adds a LEFT JOIN clause to the query using the Course relation
- * @method CursusQuery rightJoinCourse($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Course relation
- * @method CursusQuery innerJoinCourse($relationAlias = null) Adds a INNER JOIN clause to the query using the Course relation
+ * @method     CursusQuery leftJoinEducationalPath($relationAlias = null) Adds a LEFT JOIN clause to the query using the EducationalPath relation
+ * @method     CursusQuery rightJoinEducationalPath($relationAlias = null) Adds a RIGHT JOIN clause to the query using the EducationalPath relation
+ * @method     CursusQuery innerJoinEducationalPath($relationAlias = null) Adds a INNER JOIN clause to the query using the EducationalPath relation
  *
- * @method CursusQuery leftJoinEducationalPath($relationAlias = null) Adds a LEFT JOIN clause to the query using the EducationalPath relation
- * @method CursusQuery rightJoinEducationalPath($relationAlias = null) Adds a RIGHT JOIN clause to the query using the EducationalPath relation
- * @method CursusQuery innerJoinEducationalPath($relationAlias = null) Adds a INNER JOIN clause to the query using the EducationalPath relation
+ * @method     CursusQuery leftJoinAlert($relationAlias = null) Adds a LEFT JOIN clause to the query using the Alert relation
+ * @method     CursusQuery rightJoinAlert($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Alert relation
+ * @method     CursusQuery innerJoinAlert($relationAlias = null) Adds a INNER JOIN clause to the query using the Alert relation
  *
- * @method CursusQuery leftJoinAlert($relationAlias = null) Adds a LEFT JOIN clause to the query using the Alert relation
- * @method CursusQuery rightJoinAlert($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Alert relation
- * @method CursusQuery innerJoinAlert($relationAlias = null) Adds a INNER JOIN clause to the query using the Alert relation
+ * @method     CursusQuery leftJoinContent($relationAlias = null) Adds a LEFT JOIN clause to the query using the Content relation
+ * @method     CursusQuery rightJoinContent($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Content relation
+ * @method     CursusQuery innerJoinContent($relationAlias = null) Adds a INNER JOIN clause to the query using the Content relation
  *
- * @method CursusQuery leftJoinContent($relationAlias = null) Adds a LEFT JOIN clause to the query using the Content relation
- * @method CursusQuery rightJoinContent($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Content relation
- * @method CursusQuery innerJoinContent($relationAlias = null) Adds a INNER JOIN clause to the query using the Content relation
+ * @method     CursusQuery leftJoinNews($relationAlias = null) Adds a LEFT JOIN clause to the query using the News relation
+ * @method     CursusQuery rightJoinNews($relationAlias = null) Adds a RIGHT JOIN clause to the query using the News relation
+ * @method     CursusQuery innerJoinNews($relationAlias = null) Adds a INNER JOIN clause to the query using the News relation
  *
- * @method CursusQuery leftJoinNews($relationAlias = null) Adds a LEFT JOIN clause to the query using the News relation
- * @method CursusQuery rightJoinNews($relationAlias = null) Adds a RIGHT JOIN clause to the query using the News relation
- * @method CursusQuery innerJoinNews($relationAlias = null) Adds a INNER JOIN clause to the query using the News relation
+ * @method     CursusQuery leftJoinSchedule($relationAlias = null) Adds a LEFT JOIN clause to the query using the Schedule relation
+ * @method     CursusQuery rightJoinSchedule($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Schedule relation
+ * @method     CursusQuery innerJoinSchedule($relationAlias = null) Adds a INNER JOIN clause to the query using the Schedule relation
  *
- * @method CursusQuery leftJoinSchedule($relationAlias = null) Adds a LEFT JOIN clause to the query using the Schedule relation
- * @method CursusQuery rightJoinSchedule($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Schedule relation
- * @method CursusQuery innerJoinSchedule($relationAlias = null) Adds a INNER JOIN clause to the query using the Schedule relation
+ * @method     Cursus findOne(PropelPDO $con = null) Return the first Cursus matching the query
+ * @method     Cursus findOneOrCreate(PropelPDO $con = null) Return the first Cursus matching the query, or a new Cursus object populated from the query conditions when no match is found
  *
- * @method Cursus findOne(PropelPDO $con = null) Return the first Cursus matching the query
- * @method Cursus findOneOrCreate(PropelPDO $con = null) Return the first Cursus matching the query, or a new Cursus object populated from the query conditions when no match is found
+ * @method     Cursus findOneById(int $id) Return the first Cursus filtered by the id column
+ * @method     Cursus findOneByShortName(string $short_name) Return the first Cursus filtered by the short_name column
+ * @method     Cursus findOneByName(string $name) Return the first Cursus filtered by the name column
+ * @method     Cursus findOneByDescription(string $description) Return the first Cursus filtered by the description column
+ * @method     Cursus findOneByResponsableId(int $responsable_id) Return the first Cursus filtered by the responsable_id column
+ * @method     Cursus findOneByNewsletterId(int $newsletter_id) Return the first Cursus filtered by the newsletter_id column
  *
- * @method Cursus findOneById(int $id) Return the first Cursus filtered by the id column
- * @method Cursus findOneByShortName(string $short_name) Return the first Cursus filtered by the short_name column
- * @method Cursus findOneByName(string $name) Return the first Cursus filtered by the name column
- * @method Cursus findOneByDescription(string $description) Return the first Cursus filtered by the description column
- * @method Cursus findOneByResponsableId(int $responsable_id) Return the first Cursus filtered by the responsable_id column
- * @method Cursus findOneByNewsletterId(int $newsletter_id) Return the first Cursus filtered by the newsletter_id column
- *
- * @method array findById(int $id) Return Cursus objects filtered by the id column
- * @method array findByShortName(string $short_name) Return Cursus objects filtered by the short_name column
- * @method array findByName(string $name) Return Cursus objects filtered by the name column
- * @method array findByDescription(string $description) Return Cursus objects filtered by the description column
- * @method array findByResponsableId(int $responsable_id) Return Cursus objects filtered by the responsable_id column
- * @method array findByNewsletterId(int $newsletter_id) Return Cursus objects filtered by the newsletter_id column
+ * @method     array findById(int $id) Return Cursus objects filtered by the id column
+ * @method     array findByShortName(string $short_name) Return Cursus objects filtered by the short_name column
+ * @method     array findByName(string $name) Return Cursus objects filtered by the name column
+ * @method     array findByDescription(string $description) Return Cursus objects filtered by the description column
+ * @method     array findByResponsableId(int $responsable_id) Return Cursus objects filtered by the responsable_id column
+ * @method     array findByNewsletterId(int $newsletter_id) Return Cursus objects filtered by the newsletter_id column
  *
  * @package    propel.generator.ip7website.om
  */
 abstract class BaseCursusQuery extends ModelCriteria
 {
+    
     /**
      * Initializes internal state of BaseCursusQuery object.
      *
@@ -122,7 +123,7 @@ abstract class BaseCursusQuery extends ModelCriteria
      * $obj  = $c->findPk(12, $con);
      * </code>
      *
-     * @param mixed $key Primary key to use for the query
+     * @param mixed $key Primary key to use for the query 
      * @param     PropelPDO $con an optional connection object
      *
      * @return   Cursus|Cursus[]|mixed the result, formatted by the current formatter
@@ -164,7 +165,7 @@ abstract class BaseCursusQuery extends ModelCriteria
         $sql = 'SELECT `ID`, `SHORT_NAME`, `NAME`, `RESPONSABLE_ID`, `NEWSLETTER_ID` FROM `cursus` WHERE `ID` = :p0';
         try {
             $stmt = $con->prepare($sql);
-            $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
+			$stmt->bindValue(':p0', $key, PDO::PARAM_INT);
             $stmt->execute();
         } catch (Exception $e) {
             Propel::log($e->getMessage(), Propel::LOG_ERR);
@@ -1062,4 +1063,4 @@ abstract class BaseCursusQuery extends ModelCriteria
         return $this;
     }
 
-}
+} // BaseCursusQuery

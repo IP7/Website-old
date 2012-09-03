@@ -4,12 +4,13 @@
 /**
  * Base class that represents a row from the 'transactions' table.
  *
- *
+ * 
  *
  * @package    propel.generator.ip7website.om
  */
-abstract class BaseTransaction extends BaseObject implements Persistent
+abstract class BaseTransaction extends BaseObject 
 {
+
     /**
      * Peer class name
      */
@@ -102,59 +103,64 @@ abstract class BaseTransaction extends BaseObject implements Persistent
 
     /**
      * Get the [id] column value.
-     *
-     * @return int
+     * 
+     * @return   int
      */
     public function getId()
     {
+
         return $this->id;
     }
 
     /**
      * Get the [description] column value.
-     *
-     * @return string
+     * 
+     * @return   string
      */
     public function getDescription()
     {
+
         return $this->description;
     }
 
     /**
      * Get the [amount] column value.
-     *
-     * @return double
+     * 
+     * @return   double
      */
     public function getAmount()
     {
+
         return $this->amount;
     }
 
     /**
      * Get the [user_id] column value.
-     *
-     * @return int
+     * 
+     * @return   int
      */
     public function getUserId()
     {
+
         return $this->user_id;
     }
 
     /**
      * Get the [validated] column value.
-     *
-     * @return boolean
+     * 
+     * @return   boolean
      */
     public function getValidated()
     {
+
         return $this->validated;
     }
 
     /**
      * Set the value of [id] column.
-     *
-     * @param int $v new value
-     * @return Transaction The current object (for fluent API support)
+     * 
+     * @param      int $v new value
+     * @return   Transaction The current object (for fluent API support)
      */
     public function setId($v)
     {
@@ -173,9 +179,9 @@ abstract class BaseTransaction extends BaseObject implements Persistent
 
     /**
      * Set the value of [description] column.
-     *
-     * @param string $v new value
-     * @return Transaction The current object (for fluent API support)
+     * 
+     * @param      string $v new value
+     * @return   Transaction The current object (for fluent API support)
      */
     public function setDescription($v)
     {
@@ -194,9 +200,9 @@ abstract class BaseTransaction extends BaseObject implements Persistent
 
     /**
      * Set the value of [amount] column.
-     *
-     * @param double $v new value
-     * @return Transaction The current object (for fluent API support)
+     * 
+     * @param      double $v new value
+     * @return   Transaction The current object (for fluent API support)
      */
     public function setAmount($v)
     {
@@ -215,9 +221,9 @@ abstract class BaseTransaction extends BaseObject implements Persistent
 
     /**
      * Set the value of [user_id] column.
-     *
-     * @param int $v new value
-     * @return Transaction The current object (for fluent API support)
+     * 
+     * @param      int $v new value
+     * @return   Transaction The current object (for fluent API support)
      */
     public function setUserId($v)
     {
@@ -244,9 +250,9 @@ abstract class BaseTransaction extends BaseObject implements Persistent
      *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
      *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
      * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
-     *
-     * @param boolean|integer|string $v The new value
-     * @return Transaction The current object (for fluent API support)
+     * 
+     * @param      boolean|integer|string $v The new value
+     * @return   Transaction The current object (for fluent API support)
      */
     public function setValidated($v)
     {
@@ -277,7 +283,7 @@ abstract class BaseTransaction extends BaseObject implements Persistent
      */
     public function hasOnlyDefaultValues()
     {
-        // otherwise, everything was equal, so return true
+        // otherwise, everything was equal, so return TRUE
         return true;
     } // hasOnlyDefaultValues()
 
@@ -289,9 +295,9 @@ abstract class BaseTransaction extends BaseObject implements Persistent
      * for results of JOIN queries where the resultset row includes columns from two or
      * more tables.
      *
-     * @param array $row The row returned by PDOStatement->fetch(PDO::FETCH_NUM)
-     * @param int $startcol 0-based offset column which indicates which restultset column to start with.
-     * @param boolean $rehydrate Whether this object is being re-hydrated from the database.
+     * @param      array $row The row returned by PDOStatement->fetch(PDO::FETCH_NUM)
+     * @param      int $startcol 0-based offset column which indicates which restultset column to start with.
+     * @param      boolean $rehydrate Whether this object is being re-hydrated from the database.
      * @return int             next starting column
      * @throws PropelException - Any caught Exception will be rewrapped as a PropelException.
      */
@@ -345,8 +351,8 @@ abstract class BaseTransaction extends BaseObject implements Persistent
      *
      * This will only work if the object has been saved and has a valid primary key set.
      *
-     * @param boolean $deep (optional) Whether to also de-associated any related objects.
-     * @param PropelPDO $con (optional) The PropelPDO connection to use.
+     * @param      boolean $deep (optional) Whether to also de-associated any related objects.
+     * @param      PropelPDO $con (optional) The PropelPDO connection to use.
      * @return void
      * @throws PropelException - if this object is deleted, unsaved or doesn't have pk match in db
      */
@@ -384,7 +390,7 @@ abstract class BaseTransaction extends BaseObject implements Persistent
     /**
      * Removes this object from datastore and sets delete attribute.
      *
-     * @param PropelPDO $con
+     * @param      PropelPDO $con
      * @return void
      * @throws PropelException
      * @throws Exception
@@ -428,7 +434,7 @@ abstract class BaseTransaction extends BaseObject implements Persistent
      * method.  This method wraps all precipitate database operations in a
      * single transaction.
      *
-     * @param PropelPDO $con
+     * @param      PropelPDO $con
      * @return int             The number of rows affected by this insert/update and any referring fk objects' save() operations.
      * @throws PropelException
      * @throws Exception
@@ -480,7 +486,7 @@ abstract class BaseTransaction extends BaseObject implements Persistent
      * If the object is new, it inserts it; otherwise an update is performed.
      * All related objects are also updated in this method.
      *
-     * @param PropelPDO $con
+     * @param      PropelPDO $con
      * @return int             The number of rows affected by this insert/update and any referring fk objects' save() operations.
      * @throws PropelException
      * @see        save()
@@ -524,7 +530,7 @@ abstract class BaseTransaction extends BaseObject implements Persistent
     /**
      * Insert the row in the database.
      *
-     * @param PropelPDO $con
+     * @param      PropelPDO $con
      *
      * @throws PropelException
      * @see        doSave()
@@ -567,19 +573,19 @@ abstract class BaseTransaction extends BaseObject implements Persistent
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
                     case '`ID`':
-                        $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
+						$stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
                     case '`DESCRIPTION`':
-                        $stmt->bindValue($identifier, $this->description, PDO::PARAM_STR);
+						$stmt->bindValue($identifier, $this->description, PDO::PARAM_STR);
                         break;
                     case '`AMOUNT`':
-                        $stmt->bindValue($identifier, $this->amount, PDO::PARAM_STR);
+						$stmt->bindValue($identifier, $this->amount, PDO::PARAM_STR);
                         break;
                     case '`USER_ID`':
-                        $stmt->bindValue($identifier, $this->user_id, PDO::PARAM_INT);
+						$stmt->bindValue($identifier, $this->user_id, PDO::PARAM_INT);
                         break;
                     case '`VALIDATED`':
-                        $stmt->bindValue($identifier, (int) $this->validated, PDO::PARAM_INT);
+						$stmt->bindValue($identifier, (int) $this->validated, PDO::PARAM_INT);
                         break;
                 }
             }
@@ -590,7 +596,7 @@ abstract class BaseTransaction extends BaseObject implements Persistent
         }
 
         try {
-            $pk = $con->lastInsertId();
+			$pk = $con->lastInsertId();
         } catch (Exception $e) {
             throw new PropelException('Unable to get autoincrement id.', $e);
         }
@@ -602,7 +608,7 @@ abstract class BaseTransaction extends BaseObject implements Persistent
     /**
      * Update the row in the database.
      *
-     * @param PropelPDO $con
+     * @param      PropelPDO $con
      *
      * @see        doSave()
      */
@@ -637,7 +643,7 @@ abstract class BaseTransaction extends BaseObject implements Persistent
      * If $columns is either a column name or an array of column names
      * only those columns are validated.
      *
-     * @param mixed $columns Column name or an array of column names.
+     * @param      mixed $columns Column name or an array of column names.
      * @return boolean Whether all columns pass validation.
      * @see        doValidate()
      * @see        getValidationFailures()
@@ -663,7 +669,7 @@ abstract class BaseTransaction extends BaseObject implements Persistent
      * also be validated.  If all pass then <code>true</code> is returned; otherwise
      * an aggreagated array of ValidationFailed objects will be returned.
      *
-     * @param array $columns Array of column names to validate.
+     * @param      array $columns Array of column names to validate.
      * @return mixed <code>true</code> if all validations pass; array of <code>ValidationFailed</code> objets otherwise.
      */
     protected function doValidate($columns = null)
@@ -702,11 +708,11 @@ abstract class BaseTransaction extends BaseObject implements Persistent
     /**
      * Retrieves a field from the object by name passed in as a string.
      *
-     * @param string $name name
-     * @param string $type The type of fieldname the $name is of:
-     *               one of the class type constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME
-     *               BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM.
-     *               Defaults to BasePeer::TYPE_PHPNAME
+     * @param      string $name name
+     * @param      string $type The type of fieldname the $name is of:
+     *                     one of the class type constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME
+     *                     BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM.
+     *                     Defaults to BasePeer::TYPE_PHPNAME
      * @return mixed Value of field.
      */
     public function getByName($name, $type = BasePeer::TYPE_PHPNAME)
@@ -721,7 +727,7 @@ abstract class BaseTransaction extends BaseObject implements Persistent
      * Retrieves a field from the object by Position as specified in the xml schema.
      * Zero-based.
      *
-     * @param int $pos position in xml schema
+     * @param      int $pos position in xml schema
      * @return mixed Value of field at $pos
      */
     public function getByPosition($pos)
@@ -757,7 +763,7 @@ abstract class BaseTransaction extends BaseObject implements Persistent
      * @param     string  $keyType (optional) One of the class type constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME,
      *                    BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM.
      *                    Defaults to BasePeer::TYPE_PHPNAME.
-     * @param     boolean $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to true.
+     * @param     boolean $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to TRUE.
      * @param     array $alreadyDumpedObjects List of objects to skip to avoid recursion
      * @param     boolean $includeForeignObjects (optional) Whether to include hydrated related objects. Default to FALSE.
      *
@@ -789,9 +795,9 @@ abstract class BaseTransaction extends BaseObject implements Persistent
     /**
      * Sets a field from the object by name passed in as a string.
      *
-     * @param string $name peer name
-     * @param mixed $value field value
-     * @param string $type The type of fieldname the $name is of:
+     * @param      string $name peer name
+     * @param      mixed $value field value
+     * @param      string $type The type of fieldname the $name is of:
      *                     one of the class type constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME
      *                     BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM.
      *                     Defaults to BasePeer::TYPE_PHPNAME
@@ -808,8 +814,8 @@ abstract class BaseTransaction extends BaseObject implements Persistent
      * Sets a field from the object by Position as specified in the xml schema.
      * Zero-based.
      *
-     * @param int $pos position in xml schema
-     * @param mixed $value field value
+     * @param      int $pos position in xml schema
+     * @param      mixed $value field value
      * @return void
      */
     public function setByPosition($pos, $value)
@@ -846,8 +852,8 @@ abstract class BaseTransaction extends BaseObject implements Persistent
      * BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM.
      * The default key type is the column's BasePeer::TYPE_PHPNAME
      *
-     * @param array  $arr     An array to populate the object from.
-     * @param string $keyType The type of keys the array uses.
+     * @param      array  $arr     An array to populate the object from.
+     * @param      string $keyType The type of keys the array uses.
      * @return void
      */
     public function fromArray($arr, $keyType = BasePeer::TYPE_PHPNAME)
@@ -897,7 +903,7 @@ abstract class BaseTransaction extends BaseObject implements Persistent
 
     /**
      * Returns the primary key for this object (row).
-     * @return int
+     * @return   int
      */
     public function getPrimaryKey()
     {
@@ -907,7 +913,7 @@ abstract class BaseTransaction extends BaseObject implements Persistent
     /**
      * Generic method to set the primary key (id column).
      *
-     * @param  int $key Primary key.
+     * @param       int $key Primary key.
      * @return void
      */
     public function setPrimaryKey($key)
@@ -931,9 +937,9 @@ abstract class BaseTransaction extends BaseObject implements Persistent
      * If desired, this method can also make copies of all associated (fkey referrers)
      * objects.
      *
-     * @param object $copyObj An object of Transaction (or compatible) type.
-     * @param boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
-     * @param boolean $makeNew Whether to reset autoincrement PKs and make the object new.
+     * @param      object $copyObj An object of Transaction (or compatible) type.
+     * @param      boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
+     * @param      boolean $makeNew Whether to reset autoincrement PKs and make the object new.
      * @throws PropelException
      */
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
@@ -968,8 +974,8 @@ abstract class BaseTransaction extends BaseObject implements Persistent
      * If desired, this method can also make copies of all associated (fkey referrers)
      * objects.
      *
-     * @param boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
-     * @return Transaction Clone of current object.
+     * @param      boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
+     * @return                 Transaction Clone of current object.
      * @throws PropelException
      */
     public function copy($deepCopy = false)
@@ -989,7 +995,7 @@ abstract class BaseTransaction extends BaseObject implements Persistent
      * same instance for all member of this class. The method could therefore
      * be static, but this would prevent one from overriding the behavior.
      *
-     * @return TransactionPeer
+     * @return   TransactionPeer
      */
     public function getPeer()
     {
@@ -1003,8 +1009,8 @@ abstract class BaseTransaction extends BaseObject implements Persistent
     /**
      * Declares an association between this object and a User object.
      *
-     * @param             User $v
-     * @return Transaction The current object (for fluent API support)
+     * @param                  User $v
+     * @return                 Transaction The current object (for fluent API support)
      * @throws PropelException
      */
     public function setUser(User $v = null)
@@ -1031,8 +1037,8 @@ abstract class BaseTransaction extends BaseObject implements Persistent
     /**
      * Get the associated User object
      *
-     * @param PropelPDO $con Optional Connection object.
-     * @return User The associated User object.
+     * @param      PropelPDO $con Optional Connection object.
+     * @return                 User The associated User object.
      * @throws PropelException
      */
     public function getUser(PropelPDO $con = null)
@@ -1077,7 +1083,7 @@ abstract class BaseTransaction extends BaseObject implements Persistent
      * objects with circular references (even in PHP 5.3). This is currently necessary
      * when using Propel in certain daemon or large-volumne/high-memory operations.
      *
-     * @param boolean $deep Whether to also clear the references on all referrer objects.
+     * @param      boolean $deep Whether to also clear the references on all referrer objects.
      */
     public function clearAllReferences($deep = false)
     {
@@ -1088,7 +1094,7 @@ abstract class BaseTransaction extends BaseObject implements Persistent
     }
 
     /**
-     * return the string representation of this object
+     * Return the string representation of this object
      *
      * @return string
      */
@@ -1097,14 +1103,4 @@ abstract class BaseTransaction extends BaseObject implements Persistent
         return (string) $this->exportTo(TransactionPeer::DEFAULT_STRING_FORMAT);
     }
 
-    /**
-     * return true is the object is in saving state
-     *
-     * @return boolean
-     */
-    public function isAlreadyInSave()
-    {
-        return $this->alreadyInSave;
-    }
-
-}
+} // BaseTransaction

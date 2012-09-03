@@ -4,39 +4,40 @@
 /**
  * Base class that represents a query for the 'educational_paths_optional_courses' table.
  *
+ * 
  *
+ * @method     EducationalPathsOptionalCoursesQuery orderByCourseId($order = Criteria::ASC) Order by the course_id column
+ * @method     EducationalPathsOptionalCoursesQuery orderByPathId($order = Criteria::ASC) Order by the path_id column
  *
- * @method EducationalPathsOptionalCoursesQuery orderByCourseId($order = Criteria::ASC) Order by the course_id column
- * @method EducationalPathsOptionalCoursesQuery orderByPathId($order = Criteria::ASC) Order by the path_id column
+ * @method     EducationalPathsOptionalCoursesQuery groupByCourseId() Group by the course_id column
+ * @method     EducationalPathsOptionalCoursesQuery groupByPathId() Group by the path_id column
  *
- * @method EducationalPathsOptionalCoursesQuery groupByCourseId() Group by the course_id column
- * @method EducationalPathsOptionalCoursesQuery groupByPathId() Group by the path_id column
+ * @method     EducationalPathsOptionalCoursesQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
+ * @method     EducationalPathsOptionalCoursesQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
+ * @method     EducationalPathsOptionalCoursesQuery innerJoin($relation) Adds a INNER JOIN clause to the query
  *
- * @method EducationalPathsOptionalCoursesQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
- * @method EducationalPathsOptionalCoursesQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
- * @method EducationalPathsOptionalCoursesQuery innerJoin($relation) Adds a INNER JOIN clause to the query
+ * @method     EducationalPathsOptionalCoursesQuery leftJoinOptionalCourse($relationAlias = null) Adds a LEFT JOIN clause to the query using the OptionalCourse relation
+ * @method     EducationalPathsOptionalCoursesQuery rightJoinOptionalCourse($relationAlias = null) Adds a RIGHT JOIN clause to the query using the OptionalCourse relation
+ * @method     EducationalPathsOptionalCoursesQuery innerJoinOptionalCourse($relationAlias = null) Adds a INNER JOIN clause to the query using the OptionalCourse relation
  *
- * @method EducationalPathsOptionalCoursesQuery leftJoinOptionalCourse($relationAlias = null) Adds a LEFT JOIN clause to the query using the OptionalCourse relation
- * @method EducationalPathsOptionalCoursesQuery rightJoinOptionalCourse($relationAlias = null) Adds a RIGHT JOIN clause to the query using the OptionalCourse relation
- * @method EducationalPathsOptionalCoursesQuery innerJoinOptionalCourse($relationAlias = null) Adds a INNER JOIN clause to the query using the OptionalCourse relation
+ * @method     EducationalPathsOptionalCoursesQuery leftJoinOptionalEducationalPath($relationAlias = null) Adds a LEFT JOIN clause to the query using the OptionalEducationalPath relation
+ * @method     EducationalPathsOptionalCoursesQuery rightJoinOptionalEducationalPath($relationAlias = null) Adds a RIGHT JOIN clause to the query using the OptionalEducationalPath relation
+ * @method     EducationalPathsOptionalCoursesQuery innerJoinOptionalEducationalPath($relationAlias = null) Adds a INNER JOIN clause to the query using the OptionalEducationalPath relation
  *
- * @method EducationalPathsOptionalCoursesQuery leftJoinOptionalEducationalPath($relationAlias = null) Adds a LEFT JOIN clause to the query using the OptionalEducationalPath relation
- * @method EducationalPathsOptionalCoursesQuery rightJoinOptionalEducationalPath($relationAlias = null) Adds a RIGHT JOIN clause to the query using the OptionalEducationalPath relation
- * @method EducationalPathsOptionalCoursesQuery innerJoinOptionalEducationalPath($relationAlias = null) Adds a INNER JOIN clause to the query using the OptionalEducationalPath relation
+ * @method     EducationalPathsOptionalCourses findOne(PropelPDO $con = null) Return the first EducationalPathsOptionalCourses matching the query
+ * @method     EducationalPathsOptionalCourses findOneOrCreate(PropelPDO $con = null) Return the first EducationalPathsOptionalCourses matching the query, or a new EducationalPathsOptionalCourses object populated from the query conditions when no match is found
  *
- * @method EducationalPathsOptionalCourses findOne(PropelPDO $con = null) Return the first EducationalPathsOptionalCourses matching the query
- * @method EducationalPathsOptionalCourses findOneOrCreate(PropelPDO $con = null) Return the first EducationalPathsOptionalCourses matching the query, or a new EducationalPathsOptionalCourses object populated from the query conditions when no match is found
+ * @method     EducationalPathsOptionalCourses findOneByCourseId(int $course_id) Return the first EducationalPathsOptionalCourses filtered by the course_id column
+ * @method     EducationalPathsOptionalCourses findOneByPathId(int $path_id) Return the first EducationalPathsOptionalCourses filtered by the path_id column
  *
- * @method EducationalPathsOptionalCourses findOneByCourseId(int $course_id) Return the first EducationalPathsOptionalCourses filtered by the course_id column
- * @method EducationalPathsOptionalCourses findOneByPathId(int $path_id) Return the first EducationalPathsOptionalCourses filtered by the path_id column
- *
- * @method array findByCourseId(int $course_id) Return EducationalPathsOptionalCourses objects filtered by the course_id column
- * @method array findByPathId(int $path_id) Return EducationalPathsOptionalCourses objects filtered by the path_id column
+ * @method     array findByCourseId(int $course_id) Return EducationalPathsOptionalCourses objects filtered by the course_id column
+ * @method     array findByPathId(int $path_id) Return EducationalPathsOptionalCourses objects filtered by the path_id column
  *
  * @package    propel.generator.ip7website.om
  */
 abstract class BaseEducationalPathsOptionalCoursesQuery extends ModelCriteria
 {
+    
     /**
      * Initializes internal state of BaseEducationalPathsOptionalCoursesQuery object.
      *
@@ -82,7 +83,7 @@ abstract class BaseEducationalPathsOptionalCoursesQuery extends ModelCriteria
      * $obj = $c->findPk(array(12, 34), $con);
      * </code>
      *
-     * @param array $key Primary key to use for the query
+     * @param array $key Primary key to use for the query 
                          A Primary key composition: [$course_id, $path_id]
      * @param     PropelPDO $con an optional connection object
      *
@@ -125,8 +126,8 @@ abstract class BaseEducationalPathsOptionalCoursesQuery extends ModelCriteria
         $sql = 'SELECT `COURSE_ID`, `PATH_ID` FROM `educational_paths_optional_courses` WHERE `COURSE_ID` = :p0 AND `PATH_ID` = :p1';
         try {
             $stmt = $con->prepare($sql);
-            $stmt->bindValue(':p0', $key[0], PDO::PARAM_INT);
-            $stmt->bindValue(':p1', $key[1], PDO::PARAM_INT);
+			$stmt->bindValue(':p0', $key[0], PDO::PARAM_INT);
+			$stmt->bindValue(':p1', $key[1], PDO::PARAM_INT);
             $stmt->execute();
         } catch (Exception $e) {
             Propel::log($e->getMessage(), Propel::LOG_ERR);
@@ -451,4 +452,4 @@ abstract class BaseEducationalPathsOptionalCoursesQuery extends ModelCriteria
         return $this;
     }
 
-}
+} // BaseEducationalPathsOptionalCoursesQuery

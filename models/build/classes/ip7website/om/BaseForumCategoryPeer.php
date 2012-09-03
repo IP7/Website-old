@@ -4,12 +4,11 @@
 /**
  * Base static class for performing query and update operations on the 'forum_categories' table.
  *
+ * 
  *
- *
- * @package propel.generator.ip7website.om
+ * @package    propel.generator.ip7website.om
  */
-abstract class BaseForumCategoryPeer
-{
+abstract class BaseForumCategoryPeer {
 
     /** the default database name for this class */
     const DATABASE_NAME = 'infop7db';
@@ -60,12 +59,12 @@ abstract class BaseForumCategoryPeer
      * holds an array of fieldnames
      *
      * first dimension keys are the type constants
-     * e.g. ForumCategoryPeer::$fieldNames[ForumCategoryPeer::TYPE_PHPNAME][0] = 'Id'
+     * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
         BasePeer::TYPE_PHPNAME => array ('Id', 'Name', 'ParentId', 'AccessRights', ),
         BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'name', 'parentId', 'accessRights', ),
-        BasePeer::TYPE_COLNAME => array (ForumCategoryPeer::ID, ForumCategoryPeer::NAME, ForumCategoryPeer::PARENT_ID, ForumCategoryPeer::ACCESS_RIGHTS, ),
+        BasePeer::TYPE_COLNAME => array (self::ID, self::NAME, self::PARENT_ID, self::ACCESS_RIGHTS, ),
         BasePeer::TYPE_RAW_COLNAME => array ('ID', 'NAME', 'PARENT_ID', 'ACCESS_RIGHTS', ),
         BasePeer::TYPE_FIELDNAME => array ('id', 'name', 'parent_id', 'access_rights', ),
         BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
@@ -75,12 +74,12 @@ abstract class BaseForumCategoryPeer
      * holds an array of keys for quick access to the fieldnames array
      *
      * first dimension keys are the type constants
-     * e.g. ForumCategoryPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
+     * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
         BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Name' => 1, 'ParentId' => 2, 'AccessRights' => 3, ),
         BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'name' => 1, 'parentId' => 2, 'accessRights' => 3, ),
-        BasePeer::TYPE_COLNAME => array (ForumCategoryPeer::ID => 0, ForumCategoryPeer::NAME => 1, ForumCategoryPeer::PARENT_ID => 2, ForumCategoryPeer::ACCESS_RIGHTS => 3, ),
+        BasePeer::TYPE_COLNAME => array (self::ID => 0, self::NAME => 1, self::PARENT_ID => 2, self::ACCESS_RIGHTS => 3, ),
         BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'NAME' => 1, 'PARENT_ID' => 2, 'ACCESS_RIGHTS' => 3, ),
         BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'name' => 1, 'parent_id' => 2, 'access_rights' => 3, ),
         BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
@@ -98,10 +97,10 @@ abstract class BaseForumCategoryPeer
      */
     public static function translateFieldName($name, $fromType, $toType)
     {
-        $toNames = ForumCategoryPeer::getFieldNames($toType);
-        $key = isset(ForumCategoryPeer::$fieldKeys[$fromType][$name]) ? ForumCategoryPeer::$fieldKeys[$fromType][$name] : null;
+        $toNames = self::getFieldNames($toType);
+        $key = isset(self::$fieldKeys[$fromType][$name]) ? self::$fieldKeys[$fromType][$name] : null;
         if ($key === null) {
-            throw new PropelException("'$name' could not be found in the field names of type '$fromType'. These are: " . print_r(ForumCategoryPeer::$fieldKeys[$fromType], true));
+            throw new PropelException("'$name' could not be found in the field names of type '$fromType'. These are: " . print_r(self::$fieldKeys[$fromType], true));
         }
 
         return $toNames[$key];
@@ -118,11 +117,11 @@ abstract class BaseForumCategoryPeer
      */
     public static function getFieldNames($type = BasePeer::TYPE_PHPNAME)
     {
-        if (!array_key_exists($type, ForumCategoryPeer::$fieldNames)) {
+        if (!array_key_exists($type, self::$fieldNames)) {
             throw new PropelException('Method getFieldNames() expects the parameter $type to be one of the class constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME, BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM. ' . $type . ' was given.');
         }
 
-        return ForumCategoryPeer::$fieldNames[$type];
+        return self::$fieldNames[$type];
     }
 
     /**
@@ -196,7 +195,7 @@ abstract class BaseForumCategoryPeer
         }
 
         $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
-        $criteria->setDbName(ForumCategoryPeer::DATABASE_NAME); // Set the correct dbName
+        $criteria->setDbName(self::DATABASE_NAME); // Set the correct dbName
 
         if ($con === null) {
             $con = Propel::getConnection(ForumCategoryPeer::DATABASE_NAME, Propel::CONNECTION_READ);
@@ -271,7 +270,7 @@ abstract class BaseForumCategoryPeer
         }
 
         // Set the correct dbName
-        $criteria->setDbName(ForumCategoryPeer::DATABASE_NAME);
+        $criteria->setDbName(self::DATABASE_NAME);
 
         // BasePeer returns a PDOStatement
         return BasePeer::doSelect($criteria, $con);
@@ -294,7 +293,7 @@ abstract class BaseForumCategoryPeer
             if ($key === null) {
                 $key = (string) $obj->getId();
             } // if key === null
-            ForumCategoryPeer::$instances[$key] = $obj;
+            self::$instances[$key] = $obj;
         }
     }
 
@@ -324,7 +323,7 @@ abstract class BaseForumCategoryPeer
                 throw $e;
             }
 
-            unset(ForumCategoryPeer::$instances[$key]);
+            unset(self::$instances[$key]);
         }
     } // removeInstanceFromPool()
 
@@ -335,20 +334,20 @@ abstract class BaseForumCategoryPeer
      * a multi-column primary key, a serialize()d version of the primary key will be returned.
      *
      * @param      string $key The key (@see getPrimaryKeyHash()) for this instance.
-     * @return   ForumCategory Found object or null if 1) no instance exists for specified key or 2) instance pooling has been disabled.
+     * @return   ForumCategory Found object or NULL if 1) no instance exists for specified key or 2) instance pooling has been disabled.
      * @see        getPrimaryKeyHash()
      */
     public static function getInstanceFromPool($key)
     {
         if (Propel::isInstancePoolingEnabled()) {
-            if (isset(ForumCategoryPeer::$instances[$key])) {
-                return ForumCategoryPeer::$instances[$key];
+            if (isset(self::$instances[$key])) {
+                return self::$instances[$key];
             }
         }
 
         return null; // just to be explicit
     }
-
+    
     /**
      * Clear the instance pool.
      *
@@ -356,9 +355,9 @@ abstract class BaseForumCategoryPeer
      */
     public static function clearInstancePool()
     {
-        ForumCategoryPeer::$instances = array();
+        self::$instances = array();
     }
-
+    
     /**
      * Method to invalidate the instance pool of all tables related to forum_categories
      * by a foreign key with ON DELETE CASCADE
@@ -381,11 +380,11 @@ abstract class BaseForumCategoryPeer
      *
      * @param      array $row PropelPDO resultset row.
      * @param      int $startcol The 0-based offset for reading from the resultset row.
-     * @return string A string version of PK or null if the components of primary key in result array are all null.
+     * @return string A string version of PK or NULL if the components of primary key in result array are all null.
      */
     public static function getPrimaryKeyHashFromRow($row, $startcol = 0)
     {
-        // If the PK cannot be derived from the row, return null.
+        // If the PK cannot be derived from the row, return NULL.
         if ($row[$startcol] === null) {
             return null;
         }
@@ -407,7 +406,7 @@ abstract class BaseForumCategoryPeer
 
         return (int) $row[$startcol];
     }
-
+    
     /**
      * The returned array will contain objects of the default type or
      * objects that inherit from the default.
@@ -418,7 +417,7 @@ abstract class BaseForumCategoryPeer
     public static function populateObjects(PDOStatement $stmt)
     {
         $results = array();
-
+    
         // set the class once to avoid overhead in the loop
         $cls = ForumCategoryPeer::getOMClass();
         // populate the object(s)
@@ -498,7 +497,7 @@ abstract class BaseForumCategoryPeer
         $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
 
         // Set the correct dbName
-        $criteria->setDbName(ForumCategoryPeer::DATABASE_NAME);
+        $criteria->setDbName(self::DATABASE_NAME);
 
         if ($con === null) {
             $con = Propel::getConnection(ForumCategoryPeer::DATABASE_NAME, Propel::CONNECTION_READ);
@@ -532,7 +531,7 @@ abstract class BaseForumCategoryPeer
 
         // Set the correct dbName if it has not been overridden
         if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(ForumCategoryPeer::DATABASE_NAME);
+            $criteria->setDbName(self::DATABASE_NAME);
         }
 
         ForumCategoryPeer::addSelectColumns($criteria);
@@ -571,7 +570,7 @@ abstract class BaseForumCategoryPeer
      */
     public static function getTableMap()
     {
-        return Propel::getDatabaseMap(ForumCategoryPeer::DATABASE_NAME)->getTable(ForumCategoryPeer::TABLE_NAME);
+        return Propel::getDatabaseMap(self::DATABASE_NAME)->getTable(self::TABLE_NAME);
     }
 
     /**
@@ -623,7 +622,7 @@ abstract class BaseForumCategoryPeer
 
 
         // Set the correct dbName
-        $criteria->setDbName(ForumCategoryPeer::DATABASE_NAME);
+        $criteria->setDbName(self::DATABASE_NAME);
 
         try {
             // use transaction because $criteria could contain info
@@ -654,7 +653,7 @@ abstract class BaseForumCategoryPeer
             $con = Propel::getConnection(ForumCategoryPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
-        $selectCriteria = new Criteria(ForumCategoryPeer::DATABASE_NAME);
+        $selectCriteria = new Criteria(self::DATABASE_NAME);
 
         if ($values instanceof Criteria) {
             $criteria = clone $values; // rename for clarity
@@ -673,7 +672,7 @@ abstract class BaseForumCategoryPeer
         }
 
         // set the correct dbName
-        $criteria->setDbName(ForumCategoryPeer::DATABASE_NAME);
+        $criteria->setDbName(self::DATABASE_NAME);
 
         return BasePeer::doUpdate($selectCriteria, $criteria, $con);
     }
@@ -736,12 +735,12 @@ abstract class BaseForumCategoryPeer
             // create criteria based on pk values
             $criteria = $values->buildPkeyCriteria();
         } else { // it's a primary key, or an array of pks
-            $criteria = new Criteria(ForumCategoryPeer::DATABASE_NAME);
+            $criteria = new Criteria(self::DATABASE_NAME);
             $criteria->add(ForumCategoryPeer::ID, (array) $values, Criteria::IN);
         }
 
         // Set the correct dbName
-        $criteria->setDbName(ForumCategoryPeer::DATABASE_NAME);
+        $criteria->setDbName(self::DATABASE_NAME);
 
         $affectedRows = 0; // initialize var to track total num of affected rows
 
@@ -749,15 +748,15 @@ abstract class BaseForumCategoryPeer
             // use transaction because $criteria could contain info
             // for more than one table or we could emulating ON DELETE CASCADE, etc.
             $con->beginTransaction();
-
+            
             // cloning the Criteria in case it's modified by doSelect() or doSelectStmt()
             $c = clone $criteria;
             $affectedRows += ForumCategoryPeer::doOnDeleteCascade($c, $con);
-
+            
             // cloning the Criteria in case it's modified by doSelect() or doSelectStmt()
             $c = clone $criteria;
             ForumCategoryPeer::doOnDeleteSetNull($c, $con);
-
+            
             // Because this db requires some delete cascade/set null emulation, we have to
             // clear the cached instance *after* the emulation has happened (since
             // instances get re-added by the select statement contained therein).
@@ -770,7 +769,7 @@ abstract class BaseForumCategoryPeer
                     ForumCategoryPeer::removeInstanceFromPool($singleval);
                 }
             }
-
+            
             $affectedRows += BasePeer::doDelete($criteria, $con);
             ForumCategoryPeer::clearRelatedInstancePool();
             $con->commit();
@@ -807,7 +806,7 @@ abstract class BaseForumCategoryPeer
 
             // delete related ForumTopic objects
             $criteria = new Criteria(ForumTopicPeer::DATABASE_NAME);
-
+            
             $criteria->add(ForumTopicPeer::CATEGORY_ID, $obj->getId());
             $affectedRows += ForumTopicPeer::doDelete($criteria, $con);
         }
@@ -835,7 +834,7 @@ abstract class BaseForumCategoryPeer
         $objects = ForumCategoryPeer::doSelect($criteria, $con);
         foreach ($objects as $obj) {
 
-            // set fkey col in related ForumCategory rows to null
+            // set fkey col in related ForumCategory rows to NULL
             $selectCriteria = new Criteria(ForumCategoryPeer::DATABASE_NAME);
             $updateValues = new Criteria(ForumCategoryPeer::DATABASE_NAME);
             $selectCriteria->add(ForumCategoryPeer::PARENT_ID, $obj->getId());

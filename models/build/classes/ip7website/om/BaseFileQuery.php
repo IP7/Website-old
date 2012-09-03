@@ -4,67 +4,68 @@
 /**
  * Base class that represents a query for the 'files' table.
  *
+ * 
  *
+ * @method     FileQuery orderById($order = Criteria::ASC) Order by the id column
+ * @method     FileQuery orderByAuthorId($order = Criteria::ASC) Order by the author_id column
+ * @method     FileQuery orderByName($order = Criteria::ASC) Order by the name column
+ * @method     FileQuery orderByDate($order = Criteria::ASC) Order by the date column
+ * @method     FileQuery orderByDescription($order = Criteria::ASC) Order by the description column
+ * @method     FileQuery orderByFileType($order = Criteria::ASC) Order by the file_type column
+ * @method     FileQuery orderByPath($order = Criteria::ASC) Order by the path column
+ * @method     FileQuery orderByAccessRights($order = Criteria::ASC) Order by the access_rights column
  *
- * @method FileQuery orderById($order = Criteria::ASC) Order by the id column
- * @method FileQuery orderByAuthorId($order = Criteria::ASC) Order by the author_id column
- * @method FileQuery orderByName($order = Criteria::ASC) Order by the name column
- * @method FileQuery orderByDate($order = Criteria::ASC) Order by the date column
- * @method FileQuery orderByDescription($order = Criteria::ASC) Order by the description column
- * @method FileQuery orderByFileType($order = Criteria::ASC) Order by the file_type column
- * @method FileQuery orderByPath($order = Criteria::ASC) Order by the path column
- * @method FileQuery orderByAccessRights($order = Criteria::ASC) Order by the access_rights column
+ * @method     FileQuery groupById() Group by the id column
+ * @method     FileQuery groupByAuthorId() Group by the author_id column
+ * @method     FileQuery groupByName() Group by the name column
+ * @method     FileQuery groupByDate() Group by the date column
+ * @method     FileQuery groupByDescription() Group by the description column
+ * @method     FileQuery groupByFileType() Group by the file_type column
+ * @method     FileQuery groupByPath() Group by the path column
+ * @method     FileQuery groupByAccessRights() Group by the access_rights column
  *
- * @method FileQuery groupById() Group by the id column
- * @method FileQuery groupByAuthorId() Group by the author_id column
- * @method FileQuery groupByName() Group by the name column
- * @method FileQuery groupByDate() Group by the date column
- * @method FileQuery groupByDescription() Group by the description column
- * @method FileQuery groupByFileType() Group by the file_type column
- * @method FileQuery groupByPath() Group by the path column
- * @method FileQuery groupByAccessRights() Group by the access_rights column
+ * @method     FileQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
+ * @method     FileQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
+ * @method     FileQuery innerJoin($relation) Adds a INNER JOIN clause to the query
  *
- * @method FileQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
- * @method FileQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
- * @method FileQuery innerJoin($relation) Adds a INNER JOIN clause to the query
+ * @method     FileQuery leftJoinAuthor($relationAlias = null) Adds a LEFT JOIN clause to the query using the Author relation
+ * @method     FileQuery rightJoinAuthor($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Author relation
+ * @method     FileQuery innerJoinAuthor($relationAlias = null) Adds a INNER JOIN clause to the query using the Author relation
  *
- * @method FileQuery leftJoinAuthor($relationAlias = null) Adds a LEFT JOIN clause to the query using the Author relation
- * @method FileQuery rightJoinAuthor($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Author relation
- * @method FileQuery innerJoinAuthor($relationAlias = null) Adds a INNER JOIN clause to the query using the Author relation
+ * @method     FileQuery leftJoinUserRelatedByAvatarId($relationAlias = null) Adds a LEFT JOIN clause to the query using the UserRelatedByAvatarId relation
+ * @method     FileQuery rightJoinUserRelatedByAvatarId($relationAlias = null) Adds a RIGHT JOIN clause to the query using the UserRelatedByAvatarId relation
+ * @method     FileQuery innerJoinUserRelatedByAvatarId($relationAlias = null) Adds a INNER JOIN clause to the query using the UserRelatedByAvatarId relation
  *
- * @method FileQuery leftJoinUserRelatedByAvatarId($relationAlias = null) Adds a LEFT JOIN clause to the query using the UserRelatedByAvatarId relation
- * @method FileQuery rightJoinUserRelatedByAvatarId($relationAlias = null) Adds a RIGHT JOIN clause to the query using the UserRelatedByAvatarId relation
- * @method FileQuery innerJoinUserRelatedByAvatarId($relationAlias = null) Adds a INNER JOIN clause to the query using the UserRelatedByAvatarId relation
+ * @method     FileQuery leftJoinContentsFiles($relationAlias = null) Adds a LEFT JOIN clause to the query using the ContentsFiles relation
+ * @method     FileQuery rightJoinContentsFiles($relationAlias = null) Adds a RIGHT JOIN clause to the query using the ContentsFiles relation
+ * @method     FileQuery innerJoinContentsFiles($relationAlias = null) Adds a INNER JOIN clause to the query using the ContentsFiles relation
  *
- * @method FileQuery leftJoinContentsFiles($relationAlias = null) Adds a LEFT JOIN clause to the query using the ContentsFiles relation
- * @method FileQuery rightJoinContentsFiles($relationAlias = null) Adds a RIGHT JOIN clause to the query using the ContentsFiles relation
- * @method FileQuery innerJoinContentsFiles($relationAlias = null) Adds a INNER JOIN clause to the query using the ContentsFiles relation
+ * @method     File findOne(PropelPDO $con = null) Return the first File matching the query
+ * @method     File findOneOrCreate(PropelPDO $con = null) Return the first File matching the query, or a new File object populated from the query conditions when no match is found
  *
- * @method File findOne(PropelPDO $con = null) Return the first File matching the query
- * @method File findOneOrCreate(PropelPDO $con = null) Return the first File matching the query, or a new File object populated from the query conditions when no match is found
+ * @method     File findOneById(int $id) Return the first File filtered by the id column
+ * @method     File findOneByAuthorId(int $author_id) Return the first File filtered by the author_id column
+ * @method     File findOneByName(string $name) Return the first File filtered by the name column
+ * @method     File findOneByDate(string $date) Return the first File filtered by the date column
+ * @method     File findOneByDescription(string $description) Return the first File filtered by the description column
+ * @method     File findOneByFileType(int $file_type) Return the first File filtered by the file_type column
+ * @method     File findOneByPath(string $path) Return the first File filtered by the path column
+ * @method     File findOneByAccessRights(int $access_rights) Return the first File filtered by the access_rights column
  *
- * @method File findOneById(int $id) Return the first File filtered by the id column
- * @method File findOneByAuthorId(int $author_id) Return the first File filtered by the author_id column
- * @method File findOneByName(string $name) Return the first File filtered by the name column
- * @method File findOneByDate(string $date) Return the first File filtered by the date column
- * @method File findOneByDescription(string $description) Return the first File filtered by the description column
- * @method File findOneByFileType(int $file_type) Return the first File filtered by the file_type column
- * @method File findOneByPath(string $path) Return the first File filtered by the path column
- * @method File findOneByAccessRights(int $access_rights) Return the first File filtered by the access_rights column
- *
- * @method array findById(int $id) Return File objects filtered by the id column
- * @method array findByAuthorId(int $author_id) Return File objects filtered by the author_id column
- * @method array findByName(string $name) Return File objects filtered by the name column
- * @method array findByDate(string $date) Return File objects filtered by the date column
- * @method array findByDescription(string $description) Return File objects filtered by the description column
- * @method array findByFileType(int $file_type) Return File objects filtered by the file_type column
- * @method array findByPath(string $path) Return File objects filtered by the path column
- * @method array findByAccessRights(int $access_rights) Return File objects filtered by the access_rights column
+ * @method     array findById(int $id) Return File objects filtered by the id column
+ * @method     array findByAuthorId(int $author_id) Return File objects filtered by the author_id column
+ * @method     array findByName(string $name) Return File objects filtered by the name column
+ * @method     array findByDate(string $date) Return File objects filtered by the date column
+ * @method     array findByDescription(string $description) Return File objects filtered by the description column
+ * @method     array findByFileType(int $file_type) Return File objects filtered by the file_type column
+ * @method     array findByPath(string $path) Return File objects filtered by the path column
+ * @method     array findByAccessRights(int $access_rights) Return File objects filtered by the access_rights column
  *
  * @package    propel.generator.ip7website.om
  */
 abstract class BaseFileQuery extends ModelCriteria
 {
+    
     /**
      * Initializes internal state of BaseFileQuery object.
      *
@@ -110,7 +111,7 @@ abstract class BaseFileQuery extends ModelCriteria
      * $obj  = $c->findPk(12, $con);
      * </code>
      *
-     * @param mixed $key Primary key to use for the query
+     * @param mixed $key Primary key to use for the query 
      * @param     PropelPDO $con an optional connection object
      *
      * @return   File|File[]|mixed the result, formatted by the current formatter
@@ -152,7 +153,7 @@ abstract class BaseFileQuery extends ModelCriteria
         $sql = 'SELECT `ID`, `AUTHOR_ID`, `NAME`, `DATE`, `DESCRIPTION`, `FILE_TYPE`, `PATH`, `ACCESS_RIGHTS` FROM `files` WHERE `ID` = :p0';
         try {
             $stmt = $con->prepare($sql);
-            $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
+			$stmt->bindValue(':p0', $key, PDO::PARAM_INT);
             $stmt->execute();
         } catch (Exception $e) {
             Propel::log($e->getMessage(), Propel::LOG_ERR);
@@ -770,4 +771,4 @@ abstract class BaseFileQuery extends ModelCriteria
         return $this;
     }
 
-}
+} // BaseFileQuery

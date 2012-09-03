@@ -4,12 +4,11 @@
 /**
  * Base static class for performing query and update operations on the 'newsletters_posts' table.
  *
+ * 
  *
- *
- * @package propel.generator.ip7website.om
+ * @package    propel.generator.ip7website.om
  */
-abstract class BaseNewsletterPostPeer
-{
+abstract class BaseNewsletterPostPeer {
 
     /** the default database name for this class */
     const DATABASE_NAME = 'infop7db';
@@ -60,12 +59,12 @@ abstract class BaseNewsletterPostPeer
      * holds an array of fieldnames
      *
      * first dimension keys are the type constants
-     * e.g. NewsletterPostPeer::$fieldNames[NewsletterPostPeer::TYPE_PHPNAME][0] = 'Id'
+     * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
         BasePeer::TYPE_PHPNAME => array ('Id', 'NewsletterId', 'Date', 'Text', ),
         BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'newsletterId', 'date', 'text', ),
-        BasePeer::TYPE_COLNAME => array (NewsletterPostPeer::ID, NewsletterPostPeer::NEWSLETTER_ID, NewsletterPostPeer::DATE, NewsletterPostPeer::TEXT, ),
+        BasePeer::TYPE_COLNAME => array (self::ID, self::NEWSLETTER_ID, self::DATE, self::TEXT, ),
         BasePeer::TYPE_RAW_COLNAME => array ('ID', 'NEWSLETTER_ID', 'DATE', 'TEXT', ),
         BasePeer::TYPE_FIELDNAME => array ('id', 'newsletter_id', 'date', 'text', ),
         BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
@@ -75,12 +74,12 @@ abstract class BaseNewsletterPostPeer
      * holds an array of keys for quick access to the fieldnames array
      *
      * first dimension keys are the type constants
-     * e.g. NewsletterPostPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
+     * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
         BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'NewsletterId' => 1, 'Date' => 2, 'Text' => 3, ),
         BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'newsletterId' => 1, 'date' => 2, 'text' => 3, ),
-        BasePeer::TYPE_COLNAME => array (NewsletterPostPeer::ID => 0, NewsletterPostPeer::NEWSLETTER_ID => 1, NewsletterPostPeer::DATE => 2, NewsletterPostPeer::TEXT => 3, ),
+        BasePeer::TYPE_COLNAME => array (self::ID => 0, self::NEWSLETTER_ID => 1, self::DATE => 2, self::TEXT => 3, ),
         BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'NEWSLETTER_ID' => 1, 'DATE' => 2, 'TEXT' => 3, ),
         BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'newsletter_id' => 1, 'date' => 2, 'text' => 3, ),
         BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
@@ -98,10 +97,10 @@ abstract class BaseNewsletterPostPeer
      */
     public static function translateFieldName($name, $fromType, $toType)
     {
-        $toNames = NewsletterPostPeer::getFieldNames($toType);
-        $key = isset(NewsletterPostPeer::$fieldKeys[$fromType][$name]) ? NewsletterPostPeer::$fieldKeys[$fromType][$name] : null;
+        $toNames = self::getFieldNames($toType);
+        $key = isset(self::$fieldKeys[$fromType][$name]) ? self::$fieldKeys[$fromType][$name] : null;
         if ($key === null) {
-            throw new PropelException("'$name' could not be found in the field names of type '$fromType'. These are: " . print_r(NewsletterPostPeer::$fieldKeys[$fromType], true));
+            throw new PropelException("'$name' could not be found in the field names of type '$fromType'. These are: " . print_r(self::$fieldKeys[$fromType], true));
         }
 
         return $toNames[$key];
@@ -118,11 +117,11 @@ abstract class BaseNewsletterPostPeer
      */
     public static function getFieldNames($type = BasePeer::TYPE_PHPNAME)
     {
-        if (!array_key_exists($type, NewsletterPostPeer::$fieldNames)) {
+        if (!array_key_exists($type, self::$fieldNames)) {
             throw new PropelException('Method getFieldNames() expects the parameter $type to be one of the class constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME, BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM. ' . $type . ' was given.');
         }
 
-        return NewsletterPostPeer::$fieldNames[$type];
+        return self::$fieldNames[$type];
     }
 
     /**
@@ -194,7 +193,7 @@ abstract class BaseNewsletterPostPeer
         }
 
         $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
-        $criteria->setDbName(NewsletterPostPeer::DATABASE_NAME); // Set the correct dbName
+        $criteria->setDbName(self::DATABASE_NAME); // Set the correct dbName
 
         if ($con === null) {
             $con = Propel::getConnection(NewsletterPostPeer::DATABASE_NAME, Propel::CONNECTION_READ);
@@ -269,7 +268,7 @@ abstract class BaseNewsletterPostPeer
         }
 
         // Set the correct dbName
-        $criteria->setDbName(NewsletterPostPeer::DATABASE_NAME);
+        $criteria->setDbName(self::DATABASE_NAME);
 
         // BasePeer returns a PDOStatement
         return BasePeer::doSelect($criteria, $con);
@@ -292,7 +291,7 @@ abstract class BaseNewsletterPostPeer
             if ($key === null) {
                 $key = (string) $obj->getId();
             } // if key === null
-            NewsletterPostPeer::$instances[$key] = $obj;
+            self::$instances[$key] = $obj;
         }
     }
 
@@ -322,7 +321,7 @@ abstract class BaseNewsletterPostPeer
                 throw $e;
             }
 
-            unset(NewsletterPostPeer::$instances[$key]);
+            unset(self::$instances[$key]);
         }
     } // removeInstanceFromPool()
 
@@ -333,20 +332,20 @@ abstract class BaseNewsletterPostPeer
      * a multi-column primary key, a serialize()d version of the primary key will be returned.
      *
      * @param      string $key The key (@see getPrimaryKeyHash()) for this instance.
-     * @return   NewsletterPost Found object or null if 1) no instance exists for specified key or 2) instance pooling has been disabled.
+     * @return   NewsletterPost Found object or NULL if 1) no instance exists for specified key or 2) instance pooling has been disabled.
      * @see        getPrimaryKeyHash()
      */
     public static function getInstanceFromPool($key)
     {
         if (Propel::isInstancePoolingEnabled()) {
-            if (isset(NewsletterPostPeer::$instances[$key])) {
-                return NewsletterPostPeer::$instances[$key];
+            if (isset(self::$instances[$key])) {
+                return self::$instances[$key];
             }
         }
 
         return null; // just to be explicit
     }
-
+    
     /**
      * Clear the instance pool.
      *
@@ -354,9 +353,9 @@ abstract class BaseNewsletterPostPeer
      */
     public static function clearInstancePool()
     {
-        NewsletterPostPeer::$instances = array();
+        self::$instances = array();
     }
-
+    
     /**
      * Method to invalidate the instance pool of all tables related to newsletters_posts
      * by a foreign key with ON DELETE CASCADE
@@ -373,11 +372,11 @@ abstract class BaseNewsletterPostPeer
      *
      * @param      array $row PropelPDO resultset row.
      * @param      int $startcol The 0-based offset for reading from the resultset row.
-     * @return string A string version of PK or null if the components of primary key in result array are all null.
+     * @return string A string version of PK or NULL if the components of primary key in result array are all null.
      */
     public static function getPrimaryKeyHashFromRow($row, $startcol = 0)
     {
-        // If the PK cannot be derived from the row, return null.
+        // If the PK cannot be derived from the row, return NULL.
         if ($row[$startcol] === null) {
             return null;
         }
@@ -399,7 +398,7 @@ abstract class BaseNewsletterPostPeer
 
         return (int) $row[$startcol];
     }
-
+    
     /**
      * The returned array will contain objects of the default type or
      * objects that inherit from the default.
@@ -410,7 +409,7 @@ abstract class BaseNewsletterPostPeer
     public static function populateObjects(PDOStatement $stmt)
     {
         $results = array();
-
+    
         // set the class once to avoid overhead in the loop
         $cls = NewsletterPostPeer::getOMClass();
         // populate the object(s)
@@ -490,7 +489,7 @@ abstract class BaseNewsletterPostPeer
         $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
 
         // Set the correct dbName
-        $criteria->setDbName(NewsletterPostPeer::DATABASE_NAME);
+        $criteria->setDbName(self::DATABASE_NAME);
 
         if ($con === null) {
             $con = Propel::getConnection(NewsletterPostPeer::DATABASE_NAME, Propel::CONNECTION_READ);
@@ -526,7 +525,7 @@ abstract class BaseNewsletterPostPeer
 
         // Set the correct dbName if it has not been overridden
         if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(NewsletterPostPeer::DATABASE_NAME);
+            $criteria->setDbName(self::DATABASE_NAME);
         }
 
         NewsletterPostPeer::addSelectColumns($criteria);
@@ -608,7 +607,7 @@ abstract class BaseNewsletterPostPeer
         $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
 
         // Set the correct dbName
-        $criteria->setDbName(NewsletterPostPeer::DATABASE_NAME);
+        $criteria->setDbName(self::DATABASE_NAME);
 
         if ($con === null) {
             $con = Propel::getConnection(NewsletterPostPeer::DATABASE_NAME, Propel::CONNECTION_READ);
@@ -644,7 +643,7 @@ abstract class BaseNewsletterPostPeer
 
         // Set the correct dbName if it has not been overridden
         if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(NewsletterPostPeer::DATABASE_NAME);
+            $criteria->setDbName(self::DATABASE_NAME);
         }
 
         NewsletterPostPeer::addSelectColumns($criteria);
@@ -706,7 +705,7 @@ abstract class BaseNewsletterPostPeer
      */
     public static function getTableMap()
     {
-        return Propel::getDatabaseMap(NewsletterPostPeer::DATABASE_NAME)->getTable(NewsletterPostPeer::TABLE_NAME);
+        return Propel::getDatabaseMap(self::DATABASE_NAME)->getTable(self::TABLE_NAME);
     }
 
     /**
@@ -758,7 +757,7 @@ abstract class BaseNewsletterPostPeer
 
 
         // Set the correct dbName
-        $criteria->setDbName(NewsletterPostPeer::DATABASE_NAME);
+        $criteria->setDbName(self::DATABASE_NAME);
 
         try {
             // use transaction because $criteria could contain info
@@ -789,7 +788,7 @@ abstract class BaseNewsletterPostPeer
             $con = Propel::getConnection(NewsletterPostPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
-        $selectCriteria = new Criteria(NewsletterPostPeer::DATABASE_NAME);
+        $selectCriteria = new Criteria(self::DATABASE_NAME);
 
         if ($values instanceof Criteria) {
             $criteria = clone $values; // rename for clarity
@@ -808,7 +807,7 @@ abstract class BaseNewsletterPostPeer
         }
 
         // set the correct dbName
-        $criteria->setDbName(NewsletterPostPeer::DATABASE_NAME);
+        $criteria->setDbName(self::DATABASE_NAME);
 
         return BasePeer::doUpdate($selectCriteria, $criteria, $con);
     }
@@ -875,7 +874,7 @@ abstract class BaseNewsletterPostPeer
             // create criteria based on pk values
             $criteria = $values->buildPkeyCriteria();
         } else { // it's a primary key, or an array of pks
-            $criteria = new Criteria(NewsletterPostPeer::DATABASE_NAME);
+            $criteria = new Criteria(self::DATABASE_NAME);
             $criteria->add(NewsletterPostPeer::ID, (array) $values, Criteria::IN);
             // invalidate the cache for this object(s)
             foreach ((array) $values as $singleval) {
@@ -884,7 +883,7 @@ abstract class BaseNewsletterPostPeer
         }
 
         // Set the correct dbName
-        $criteria->setDbName(NewsletterPostPeer::DATABASE_NAME);
+        $criteria->setDbName(self::DATABASE_NAME);
 
         $affectedRows = 0; // initialize var to track total num of affected rows
 
@@ -892,7 +891,7 @@ abstract class BaseNewsletterPostPeer
             // use transaction because $criteria could contain info
             // for more than one table or we could emulating ON DELETE CASCADE, etc.
             $con->beginTransaction();
-
+            
             $affectedRows += BasePeer::doDelete($criteria, $con);
             NewsletterPostPeer::clearRelatedInstancePool();
             $con->commit();

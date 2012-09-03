@@ -20,7 +20,6 @@ CREATE TABLE `users`
     `gender` TINYINT DEFAULT 0,
     `email` VARCHAR(255) NOT NULL,
     `phone` VARCHAR(20),
-    `address` VARCHAR(255),
     `website` VARCHAR(255),
     `birth_date` DATE,
     `first_entry` DATE,

@@ -4,39 +4,40 @@
 /**
  * Base class that represents a query for the 'schedules_courses' table.
  *
+ * 
  *
+ * @method     SchedulesCoursesQuery orderByScheduleId($order = Criteria::ASC) Order by the schedule_id column
+ * @method     SchedulesCoursesQuery orderByScheduledCourseId($order = Criteria::ASC) Order by the scheduled_course_id column
  *
- * @method SchedulesCoursesQuery orderByScheduleId($order = Criteria::ASC) Order by the schedule_id column
- * @method SchedulesCoursesQuery orderByScheduledCourseId($order = Criteria::ASC) Order by the scheduled_course_id column
+ * @method     SchedulesCoursesQuery groupByScheduleId() Group by the schedule_id column
+ * @method     SchedulesCoursesQuery groupByScheduledCourseId() Group by the scheduled_course_id column
  *
- * @method SchedulesCoursesQuery groupByScheduleId() Group by the schedule_id column
- * @method SchedulesCoursesQuery groupByScheduledCourseId() Group by the scheduled_course_id column
+ * @method     SchedulesCoursesQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
+ * @method     SchedulesCoursesQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
+ * @method     SchedulesCoursesQuery innerJoin($relation) Adds a INNER JOIN clause to the query
  *
- * @method SchedulesCoursesQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
- * @method SchedulesCoursesQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
- * @method SchedulesCoursesQuery innerJoin($relation) Adds a INNER JOIN clause to the query
+ * @method     SchedulesCoursesQuery leftJoinSchedule($relationAlias = null) Adds a LEFT JOIN clause to the query using the Schedule relation
+ * @method     SchedulesCoursesQuery rightJoinSchedule($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Schedule relation
+ * @method     SchedulesCoursesQuery innerJoinSchedule($relationAlias = null) Adds a INNER JOIN clause to the query using the Schedule relation
  *
- * @method SchedulesCoursesQuery leftJoinSchedule($relationAlias = null) Adds a LEFT JOIN clause to the query using the Schedule relation
- * @method SchedulesCoursesQuery rightJoinSchedule($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Schedule relation
- * @method SchedulesCoursesQuery innerJoinSchedule($relationAlias = null) Adds a INNER JOIN clause to the query using the Schedule relation
+ * @method     SchedulesCoursesQuery leftJoinScheduledCourse($relationAlias = null) Adds a LEFT JOIN clause to the query using the ScheduledCourse relation
+ * @method     SchedulesCoursesQuery rightJoinScheduledCourse($relationAlias = null) Adds a RIGHT JOIN clause to the query using the ScheduledCourse relation
+ * @method     SchedulesCoursesQuery innerJoinScheduledCourse($relationAlias = null) Adds a INNER JOIN clause to the query using the ScheduledCourse relation
  *
- * @method SchedulesCoursesQuery leftJoinScheduledCourse($relationAlias = null) Adds a LEFT JOIN clause to the query using the ScheduledCourse relation
- * @method SchedulesCoursesQuery rightJoinScheduledCourse($relationAlias = null) Adds a RIGHT JOIN clause to the query using the ScheduledCourse relation
- * @method SchedulesCoursesQuery innerJoinScheduledCourse($relationAlias = null) Adds a INNER JOIN clause to the query using the ScheduledCourse relation
+ * @method     SchedulesCourses findOne(PropelPDO $con = null) Return the first SchedulesCourses matching the query
+ * @method     SchedulesCourses findOneOrCreate(PropelPDO $con = null) Return the first SchedulesCourses matching the query, or a new SchedulesCourses object populated from the query conditions when no match is found
  *
- * @method SchedulesCourses findOne(PropelPDO $con = null) Return the first SchedulesCourses matching the query
- * @method SchedulesCourses findOneOrCreate(PropelPDO $con = null) Return the first SchedulesCourses matching the query, or a new SchedulesCourses object populated from the query conditions when no match is found
+ * @method     SchedulesCourses findOneByScheduleId(int $schedule_id) Return the first SchedulesCourses filtered by the schedule_id column
+ * @method     SchedulesCourses findOneByScheduledCourseId(int $scheduled_course_id) Return the first SchedulesCourses filtered by the scheduled_course_id column
  *
- * @method SchedulesCourses findOneByScheduleId(int $schedule_id) Return the first SchedulesCourses filtered by the schedule_id column
- * @method SchedulesCourses findOneByScheduledCourseId(int $scheduled_course_id) Return the first SchedulesCourses filtered by the scheduled_course_id column
- *
- * @method array findByScheduleId(int $schedule_id) Return SchedulesCourses objects filtered by the schedule_id column
- * @method array findByScheduledCourseId(int $scheduled_course_id) Return SchedulesCourses objects filtered by the scheduled_course_id column
+ * @method     array findByScheduleId(int $schedule_id) Return SchedulesCourses objects filtered by the schedule_id column
+ * @method     array findByScheduledCourseId(int $scheduled_course_id) Return SchedulesCourses objects filtered by the scheduled_course_id column
  *
  * @package    propel.generator.ip7website.om
  */
 abstract class BaseSchedulesCoursesQuery extends ModelCriteria
 {
+    
     /**
      * Initializes internal state of BaseSchedulesCoursesQuery object.
      *
@@ -82,7 +83,7 @@ abstract class BaseSchedulesCoursesQuery extends ModelCriteria
      * $obj = $c->findPk(array(12, 34), $con);
      * </code>
      *
-     * @param array $key Primary key to use for the query
+     * @param array $key Primary key to use for the query 
                          A Primary key composition: [$schedule_id, $scheduled_course_id]
      * @param     PropelPDO $con an optional connection object
      *
@@ -125,8 +126,8 @@ abstract class BaseSchedulesCoursesQuery extends ModelCriteria
         $sql = 'SELECT `SCHEDULE_ID`, `SCHEDULED_COURSE_ID` FROM `schedules_courses` WHERE `SCHEDULE_ID` = :p0 AND `SCHEDULED_COURSE_ID` = :p1';
         try {
             $stmt = $con->prepare($sql);
-            $stmt->bindValue(':p0', $key[0], PDO::PARAM_INT);
-            $stmt->bindValue(':p1', $key[1], PDO::PARAM_INT);
+			$stmt->bindValue(':p0', $key[0], PDO::PARAM_INT);
+			$stmt->bindValue(':p1', $key[1], PDO::PARAM_INT);
             $stmt->execute();
         } catch (Exception $e) {
             Propel::log($e->getMessage(), Propel::LOG_ERR);
@@ -451,4 +452,4 @@ abstract class BaseSchedulesCoursesQuery extends ModelCriteria
         return $this;
     }
 
-}
+} // BaseSchedulesCoursesQuery

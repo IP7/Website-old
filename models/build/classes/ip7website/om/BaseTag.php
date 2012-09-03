@@ -4,12 +4,13 @@
 /**
  * Base class that represents a row from the 'tags' table.
  *
- *
+ * 
  *
  * @package    propel.generator.ip7website.om
  */
-abstract class BaseTag extends BaseObject implements Persistent
+abstract class BaseTag extends BaseObject 
 {
+
     /**
      * Peer class name
      */
@@ -45,19 +46,16 @@ abstract class BaseTag extends BaseObject implements Persistent
      * @var        PropelObjectCollection|Alert[] Collection to store aggregation of Alert objects.
      */
     protected $collAlerts;
-    protected $collAlertsPartial;
 
     /**
      * @var        PropelObjectCollection|ContentsTags[] Collection to store aggregation of ContentsTags objects.
      */
     protected $collContentsTagss;
-    protected $collContentsTagssPartial;
 
     /**
      * @var        PropelObjectCollection|AdsTags[] Collection to store aggregation of AdsTags objects.
      */
     protected $collAdsTagss;
-    protected $collAdsTagssPartial;
 
     /**
      * @var        PropelObjectCollection|Content[] Collection to store aggregation of Content objects.
@@ -115,29 +113,31 @@ abstract class BaseTag extends BaseObject implements Persistent
 
     /**
      * Get the [id] column value.
-     *
-     * @return int
+     * 
+     * @return   int
      */
     public function getId()
     {
+
         return $this->id;
     }
 
     /**
      * Get the [name] column value.
-     *
-     * @return string
+     * 
+     * @return   string
      */
     public function getName()
     {
+
         return $this->name;
     }
 
     /**
      * Set the value of [id] column.
-     *
-     * @param int $v new value
-     * @return Tag The current object (for fluent API support)
+     * 
+     * @param      int $v new value
+     * @return   Tag The current object (for fluent API support)
      */
     public function setId($v)
     {
@@ -156,9 +156,9 @@ abstract class BaseTag extends BaseObject implements Persistent
 
     /**
      * Set the value of [name] column.
-     *
-     * @param string $v new value
-     * @return Tag The current object (for fluent API support)
+     * 
+     * @param      string $v new value
+     * @return   Tag The current object (for fluent API support)
      */
     public function setName($v)
     {
@@ -185,7 +185,7 @@ abstract class BaseTag extends BaseObject implements Persistent
      */
     public function hasOnlyDefaultValues()
     {
-        // otherwise, everything was equal, so return true
+        // otherwise, everything was equal, so return TRUE
         return true;
     } // hasOnlyDefaultValues()
 
@@ -197,9 +197,9 @@ abstract class BaseTag extends BaseObject implements Persistent
      * for results of JOIN queries where the resultset row includes columns from two or
      * more tables.
      *
-     * @param array $row The row returned by PDOStatement->fetch(PDO::FETCH_NUM)
-     * @param int $startcol 0-based offset column which indicates which restultset column to start with.
-     * @param boolean $rehydrate Whether this object is being re-hydrated from the database.
+     * @param      array $row The row returned by PDOStatement->fetch(PDO::FETCH_NUM)
+     * @param      int $startcol 0-based offset column which indicates which restultset column to start with.
+     * @param      boolean $rehydrate Whether this object is being re-hydrated from the database.
      * @return int             next starting column
      * @throws PropelException - Any caught Exception will be rewrapped as a PropelException.
      */
@@ -247,8 +247,8 @@ abstract class BaseTag extends BaseObject implements Persistent
      *
      * This will only work if the object has been saved and has a valid primary key set.
      *
-     * @param boolean $deep (optional) Whether to also de-associated any related objects.
-     * @param PropelPDO $con (optional) The PropelPDO connection to use.
+     * @param      boolean $deep (optional) Whether to also de-associated any related objects.
+     * @param      PropelPDO $con (optional) The PropelPDO connection to use.
      * @return void
      * @throws PropelException - if this object is deleted, unsaved or doesn't have pk match in db
      */
@@ -293,7 +293,7 @@ abstract class BaseTag extends BaseObject implements Persistent
     /**
      * Removes this object from datastore and sets delete attribute.
      *
-     * @param PropelPDO $con
+     * @param      PropelPDO $con
      * @return void
      * @throws PropelException
      * @throws Exception
@@ -337,7 +337,7 @@ abstract class BaseTag extends BaseObject implements Persistent
      * method.  This method wraps all precipitate database operations in a
      * single transaction.
      *
-     * @param PropelPDO $con
+     * @param      PropelPDO $con
      * @return int             The number of rows affected by this insert/update and any referring fk objects' save() operations.
      * @throws PropelException
      * @throws Exception
@@ -389,7 +389,7 @@ abstract class BaseTag extends BaseObject implements Persistent
      * If the object is new, it inserts it; otherwise an update is performed.
      * All related objects are also updated in this method.
      *
-     * @param PropelPDO $con
+     * @param      PropelPDO $con
      * @return int             The number of rows affected by this insert/update and any referring fk objects' save() operations.
      * @throws PropelException
      * @see        save()
@@ -513,7 +513,7 @@ abstract class BaseTag extends BaseObject implements Persistent
     /**
      * Insert the row in the database.
      *
-     * @param PropelPDO $con
+     * @param      PropelPDO $con
      *
      * @throws PropelException
      * @see        doSave()
@@ -547,10 +547,10 @@ abstract class BaseTag extends BaseObject implements Persistent
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
                     case '`ID`':
-                        $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
+						$stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
                     case '`NAME`':
-                        $stmt->bindValue($identifier, $this->name, PDO::PARAM_STR);
+						$stmt->bindValue($identifier, $this->name, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -561,7 +561,7 @@ abstract class BaseTag extends BaseObject implements Persistent
         }
 
         try {
-            $pk = $con->lastInsertId();
+			$pk = $con->lastInsertId();
         } catch (Exception $e) {
             throw new PropelException('Unable to get autoincrement id.', $e);
         }
@@ -573,7 +573,7 @@ abstract class BaseTag extends BaseObject implements Persistent
     /**
      * Update the row in the database.
      *
-     * @param PropelPDO $con
+     * @param      PropelPDO $con
      *
      * @see        doSave()
      */
@@ -608,7 +608,7 @@ abstract class BaseTag extends BaseObject implements Persistent
      * If $columns is either a column name or an array of column names
      * only those columns are validated.
      *
-     * @param mixed $columns Column name or an array of column names.
+     * @param      mixed $columns Column name or an array of column names.
      * @return boolean Whether all columns pass validation.
      * @see        doValidate()
      * @see        getValidationFailures()
@@ -634,7 +634,7 @@ abstract class BaseTag extends BaseObject implements Persistent
      * also be validated.  If all pass then <code>true</code> is returned; otherwise
      * an aggreagated array of ValidationFailed objects will be returned.
      *
-     * @param array $columns Array of column names to validate.
+     * @param      array $columns Array of column names to validate.
      * @return mixed <code>true</code> if all validations pass; array of <code>ValidationFailed</code> objets otherwise.
      */
     protected function doValidate($columns = null)
@@ -685,11 +685,11 @@ abstract class BaseTag extends BaseObject implements Persistent
     /**
      * Retrieves a field from the object by name passed in as a string.
      *
-     * @param string $name name
-     * @param string $type The type of fieldname the $name is of:
-     *               one of the class type constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME
-     *               BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM.
-     *               Defaults to BasePeer::TYPE_PHPNAME
+     * @param      string $name name
+     * @param      string $type The type of fieldname the $name is of:
+     *                     one of the class type constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME
+     *                     BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM.
+     *                     Defaults to BasePeer::TYPE_PHPNAME
      * @return mixed Value of field.
      */
     public function getByName($name, $type = BasePeer::TYPE_PHPNAME)
@@ -704,7 +704,7 @@ abstract class BaseTag extends BaseObject implements Persistent
      * Retrieves a field from the object by Position as specified in the xml schema.
      * Zero-based.
      *
-     * @param int $pos position in xml schema
+     * @param      int $pos position in xml schema
      * @return mixed Value of field at $pos
      */
     public function getByPosition($pos)
@@ -731,7 +731,7 @@ abstract class BaseTag extends BaseObject implements Persistent
      * @param     string  $keyType (optional) One of the class type constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME,
      *                    BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM.
      *                    Defaults to BasePeer::TYPE_PHPNAME.
-     * @param     boolean $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to true.
+     * @param     boolean $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to TRUE.
      * @param     array $alreadyDumpedObjects List of objects to skip to avoid recursion
      * @param     boolean $includeForeignObjects (optional) Whether to include hydrated related objects. Default to FALSE.
      *
@@ -766,9 +766,9 @@ abstract class BaseTag extends BaseObject implements Persistent
     /**
      * Sets a field from the object by name passed in as a string.
      *
-     * @param string $name peer name
-     * @param mixed $value field value
-     * @param string $type The type of fieldname the $name is of:
+     * @param      string $name peer name
+     * @param      mixed $value field value
+     * @param      string $type The type of fieldname the $name is of:
      *                     one of the class type constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME
      *                     BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM.
      *                     Defaults to BasePeer::TYPE_PHPNAME
@@ -785,8 +785,8 @@ abstract class BaseTag extends BaseObject implements Persistent
      * Sets a field from the object by Position as specified in the xml schema.
      * Zero-based.
      *
-     * @param int $pos position in xml schema
-     * @param mixed $value field value
+     * @param      int $pos position in xml schema
+     * @param      mixed $value field value
      * @return void
      */
     public function setByPosition($pos, $value)
@@ -814,8 +814,8 @@ abstract class BaseTag extends BaseObject implements Persistent
      * BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM.
      * The default key type is the column's BasePeer::TYPE_PHPNAME
      *
-     * @param array  $arr     An array to populate the object from.
-     * @param string $keyType The type of keys the array uses.
+     * @param      array  $arr     An array to populate the object from.
+     * @param      string $keyType The type of keys the array uses.
      * @return void
      */
     public function fromArray($arr, $keyType = BasePeer::TYPE_PHPNAME)
@@ -859,7 +859,7 @@ abstract class BaseTag extends BaseObject implements Persistent
 
     /**
      * Returns the primary key for this object (row).
-     * @return int
+     * @return   int
      */
     public function getPrimaryKey()
     {
@@ -869,7 +869,7 @@ abstract class BaseTag extends BaseObject implements Persistent
     /**
      * Generic method to set the primary key (id column).
      *
-     * @param  int $key Primary key.
+     * @param       int $key Primary key.
      * @return void
      */
     public function setPrimaryKey($key)
@@ -893,9 +893,9 @@ abstract class BaseTag extends BaseObject implements Persistent
      * If desired, this method can also make copies of all associated (fkey referrers)
      * objects.
      *
-     * @param object $copyObj An object of Tag (or compatible) type.
-     * @param boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
-     * @param boolean $makeNew Whether to reset autoincrement PKs and make the object new.
+     * @param      object $copyObj An object of Tag (or compatible) type.
+     * @param      boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
+     * @param      boolean $makeNew Whether to reset autoincrement PKs and make the object new.
      * @throws PropelException
      */
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
@@ -945,8 +945,8 @@ abstract class BaseTag extends BaseObject implements Persistent
      * If desired, this method can also make copies of all associated (fkey referrers)
      * objects.
      *
-     * @param boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
-     * @return Tag Clone of current object.
+     * @param      boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
+     * @return                 Tag Clone of current object.
      * @throws PropelException
      */
     public function copy($deepCopy = false)
@@ -966,7 +966,7 @@ abstract class BaseTag extends BaseObject implements Persistent
      * same instance for all member of this class. The method could therefore
      * be static, but this would prevent one from overriding the behavior.
      *
-     * @return TagPeer
+     * @return   TagPeer
      */
     public function getPeer()
     {
@@ -983,7 +983,7 @@ abstract class BaseTag extends BaseObject implements Persistent
      * Avoids crafting an 'init[$relationName]s' method name
      * that wouldn't work when StandardEnglishPluralizer is used.
      *
-     * @param string $relationName The name of the relation to initialize
+     * @param      string $relationName The name of the relation to initialize
      * @return void
      */
     public function initRelation($relationName)
@@ -1010,18 +1010,7 @@ abstract class BaseTag extends BaseObject implements Persistent
      */
     public function clearAlerts()
     {
-        $this->collAlerts = null; // important to set this to null since that means it is uninitialized
-        $this->collAlertsPartial = null;
-    }
-
-    /**
-     * reset is the collAlerts collection loaded partially
-     *
-     * @return void
-     */
-    public function resetPartialAlerts($v = true)
-    {
-        $this->collAlertsPartial = $v;
+        $this->collAlerts = null; // important to set this to NULL since that means it is uninitialized
     }
 
     /**
@@ -1031,7 +1020,7 @@ abstract class BaseTag extends BaseObject implements Persistent
      * however, you may wish to override this method in your stub class to provide setting appropriate
      * to your application -- for example, setting the initial array to the values stored in database.
      *
-     * @param boolean $overrideExisting If set to true, the method call initializes
+     * @param      boolean $overrideExisting If set to true, the method call initializes
      *                                        the collection even if it is not empty
      *
      * @return void
@@ -1054,15 +1043,14 @@ abstract class BaseTag extends BaseObject implements Persistent
      * If this Tag is new, it will return
      * an empty collection or the current collection; the criteria is ignored on a new object.
      *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      PropelPDO $con optional connection object
      * @return PropelObjectCollection|Alert[] List of Alert objects
      * @throws PropelException
      */
     public function getAlerts($criteria = null, PropelPDO $con = null)
     {
-        $partial = $this->collAlertsPartial && !$this->isNew();
-        if (null === $this->collAlerts || null !== $criteria  || $partial) {
+        if (null === $this->collAlerts || null !== $criteria) {
             if ($this->isNew() && null === $this->collAlerts) {
                 // return empty collection
                 $this->initAlerts();
@@ -1071,31 +1059,9 @@ abstract class BaseTag extends BaseObject implements Persistent
                     ->filterByTag($this)
                     ->find($con);
                 if (null !== $criteria) {
-                    if (false !== $this->collAlertsPartial && count($collAlerts)) {
-                      $this->initAlerts(false);
-
-                      foreach($collAlerts as $obj) {
-                        if (false == $this->collAlerts->contains($obj)) {
-                          $this->collAlerts->append($obj);
-                        }
-                      }
-
-                      $this->collAlertsPartial = true;
-                    }
-
                     return $collAlerts;
                 }
-
-                if($partial && $this->collAlerts) {
-                    foreach($this->collAlerts as $obj) {
-                        if($obj->isNew()) {
-                            $collAlerts[] = $obj;
-                        }
-                    }
-                }
-
                 $this->collAlerts = $collAlerts;
-                $this->collAlertsPartial = false;
             }
         }
 
@@ -1108,8 +1074,8 @@ abstract class BaseTag extends BaseObject implements Persistent
      * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
      * and new objects from the given Propel collection.
      *
-     * @param PropelCollection $alerts A Propel collection.
-     * @param PropelPDO $con Optional connection object
+     * @param      PropelCollection $alerts A Propel collection.
+     * @param      PropelPDO $con Optional connection object
      */
     public function setAlerts(PropelCollection $alerts, PropelPDO $con = null)
     {
@@ -1125,28 +1091,23 @@ abstract class BaseTag extends BaseObject implements Persistent
         }
 
         $this->collAlerts = $alerts;
-        $this->collAlertsPartial = false;
     }
 
     /**
      * Returns the number of related Alert objects.
      *
-     * @param Criteria $criteria
-     * @param boolean $distinct
-     * @param PropelPDO $con
+     * @param      Criteria $criteria
+     * @param      boolean $distinct
+     * @param      PropelPDO $con
      * @return int             Count of related Alert objects.
      * @throws PropelException
      */
     public function countAlerts(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
     {
-        $partial = $this->collAlertsPartial && !$this->isNew();
-        if (null === $this->collAlerts || null !== $criteria || $partial) {
+        if (null === $this->collAlerts || null !== $criteria) {
             if ($this->isNew() && null === $this->collAlerts) {
                 return 0;
             } else {
-                if($partial && !$criteria) {
-                    return count($this->getAlerts());
-                }
                 $query = AlertQuery::create(null, $criteria);
                 if ($distinct) {
                     $query->distinct();
@@ -1166,13 +1127,12 @@ abstract class BaseTag extends BaseObject implements Persistent
      * through the Alert foreign key attribute.
      *
      * @param    Alert $l Alert
-     * @return Tag The current object (for fluent API support)
+     * @return   Tag The current object (for fluent API support)
      */
     public function addAlert(Alert $l)
     {
         if ($this->collAlerts === null) {
             $this->initAlerts();
-            $this->collAlertsPartial = true;
         }
         if (!$this->collAlerts->contains($l)) { // only add it if the **same** object is not already associated
             $this->doAddAlert($l);
@@ -1218,9 +1178,9 @@ abstract class BaseTag extends BaseObject implements Persistent
      * api reasonable.  You can provide public methods for those you
      * actually need in Tag.
      *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      PropelPDO $con optional connection object
+     * @param      string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
      * @return PropelObjectCollection|Alert[] List of Alert objects
      */
     public function getAlertsJoinSubscriber($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
@@ -1243,9 +1203,9 @@ abstract class BaseTag extends BaseObject implements Persistent
      * api reasonable.  You can provide public methods for those you
      * actually need in Tag.
      *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      PropelPDO $con optional connection object
+     * @param      string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
      * @return PropelObjectCollection|Alert[] List of Alert objects
      */
     public function getAlertsJoinCursus($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
@@ -1268,9 +1228,9 @@ abstract class BaseTag extends BaseObject implements Persistent
      * api reasonable.  You can provide public methods for those you
      * actually need in Tag.
      *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      PropelPDO $con optional connection object
+     * @param      string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
      * @return PropelObjectCollection|Alert[] List of Alert objects
      */
     public function getAlertsJoinCourse($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
@@ -1293,9 +1253,9 @@ abstract class BaseTag extends BaseObject implements Persistent
      * api reasonable.  You can provide public methods for those you
      * actually need in Tag.
      *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      PropelPDO $con optional connection object
+     * @param      string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
      * @return PropelObjectCollection|Alert[] List of Alert objects
      */
     public function getAlertsJoinContentType($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
@@ -1317,18 +1277,7 @@ abstract class BaseTag extends BaseObject implements Persistent
      */
     public function clearContentsTagss()
     {
-        $this->collContentsTagss = null; // important to set this to null since that means it is uninitialized
-        $this->collContentsTagssPartial = null;
-    }
-
-    /**
-     * reset is the collContentsTagss collection loaded partially
-     *
-     * @return void
-     */
-    public function resetPartialContentsTagss($v = true)
-    {
-        $this->collContentsTagssPartial = $v;
+        $this->collContentsTagss = null; // important to set this to NULL since that means it is uninitialized
     }
 
     /**
@@ -1338,7 +1287,7 @@ abstract class BaseTag extends BaseObject implements Persistent
      * however, you may wish to override this method in your stub class to provide setting appropriate
      * to your application -- for example, setting the initial array to the values stored in database.
      *
-     * @param boolean $overrideExisting If set to true, the method call initializes
+     * @param      boolean $overrideExisting If set to true, the method call initializes
      *                                        the collection even if it is not empty
      *
      * @return void
@@ -1361,15 +1310,14 @@ abstract class BaseTag extends BaseObject implements Persistent
      * If this Tag is new, it will return
      * an empty collection or the current collection; the criteria is ignored on a new object.
      *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      PropelPDO $con optional connection object
      * @return PropelObjectCollection|ContentsTags[] List of ContentsTags objects
      * @throws PropelException
      */
     public function getContentsTagss($criteria = null, PropelPDO $con = null)
     {
-        $partial = $this->collContentsTagssPartial && !$this->isNew();
-        if (null === $this->collContentsTagss || null !== $criteria  || $partial) {
+        if (null === $this->collContentsTagss || null !== $criteria) {
             if ($this->isNew() && null === $this->collContentsTagss) {
                 // return empty collection
                 $this->initContentsTagss();
@@ -1378,31 +1326,9 @@ abstract class BaseTag extends BaseObject implements Persistent
                     ->filterByTag($this)
                     ->find($con);
                 if (null !== $criteria) {
-                    if (false !== $this->collContentsTagssPartial && count($collContentsTagss)) {
-                      $this->initContentsTagss(false);
-
-                      foreach($collContentsTagss as $obj) {
-                        if (false == $this->collContentsTagss->contains($obj)) {
-                          $this->collContentsTagss->append($obj);
-                        }
-                      }
-
-                      $this->collContentsTagssPartial = true;
-                    }
-
                     return $collContentsTagss;
                 }
-
-                if($partial && $this->collContentsTagss) {
-                    foreach($this->collContentsTagss as $obj) {
-                        if($obj->isNew()) {
-                            $collContentsTagss[] = $obj;
-                        }
-                    }
-                }
-
                 $this->collContentsTagss = $collContentsTagss;
-                $this->collContentsTagssPartial = false;
             }
         }
 
@@ -1415,8 +1341,8 @@ abstract class BaseTag extends BaseObject implements Persistent
      * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
      * and new objects from the given Propel collection.
      *
-     * @param PropelCollection $contentsTagss A Propel collection.
-     * @param PropelPDO $con Optional connection object
+     * @param      PropelCollection $contentsTagss A Propel collection.
+     * @param      PropelPDO $con Optional connection object
      */
     public function setContentsTagss(PropelCollection $contentsTagss, PropelPDO $con = null)
     {
@@ -1432,28 +1358,23 @@ abstract class BaseTag extends BaseObject implements Persistent
         }
 
         $this->collContentsTagss = $contentsTagss;
-        $this->collContentsTagssPartial = false;
     }
 
     /**
      * Returns the number of related ContentsTags objects.
      *
-     * @param Criteria $criteria
-     * @param boolean $distinct
-     * @param PropelPDO $con
+     * @param      Criteria $criteria
+     * @param      boolean $distinct
+     * @param      PropelPDO $con
      * @return int             Count of related ContentsTags objects.
      * @throws PropelException
      */
     public function countContentsTagss(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
     {
-        $partial = $this->collContentsTagssPartial && !$this->isNew();
-        if (null === $this->collContentsTagss || null !== $criteria || $partial) {
+        if (null === $this->collContentsTagss || null !== $criteria) {
             if ($this->isNew() && null === $this->collContentsTagss) {
                 return 0;
             } else {
-                if($partial && !$criteria) {
-                    return count($this->getContentsTagss());
-                }
                 $query = ContentsTagsQuery::create(null, $criteria);
                 if ($distinct) {
                     $query->distinct();
@@ -1473,13 +1394,12 @@ abstract class BaseTag extends BaseObject implements Persistent
      * through the ContentsTags foreign key attribute.
      *
      * @param    ContentsTags $l ContentsTags
-     * @return Tag The current object (for fluent API support)
+     * @return   Tag The current object (for fluent API support)
      */
     public function addContentsTags(ContentsTags $l)
     {
         if ($this->collContentsTagss === null) {
             $this->initContentsTagss();
-            $this->collContentsTagssPartial = true;
         }
         if (!$this->collContentsTagss->contains($l)) { // only add it if the **same** object is not already associated
             $this->doAddContentsTags($l);
@@ -1525,9 +1445,9 @@ abstract class BaseTag extends BaseObject implements Persistent
      * api reasonable.  You can provide public methods for those you
      * actually need in Tag.
      *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      PropelPDO $con optional connection object
+     * @param      string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
      * @return PropelObjectCollection|ContentsTags[] List of ContentsTags objects
      */
     public function getContentsTagssJoinContent($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
@@ -1549,18 +1469,7 @@ abstract class BaseTag extends BaseObject implements Persistent
      */
     public function clearAdsTagss()
     {
-        $this->collAdsTagss = null; // important to set this to null since that means it is uninitialized
-        $this->collAdsTagssPartial = null;
-    }
-
-    /**
-     * reset is the collAdsTagss collection loaded partially
-     *
-     * @return void
-     */
-    public function resetPartialAdsTagss($v = true)
-    {
-        $this->collAdsTagssPartial = $v;
+        $this->collAdsTagss = null; // important to set this to NULL since that means it is uninitialized
     }
 
     /**
@@ -1570,7 +1479,7 @@ abstract class BaseTag extends BaseObject implements Persistent
      * however, you may wish to override this method in your stub class to provide setting appropriate
      * to your application -- for example, setting the initial array to the values stored in database.
      *
-     * @param boolean $overrideExisting If set to true, the method call initializes
+     * @param      boolean $overrideExisting If set to true, the method call initializes
      *                                        the collection even if it is not empty
      *
      * @return void
@@ -1593,15 +1502,14 @@ abstract class BaseTag extends BaseObject implements Persistent
      * If this Tag is new, it will return
      * an empty collection or the current collection; the criteria is ignored on a new object.
      *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      PropelPDO $con optional connection object
      * @return PropelObjectCollection|AdsTags[] List of AdsTags objects
      * @throws PropelException
      */
     public function getAdsTagss($criteria = null, PropelPDO $con = null)
     {
-        $partial = $this->collAdsTagssPartial && !$this->isNew();
-        if (null === $this->collAdsTagss || null !== $criteria  || $partial) {
+        if (null === $this->collAdsTagss || null !== $criteria) {
             if ($this->isNew() && null === $this->collAdsTagss) {
                 // return empty collection
                 $this->initAdsTagss();
@@ -1610,31 +1518,9 @@ abstract class BaseTag extends BaseObject implements Persistent
                     ->filterByTag($this)
                     ->find($con);
                 if (null !== $criteria) {
-                    if (false !== $this->collAdsTagssPartial && count($collAdsTagss)) {
-                      $this->initAdsTagss(false);
-
-                      foreach($collAdsTagss as $obj) {
-                        if (false == $this->collAdsTagss->contains($obj)) {
-                          $this->collAdsTagss->append($obj);
-                        }
-                      }
-
-                      $this->collAdsTagssPartial = true;
-                    }
-
                     return $collAdsTagss;
                 }
-
-                if($partial && $this->collAdsTagss) {
-                    foreach($this->collAdsTagss as $obj) {
-                        if($obj->isNew()) {
-                            $collAdsTagss[] = $obj;
-                        }
-                    }
-                }
-
                 $this->collAdsTagss = $collAdsTagss;
-                $this->collAdsTagssPartial = false;
             }
         }
 
@@ -1647,8 +1533,8 @@ abstract class BaseTag extends BaseObject implements Persistent
      * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
      * and new objects from the given Propel collection.
      *
-     * @param PropelCollection $adsTagss A Propel collection.
-     * @param PropelPDO $con Optional connection object
+     * @param      PropelCollection $adsTagss A Propel collection.
+     * @param      PropelPDO $con Optional connection object
      */
     public function setAdsTagss(PropelCollection $adsTagss, PropelPDO $con = null)
     {
@@ -1664,28 +1550,23 @@ abstract class BaseTag extends BaseObject implements Persistent
         }
 
         $this->collAdsTagss = $adsTagss;
-        $this->collAdsTagssPartial = false;
     }
 
     /**
      * Returns the number of related AdsTags objects.
      *
-     * @param Criteria $criteria
-     * @param boolean $distinct
-     * @param PropelPDO $con
+     * @param      Criteria $criteria
+     * @param      boolean $distinct
+     * @param      PropelPDO $con
      * @return int             Count of related AdsTags objects.
      * @throws PropelException
      */
     public function countAdsTagss(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
     {
-        $partial = $this->collAdsTagssPartial && !$this->isNew();
-        if (null === $this->collAdsTagss || null !== $criteria || $partial) {
+        if (null === $this->collAdsTagss || null !== $criteria) {
             if ($this->isNew() && null === $this->collAdsTagss) {
                 return 0;
             } else {
-                if($partial && !$criteria) {
-                    return count($this->getAdsTagss());
-                }
                 $query = AdsTagsQuery::create(null, $criteria);
                 if ($distinct) {
                     $query->distinct();
@@ -1705,13 +1586,12 @@ abstract class BaseTag extends BaseObject implements Persistent
      * through the AdsTags foreign key attribute.
      *
      * @param    AdsTags $l AdsTags
-     * @return Tag The current object (for fluent API support)
+     * @return   Tag The current object (for fluent API support)
      */
     public function addAdsTags(AdsTags $l)
     {
         if ($this->collAdsTagss === null) {
             $this->initAdsTagss();
-            $this->collAdsTagssPartial = true;
         }
         if (!$this->collAdsTagss->contains($l)) { // only add it if the **same** object is not already associated
             $this->doAddAdsTags($l);
@@ -1757,9 +1637,9 @@ abstract class BaseTag extends BaseObject implements Persistent
      * api reasonable.  You can provide public methods for those you
      * actually need in Tag.
      *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      PropelPDO $con optional connection object
+     * @param      string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
      * @return PropelObjectCollection|AdsTags[] List of AdsTags objects
      */
     public function getAdsTagssJoinAd($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
@@ -1781,8 +1661,7 @@ abstract class BaseTag extends BaseObject implements Persistent
      */
     public function clearContents()
     {
-        $this->collContents = null; // important to set this to null since that means it is uninitialized
-        $this->collContentsPartial = null;
+        $this->collContents = null; // important to set this to NULL since that means it is uninitialized
     }
 
     /**
@@ -1810,8 +1689,8 @@ abstract class BaseTag extends BaseObject implements Persistent
      * If this Tag is new, it will return
      * an empty collection or the current collection; the criteria is ignored on a new object.
      *
-     * @param Criteria $criteria Optional query object to filter the query
-     * @param PropelPDO $con Optional connection object
+     * @param      Criteria $criteria Optional query object to filter the query
+     * @param      PropelPDO $con Optional connection object
      *
      * @return PropelObjectCollection|Content[] List of Content objects
      */
@@ -1841,8 +1720,8 @@ abstract class BaseTag extends BaseObject implements Persistent
      * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
      * and new objects from the given Propel collection.
      *
-     * @param PropelCollection $contents A Propel collection.
-     * @param PropelPDO $con Optional connection object
+     * @param      PropelCollection $contents A Propel collection.
+     * @param      PropelPDO $con Optional connection object
      */
     public function setContents(PropelCollection $contents, PropelPDO $con = null)
     {
@@ -1864,9 +1743,9 @@ abstract class BaseTag extends BaseObject implements Persistent
      * Gets the number of Content objects related by a many-to-many relationship
      * to the current object by way of the contents_tags cross-reference table.
      *
-     * @param Criteria $criteria Optional query object to filter the query
-     * @param boolean $distinct Set to true to force count distinct
-     * @param PropelPDO $con Optional connection object
+     * @param      Criteria $criteria Optional query object to filter the query
+     * @param      boolean $distinct Set to true to force count distinct
+     * @param      PropelPDO $con Optional connection object
      *
      * @return int the number of related Content objects
      */
@@ -1923,7 +1802,7 @@ abstract class BaseTag extends BaseObject implements Persistent
      * Remove a Content object to this object
      * through the contents_tags cross reference table.
      *
-     * @param Content $content The ContentsTags object to relate
+     * @param      Content $content The ContentsTags object to relate
      * @return void
      */
     public function removeContent(Content $content)
@@ -1949,8 +1828,7 @@ abstract class BaseTag extends BaseObject implements Persistent
      */
     public function clearAds()
     {
-        $this->collAds = null; // important to set this to null since that means it is uninitialized
-        $this->collAdsPartial = null;
+        $this->collAds = null; // important to set this to NULL since that means it is uninitialized
     }
 
     /**
@@ -1978,8 +1856,8 @@ abstract class BaseTag extends BaseObject implements Persistent
      * If this Tag is new, it will return
      * an empty collection or the current collection; the criteria is ignored on a new object.
      *
-     * @param Criteria $criteria Optional query object to filter the query
-     * @param PropelPDO $con Optional connection object
+     * @param      Criteria $criteria Optional query object to filter the query
+     * @param      PropelPDO $con Optional connection object
      *
      * @return PropelObjectCollection|Ad[] List of Ad objects
      */
@@ -2009,8 +1887,8 @@ abstract class BaseTag extends BaseObject implements Persistent
      * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
      * and new objects from the given Propel collection.
      *
-     * @param PropelCollection $ads A Propel collection.
-     * @param PropelPDO $con Optional connection object
+     * @param      PropelCollection $ads A Propel collection.
+     * @param      PropelPDO $con Optional connection object
      */
     public function setAds(PropelCollection $ads, PropelPDO $con = null)
     {
@@ -2032,9 +1910,9 @@ abstract class BaseTag extends BaseObject implements Persistent
      * Gets the number of Ad objects related by a many-to-many relationship
      * to the current object by way of the ads_tags cross-reference table.
      *
-     * @param Criteria $criteria Optional query object to filter the query
-     * @param boolean $distinct Set to true to force count distinct
-     * @param PropelPDO $con Optional connection object
+     * @param      Criteria $criteria Optional query object to filter the query
+     * @param      boolean $distinct Set to true to force count distinct
+     * @param      PropelPDO $con Optional connection object
      *
      * @return int the number of related Ad objects
      */
@@ -2091,7 +1969,7 @@ abstract class BaseTag extends BaseObject implements Persistent
      * Remove a Ad object to this object
      * through the ads_tags cross reference table.
      *
-     * @param Ad $ad The AdsTags object to relate
+     * @param      Ad $ad The AdsTags object to relate
      * @return void
      */
     public function removeAd(Ad $ad)
@@ -2128,7 +2006,7 @@ abstract class BaseTag extends BaseObject implements Persistent
      * objects with circular references (even in PHP 5.3). This is currently necessary
      * when using Propel in certain daemon or large-volumne/high-memory operations.
      *
-     * @param boolean $deep Whether to also clear the references on all referrer objects.
+     * @param      boolean $deep Whether to also clear the references on all referrer objects.
      */
     public function clearAllReferences($deep = false)
     {
@@ -2183,7 +2061,7 @@ abstract class BaseTag extends BaseObject implements Persistent
     }
 
     /**
-     * return the string representation of this object
+     * Return the string representation of this object
      *
      * @return string
      */
@@ -2192,14 +2070,4 @@ abstract class BaseTag extends BaseObject implements Persistent
         return (string) $this->exportTo(TagPeer::DEFAULT_STRING_FORMAT);
     }
 
-    /**
-     * return true is the object is in saving state
-     *
-     * @return boolean
-     */
-    public function isAlreadyInSave()
-    {
-        return $this->alreadyInSave;
-    }
-
-}
+} // BaseTag

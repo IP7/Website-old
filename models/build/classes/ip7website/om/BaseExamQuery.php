@@ -4,51 +4,52 @@
 /**
  * Base class that represents a query for the 'exams' table.
  *
+ * 
  *
+ * @method     ExamQuery orderById($order = Criteria::ASC) Order by the id column
+ * @method     ExamQuery orderByCourseId($order = Criteria::ASC) Order by the course_id column
+ * @method     ExamQuery orderByDate($order = Criteria::ASC) Order by the date column
+ * @method     ExamQuery orderByBeginning($order = Criteria::ASC) Order by the beginning column
+ * @method     ExamQuery orderByEnd($order = Criteria::ASC) Order by the end column
+ * @method     ExamQuery orderByComments($order = Criteria::ASC) Order by the comments column
  *
- * @method ExamQuery orderById($order = Criteria::ASC) Order by the id column
- * @method ExamQuery orderByCourseId($order = Criteria::ASC) Order by the course_id column
- * @method ExamQuery orderByDate($order = Criteria::ASC) Order by the date column
- * @method ExamQuery orderByBeginning($order = Criteria::ASC) Order by the beginning column
- * @method ExamQuery orderByEnd($order = Criteria::ASC) Order by the end column
- * @method ExamQuery orderByComments($order = Criteria::ASC) Order by the comments column
+ * @method     ExamQuery groupById() Group by the id column
+ * @method     ExamQuery groupByCourseId() Group by the course_id column
+ * @method     ExamQuery groupByDate() Group by the date column
+ * @method     ExamQuery groupByBeginning() Group by the beginning column
+ * @method     ExamQuery groupByEnd() Group by the end column
+ * @method     ExamQuery groupByComments() Group by the comments column
  *
- * @method ExamQuery groupById() Group by the id column
- * @method ExamQuery groupByCourseId() Group by the course_id column
- * @method ExamQuery groupByDate() Group by the date column
- * @method ExamQuery groupByBeginning() Group by the beginning column
- * @method ExamQuery groupByEnd() Group by the end column
- * @method ExamQuery groupByComments() Group by the comments column
+ * @method     ExamQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
+ * @method     ExamQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
+ * @method     ExamQuery innerJoin($relation) Adds a INNER JOIN clause to the query
  *
- * @method ExamQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
- * @method ExamQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
- * @method ExamQuery innerJoin($relation) Adds a INNER JOIN clause to the query
+ * @method     ExamQuery leftJoinCourse($relationAlias = null) Adds a LEFT JOIN clause to the query using the Course relation
+ * @method     ExamQuery rightJoinCourse($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Course relation
+ * @method     ExamQuery innerJoinCourse($relationAlias = null) Adds a INNER JOIN clause to the query using the Course relation
  *
- * @method ExamQuery leftJoinCourse($relationAlias = null) Adds a LEFT JOIN clause to the query using the Course relation
- * @method ExamQuery rightJoinCourse($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Course relation
- * @method ExamQuery innerJoinCourse($relationAlias = null) Adds a INNER JOIN clause to the query using the Course relation
+ * @method     Exam findOne(PropelPDO $con = null) Return the first Exam matching the query
+ * @method     Exam findOneOrCreate(PropelPDO $con = null) Return the first Exam matching the query, or a new Exam object populated from the query conditions when no match is found
  *
- * @method Exam findOne(PropelPDO $con = null) Return the first Exam matching the query
- * @method Exam findOneOrCreate(PropelPDO $con = null) Return the first Exam matching the query, or a new Exam object populated from the query conditions when no match is found
+ * @method     Exam findOneById(int $id) Return the first Exam filtered by the id column
+ * @method     Exam findOneByCourseId(int $course_id) Return the first Exam filtered by the course_id column
+ * @method     Exam findOneByDate(string $date) Return the first Exam filtered by the date column
+ * @method     Exam findOneByBeginning(string $beginning) Return the first Exam filtered by the beginning column
+ * @method     Exam findOneByEnd(string $end) Return the first Exam filtered by the end column
+ * @method     Exam findOneByComments(string $comments) Return the first Exam filtered by the comments column
  *
- * @method Exam findOneById(int $id) Return the first Exam filtered by the id column
- * @method Exam findOneByCourseId(int $course_id) Return the first Exam filtered by the course_id column
- * @method Exam findOneByDate(string $date) Return the first Exam filtered by the date column
- * @method Exam findOneByBeginning(string $beginning) Return the first Exam filtered by the beginning column
- * @method Exam findOneByEnd(string $end) Return the first Exam filtered by the end column
- * @method Exam findOneByComments(string $comments) Return the first Exam filtered by the comments column
- *
- * @method array findById(int $id) Return Exam objects filtered by the id column
- * @method array findByCourseId(int $course_id) Return Exam objects filtered by the course_id column
- * @method array findByDate(string $date) Return Exam objects filtered by the date column
- * @method array findByBeginning(string $beginning) Return Exam objects filtered by the beginning column
- * @method array findByEnd(string $end) Return Exam objects filtered by the end column
- * @method array findByComments(string $comments) Return Exam objects filtered by the comments column
+ * @method     array findById(int $id) Return Exam objects filtered by the id column
+ * @method     array findByCourseId(int $course_id) Return Exam objects filtered by the course_id column
+ * @method     array findByDate(string $date) Return Exam objects filtered by the date column
+ * @method     array findByBeginning(string $beginning) Return Exam objects filtered by the beginning column
+ * @method     array findByEnd(string $end) Return Exam objects filtered by the end column
+ * @method     array findByComments(string $comments) Return Exam objects filtered by the comments column
  *
  * @package    propel.generator.ip7website.om
  */
 abstract class BaseExamQuery extends ModelCriteria
 {
+    
     /**
      * Initializes internal state of BaseExamQuery object.
      *
@@ -94,7 +95,7 @@ abstract class BaseExamQuery extends ModelCriteria
      * $obj  = $c->findPk(12, $con);
      * </code>
      *
-     * @param mixed $key Primary key to use for the query
+     * @param mixed $key Primary key to use for the query 
      * @param     PropelPDO $con an optional connection object
      *
      * @return   Exam|Exam[]|mixed the result, formatted by the current formatter
@@ -136,7 +137,7 @@ abstract class BaseExamQuery extends ModelCriteria
         $sql = 'SELECT `ID`, `COURSE_ID`, `DATE`, `BEGINNING`, `END`, `COMMENTS` FROM `exams` WHERE `ID` = :p0';
         try {
             $stmt = $con->prepare($sql);
-            $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
+			$stmt->bindValue(':p0', $key, PDO::PARAM_INT);
             $stmt->execute();
         } catch (Exception $e) {
             Propel::log($e->getMessage(), Propel::LOG_ERR);
@@ -542,4 +543,4 @@ abstract class BaseExamQuery extends ModelCriteria
         return $this;
     }
 
-}
+} // BaseExamQuery

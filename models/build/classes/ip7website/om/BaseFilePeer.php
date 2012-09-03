@@ -4,12 +4,11 @@
 /**
  * Base static class for performing query and update operations on the 'files' table.
  *
+ * 
  *
- *
- * @package propel.generator.ip7website.om
+ * @package    propel.generator.ip7website.om
  */
-abstract class BaseFilePeer
-{
+abstract class BaseFilePeer {
 
     /** the default database name for this class */
     const DATABASE_NAME = 'infop7db';
@@ -80,12 +79,12 @@ abstract class BaseFilePeer
      * holds an array of fieldnames
      *
      * first dimension keys are the type constants
-     * e.g. FilePeer::$fieldNames[FilePeer::TYPE_PHPNAME][0] = 'Id'
+     * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
         BasePeer::TYPE_PHPNAME => array ('Id', 'AuthorId', 'Name', 'Date', 'Description', 'FileType', 'Path', 'AccessRights', ),
         BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'authorId', 'name', 'date', 'description', 'fileType', 'path', 'accessRights', ),
-        BasePeer::TYPE_COLNAME => array (FilePeer::ID, FilePeer::AUTHOR_ID, FilePeer::NAME, FilePeer::DATE, FilePeer::DESCRIPTION, FilePeer::FILE_TYPE, FilePeer::PATH, FilePeer::ACCESS_RIGHTS, ),
+        BasePeer::TYPE_COLNAME => array (self::ID, self::AUTHOR_ID, self::NAME, self::DATE, self::DESCRIPTION, self::FILE_TYPE, self::PATH, self::ACCESS_RIGHTS, ),
         BasePeer::TYPE_RAW_COLNAME => array ('ID', 'AUTHOR_ID', 'NAME', 'DATE', 'DESCRIPTION', 'FILE_TYPE', 'PATH', 'ACCESS_RIGHTS', ),
         BasePeer::TYPE_FIELDNAME => array ('id', 'author_id', 'name', 'date', 'description', 'file_type', 'path', 'access_rights', ),
         BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, )
@@ -95,12 +94,12 @@ abstract class BaseFilePeer
      * holds an array of keys for quick access to the fieldnames array
      *
      * first dimension keys are the type constants
-     * e.g. FilePeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
+     * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
         BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'AuthorId' => 1, 'Name' => 2, 'Date' => 3, 'Description' => 4, 'FileType' => 5, 'Path' => 6, 'AccessRights' => 7, ),
         BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'authorId' => 1, 'name' => 2, 'date' => 3, 'description' => 4, 'fileType' => 5, 'path' => 6, 'accessRights' => 7, ),
-        BasePeer::TYPE_COLNAME => array (FilePeer::ID => 0, FilePeer::AUTHOR_ID => 1, FilePeer::NAME => 2, FilePeer::DATE => 3, FilePeer::DESCRIPTION => 4, FilePeer::FILE_TYPE => 5, FilePeer::PATH => 6, FilePeer::ACCESS_RIGHTS => 7, ),
+        BasePeer::TYPE_COLNAME => array (self::ID => 0, self::AUTHOR_ID => 1, self::NAME => 2, self::DATE => 3, self::DESCRIPTION => 4, self::FILE_TYPE => 5, self::PATH => 6, self::ACCESS_RIGHTS => 7, ),
         BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'AUTHOR_ID' => 1, 'NAME' => 2, 'DATE' => 3, 'DESCRIPTION' => 4, 'FILE_TYPE' => 5, 'PATH' => 6, 'ACCESS_RIGHTS' => 7, ),
         BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'author_id' => 1, 'name' => 2, 'date' => 3, 'description' => 4, 'file_type' => 5, 'path' => 6, 'access_rights' => 7, ),
         BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, )
@@ -108,14 +107,14 @@ abstract class BaseFilePeer
 
     /** The enumerated values for this table */
     protected static $enumValueSets = array(
-        FilePeer::FILE_TYPE => array(
-            FilePeer::FILE_TYPE_TEXT,
-            FilePeer::FILE_TYPE_IMAGE,
-            FilePeer::FILE_TYPE_VIDEO,
-            FilePeer::FILE_TYPE_AUDIO,
-            FilePeer::FILE_TYPE_PDF,
-            FilePeer::FILE_TYPE_BINARY,
-        ),
+        self::FILE_TYPE => array(
+			FilePeer::FILE_TYPE_TEXT,
+			FilePeer::FILE_TYPE_IMAGE,
+			FilePeer::FILE_TYPE_VIDEO,
+			FilePeer::FILE_TYPE_AUDIO,
+			FilePeer::FILE_TYPE_PDF,
+			FilePeer::FILE_TYPE_BINARY,
+		),
     );
 
     /**
@@ -130,10 +129,10 @@ abstract class BaseFilePeer
      */
     public static function translateFieldName($name, $fromType, $toType)
     {
-        $toNames = FilePeer::getFieldNames($toType);
-        $key = isset(FilePeer::$fieldKeys[$fromType][$name]) ? FilePeer::$fieldKeys[$fromType][$name] : null;
+        $toNames = self::getFieldNames($toType);
+        $key = isset(self::$fieldKeys[$fromType][$name]) ? self::$fieldKeys[$fromType][$name] : null;
         if ($key === null) {
-            throw new PropelException("'$name' could not be found in the field names of type '$fromType'. These are: " . print_r(FilePeer::$fieldKeys[$fromType], true));
+            throw new PropelException("'$name' could not be found in the field names of type '$fromType'. These are: " . print_r(self::$fieldKeys[$fromType], true));
         }
 
         return $toNames[$key];
@@ -150,11 +149,11 @@ abstract class BaseFilePeer
      */
     public static function getFieldNames($type = BasePeer::TYPE_PHPNAME)
     {
-        if (!array_key_exists($type, FilePeer::$fieldNames)) {
+        if (!array_key_exists($type, self::$fieldNames)) {
             throw new PropelException('Method getFieldNames() expects the parameter $type to be one of the class constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME, BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM. ' . $type . ' was given.');
         }
 
-        return FilePeer::$fieldNames[$type];
+        return self::$fieldNames[$type];
     }
 
     /**
@@ -175,7 +174,7 @@ abstract class BaseFilePeer
      */
     public static function getValueSet($colname)
     {
-        $valueSets = FilePeer::getValueSets();
+        $valueSets = self::getValueSets();
 
         return $valueSets[$colname];
     }
@@ -259,7 +258,7 @@ abstract class BaseFilePeer
         }
 
         $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
-        $criteria->setDbName(FilePeer::DATABASE_NAME); // Set the correct dbName
+        $criteria->setDbName(self::DATABASE_NAME); // Set the correct dbName
 
         if ($con === null) {
             $con = Propel::getConnection(FilePeer::DATABASE_NAME, Propel::CONNECTION_READ);
@@ -334,7 +333,7 @@ abstract class BaseFilePeer
         }
 
         // Set the correct dbName
-        $criteria->setDbName(FilePeer::DATABASE_NAME);
+        $criteria->setDbName(self::DATABASE_NAME);
 
         // BasePeer returns a PDOStatement
         return BasePeer::doSelect($criteria, $con);
@@ -357,7 +356,7 @@ abstract class BaseFilePeer
             if ($key === null) {
                 $key = (string) $obj->getId();
             } // if key === null
-            FilePeer::$instances[$key] = $obj;
+            self::$instances[$key] = $obj;
         }
     }
 
@@ -387,7 +386,7 @@ abstract class BaseFilePeer
                 throw $e;
             }
 
-            unset(FilePeer::$instances[$key]);
+            unset(self::$instances[$key]);
         }
     } // removeInstanceFromPool()
 
@@ -398,20 +397,20 @@ abstract class BaseFilePeer
      * a multi-column primary key, a serialize()d version of the primary key will be returned.
      *
      * @param      string $key The key (@see getPrimaryKeyHash()) for this instance.
-     * @return   File Found object or null if 1) no instance exists for specified key or 2) instance pooling has been disabled.
+     * @return   File Found object or NULL if 1) no instance exists for specified key or 2) instance pooling has been disabled.
      * @see        getPrimaryKeyHash()
      */
     public static function getInstanceFromPool($key)
     {
         if (Propel::isInstancePoolingEnabled()) {
-            if (isset(FilePeer::$instances[$key])) {
-                return FilePeer::$instances[$key];
+            if (isset(self::$instances[$key])) {
+                return self::$instances[$key];
             }
         }
 
         return null; // just to be explicit
     }
-
+    
     /**
      * Clear the instance pool.
      *
@@ -419,9 +418,9 @@ abstract class BaseFilePeer
      */
     public static function clearInstancePool()
     {
-        FilePeer::$instances = array();
+        self::$instances = array();
     }
-
+    
     /**
      * Method to invalidate the instance pool of all tables related to files
      * by a foreign key with ON DELETE CASCADE
@@ -444,11 +443,11 @@ abstract class BaseFilePeer
      *
      * @param      array $row PropelPDO resultset row.
      * @param      int $startcol The 0-based offset for reading from the resultset row.
-     * @return string A string version of PK or null if the components of primary key in result array are all null.
+     * @return string A string version of PK or NULL if the components of primary key in result array are all null.
      */
     public static function getPrimaryKeyHashFromRow($row, $startcol = 0)
     {
-        // If the PK cannot be derived from the row, return null.
+        // If the PK cannot be derived from the row, return NULL.
         if ($row[$startcol] === null) {
             return null;
         }
@@ -470,7 +469,7 @@ abstract class BaseFilePeer
 
         return (int) $row[$startcol];
     }
-
+    
     /**
      * The returned array will contain objects of the default type or
      * objects that inherit from the default.
@@ -481,7 +480,7 @@ abstract class BaseFilePeer
     public static function populateObjects(PDOStatement $stmt)
     {
         $results = array();
-
+    
         // set the class once to avoid overhead in the loop
         $cls = FilePeer::getOMClass();
         // populate the object(s)
@@ -561,7 +560,7 @@ abstract class BaseFilePeer
         $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
 
         // Set the correct dbName
-        $criteria->setDbName(FilePeer::DATABASE_NAME);
+        $criteria->setDbName(self::DATABASE_NAME);
 
         if ($con === null) {
             $con = Propel::getConnection(FilePeer::DATABASE_NAME, Propel::CONNECTION_READ);
@@ -597,7 +596,7 @@ abstract class BaseFilePeer
 
         // Set the correct dbName if it has not been overridden
         if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(FilePeer::DATABASE_NAME);
+            $criteria->setDbName(self::DATABASE_NAME);
         }
 
         FilePeer::addSelectColumns($criteria);
@@ -679,7 +678,7 @@ abstract class BaseFilePeer
         $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
 
         // Set the correct dbName
-        $criteria->setDbName(FilePeer::DATABASE_NAME);
+        $criteria->setDbName(self::DATABASE_NAME);
 
         if ($con === null) {
             $con = Propel::getConnection(FilePeer::DATABASE_NAME, Propel::CONNECTION_READ);
@@ -715,7 +714,7 @@ abstract class BaseFilePeer
 
         // Set the correct dbName if it has not been overridden
         if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(FilePeer::DATABASE_NAME);
+            $criteria->setDbName(self::DATABASE_NAME);
         }
 
         FilePeer::addSelectColumns($criteria);
@@ -777,7 +776,7 @@ abstract class BaseFilePeer
      */
     public static function getTableMap()
     {
-        return Propel::getDatabaseMap(FilePeer::DATABASE_NAME)->getTable(FilePeer::TABLE_NAME);
+        return Propel::getDatabaseMap(self::DATABASE_NAME)->getTable(self::TABLE_NAME);
     }
 
     /**
@@ -829,7 +828,7 @@ abstract class BaseFilePeer
 
 
         // Set the correct dbName
-        $criteria->setDbName(FilePeer::DATABASE_NAME);
+        $criteria->setDbName(self::DATABASE_NAME);
 
         try {
             // use transaction because $criteria could contain info
@@ -860,7 +859,7 @@ abstract class BaseFilePeer
             $con = Propel::getConnection(FilePeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
-        $selectCriteria = new Criteria(FilePeer::DATABASE_NAME);
+        $selectCriteria = new Criteria(self::DATABASE_NAME);
 
         if ($values instanceof Criteria) {
             $criteria = clone $values; // rename for clarity
@@ -879,7 +878,7 @@ abstract class BaseFilePeer
         }
 
         // set the correct dbName
-        $criteria->setDbName(FilePeer::DATABASE_NAME);
+        $criteria->setDbName(self::DATABASE_NAME);
 
         return BasePeer::doUpdate($selectCriteria, $criteria, $con);
     }
@@ -942,12 +941,12 @@ abstract class BaseFilePeer
             // create criteria based on pk values
             $criteria = $values->buildPkeyCriteria();
         } else { // it's a primary key, or an array of pks
-            $criteria = new Criteria(FilePeer::DATABASE_NAME);
+            $criteria = new Criteria(self::DATABASE_NAME);
             $criteria->add(FilePeer::ID, (array) $values, Criteria::IN);
         }
 
         // Set the correct dbName
-        $criteria->setDbName(FilePeer::DATABASE_NAME);
+        $criteria->setDbName(self::DATABASE_NAME);
 
         $affectedRows = 0; // initialize var to track total num of affected rows
 
@@ -955,15 +954,15 @@ abstract class BaseFilePeer
             // use transaction because $criteria could contain info
             // for more than one table or we could emulating ON DELETE CASCADE, etc.
             $con->beginTransaction();
-
+            
             // cloning the Criteria in case it's modified by doSelect() or doSelectStmt()
             $c = clone $criteria;
             $affectedRows += FilePeer::doOnDeleteCascade($c, $con);
-
+            
             // cloning the Criteria in case it's modified by doSelect() or doSelectStmt()
             $c = clone $criteria;
             FilePeer::doOnDeleteSetNull($c, $con);
-
+            
             // Because this db requires some delete cascade/set null emulation, we have to
             // clear the cached instance *after* the emulation has happened (since
             // instances get re-added by the select statement contained therein).
@@ -976,7 +975,7 @@ abstract class BaseFilePeer
                     FilePeer::removeInstanceFromPool($singleval);
                 }
             }
-
+            
             $affectedRows += BasePeer::doDelete($criteria, $con);
             FilePeer::clearRelatedInstancePool();
             $con->commit();
@@ -1013,7 +1012,7 @@ abstract class BaseFilePeer
 
             // delete related ContentsFiles objects
             $criteria = new Criteria(ContentsFilesPeer::DATABASE_NAME);
-
+            
             $criteria->add(ContentsFilesPeer::FILE_ID, $obj->getId());
             $affectedRows += ContentsFilesPeer::doDelete($criteria, $con);
         }
@@ -1041,7 +1040,7 @@ abstract class BaseFilePeer
         $objects = FilePeer::doSelect($criteria, $con);
         foreach ($objects as $obj) {
 
-            // set fkey col in related User rows to null
+            // set fkey col in related User rows to NULL
             $selectCriteria = new Criteria(FilePeer::DATABASE_NAME);
             $updateValues = new Criteria(FilePeer::DATABASE_NAME);
             $selectCriteria->add(UserPeer::AVATAR_ID, $obj->getId());

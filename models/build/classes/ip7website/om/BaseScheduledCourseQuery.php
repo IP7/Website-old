@@ -4,67 +4,68 @@
 /**
  * Base class that represents a query for the 'scheduled_courses' table.
  *
+ * 
  *
+ * @method     ScheduledCourseQuery orderById($order = Criteria::ASC) Order by the id column
+ * @method     ScheduledCourseQuery orderByCourseId($order = Criteria::ASC) Order by the course_id column
+ * @method     ScheduledCourseQuery orderByTeacherId($order = Criteria::ASC) Order by the teacher_id column
+ * @method     ScheduledCourseQuery orderByTeacherName($order = Criteria::ASC) Order by the teacher_name column
+ * @method     ScheduledCourseQuery orderByWeekday($order = Criteria::ASC) Order by the weekday column
+ * @method     ScheduledCourseQuery orderByBeginning($order = Criteria::ASC) Order by the beginning column
+ * @method     ScheduledCourseQuery orderByEnd($order = Criteria::ASC) Order by the end column
+ * @method     ScheduledCourseQuery orderByPlace($order = Criteria::ASC) Order by the place column
  *
- * @method ScheduledCourseQuery orderById($order = Criteria::ASC) Order by the id column
- * @method ScheduledCourseQuery orderByCourseId($order = Criteria::ASC) Order by the course_id column
- * @method ScheduledCourseQuery orderByTeacherId($order = Criteria::ASC) Order by the teacher_id column
- * @method ScheduledCourseQuery orderByTeacherName($order = Criteria::ASC) Order by the teacher_name column
- * @method ScheduledCourseQuery orderByWeekday($order = Criteria::ASC) Order by the weekday column
- * @method ScheduledCourseQuery orderByBeginning($order = Criteria::ASC) Order by the beginning column
- * @method ScheduledCourseQuery orderByEnd($order = Criteria::ASC) Order by the end column
- * @method ScheduledCourseQuery orderByPlace($order = Criteria::ASC) Order by the place column
+ * @method     ScheduledCourseQuery groupById() Group by the id column
+ * @method     ScheduledCourseQuery groupByCourseId() Group by the course_id column
+ * @method     ScheduledCourseQuery groupByTeacherId() Group by the teacher_id column
+ * @method     ScheduledCourseQuery groupByTeacherName() Group by the teacher_name column
+ * @method     ScheduledCourseQuery groupByWeekday() Group by the weekday column
+ * @method     ScheduledCourseQuery groupByBeginning() Group by the beginning column
+ * @method     ScheduledCourseQuery groupByEnd() Group by the end column
+ * @method     ScheduledCourseQuery groupByPlace() Group by the place column
  *
- * @method ScheduledCourseQuery groupById() Group by the id column
- * @method ScheduledCourseQuery groupByCourseId() Group by the course_id column
- * @method ScheduledCourseQuery groupByTeacherId() Group by the teacher_id column
- * @method ScheduledCourseQuery groupByTeacherName() Group by the teacher_name column
- * @method ScheduledCourseQuery groupByWeekday() Group by the weekday column
- * @method ScheduledCourseQuery groupByBeginning() Group by the beginning column
- * @method ScheduledCourseQuery groupByEnd() Group by the end column
- * @method ScheduledCourseQuery groupByPlace() Group by the place column
+ * @method     ScheduledCourseQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
+ * @method     ScheduledCourseQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
+ * @method     ScheduledCourseQuery innerJoin($relation) Adds a INNER JOIN clause to the query
  *
- * @method ScheduledCourseQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
- * @method ScheduledCourseQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
- * @method ScheduledCourseQuery innerJoin($relation) Adds a INNER JOIN clause to the query
+ * @method     ScheduledCourseQuery leftJoinCourse($relationAlias = null) Adds a LEFT JOIN clause to the query using the Course relation
+ * @method     ScheduledCourseQuery rightJoinCourse($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Course relation
+ * @method     ScheduledCourseQuery innerJoinCourse($relationAlias = null) Adds a INNER JOIN clause to the query using the Course relation
  *
- * @method ScheduledCourseQuery leftJoinCourse($relationAlias = null) Adds a LEFT JOIN clause to the query using the Course relation
- * @method ScheduledCourseQuery rightJoinCourse($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Course relation
- * @method ScheduledCourseQuery innerJoinCourse($relationAlias = null) Adds a INNER JOIN clause to the query using the Course relation
+ * @method     ScheduledCourseQuery leftJoinTeacher($relationAlias = null) Adds a LEFT JOIN clause to the query using the Teacher relation
+ * @method     ScheduledCourseQuery rightJoinTeacher($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Teacher relation
+ * @method     ScheduledCourseQuery innerJoinTeacher($relationAlias = null) Adds a INNER JOIN clause to the query using the Teacher relation
  *
- * @method ScheduledCourseQuery leftJoinTeacher($relationAlias = null) Adds a LEFT JOIN clause to the query using the Teacher relation
- * @method ScheduledCourseQuery rightJoinTeacher($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Teacher relation
- * @method ScheduledCourseQuery innerJoinTeacher($relationAlias = null) Adds a INNER JOIN clause to the query using the Teacher relation
+ * @method     ScheduledCourseQuery leftJoinSchedulesCourses($relationAlias = null) Adds a LEFT JOIN clause to the query using the SchedulesCourses relation
+ * @method     ScheduledCourseQuery rightJoinSchedulesCourses($relationAlias = null) Adds a RIGHT JOIN clause to the query using the SchedulesCourses relation
+ * @method     ScheduledCourseQuery innerJoinSchedulesCourses($relationAlias = null) Adds a INNER JOIN clause to the query using the SchedulesCourses relation
  *
- * @method ScheduledCourseQuery leftJoinSchedulesCourses($relationAlias = null) Adds a LEFT JOIN clause to the query using the SchedulesCourses relation
- * @method ScheduledCourseQuery rightJoinSchedulesCourses($relationAlias = null) Adds a RIGHT JOIN clause to the query using the SchedulesCourses relation
- * @method ScheduledCourseQuery innerJoinSchedulesCourses($relationAlias = null) Adds a INNER JOIN clause to the query using the SchedulesCourses relation
+ * @method     ScheduledCourse findOne(PropelPDO $con = null) Return the first ScheduledCourse matching the query
+ * @method     ScheduledCourse findOneOrCreate(PropelPDO $con = null) Return the first ScheduledCourse matching the query, or a new ScheduledCourse object populated from the query conditions when no match is found
  *
- * @method ScheduledCourse findOne(PropelPDO $con = null) Return the first ScheduledCourse matching the query
- * @method ScheduledCourse findOneOrCreate(PropelPDO $con = null) Return the first ScheduledCourse matching the query, or a new ScheduledCourse object populated from the query conditions when no match is found
+ * @method     ScheduledCourse findOneById(int $id) Return the first ScheduledCourse filtered by the id column
+ * @method     ScheduledCourse findOneByCourseId(int $course_id) Return the first ScheduledCourse filtered by the course_id column
+ * @method     ScheduledCourse findOneByTeacherId(int $teacher_id) Return the first ScheduledCourse filtered by the teacher_id column
+ * @method     ScheduledCourse findOneByTeacherName(string $teacher_name) Return the first ScheduledCourse filtered by the teacher_name column
+ * @method     ScheduledCourse findOneByWeekday(int $weekday) Return the first ScheduledCourse filtered by the weekday column
+ * @method     ScheduledCourse findOneByBeginning(string $beginning) Return the first ScheduledCourse filtered by the beginning column
+ * @method     ScheduledCourse findOneByEnd(string $end) Return the first ScheduledCourse filtered by the end column
+ * @method     ScheduledCourse findOneByPlace(string $place) Return the first ScheduledCourse filtered by the place column
  *
- * @method ScheduledCourse findOneById(int $id) Return the first ScheduledCourse filtered by the id column
- * @method ScheduledCourse findOneByCourseId(int $course_id) Return the first ScheduledCourse filtered by the course_id column
- * @method ScheduledCourse findOneByTeacherId(int $teacher_id) Return the first ScheduledCourse filtered by the teacher_id column
- * @method ScheduledCourse findOneByTeacherName(string $teacher_name) Return the first ScheduledCourse filtered by the teacher_name column
- * @method ScheduledCourse findOneByWeekday(int $weekday) Return the first ScheduledCourse filtered by the weekday column
- * @method ScheduledCourse findOneByBeginning(string $beginning) Return the first ScheduledCourse filtered by the beginning column
- * @method ScheduledCourse findOneByEnd(string $end) Return the first ScheduledCourse filtered by the end column
- * @method ScheduledCourse findOneByPlace(string $place) Return the first ScheduledCourse filtered by the place column
- *
- * @method array findById(int $id) Return ScheduledCourse objects filtered by the id column
- * @method array findByCourseId(int $course_id) Return ScheduledCourse objects filtered by the course_id column
- * @method array findByTeacherId(int $teacher_id) Return ScheduledCourse objects filtered by the teacher_id column
- * @method array findByTeacherName(string $teacher_name) Return ScheduledCourse objects filtered by the teacher_name column
- * @method array findByWeekday(int $weekday) Return ScheduledCourse objects filtered by the weekday column
- * @method array findByBeginning(string $beginning) Return ScheduledCourse objects filtered by the beginning column
- * @method array findByEnd(string $end) Return ScheduledCourse objects filtered by the end column
- * @method array findByPlace(string $place) Return ScheduledCourse objects filtered by the place column
+ * @method     array findById(int $id) Return ScheduledCourse objects filtered by the id column
+ * @method     array findByCourseId(int $course_id) Return ScheduledCourse objects filtered by the course_id column
+ * @method     array findByTeacherId(int $teacher_id) Return ScheduledCourse objects filtered by the teacher_id column
+ * @method     array findByTeacherName(string $teacher_name) Return ScheduledCourse objects filtered by the teacher_name column
+ * @method     array findByWeekday(int $weekday) Return ScheduledCourse objects filtered by the weekday column
+ * @method     array findByBeginning(string $beginning) Return ScheduledCourse objects filtered by the beginning column
+ * @method     array findByEnd(string $end) Return ScheduledCourse objects filtered by the end column
+ * @method     array findByPlace(string $place) Return ScheduledCourse objects filtered by the place column
  *
  * @package    propel.generator.ip7website.om
  */
 abstract class BaseScheduledCourseQuery extends ModelCriteria
 {
+    
     /**
      * Initializes internal state of BaseScheduledCourseQuery object.
      *
@@ -110,7 +111,7 @@ abstract class BaseScheduledCourseQuery extends ModelCriteria
      * $obj  = $c->findPk(12, $con);
      * </code>
      *
-     * @param mixed $key Primary key to use for the query
+     * @param mixed $key Primary key to use for the query 
      * @param     PropelPDO $con an optional connection object
      *
      * @return   ScheduledCourse|ScheduledCourse[]|mixed the result, formatted by the current formatter
@@ -152,7 +153,7 @@ abstract class BaseScheduledCourseQuery extends ModelCriteria
         $sql = 'SELECT `ID`, `COURSE_ID`, `TEACHER_ID`, `TEACHER_NAME`, `WEEKDAY`, `BEGINNING`, `END`, `PLACE` FROM `scheduled_courses` WHERE `ID` = :p0';
         try {
             $stmt = $con->prepare($sql);
-            $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
+			$stmt->bindValue(':p0', $key, PDO::PARAM_INT);
             $stmt->execute();
         } catch (Exception $e) {
             Propel::log($e->getMessage(), Propel::LOG_ERR);
@@ -788,4 +789,4 @@ abstract class BaseScheduledCourseQuery extends ModelCriteria
         return $this;
     }
 
-}
+} // BaseScheduledCourseQuery

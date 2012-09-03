@@ -4,59 +4,60 @@
 /**
  * Base class that represents a query for the 'ads' table.
  *
+ * 
  *
+ * @method     AdQuery orderById($order = Criteria::ASC) Order by the id column
+ * @method     AdQuery orderByAuthorId($order = Criteria::ASC) Order by the author_id column
+ * @method     AdQuery orderByTitle($order = Criteria::ASC) Order by the title column
+ * @method     AdQuery orderByText($order = Criteria::ASC) Order by the text column
+ * @method     AdQuery orderByDate($order = Criteria::ASC) Order by the date column
+ * @method     AdQuery orderByValidated($order = Criteria::ASC) Order by the validated column
+ * @method     AdQuery orderByAccessRights($order = Criteria::ASC) Order by the access_rights column
  *
- * @method AdQuery orderById($order = Criteria::ASC) Order by the id column
- * @method AdQuery orderByAuthorId($order = Criteria::ASC) Order by the author_id column
- * @method AdQuery orderByTitle($order = Criteria::ASC) Order by the title column
- * @method AdQuery orderByText($order = Criteria::ASC) Order by the text column
- * @method AdQuery orderByDate($order = Criteria::ASC) Order by the date column
- * @method AdQuery orderByValidated($order = Criteria::ASC) Order by the validated column
- * @method AdQuery orderByAccessRights($order = Criteria::ASC) Order by the access_rights column
+ * @method     AdQuery groupById() Group by the id column
+ * @method     AdQuery groupByAuthorId() Group by the author_id column
+ * @method     AdQuery groupByTitle() Group by the title column
+ * @method     AdQuery groupByText() Group by the text column
+ * @method     AdQuery groupByDate() Group by the date column
+ * @method     AdQuery groupByValidated() Group by the validated column
+ * @method     AdQuery groupByAccessRights() Group by the access_rights column
  *
- * @method AdQuery groupById() Group by the id column
- * @method AdQuery groupByAuthorId() Group by the author_id column
- * @method AdQuery groupByTitle() Group by the title column
- * @method AdQuery groupByText() Group by the text column
- * @method AdQuery groupByDate() Group by the date column
- * @method AdQuery groupByValidated() Group by the validated column
- * @method AdQuery groupByAccessRights() Group by the access_rights column
+ * @method     AdQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
+ * @method     AdQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
+ * @method     AdQuery innerJoin($relation) Adds a INNER JOIN clause to the query
  *
- * @method AdQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
- * @method AdQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
- * @method AdQuery innerJoin($relation) Adds a INNER JOIN clause to the query
+ * @method     AdQuery leftJoinAuthor($relationAlias = null) Adds a LEFT JOIN clause to the query using the Author relation
+ * @method     AdQuery rightJoinAuthor($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Author relation
+ * @method     AdQuery innerJoinAuthor($relationAlias = null) Adds a INNER JOIN clause to the query using the Author relation
  *
- * @method AdQuery leftJoinAuthor($relationAlias = null) Adds a LEFT JOIN clause to the query using the Author relation
- * @method AdQuery rightJoinAuthor($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Author relation
- * @method AdQuery innerJoinAuthor($relationAlias = null) Adds a INNER JOIN clause to the query using the Author relation
+ * @method     AdQuery leftJoinAdsTags($relationAlias = null) Adds a LEFT JOIN clause to the query using the AdsTags relation
+ * @method     AdQuery rightJoinAdsTags($relationAlias = null) Adds a RIGHT JOIN clause to the query using the AdsTags relation
+ * @method     AdQuery innerJoinAdsTags($relationAlias = null) Adds a INNER JOIN clause to the query using the AdsTags relation
  *
- * @method AdQuery leftJoinAdsTags($relationAlias = null) Adds a LEFT JOIN clause to the query using the AdsTags relation
- * @method AdQuery rightJoinAdsTags($relationAlias = null) Adds a RIGHT JOIN clause to the query using the AdsTags relation
- * @method AdQuery innerJoinAdsTags($relationAlias = null) Adds a INNER JOIN clause to the query using the AdsTags relation
+ * @method     Ad findOne(PropelPDO $con = null) Return the first Ad matching the query
+ * @method     Ad findOneOrCreate(PropelPDO $con = null) Return the first Ad matching the query, or a new Ad object populated from the query conditions when no match is found
  *
- * @method Ad findOne(PropelPDO $con = null) Return the first Ad matching the query
- * @method Ad findOneOrCreate(PropelPDO $con = null) Return the first Ad matching the query, or a new Ad object populated from the query conditions when no match is found
+ * @method     Ad findOneById(int $id) Return the first Ad filtered by the id column
+ * @method     Ad findOneByAuthorId(int $author_id) Return the first Ad filtered by the author_id column
+ * @method     Ad findOneByTitle(string $title) Return the first Ad filtered by the title column
+ * @method     Ad findOneByText(string $text) Return the first Ad filtered by the text column
+ * @method     Ad findOneByDate(string $date) Return the first Ad filtered by the date column
+ * @method     Ad findOneByValidated(boolean $validated) Return the first Ad filtered by the validated column
+ * @method     Ad findOneByAccessRights(int $access_rights) Return the first Ad filtered by the access_rights column
  *
- * @method Ad findOneById(int $id) Return the first Ad filtered by the id column
- * @method Ad findOneByAuthorId(int $author_id) Return the first Ad filtered by the author_id column
- * @method Ad findOneByTitle(string $title) Return the first Ad filtered by the title column
- * @method Ad findOneByText(string $text) Return the first Ad filtered by the text column
- * @method Ad findOneByDate(string $date) Return the first Ad filtered by the date column
- * @method Ad findOneByValidated(boolean $validated) Return the first Ad filtered by the validated column
- * @method Ad findOneByAccessRights(int $access_rights) Return the first Ad filtered by the access_rights column
- *
- * @method array findById(int $id) Return Ad objects filtered by the id column
- * @method array findByAuthorId(int $author_id) Return Ad objects filtered by the author_id column
- * @method array findByTitle(string $title) Return Ad objects filtered by the title column
- * @method array findByText(string $text) Return Ad objects filtered by the text column
- * @method array findByDate(string $date) Return Ad objects filtered by the date column
- * @method array findByValidated(boolean $validated) Return Ad objects filtered by the validated column
- * @method array findByAccessRights(int $access_rights) Return Ad objects filtered by the access_rights column
+ * @method     array findById(int $id) Return Ad objects filtered by the id column
+ * @method     array findByAuthorId(int $author_id) Return Ad objects filtered by the author_id column
+ * @method     array findByTitle(string $title) Return Ad objects filtered by the title column
+ * @method     array findByText(string $text) Return Ad objects filtered by the text column
+ * @method     array findByDate(string $date) Return Ad objects filtered by the date column
+ * @method     array findByValidated(boolean $validated) Return Ad objects filtered by the validated column
+ * @method     array findByAccessRights(int $access_rights) Return Ad objects filtered by the access_rights column
  *
  * @package    propel.generator.ip7website.om
  */
 abstract class BaseAdQuery extends ModelCriteria
 {
+    
     /**
      * Initializes internal state of BaseAdQuery object.
      *
@@ -102,7 +103,7 @@ abstract class BaseAdQuery extends ModelCriteria
      * $obj  = $c->findPk(12, $con);
      * </code>
      *
-     * @param mixed $key Primary key to use for the query
+     * @param mixed $key Primary key to use for the query 
      * @param     PropelPDO $con an optional connection object
      *
      * @return   Ad|Ad[]|mixed the result, formatted by the current formatter
@@ -144,7 +145,7 @@ abstract class BaseAdQuery extends ModelCriteria
         $sql = 'SELECT `ID`, `AUTHOR_ID`, `TITLE`, `TEXT`, `DATE`, `VALIDATED`, `ACCESS_RIGHTS` FROM `ads` WHERE `ID` = :p0';
         try {
             $stmt = $con->prepare($sql);
-            $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
+			$stmt->bindValue(':p0', $key, PDO::PARAM_INT);
             $stmt->execute();
         } catch (Exception $e) {
             Propel::log($e->getMessage(), Propel::LOG_ERR);
@@ -652,4 +653,4 @@ abstract class BaseAdQuery extends ModelCriteria
         return $this;
     }
 
-}
+} // BaseAdQuery

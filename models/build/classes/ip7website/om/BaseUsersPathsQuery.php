@@ -4,39 +4,40 @@
 /**
  * Base class that represents a query for the 'users_paths' table.
  *
+ * 
  *
+ * @method     UsersPathsQuery orderByUserId($order = Criteria::ASC) Order by the user_id column
+ * @method     UsersPathsQuery orderByPathId($order = Criteria::ASC) Order by the path_id column
  *
- * @method UsersPathsQuery orderByUserId($order = Criteria::ASC) Order by the user_id column
- * @method UsersPathsQuery orderByPathId($order = Criteria::ASC) Order by the path_id column
+ * @method     UsersPathsQuery groupByUserId() Group by the user_id column
+ * @method     UsersPathsQuery groupByPathId() Group by the path_id column
  *
- * @method UsersPathsQuery groupByUserId() Group by the user_id column
- * @method UsersPathsQuery groupByPathId() Group by the path_id column
+ * @method     UsersPathsQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
+ * @method     UsersPathsQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
+ * @method     UsersPathsQuery innerJoin($relation) Adds a INNER JOIN clause to the query
  *
- * @method UsersPathsQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
- * @method UsersPathsQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
- * @method UsersPathsQuery innerJoin($relation) Adds a INNER JOIN clause to the query
+ * @method     UsersPathsQuery leftJoinUser($relationAlias = null) Adds a LEFT JOIN clause to the query using the User relation
+ * @method     UsersPathsQuery rightJoinUser($relationAlias = null) Adds a RIGHT JOIN clause to the query using the User relation
+ * @method     UsersPathsQuery innerJoinUser($relationAlias = null) Adds a INNER JOIN clause to the query using the User relation
  *
- * @method UsersPathsQuery leftJoinUser($relationAlias = null) Adds a LEFT JOIN clause to the query using the User relation
- * @method UsersPathsQuery rightJoinUser($relationAlias = null) Adds a RIGHT JOIN clause to the query using the User relation
- * @method UsersPathsQuery innerJoinUser($relationAlias = null) Adds a INNER JOIN clause to the query using the User relation
+ * @method     UsersPathsQuery leftJoinEducationalPath($relationAlias = null) Adds a LEFT JOIN clause to the query using the EducationalPath relation
+ * @method     UsersPathsQuery rightJoinEducationalPath($relationAlias = null) Adds a RIGHT JOIN clause to the query using the EducationalPath relation
+ * @method     UsersPathsQuery innerJoinEducationalPath($relationAlias = null) Adds a INNER JOIN clause to the query using the EducationalPath relation
  *
- * @method UsersPathsQuery leftJoinEducationalPath($relationAlias = null) Adds a LEFT JOIN clause to the query using the EducationalPath relation
- * @method UsersPathsQuery rightJoinEducationalPath($relationAlias = null) Adds a RIGHT JOIN clause to the query using the EducationalPath relation
- * @method UsersPathsQuery innerJoinEducationalPath($relationAlias = null) Adds a INNER JOIN clause to the query using the EducationalPath relation
+ * @method     UsersPaths findOne(PropelPDO $con = null) Return the first UsersPaths matching the query
+ * @method     UsersPaths findOneOrCreate(PropelPDO $con = null) Return the first UsersPaths matching the query, or a new UsersPaths object populated from the query conditions when no match is found
  *
- * @method UsersPaths findOne(PropelPDO $con = null) Return the first UsersPaths matching the query
- * @method UsersPaths findOneOrCreate(PropelPDO $con = null) Return the first UsersPaths matching the query, or a new UsersPaths object populated from the query conditions when no match is found
+ * @method     UsersPaths findOneByUserId(int $user_id) Return the first UsersPaths filtered by the user_id column
+ * @method     UsersPaths findOneByPathId(int $path_id) Return the first UsersPaths filtered by the path_id column
  *
- * @method UsersPaths findOneByUserId(int $user_id) Return the first UsersPaths filtered by the user_id column
- * @method UsersPaths findOneByPathId(int $path_id) Return the first UsersPaths filtered by the path_id column
- *
- * @method array findByUserId(int $user_id) Return UsersPaths objects filtered by the user_id column
- * @method array findByPathId(int $path_id) Return UsersPaths objects filtered by the path_id column
+ * @method     array findByUserId(int $user_id) Return UsersPaths objects filtered by the user_id column
+ * @method     array findByPathId(int $path_id) Return UsersPaths objects filtered by the path_id column
  *
  * @package    propel.generator.ip7website.om
  */
 abstract class BaseUsersPathsQuery extends ModelCriteria
 {
+    
     /**
      * Initializes internal state of BaseUsersPathsQuery object.
      *
@@ -82,7 +83,7 @@ abstract class BaseUsersPathsQuery extends ModelCriteria
      * $obj = $c->findPk(array(12, 34), $con);
      * </code>
      *
-     * @param array $key Primary key to use for the query
+     * @param array $key Primary key to use for the query 
                          A Primary key composition: [$user_id, $path_id]
      * @param     PropelPDO $con an optional connection object
      *
@@ -125,8 +126,8 @@ abstract class BaseUsersPathsQuery extends ModelCriteria
         $sql = 'SELECT `USER_ID`, `PATH_ID` FROM `users_paths` WHERE `USER_ID` = :p0 AND `PATH_ID` = :p1';
         try {
             $stmt = $con->prepare($sql);
-            $stmt->bindValue(':p0', $key[0], PDO::PARAM_INT);
-            $stmt->bindValue(':p1', $key[1], PDO::PARAM_INT);
+			$stmt->bindValue(':p0', $key[0], PDO::PARAM_INT);
+			$stmt->bindValue(':p1', $key[1], PDO::PARAM_INT);
             $stmt->execute();
         } catch (Exception $e) {
             Propel::log($e->getMessage(), Propel::LOG_ERR);
@@ -451,4 +452,4 @@ abstract class BaseUsersPathsQuery extends ModelCriteria
         return $this;
     }
 
-}
+} // BaseUsersPathsQuery

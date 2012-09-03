@@ -35,8 +35,6 @@
         <column name="email"                 type="VARCHAR"  required="true" />
         <!-- tél -->
         <column name="phone"                 type="VARCHAR" size="20" />
-        <!-- adresse -->
-        <column name="address"               type="VARCHAR" />
 
         <!-- site web -->
         <column name="website"               type="VARCHAR" />
