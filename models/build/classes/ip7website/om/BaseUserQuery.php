@@ -27,7 +27,6 @@
  * @method     UserQuery orderByConfigShowRealName($order = Criteria::ASC) Order by the config_show_real_name column
  * @method     UserQuery orderByConfigShowBirthdate($order = Criteria::ASC) Order by the config_show_birthdate column
  * @method     UserQuery orderByConfigShowAge($order = Criteria::ASC) Order by the config_show_age column
- * @method     UserQuery orderByConfigShowAddress($order = Criteria::ASC) Order by the config_show_address column
  * @method     UserQuery orderByConfigIndexProfile($order = Criteria::ASC) Order by the config_index_profile column
  * @method     UserQuery orderByConfigPrivateProfile($order = Criteria::ASC) Order by the config_private_profile column
  * @method     UserQuery orderByDeactivated($order = Criteria::ASC) Order by the deactivated column
@@ -59,7 +58,6 @@
  * @method     UserQuery groupByConfigShowRealName() Group by the config_show_real_name column
  * @method     UserQuery groupByConfigShowBirthdate() Group by the config_show_birthdate column
  * @method     UserQuery groupByConfigShowAge() Group by the config_show_age column
- * @method     UserQuery groupByConfigShowAddress() Group by the config_show_address column
  * @method     UserQuery groupByConfigIndexProfile() Group by the config_index_profile column
  * @method     UserQuery groupByConfigPrivateProfile() Group by the config_private_profile column
  * @method     UserQuery groupByDeactivated() Group by the deactivated column
@@ -166,7 +164,6 @@
  * @method     User findOneByConfigShowRealName(boolean $config_show_real_name) Return the first User filtered by the config_show_real_name column
  * @method     User findOneByConfigShowBirthdate(boolean $config_show_birthdate) Return the first User filtered by the config_show_birthdate column
  * @method     User findOneByConfigShowAge(boolean $config_show_age) Return the first User filtered by the config_show_age column
- * @method     User findOneByConfigShowAddress(boolean $config_show_address) Return the first User filtered by the config_show_address column
  * @method     User findOneByConfigIndexProfile(boolean $config_index_profile) Return the first User filtered by the config_index_profile column
  * @method     User findOneByConfigPrivateProfile(boolean $config_private_profile) Return the first User filtered by the config_private_profile column
  * @method     User findOneByDeactivated(boolean $deactivated) Return the first User filtered by the deactivated column
@@ -198,7 +195,6 @@
  * @method     array findByConfigShowRealName(boolean $config_show_real_name) Return User objects filtered by the config_show_real_name column
  * @method     array findByConfigShowBirthdate(boolean $config_show_birthdate) Return User objects filtered by the config_show_birthdate column
  * @method     array findByConfigShowAge(boolean $config_show_age) Return User objects filtered by the config_show_age column
- * @method     array findByConfigShowAddress(boolean $config_show_address) Return User objects filtered by the config_show_address column
  * @method     array findByConfigIndexProfile(boolean $config_index_profile) Return User objects filtered by the config_index_profile column
  * @method     array findByConfigPrivateProfile(boolean $config_private_profile) Return User objects filtered by the config_private_profile column
  * @method     array findByDeactivated(boolean $deactivated) Return User objects filtered by the deactivated column
@@ -298,7 +294,7 @@ abstract class BaseUserQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `ID`, `USERNAME`, `PASSWORD_HASH`, `TYPE`, `FIRSTNAME`, `LASTNAME`, `GENDER`, `EMAIL`, `PHONE`, `WEBSITE`, `BIRTH_DATE`, `FIRST_ENTRY`, `LAST_ENTRY`, `EXPIRATION_DATE`, `LAST_VISIT`, `VISITS_NB`, `CONFIG_SHOW_EMAIL`, `CONFIG_SHOW_PHONE`, `CONFIG_SHOW_REAL_NAME`, `CONFIG_SHOW_BIRTHDATE`, `CONFIG_SHOW_AGE`, `CONFIG_SHOW_ADDRESS`, `CONFIG_INDEX_PROFILE`, `CONFIG_PRIVATE_PROFILE`, `DEACTIVATED`, `IS_A_TEACHER`, `IS_A_STUDENT`, `IS_AN_ALUMNI`, `AVATAR_ID` FROM `users` WHERE `ID` = :p0';
+        $sql = 'SELECT `ID`, `USERNAME`, `PASSWORD_HASH`, `TYPE`, `FIRSTNAME`, `LASTNAME`, `GENDER`, `EMAIL`, `PHONE`, `WEBSITE`, `BIRTH_DATE`, `FIRST_ENTRY`, `LAST_ENTRY`, `EXPIRATION_DATE`, `LAST_VISIT`, `VISITS_NB`, `CONFIG_SHOW_EMAIL`, `CONFIG_SHOW_PHONE`, `CONFIG_SHOW_REAL_NAME`, `CONFIG_SHOW_BIRTHDATE`, `CONFIG_SHOW_AGE`, `CONFIG_INDEX_PROFILE`, `CONFIG_PRIVATE_PROFILE`, `DEACTIVATED`, `IS_A_TEACHER`, `IS_A_STUDENT`, `IS_AN_ALUMNI`, `AVATAR_ID` FROM `users` WHERE `ID` = :p0';
         try {
             $stmt = $con->prepare($sql);
 			$stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -1081,33 +1077,6 @@ abstract class BaseUserQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(UserPeer::CONFIG_SHOW_AGE, $configShowAge, $comparison);
-    }
-
-    /**
-     * Filter the query on the config_show_address column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByConfigShowAddress(true); // WHERE config_show_address = true
-     * $query->filterByConfigShowAddress('yes'); // WHERE config_show_address = true
-     * </code>
-     *
-     * @param     boolean|string $configShowAddress The value to use as filter.
-     *              Non-boolean arguments are converted using the following rules:
-     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
-     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
-     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return UserQuery The current query, for fluid interface
-     */
-    public function filterByConfigShowAddress($configShowAddress = null, $comparison = null)
-    {
-        if (is_string($configShowAddress)) {
-            $config_show_address = in_array(strtolower($configShowAddress), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
-        }
-
-        return $this->addUsingAlias(UserPeer::CONFIG_SHOW_ADDRESS, $configShowAddress, $comparison);
     }
 
     /**

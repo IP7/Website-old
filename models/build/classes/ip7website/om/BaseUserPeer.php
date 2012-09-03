@@ -23,13 +23,13 @@ abstract class BaseUserPeer {
     const TM_CLASS = 'UserTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 31;
+    const NUM_COLUMNS = 30;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 2;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 29;
+    const NUM_HYDRATE_COLUMNS = 28;
 
     /** the column name for the ID field */
     const ID = 'users.ID';
@@ -94,9 +94,6 @@ abstract class BaseUserPeer {
     /** the column name for the CONFIG_SHOW_AGE field */
     const CONFIG_SHOW_AGE = 'users.CONFIG_SHOW_AGE';
 
-    /** the column name for the CONFIG_SHOW_ADDRESS field */
-    const CONFIG_SHOW_ADDRESS = 'users.CONFIG_SHOW_ADDRESS';
-
     /** the column name for the CONFIG_INDEX_PROFILE field */
     const CONFIG_INDEX_PROFILE = 'users.CONFIG_INDEX_PROFILE';
 
@@ -148,12 +145,12 @@ abstract class BaseUserPeer {
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'Username', 'PasswordHash', 'Type', 'Firstname', 'Lastname', 'Gender', 'Email', 'Phone', 'Website', 'BirthDate', 'FirstEntry', 'LastEntry', 'ExpirationDate', 'LastVisit', 'VisitsNb', 'ConfigShowEmail', 'ConfigShowPhone', 'ConfigShowRealName', 'ConfigShowBirthdate', 'ConfigShowAge', 'ConfigShowAddress', 'ConfigIndexProfile', 'ConfigPrivateProfile', 'Deactivated', 'IsATeacher', 'IsAStudent', 'IsAnAlumni', 'AvatarId', 'Description', 'Remarks', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'username', 'passwordHash', 'type', 'firstname', 'lastname', 'gender', 'email', 'phone', 'website', 'birthDate', 'firstEntry', 'lastEntry', 'expirationDate', 'lastVisit', 'visitsNb', 'configShowEmail', 'configShowPhone', 'configShowRealName', 'configShowBirthdate', 'configShowAge', 'configShowAddress', 'configIndexProfile', 'configPrivateProfile', 'deactivated', 'isATeacher', 'isAStudent', 'isAnAlumni', 'avatarId', 'description', 'remarks', ),
-        BasePeer::TYPE_COLNAME => array (self::ID, self::USERNAME, self::PASSWORD_HASH, self::TYPE, self::FIRSTNAME, self::LASTNAME, self::GENDER, self::EMAIL, self::PHONE, self::WEBSITE, self::BIRTH_DATE, self::FIRST_ENTRY, self::LAST_ENTRY, self::EXPIRATION_DATE, self::LAST_VISIT, self::VISITS_NB, self::CONFIG_SHOW_EMAIL, self::CONFIG_SHOW_PHONE, self::CONFIG_SHOW_REAL_NAME, self::CONFIG_SHOW_BIRTHDATE, self::CONFIG_SHOW_AGE, self::CONFIG_SHOW_ADDRESS, self::CONFIG_INDEX_PROFILE, self::CONFIG_PRIVATE_PROFILE, self::DEACTIVATED, self::IS_A_TEACHER, self::IS_A_STUDENT, self::IS_AN_ALUMNI, self::AVATAR_ID, self::DESCRIPTION, self::REMARKS, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'USERNAME', 'PASSWORD_HASH', 'TYPE', 'FIRSTNAME', 'LASTNAME', 'GENDER', 'EMAIL', 'PHONE', 'WEBSITE', 'BIRTH_DATE', 'FIRST_ENTRY', 'LAST_ENTRY', 'EXPIRATION_DATE', 'LAST_VISIT', 'VISITS_NB', 'CONFIG_SHOW_EMAIL', 'CONFIG_SHOW_PHONE', 'CONFIG_SHOW_REAL_NAME', 'CONFIG_SHOW_BIRTHDATE', 'CONFIG_SHOW_AGE', 'CONFIG_SHOW_ADDRESS', 'CONFIG_INDEX_PROFILE', 'CONFIG_PRIVATE_PROFILE', 'DEACTIVATED', 'IS_A_TEACHER', 'IS_A_STUDENT', 'IS_AN_ALUMNI', 'AVATAR_ID', 'DESCRIPTION', 'REMARKS', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'username', 'password_hash', 'type', 'firstname', 'lastname', 'gender', 'email', 'phone', 'website', 'birth_date', 'first_entry', 'last_entry', 'expiration_date', 'last_visit', 'visits_nb', 'config_show_email', 'config_show_phone', 'config_show_real_name', 'config_show_birthdate', 'config_show_age', 'config_show_address', 'config_index_profile', 'config_private_profile', 'deactivated', 'is_a_teacher', 'is_a_student', 'is_an_alumni', 'avatar_id', 'description', 'remarks', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'Username', 'PasswordHash', 'Type', 'Firstname', 'Lastname', 'Gender', 'Email', 'Phone', 'Website', 'BirthDate', 'FirstEntry', 'LastEntry', 'ExpirationDate', 'LastVisit', 'VisitsNb', 'ConfigShowEmail', 'ConfigShowPhone', 'ConfigShowRealName', 'ConfigShowBirthdate', 'ConfigShowAge', 'ConfigIndexProfile', 'ConfigPrivateProfile', 'Deactivated', 'IsATeacher', 'IsAStudent', 'IsAnAlumni', 'AvatarId', 'Description', 'Remarks', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'username', 'passwordHash', 'type', 'firstname', 'lastname', 'gender', 'email', 'phone', 'website', 'birthDate', 'firstEntry', 'lastEntry', 'expirationDate', 'lastVisit', 'visitsNb', 'configShowEmail', 'configShowPhone', 'configShowRealName', 'configShowBirthdate', 'configShowAge', 'configIndexProfile', 'configPrivateProfile', 'deactivated', 'isATeacher', 'isAStudent', 'isAnAlumni', 'avatarId', 'description', 'remarks', ),
+        BasePeer::TYPE_COLNAME => array (self::ID, self::USERNAME, self::PASSWORD_HASH, self::TYPE, self::FIRSTNAME, self::LASTNAME, self::GENDER, self::EMAIL, self::PHONE, self::WEBSITE, self::BIRTH_DATE, self::FIRST_ENTRY, self::LAST_ENTRY, self::EXPIRATION_DATE, self::LAST_VISIT, self::VISITS_NB, self::CONFIG_SHOW_EMAIL, self::CONFIG_SHOW_PHONE, self::CONFIG_SHOW_REAL_NAME, self::CONFIG_SHOW_BIRTHDATE, self::CONFIG_SHOW_AGE, self::CONFIG_INDEX_PROFILE, self::CONFIG_PRIVATE_PROFILE, self::DEACTIVATED, self::IS_A_TEACHER, self::IS_A_STUDENT, self::IS_AN_ALUMNI, self::AVATAR_ID, self::DESCRIPTION, self::REMARKS, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'USERNAME', 'PASSWORD_HASH', 'TYPE', 'FIRSTNAME', 'LASTNAME', 'GENDER', 'EMAIL', 'PHONE', 'WEBSITE', 'BIRTH_DATE', 'FIRST_ENTRY', 'LAST_ENTRY', 'EXPIRATION_DATE', 'LAST_VISIT', 'VISITS_NB', 'CONFIG_SHOW_EMAIL', 'CONFIG_SHOW_PHONE', 'CONFIG_SHOW_REAL_NAME', 'CONFIG_SHOW_BIRTHDATE', 'CONFIG_SHOW_AGE', 'CONFIG_INDEX_PROFILE', 'CONFIG_PRIVATE_PROFILE', 'DEACTIVATED', 'IS_A_TEACHER', 'IS_A_STUDENT', 'IS_AN_ALUMNI', 'AVATAR_ID', 'DESCRIPTION', 'REMARKS', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'username', 'password_hash', 'type', 'firstname', 'lastname', 'gender', 'email', 'phone', 'website', 'birth_date', 'first_entry', 'last_entry', 'expiration_date', 'last_visit', 'visits_nb', 'config_show_email', 'config_show_phone', 'config_show_real_name', 'config_show_birthdate', 'config_show_age', 'config_index_profile', 'config_private_profile', 'deactivated', 'is_a_teacher', 'is_a_student', 'is_an_alumni', 'avatar_id', 'description', 'remarks', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, )
     );
 
     /**
@@ -163,12 +160,12 @@ abstract class BaseUserPeer {
      * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Username' => 1, 'PasswordHash' => 2, 'Type' => 3, 'Firstname' => 4, 'Lastname' => 5, 'Gender' => 6, 'Email' => 7, 'Phone' => 8, 'Website' => 9, 'BirthDate' => 10, 'FirstEntry' => 11, 'LastEntry' => 12, 'ExpirationDate' => 13, 'LastVisit' => 14, 'VisitsNb' => 15, 'ConfigShowEmail' => 16, 'ConfigShowPhone' => 17, 'ConfigShowRealName' => 18, 'ConfigShowBirthdate' => 19, 'ConfigShowAge' => 20, 'ConfigShowAddress' => 21, 'ConfigIndexProfile' => 22, 'ConfigPrivateProfile' => 23, 'Deactivated' => 24, 'IsATeacher' => 25, 'IsAStudent' => 26, 'IsAnAlumni' => 27, 'AvatarId' => 28, 'Description' => 29, 'Remarks' => 30, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'username' => 1, 'passwordHash' => 2, 'type' => 3, 'firstname' => 4, 'lastname' => 5, 'gender' => 6, 'email' => 7, 'phone' => 8, 'website' => 9, 'birthDate' => 10, 'firstEntry' => 11, 'lastEntry' => 12, 'expirationDate' => 13, 'lastVisit' => 14, 'visitsNb' => 15, 'configShowEmail' => 16, 'configShowPhone' => 17, 'configShowRealName' => 18, 'configShowBirthdate' => 19, 'configShowAge' => 20, 'configShowAddress' => 21, 'configIndexProfile' => 22, 'configPrivateProfile' => 23, 'deactivated' => 24, 'isATeacher' => 25, 'isAStudent' => 26, 'isAnAlumni' => 27, 'avatarId' => 28, 'description' => 29, 'remarks' => 30, ),
-        BasePeer::TYPE_COLNAME => array (self::ID => 0, self::USERNAME => 1, self::PASSWORD_HASH => 2, self::TYPE => 3, self::FIRSTNAME => 4, self::LASTNAME => 5, self::GENDER => 6, self::EMAIL => 7, self::PHONE => 8, self::WEBSITE => 9, self::BIRTH_DATE => 10, self::FIRST_ENTRY => 11, self::LAST_ENTRY => 12, self::EXPIRATION_DATE => 13, self::LAST_VISIT => 14, self::VISITS_NB => 15, self::CONFIG_SHOW_EMAIL => 16, self::CONFIG_SHOW_PHONE => 17, self::CONFIG_SHOW_REAL_NAME => 18, self::CONFIG_SHOW_BIRTHDATE => 19, self::CONFIG_SHOW_AGE => 20, self::CONFIG_SHOW_ADDRESS => 21, self::CONFIG_INDEX_PROFILE => 22, self::CONFIG_PRIVATE_PROFILE => 23, self::DEACTIVATED => 24, self::IS_A_TEACHER => 25, self::IS_A_STUDENT => 26, self::IS_AN_ALUMNI => 27, self::AVATAR_ID => 28, self::DESCRIPTION => 29, self::REMARKS => 30, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'USERNAME' => 1, 'PASSWORD_HASH' => 2, 'TYPE' => 3, 'FIRSTNAME' => 4, 'LASTNAME' => 5, 'GENDER' => 6, 'EMAIL' => 7, 'PHONE' => 8, 'WEBSITE' => 9, 'BIRTH_DATE' => 10, 'FIRST_ENTRY' => 11, 'LAST_ENTRY' => 12, 'EXPIRATION_DATE' => 13, 'LAST_VISIT' => 14, 'VISITS_NB' => 15, 'CONFIG_SHOW_EMAIL' => 16, 'CONFIG_SHOW_PHONE' => 17, 'CONFIG_SHOW_REAL_NAME' => 18, 'CONFIG_SHOW_BIRTHDATE' => 19, 'CONFIG_SHOW_AGE' => 20, 'CONFIG_SHOW_ADDRESS' => 21, 'CONFIG_INDEX_PROFILE' => 22, 'CONFIG_PRIVATE_PROFILE' => 23, 'DEACTIVATED' => 24, 'IS_A_TEACHER' => 25, 'IS_A_STUDENT' => 26, 'IS_AN_ALUMNI' => 27, 'AVATAR_ID' => 28, 'DESCRIPTION' => 29, 'REMARKS' => 30, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'username' => 1, 'password_hash' => 2, 'type' => 3, 'firstname' => 4, 'lastname' => 5, 'gender' => 6, 'email' => 7, 'phone' => 8, 'website' => 9, 'birth_date' => 10, 'first_entry' => 11, 'last_entry' => 12, 'expiration_date' => 13, 'last_visit' => 14, 'visits_nb' => 15, 'config_show_email' => 16, 'config_show_phone' => 17, 'config_show_real_name' => 18, 'config_show_birthdate' => 19, 'config_show_age' => 20, 'config_show_address' => 21, 'config_index_profile' => 22, 'config_private_profile' => 23, 'deactivated' => 24, 'is_a_teacher' => 25, 'is_a_student' => 26, 'is_an_alumni' => 27, 'avatar_id' => 28, 'description' => 29, 'remarks' => 30, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Username' => 1, 'PasswordHash' => 2, 'Type' => 3, 'Firstname' => 4, 'Lastname' => 5, 'Gender' => 6, 'Email' => 7, 'Phone' => 8, 'Website' => 9, 'BirthDate' => 10, 'FirstEntry' => 11, 'LastEntry' => 12, 'ExpirationDate' => 13, 'LastVisit' => 14, 'VisitsNb' => 15, 'ConfigShowEmail' => 16, 'ConfigShowPhone' => 17, 'ConfigShowRealName' => 18, 'ConfigShowBirthdate' => 19, 'ConfigShowAge' => 20, 'ConfigIndexProfile' => 21, 'ConfigPrivateProfile' => 22, 'Deactivated' => 23, 'IsATeacher' => 24, 'IsAStudent' => 25, 'IsAnAlumni' => 26, 'AvatarId' => 27, 'Description' => 28, 'Remarks' => 29, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'username' => 1, 'passwordHash' => 2, 'type' => 3, 'firstname' => 4, 'lastname' => 5, 'gender' => 6, 'email' => 7, 'phone' => 8, 'website' => 9, 'birthDate' => 10, 'firstEntry' => 11, 'lastEntry' => 12, 'expirationDate' => 13, 'lastVisit' => 14, 'visitsNb' => 15, 'configShowEmail' => 16, 'configShowPhone' => 17, 'configShowRealName' => 18, 'configShowBirthdate' => 19, 'configShowAge' => 20, 'configIndexProfile' => 21, 'configPrivateProfile' => 22, 'deactivated' => 23, 'isATeacher' => 24, 'isAStudent' => 25, 'isAnAlumni' => 26, 'avatarId' => 27, 'description' => 28, 'remarks' => 29, ),
+        BasePeer::TYPE_COLNAME => array (self::ID => 0, self::USERNAME => 1, self::PASSWORD_HASH => 2, self::TYPE => 3, self::FIRSTNAME => 4, self::LASTNAME => 5, self::GENDER => 6, self::EMAIL => 7, self::PHONE => 8, self::WEBSITE => 9, self::BIRTH_DATE => 10, self::FIRST_ENTRY => 11, self::LAST_ENTRY => 12, self::EXPIRATION_DATE => 13, self::LAST_VISIT => 14, self::VISITS_NB => 15, self::CONFIG_SHOW_EMAIL => 16, self::CONFIG_SHOW_PHONE => 17, self::CONFIG_SHOW_REAL_NAME => 18, self::CONFIG_SHOW_BIRTHDATE => 19, self::CONFIG_SHOW_AGE => 20, self::CONFIG_INDEX_PROFILE => 21, self::CONFIG_PRIVATE_PROFILE => 22, self::DEACTIVATED => 23, self::IS_A_TEACHER => 24, self::IS_A_STUDENT => 25, self::IS_AN_ALUMNI => 26, self::AVATAR_ID => 27, self::DESCRIPTION => 28, self::REMARKS => 29, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'USERNAME' => 1, 'PASSWORD_HASH' => 2, 'TYPE' => 3, 'FIRSTNAME' => 4, 'LASTNAME' => 5, 'GENDER' => 6, 'EMAIL' => 7, 'PHONE' => 8, 'WEBSITE' => 9, 'BIRTH_DATE' => 10, 'FIRST_ENTRY' => 11, 'LAST_ENTRY' => 12, 'EXPIRATION_DATE' => 13, 'LAST_VISIT' => 14, 'VISITS_NB' => 15, 'CONFIG_SHOW_EMAIL' => 16, 'CONFIG_SHOW_PHONE' => 17, 'CONFIG_SHOW_REAL_NAME' => 18, 'CONFIG_SHOW_BIRTHDATE' => 19, 'CONFIG_SHOW_AGE' => 20, 'CONFIG_INDEX_PROFILE' => 21, 'CONFIG_PRIVATE_PROFILE' => 22, 'DEACTIVATED' => 23, 'IS_A_TEACHER' => 24, 'IS_A_STUDENT' => 25, 'IS_AN_ALUMNI' => 26, 'AVATAR_ID' => 27, 'DESCRIPTION' => 28, 'REMARKS' => 29, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'username' => 1, 'password_hash' => 2, 'type' => 3, 'firstname' => 4, 'lastname' => 5, 'gender' => 6, 'email' => 7, 'phone' => 8, 'website' => 9, 'birth_date' => 10, 'first_entry' => 11, 'last_entry' => 12, 'expiration_date' => 13, 'last_visit' => 14, 'visits_nb' => 15, 'config_show_email' => 16, 'config_show_phone' => 17, 'config_show_real_name' => 18, 'config_show_birthdate' => 19, 'config_show_age' => 20, 'config_index_profile' => 21, 'config_private_profile' => 22, 'deactivated' => 23, 'is_a_teacher' => 24, 'is_a_student' => 25, 'is_an_alumni' => 26, 'avatar_id' => 27, 'description' => 28, 'remarks' => 29, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, )
     );
 
     /** The enumerated values for this table */
@@ -295,7 +292,6 @@ abstract class BaseUserPeer {
             $criteria->addSelectColumn(UserPeer::CONFIG_SHOW_REAL_NAME);
             $criteria->addSelectColumn(UserPeer::CONFIG_SHOW_BIRTHDATE);
             $criteria->addSelectColumn(UserPeer::CONFIG_SHOW_AGE);
-            $criteria->addSelectColumn(UserPeer::CONFIG_SHOW_ADDRESS);
             $criteria->addSelectColumn(UserPeer::CONFIG_INDEX_PROFILE);
             $criteria->addSelectColumn(UserPeer::CONFIG_PRIVATE_PROFILE);
             $criteria->addSelectColumn(UserPeer::DEACTIVATED);
@@ -325,7 +321,6 @@ abstract class BaseUserPeer {
             $criteria->addSelectColumn($alias . '.CONFIG_SHOW_REAL_NAME');
             $criteria->addSelectColumn($alias . '.CONFIG_SHOW_BIRTHDATE');
             $criteria->addSelectColumn($alias . '.CONFIG_SHOW_AGE');
-            $criteria->addSelectColumn($alias . '.CONFIG_SHOW_ADDRESS');
             $criteria->addSelectColumn($alias . '.CONFIG_INDEX_PROFILE');
             $criteria->addSelectColumn($alias . '.CONFIG_PRIVATE_PROFILE');
             $criteria->addSelectColumn($alias . '.DEACTIVATED');

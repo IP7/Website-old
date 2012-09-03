@@ -102,10 +102,6 @@ function display_profile_page($username=NULL, $is_my_profile=false) {
         $tpl_user['age'] = false;
     }
 
-    if (!$user->getConfigShowAddress()) {
-        $tpl_user['address'] = false;
-    }
-
     $profile = array(
         'page' => array(
             'edit_button' => $edit_button,
@@ -238,12 +234,6 @@ function post_edit_profile_page($username=NULL) {
     }
     else {
         $user->setGender('N');
-    }
-
-    if (has_post('address')) {
-        $address = trim($_POST['address']);
-
-        $user->setAddress($address);
     }
 
     $opts_names = User::getConfigVars();

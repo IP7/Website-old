@@ -101,7 +101,6 @@ class User extends BaseUser {
     'show_real_name'  => 'ConfigShowRealName',
     'show_birthdate'  => 'ConfigShowBirthdate',
     'show_age'        => 'ConfigShowAge',
-    'show_address'    => 'ConfigShowAddress',
     'index_profile'   => 'ConfigIndexProfile',
     'private_profile' => 'ConfigPrivateProfile'
   );

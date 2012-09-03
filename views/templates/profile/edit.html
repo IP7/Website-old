@@ -18,9 +18,6 @@
                               #}<label><input type="radio" name="gender" value="N" {% if page.user.gender is defined and page.user.gender == 'N' %}{#
                                                 #} checked{% endif %} /> Non précisé</label>
 
-    <label>Adresse&nbsp;:<input type="text" name="address" maxlength="200" {#
-           #}{% if page.user.address is defined and page.user.address %} value="{{ page.user.address }}"{% endif %}/></label>
-
     <label class="explicit" for="desc">Présentation&nbsp;:</label>
     <textarea id="desc" name="description" cols="80" rows="25">{{ page.user.description }}</textarea>
 
