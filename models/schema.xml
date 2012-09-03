@@ -35,8 +35,6 @@
         <column name="email"                 type="VARCHAR"  required="true" />
         <!-- tél -->
         <column name="phone"                 type="VARCHAR" size="20" />
-        <!-- adresse -->
-        <column name="address"               type="VARCHAR" />
 
         <!-- site web -->
         <column name="website"               type="VARCHAR" />
@@ -70,8 +68,6 @@
 	    <column name="config_show_birthdate" type="BOOLEAN" defaultExpr="0" />
 		<!-- montrer l'age publiquement -->
 	    <column name="config_show_age"       type="BOOLEAN" defaultExpr="1" />
-		<!-- montrer l'addresse publiquement -->
-	    <column name="config_show_address"   type="BOOLEAN" defaultExpr="0" />
 		<!-- permet l'indexation du profil -->
 	    <column name="config_index_profile"  type="BOOLEAN" defaultExpr="0" />
         <!-- cacher le profil aux non-connectés -->

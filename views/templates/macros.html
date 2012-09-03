@@ -74,4 +74,16 @@
 <li class="navlink">{{ _self.a(href, value, title, hreflang, false) }}</li>
 {% endmacro %}
 
-
+{# Connection button #}
+{% macro connection_button(cb) %}
+{% if cb.method == 'GET' %}
+<a href="{{ cb.action }}" class="navlink" id="connect">{{ cb.title }}</a>
+{% else %}
+<form action="{{ cb.action }}" method="POST">
+    {% for p in cb.params %}
+    <input type="hidden" name="{{ p.name }}" value="{{ p.value }}" />
+    {% endfor %}
+    <a href="#" class="navlink" onclick="this.parentElement.submit()">{{ cb.title }}</a>
+</form>
+{% endif %}
+{% endmacro %}

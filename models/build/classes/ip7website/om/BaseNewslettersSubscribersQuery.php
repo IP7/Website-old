@@ -4,39 +4,40 @@
 /**
  * Base class that represents a query for the 'newsletters_subscribers' table.
  *
+ * 
  *
+ * @method     NewslettersSubscribersQuery orderBySubscriberId($order = Criteria::ASC) Order by the subscriber_id column
+ * @method     NewslettersSubscribersQuery orderByNewsletterId($order = Criteria::ASC) Order by the newsletter_id column
  *
- * @method NewslettersSubscribersQuery orderBySubscriberId($order = Criteria::ASC) Order by the subscriber_id column
- * @method NewslettersSubscribersQuery orderByNewsletterId($order = Criteria::ASC) Order by the newsletter_id column
+ * @method     NewslettersSubscribersQuery groupBySubscriberId() Group by the subscriber_id column
+ * @method     NewslettersSubscribersQuery groupByNewsletterId() Group by the newsletter_id column
  *
- * @method NewslettersSubscribersQuery groupBySubscriberId() Group by the subscriber_id column
- * @method NewslettersSubscribersQuery groupByNewsletterId() Group by the newsletter_id column
+ * @method     NewslettersSubscribersQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
+ * @method     NewslettersSubscribersQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
+ * @method     NewslettersSubscribersQuery innerJoin($relation) Adds a INNER JOIN clause to the query
  *
- * @method NewslettersSubscribersQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
- * @method NewslettersSubscribersQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
- * @method NewslettersSubscribersQuery innerJoin($relation) Adds a INNER JOIN clause to the query
+ * @method     NewslettersSubscribersQuery leftJoinSubscriber($relationAlias = null) Adds a LEFT JOIN clause to the query using the Subscriber relation
+ * @method     NewslettersSubscribersQuery rightJoinSubscriber($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Subscriber relation
+ * @method     NewslettersSubscribersQuery innerJoinSubscriber($relationAlias = null) Adds a INNER JOIN clause to the query using the Subscriber relation
  *
- * @method NewslettersSubscribersQuery leftJoinSubscriber($relationAlias = null) Adds a LEFT JOIN clause to the query using the Subscriber relation
- * @method NewslettersSubscribersQuery rightJoinSubscriber($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Subscriber relation
- * @method NewslettersSubscribersQuery innerJoinSubscriber($relationAlias = null) Adds a INNER JOIN clause to the query using the Subscriber relation
+ * @method     NewslettersSubscribersQuery leftJoinNewsletter($relationAlias = null) Adds a LEFT JOIN clause to the query using the Newsletter relation
+ * @method     NewslettersSubscribersQuery rightJoinNewsletter($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Newsletter relation
+ * @method     NewslettersSubscribersQuery innerJoinNewsletter($relationAlias = null) Adds a INNER JOIN clause to the query using the Newsletter relation
  *
- * @method NewslettersSubscribersQuery leftJoinNewsletter($relationAlias = null) Adds a LEFT JOIN clause to the query using the Newsletter relation
- * @method NewslettersSubscribersQuery rightJoinNewsletter($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Newsletter relation
- * @method NewslettersSubscribersQuery innerJoinNewsletter($relationAlias = null) Adds a INNER JOIN clause to the query using the Newsletter relation
+ * @method     NewslettersSubscribers findOne(PropelPDO $con = null) Return the first NewslettersSubscribers matching the query
+ * @method     NewslettersSubscribers findOneOrCreate(PropelPDO $con = null) Return the first NewslettersSubscribers matching the query, or a new NewslettersSubscribers object populated from the query conditions when no match is found
  *
- * @method NewslettersSubscribers findOne(PropelPDO $con = null) Return the first NewslettersSubscribers matching the query
- * @method NewslettersSubscribers findOneOrCreate(PropelPDO $con = null) Return the first NewslettersSubscribers matching the query, or a new NewslettersSubscribers object populated from the query conditions when no match is found
+ * @method     NewslettersSubscribers findOneBySubscriberId(int $subscriber_id) Return the first NewslettersSubscribers filtered by the subscriber_id column
+ * @method     NewslettersSubscribers findOneByNewsletterId(int $newsletter_id) Return the first NewslettersSubscribers filtered by the newsletter_id column
  *
- * @method NewslettersSubscribers findOneBySubscriberId(int $subscriber_id) Return the first NewslettersSubscribers filtered by the subscriber_id column
- * @method NewslettersSubscribers findOneByNewsletterId(int $newsletter_id) Return the first NewslettersSubscribers filtered by the newsletter_id column
- *
- * @method array findBySubscriberId(int $subscriber_id) Return NewslettersSubscribers objects filtered by the subscriber_id column
- * @method array findByNewsletterId(int $newsletter_id) Return NewslettersSubscribers objects filtered by the newsletter_id column
+ * @method     array findBySubscriberId(int $subscriber_id) Return NewslettersSubscribers objects filtered by the subscriber_id column
+ * @method     array findByNewsletterId(int $newsletter_id) Return NewslettersSubscribers objects filtered by the newsletter_id column
  *
  * @package    propel.generator.ip7website.om
  */
 abstract class BaseNewslettersSubscribersQuery extends ModelCriteria
 {
+    
     /**
      * Initializes internal state of BaseNewslettersSubscribersQuery object.
      *
@@ -82,7 +83,7 @@ abstract class BaseNewslettersSubscribersQuery extends ModelCriteria
      * $obj = $c->findPk(array(12, 34), $con);
      * </code>
      *
-     * @param array $key Primary key to use for the query
+     * @param array $key Primary key to use for the query 
                          A Primary key composition: [$subscriber_id, $newsletter_id]
      * @param     PropelPDO $con an optional connection object
      *
@@ -125,8 +126,8 @@ abstract class BaseNewslettersSubscribersQuery extends ModelCriteria
         $sql = 'SELECT `SUBSCRIBER_ID`, `NEWSLETTER_ID` FROM `newsletters_subscribers` WHERE `SUBSCRIBER_ID` = :p0 AND `NEWSLETTER_ID` = :p1';
         try {
             $stmt = $con->prepare($sql);
-            $stmt->bindValue(':p0', $key[0], PDO::PARAM_INT);
-            $stmt->bindValue(':p1', $key[1], PDO::PARAM_INT);
+			$stmt->bindValue(':p0', $key[0], PDO::PARAM_INT);
+			$stmt->bindValue(':p1', $key[1], PDO::PARAM_INT);
             $stmt->execute();
         } catch (Exception $e) {
             Propel::log($e->getMessage(), Propel::LOG_ERR);
@@ -451,4 +452,4 @@ abstract class BaseNewslettersSubscribersQuery extends ModelCriteria
         return $this;
     }
 
-}
+} // BaseNewslettersSubscribersQuery

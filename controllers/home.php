@@ -5,9 +5,12 @@ Config::init();
 
 function display_home() {
 
-    # Disconnection
-    if (isset($_GET['disconnect'])) {
+    if (has_post('disconnect')) {
         disconnection();
+
+        if (has_post('u')) {
+            redirect_to($_POST['u'], array('status' => HTTP_SEE_OTHER));
+        }
     }
 
     # Rendering
@@ -52,8 +55,16 @@ function display_connection($message=null, $message_type=null) {
         'page' => array(
             'title' => 'Connexion',
             'form' => array( 'action' => Config::$root_uri.'connexion' ),
+            'breadcrumbs' => false,
 
             'forgotten_password_url' => Config::$root_uri.'oubli',
+
+            'styles' => array(
+                array(
+                    'href' => Config::$root_uri.'views/static/styles/connection.css',
+                    'media' => 'all'
+                )
+            ),
 
             'message' => $message,
             'message_type' => $message_type

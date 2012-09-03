@@ -4,12 +4,11 @@
 /**
  * Base static class for performing query and update operations on the 'content_comments' table.
  *
+ * 
  *
- *
- * @package propel.generator.ip7website.om
+ * @package    propel.generator.ip7website.om
  */
-abstract class BaseCommentPeer
-{
+abstract class BaseCommentPeer {
 
     /** the default database name for this class */
     const DATABASE_NAME = 'infop7db';
@@ -66,12 +65,12 @@ abstract class BaseCommentPeer
      * holds an array of fieldnames
      *
      * first dimension keys are the type constants
-     * e.g. CommentPeer::$fieldNames[CommentPeer::TYPE_PHPNAME][0] = 'Id'
+     * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
         BasePeer::TYPE_PHPNAME => array ('Id', 'ReplyToId', 'ContentId', 'AuthorId', 'Date', 'Text', ),
         BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'replyToId', 'contentId', 'authorId', 'date', 'text', ),
-        BasePeer::TYPE_COLNAME => array (CommentPeer::ID, CommentPeer::REPLY_TO_ID, CommentPeer::CONTENT_ID, CommentPeer::AUTHOR_ID, CommentPeer::DATE, CommentPeer::TEXT, ),
+        BasePeer::TYPE_COLNAME => array (self::ID, self::REPLY_TO_ID, self::CONTENT_ID, self::AUTHOR_ID, self::DATE, self::TEXT, ),
         BasePeer::TYPE_RAW_COLNAME => array ('ID', 'REPLY_TO_ID', 'CONTENT_ID', 'AUTHOR_ID', 'DATE', 'TEXT', ),
         BasePeer::TYPE_FIELDNAME => array ('id', 'reply_to_id', 'content_id', 'author_id', 'date', 'text', ),
         BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
@@ -81,12 +80,12 @@ abstract class BaseCommentPeer
      * holds an array of keys for quick access to the fieldnames array
      *
      * first dimension keys are the type constants
-     * e.g. CommentPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
+     * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
         BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'ReplyToId' => 1, 'ContentId' => 2, 'AuthorId' => 3, 'Date' => 4, 'Text' => 5, ),
         BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'replyToId' => 1, 'contentId' => 2, 'authorId' => 3, 'date' => 4, 'text' => 5, ),
-        BasePeer::TYPE_COLNAME => array (CommentPeer::ID => 0, CommentPeer::REPLY_TO_ID => 1, CommentPeer::CONTENT_ID => 2, CommentPeer::AUTHOR_ID => 3, CommentPeer::DATE => 4, CommentPeer::TEXT => 5, ),
+        BasePeer::TYPE_COLNAME => array (self::ID => 0, self::REPLY_TO_ID => 1, self::CONTENT_ID => 2, self::AUTHOR_ID => 3, self::DATE => 4, self::TEXT => 5, ),
         BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'REPLY_TO_ID' => 1, 'CONTENT_ID' => 2, 'AUTHOR_ID' => 3, 'DATE' => 4, 'TEXT' => 5, ),
         BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'reply_to_id' => 1, 'content_id' => 2, 'author_id' => 3, 'date' => 4, 'text' => 5, ),
         BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
@@ -104,10 +103,10 @@ abstract class BaseCommentPeer
      */
     public static function translateFieldName($name, $fromType, $toType)
     {
-        $toNames = CommentPeer::getFieldNames($toType);
-        $key = isset(CommentPeer::$fieldKeys[$fromType][$name]) ? CommentPeer::$fieldKeys[$fromType][$name] : null;
+        $toNames = self::getFieldNames($toType);
+        $key = isset(self::$fieldKeys[$fromType][$name]) ? self::$fieldKeys[$fromType][$name] : null;
         if ($key === null) {
-            throw new PropelException("'$name' could not be found in the field names of type '$fromType'. These are: " . print_r(CommentPeer::$fieldKeys[$fromType], true));
+            throw new PropelException("'$name' could not be found in the field names of type '$fromType'. These are: " . print_r(self::$fieldKeys[$fromType], true));
         }
 
         return $toNames[$key];
@@ -124,11 +123,11 @@ abstract class BaseCommentPeer
      */
     public static function getFieldNames($type = BasePeer::TYPE_PHPNAME)
     {
-        if (!array_key_exists($type, CommentPeer::$fieldNames)) {
+        if (!array_key_exists($type, self::$fieldNames)) {
             throw new PropelException('Method getFieldNames() expects the parameter $type to be one of the class constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME, BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM. ' . $type . ' was given.');
         }
 
-        return CommentPeer::$fieldNames[$type];
+        return self::$fieldNames[$type];
     }
 
     /**
@@ -204,7 +203,7 @@ abstract class BaseCommentPeer
         }
 
         $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
-        $criteria->setDbName(CommentPeer::DATABASE_NAME); // Set the correct dbName
+        $criteria->setDbName(self::DATABASE_NAME); // Set the correct dbName
 
         if ($con === null) {
             $con = Propel::getConnection(CommentPeer::DATABASE_NAME, Propel::CONNECTION_READ);
@@ -279,7 +278,7 @@ abstract class BaseCommentPeer
         }
 
         // Set the correct dbName
-        $criteria->setDbName(CommentPeer::DATABASE_NAME);
+        $criteria->setDbName(self::DATABASE_NAME);
 
         // BasePeer returns a PDOStatement
         return BasePeer::doSelect($criteria, $con);
@@ -302,7 +301,7 @@ abstract class BaseCommentPeer
             if ($key === null) {
                 $key = (string) $obj->getId();
             } // if key === null
-            CommentPeer::$instances[$key] = $obj;
+            self::$instances[$key] = $obj;
         }
     }
 
@@ -332,7 +331,7 @@ abstract class BaseCommentPeer
                 throw $e;
             }
 
-            unset(CommentPeer::$instances[$key]);
+            unset(self::$instances[$key]);
         }
     } // removeInstanceFromPool()
 
@@ -343,20 +342,20 @@ abstract class BaseCommentPeer
      * a multi-column primary key, a serialize()d version of the primary key will be returned.
      *
      * @param      string $key The key (@see getPrimaryKeyHash()) for this instance.
-     * @return   Comment Found object or null if 1) no instance exists for specified key or 2) instance pooling has been disabled.
+     * @return   Comment Found object or NULL if 1) no instance exists for specified key or 2) instance pooling has been disabled.
      * @see        getPrimaryKeyHash()
      */
     public static function getInstanceFromPool($key)
     {
         if (Propel::isInstancePoolingEnabled()) {
-            if (isset(CommentPeer::$instances[$key])) {
-                return CommentPeer::$instances[$key];
+            if (isset(self::$instances[$key])) {
+                return self::$instances[$key];
             }
         }
 
         return null; // just to be explicit
     }
-
+    
     /**
      * Clear the instance pool.
      *
@@ -364,9 +363,9 @@ abstract class BaseCommentPeer
      */
     public static function clearInstancePool()
     {
-        CommentPeer::$instances = array();
+        self::$instances = array();
     }
-
+    
     /**
      * Method to invalidate the instance pool of all tables related to content_comments
      * by a foreign key with ON DELETE CASCADE
@@ -386,11 +385,11 @@ abstract class BaseCommentPeer
      *
      * @param      array $row PropelPDO resultset row.
      * @param      int $startcol The 0-based offset for reading from the resultset row.
-     * @return string A string version of PK or null if the components of primary key in result array are all null.
+     * @return string A string version of PK or NULL if the components of primary key in result array are all null.
      */
     public static function getPrimaryKeyHashFromRow($row, $startcol = 0)
     {
-        // If the PK cannot be derived from the row, return null.
+        // If the PK cannot be derived from the row, return NULL.
         if ($row[$startcol] === null) {
             return null;
         }
@@ -412,7 +411,7 @@ abstract class BaseCommentPeer
 
         return (int) $row[$startcol];
     }
-
+    
     /**
      * The returned array will contain objects of the default type or
      * objects that inherit from the default.
@@ -423,7 +422,7 @@ abstract class BaseCommentPeer
     public static function populateObjects(PDOStatement $stmt)
     {
         $results = array();
-
+    
         // set the class once to avoid overhead in the loop
         $cls = CommentPeer::getOMClass();
         // populate the object(s)
@@ -503,7 +502,7 @@ abstract class BaseCommentPeer
         $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
 
         // Set the correct dbName
-        $criteria->setDbName(CommentPeer::DATABASE_NAME);
+        $criteria->setDbName(self::DATABASE_NAME);
 
         if ($con === null) {
             $con = Propel::getConnection(CommentPeer::DATABASE_NAME, Propel::CONNECTION_READ);
@@ -554,7 +553,7 @@ abstract class BaseCommentPeer
         $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
 
         // Set the correct dbName
-        $criteria->setDbName(CommentPeer::DATABASE_NAME);
+        $criteria->setDbName(self::DATABASE_NAME);
 
         if ($con === null) {
             $con = Propel::getConnection(CommentPeer::DATABASE_NAME, Propel::CONNECTION_READ);
@@ -590,7 +589,7 @@ abstract class BaseCommentPeer
 
         // Set the correct dbName if it has not been overridden
         if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(CommentPeer::DATABASE_NAME);
+            $criteria->setDbName(self::DATABASE_NAME);
         }
 
         CommentPeer::addSelectColumns($criteria);
@@ -657,7 +656,7 @@ abstract class BaseCommentPeer
 
         // Set the correct dbName if it has not been overridden
         if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(CommentPeer::DATABASE_NAME);
+            $criteria->setDbName(self::DATABASE_NAME);
         }
 
         CommentPeer::addSelectColumns($criteria);
@@ -739,7 +738,7 @@ abstract class BaseCommentPeer
         $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
 
         // Set the correct dbName
-        $criteria->setDbName(CommentPeer::DATABASE_NAME);
+        $criteria->setDbName(self::DATABASE_NAME);
 
         if ($con === null) {
             $con = Propel::getConnection(CommentPeer::DATABASE_NAME, Propel::CONNECTION_READ);
@@ -777,7 +776,7 @@ abstract class BaseCommentPeer
 
         // Set the correct dbName if it has not been overridden
         if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(CommentPeer::DATABASE_NAME);
+            $criteria->setDbName(self::DATABASE_NAME);
         }
 
         CommentPeer::addSelectColumns($criteria);
@@ -884,12 +883,12 @@ abstract class BaseCommentPeer
         $criteria->clearOrderByColumns(); // ORDER BY should not affect count
 
         // Set the correct dbName
-        $criteria->setDbName(CommentPeer::DATABASE_NAME);
+        $criteria->setDbName(self::DATABASE_NAME);
 
         if ($con === null) {
             $con = Propel::getConnection(CommentPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
-
+    
         $criteria->addJoin(CommentPeer::CONTENT_ID, ContentPeer::ID, $join_behavior);
 
         $criteria->addJoin(CommentPeer::AUTHOR_ID, UserPeer::ID, $join_behavior);
@@ -937,12 +936,12 @@ abstract class BaseCommentPeer
         $criteria->clearOrderByColumns(); // ORDER BY should not affect count
 
         // Set the correct dbName
-        $criteria->setDbName(CommentPeer::DATABASE_NAME);
+        $criteria->setDbName(self::DATABASE_NAME);
 
         if ($con === null) {
             $con = Propel::getConnection(CommentPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
-
+    
         $criteria->addJoin(CommentPeer::AUTHOR_ID, UserPeer::ID, $join_behavior);
 
         $stmt = BasePeer::doCount($criteria, $con);
@@ -988,12 +987,12 @@ abstract class BaseCommentPeer
         $criteria->clearOrderByColumns(); // ORDER BY should not affect count
 
         // Set the correct dbName
-        $criteria->setDbName(CommentPeer::DATABASE_NAME);
+        $criteria->setDbName(self::DATABASE_NAME);
 
         if ($con === null) {
             $con = Propel::getConnection(CommentPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
-
+    
         $criteria->addJoin(CommentPeer::CONTENT_ID, ContentPeer::ID, $join_behavior);
 
         $stmt = BasePeer::doCount($criteria, $con);
@@ -1027,7 +1026,7 @@ abstract class BaseCommentPeer
         // $criteria->getDbName() will return the same object if not set to another value
         // so == check is okay and faster
         if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(CommentPeer::DATABASE_NAME);
+            $criteria->setDbName(self::DATABASE_NAME);
         }
 
         CommentPeer::addSelectColumns($criteria);
@@ -1067,7 +1066,7 @@ abstract class BaseCommentPeer
                 if ($key2 !== null) {
                     $obj2 = ContentPeer::getInstanceFromPool($key2);
                     if (!$obj2) {
-
+    
                         $cls = ContentPeer::getOMClass();
 
                     $obj2 = new $cls();
@@ -1086,7 +1085,7 @@ abstract class BaseCommentPeer
                 if ($key3 !== null) {
                     $obj3 = UserPeer::getInstanceFromPool($key3);
                     if (!$obj3) {
-
+    
                         $cls = UserPeer::getOMClass();
 
                     $obj3 = new $cls();
@@ -1125,7 +1124,7 @@ abstract class BaseCommentPeer
         // $criteria->getDbName() will return the same object if not set to another value
         // so == check is okay and faster
         if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(CommentPeer::DATABASE_NAME);
+            $criteria->setDbName(self::DATABASE_NAME);
         }
 
         CommentPeer::addSelectColumns($criteria);
@@ -1160,7 +1159,7 @@ abstract class BaseCommentPeer
                 if ($key2 !== null) {
                     $obj2 = UserPeer::getInstanceFromPool($key2);
                     if (!$obj2) {
-
+    
                         $cls = UserPeer::getOMClass();
 
                     $obj2 = new $cls();
@@ -1199,7 +1198,7 @@ abstract class BaseCommentPeer
         // $criteria->getDbName() will return the same object if not set to another value
         // so == check is okay and faster
         if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(CommentPeer::DATABASE_NAME);
+            $criteria->setDbName(self::DATABASE_NAME);
         }
 
         CommentPeer::addSelectColumns($criteria);
@@ -1234,7 +1233,7 @@ abstract class BaseCommentPeer
                 if ($key2 !== null) {
                     $obj2 = ContentPeer::getInstanceFromPool($key2);
                     if (!$obj2) {
-
+    
                         $cls = ContentPeer::getOMClass();
 
                     $obj2 = new $cls();
@@ -1263,7 +1262,7 @@ abstract class BaseCommentPeer
      */
     public static function getTableMap()
     {
-        return Propel::getDatabaseMap(CommentPeer::DATABASE_NAME)->getTable(CommentPeer::TABLE_NAME);
+        return Propel::getDatabaseMap(self::DATABASE_NAME)->getTable(self::TABLE_NAME);
     }
 
     /**
@@ -1315,7 +1314,7 @@ abstract class BaseCommentPeer
 
 
         // Set the correct dbName
-        $criteria->setDbName(CommentPeer::DATABASE_NAME);
+        $criteria->setDbName(self::DATABASE_NAME);
 
         try {
             // use transaction because $criteria could contain info
@@ -1346,7 +1345,7 @@ abstract class BaseCommentPeer
             $con = Propel::getConnection(CommentPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
-        $selectCriteria = new Criteria(CommentPeer::DATABASE_NAME);
+        $selectCriteria = new Criteria(self::DATABASE_NAME);
 
         if ($values instanceof Criteria) {
             $criteria = clone $values; // rename for clarity
@@ -1365,7 +1364,7 @@ abstract class BaseCommentPeer
         }
 
         // set the correct dbName
-        $criteria->setDbName(CommentPeer::DATABASE_NAME);
+        $criteria->setDbName(self::DATABASE_NAME);
 
         return BasePeer::doUpdate($selectCriteria, $criteria, $con);
     }
@@ -1427,12 +1426,12 @@ abstract class BaseCommentPeer
             // create criteria based on pk values
             $criteria = $values->buildPkeyCriteria();
         } else { // it's a primary key, or an array of pks
-            $criteria = new Criteria(CommentPeer::DATABASE_NAME);
+            $criteria = new Criteria(self::DATABASE_NAME);
             $criteria->add(CommentPeer::ID, (array) $values, Criteria::IN);
         }
 
         // Set the correct dbName
-        $criteria->setDbName(CommentPeer::DATABASE_NAME);
+        $criteria->setDbName(self::DATABASE_NAME);
 
         $affectedRows = 0; // initialize var to track total num of affected rows
 
@@ -1440,11 +1439,11 @@ abstract class BaseCommentPeer
             // use transaction because $criteria could contain info
             // for more than one table or we could emulating ON DELETE CASCADE, etc.
             $con->beginTransaction();
-
+            
             // cloning the Criteria in case it's modified by doSelect() or doSelectStmt()
             $c = clone $criteria;
             CommentPeer::doOnDeleteSetNull($c, $con);
-
+            
             // Because this db requires some delete cascade/set null emulation, we have to
             // clear the cached instance *after* the emulation has happened (since
             // instances get re-added by the select statement contained therein).
@@ -1457,7 +1456,7 @@ abstract class BaseCommentPeer
                     CommentPeer::removeInstanceFromPool($singleval);
                 }
             }
-
+            
             $affectedRows += BasePeer::doDelete($criteria, $con);
             CommentPeer::clearRelatedInstancePool();
             $con->commit();
@@ -1489,7 +1488,7 @@ abstract class BaseCommentPeer
         $objects = CommentPeer::doSelect($criteria, $con);
         foreach ($objects as $obj) {
 
-            // set fkey col in related Comment rows to null
+            // set fkey col in related Comment rows to NULL
             $selectCriteria = new Criteria(CommentPeer::DATABASE_NAME);
             $updateValues = new Criteria(CommentPeer::DATABASE_NAME);
             $selectCriteria->add(CommentPeer::REPLY_TO_ID, $obj->getId());

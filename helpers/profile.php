@@ -31,7 +31,6 @@ function tpl_user($user, $extended=false) {
         'age'         => $user->getAge(),
         'email'       => $user->getEmail(),
         'phone'       => $user->getPhone(),
-        'address'     => $user->getAddress(),
         'website'     => $user->getWebsite(),
         'first_entry' => tpl_date($user->getFirstEntry()),
         'last_entry'  => tpl_date($user->getLastEntry()),
@@ -65,11 +64,6 @@ function tpl_user($user, $extended=false) {
                 'name'  => 'show_phone',
                 'value' => $user->getConfigShowPhone(),
                 'title' => 'Montrer mon téléphone'
-            ),
-            array(
-                'name'  => 'show_address',
-                'value' => $user->getConfigShowAddress(),
-                'title' => 'Montrer mon adresse'
             ),
             array(
                 'name'  => 'private_profile',

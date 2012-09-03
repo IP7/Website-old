@@ -41,9 +41,6 @@
             {% if page.user.phone is defined and page.user.phone %}{#
                 #}<dt>Téléphone&nbsp;:</dt><dd itemprop="telephone" itemscope>{{ page.user.phone }}</dd>{#
           #}{% endif %}
-            {% if page.user.address is defined and page.user.address %}{#
-                #}<dt>Adresse&nbsp;:</dt><dd itemprop="address" itemscope>{{ page.user.address }}</dd>{#
-          #}{% endif %}
             {% if page.user.website is defined and page.user.website %}{#
                 #}<dt>Site Web&nbsp;:</dt><dd><a rel="external nofollow" href="{{ page.user.website }}">{{ page.user.website }}</a></dd>{#
           #}{% endif %}

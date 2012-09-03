@@ -4,51 +4,52 @@
 /**
  * Base class that represents a query for the 'reports' table.
  *
+ * 
  *
+ * @method     ReportQuery orderById($order = Criteria::ASC) Order by the id column
+ * @method     ReportQuery orderByContentId($order = Criteria::ASC) Order by the content_id column
+ * @method     ReportQuery orderByAuthorId($order = Criteria::ASC) Order by the author_id column
+ * @method     ReportQuery orderByDate($order = Criteria::ASC) Order by the date column
+ * @method     ReportQuery orderByText($order = Criteria::ASC) Order by the text column
  *
- * @method ReportQuery orderById($order = Criteria::ASC) Order by the id column
- * @method ReportQuery orderByContentId($order = Criteria::ASC) Order by the content_id column
- * @method ReportQuery orderByAuthorId($order = Criteria::ASC) Order by the author_id column
- * @method ReportQuery orderByDate($order = Criteria::ASC) Order by the date column
- * @method ReportQuery orderByText($order = Criteria::ASC) Order by the text column
+ * @method     ReportQuery groupById() Group by the id column
+ * @method     ReportQuery groupByContentId() Group by the content_id column
+ * @method     ReportQuery groupByAuthorId() Group by the author_id column
+ * @method     ReportQuery groupByDate() Group by the date column
+ * @method     ReportQuery groupByText() Group by the text column
  *
- * @method ReportQuery groupById() Group by the id column
- * @method ReportQuery groupByContentId() Group by the content_id column
- * @method ReportQuery groupByAuthorId() Group by the author_id column
- * @method ReportQuery groupByDate() Group by the date column
- * @method ReportQuery groupByText() Group by the text column
+ * @method     ReportQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
+ * @method     ReportQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
+ * @method     ReportQuery innerJoin($relation) Adds a INNER JOIN clause to the query
  *
- * @method ReportQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
- * @method ReportQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
- * @method ReportQuery innerJoin($relation) Adds a INNER JOIN clause to the query
+ * @method     ReportQuery leftJoinContent($relationAlias = null) Adds a LEFT JOIN clause to the query using the Content relation
+ * @method     ReportQuery rightJoinContent($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Content relation
+ * @method     ReportQuery innerJoinContent($relationAlias = null) Adds a INNER JOIN clause to the query using the Content relation
  *
- * @method ReportQuery leftJoinContent($relationAlias = null) Adds a LEFT JOIN clause to the query using the Content relation
- * @method ReportQuery rightJoinContent($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Content relation
- * @method ReportQuery innerJoinContent($relationAlias = null) Adds a INNER JOIN clause to the query using the Content relation
+ * @method     ReportQuery leftJoinAuthor($relationAlias = null) Adds a LEFT JOIN clause to the query using the Author relation
+ * @method     ReportQuery rightJoinAuthor($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Author relation
+ * @method     ReportQuery innerJoinAuthor($relationAlias = null) Adds a INNER JOIN clause to the query using the Author relation
  *
- * @method ReportQuery leftJoinAuthor($relationAlias = null) Adds a LEFT JOIN clause to the query using the Author relation
- * @method ReportQuery rightJoinAuthor($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Author relation
- * @method ReportQuery innerJoinAuthor($relationAlias = null) Adds a INNER JOIN clause to the query using the Author relation
+ * @method     Report findOne(PropelPDO $con = null) Return the first Report matching the query
+ * @method     Report findOneOrCreate(PropelPDO $con = null) Return the first Report matching the query, or a new Report object populated from the query conditions when no match is found
  *
- * @method Report findOne(PropelPDO $con = null) Return the first Report matching the query
- * @method Report findOneOrCreate(PropelPDO $con = null) Return the first Report matching the query, or a new Report object populated from the query conditions when no match is found
+ * @method     Report findOneById(int $id) Return the first Report filtered by the id column
+ * @method     Report findOneByContentId(int $content_id) Return the first Report filtered by the content_id column
+ * @method     Report findOneByAuthorId(int $author_id) Return the first Report filtered by the author_id column
+ * @method     Report findOneByDate(string $date) Return the first Report filtered by the date column
+ * @method     Report findOneByText(string $text) Return the first Report filtered by the text column
  *
- * @method Report findOneById(int $id) Return the first Report filtered by the id column
- * @method Report findOneByContentId(int $content_id) Return the first Report filtered by the content_id column
- * @method Report findOneByAuthorId(int $author_id) Return the first Report filtered by the author_id column
- * @method Report findOneByDate(string $date) Return the first Report filtered by the date column
- * @method Report findOneByText(string $text) Return the first Report filtered by the text column
- *
- * @method array findById(int $id) Return Report objects filtered by the id column
- * @method array findByContentId(int $content_id) Return Report objects filtered by the content_id column
- * @method array findByAuthorId(int $author_id) Return Report objects filtered by the author_id column
- * @method array findByDate(string $date) Return Report objects filtered by the date column
- * @method array findByText(string $text) Return Report objects filtered by the text column
+ * @method     array findById(int $id) Return Report objects filtered by the id column
+ * @method     array findByContentId(int $content_id) Return Report objects filtered by the content_id column
+ * @method     array findByAuthorId(int $author_id) Return Report objects filtered by the author_id column
+ * @method     array findByDate(string $date) Return Report objects filtered by the date column
+ * @method     array findByText(string $text) Return Report objects filtered by the text column
  *
  * @package    propel.generator.ip7website.om
  */
 abstract class BaseReportQuery extends ModelCriteria
 {
+    
     /**
      * Initializes internal state of BaseReportQuery object.
      *
@@ -94,7 +95,7 @@ abstract class BaseReportQuery extends ModelCriteria
      * $obj  = $c->findPk(12, $con);
      * </code>
      *
-     * @param mixed $key Primary key to use for the query
+     * @param mixed $key Primary key to use for the query 
      * @param     PropelPDO $con an optional connection object
      *
      * @return   Report|Report[]|mixed the result, formatted by the current formatter
@@ -136,7 +137,7 @@ abstract class BaseReportQuery extends ModelCriteria
         $sql = 'SELECT `ID`, `CONTENT_ID`, `AUTHOR_ID`, `DATE`, `TEXT` FROM `reports` WHERE `ID` = :p0';
         try {
             $stmt = $con->prepare($sql);
-            $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
+			$stmt->bindValue(':p0', $key, PDO::PARAM_INT);
             $stmt->execute();
         } catch (Exception $e) {
             Propel::log($e->getMessage(), Propel::LOG_ERR);
@@ -575,4 +576,4 @@ abstract class BaseReportQuery extends ModelCriteria
         return $this;
     }
 
-}
+} // BaseReportQuery

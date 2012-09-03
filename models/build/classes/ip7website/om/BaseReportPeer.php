@@ -4,12 +4,11 @@
 /**
  * Base static class for performing query and update operations on the 'reports' table.
  *
+ * 
  *
- *
- * @package propel.generator.ip7website.om
+ * @package    propel.generator.ip7website.om
  */
-abstract class BaseReportPeer
-{
+abstract class BaseReportPeer {
 
     /** the default database name for this class */
     const DATABASE_NAME = 'infop7db';
@@ -63,12 +62,12 @@ abstract class BaseReportPeer
      * holds an array of fieldnames
      *
      * first dimension keys are the type constants
-     * e.g. ReportPeer::$fieldNames[ReportPeer::TYPE_PHPNAME][0] = 'Id'
+     * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
         BasePeer::TYPE_PHPNAME => array ('Id', 'ContentId', 'AuthorId', 'Date', 'Text', ),
         BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'contentId', 'authorId', 'date', 'text', ),
-        BasePeer::TYPE_COLNAME => array (ReportPeer::ID, ReportPeer::CONTENT_ID, ReportPeer::AUTHOR_ID, ReportPeer::DATE, ReportPeer::TEXT, ),
+        BasePeer::TYPE_COLNAME => array (self::ID, self::CONTENT_ID, self::AUTHOR_ID, self::DATE, self::TEXT, ),
         BasePeer::TYPE_RAW_COLNAME => array ('ID', 'CONTENT_ID', 'AUTHOR_ID', 'DATE', 'TEXT', ),
         BasePeer::TYPE_FIELDNAME => array ('id', 'content_id', 'author_id', 'date', 'text', ),
         BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
@@ -78,12 +77,12 @@ abstract class BaseReportPeer
      * holds an array of keys for quick access to the fieldnames array
      *
      * first dimension keys are the type constants
-     * e.g. ReportPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
+     * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
         BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'ContentId' => 1, 'AuthorId' => 2, 'Date' => 3, 'Text' => 4, ),
         BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'contentId' => 1, 'authorId' => 2, 'date' => 3, 'text' => 4, ),
-        BasePeer::TYPE_COLNAME => array (ReportPeer::ID => 0, ReportPeer::CONTENT_ID => 1, ReportPeer::AUTHOR_ID => 2, ReportPeer::DATE => 3, ReportPeer::TEXT => 4, ),
+        BasePeer::TYPE_COLNAME => array (self::ID => 0, self::CONTENT_ID => 1, self::AUTHOR_ID => 2, self::DATE => 3, self::TEXT => 4, ),
         BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'CONTENT_ID' => 1, 'AUTHOR_ID' => 2, 'DATE' => 3, 'TEXT' => 4, ),
         BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'content_id' => 1, 'author_id' => 2, 'date' => 3, 'text' => 4, ),
         BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
@@ -101,10 +100,10 @@ abstract class BaseReportPeer
      */
     public static function translateFieldName($name, $fromType, $toType)
     {
-        $toNames = ReportPeer::getFieldNames($toType);
-        $key = isset(ReportPeer::$fieldKeys[$fromType][$name]) ? ReportPeer::$fieldKeys[$fromType][$name] : null;
+        $toNames = self::getFieldNames($toType);
+        $key = isset(self::$fieldKeys[$fromType][$name]) ? self::$fieldKeys[$fromType][$name] : null;
         if ($key === null) {
-            throw new PropelException("'$name' could not be found in the field names of type '$fromType'. These are: " . print_r(ReportPeer::$fieldKeys[$fromType], true));
+            throw new PropelException("'$name' could not be found in the field names of type '$fromType'. These are: " . print_r(self::$fieldKeys[$fromType], true));
         }
 
         return $toNames[$key];
@@ -121,11 +120,11 @@ abstract class BaseReportPeer
      */
     public static function getFieldNames($type = BasePeer::TYPE_PHPNAME)
     {
-        if (!array_key_exists($type, ReportPeer::$fieldNames)) {
+        if (!array_key_exists($type, self::$fieldNames)) {
             throw new PropelException('Method getFieldNames() expects the parameter $type to be one of the class constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME, BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM. ' . $type . ' was given.');
         }
 
-        return ReportPeer::$fieldNames[$type];
+        return self::$fieldNames[$type];
     }
 
     /**
@@ -201,7 +200,7 @@ abstract class BaseReportPeer
         }
 
         $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
-        $criteria->setDbName(ReportPeer::DATABASE_NAME); // Set the correct dbName
+        $criteria->setDbName(self::DATABASE_NAME); // Set the correct dbName
 
         if ($con === null) {
             $con = Propel::getConnection(ReportPeer::DATABASE_NAME, Propel::CONNECTION_READ);
@@ -276,7 +275,7 @@ abstract class BaseReportPeer
         }
 
         // Set the correct dbName
-        $criteria->setDbName(ReportPeer::DATABASE_NAME);
+        $criteria->setDbName(self::DATABASE_NAME);
 
         // BasePeer returns a PDOStatement
         return BasePeer::doSelect($criteria, $con);
@@ -299,7 +298,7 @@ abstract class BaseReportPeer
             if ($key === null) {
                 $key = (string) $obj->getId();
             } // if key === null
-            ReportPeer::$instances[$key] = $obj;
+            self::$instances[$key] = $obj;
         }
     }
 
@@ -329,7 +328,7 @@ abstract class BaseReportPeer
                 throw $e;
             }
 
-            unset(ReportPeer::$instances[$key]);
+            unset(self::$instances[$key]);
         }
     } // removeInstanceFromPool()
 
@@ -340,20 +339,20 @@ abstract class BaseReportPeer
      * a multi-column primary key, a serialize()d version of the primary key will be returned.
      *
      * @param      string $key The key (@see getPrimaryKeyHash()) for this instance.
-     * @return   Report Found object or null if 1) no instance exists for specified key or 2) instance pooling has been disabled.
+     * @return   Report Found object or NULL if 1) no instance exists for specified key or 2) instance pooling has been disabled.
      * @see        getPrimaryKeyHash()
      */
     public static function getInstanceFromPool($key)
     {
         if (Propel::isInstancePoolingEnabled()) {
-            if (isset(ReportPeer::$instances[$key])) {
-                return ReportPeer::$instances[$key];
+            if (isset(self::$instances[$key])) {
+                return self::$instances[$key];
             }
         }
 
         return null; // just to be explicit
     }
-
+    
     /**
      * Clear the instance pool.
      *
@@ -361,9 +360,9 @@ abstract class BaseReportPeer
      */
     public static function clearInstancePool()
     {
-        ReportPeer::$instances = array();
+        self::$instances = array();
     }
-
+    
     /**
      * Method to invalidate the instance pool of all tables related to reports
      * by a foreign key with ON DELETE CASCADE
@@ -380,11 +379,11 @@ abstract class BaseReportPeer
      *
      * @param      array $row PropelPDO resultset row.
      * @param      int $startcol The 0-based offset for reading from the resultset row.
-     * @return string A string version of PK or null if the components of primary key in result array are all null.
+     * @return string A string version of PK or NULL if the components of primary key in result array are all null.
      */
     public static function getPrimaryKeyHashFromRow($row, $startcol = 0)
     {
-        // If the PK cannot be derived from the row, return null.
+        // If the PK cannot be derived from the row, return NULL.
         if ($row[$startcol] === null) {
             return null;
         }
@@ -406,7 +405,7 @@ abstract class BaseReportPeer
 
         return (int) $row[$startcol];
     }
-
+    
     /**
      * The returned array will contain objects of the default type or
      * objects that inherit from the default.
@@ -417,7 +416,7 @@ abstract class BaseReportPeer
     public static function populateObjects(PDOStatement $stmt)
     {
         $results = array();
-
+    
         // set the class once to avoid overhead in the loop
         $cls = ReportPeer::getOMClass();
         // populate the object(s)
@@ -497,7 +496,7 @@ abstract class BaseReportPeer
         $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
 
         // Set the correct dbName
-        $criteria->setDbName(ReportPeer::DATABASE_NAME);
+        $criteria->setDbName(self::DATABASE_NAME);
 
         if ($con === null) {
             $con = Propel::getConnection(ReportPeer::DATABASE_NAME, Propel::CONNECTION_READ);
@@ -548,7 +547,7 @@ abstract class BaseReportPeer
         $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
 
         // Set the correct dbName
-        $criteria->setDbName(ReportPeer::DATABASE_NAME);
+        $criteria->setDbName(self::DATABASE_NAME);
 
         if ($con === null) {
             $con = Propel::getConnection(ReportPeer::DATABASE_NAME, Propel::CONNECTION_READ);
@@ -584,7 +583,7 @@ abstract class BaseReportPeer
 
         // Set the correct dbName if it has not been overridden
         if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(ReportPeer::DATABASE_NAME);
+            $criteria->setDbName(self::DATABASE_NAME);
         }
 
         ReportPeer::addSelectColumns($criteria);
@@ -651,7 +650,7 @@ abstract class BaseReportPeer
 
         // Set the correct dbName if it has not been overridden
         if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(ReportPeer::DATABASE_NAME);
+            $criteria->setDbName(self::DATABASE_NAME);
         }
 
         ReportPeer::addSelectColumns($criteria);
@@ -733,7 +732,7 @@ abstract class BaseReportPeer
         $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
 
         // Set the correct dbName
-        $criteria->setDbName(ReportPeer::DATABASE_NAME);
+        $criteria->setDbName(self::DATABASE_NAME);
 
         if ($con === null) {
             $con = Propel::getConnection(ReportPeer::DATABASE_NAME, Propel::CONNECTION_READ);
@@ -771,7 +770,7 @@ abstract class BaseReportPeer
 
         // Set the correct dbName if it has not been overridden
         if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(ReportPeer::DATABASE_NAME);
+            $criteria->setDbName(self::DATABASE_NAME);
         }
 
         ReportPeer::addSelectColumns($criteria);
@@ -878,12 +877,12 @@ abstract class BaseReportPeer
         $criteria->clearOrderByColumns(); // ORDER BY should not affect count
 
         // Set the correct dbName
-        $criteria->setDbName(ReportPeer::DATABASE_NAME);
+        $criteria->setDbName(self::DATABASE_NAME);
 
         if ($con === null) {
             $con = Propel::getConnection(ReportPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
-
+    
         $criteria->addJoin(ReportPeer::AUTHOR_ID, UserPeer::ID, $join_behavior);
 
         $stmt = BasePeer::doCount($criteria, $con);
@@ -929,12 +928,12 @@ abstract class BaseReportPeer
         $criteria->clearOrderByColumns(); // ORDER BY should not affect count
 
         // Set the correct dbName
-        $criteria->setDbName(ReportPeer::DATABASE_NAME);
+        $criteria->setDbName(self::DATABASE_NAME);
 
         if ($con === null) {
             $con = Propel::getConnection(ReportPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
-
+    
         $criteria->addJoin(ReportPeer::CONTENT_ID, ContentPeer::ID, $join_behavior);
 
         $stmt = BasePeer::doCount($criteria, $con);
@@ -968,7 +967,7 @@ abstract class BaseReportPeer
         // $criteria->getDbName() will return the same object if not set to another value
         // so == check is okay and faster
         if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(ReportPeer::DATABASE_NAME);
+            $criteria->setDbName(self::DATABASE_NAME);
         }
 
         ReportPeer::addSelectColumns($criteria);
@@ -1003,7 +1002,7 @@ abstract class BaseReportPeer
                 if ($key2 !== null) {
                     $obj2 = UserPeer::getInstanceFromPool($key2);
                     if (!$obj2) {
-
+    
                         $cls = UserPeer::getOMClass();
 
                     $obj2 = new $cls();
@@ -1042,7 +1041,7 @@ abstract class BaseReportPeer
         // $criteria->getDbName() will return the same object if not set to another value
         // so == check is okay and faster
         if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(ReportPeer::DATABASE_NAME);
+            $criteria->setDbName(self::DATABASE_NAME);
         }
 
         ReportPeer::addSelectColumns($criteria);
@@ -1077,7 +1076,7 @@ abstract class BaseReportPeer
                 if ($key2 !== null) {
                     $obj2 = ContentPeer::getInstanceFromPool($key2);
                     if (!$obj2) {
-
+    
                         $cls = ContentPeer::getOMClass();
 
                     $obj2 = new $cls();
@@ -1106,7 +1105,7 @@ abstract class BaseReportPeer
      */
     public static function getTableMap()
     {
-        return Propel::getDatabaseMap(ReportPeer::DATABASE_NAME)->getTable(ReportPeer::TABLE_NAME);
+        return Propel::getDatabaseMap(self::DATABASE_NAME)->getTable(self::TABLE_NAME);
     }
 
     /**
@@ -1158,7 +1157,7 @@ abstract class BaseReportPeer
 
 
         // Set the correct dbName
-        $criteria->setDbName(ReportPeer::DATABASE_NAME);
+        $criteria->setDbName(self::DATABASE_NAME);
 
         try {
             // use transaction because $criteria could contain info
@@ -1189,7 +1188,7 @@ abstract class BaseReportPeer
             $con = Propel::getConnection(ReportPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
-        $selectCriteria = new Criteria(ReportPeer::DATABASE_NAME);
+        $selectCriteria = new Criteria(self::DATABASE_NAME);
 
         if ($values instanceof Criteria) {
             $criteria = clone $values; // rename for clarity
@@ -1208,7 +1207,7 @@ abstract class BaseReportPeer
         }
 
         // set the correct dbName
-        $criteria->setDbName(ReportPeer::DATABASE_NAME);
+        $criteria->setDbName(self::DATABASE_NAME);
 
         return BasePeer::doUpdate($selectCriteria, $criteria, $con);
     }
@@ -1275,7 +1274,7 @@ abstract class BaseReportPeer
             // create criteria based on pk values
             $criteria = $values->buildPkeyCriteria();
         } else { // it's a primary key, or an array of pks
-            $criteria = new Criteria(ReportPeer::DATABASE_NAME);
+            $criteria = new Criteria(self::DATABASE_NAME);
             $criteria->add(ReportPeer::ID, (array) $values, Criteria::IN);
             // invalidate the cache for this object(s)
             foreach ((array) $values as $singleval) {
@@ -1284,7 +1283,7 @@ abstract class BaseReportPeer
         }
 
         // Set the correct dbName
-        $criteria->setDbName(ReportPeer::DATABASE_NAME);
+        $criteria->setDbName(self::DATABASE_NAME);
 
         $affectedRows = 0; // initialize var to track total num of affected rows
 
@@ -1292,7 +1291,7 @@ abstract class BaseReportPeer
             // use transaction because $criteria could contain info
             // for more than one table or we could emulating ON DELETE CASCADE, etc.
             $con->beginTransaction();
-
+            
             $affectedRows += BasePeer::doDelete($criteria, $con);
             ReportPeer::clearRelatedInstancePool();
             $con->commit();

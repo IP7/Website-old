@@ -1,0 +1,7 @@
+#connection .label:after {
+    content:" :";
+}
+
+#connection .helplink {
+    font-size:0.9em;
+}

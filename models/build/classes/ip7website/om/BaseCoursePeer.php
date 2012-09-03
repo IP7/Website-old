@@ -4,12 +4,11 @@
 /**
  * Base static class for performing query and update operations on the 'courses' table.
  *
+ * 
  *
- *
- * @package propel.generator.ip7website.om
+ * @package    propel.generator.ip7website.om
  */
-abstract class BaseCoursePeer
-{
+abstract class BaseCoursePeer {
 
     /** the default database name for this class */
     const DATABASE_NAME = 'infop7db';
@@ -69,12 +68,12 @@ abstract class BaseCoursePeer
      * holds an array of fieldnames
      *
      * first dimension keys are the type constants
-     * e.g. CoursePeer::$fieldNames[CoursePeer::TYPE_PHPNAME][0] = 'Id'
+     * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
         BasePeer::TYPE_PHPNAME => array ('Id', 'CursusId', 'Semester', 'Name', 'Code', 'Ects', 'Description', ),
         BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'cursusId', 'semester', 'name', 'code', 'ects', 'description', ),
-        BasePeer::TYPE_COLNAME => array (CoursePeer::ID, CoursePeer::CURSUS_ID, CoursePeer::SEMESTER, CoursePeer::NAME, CoursePeer::CODE, CoursePeer::ECTS, CoursePeer::DESCRIPTION, ),
+        BasePeer::TYPE_COLNAME => array (self::ID, self::CURSUS_ID, self::SEMESTER, self::NAME, self::CODE, self::ECTS, self::DESCRIPTION, ),
         BasePeer::TYPE_RAW_COLNAME => array ('ID', 'CURSUS_ID', 'SEMESTER', 'NAME', 'CODE', 'ECTS', 'DESCRIPTION', ),
         BasePeer::TYPE_FIELDNAME => array ('id', 'cursus_id', 'semester', 'name', 'code', 'ECTS', 'description', ),
         BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
@@ -84,12 +83,12 @@ abstract class BaseCoursePeer
      * holds an array of keys for quick access to the fieldnames array
      *
      * first dimension keys are the type constants
-     * e.g. CoursePeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
+     * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
         BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'CursusId' => 1, 'Semester' => 2, 'Name' => 3, 'Code' => 4, 'Ects' => 5, 'Description' => 6, ),
         BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'cursusId' => 1, 'semester' => 2, 'name' => 3, 'code' => 4, 'ects' => 5, 'description' => 6, ),
-        BasePeer::TYPE_COLNAME => array (CoursePeer::ID => 0, CoursePeer::CURSUS_ID => 1, CoursePeer::SEMESTER => 2, CoursePeer::NAME => 3, CoursePeer::CODE => 4, CoursePeer::ECTS => 5, CoursePeer::DESCRIPTION => 6, ),
+        BasePeer::TYPE_COLNAME => array (self::ID => 0, self::CURSUS_ID => 1, self::SEMESTER => 2, self::NAME => 3, self::CODE => 4, self::ECTS => 5, self::DESCRIPTION => 6, ),
         BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'CURSUS_ID' => 1, 'SEMESTER' => 2, 'NAME' => 3, 'CODE' => 4, 'ECTS' => 5, 'DESCRIPTION' => 6, ),
         BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'cursus_id' => 1, 'semester' => 2, 'name' => 3, 'code' => 4, 'ECTS' => 5, 'description' => 6, ),
         BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
@@ -107,10 +106,10 @@ abstract class BaseCoursePeer
      */
     public static function translateFieldName($name, $fromType, $toType)
     {
-        $toNames = CoursePeer::getFieldNames($toType);
-        $key = isset(CoursePeer::$fieldKeys[$fromType][$name]) ? CoursePeer::$fieldKeys[$fromType][$name] : null;
+        $toNames = self::getFieldNames($toType);
+        $key = isset(self::$fieldKeys[$fromType][$name]) ? self::$fieldKeys[$fromType][$name] : null;
         if ($key === null) {
-            throw new PropelException("'$name' could not be found in the field names of type '$fromType'. These are: " . print_r(CoursePeer::$fieldKeys[$fromType], true));
+            throw new PropelException("'$name' could not be found in the field names of type '$fromType'. These are: " . print_r(self::$fieldKeys[$fromType], true));
         }
 
         return $toNames[$key];
@@ -127,11 +126,11 @@ abstract class BaseCoursePeer
      */
     public static function getFieldNames($type = BasePeer::TYPE_PHPNAME)
     {
-        if (!array_key_exists($type, CoursePeer::$fieldNames)) {
+        if (!array_key_exists($type, self::$fieldNames)) {
             throw new PropelException('Method getFieldNames() expects the parameter $type to be one of the class constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME, BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM. ' . $type . ' was given.');
         }
 
-        return CoursePeer::$fieldNames[$type];
+        return self::$fieldNames[$type];
     }
 
     /**
@@ -211,7 +210,7 @@ abstract class BaseCoursePeer
         }
 
         $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
-        $criteria->setDbName(CoursePeer::DATABASE_NAME); // Set the correct dbName
+        $criteria->setDbName(self::DATABASE_NAME); // Set the correct dbName
 
         if ($con === null) {
             $con = Propel::getConnection(CoursePeer::DATABASE_NAME, Propel::CONNECTION_READ);
@@ -286,7 +285,7 @@ abstract class BaseCoursePeer
         }
 
         // Set the correct dbName
-        $criteria->setDbName(CoursePeer::DATABASE_NAME);
+        $criteria->setDbName(self::DATABASE_NAME);
 
         // BasePeer returns a PDOStatement
         return BasePeer::doSelect($criteria, $con);
@@ -309,7 +308,7 @@ abstract class BaseCoursePeer
             if ($key === null) {
                 $key = (string) $obj->getId();
             } // if key === null
-            CoursePeer::$instances[$key] = $obj;
+            self::$instances[$key] = $obj;
         }
     }
 
@@ -339,7 +338,7 @@ abstract class BaseCoursePeer
                 throw $e;
             }
 
-            unset(CoursePeer::$instances[$key]);
+            unset(self::$instances[$key]);
         }
     } // removeInstanceFromPool()
 
@@ -350,20 +349,20 @@ abstract class BaseCoursePeer
      * a multi-column primary key, a serialize()d version of the primary key will be returned.
      *
      * @param      string $key The key (@see getPrimaryKeyHash()) for this instance.
-     * @return   Course Found object or null if 1) no instance exists for specified key or 2) instance pooling has been disabled.
+     * @return   Course Found object or NULL if 1) no instance exists for specified key or 2) instance pooling has been disabled.
      * @see        getPrimaryKeyHash()
      */
     public static function getInstanceFromPool($key)
     {
         if (Propel::isInstancePoolingEnabled()) {
-            if (isset(CoursePeer::$instances[$key])) {
-                return CoursePeer::$instances[$key];
+            if (isset(self::$instances[$key])) {
+                return self::$instances[$key];
             }
         }
 
         return null; // just to be explicit
     }
-
+    
     /**
      * Clear the instance pool.
      *
@@ -371,9 +370,9 @@ abstract class BaseCoursePeer
      */
     public static function clearInstancePool()
     {
-        CoursePeer::$instances = array();
+        self::$instances = array();
     }
-
+    
     /**
      * Method to invalidate the instance pool of all tables related to courses
      * by a foreign key with ON DELETE CASCADE
@@ -414,11 +413,11 @@ abstract class BaseCoursePeer
      *
      * @param      array $row PropelPDO resultset row.
      * @param      int $startcol The 0-based offset for reading from the resultset row.
-     * @return string A string version of PK or null if the components of primary key in result array are all null.
+     * @return string A string version of PK or NULL if the components of primary key in result array are all null.
      */
     public static function getPrimaryKeyHashFromRow($row, $startcol = 0)
     {
-        // If the PK cannot be derived from the row, return null.
+        // If the PK cannot be derived from the row, return NULL.
         if ($row[$startcol] === null) {
             return null;
         }
@@ -440,7 +439,7 @@ abstract class BaseCoursePeer
 
         return (int) $row[$startcol];
     }
-
+    
     /**
      * The returned array will contain objects of the default type or
      * objects that inherit from the default.
@@ -451,7 +450,7 @@ abstract class BaseCoursePeer
     public static function populateObjects(PDOStatement $stmt)
     {
         $results = array();
-
+    
         // set the class once to avoid overhead in the loop
         $cls = CoursePeer::getOMClass();
         // populate the object(s)
@@ -531,7 +530,7 @@ abstract class BaseCoursePeer
         $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
 
         // Set the correct dbName
-        $criteria->setDbName(CoursePeer::DATABASE_NAME);
+        $criteria->setDbName(self::DATABASE_NAME);
 
         if ($con === null) {
             $con = Propel::getConnection(CoursePeer::DATABASE_NAME, Propel::CONNECTION_READ);
@@ -567,7 +566,7 @@ abstract class BaseCoursePeer
 
         // Set the correct dbName if it has not been overridden
         if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(CoursePeer::DATABASE_NAME);
+            $criteria->setDbName(self::DATABASE_NAME);
         }
 
         CoursePeer::addSelectColumns($criteria);
@@ -649,7 +648,7 @@ abstract class BaseCoursePeer
         $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
 
         // Set the correct dbName
-        $criteria->setDbName(CoursePeer::DATABASE_NAME);
+        $criteria->setDbName(self::DATABASE_NAME);
 
         if ($con === null) {
             $con = Propel::getConnection(CoursePeer::DATABASE_NAME, Propel::CONNECTION_READ);
@@ -685,7 +684,7 @@ abstract class BaseCoursePeer
 
         // Set the correct dbName if it has not been overridden
         if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(CoursePeer::DATABASE_NAME);
+            $criteria->setDbName(self::DATABASE_NAME);
         }
 
         CoursePeer::addSelectColumns($criteria);
@@ -747,7 +746,7 @@ abstract class BaseCoursePeer
      */
     public static function getTableMap()
     {
-        return Propel::getDatabaseMap(CoursePeer::DATABASE_NAME)->getTable(CoursePeer::TABLE_NAME);
+        return Propel::getDatabaseMap(self::DATABASE_NAME)->getTable(self::TABLE_NAME);
     }
 
     /**
@@ -799,7 +798,7 @@ abstract class BaseCoursePeer
 
 
         // Set the correct dbName
-        $criteria->setDbName(CoursePeer::DATABASE_NAME);
+        $criteria->setDbName(self::DATABASE_NAME);
 
         try {
             // use transaction because $criteria could contain info
@@ -830,7 +829,7 @@ abstract class BaseCoursePeer
             $con = Propel::getConnection(CoursePeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
-        $selectCriteria = new Criteria(CoursePeer::DATABASE_NAME);
+        $selectCriteria = new Criteria(self::DATABASE_NAME);
 
         if ($values instanceof Criteria) {
             $criteria = clone $values; // rename for clarity
@@ -849,7 +848,7 @@ abstract class BaseCoursePeer
         }
 
         // set the correct dbName
-        $criteria->setDbName(CoursePeer::DATABASE_NAME);
+        $criteria->setDbName(self::DATABASE_NAME);
 
         return BasePeer::doUpdate($selectCriteria, $criteria, $con);
     }
@@ -911,12 +910,12 @@ abstract class BaseCoursePeer
             // create criteria based on pk values
             $criteria = $values->buildPkeyCriteria();
         } else { // it's a primary key, or an array of pks
-            $criteria = new Criteria(CoursePeer::DATABASE_NAME);
+            $criteria = new Criteria(self::DATABASE_NAME);
             $criteria->add(CoursePeer::ID, (array) $values, Criteria::IN);
         }
 
         // Set the correct dbName
-        $criteria->setDbName(CoursePeer::DATABASE_NAME);
+        $criteria->setDbName(self::DATABASE_NAME);
 
         $affectedRows = 0; // initialize var to track total num of affected rows
 
@@ -924,11 +923,11 @@ abstract class BaseCoursePeer
             // use transaction because $criteria could contain info
             // for more than one table or we could emulating ON DELETE CASCADE, etc.
             $con->beginTransaction();
-
+            
             // cloning the Criteria in case it's modified by doSelect() or doSelectStmt()
             $c = clone $criteria;
             $affectedRows += CoursePeer::doOnDeleteCascade($c, $con);
-
+            
             // Because this db requires some delete cascade/set null emulation, we have to
             // clear the cached instance *after* the emulation has happened (since
             // instances get re-added by the select statement contained therein).
@@ -941,7 +940,7 @@ abstract class BaseCoursePeer
                     CoursePeer::removeInstanceFromPool($singleval);
                 }
             }
-
+            
             $affectedRows += BasePeer::doDelete($criteria, $con);
             CoursePeer::clearRelatedInstancePool();
             $con->commit();
@@ -978,49 +977,49 @@ abstract class BaseCoursePeer
 
             // delete related EducationalPathsOptionalCourses objects
             $criteria = new Criteria(EducationalPathsOptionalCoursesPeer::DATABASE_NAME);
-
+            
             $criteria->add(EducationalPathsOptionalCoursesPeer::COURSE_ID, $obj->getId());
             $affectedRows += EducationalPathsOptionalCoursesPeer::doDelete($criteria, $con);
 
             // delete related EducationalPathsMandatoryCourses objects
             $criteria = new Criteria(EducationalPathsMandatoryCoursesPeer::DATABASE_NAME);
-
+            
             $criteria->add(EducationalPathsMandatoryCoursesPeer::COURSE_ID, $obj->getId());
             $affectedRows += EducationalPathsMandatoryCoursesPeer::doDelete($criteria, $con);
 
             // delete related Alert objects
             $criteria = new Criteria(AlertPeer::DATABASE_NAME);
-
+            
             $criteria->add(AlertPeer::COURSE_ID, $obj->getId());
             $affectedRows += AlertPeer::doDelete($criteria, $con);
 
             // delete related Content objects
             $criteria = new Criteria(ContentPeer::DATABASE_NAME);
-
+            
             $criteria->add(ContentPeer::COURSE_ID, $obj->getId());
             $affectedRows += ContentPeer::doDelete($criteria, $con);
 
             // delete related Note objects
             $criteria = new Criteria(NotePeer::DATABASE_NAME);
-
+            
             $criteria->add(NotePeer::COURSE_ID, $obj->getId());
             $affectedRows += NotePeer::doDelete($criteria, $con);
 
             // delete related News objects
             $criteria = new Criteria(NewsPeer::DATABASE_NAME);
-
+            
             $criteria->add(NewsPeer::COURSE_ID, $obj->getId());
             $affectedRows += NewsPeer::doDelete($criteria, $con);
 
             // delete related Exam objects
             $criteria = new Criteria(ExamPeer::DATABASE_NAME);
-
+            
             $criteria->add(ExamPeer::COURSE_ID, $obj->getId());
             $affectedRows += ExamPeer::doDelete($criteria, $con);
 
             // delete related ScheduledCourse objects
             $criteria = new Criteria(ScheduledCoursePeer::DATABASE_NAME);
-
+            
             $criteria->add(ScheduledCoursePeer::COURSE_ID, $obj->getId());
             $affectedRows += ScheduledCoursePeer::doDelete($criteria, $con);
         }

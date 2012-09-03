@@ -125,7 +125,6 @@ if (!$q) {
     $admin->setLastName('Istrateur');
     $admin->setEmail('batifon@yahoo.fr');
     $admin->setPhone('0102030405');
-    $admin->setAddress('12 rue des Universités, 75016 Paris');
     $admin->setWebsite('http://www.google.com');
     $admin->setBirthDate('1994-04-23');
     $admin->setFirstEntry('2012-08-09');

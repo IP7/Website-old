@@ -4,51 +4,52 @@
 /**
  * Base class that represents a query for the 'tokens' table.
  *
+ * 
  *
+ * @method     TokenQuery orderById($order = Criteria::ASC) Order by the id column
+ * @method     TokenQuery orderByUserId($order = Criteria::ASC) Order by the user_id column
+ * @method     TokenQuery orderByExpirationDate($order = Criteria::ASC) Order by the expiration_date column
+ * @method     TokenQuery orderByRights($order = Criteria::ASC) Order by the rights column
+ * @method     TokenQuery orderByValue($order = Criteria::ASC) Order by the value column
+ * @method     TokenQuery orderByMethod($order = Criteria::ASC) Order by the method column
  *
- * @method TokenQuery orderById($order = Criteria::ASC) Order by the id column
- * @method TokenQuery orderByUserId($order = Criteria::ASC) Order by the user_id column
- * @method TokenQuery orderByExpirationDate($order = Criteria::ASC) Order by the expiration_date column
- * @method TokenQuery orderByRights($order = Criteria::ASC) Order by the rights column
- * @method TokenQuery orderByValue($order = Criteria::ASC) Order by the value column
- * @method TokenQuery orderByMethod($order = Criteria::ASC) Order by the method column
+ * @method     TokenQuery groupById() Group by the id column
+ * @method     TokenQuery groupByUserId() Group by the user_id column
+ * @method     TokenQuery groupByExpirationDate() Group by the expiration_date column
+ * @method     TokenQuery groupByRights() Group by the rights column
+ * @method     TokenQuery groupByValue() Group by the value column
+ * @method     TokenQuery groupByMethod() Group by the method column
  *
- * @method TokenQuery groupById() Group by the id column
- * @method TokenQuery groupByUserId() Group by the user_id column
- * @method TokenQuery groupByExpirationDate() Group by the expiration_date column
- * @method TokenQuery groupByRights() Group by the rights column
- * @method TokenQuery groupByValue() Group by the value column
- * @method TokenQuery groupByMethod() Group by the method column
+ * @method     TokenQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
+ * @method     TokenQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
+ * @method     TokenQuery innerJoin($relation) Adds a INNER JOIN clause to the query
  *
- * @method TokenQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
- * @method TokenQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
- * @method TokenQuery innerJoin($relation) Adds a INNER JOIN clause to the query
+ * @method     TokenQuery leftJoinUser($relationAlias = null) Adds a LEFT JOIN clause to the query using the User relation
+ * @method     TokenQuery rightJoinUser($relationAlias = null) Adds a RIGHT JOIN clause to the query using the User relation
+ * @method     TokenQuery innerJoinUser($relationAlias = null) Adds a INNER JOIN clause to the query using the User relation
  *
- * @method TokenQuery leftJoinUser($relationAlias = null) Adds a LEFT JOIN clause to the query using the User relation
- * @method TokenQuery rightJoinUser($relationAlias = null) Adds a RIGHT JOIN clause to the query using the User relation
- * @method TokenQuery innerJoinUser($relationAlias = null) Adds a INNER JOIN clause to the query using the User relation
+ * @method     Token findOne(PropelPDO $con = null) Return the first Token matching the query
+ * @method     Token findOneOrCreate(PropelPDO $con = null) Return the first Token matching the query, or a new Token object populated from the query conditions when no match is found
  *
- * @method Token findOne(PropelPDO $con = null) Return the first Token matching the query
- * @method Token findOneOrCreate(PropelPDO $con = null) Return the first Token matching the query, or a new Token object populated from the query conditions when no match is found
+ * @method     Token findOneById(int $id) Return the first Token filtered by the id column
+ * @method     Token findOneByUserId(int $user_id) Return the first Token filtered by the user_id column
+ * @method     Token findOneByExpirationDate(string $expiration_date) Return the first Token filtered by the expiration_date column
+ * @method     Token findOneByRights(int $rights) Return the first Token filtered by the rights column
+ * @method     Token findOneByValue(string $value) Return the first Token filtered by the value column
+ * @method     Token findOneByMethod(int $method) Return the first Token filtered by the method column
  *
- * @method Token findOneById(int $id) Return the first Token filtered by the id column
- * @method Token findOneByUserId(int $user_id) Return the first Token filtered by the user_id column
- * @method Token findOneByExpirationDate(string $expiration_date) Return the first Token filtered by the expiration_date column
- * @method Token findOneByRights(int $rights) Return the first Token filtered by the rights column
- * @method Token findOneByValue(string $value) Return the first Token filtered by the value column
- * @method Token findOneByMethod(int $method) Return the first Token filtered by the method column
- *
- * @method array findById(int $id) Return Token objects filtered by the id column
- * @method array findByUserId(int $user_id) Return Token objects filtered by the user_id column
- * @method array findByExpirationDate(string $expiration_date) Return Token objects filtered by the expiration_date column
- * @method array findByRights(int $rights) Return Token objects filtered by the rights column
- * @method array findByValue(string $value) Return Token objects filtered by the value column
- * @method array findByMethod(int $method) Return Token objects filtered by the method column
+ * @method     array findById(int $id) Return Token objects filtered by the id column
+ * @method     array findByUserId(int $user_id) Return Token objects filtered by the user_id column
+ * @method     array findByExpirationDate(string $expiration_date) Return Token objects filtered by the expiration_date column
+ * @method     array findByRights(int $rights) Return Token objects filtered by the rights column
+ * @method     array findByValue(string $value) Return Token objects filtered by the value column
+ * @method     array findByMethod(int $method) Return Token objects filtered by the method column
  *
  * @package    propel.generator.ip7website.om
  */
 abstract class BaseTokenQuery extends ModelCriteria
 {
+    
     /**
      * Initializes internal state of BaseTokenQuery object.
      *
@@ -94,7 +95,7 @@ abstract class BaseTokenQuery extends ModelCriteria
      * $obj  = $c->findPk(12, $con);
      * </code>
      *
-     * @param mixed $key Primary key to use for the query
+     * @param mixed $key Primary key to use for the query 
      * @param     PropelPDO $con an optional connection object
      *
      * @return   Token|Token[]|mixed the result, formatted by the current formatter
@@ -136,7 +137,7 @@ abstract class BaseTokenQuery extends ModelCriteria
         $sql = 'SELECT `ID`, `USER_ID`, `EXPIRATION_DATE`, `RIGHTS`, `VALUE`, `METHOD` FROM `tokens` WHERE `ID` = :p0';
         try {
             $stmt = $con->prepare($sql);
-            $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
+			$stmt->bindValue(':p0', $key, PDO::PARAM_INT);
             $stmt->execute();
         } catch (Exception $e) {
             Propel::log($e->getMessage(), Propel::LOG_ERR);
@@ -531,4 +532,4 @@ abstract class BaseTokenQuery extends ModelCriteria
         return $this;
     }
 
-}
+} // BaseTokenQuery

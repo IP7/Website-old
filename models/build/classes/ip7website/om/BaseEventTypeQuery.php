@@ -4,35 +4,36 @@
 /**
  * Base class that represents a query for the 'event_types' table.
  *
+ * 
  *
+ * @method     EventTypeQuery orderById($order = Criteria::ASC) Order by the id column
+ * @method     EventTypeQuery orderByName($order = Criteria::ASC) Order by the name column
  *
- * @method EventTypeQuery orderById($order = Criteria::ASC) Order by the id column
- * @method EventTypeQuery orderByName($order = Criteria::ASC) Order by the name column
+ * @method     EventTypeQuery groupById() Group by the id column
+ * @method     EventTypeQuery groupByName() Group by the name column
  *
- * @method EventTypeQuery groupById() Group by the id column
- * @method EventTypeQuery groupByName() Group by the name column
+ * @method     EventTypeQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
+ * @method     EventTypeQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
+ * @method     EventTypeQuery innerJoin($relation) Adds a INNER JOIN clause to the query
  *
- * @method EventTypeQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
- * @method EventTypeQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
- * @method EventTypeQuery innerJoin($relation) Adds a INNER JOIN clause to the query
+ * @method     EventTypeQuery leftJoinEvent($relationAlias = null) Adds a LEFT JOIN clause to the query using the Event relation
+ * @method     EventTypeQuery rightJoinEvent($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Event relation
+ * @method     EventTypeQuery innerJoinEvent($relationAlias = null) Adds a INNER JOIN clause to the query using the Event relation
  *
- * @method EventTypeQuery leftJoinEvent($relationAlias = null) Adds a LEFT JOIN clause to the query using the Event relation
- * @method EventTypeQuery rightJoinEvent($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Event relation
- * @method EventTypeQuery innerJoinEvent($relationAlias = null) Adds a INNER JOIN clause to the query using the Event relation
+ * @method     EventType findOne(PropelPDO $con = null) Return the first EventType matching the query
+ * @method     EventType findOneOrCreate(PropelPDO $con = null) Return the first EventType matching the query, or a new EventType object populated from the query conditions when no match is found
  *
- * @method EventType findOne(PropelPDO $con = null) Return the first EventType matching the query
- * @method EventType findOneOrCreate(PropelPDO $con = null) Return the first EventType matching the query, or a new EventType object populated from the query conditions when no match is found
+ * @method     EventType findOneById(int $id) Return the first EventType filtered by the id column
+ * @method     EventType findOneByName(string $name) Return the first EventType filtered by the name column
  *
- * @method EventType findOneById(int $id) Return the first EventType filtered by the id column
- * @method EventType findOneByName(string $name) Return the first EventType filtered by the name column
- *
- * @method array findById(int $id) Return EventType objects filtered by the id column
- * @method array findByName(string $name) Return EventType objects filtered by the name column
+ * @method     array findById(int $id) Return EventType objects filtered by the id column
+ * @method     array findByName(string $name) Return EventType objects filtered by the name column
  *
  * @package    propel.generator.ip7website.om
  */
 abstract class BaseEventTypeQuery extends ModelCriteria
 {
+    
     /**
      * Initializes internal state of BaseEventTypeQuery object.
      *
@@ -78,7 +79,7 @@ abstract class BaseEventTypeQuery extends ModelCriteria
      * $obj  = $c->findPk(12, $con);
      * </code>
      *
-     * @param mixed $key Primary key to use for the query
+     * @param mixed $key Primary key to use for the query 
      * @param     PropelPDO $con an optional connection object
      *
      * @return   EventType|EventType[]|mixed the result, formatted by the current formatter
@@ -120,7 +121,7 @@ abstract class BaseEventTypeQuery extends ModelCriteria
         $sql = 'SELECT `ID`, `NAME` FROM `event_types` WHERE `ID` = :p0';
         try {
             $stmt = $con->prepare($sql);
-            $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
+			$stmt->bindValue(':p0', $key, PDO::PARAM_INT);
             $stmt->execute();
         } catch (Exception $e) {
             Propel::log($e->getMessage(), Propel::LOG_ERR);
@@ -352,4 +353,4 @@ abstract class BaseEventTypeQuery extends ModelCriteria
         return $this;
     }
 
-}
+} // BaseEventTypeQuery

@@ -60,8 +60,8 @@ class Config {
     # initalize Twig
     private static function tpl_init() {
 
-            $styles = self::$root_uri.'views/static/styles';
-            $scripts = self::$root_uri.'views/static/js';
+        $styles = self::$root_uri.'views/static/styles';
+        $scripts = self::$root_uri.'views/static/js';
 
         Twig_Autoloader::register();
 
@@ -90,9 +90,7 @@ class Config {
                 ),
 
                 # IE Styles
-                'ie_styles'       => array(
-                    array( 'href' => $styles.'/ie.css', 'media' => 'all' )
-                ),
+                'ie_styles'       => array(),
 
                 # Scripts
                 'rendering_scripts' => array(

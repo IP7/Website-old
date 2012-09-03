@@ -4,12 +4,13 @@
 /**
  * Base class that represents a row from the 'newsletters_posts' table.
  *
- *
+ * 
  *
  * @package    propel.generator.ip7website.om
  */
-abstract class BaseNewsletterPost extends BaseObject implements Persistent
+abstract class BaseNewsletterPost extends BaseObject 
 {
+
     /**
      * Peer class name
      */
@@ -55,7 +56,7 @@ abstract class BaseNewsletterPost extends BaseObject implements Persistent
 
     /**
      * Whether the lazy-loaded $text value has been loaded from database.
-     * This is necessary to avoid repeated lookups if $text column is null in the db.
+     * This is necessary to avoid repeated lookups if $text column is NULL in the db.
      * @var        boolean
      */
     protected $text_isLoaded = false;
@@ -81,31 +82,33 @@ abstract class BaseNewsletterPost extends BaseObject implements Persistent
 
     /**
      * Get the [id] column value.
-     *
-     * @return int
+     * 
+     * @return   int
      */
     public function getId()
     {
+
         return $this->id;
     }
 
     /**
      * Get the [newsletter_id] column value.
-     *
-     * @return int
+     * 
+     * @return   int
      */
     public function getNewsletterId()
     {
+
         return $this->newsletter_id;
     }
 
     /**
      * Get the [optionally formatted] temporal [date] column value.
+     * 
      *
-     *
-     * @param string $format The date/time format string (either date()-style or strftime()-style).
-     *				 If format is null, then the raw DateTime object will be returned.
-     * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00 00:00:00
+     * @param      string $format The date/time format string (either date()-style or strftime()-style).
+     *							If format is NULL, then the raw DateTime object will be returned.
+     * @return mixed Formatted date/time value as string or DateTime object (if format is NULL), NULL if column is NULL, and 0 if column value is 0000-00-00 00:00:00
      * @throws PropelException - if unable to parse/validate the date/time value.
      */
     public function getDate($format = '{d-m-Y H:i:s}')
@@ -114,8 +117,9 @@ abstract class BaseNewsletterPost extends BaseObject implements Persistent
             return null;
         }
 
+
         if ($this->date === '0000-00-00 00:00:00') {
-            // while technically this is not a default value of null,
+            // while technically this is not a default value of NULL,
             // this seems to be closest in meaning.
             return null;
         } else {
@@ -127,7 +131,7 @@ abstract class BaseNewsletterPost extends BaseObject implements Persistent
         }
 
         if ($format === null) {
-            // Because propel.useDateTimeClass is true, we return a DateTime object.
+            // Because propel.useDateTimeClass is TRUE, we return a DateTime object.
             return $dt;
         } elseif (strpos($format, '%') !== false) {
             return strftime($format, $dt->format('U'));
@@ -138,15 +142,16 @@ abstract class BaseNewsletterPost extends BaseObject implements Persistent
 
     /**
      * Get the [text] column value.
-     *
-     * @param PropelPDO $con An optional PropelPDO connection to use for fetching this lazy-loaded column.
-     * @return string
+     * 
+     * @param      PropelPDO $con An optional PropelPDO connection to use for fetching this lazy-loaded column.
+     * @return   string
      */
     public function getText(PropelPDO $con = null)
     {
         if (!$this->text_isLoaded && $this->text === null && !$this->isNew()) {
             $this->loadText($con);
         }
+
 
         return $this->text;
     }
@@ -178,9 +183,9 @@ abstract class BaseNewsletterPost extends BaseObject implements Persistent
     }
     /**
      * Set the value of [id] column.
-     *
-     * @param int $v new value
-     * @return NewsletterPost The current object (for fluent API support)
+     * 
+     * @param      int $v new value
+     * @return   NewsletterPost The current object (for fluent API support)
      */
     public function setId($v)
     {
@@ -199,9 +204,9 @@ abstract class BaseNewsletterPost extends BaseObject implements Persistent
 
     /**
      * Set the value of [newsletter_id] column.
-     *
-     * @param int $v new value
-     * @return NewsletterPost The current object (for fluent API support)
+     * 
+     * @param      int $v new value
+     * @return   NewsletterPost The current object (for fluent API support)
      */
     public function setNewsletterId($v)
     {
@@ -224,10 +229,10 @@ abstract class BaseNewsletterPost extends BaseObject implements Persistent
 
     /**
      * Sets the value of [date] column to a normalized version of the date/time value specified.
-     *
-     * @param mixed $v string, integer (timestamp), or DateTime value.
-     *               Empty strings are treated as null.
-     * @return NewsletterPost The current object (for fluent API support)
+     * 
+     * @param      mixed $v string, integer (timestamp), or DateTime value.
+     *               Empty strings are treated as NULL.
+     * @return   NewsletterPost The current object (for fluent API support)
      */
     public function setDate($v)
     {
@@ -247,9 +252,9 @@ abstract class BaseNewsletterPost extends BaseObject implements Persistent
 
     /**
      * Set the value of [text] column.
-     *
-     * @param string $v new value
-     * @return NewsletterPost The current object (for fluent API support)
+     * 
+     * @param      string $v new value
+     * @return   NewsletterPost The current object (for fluent API support)
      */
     public function setText($v)
     {
@@ -282,7 +287,7 @@ abstract class BaseNewsletterPost extends BaseObject implements Persistent
      */
     public function hasOnlyDefaultValues()
     {
-        // otherwise, everything was equal, so return true
+        // otherwise, everything was equal, so return TRUE
         return true;
     } // hasOnlyDefaultValues()
 
@@ -294,9 +299,9 @@ abstract class BaseNewsletterPost extends BaseObject implements Persistent
      * for results of JOIN queries where the resultset row includes columns from two or
      * more tables.
      *
-     * @param array $row The row returned by PDOStatement->fetch(PDO::FETCH_NUM)
-     * @param int $startcol 0-based offset column which indicates which restultset column to start with.
-     * @param boolean $rehydrate Whether this object is being re-hydrated from the database.
+     * @param      array $row The row returned by PDOStatement->fetch(PDO::FETCH_NUM)
+     * @param      int $startcol 0-based offset column which indicates which restultset column to start with.
+     * @param      boolean $rehydrate Whether this object is being re-hydrated from the database.
      * @return int             next starting column
      * @throws PropelException - Any caught Exception will be rewrapped as a PropelException.
      */
@@ -348,8 +353,8 @@ abstract class BaseNewsletterPost extends BaseObject implements Persistent
      *
      * This will only work if the object has been saved and has a valid primary key set.
      *
-     * @param boolean $deep (optional) Whether to also de-associated any related objects.
-     * @param PropelPDO $con (optional) The PropelPDO connection to use.
+     * @param      boolean $deep (optional) Whether to also de-associated any related objects.
+     * @param      PropelPDO $con (optional) The PropelPDO connection to use.
      * @return void
      * @throws PropelException - if this object is deleted, unsaved or doesn't have pk match in db
      */
@@ -391,7 +396,7 @@ abstract class BaseNewsletterPost extends BaseObject implements Persistent
     /**
      * Removes this object from datastore and sets delete attribute.
      *
-     * @param PropelPDO $con
+     * @param      PropelPDO $con
      * @return void
      * @throws PropelException
      * @throws Exception
@@ -435,7 +440,7 @@ abstract class BaseNewsletterPost extends BaseObject implements Persistent
      * method.  This method wraps all precipitate database operations in a
      * single transaction.
      *
-     * @param PropelPDO $con
+     * @param      PropelPDO $con
      * @return int             The number of rows affected by this insert/update and any referring fk objects' save() operations.
      * @throws PropelException
      * @throws Exception
@@ -487,7 +492,7 @@ abstract class BaseNewsletterPost extends BaseObject implements Persistent
      * If the object is new, it inserts it; otherwise an update is performed.
      * All related objects are also updated in this method.
      *
-     * @param PropelPDO $con
+     * @param      PropelPDO $con
      * @return int             The number of rows affected by this insert/update and any referring fk objects' save() operations.
      * @throws PropelException
      * @see        save()
@@ -531,7 +536,7 @@ abstract class BaseNewsletterPost extends BaseObject implements Persistent
     /**
      * Insert the row in the database.
      *
-     * @param PropelPDO $con
+     * @param      PropelPDO $con
      *
      * @throws PropelException
      * @see        doSave()
@@ -571,16 +576,16 @@ abstract class BaseNewsletterPost extends BaseObject implements Persistent
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
                     case '`ID`':
-                        $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
+						$stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
                     case '`NEWSLETTER_ID`':
-                        $stmt->bindValue($identifier, $this->newsletter_id, PDO::PARAM_INT);
+						$stmt->bindValue($identifier, $this->newsletter_id, PDO::PARAM_INT);
                         break;
                     case '`DATE`':
-                        $stmt->bindValue($identifier, $this->date, PDO::PARAM_STR);
+						$stmt->bindValue($identifier, $this->date, PDO::PARAM_STR);
                         break;
                     case '`TEXT`':
-                        $stmt->bindValue($identifier, $this->text, PDO::PARAM_STR);
+						$stmt->bindValue($identifier, $this->text, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -591,7 +596,7 @@ abstract class BaseNewsletterPost extends BaseObject implements Persistent
         }
 
         try {
-            $pk = $con->lastInsertId();
+			$pk = $con->lastInsertId();
         } catch (Exception $e) {
             throw new PropelException('Unable to get autoincrement id.', $e);
         }
@@ -603,7 +608,7 @@ abstract class BaseNewsletterPost extends BaseObject implements Persistent
     /**
      * Update the row in the database.
      *
-     * @param PropelPDO $con
+     * @param      PropelPDO $con
      *
      * @see        doSave()
      */
@@ -638,7 +643,7 @@ abstract class BaseNewsletterPost extends BaseObject implements Persistent
      * If $columns is either a column name or an array of column names
      * only those columns are validated.
      *
-     * @param mixed $columns Column name or an array of column names.
+     * @param      mixed $columns Column name or an array of column names.
      * @return boolean Whether all columns pass validation.
      * @see        doValidate()
      * @see        getValidationFailures()
@@ -664,7 +669,7 @@ abstract class BaseNewsletterPost extends BaseObject implements Persistent
      * also be validated.  If all pass then <code>true</code> is returned; otherwise
      * an aggreagated array of ValidationFailed objects will be returned.
      *
-     * @param array $columns Array of column names to validate.
+     * @param      array $columns Array of column names to validate.
      * @return mixed <code>true</code> if all validations pass; array of <code>ValidationFailed</code> objets otherwise.
      */
     protected function doValidate($columns = null)
@@ -703,11 +708,11 @@ abstract class BaseNewsletterPost extends BaseObject implements Persistent
     /**
      * Retrieves a field from the object by name passed in as a string.
      *
-     * @param string $name name
-     * @param string $type The type of fieldname the $name is of:
-     *               one of the class type constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME
-     *               BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM.
-     *               Defaults to BasePeer::TYPE_PHPNAME
+     * @param      string $name name
+     * @param      string $type The type of fieldname the $name is of:
+     *                     one of the class type constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME
+     *                     BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM.
+     *                     Defaults to BasePeer::TYPE_PHPNAME
      * @return mixed Value of field.
      */
     public function getByName($name, $type = BasePeer::TYPE_PHPNAME)
@@ -722,7 +727,7 @@ abstract class BaseNewsletterPost extends BaseObject implements Persistent
      * Retrieves a field from the object by Position as specified in the xml schema.
      * Zero-based.
      *
-     * @param int $pos position in xml schema
+     * @param      int $pos position in xml schema
      * @return mixed Value of field at $pos
      */
     public function getByPosition($pos)
@@ -755,7 +760,7 @@ abstract class BaseNewsletterPost extends BaseObject implements Persistent
      * @param     string  $keyType (optional) One of the class type constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME,
      *                    BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM.
      *                    Defaults to BasePeer::TYPE_PHPNAME.
-     * @param     boolean $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to true.
+     * @param     boolean $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to TRUE.
      * @param     array $alreadyDumpedObjects List of objects to skip to avoid recursion
      * @param     boolean $includeForeignObjects (optional) Whether to include hydrated related objects. Default to FALSE.
      *
@@ -786,9 +791,9 @@ abstract class BaseNewsletterPost extends BaseObject implements Persistent
     /**
      * Sets a field from the object by name passed in as a string.
      *
-     * @param string $name peer name
-     * @param mixed $value field value
-     * @param string $type The type of fieldname the $name is of:
+     * @param      string $name peer name
+     * @param      mixed $value field value
+     * @param      string $type The type of fieldname the $name is of:
      *                     one of the class type constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME
      *                     BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM.
      *                     Defaults to BasePeer::TYPE_PHPNAME
@@ -805,8 +810,8 @@ abstract class BaseNewsletterPost extends BaseObject implements Persistent
      * Sets a field from the object by Position as specified in the xml schema.
      * Zero-based.
      *
-     * @param int $pos position in xml schema
-     * @param mixed $value field value
+     * @param      int $pos position in xml schema
+     * @param      mixed $value field value
      * @return void
      */
     public function setByPosition($pos, $value)
@@ -840,8 +845,8 @@ abstract class BaseNewsletterPost extends BaseObject implements Persistent
      * BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM.
      * The default key type is the column's BasePeer::TYPE_PHPNAME
      *
-     * @param array  $arr     An array to populate the object from.
-     * @param string $keyType The type of keys the array uses.
+     * @param      array  $arr     An array to populate the object from.
+     * @param      string $keyType The type of keys the array uses.
      * @return void
      */
     public function fromArray($arr, $keyType = BasePeer::TYPE_PHPNAME)
@@ -889,7 +894,7 @@ abstract class BaseNewsletterPost extends BaseObject implements Persistent
 
     /**
      * Returns the primary key for this object (row).
-     * @return int
+     * @return   int
      */
     public function getPrimaryKey()
     {
@@ -899,7 +904,7 @@ abstract class BaseNewsletterPost extends BaseObject implements Persistent
     /**
      * Generic method to set the primary key (id column).
      *
-     * @param  int $key Primary key.
+     * @param       int $key Primary key.
      * @return void
      */
     public function setPrimaryKey($key)
@@ -923,9 +928,9 @@ abstract class BaseNewsletterPost extends BaseObject implements Persistent
      * If desired, this method can also make copies of all associated (fkey referrers)
      * objects.
      *
-     * @param object $copyObj An object of NewsletterPost (or compatible) type.
-     * @param boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
-     * @param boolean $makeNew Whether to reset autoincrement PKs and make the object new.
+     * @param      object $copyObj An object of NewsletterPost (or compatible) type.
+     * @param      boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
+     * @param      boolean $makeNew Whether to reset autoincrement PKs and make the object new.
      * @throws PropelException
      */
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
@@ -959,8 +964,8 @@ abstract class BaseNewsletterPost extends BaseObject implements Persistent
      * If desired, this method can also make copies of all associated (fkey referrers)
      * objects.
      *
-     * @param boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
-     * @return NewsletterPost Clone of current object.
+     * @param      boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
+     * @return                 NewsletterPost Clone of current object.
      * @throws PropelException
      */
     public function copy($deepCopy = false)
@@ -980,7 +985,7 @@ abstract class BaseNewsletterPost extends BaseObject implements Persistent
      * same instance for all member of this class. The method could therefore
      * be static, but this would prevent one from overriding the behavior.
      *
-     * @return NewsletterPostPeer
+     * @return   NewsletterPostPeer
      */
     public function getPeer()
     {
@@ -994,8 +999,8 @@ abstract class BaseNewsletterPost extends BaseObject implements Persistent
     /**
      * Declares an association between this object and a Newsletter object.
      *
-     * @param             Newsletter $v
-     * @return NewsletterPost The current object (for fluent API support)
+     * @param                  Newsletter $v
+     * @return                 NewsletterPost The current object (for fluent API support)
      * @throws PropelException
      */
     public function setNewsletter(Newsletter $v = null)
@@ -1022,8 +1027,8 @@ abstract class BaseNewsletterPost extends BaseObject implements Persistent
     /**
      * Get the associated Newsletter object
      *
-     * @param PropelPDO $con Optional Connection object.
-     * @return Newsletter The associated Newsletter object.
+     * @param      PropelPDO $con Optional Connection object.
+     * @return                 Newsletter The associated Newsletter object.
      * @throws PropelException
      */
     public function getNewsletter(PropelPDO $con = null)
@@ -1067,7 +1072,7 @@ abstract class BaseNewsletterPost extends BaseObject implements Persistent
      * objects with circular references (even in PHP 5.3). This is currently necessary
      * when using Propel in certain daemon or large-volumne/high-memory operations.
      *
-     * @param boolean $deep Whether to also clear the references on all referrer objects.
+     * @param      boolean $deep Whether to also clear the references on all referrer objects.
      */
     public function clearAllReferences($deep = false)
     {
@@ -1078,7 +1083,7 @@ abstract class BaseNewsletterPost extends BaseObject implements Persistent
     }
 
     /**
-     * return the string representation of this object
+     * Return the string representation of this object
      *
      * @return string
      */
@@ -1087,14 +1092,4 @@ abstract class BaseNewsletterPost extends BaseObject implements Persistent
         return (string) $this->exportTo(NewsletterPostPeer::DEFAULT_STRING_FORMAT);
     }
 
-    /**
-     * return true is the object is in saving state
-     *
-     * @return boolean
-     */
-    public function isAlreadyInSave()
-    {
-        return $this->alreadyInSave;
-    }
-
-}
+} // BaseNewsletterPost

@@ -18,10 +18,6 @@ function configure() {
 
 function before($route) {
 
-    if (isset($_GET['disconnect']) && $_GET['disconnect']) {
-        disconnection();
-    }
-
     try_autoconnect();
 
     if (stristr($route['callback'], 'admin')) {

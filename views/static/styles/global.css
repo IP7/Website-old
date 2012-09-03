@@ -21,17 +21,23 @@ a {
     border:none;
 }
 
-/* -- Colors ---------------------------------------------- */
-
-#global_header { background-color: #EEE; }
 body { background-color: #FAFAFA; }
 
 /* == Main content ======================================== */
 
-#main_content { display:table; }
+#main_content {
+    display:table;
+    width:100%;
+    padding: 0 40px 20px 40px;
+}
 #main_content > aside,
 #main_content > article {
+    color: #222;
     display:table-cell;
+}
+
+#main_content > article {
+    text-align:left;
 }
 
 /* == Code ================================================ */
@@ -58,16 +64,19 @@ pre {
 
 .bar ul,
 .bar li,
+.bar form,
 .bar nav {
     display: inline-block;
 }
 
-.bar ul { padding-left:inherit; }
+.bar ul { padding-left: inherit; }
 
 .navlink abbr {
     outline:none;
     border:none;
 }
+
+.bar a { color: inherit; }
 
 /* == Breadcrumbs ========================================= */
 
@@ -77,6 +86,7 @@ pre {
 
 #breadcrumbs li {
     display:inline-block;
+    font-size:0.9em;
 }
 
 /* == Forms =============================================== */
@@ -132,8 +142,8 @@ input[type="reset"]:active {
 }
 
 label.hidden.explicit {
-    display:inline-block;
     width:0;
+    height:0;
     overflow:hidden;
     margin:0;
 }
@@ -153,6 +163,14 @@ form label,
     position:relative;
     width:100%;
 
+    background-color: #EEE;
+
+    -webkit-box-shadow: 0 1px 4px #CCC;
+       -moz-box-shadow: 0 1px 4px #CCC;
+        -ms-box-shadow: 0 1px 4px #CCC;
+         -o-box-shadow: 0 1px 4px #CCC;
+            box-shadow: 0 1px 4px #CCC;
+
     max-height:60px;
 }
 
@@ -160,18 +178,62 @@ form label,
     text-decoration:none;
 }
 
-#global_nav {
+#global_header_nav {
     width:100%;
     display: table;
+    white-space:nowrap;
+    padding:0;
 }
 
-#global_nav .nav-group,
-#global_nav .buffer,
+#main_logo_link,
+#cursus_nav,
+#others_nav,
 #search {
-    min-width:10%;
-    display-table-cell;
+    vertical-align:middle;
+    display:table-cell;
 }
 
-#search {
-    margin-left: 20px;
+#main_logo_link {
+    width: 32px;
 }
+
+#cursus_nav {
+    padding-left:20px;
+}
+
+#others_nav,
+#search {
+    text-align:right;
+}
+#search {
+    width:250px;
+    padding-left:16px;
+    padding-right:16px;
+}
+
+/* == Footers ============================================= */
+
+/* -- Main Footer ----------------------------------------- */
+
+#global_footer {
+    margin-top:40px;
+    text-align:center;
+    font-size:0.8em;
+}
+
+#global_footer_nav ul {
+    margin:0;
+}
+
+#global_footer_nav li {
+    margin-top:4px;
+}
+
+#global_footer_nav a {
+    text-decoration:inherit;
+}
+
+#global_footer_nav li + li:before {
+    content:"‑ ";    
+}
+

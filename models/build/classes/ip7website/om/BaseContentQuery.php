@@ -4,95 +4,96 @@
 /**
  * Base class that represents a query for the 'contents' table.
  *
+ * 
  *
+ * @method     ContentQuery orderById($order = Criteria::ASC) Order by the id column
+ * @method     ContentQuery orderByAuthorId($order = Criteria::ASC) Order by the author_id column
+ * @method     ContentQuery orderByContentTypeId($order = Criteria::ASC) Order by the content_type_id column
+ * @method     ContentQuery orderByDate($order = Criteria::ASC) Order by the date column
+ * @method     ContentQuery orderByAccessRights($order = Criteria::ASC) Order by the access_rights column
+ * @method     ContentQuery orderByValidated($order = Criteria::ASC) Order by the validated column
+ * @method     ContentQuery orderByTitle($order = Criteria::ASC) Order by the title column
+ * @method     ContentQuery orderByText($order = Criteria::ASC) Order by the text column
+ * @method     ContentQuery orderByCursusId($order = Criteria::ASC) Order by the cursus_id column
+ * @method     ContentQuery orderByCourseId($order = Criteria::ASC) Order by the course_id column
  *
- * @method ContentQuery orderById($order = Criteria::ASC) Order by the id column
- * @method ContentQuery orderByAuthorId($order = Criteria::ASC) Order by the author_id column
- * @method ContentQuery orderByContentTypeId($order = Criteria::ASC) Order by the content_type_id column
- * @method ContentQuery orderByDate($order = Criteria::ASC) Order by the date column
- * @method ContentQuery orderByAccessRights($order = Criteria::ASC) Order by the access_rights column
- * @method ContentQuery orderByValidated($order = Criteria::ASC) Order by the validated column
- * @method ContentQuery orderByTitle($order = Criteria::ASC) Order by the title column
- * @method ContentQuery orderByText($order = Criteria::ASC) Order by the text column
- * @method ContentQuery orderByCursusId($order = Criteria::ASC) Order by the cursus_id column
- * @method ContentQuery orderByCourseId($order = Criteria::ASC) Order by the course_id column
+ * @method     ContentQuery groupById() Group by the id column
+ * @method     ContentQuery groupByAuthorId() Group by the author_id column
+ * @method     ContentQuery groupByContentTypeId() Group by the content_type_id column
+ * @method     ContentQuery groupByDate() Group by the date column
+ * @method     ContentQuery groupByAccessRights() Group by the access_rights column
+ * @method     ContentQuery groupByValidated() Group by the validated column
+ * @method     ContentQuery groupByTitle() Group by the title column
+ * @method     ContentQuery groupByText() Group by the text column
+ * @method     ContentQuery groupByCursusId() Group by the cursus_id column
+ * @method     ContentQuery groupByCourseId() Group by the course_id column
  *
- * @method ContentQuery groupById() Group by the id column
- * @method ContentQuery groupByAuthorId() Group by the author_id column
- * @method ContentQuery groupByContentTypeId() Group by the content_type_id column
- * @method ContentQuery groupByDate() Group by the date column
- * @method ContentQuery groupByAccessRights() Group by the access_rights column
- * @method ContentQuery groupByValidated() Group by the validated column
- * @method ContentQuery groupByTitle() Group by the title column
- * @method ContentQuery groupByText() Group by the text column
- * @method ContentQuery groupByCursusId() Group by the cursus_id column
- * @method ContentQuery groupByCourseId() Group by the course_id column
+ * @method     ContentQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
+ * @method     ContentQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
+ * @method     ContentQuery innerJoin($relation) Adds a INNER JOIN clause to the query
  *
- * @method ContentQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
- * @method ContentQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
- * @method ContentQuery innerJoin($relation) Adds a INNER JOIN clause to the query
+ * @method     ContentQuery leftJoinAuthor($relationAlias = null) Adds a LEFT JOIN clause to the query using the Author relation
+ * @method     ContentQuery rightJoinAuthor($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Author relation
+ * @method     ContentQuery innerJoinAuthor($relationAlias = null) Adds a INNER JOIN clause to the query using the Author relation
  *
- * @method ContentQuery leftJoinAuthor($relationAlias = null) Adds a LEFT JOIN clause to the query using the Author relation
- * @method ContentQuery rightJoinAuthor($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Author relation
- * @method ContentQuery innerJoinAuthor($relationAlias = null) Adds a INNER JOIN clause to the query using the Author relation
+ * @method     ContentQuery leftJoinCursus($relationAlias = null) Adds a LEFT JOIN clause to the query using the Cursus relation
+ * @method     ContentQuery rightJoinCursus($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Cursus relation
+ * @method     ContentQuery innerJoinCursus($relationAlias = null) Adds a INNER JOIN clause to the query using the Cursus relation
  *
- * @method ContentQuery leftJoinCursus($relationAlias = null) Adds a LEFT JOIN clause to the query using the Cursus relation
- * @method ContentQuery rightJoinCursus($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Cursus relation
- * @method ContentQuery innerJoinCursus($relationAlias = null) Adds a INNER JOIN clause to the query using the Cursus relation
+ * @method     ContentQuery leftJoinCourse($relationAlias = null) Adds a LEFT JOIN clause to the query using the Course relation
+ * @method     ContentQuery rightJoinCourse($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Course relation
+ * @method     ContentQuery innerJoinCourse($relationAlias = null) Adds a INNER JOIN clause to the query using the Course relation
  *
- * @method ContentQuery leftJoinCourse($relationAlias = null) Adds a LEFT JOIN clause to the query using the Course relation
- * @method ContentQuery rightJoinCourse($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Course relation
- * @method ContentQuery innerJoinCourse($relationAlias = null) Adds a INNER JOIN clause to the query using the Course relation
+ * @method     ContentQuery leftJoinContentType($relationAlias = null) Adds a LEFT JOIN clause to the query using the ContentType relation
+ * @method     ContentQuery rightJoinContentType($relationAlias = null) Adds a RIGHT JOIN clause to the query using the ContentType relation
+ * @method     ContentQuery innerJoinContentType($relationAlias = null) Adds a INNER JOIN clause to the query using the ContentType relation
  *
- * @method ContentQuery leftJoinContentType($relationAlias = null) Adds a LEFT JOIN clause to the query using the ContentType relation
- * @method ContentQuery rightJoinContentType($relationAlias = null) Adds a RIGHT JOIN clause to the query using the ContentType relation
- * @method ContentQuery innerJoinContentType($relationAlias = null) Adds a INNER JOIN clause to the query using the ContentType relation
+ * @method     ContentQuery leftJoinContentsFiles($relationAlias = null) Adds a LEFT JOIN clause to the query using the ContentsFiles relation
+ * @method     ContentQuery rightJoinContentsFiles($relationAlias = null) Adds a RIGHT JOIN clause to the query using the ContentsFiles relation
+ * @method     ContentQuery innerJoinContentsFiles($relationAlias = null) Adds a INNER JOIN clause to the query using the ContentsFiles relation
  *
- * @method ContentQuery leftJoinContentsFiles($relationAlias = null) Adds a LEFT JOIN clause to the query using the ContentsFiles relation
- * @method ContentQuery rightJoinContentsFiles($relationAlias = null) Adds a RIGHT JOIN clause to the query using the ContentsFiles relation
- * @method ContentQuery innerJoinContentsFiles($relationAlias = null) Adds a INNER JOIN clause to the query using the ContentsFiles relation
+ * @method     ContentQuery leftJoinComment($relationAlias = null) Adds a LEFT JOIN clause to the query using the Comment relation
+ * @method     ContentQuery rightJoinComment($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Comment relation
+ * @method     ContentQuery innerJoinComment($relationAlias = null) Adds a INNER JOIN clause to the query using the Comment relation
  *
- * @method ContentQuery leftJoinComment($relationAlias = null) Adds a LEFT JOIN clause to the query using the Comment relation
- * @method ContentQuery rightJoinComment($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Comment relation
- * @method ContentQuery innerJoinComment($relationAlias = null) Adds a INNER JOIN clause to the query using the Comment relation
+ * @method     ContentQuery leftJoinContentsTags($relationAlias = null) Adds a LEFT JOIN clause to the query using the ContentsTags relation
+ * @method     ContentQuery rightJoinContentsTags($relationAlias = null) Adds a RIGHT JOIN clause to the query using the ContentsTags relation
+ * @method     ContentQuery innerJoinContentsTags($relationAlias = null) Adds a INNER JOIN clause to the query using the ContentsTags relation
  *
- * @method ContentQuery leftJoinContentsTags($relationAlias = null) Adds a LEFT JOIN clause to the query using the ContentsTags relation
- * @method ContentQuery rightJoinContentsTags($relationAlias = null) Adds a RIGHT JOIN clause to the query using the ContentsTags relation
- * @method ContentQuery innerJoinContentsTags($relationAlias = null) Adds a INNER JOIN clause to the query using the ContentsTags relation
+ * @method     ContentQuery leftJoinReport($relationAlias = null) Adds a LEFT JOIN clause to the query using the Report relation
+ * @method     ContentQuery rightJoinReport($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Report relation
+ * @method     ContentQuery innerJoinReport($relationAlias = null) Adds a INNER JOIN clause to the query using the Report relation
  *
- * @method ContentQuery leftJoinReport($relationAlias = null) Adds a LEFT JOIN clause to the query using the Report relation
- * @method ContentQuery rightJoinReport($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Report relation
- * @method ContentQuery innerJoinReport($relationAlias = null) Adds a INNER JOIN clause to the query using the Report relation
+ * @method     Content findOne(PropelPDO $con = null) Return the first Content matching the query
+ * @method     Content findOneOrCreate(PropelPDO $con = null) Return the first Content matching the query, or a new Content object populated from the query conditions when no match is found
  *
- * @method Content findOne(PropelPDO $con = null) Return the first Content matching the query
- * @method Content findOneOrCreate(PropelPDO $con = null) Return the first Content matching the query, or a new Content object populated from the query conditions when no match is found
+ * @method     Content findOneById(int $id) Return the first Content filtered by the id column
+ * @method     Content findOneByAuthorId(int $author_id) Return the first Content filtered by the author_id column
+ * @method     Content findOneByContentTypeId(int $content_type_id) Return the first Content filtered by the content_type_id column
+ * @method     Content findOneByDate(string $date) Return the first Content filtered by the date column
+ * @method     Content findOneByAccessRights(int $access_rights) Return the first Content filtered by the access_rights column
+ * @method     Content findOneByValidated(boolean $validated) Return the first Content filtered by the validated column
+ * @method     Content findOneByTitle(string $title) Return the first Content filtered by the title column
+ * @method     Content findOneByText(string $text) Return the first Content filtered by the text column
+ * @method     Content findOneByCursusId(int $cursus_id) Return the first Content filtered by the cursus_id column
+ * @method     Content findOneByCourseId(int $course_id) Return the first Content filtered by the course_id column
  *
- * @method Content findOneById(int $id) Return the first Content filtered by the id column
- * @method Content findOneByAuthorId(int $author_id) Return the first Content filtered by the author_id column
- * @method Content findOneByContentTypeId(int $content_type_id) Return the first Content filtered by the content_type_id column
- * @method Content findOneByDate(string $date) Return the first Content filtered by the date column
- * @method Content findOneByAccessRights(int $access_rights) Return the first Content filtered by the access_rights column
- * @method Content findOneByValidated(boolean $validated) Return the first Content filtered by the validated column
- * @method Content findOneByTitle(string $title) Return the first Content filtered by the title column
- * @method Content findOneByText(string $text) Return the first Content filtered by the text column
- * @method Content findOneByCursusId(int $cursus_id) Return the first Content filtered by the cursus_id column
- * @method Content findOneByCourseId(int $course_id) Return the first Content filtered by the course_id column
- *
- * @method array findById(int $id) Return Content objects filtered by the id column
- * @method array findByAuthorId(int $author_id) Return Content objects filtered by the author_id column
- * @method array findByContentTypeId(int $content_type_id) Return Content objects filtered by the content_type_id column
- * @method array findByDate(string $date) Return Content objects filtered by the date column
- * @method array findByAccessRights(int $access_rights) Return Content objects filtered by the access_rights column
- * @method array findByValidated(boolean $validated) Return Content objects filtered by the validated column
- * @method array findByTitle(string $title) Return Content objects filtered by the title column
- * @method array findByText(string $text) Return Content objects filtered by the text column
- * @method array findByCursusId(int $cursus_id) Return Content objects filtered by the cursus_id column
- * @method array findByCourseId(int $course_id) Return Content objects filtered by the course_id column
+ * @method     array findById(int $id) Return Content objects filtered by the id column
+ * @method     array findByAuthorId(int $author_id) Return Content objects filtered by the author_id column
+ * @method     array findByContentTypeId(int $content_type_id) Return Content objects filtered by the content_type_id column
+ * @method     array findByDate(string $date) Return Content objects filtered by the date column
+ * @method     array findByAccessRights(int $access_rights) Return Content objects filtered by the access_rights column
+ * @method     array findByValidated(boolean $validated) Return Content objects filtered by the validated column
+ * @method     array findByTitle(string $title) Return Content objects filtered by the title column
+ * @method     array findByText(string $text) Return Content objects filtered by the text column
+ * @method     array findByCursusId(int $cursus_id) Return Content objects filtered by the cursus_id column
+ * @method     array findByCourseId(int $course_id) Return Content objects filtered by the course_id column
  *
  * @package    propel.generator.ip7website.om
  */
 abstract class BaseContentQuery extends ModelCriteria
 {
+    
     /**
      * Initializes internal state of BaseContentQuery object.
      *
@@ -138,7 +139,7 @@ abstract class BaseContentQuery extends ModelCriteria
      * $obj  = $c->findPk(12, $con);
      * </code>
      *
-     * @param mixed $key Primary key to use for the query
+     * @param mixed $key Primary key to use for the query 
      * @param     PropelPDO $con an optional connection object
      *
      * @return   Content|Content[]|mixed the result, formatted by the current formatter
@@ -180,7 +181,7 @@ abstract class BaseContentQuery extends ModelCriteria
         $sql = 'SELECT `ID`, `AUTHOR_ID`, `CONTENT_TYPE_ID`, `DATE`, `ACCESS_RIGHTS`, `VALIDATED`, `TITLE`, `CURSUS_ID`, `COURSE_ID` FROM `contents` WHERE `ID` = :p0';
         try {
             $stmt = $con->prepare($sql);
-            $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
+			$stmt->bindValue(':p0', $key, PDO::PARAM_INT);
             $stmt->execute();
         } catch (Exception $e) {
             Propel::log($e->getMessage(), Propel::LOG_ERR);
@@ -1284,4 +1285,4 @@ abstract class BaseContentQuery extends ModelCriteria
         return $this;
     }
 
-}
+} // BaseContentQuery

@@ -4,47 +4,48 @@
 /**
  * Base class that represents a query for the 'transactions' table.
  *
+ * 
  *
+ * @method     TransactionQuery orderById($order = Criteria::ASC) Order by the id column
+ * @method     TransactionQuery orderByDescription($order = Criteria::ASC) Order by the description column
+ * @method     TransactionQuery orderByAmount($order = Criteria::ASC) Order by the amount column
+ * @method     TransactionQuery orderByUserId($order = Criteria::ASC) Order by the user_id column
+ * @method     TransactionQuery orderByValidated($order = Criteria::ASC) Order by the validated column
  *
- * @method TransactionQuery orderById($order = Criteria::ASC) Order by the id column
- * @method TransactionQuery orderByDescription($order = Criteria::ASC) Order by the description column
- * @method TransactionQuery orderByAmount($order = Criteria::ASC) Order by the amount column
- * @method TransactionQuery orderByUserId($order = Criteria::ASC) Order by the user_id column
- * @method TransactionQuery orderByValidated($order = Criteria::ASC) Order by the validated column
+ * @method     TransactionQuery groupById() Group by the id column
+ * @method     TransactionQuery groupByDescription() Group by the description column
+ * @method     TransactionQuery groupByAmount() Group by the amount column
+ * @method     TransactionQuery groupByUserId() Group by the user_id column
+ * @method     TransactionQuery groupByValidated() Group by the validated column
  *
- * @method TransactionQuery groupById() Group by the id column
- * @method TransactionQuery groupByDescription() Group by the description column
- * @method TransactionQuery groupByAmount() Group by the amount column
- * @method TransactionQuery groupByUserId() Group by the user_id column
- * @method TransactionQuery groupByValidated() Group by the validated column
+ * @method     TransactionQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
+ * @method     TransactionQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
+ * @method     TransactionQuery innerJoin($relation) Adds a INNER JOIN clause to the query
  *
- * @method TransactionQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
- * @method TransactionQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
- * @method TransactionQuery innerJoin($relation) Adds a INNER JOIN clause to the query
+ * @method     TransactionQuery leftJoinUser($relationAlias = null) Adds a LEFT JOIN clause to the query using the User relation
+ * @method     TransactionQuery rightJoinUser($relationAlias = null) Adds a RIGHT JOIN clause to the query using the User relation
+ * @method     TransactionQuery innerJoinUser($relationAlias = null) Adds a INNER JOIN clause to the query using the User relation
  *
- * @method TransactionQuery leftJoinUser($relationAlias = null) Adds a LEFT JOIN clause to the query using the User relation
- * @method TransactionQuery rightJoinUser($relationAlias = null) Adds a RIGHT JOIN clause to the query using the User relation
- * @method TransactionQuery innerJoinUser($relationAlias = null) Adds a INNER JOIN clause to the query using the User relation
+ * @method     Transaction findOne(PropelPDO $con = null) Return the first Transaction matching the query
+ * @method     Transaction findOneOrCreate(PropelPDO $con = null) Return the first Transaction matching the query, or a new Transaction object populated from the query conditions when no match is found
  *
- * @method Transaction findOne(PropelPDO $con = null) Return the first Transaction matching the query
- * @method Transaction findOneOrCreate(PropelPDO $con = null) Return the first Transaction matching the query, or a new Transaction object populated from the query conditions when no match is found
+ * @method     Transaction findOneById(int $id) Return the first Transaction filtered by the id column
+ * @method     Transaction findOneByDescription(string $description) Return the first Transaction filtered by the description column
+ * @method     Transaction findOneByAmount(double $amount) Return the first Transaction filtered by the amount column
+ * @method     Transaction findOneByUserId(int $user_id) Return the first Transaction filtered by the user_id column
+ * @method     Transaction findOneByValidated(boolean $validated) Return the first Transaction filtered by the validated column
  *
- * @method Transaction findOneById(int $id) Return the first Transaction filtered by the id column
- * @method Transaction findOneByDescription(string $description) Return the first Transaction filtered by the description column
- * @method Transaction findOneByAmount(double $amount) Return the first Transaction filtered by the amount column
- * @method Transaction findOneByUserId(int $user_id) Return the first Transaction filtered by the user_id column
- * @method Transaction findOneByValidated(boolean $validated) Return the first Transaction filtered by the validated column
- *
- * @method array findById(int $id) Return Transaction objects filtered by the id column
- * @method array findByDescription(string $description) Return Transaction objects filtered by the description column
- * @method array findByAmount(double $amount) Return Transaction objects filtered by the amount column
- * @method array findByUserId(int $user_id) Return Transaction objects filtered by the user_id column
- * @method array findByValidated(boolean $validated) Return Transaction objects filtered by the validated column
+ * @method     array findById(int $id) Return Transaction objects filtered by the id column
+ * @method     array findByDescription(string $description) Return Transaction objects filtered by the description column
+ * @method     array findByAmount(double $amount) Return Transaction objects filtered by the amount column
+ * @method     array findByUserId(int $user_id) Return Transaction objects filtered by the user_id column
+ * @method     array findByValidated(boolean $validated) Return Transaction objects filtered by the validated column
  *
  * @package    propel.generator.ip7website.om
  */
 abstract class BaseTransactionQuery extends ModelCriteria
 {
+    
     /**
      * Initializes internal state of BaseTransactionQuery object.
      *
@@ -90,7 +91,7 @@ abstract class BaseTransactionQuery extends ModelCriteria
      * $obj  = $c->findPk(12, $con);
      * </code>
      *
-     * @param mixed $key Primary key to use for the query
+     * @param mixed $key Primary key to use for the query 
      * @param     PropelPDO $con an optional connection object
      *
      * @return   Transaction|Transaction[]|mixed the result, formatted by the current formatter
@@ -132,7 +133,7 @@ abstract class BaseTransactionQuery extends ModelCriteria
         $sql = 'SELECT `ID`, `DESCRIPTION`, `AMOUNT`, `USER_ID`, `VALIDATED` FROM `transactions` WHERE `ID` = :p0';
         try {
             $stmt = $con->prepare($sql);
-            $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
+			$stmt->bindValue(':p0', $key, PDO::PARAM_INT);
             $stmt->execute();
         } catch (Exception $e) {
             Propel::log($e->getMessage(), Propel::LOG_ERR);
@@ -477,4 +478,4 @@ abstract class BaseTransactionQuery extends ModelCriteria
         return $this;
     }
 
-}
+} // BaseTransactionQuery

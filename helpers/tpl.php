@@ -31,20 +31,37 @@ function array_merge_recursive_new() {
 # i.e. connected or not
 function global_menu_links() {
 
-    $others_links = (!is_connected()
-        ? array(array( 'href' => Config::$root_uri.'connexion', 'title' => 'Connexion' ))
-        : array(
-                array( 'href' => Config::$root_uri.'forum',     'title' => 'Forum' ),
-                array( 'href' => Config::$root_uri.'profile',   'title' => 'Mon Profil'),
-                array( 'href' => '?disconnect=1',               'title' => 'Déconnexion')
-        )
-    );
+    $others_links = array();
+    $connection_button = array();
+
+    if (is_connected()) {
+
+        $others_links = array(
+        #    array( 'href' => Config::$root_uri.'forum',     'title' => 'Forum' ),
+            array( 'href' => Config::$root_uri.'profile',   'title' => 'Mon Profil'),
+        );
+
+        $connection_button['title']  = 'Déconnexion';
+        $connection_button['method'] = 'POST';
+        $connection_button['action'] = Config::$root_uri;
+        $connection_button['params'] = array(
+            array( 'name' => 'disconnect', 'value' => 1 ),
+            array( 'name' => 'u',          'value' => config_url() )
+        );
+
+    }
+    else {
+        $connection_button['title'] = 'Connexion';
+        $connection_button['method'] = 'GET';
+        $connection_button['action'] = Config::$root_uri.'connexion';
+    }
 
     return array(
         'site' => array(
             'global_links' => array(
                 'others' => $others_links
-            )
+            ),
+            'connection_button' => $connection_button
         )
     );
 }

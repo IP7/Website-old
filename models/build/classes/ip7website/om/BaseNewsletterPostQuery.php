@@ -4,43 +4,44 @@
 /**
  * Base class that represents a query for the 'newsletters_posts' table.
  *
+ * 
  *
+ * @method     NewsletterPostQuery orderById($order = Criteria::ASC) Order by the id column
+ * @method     NewsletterPostQuery orderByNewsletterId($order = Criteria::ASC) Order by the newsletter_id column
+ * @method     NewsletterPostQuery orderByDate($order = Criteria::ASC) Order by the date column
+ * @method     NewsletterPostQuery orderByText($order = Criteria::ASC) Order by the text column
  *
- * @method NewsletterPostQuery orderById($order = Criteria::ASC) Order by the id column
- * @method NewsletterPostQuery orderByNewsletterId($order = Criteria::ASC) Order by the newsletter_id column
- * @method NewsletterPostQuery orderByDate($order = Criteria::ASC) Order by the date column
- * @method NewsletterPostQuery orderByText($order = Criteria::ASC) Order by the text column
+ * @method     NewsletterPostQuery groupById() Group by the id column
+ * @method     NewsletterPostQuery groupByNewsletterId() Group by the newsletter_id column
+ * @method     NewsletterPostQuery groupByDate() Group by the date column
+ * @method     NewsletterPostQuery groupByText() Group by the text column
  *
- * @method NewsletterPostQuery groupById() Group by the id column
- * @method NewsletterPostQuery groupByNewsletterId() Group by the newsletter_id column
- * @method NewsletterPostQuery groupByDate() Group by the date column
- * @method NewsletterPostQuery groupByText() Group by the text column
+ * @method     NewsletterPostQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
+ * @method     NewsletterPostQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
+ * @method     NewsletterPostQuery innerJoin($relation) Adds a INNER JOIN clause to the query
  *
- * @method NewsletterPostQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
- * @method NewsletterPostQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
- * @method NewsletterPostQuery innerJoin($relation) Adds a INNER JOIN clause to the query
+ * @method     NewsletterPostQuery leftJoinNewsletter($relationAlias = null) Adds a LEFT JOIN clause to the query using the Newsletter relation
+ * @method     NewsletterPostQuery rightJoinNewsletter($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Newsletter relation
+ * @method     NewsletterPostQuery innerJoinNewsletter($relationAlias = null) Adds a INNER JOIN clause to the query using the Newsletter relation
  *
- * @method NewsletterPostQuery leftJoinNewsletter($relationAlias = null) Adds a LEFT JOIN clause to the query using the Newsletter relation
- * @method NewsletterPostQuery rightJoinNewsletter($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Newsletter relation
- * @method NewsletterPostQuery innerJoinNewsletter($relationAlias = null) Adds a INNER JOIN clause to the query using the Newsletter relation
+ * @method     NewsletterPost findOne(PropelPDO $con = null) Return the first NewsletterPost matching the query
+ * @method     NewsletterPost findOneOrCreate(PropelPDO $con = null) Return the first NewsletterPost matching the query, or a new NewsletterPost object populated from the query conditions when no match is found
  *
- * @method NewsletterPost findOne(PropelPDO $con = null) Return the first NewsletterPost matching the query
- * @method NewsletterPost findOneOrCreate(PropelPDO $con = null) Return the first NewsletterPost matching the query, or a new NewsletterPost object populated from the query conditions when no match is found
+ * @method     NewsletterPost findOneById(int $id) Return the first NewsletterPost filtered by the id column
+ * @method     NewsletterPost findOneByNewsletterId(int $newsletter_id) Return the first NewsletterPost filtered by the newsletter_id column
+ * @method     NewsletterPost findOneByDate(string $date) Return the first NewsletterPost filtered by the date column
+ * @method     NewsletterPost findOneByText(string $text) Return the first NewsletterPost filtered by the text column
  *
- * @method NewsletterPost findOneById(int $id) Return the first NewsletterPost filtered by the id column
- * @method NewsletterPost findOneByNewsletterId(int $newsletter_id) Return the first NewsletterPost filtered by the newsletter_id column
- * @method NewsletterPost findOneByDate(string $date) Return the first NewsletterPost filtered by the date column
- * @method NewsletterPost findOneByText(string $text) Return the first NewsletterPost filtered by the text column
- *
- * @method array findById(int $id) Return NewsletterPost objects filtered by the id column
- * @method array findByNewsletterId(int $newsletter_id) Return NewsletterPost objects filtered by the newsletter_id column
- * @method array findByDate(string $date) Return NewsletterPost objects filtered by the date column
- * @method array findByText(string $text) Return NewsletterPost objects filtered by the text column
+ * @method     array findById(int $id) Return NewsletterPost objects filtered by the id column
+ * @method     array findByNewsletterId(int $newsletter_id) Return NewsletterPost objects filtered by the newsletter_id column
+ * @method     array findByDate(string $date) Return NewsletterPost objects filtered by the date column
+ * @method     array findByText(string $text) Return NewsletterPost objects filtered by the text column
  *
  * @package    propel.generator.ip7website.om
  */
 abstract class BaseNewsletterPostQuery extends ModelCriteria
 {
+    
     /**
      * Initializes internal state of BaseNewsletterPostQuery object.
      *
@@ -86,7 +87,7 @@ abstract class BaseNewsletterPostQuery extends ModelCriteria
      * $obj  = $c->findPk(12, $con);
      * </code>
      *
-     * @param mixed $key Primary key to use for the query
+     * @param mixed $key Primary key to use for the query 
      * @param     PropelPDO $con an optional connection object
      *
      * @return   NewsletterPost|NewsletterPost[]|mixed the result, formatted by the current formatter
@@ -128,7 +129,7 @@ abstract class BaseNewsletterPostQuery extends ModelCriteria
         $sql = 'SELECT `ID`, `NEWSLETTER_ID`, `DATE` FROM `newsletters_posts` WHERE `ID` = :p0';
         try {
             $stmt = $con->prepare($sql);
-            $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
+			$stmt->bindValue(':p0', $key, PDO::PARAM_INT);
             $stmt->execute();
         } catch (Exception $e) {
             Propel::log($e->getMessage(), Propel::LOG_ERR);
@@ -448,4 +449,4 @@ abstract class BaseNewsletterPostQuery extends ModelCriteria
         return $this;
     }
 
-}
+} // BaseNewsletterPostQuery

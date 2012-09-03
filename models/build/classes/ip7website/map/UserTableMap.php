@@ -52,7 +52,6 @@ class UserTableMap extends TableMap
 ));
         $this->addColumn('EMAIL', 'Email', 'VARCHAR', true, 255, null);
         $this->addColumn('PHONE', 'Phone', 'VARCHAR', false, 20, null);
-        $this->addColumn('ADDRESS', 'Address', 'VARCHAR', false, 255, null);
         $this->addColumn('WEBSITE', 'Website', 'VARCHAR', false, 255, null);
         $this->addColumn('BIRTH_DATE', 'BirthDate', 'DATE', false, null, null);
         $this->addColumn('FIRST_ENTRY', 'FirstEntry', 'DATE', false, null, null);
@@ -65,7 +64,6 @@ class UserTableMap extends TableMap
         $this->addColumn('CONFIG_SHOW_REAL_NAME', 'ConfigShowRealName', 'BOOLEAN', false, 1, '1');
         $this->addColumn('CONFIG_SHOW_BIRTHDATE', 'ConfigShowBirthdate', 'BOOLEAN', false, 1, '0');
         $this->addColumn('CONFIG_SHOW_AGE', 'ConfigShowAge', 'BOOLEAN', false, 1, '1');
-        $this->addColumn('CONFIG_SHOW_ADDRESS', 'ConfigShowAddress', 'BOOLEAN', false, 1, '0');
         $this->addColumn('CONFIG_INDEX_PROFILE', 'ConfigIndexProfile', 'BOOLEAN', false, 1, '0');
         $this->addColumn('CONFIG_PRIVATE_PROFILE', 'ConfigPrivateProfile', 'BOOLEAN', false, 1, '0');
         $this->addColumn('DEACTIVATED', 'Deactivated', 'BOOLEAN', false, 1, '1');
