@@ -7,10 +7,10 @@
 
     <input type="hidden" name="MAX_FILE_SIZE" value="{{ site.avatar_max_size }}" />
     <label>Avatar&nbsp;:<input type="file" name="avatar" accept="image/gif,image/jpeg,image/png" />{#
-        #}<p class="microcopy">Une image <abbr>GIF</abbr>, <abbr>JPEG</abbr> ou <abbr>PNG</abbr>, max. 64 kio.</p></label>
-    <label>Site Web&nbsp;:<input type="url" name="website" placeholder="http://"{#
+        #}<p class="microcopy">Une image <abbr>GIF</abbr>, <abbr>JPEG</abbr> ou <abbr>PNG</abbr>, max 128x128 pixels et 64 kio.</p></label>
+    <label>Site Web&nbsp;:<input type="url" name="website" autocomplete="off" placeholder="http://"{#
             #}{% if page.user.website is defined and page.user.website %} value="{{ page.user.website }}"{% endif %} maxlength="200" /></label>
-    <label>Ancien mot de passe&nbsp;:<input type="password" name="old_password" /></label>
+    <label>Ancien mot de passe&nbsp;:<input type="password" autocomplete="off" name="old_password" /></label>
     <label>Nouveau mot de passe&nbsp;:<input type="password" name="new_password" /></label>
 
     <p class="label">Genre&nbsp;:<label><input type="radio" name="gender" value="M"{% if page.user.gender is defined and page.user.gender == 'M' %}{#
