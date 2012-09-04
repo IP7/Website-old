@@ -131,38 +131,6 @@ if(function_exists('set_magic_quotes_runtime') && get_magic_quotes_runtime()) se
 #    if you want to show errors before running app
 ini_set('display_errors', 0);
 
-## SETTING INTERNAL ROUTES _____________________________________________________
-
-dispatch(array("/_lim_css/*.css", array('_lim_css_filename')), 'render_limonade_css');
-  /**
-   * Internal controller that responds to route /_lim_css/*.css
-   *
-   * @access private
-   * @return string
-   */
-  function render_limonade_css()
-  {
-    option('views_dir', file_path(option('limonade_public_dir'), 'css'));
-    $fpath = file_path(params('_lim_css_filename').".css");
-    return css($fpath, null); // with no layout
-  }
-
-dispatch(array("/_lim_public/**", array('_lim_public_file')), 'render_limonade_file');
-  /**
-   * Internal controller that responds to route /_lim_public/**
-   *
-   * @access private
-   * @return void
-   */
-  function render_limonade_file()
-  {
-    $fpath = file_path(option('limonade_public_dir'), params('_lim_public_file'));
-    return render_file($fpath, true);
-  }
-
-
-
-
                                      # # #
 
 
@@ -1594,7 +1562,7 @@ function render_file($filename, $return = false)
     send_header($header);
     return file_read($filename, $return);
   }
-  else halt(NOT_FOUND, "unknown filename $filename");
+  else halt(NOT_FOUND, "unknown file");
 }
 
 /**
