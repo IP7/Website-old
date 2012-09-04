@@ -24,7 +24,7 @@ function tpl_user($user, $extended=false) {
 
         $a = $user->getAvatar();
         $avatar = array(
-            'href'   => Config::$root_uri.'avatar/'.$user->getId().'/'.$avatar_size,
+            'href'   => Config::$root_uri.'avatar/'.$user->getId().'/'.$avatar_size.'.png',
             'height' => $avatar_size,
             'width'  => $avatar_size
         );
