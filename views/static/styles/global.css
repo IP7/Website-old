@@ -61,6 +61,12 @@ pre {
 
 .bar a { color: inherit; }
 
+/* -- Left/right menus ------------------------------------ */
+
+aside.submenu {
+    max-width:100px;
+}
+
 /* == Breadcrumbs ========================================= */
 
 #breadcrumbs .next:before {
