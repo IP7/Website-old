@@ -102,6 +102,10 @@ dispatch('/contact', 'display_contact_page');
 dispatch('/sitemap', 'display_sitemap_page');
 dispatch('/legals',   'display_legals_page');
 
+## content
+dispatch('/avatar/:id',       'serve_avatar');
+dispatch('/avatar/:id/:size', 'serve_avatar_with_size');
+
 ## API
 dispatch('/api/1/users/exists.json', 'json_check_username');
 

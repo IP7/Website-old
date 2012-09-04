@@ -4,6 +4,7 @@ function tpl_user($user, $extended=false) {
     $displayed_name = ($user->getConfigShowRealName()) ? $user->getName() : $user->getUsername();
 
     $userStatus = '';
+    $avatar = null;
 
     if ($user->isAlumni()) {
         $userStatus .= adapt_to_gender($user, 'Ancien étudiant');
@@ -17,12 +18,26 @@ function tpl_user($user, $extended=false) {
         $userStatus .= adapt_to_gender($user, 'nseignant');
     }
 
+    if ($user->getAvatar()) {
+
+        $avatar_size = '32';
+
+        $a = $user->getAvatar();
+        $avatar = array(
+            'href'   => Config::$root_uri.'avatar/'.$user->getId().'/'.$avatar_size,
+            'height' => $avatar_size,
+            'width'  => $avatar_size
+        );
+    }
+
     $tpl_user = array(
         'name'        => $user->getName(),
         'firstname'   => $user->getFirstName(),
         'lastname'    => $user->getLastName(),
         'pseudo'      => $user->getUsername(),
         'displayed_name' => $displayed_name,
+
+        'avatar'      => $avatar,
 
         'gender'      => $user->getGender(),
         'status'      => $userStatus,
