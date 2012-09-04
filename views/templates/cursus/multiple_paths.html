@@ -7,7 +7,7 @@
     <nav>
     <ul class="educational-paths">
         {% for p in page.cursus.educational_paths %}
-        <li><a href="{{ p.href }}"><abbr title="{{ p.name }}">{{ p.title }}</abbr></a></li>
+        <li class="navlink educpath"><a href="{{ p.href }}"><abbr title="{{ p.name }}">{{ p.title }}</abbr></a></li>
         {% endfor %}
     </ul>
 </aside>

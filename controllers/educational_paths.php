@@ -55,15 +55,17 @@ function display_educational_path() {
     
     foreach ($path->getOptionalCourses() as $c) {
         $courses['s'.$c->getSemester()]['optional'] []= array(
-            'href' => $cursus_uri.$c->getCode(),
-            'title' => $c->getCode()
+            'href'  => $cursus_uri.$c->getCode(),
+            'title' => $c->getCode(),
+            'name'  => $c->getName()
         );
     }
     
     foreach ($path->getMandatoryCourses() as $c) {
         $courses['s'.$c->getSemester()]['mandatory'] []= array(
-            'href' => $cursus_uri.$c->getCode(),
-            'title' => $c->getCode()
+            'href'  => $cursus_uri.$c->getCode(),
+            'title' => $c->getCode(),
+            'name'  => $c->getName()
         );
     }
 

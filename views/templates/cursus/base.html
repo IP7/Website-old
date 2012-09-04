@@ -11,7 +11,7 @@
             <section class="mandatory">
             <ul>
                 {% for course in page.cursus.courses.s1.mandatory %}
-                <li class="navlink course">{{ _m.a(course.href, course.title) }}</li>
+                <li class="navlink course"><a href="{{ course.href }}">{{ _m.abbr(course.name, course.title) }}</a></li>
                 {% endfor %}
                 {% if page.cursus.courses.s1.optional is not empty %}
             </ul>
@@ -20,7 +20,7 @@
             <h6>Options</h6>
             <ul>
                     {% for course in page.cursus.courses.s1.optional %}
-                <li class="navlink course">{{ _m.a(course.href, course.title) }}</li>
+                <li class="navlink course"><a href="{{ course.href }}">{{ _m.abbr(course.name, course.title) }}</a></li>
                     {% endfor %}
                 {% endif %}
             </ul>
