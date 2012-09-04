@@ -109,7 +109,7 @@
                 {% include 'breadcrumbs.html' %}
 
                 {# contenu #}
-                <section id="main_content">{% block content %}{% endblock %}</section>
+                <section id="main_content" {% block content_attrs %}{% endblock %}>{% block content %}{% endblock %}</section>
 
             </div>
             {# footer #}
