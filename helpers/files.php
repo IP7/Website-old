@@ -4,7 +4,8 @@
  * Get the type of a file without using its extension
  **/
 function get_filetype($path) {
-    return strtolower(finfo::file($path, FILEINFO_MIME_TYPE));
+    $finfo = new finfo();
+    return strtolower($finfo->file($path, FILEINFO_MIME_TYPE));
 }
 
 # remove every child of $path
