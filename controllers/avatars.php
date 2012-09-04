@@ -16,6 +16,8 @@ function serve_avatar_with_size($id, $size) {
     $path = $file->getPath();
     if (!$path) { return serve_default_avatar(); }
 
+    $path = preg_replace('@/([^/]+)/\.\./@', '/', $path);
+
     $path_with_size = preg_replace('/\(.[a-z]+)$/', '-'.$size.'\\0', $path);
 
     if (file_exists($path_with_size)) {
