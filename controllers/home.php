@@ -39,22 +39,24 @@ function display_connection($message=null, $message_type=null) {
         # Tokens
         if (has_get('t') && use_token(''.$_GET['t'])) {
 
-            // Token::canChange*
+            // if it's a 'canChangeXXX' token
             if ($_SESSION['token']['rights'] > 1) {
                 redirect_to('/profile/init', array('status' => HTTP_SEE_OTHER));
             }
 
-            // Token::canConnect
+            // if it's a 'canConnect' token
             if ($_SESSION['token']['rights'] > 0) {
                 redirect_to('/', array('status' => HTTP_SEE_OTHER));
             }
         }
     }
 
+    $u = has_get('u') ? '?u='.$_GET['u'] : '';
+
     return tpl_render('connection.html', array(
         'page' => array(
             'title' => 'Connexion',
-            'form' => array( 'action' => Config::$root_uri.'connexion' ),
+            'form' => array( 'action' => Config::$root_uri.'connexion'.$u ),
             'breadcrumbs' => false,
 
             'forgotten_password_url' => Config::$root_uri.'oubli',
@@ -93,7 +95,11 @@ function post_connection() {
             $message = app_error_message($res);
         }
         else {
-            redirect_to('/', array('status' => HTTP_SEE_OTHER));
+            $u = '/';
+            if (has_get('u') && $_GET['u'][0] == '/') {
+                $u = $_GET['u'];
+            }
+            redirect_to($u, array('status' => HTTP_SEE_OTHER));
         }
     }
 

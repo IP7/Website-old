@@ -38,7 +38,7 @@ function global_menu_links() {
 
         $others_links = array(
         #    array( 'href' => Config::$root_uri.'forum',     'title' => 'Forum' ),
-            array( 'href' => Config::$root_uri.'profile',   'title' => 'Mon Profil'),
+            array( 'href' => Config::$root_uri.'profile',   'title' => 'Mon Profil')
         );
 
         $connection_button['title']  = 'Déconnexion';
@@ -53,7 +53,7 @@ function global_menu_links() {
     else {
         $connection_button['title'] = 'Connexion';
         $connection_button['method'] = 'GET';
-        $connection_button['action'] = Config::$root_uri.'connexion';
+        $connection_button['action'] = Config::$root_uri.'connexion?u=/'.config_url();
     }
 
     return array(
