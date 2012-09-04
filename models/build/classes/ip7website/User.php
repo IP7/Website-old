@@ -158,6 +158,10 @@ class User extends BaseUser {
     return ($birthdate ? intval($birthdate->diff($today)->format('%Y')) : NULL);
   }
 
+  public function getPublicName($sep=' ') {
+      return $this->getConfigShowRealName() ? $this->getName() : $this->getUsername();
+  }
+
   /* == Misc ================================================= */
 
   /**

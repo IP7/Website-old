@@ -1,7 +1,7 @@
 <?php
 
 function tpl_user($user, $extended=false) {
-    $displayed_name = ($user->getConfigShowRealName()) ? $user->getName() : $user->getUsername();
+    $displayed_name = $user->getPublicName();
 
     $userStatus = '';
     $avatar = null;
