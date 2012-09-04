@@ -179,14 +179,16 @@ function post_edit_profile_page($username=NULL) {
     $msgstr = '';
     $msgtype = false;
 
+    upload_avatar($user, &$msgstr, &$msgtype);
+
     if (has_post('new_password')) {
         if (!has_post('old_password')) {
-            $msgstr = 'Veuillez entrer votre ancien mot de passe pour le changer.';
+            $msgstr = ($msgstr?' ':'').'Veuillez entrer votre ancien mot de passe pour le changer.';
             $msgtype = 'error';
         }
         else if (!Config::$p_hasher->CheckPassword($_POST['old_password'],
                                                    user()->getPasswordHash())) {
-                $msgstr = 'L\'ancien mot de passe est incorrect.';
+                $msgstr = ($msgstr?' ':'').'L\'ancien mot de passe est incorrect.';
                 $msgtype = 'error';
         }
         else {
@@ -194,7 +196,7 @@ function post_edit_profile_page($username=NULL) {
             $p = $_POST['new_password'];
 
             if (strlen($p) < 3) {
-                $msgstr = 'Le nouveau mot de passe est trop court.';
+                $msgstr .= ($msgstr?' ':'').'Le nouveau mot de passe est trop court.';
                 $msgtype = 'error';
             }
             else {
