@@ -34,6 +34,8 @@ function global_menu_links() {
     $others_links = array();
     $connection_button = array();
 
+    $url = config_url();
+
     if (is_connected()) {
 
         $others_links = array(
@@ -45,15 +47,21 @@ function global_menu_links() {
         $connection_button['method'] = 'POST';
         $connection_button['action'] = Config::$root_uri;
         $connection_button['params'] = array(
-            array( 'name' => 'disconnect', 'value' => 1 ),
-            array( 'name' => 'u',          'value' => config_url() )
+            array( 'name' => 'disconnect', 'value' => 1 )
         );
+
+        if ($url) {
+            $connection_button['params'] []= array(
+                'name' => 'u', 'value' => $url
+            );
+        }
 
     }
     else {
         $connection_button['title'] = 'Connexion';
         $connection_button['method'] = 'GET';
-        $connection_button['action'] = Config::$root_uri.'connexion?u=/'.config_url();
+        $connection_button['action'] =
+            Config::$root_uri.'connexion'.($url ? '?u=/'.$url : '');
     }
 
     return array(
