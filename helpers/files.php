@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * Get the type of a file without using its extension
+ **/
+function get_filetype($path) {
+    return strtolower(finfo::file($path, FILEINFO_MIME_TYPE));
+}
+
 # remove every child of $path
 # like rm -R $path/*
 function empty_dir_recur($path) {
