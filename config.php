@@ -30,6 +30,9 @@ define('AUTH_COOKIE_EXPIRE', time()+60*60*24*30);
 #
 define('SESSION_COOKIE', 's');
 #
+# - avatars
+define('AVATAR_MAX_SIZE', 65536); # 65 kio
+#
 ###
 
 # Usage:
@@ -104,6 +107,8 @@ class Config {
                     'width'  => 32,
                     'height' => 32
                 ),
+
+                'avatar_max_size' => AVATAR_MAX_SIZE,
 
                 'title' => 'IP7',
 
