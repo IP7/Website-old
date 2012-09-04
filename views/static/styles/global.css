@@ -23,23 +23,6 @@ a {
 
 body { background-color: #FAFAFA; }
 
-/* == Main content ======================================== */
-
-#main_content {
-    display:table;
-    width:100%;
-    padding: 0 40px 20px 40px;
-}
-#main_content > aside,
-#main_content > article {
-    color: #222;
-    display:table-cell;
-}
-
-#main_content > article {
-    text-align:left;
-}
-
 /* == Code ================================================ */
 
 .filepath,
@@ -211,12 +194,38 @@ form label,
     padding-right:16px;
 }
 
+/* == Main content ======================================== */
+
+/* IE */
+html, body, #container { height: 100% }
+body > #container { height: auto; min-height:100%; }
+
+#main_content {
+    display:table;
+    width:100%;
+    padding: 0 40px 3em 40px;
+}
+#main_content > aside,
+#main_content > article {
+    color: #222;
+    display:table-cell;
+}
+
+#main_content > article {
+    text-align:left;
+}
+
 /* == Footers ============================================= */
 
 /* -- Main Footer ----------------------------------------- */
 
 #global_footer {
-    margin-top:40px;
+    position:relative;
+
+    clear:both;
+    height:3em;
+    margin-top: -3em;
+
     text-align:center;
     font-size:0.8em;
 }
