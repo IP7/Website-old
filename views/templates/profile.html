@@ -10,7 +10,7 @@
     <section class="profile" itemtype="http://schema.org/Person" itemscope>
         {% block profile %}
         {% if page.user.avatar is defined and page.user.avatar %}{#
-          #}<img itemprop="image" itemscope class="avatar" href="{{ page.user.avatar.href }}" {#
+          #}<img itemprop="image" itemscope class="avatar" src="{{ page.user.avatar.href }}" {#
                                          #}height="{{ page.user.avatar.height }}" width="{{ page.user.avatar.width }}" />{#
       #}{% endif %}
         <dl>
