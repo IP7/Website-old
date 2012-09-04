@@ -3,16 +3,18 @@
 {% block content_attrs %} itemscope itemtype="http://schema.org/SearchResultsPage"{% endblock %}
 {% block content %}
 <h1>{{ page.title }}</h1>
-{% for c in page.results.categories %}
-    {% if c.values is defined and c.values %}
+    {% if page.results.categories is defined %}
+        {% for c in page.results.categories %}
+            {% if c.values is defined and c.values %}
     <section class="search_results_category">
-        <h4 id="{{ c.anchor }}">{{ c.title }}</h4>
+        <h4>{{ c.title }}</h4>
         <ol>
-            {% for r in c.values %}
+                {% for r in c.values %}
             <li class="search_result">{{ _m.a(r.href, r.title) }}</li>
-            {% endfor %}
+                {% endfor %}
         </ol>
     </section>
-    {% endfor %}
-{% endfor %}
+            {% endif %}
+        {% endfor %}
+    {% endif %}
 {% endblock %}
