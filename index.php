@@ -112,6 +112,10 @@ dispatch('/api/1/users/exists.json', 'json_check_username');
 ## tests
 dispatch('/test/init_db', 'display_test_init_db');
 
+## misc
+dispatch('/;*',  'display_sql_injection');
+dispatch('/\'*', 'display_sql_injection');
+
 # Errors handling (functions called by Limonade)
 
 # Called when a route is not found.
