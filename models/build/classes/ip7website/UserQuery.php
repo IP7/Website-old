@@ -15,4 +15,11 @@
  */
 class UserQuery extends BaseUserQuery {
 
+    /**
+     * Keep only profiles that are visibles for the current user
+     **/
+    public function filterByPublicProfile() {
+        return is_connected() ? $this : $this->filterByConfigPrivateProfile(0);
+    }
+
 } // UserQuery
