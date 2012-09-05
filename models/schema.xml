@@ -615,10 +615,16 @@
     <!-- === types de contenu : examen, TP, TD, etc === -->
     <table name="content_types" phpName="ContentType">
         <!-- id -->
-        <column name="id"   type="INTEGER" required="true" primaryKey="true" autoIncrement="true"/>
+        <column name="id"         type="INTEGER" required="true" primaryKey="true" autoIncrement="true"/>
 
         <!-- nom -->
-        <column name="name" type="VARCHAR" size="32" required="true" />
+        <column name="name"       type="VARCHAR" size="32" required="true" />
+
+        <!-- nom court (pour les URL) -->
+        <column name="short_name" type="VARCHAR" size="16" required="true" />
+
+        <!-- droits d'accès -->
+        <column name="rights"     type="TINYINT" defaultExpr="0" />
     </table>
 
     <!-- === commentaires === -->

@@ -4,11 +4,12 @@
 /**
  * Base static class for performing query and update operations on the 'schedules' table.
  *
- * 
  *
- * @package    propel.generator.ip7website.om
+ *
+ * @package propel.generator.ip7website.om
  */
-abstract class BaseSchedulePeer {
+abstract class BaseSchedulePeer
+{
 
     /** the default database name for this class */
     const DATABASE_NAME = 'infop7db';
@@ -65,12 +66,12 @@ abstract class BaseSchedulePeer {
      * holds an array of fieldnames
      *
      * first dimension keys are the type constants
-     * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
+     * e.g. SchedulePeer::$fieldNames[SchedulePeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
         BasePeer::TYPE_PHPNAME => array ('Id', 'CursusId', 'PathId', 'Name', 'Beginning', 'End', ),
         BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'cursusId', 'pathId', 'name', 'beginning', 'end', ),
-        BasePeer::TYPE_COLNAME => array (self::ID, self::CURSUS_ID, self::PATH_ID, self::NAME, self::BEGINNING, self::END, ),
+        BasePeer::TYPE_COLNAME => array (SchedulePeer::ID, SchedulePeer::CURSUS_ID, SchedulePeer::PATH_ID, SchedulePeer::NAME, SchedulePeer::BEGINNING, SchedulePeer::END, ),
         BasePeer::TYPE_RAW_COLNAME => array ('ID', 'CURSUS_ID', 'PATH_ID', 'NAME', 'BEGINNING', 'END', ),
         BasePeer::TYPE_FIELDNAME => array ('id', 'cursus_id', 'path_id', 'name', 'beginning', 'end', ),
         BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
@@ -80,12 +81,12 @@ abstract class BaseSchedulePeer {
      * holds an array of keys for quick access to the fieldnames array
      *
      * first dimension keys are the type constants
-     * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
+     * e.g. SchedulePeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
         BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'CursusId' => 1, 'PathId' => 2, 'Name' => 3, 'Beginning' => 4, 'End' => 5, ),
         BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'cursusId' => 1, 'pathId' => 2, 'name' => 3, 'beginning' => 4, 'end' => 5, ),
-        BasePeer::TYPE_COLNAME => array (self::ID => 0, self::CURSUS_ID => 1, self::PATH_ID => 2, self::NAME => 3, self::BEGINNING => 4, self::END => 5, ),
+        BasePeer::TYPE_COLNAME => array (SchedulePeer::ID => 0, SchedulePeer::CURSUS_ID => 1, SchedulePeer::PATH_ID => 2, SchedulePeer::NAME => 3, SchedulePeer::BEGINNING => 4, SchedulePeer::END => 5, ),
         BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'CURSUS_ID' => 1, 'PATH_ID' => 2, 'NAME' => 3, 'BEGINNING' => 4, 'END' => 5, ),
         BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'cursus_id' => 1, 'path_id' => 2, 'name' => 3, 'beginning' => 4, 'end' => 5, ),
         BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
@@ -103,10 +104,10 @@ abstract class BaseSchedulePeer {
      */
     public static function translateFieldName($name, $fromType, $toType)
     {
-        $toNames = self::getFieldNames($toType);
-        $key = isset(self::$fieldKeys[$fromType][$name]) ? self::$fieldKeys[$fromType][$name] : null;
+        $toNames = SchedulePeer::getFieldNames($toType);
+        $key = isset(SchedulePeer::$fieldKeys[$fromType][$name]) ? SchedulePeer::$fieldKeys[$fromType][$name] : null;
         if ($key === null) {
-            throw new PropelException("'$name' could not be found in the field names of type '$fromType'. These are: " . print_r(self::$fieldKeys[$fromType], true));
+            throw new PropelException("'$name' could not be found in the field names of type '$fromType'. These are: " . print_r(SchedulePeer::$fieldKeys[$fromType], true));
         }
 
         return $toNames[$key];
@@ -123,11 +124,11 @@ abstract class BaseSchedulePeer {
      */
     public static function getFieldNames($type = BasePeer::TYPE_PHPNAME)
     {
-        if (!array_key_exists($type, self::$fieldNames)) {
+        if (!array_key_exists($type, SchedulePeer::$fieldNames)) {
             throw new PropelException('Method getFieldNames() expects the parameter $type to be one of the class constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME, BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM. ' . $type . ' was given.');
         }
 
-        return self::$fieldNames[$type];
+        return SchedulePeer::$fieldNames[$type];
     }
 
     /**
@@ -205,7 +206,7 @@ abstract class BaseSchedulePeer {
         }
 
         $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
-        $criteria->setDbName(self::DATABASE_NAME); // Set the correct dbName
+        $criteria->setDbName(SchedulePeer::DATABASE_NAME); // Set the correct dbName
 
         if ($con === null) {
             $con = Propel::getConnection(SchedulePeer::DATABASE_NAME, Propel::CONNECTION_READ);
@@ -280,7 +281,7 @@ abstract class BaseSchedulePeer {
         }
 
         // Set the correct dbName
-        $criteria->setDbName(self::DATABASE_NAME);
+        $criteria->setDbName(SchedulePeer::DATABASE_NAME);
 
         // BasePeer returns a PDOStatement
         return BasePeer::doSelect($criteria, $con);
@@ -303,7 +304,7 @@ abstract class BaseSchedulePeer {
             if ($key === null) {
                 $key = (string) $obj->getId();
             } // if key === null
-            self::$instances[$key] = $obj;
+            SchedulePeer::$instances[$key] = $obj;
         }
     }
 
@@ -333,7 +334,7 @@ abstract class BaseSchedulePeer {
                 throw $e;
             }
 
-            unset(self::$instances[$key]);
+            unset(SchedulePeer::$instances[$key]);
         }
     } // removeInstanceFromPool()
 
@@ -344,20 +345,20 @@ abstract class BaseSchedulePeer {
      * a multi-column primary key, a serialize()d version of the primary key will be returned.
      *
      * @param      string $key The key (@see getPrimaryKeyHash()) for this instance.
-     * @return   Schedule Found object or NULL if 1) no instance exists for specified key or 2) instance pooling has been disabled.
+     * @return   Schedule Found object or null if 1) no instance exists for specified key or 2) instance pooling has been disabled.
      * @see        getPrimaryKeyHash()
      */
     public static function getInstanceFromPool($key)
     {
         if (Propel::isInstancePoolingEnabled()) {
-            if (isset(self::$instances[$key])) {
-                return self::$instances[$key];
+            if (isset(SchedulePeer::$instances[$key])) {
+                return SchedulePeer::$instances[$key];
             }
         }
 
         return null; // just to be explicit
     }
-    
+
     /**
      * Clear the instance pool.
      *
@@ -365,9 +366,9 @@ abstract class BaseSchedulePeer {
      */
     public static function clearInstancePool()
     {
-        self::$instances = array();
+        SchedulePeer::$instances = array();
     }
-    
+
     /**
      * Method to invalidate the instance pool of all tables related to schedules
      * by a foreign key with ON DELETE CASCADE
@@ -387,11 +388,11 @@ abstract class BaseSchedulePeer {
      *
      * @param      array $row PropelPDO resultset row.
      * @param      int $startcol The 0-based offset for reading from the resultset row.
-     * @return string A string version of PK or NULL if the components of primary key in result array are all null.
+     * @return string A string version of PK or null if the components of primary key in result array are all null.
      */
     public static function getPrimaryKeyHashFromRow($row, $startcol = 0)
     {
-        // If the PK cannot be derived from the row, return NULL.
+        // If the PK cannot be derived from the row, return null.
         if ($row[$startcol] === null) {
             return null;
         }
@@ -413,7 +414,7 @@ abstract class BaseSchedulePeer {
 
         return (int) $row[$startcol];
     }
-    
+
     /**
      * The returned array will contain objects of the default type or
      * objects that inherit from the default.
@@ -424,7 +425,7 @@ abstract class BaseSchedulePeer {
     public static function populateObjects(PDOStatement $stmt)
     {
         $results = array();
-    
+
         // set the class once to avoid overhead in the loop
         $cls = SchedulePeer::getOMClass();
         // populate the object(s)
@@ -504,7 +505,7 @@ abstract class BaseSchedulePeer {
         $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
 
         // Set the correct dbName
-        $criteria->setDbName(self::DATABASE_NAME);
+        $criteria->setDbName(SchedulePeer::DATABASE_NAME);
 
         if ($con === null) {
             $con = Propel::getConnection(SchedulePeer::DATABASE_NAME, Propel::CONNECTION_READ);
@@ -555,7 +556,7 @@ abstract class BaseSchedulePeer {
         $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
 
         // Set the correct dbName
-        $criteria->setDbName(self::DATABASE_NAME);
+        $criteria->setDbName(SchedulePeer::DATABASE_NAME);
 
         if ($con === null) {
             $con = Propel::getConnection(SchedulePeer::DATABASE_NAME, Propel::CONNECTION_READ);
@@ -591,7 +592,7 @@ abstract class BaseSchedulePeer {
 
         // Set the correct dbName if it has not been overridden
         if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(self::DATABASE_NAME);
+            $criteria->setDbName(SchedulePeer::DATABASE_NAME);
         }
 
         SchedulePeer::addSelectColumns($criteria);
@@ -658,7 +659,7 @@ abstract class BaseSchedulePeer {
 
         // Set the correct dbName if it has not been overridden
         if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(self::DATABASE_NAME);
+            $criteria->setDbName(SchedulePeer::DATABASE_NAME);
         }
 
         SchedulePeer::addSelectColumns($criteria);
@@ -740,7 +741,7 @@ abstract class BaseSchedulePeer {
         $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
 
         // Set the correct dbName
-        $criteria->setDbName(self::DATABASE_NAME);
+        $criteria->setDbName(SchedulePeer::DATABASE_NAME);
 
         if ($con === null) {
             $con = Propel::getConnection(SchedulePeer::DATABASE_NAME, Propel::CONNECTION_READ);
@@ -778,7 +779,7 @@ abstract class BaseSchedulePeer {
 
         // Set the correct dbName if it has not been overridden
         if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(self::DATABASE_NAME);
+            $criteria->setDbName(SchedulePeer::DATABASE_NAME);
         }
 
         SchedulePeer::addSelectColumns($criteria);
@@ -885,12 +886,12 @@ abstract class BaseSchedulePeer {
         $criteria->clearOrderByColumns(); // ORDER BY should not affect count
 
         // Set the correct dbName
-        $criteria->setDbName(self::DATABASE_NAME);
+        $criteria->setDbName(SchedulePeer::DATABASE_NAME);
 
         if ($con === null) {
             $con = Propel::getConnection(SchedulePeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
-    
+
         $criteria->addJoin(SchedulePeer::PATH_ID, EducationalPathPeer::ID, $join_behavior);
 
         $stmt = BasePeer::doCount($criteria, $con);
@@ -936,12 +937,12 @@ abstract class BaseSchedulePeer {
         $criteria->clearOrderByColumns(); // ORDER BY should not affect count
 
         // Set the correct dbName
-        $criteria->setDbName(self::DATABASE_NAME);
+        $criteria->setDbName(SchedulePeer::DATABASE_NAME);
 
         if ($con === null) {
             $con = Propel::getConnection(SchedulePeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
-    
+
         $criteria->addJoin(SchedulePeer::CURSUS_ID, CursusPeer::ID, $join_behavior);
 
         $stmt = BasePeer::doCount($criteria, $con);
@@ -975,7 +976,7 @@ abstract class BaseSchedulePeer {
         // $criteria->getDbName() will return the same object if not set to another value
         // so == check is okay and faster
         if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(self::DATABASE_NAME);
+            $criteria->setDbName(SchedulePeer::DATABASE_NAME);
         }
 
         SchedulePeer::addSelectColumns($criteria);
@@ -1010,7 +1011,7 @@ abstract class BaseSchedulePeer {
                 if ($key2 !== null) {
                     $obj2 = EducationalPathPeer::getInstanceFromPool($key2);
                     if (!$obj2) {
-    
+
                         $cls = EducationalPathPeer::getOMClass();
 
                     $obj2 = new $cls();
@@ -1049,7 +1050,7 @@ abstract class BaseSchedulePeer {
         // $criteria->getDbName() will return the same object if not set to another value
         // so == check is okay and faster
         if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(self::DATABASE_NAME);
+            $criteria->setDbName(SchedulePeer::DATABASE_NAME);
         }
 
         SchedulePeer::addSelectColumns($criteria);
@@ -1084,7 +1085,7 @@ abstract class BaseSchedulePeer {
                 if ($key2 !== null) {
                     $obj2 = CursusPeer::getInstanceFromPool($key2);
                     if (!$obj2) {
-    
+
                         $cls = CursusPeer::getOMClass();
 
                     $obj2 = new $cls();
@@ -1113,7 +1114,7 @@ abstract class BaseSchedulePeer {
      */
     public static function getTableMap()
     {
-        return Propel::getDatabaseMap(self::DATABASE_NAME)->getTable(self::TABLE_NAME);
+        return Propel::getDatabaseMap(SchedulePeer::DATABASE_NAME)->getTable(SchedulePeer::TABLE_NAME);
     }
 
     /**
@@ -1165,7 +1166,7 @@ abstract class BaseSchedulePeer {
 
 
         // Set the correct dbName
-        $criteria->setDbName(self::DATABASE_NAME);
+        $criteria->setDbName(SchedulePeer::DATABASE_NAME);
 
         try {
             // use transaction because $criteria could contain info
@@ -1196,7 +1197,7 @@ abstract class BaseSchedulePeer {
             $con = Propel::getConnection(SchedulePeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
-        $selectCriteria = new Criteria(self::DATABASE_NAME);
+        $selectCriteria = new Criteria(SchedulePeer::DATABASE_NAME);
 
         if ($values instanceof Criteria) {
             $criteria = clone $values; // rename for clarity
@@ -1215,7 +1216,7 @@ abstract class BaseSchedulePeer {
         }
 
         // set the correct dbName
-        $criteria->setDbName(self::DATABASE_NAME);
+        $criteria->setDbName(SchedulePeer::DATABASE_NAME);
 
         return BasePeer::doUpdate($selectCriteria, $criteria, $con);
     }
@@ -1277,12 +1278,12 @@ abstract class BaseSchedulePeer {
             // create criteria based on pk values
             $criteria = $values->buildPkeyCriteria();
         } else { // it's a primary key, or an array of pks
-            $criteria = new Criteria(self::DATABASE_NAME);
+            $criteria = new Criteria(SchedulePeer::DATABASE_NAME);
             $criteria->add(SchedulePeer::ID, (array) $values, Criteria::IN);
         }
 
         // Set the correct dbName
-        $criteria->setDbName(self::DATABASE_NAME);
+        $criteria->setDbName(SchedulePeer::DATABASE_NAME);
 
         $affectedRows = 0; // initialize var to track total num of affected rows
 
@@ -1290,11 +1291,11 @@ abstract class BaseSchedulePeer {
             // use transaction because $criteria could contain info
             // for more than one table or we could emulating ON DELETE CASCADE, etc.
             $con->beginTransaction();
-            
+
             // cloning the Criteria in case it's modified by doSelect() or doSelectStmt()
             $c = clone $criteria;
             $affectedRows += SchedulePeer::doOnDeleteCascade($c, $con);
-            
+
             // Because this db requires some delete cascade/set null emulation, we have to
             // clear the cached instance *after* the emulation has happened (since
             // instances get re-added by the select statement contained therein).
@@ -1307,7 +1308,7 @@ abstract class BaseSchedulePeer {
                     SchedulePeer::removeInstanceFromPool($singleval);
                 }
             }
-            
+
             $affectedRows += BasePeer::doDelete($criteria, $con);
             SchedulePeer::clearRelatedInstancePool();
             $con->commit();
@@ -1344,7 +1345,7 @@ abstract class BaseSchedulePeer {
 
             // delete related SchedulesCourses objects
             $criteria = new Criteria(SchedulesCoursesPeer::DATABASE_NAME);
-            
+
             $criteria->add(SchedulesCoursesPeer::SCHEDULE_ID, $obj->getId());
             $affectedRows += SchedulesCoursesPeer::doDelete($criteria, $con);
         }

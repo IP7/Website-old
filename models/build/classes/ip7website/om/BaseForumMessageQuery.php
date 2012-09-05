@@ -4,52 +4,51 @@
 /**
  * Base class that represents a query for the 'forum_messages' table.
  *
- * 
  *
- * @method     ForumMessageQuery orderById($order = Criteria::ASC) Order by the id column
- * @method     ForumMessageQuery orderByAuthorId($order = Criteria::ASC) Order by the author_id column
- * @method     ForumMessageQuery orderByTopicId($order = Criteria::ASC) Order by the topic_id column
- * @method     ForumMessageQuery orderByLastModification($order = Criteria::ASC) Order by the last_modification column
- * @method     ForumMessageQuery orderByText($order = Criteria::ASC) Order by the text column
  *
- * @method     ForumMessageQuery groupById() Group by the id column
- * @method     ForumMessageQuery groupByAuthorId() Group by the author_id column
- * @method     ForumMessageQuery groupByTopicId() Group by the topic_id column
- * @method     ForumMessageQuery groupByLastModification() Group by the last_modification column
- * @method     ForumMessageQuery groupByText() Group by the text column
+ * @method ForumMessageQuery orderById($order = Criteria::ASC) Order by the id column
+ * @method ForumMessageQuery orderByAuthorId($order = Criteria::ASC) Order by the author_id column
+ * @method ForumMessageQuery orderByTopicId($order = Criteria::ASC) Order by the topic_id column
+ * @method ForumMessageQuery orderByLastModification($order = Criteria::ASC) Order by the last_modification column
+ * @method ForumMessageQuery orderByText($order = Criteria::ASC) Order by the text column
  *
- * @method     ForumMessageQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
- * @method     ForumMessageQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
- * @method     ForumMessageQuery innerJoin($relation) Adds a INNER JOIN clause to the query
+ * @method ForumMessageQuery groupById() Group by the id column
+ * @method ForumMessageQuery groupByAuthorId() Group by the author_id column
+ * @method ForumMessageQuery groupByTopicId() Group by the topic_id column
+ * @method ForumMessageQuery groupByLastModification() Group by the last_modification column
+ * @method ForumMessageQuery groupByText() Group by the text column
  *
- * @method     ForumMessageQuery leftJoinAuthor($relationAlias = null) Adds a LEFT JOIN clause to the query using the Author relation
- * @method     ForumMessageQuery rightJoinAuthor($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Author relation
- * @method     ForumMessageQuery innerJoinAuthor($relationAlias = null) Adds a INNER JOIN clause to the query using the Author relation
+ * @method ForumMessageQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
+ * @method ForumMessageQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
+ * @method ForumMessageQuery innerJoin($relation) Adds a INNER JOIN clause to the query
  *
- * @method     ForumMessageQuery leftJoinTopic($relationAlias = null) Adds a LEFT JOIN clause to the query using the Topic relation
- * @method     ForumMessageQuery rightJoinTopic($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Topic relation
- * @method     ForumMessageQuery innerJoinTopic($relationAlias = null) Adds a INNER JOIN clause to the query using the Topic relation
+ * @method ForumMessageQuery leftJoinAuthor($relationAlias = null) Adds a LEFT JOIN clause to the query using the Author relation
+ * @method ForumMessageQuery rightJoinAuthor($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Author relation
+ * @method ForumMessageQuery innerJoinAuthor($relationAlias = null) Adds a INNER JOIN clause to the query using the Author relation
  *
- * @method     ForumMessage findOne(PropelPDO $con = null) Return the first ForumMessage matching the query
- * @method     ForumMessage findOneOrCreate(PropelPDO $con = null) Return the first ForumMessage matching the query, or a new ForumMessage object populated from the query conditions when no match is found
+ * @method ForumMessageQuery leftJoinTopic($relationAlias = null) Adds a LEFT JOIN clause to the query using the Topic relation
+ * @method ForumMessageQuery rightJoinTopic($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Topic relation
+ * @method ForumMessageQuery innerJoinTopic($relationAlias = null) Adds a INNER JOIN clause to the query using the Topic relation
  *
- * @method     ForumMessage findOneById(int $id) Return the first ForumMessage filtered by the id column
- * @method     ForumMessage findOneByAuthorId(int $author_id) Return the first ForumMessage filtered by the author_id column
- * @method     ForumMessage findOneByTopicId(int $topic_id) Return the first ForumMessage filtered by the topic_id column
- * @method     ForumMessage findOneByLastModification(string $last_modification) Return the first ForumMessage filtered by the last_modification column
- * @method     ForumMessage findOneByText(string $text) Return the first ForumMessage filtered by the text column
+ * @method ForumMessage findOne(PropelPDO $con = null) Return the first ForumMessage matching the query
+ * @method ForumMessage findOneOrCreate(PropelPDO $con = null) Return the first ForumMessage matching the query, or a new ForumMessage object populated from the query conditions when no match is found
  *
- * @method     array findById(int $id) Return ForumMessage objects filtered by the id column
- * @method     array findByAuthorId(int $author_id) Return ForumMessage objects filtered by the author_id column
- * @method     array findByTopicId(int $topic_id) Return ForumMessage objects filtered by the topic_id column
- * @method     array findByLastModification(string $last_modification) Return ForumMessage objects filtered by the last_modification column
- * @method     array findByText(string $text) Return ForumMessage objects filtered by the text column
+ * @method ForumMessage findOneById(int $id) Return the first ForumMessage filtered by the id column
+ * @method ForumMessage findOneByAuthorId(int $author_id) Return the first ForumMessage filtered by the author_id column
+ * @method ForumMessage findOneByTopicId(int $topic_id) Return the first ForumMessage filtered by the topic_id column
+ * @method ForumMessage findOneByLastModification(string $last_modification) Return the first ForumMessage filtered by the last_modification column
+ * @method ForumMessage findOneByText(string $text) Return the first ForumMessage filtered by the text column
+ *
+ * @method array findById(int $id) Return ForumMessage objects filtered by the id column
+ * @method array findByAuthorId(int $author_id) Return ForumMessage objects filtered by the author_id column
+ * @method array findByTopicId(int $topic_id) Return ForumMessage objects filtered by the topic_id column
+ * @method array findByLastModification(string $last_modification) Return ForumMessage objects filtered by the last_modification column
+ * @method array findByText(string $text) Return ForumMessage objects filtered by the text column
  *
  * @package    propel.generator.ip7website.om
  */
 abstract class BaseForumMessageQuery extends ModelCriteria
 {
-    
     /**
      * Initializes internal state of BaseForumMessageQuery object.
      *
@@ -95,7 +94,7 @@ abstract class BaseForumMessageQuery extends ModelCriteria
      * $obj  = $c->findPk(12, $con);
      * </code>
      *
-     * @param mixed $key Primary key to use for the query 
+     * @param mixed $key Primary key to use for the query
      * @param     PropelPDO $con an optional connection object
      *
      * @return   ForumMessage|ForumMessage[]|mixed the result, formatted by the current formatter
@@ -137,7 +136,7 @@ abstract class BaseForumMessageQuery extends ModelCriteria
         $sql = 'SELECT `ID`, `AUTHOR_ID`, `TOPIC_ID`, `LAST_MODIFICATION`, `TEXT` FROM `forum_messages` WHERE `ID` = :p0';
         try {
             $stmt = $con->prepare($sql);
-			$stmt->bindValue(':p0', $key, PDO::PARAM_INT);
+            $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
             $stmt->execute();
         } catch (Exception $e) {
             Propel::log($e->getMessage(), Propel::LOG_ERR);
@@ -576,4 +575,4 @@ abstract class BaseForumMessageQuery extends ModelCriteria
         return $this;
     }
 
-} // BaseForumMessageQuery
+}

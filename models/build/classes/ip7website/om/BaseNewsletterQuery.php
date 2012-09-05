@@ -4,48 +4,47 @@
 /**
  * Base class that represents a query for the 'newsletters' table.
  *
- * 
  *
- * @method     NewsletterQuery orderById($order = Criteria::ASC) Order by the id column
- * @method     NewsletterQuery orderByName($order = Criteria::ASC) Order by the name column
- * @method     NewsletterQuery orderByDescription($order = Criteria::ASC) Order by the description column
  *
- * @method     NewsletterQuery groupById() Group by the id column
- * @method     NewsletterQuery groupByName() Group by the name column
- * @method     NewsletterQuery groupByDescription() Group by the description column
+ * @method NewsletterQuery orderById($order = Criteria::ASC) Order by the id column
+ * @method NewsletterQuery orderByName($order = Criteria::ASC) Order by the name column
+ * @method NewsletterQuery orderByDescription($order = Criteria::ASC) Order by the description column
  *
- * @method     NewsletterQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
- * @method     NewsletterQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
- * @method     NewsletterQuery innerJoin($relation) Adds a INNER JOIN clause to the query
+ * @method NewsletterQuery groupById() Group by the id column
+ * @method NewsletterQuery groupByName() Group by the name column
+ * @method NewsletterQuery groupByDescription() Group by the description column
  *
- * @method     NewsletterQuery leftJoinCursus($relationAlias = null) Adds a LEFT JOIN clause to the query using the Cursus relation
- * @method     NewsletterQuery rightJoinCursus($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Cursus relation
- * @method     NewsletterQuery innerJoinCursus($relationAlias = null) Adds a INNER JOIN clause to the query using the Cursus relation
+ * @method NewsletterQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
+ * @method NewsletterQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
+ * @method NewsletterQuery innerJoin($relation) Adds a INNER JOIN clause to the query
  *
- * @method     NewsletterQuery leftJoinNewsletterPost($relationAlias = null) Adds a LEFT JOIN clause to the query using the NewsletterPost relation
- * @method     NewsletterQuery rightJoinNewsletterPost($relationAlias = null) Adds a RIGHT JOIN clause to the query using the NewsletterPost relation
- * @method     NewsletterQuery innerJoinNewsletterPost($relationAlias = null) Adds a INNER JOIN clause to the query using the NewsletterPost relation
+ * @method NewsletterQuery leftJoinCursus($relationAlias = null) Adds a LEFT JOIN clause to the query using the Cursus relation
+ * @method NewsletterQuery rightJoinCursus($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Cursus relation
+ * @method NewsletterQuery innerJoinCursus($relationAlias = null) Adds a INNER JOIN clause to the query using the Cursus relation
  *
- * @method     NewsletterQuery leftJoinNewslettersSubscribers($relationAlias = null) Adds a LEFT JOIN clause to the query using the NewslettersSubscribers relation
- * @method     NewsletterQuery rightJoinNewslettersSubscribers($relationAlias = null) Adds a RIGHT JOIN clause to the query using the NewslettersSubscribers relation
- * @method     NewsletterQuery innerJoinNewslettersSubscribers($relationAlias = null) Adds a INNER JOIN clause to the query using the NewslettersSubscribers relation
+ * @method NewsletterQuery leftJoinNewsletterPost($relationAlias = null) Adds a LEFT JOIN clause to the query using the NewsletterPost relation
+ * @method NewsletterQuery rightJoinNewsletterPost($relationAlias = null) Adds a RIGHT JOIN clause to the query using the NewsletterPost relation
+ * @method NewsletterQuery innerJoinNewsletterPost($relationAlias = null) Adds a INNER JOIN clause to the query using the NewsletterPost relation
  *
- * @method     Newsletter findOne(PropelPDO $con = null) Return the first Newsletter matching the query
- * @method     Newsletter findOneOrCreate(PropelPDO $con = null) Return the first Newsletter matching the query, or a new Newsletter object populated from the query conditions when no match is found
+ * @method NewsletterQuery leftJoinNewslettersSubscribers($relationAlias = null) Adds a LEFT JOIN clause to the query using the NewslettersSubscribers relation
+ * @method NewsletterQuery rightJoinNewslettersSubscribers($relationAlias = null) Adds a RIGHT JOIN clause to the query using the NewslettersSubscribers relation
+ * @method NewsletterQuery innerJoinNewslettersSubscribers($relationAlias = null) Adds a INNER JOIN clause to the query using the NewslettersSubscribers relation
  *
- * @method     Newsletter findOneById(int $id) Return the first Newsletter filtered by the id column
- * @method     Newsletter findOneByName(string $name) Return the first Newsletter filtered by the name column
- * @method     Newsletter findOneByDescription(string $description) Return the first Newsletter filtered by the description column
+ * @method Newsletter findOne(PropelPDO $con = null) Return the first Newsletter matching the query
+ * @method Newsletter findOneOrCreate(PropelPDO $con = null) Return the first Newsletter matching the query, or a new Newsletter object populated from the query conditions when no match is found
  *
- * @method     array findById(int $id) Return Newsletter objects filtered by the id column
- * @method     array findByName(string $name) Return Newsletter objects filtered by the name column
- * @method     array findByDescription(string $description) Return Newsletter objects filtered by the description column
+ * @method Newsletter findOneById(int $id) Return the first Newsletter filtered by the id column
+ * @method Newsletter findOneByName(string $name) Return the first Newsletter filtered by the name column
+ * @method Newsletter findOneByDescription(string $description) Return the first Newsletter filtered by the description column
+ *
+ * @method array findById(int $id) Return Newsletter objects filtered by the id column
+ * @method array findByName(string $name) Return Newsletter objects filtered by the name column
+ * @method array findByDescription(string $description) Return Newsletter objects filtered by the description column
  *
  * @package    propel.generator.ip7website.om
  */
 abstract class BaseNewsletterQuery extends ModelCriteria
 {
-    
     /**
      * Initializes internal state of BaseNewsletterQuery object.
      *
@@ -91,7 +90,7 @@ abstract class BaseNewsletterQuery extends ModelCriteria
      * $obj  = $c->findPk(12, $con);
      * </code>
      *
-     * @param mixed $key Primary key to use for the query 
+     * @param mixed $key Primary key to use for the query
      * @param     PropelPDO $con an optional connection object
      *
      * @return   Newsletter|Newsletter[]|mixed the result, formatted by the current formatter
@@ -133,7 +132,7 @@ abstract class BaseNewsletterQuery extends ModelCriteria
         $sql = 'SELECT `ID`, `NAME`, `DESCRIPTION` FROM `newsletters` WHERE `ID` = :p0';
         try {
             $stmt = $con->prepare($sql);
-			$stmt->bindValue(':p0', $key, PDO::PARAM_INT);
+            $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
             $stmt->execute();
         } catch (Exception $e) {
             Propel::log($e->getMessage(), Propel::LOG_ERR);
@@ -559,4 +558,4 @@ abstract class BaseNewsletterQuery extends ModelCriteria
         return $this;
     }
 
-} // BaseNewsletterQuery
+}

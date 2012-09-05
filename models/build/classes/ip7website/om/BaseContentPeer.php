@@ -4,11 +4,12 @@
 /**
  * Base static class for performing query and update operations on the 'contents' table.
  *
- * 
  *
- * @package    propel.generator.ip7website.om
+ *
+ * @package propel.generator.ip7website.om
  */
-abstract class BaseContentPeer {
+abstract class BaseContentPeer
+{
 
     /** the default database name for this class */
     const DATABASE_NAME = 'infop7db';
@@ -77,12 +78,12 @@ abstract class BaseContentPeer {
      * holds an array of fieldnames
      *
      * first dimension keys are the type constants
-     * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
+     * e.g. ContentPeer::$fieldNames[ContentPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
         BasePeer::TYPE_PHPNAME => array ('Id', 'AuthorId', 'ContentTypeId', 'Date', 'AccessRights', 'Validated', 'Title', 'Text', 'CursusId', 'CourseId', ),
         BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'authorId', 'contentTypeId', 'date', 'accessRights', 'validated', 'title', 'text', 'cursusId', 'courseId', ),
-        BasePeer::TYPE_COLNAME => array (self::ID, self::AUTHOR_ID, self::CONTENT_TYPE_ID, self::DATE, self::ACCESS_RIGHTS, self::VALIDATED, self::TITLE, self::TEXT, self::CURSUS_ID, self::COURSE_ID, ),
+        BasePeer::TYPE_COLNAME => array (ContentPeer::ID, ContentPeer::AUTHOR_ID, ContentPeer::CONTENT_TYPE_ID, ContentPeer::DATE, ContentPeer::ACCESS_RIGHTS, ContentPeer::VALIDATED, ContentPeer::TITLE, ContentPeer::TEXT, ContentPeer::CURSUS_ID, ContentPeer::COURSE_ID, ),
         BasePeer::TYPE_RAW_COLNAME => array ('ID', 'AUTHOR_ID', 'CONTENT_TYPE_ID', 'DATE', 'ACCESS_RIGHTS', 'VALIDATED', 'TITLE', 'TEXT', 'CURSUS_ID', 'COURSE_ID', ),
         BasePeer::TYPE_FIELDNAME => array ('id', 'author_id', 'content_type_id', 'date', 'access_rights', 'validated', 'title', 'text', 'cursus_id', 'course_id', ),
         BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, )
@@ -92,12 +93,12 @@ abstract class BaseContentPeer {
      * holds an array of keys for quick access to the fieldnames array
      *
      * first dimension keys are the type constants
-     * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
+     * e.g. ContentPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
         BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'AuthorId' => 1, 'ContentTypeId' => 2, 'Date' => 3, 'AccessRights' => 4, 'Validated' => 5, 'Title' => 6, 'Text' => 7, 'CursusId' => 8, 'CourseId' => 9, ),
         BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'authorId' => 1, 'contentTypeId' => 2, 'date' => 3, 'accessRights' => 4, 'validated' => 5, 'title' => 6, 'text' => 7, 'cursusId' => 8, 'courseId' => 9, ),
-        BasePeer::TYPE_COLNAME => array (self::ID => 0, self::AUTHOR_ID => 1, self::CONTENT_TYPE_ID => 2, self::DATE => 3, self::ACCESS_RIGHTS => 4, self::VALIDATED => 5, self::TITLE => 6, self::TEXT => 7, self::CURSUS_ID => 8, self::COURSE_ID => 9, ),
+        BasePeer::TYPE_COLNAME => array (ContentPeer::ID => 0, ContentPeer::AUTHOR_ID => 1, ContentPeer::CONTENT_TYPE_ID => 2, ContentPeer::DATE => 3, ContentPeer::ACCESS_RIGHTS => 4, ContentPeer::VALIDATED => 5, ContentPeer::TITLE => 6, ContentPeer::TEXT => 7, ContentPeer::CURSUS_ID => 8, ContentPeer::COURSE_ID => 9, ),
         BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'AUTHOR_ID' => 1, 'CONTENT_TYPE_ID' => 2, 'DATE' => 3, 'ACCESS_RIGHTS' => 4, 'VALIDATED' => 5, 'TITLE' => 6, 'TEXT' => 7, 'CURSUS_ID' => 8, 'COURSE_ID' => 9, ),
         BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'author_id' => 1, 'content_type_id' => 2, 'date' => 3, 'access_rights' => 4, 'validated' => 5, 'title' => 6, 'text' => 7, 'cursus_id' => 8, 'course_id' => 9, ),
         BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, )
@@ -115,10 +116,10 @@ abstract class BaseContentPeer {
      */
     public static function translateFieldName($name, $fromType, $toType)
     {
-        $toNames = self::getFieldNames($toType);
-        $key = isset(self::$fieldKeys[$fromType][$name]) ? self::$fieldKeys[$fromType][$name] : null;
+        $toNames = ContentPeer::getFieldNames($toType);
+        $key = isset(ContentPeer::$fieldKeys[$fromType][$name]) ? ContentPeer::$fieldKeys[$fromType][$name] : null;
         if ($key === null) {
-            throw new PropelException("'$name' could not be found in the field names of type '$fromType'. These are: " . print_r(self::$fieldKeys[$fromType], true));
+            throw new PropelException("'$name' could not be found in the field names of type '$fromType'. These are: " . print_r(ContentPeer::$fieldKeys[$fromType], true));
         }
 
         return $toNames[$key];
@@ -135,11 +136,11 @@ abstract class BaseContentPeer {
      */
     public static function getFieldNames($type = BasePeer::TYPE_PHPNAME)
     {
-        if (!array_key_exists($type, self::$fieldNames)) {
+        if (!array_key_exists($type, ContentPeer::$fieldNames)) {
             throw new PropelException('Method getFieldNames() expects the parameter $type to be one of the class constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME, BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM. ' . $type . ' was given.');
         }
 
-        return self::$fieldNames[$type];
+        return ContentPeer::$fieldNames[$type];
     }
 
     /**
@@ -223,7 +224,7 @@ abstract class BaseContentPeer {
         }
 
         $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
-        $criteria->setDbName(self::DATABASE_NAME); // Set the correct dbName
+        $criteria->setDbName(ContentPeer::DATABASE_NAME); // Set the correct dbName
 
         if ($con === null) {
             $con = Propel::getConnection(ContentPeer::DATABASE_NAME, Propel::CONNECTION_READ);
@@ -298,7 +299,7 @@ abstract class BaseContentPeer {
         }
 
         // Set the correct dbName
-        $criteria->setDbName(self::DATABASE_NAME);
+        $criteria->setDbName(ContentPeer::DATABASE_NAME);
 
         // BasePeer returns a PDOStatement
         return BasePeer::doSelect($criteria, $con);
@@ -321,7 +322,7 @@ abstract class BaseContentPeer {
             if ($key === null) {
                 $key = (string) $obj->getId();
             } // if key === null
-            self::$instances[$key] = $obj;
+            ContentPeer::$instances[$key] = $obj;
         }
     }
 
@@ -351,7 +352,7 @@ abstract class BaseContentPeer {
                 throw $e;
             }
 
-            unset(self::$instances[$key]);
+            unset(ContentPeer::$instances[$key]);
         }
     } // removeInstanceFromPool()
 
@@ -362,20 +363,20 @@ abstract class BaseContentPeer {
      * a multi-column primary key, a serialize()d version of the primary key will be returned.
      *
      * @param      string $key The key (@see getPrimaryKeyHash()) for this instance.
-     * @return   Content Found object or NULL if 1) no instance exists for specified key or 2) instance pooling has been disabled.
+     * @return   Content Found object or null if 1) no instance exists for specified key or 2) instance pooling has been disabled.
      * @see        getPrimaryKeyHash()
      */
     public static function getInstanceFromPool($key)
     {
         if (Propel::isInstancePoolingEnabled()) {
-            if (isset(self::$instances[$key])) {
-                return self::$instances[$key];
+            if (isset(ContentPeer::$instances[$key])) {
+                return ContentPeer::$instances[$key];
             }
         }
 
         return null; // just to be explicit
     }
-    
+
     /**
      * Clear the instance pool.
      *
@@ -383,9 +384,9 @@ abstract class BaseContentPeer {
      */
     public static function clearInstancePool()
     {
-        self::$instances = array();
+        ContentPeer::$instances = array();
     }
-    
+
     /**
      * Method to invalidate the instance pool of all tables related to contents
      * by a foreign key with ON DELETE CASCADE
@@ -414,11 +415,11 @@ abstract class BaseContentPeer {
      *
      * @param      array $row PropelPDO resultset row.
      * @param      int $startcol The 0-based offset for reading from the resultset row.
-     * @return string A string version of PK or NULL if the components of primary key in result array are all null.
+     * @return string A string version of PK or null if the components of primary key in result array are all null.
      */
     public static function getPrimaryKeyHashFromRow($row, $startcol = 0)
     {
-        // If the PK cannot be derived from the row, return NULL.
+        // If the PK cannot be derived from the row, return null.
         if ($row[$startcol] === null) {
             return null;
         }
@@ -440,7 +441,7 @@ abstract class BaseContentPeer {
 
         return (int) $row[$startcol];
     }
-    
+
     /**
      * The returned array will contain objects of the default type or
      * objects that inherit from the default.
@@ -451,7 +452,7 @@ abstract class BaseContentPeer {
     public static function populateObjects(PDOStatement $stmt)
     {
         $results = array();
-    
+
         // set the class once to avoid overhead in the loop
         $cls = ContentPeer::getOMClass();
         // populate the object(s)
@@ -531,7 +532,7 @@ abstract class BaseContentPeer {
         $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
 
         // Set the correct dbName
-        $criteria->setDbName(self::DATABASE_NAME);
+        $criteria->setDbName(ContentPeer::DATABASE_NAME);
 
         if ($con === null) {
             $con = Propel::getConnection(ContentPeer::DATABASE_NAME, Propel::CONNECTION_READ);
@@ -582,7 +583,7 @@ abstract class BaseContentPeer {
         $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
 
         // Set the correct dbName
-        $criteria->setDbName(self::DATABASE_NAME);
+        $criteria->setDbName(ContentPeer::DATABASE_NAME);
 
         if ($con === null) {
             $con = Propel::getConnection(ContentPeer::DATABASE_NAME, Propel::CONNECTION_READ);
@@ -633,7 +634,7 @@ abstract class BaseContentPeer {
         $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
 
         // Set the correct dbName
-        $criteria->setDbName(self::DATABASE_NAME);
+        $criteria->setDbName(ContentPeer::DATABASE_NAME);
 
         if ($con === null) {
             $con = Propel::getConnection(ContentPeer::DATABASE_NAME, Propel::CONNECTION_READ);
@@ -684,7 +685,7 @@ abstract class BaseContentPeer {
         $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
 
         // Set the correct dbName
-        $criteria->setDbName(self::DATABASE_NAME);
+        $criteria->setDbName(ContentPeer::DATABASE_NAME);
 
         if ($con === null) {
             $con = Propel::getConnection(ContentPeer::DATABASE_NAME, Propel::CONNECTION_READ);
@@ -720,7 +721,7 @@ abstract class BaseContentPeer {
 
         // Set the correct dbName if it has not been overridden
         if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(self::DATABASE_NAME);
+            $criteria->setDbName(ContentPeer::DATABASE_NAME);
         }
 
         ContentPeer::addSelectColumns($criteria);
@@ -787,7 +788,7 @@ abstract class BaseContentPeer {
 
         // Set the correct dbName if it has not been overridden
         if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(self::DATABASE_NAME);
+            $criteria->setDbName(ContentPeer::DATABASE_NAME);
         }
 
         ContentPeer::addSelectColumns($criteria);
@@ -854,7 +855,7 @@ abstract class BaseContentPeer {
 
         // Set the correct dbName if it has not been overridden
         if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(self::DATABASE_NAME);
+            $criteria->setDbName(ContentPeer::DATABASE_NAME);
         }
 
         ContentPeer::addSelectColumns($criteria);
@@ -921,7 +922,7 @@ abstract class BaseContentPeer {
 
         // Set the correct dbName if it has not been overridden
         if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(self::DATABASE_NAME);
+            $criteria->setDbName(ContentPeer::DATABASE_NAME);
         }
 
         ContentPeer::addSelectColumns($criteria);
@@ -1003,7 +1004,7 @@ abstract class BaseContentPeer {
         $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
 
         // Set the correct dbName
-        $criteria->setDbName(self::DATABASE_NAME);
+        $criteria->setDbName(ContentPeer::DATABASE_NAME);
 
         if ($con === null) {
             $con = Propel::getConnection(ContentPeer::DATABASE_NAME, Propel::CONNECTION_READ);
@@ -1045,7 +1046,7 @@ abstract class BaseContentPeer {
 
         // Set the correct dbName if it has not been overridden
         if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(self::DATABASE_NAME);
+            $criteria->setDbName(ContentPeer::DATABASE_NAME);
         }
 
         ContentPeer::addSelectColumns($criteria);
@@ -1198,12 +1199,12 @@ abstract class BaseContentPeer {
         $criteria->clearOrderByColumns(); // ORDER BY should not affect count
 
         // Set the correct dbName
-        $criteria->setDbName(self::DATABASE_NAME);
+        $criteria->setDbName(ContentPeer::DATABASE_NAME);
 
         if ($con === null) {
             $con = Propel::getConnection(ContentPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
-    
+
         $criteria->addJoin(ContentPeer::CURSUS_ID, CursusPeer::ID, $join_behavior);
 
         $criteria->addJoin(ContentPeer::COURSE_ID, CoursePeer::ID, $join_behavior);
@@ -1253,12 +1254,12 @@ abstract class BaseContentPeer {
         $criteria->clearOrderByColumns(); // ORDER BY should not affect count
 
         // Set the correct dbName
-        $criteria->setDbName(self::DATABASE_NAME);
+        $criteria->setDbName(ContentPeer::DATABASE_NAME);
 
         if ($con === null) {
             $con = Propel::getConnection(ContentPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
-    
+
         $criteria->addJoin(ContentPeer::AUTHOR_ID, UserPeer::ID, $join_behavior);
 
         $criteria->addJoin(ContentPeer::COURSE_ID, CoursePeer::ID, $join_behavior);
@@ -1308,12 +1309,12 @@ abstract class BaseContentPeer {
         $criteria->clearOrderByColumns(); // ORDER BY should not affect count
 
         // Set the correct dbName
-        $criteria->setDbName(self::DATABASE_NAME);
+        $criteria->setDbName(ContentPeer::DATABASE_NAME);
 
         if ($con === null) {
             $con = Propel::getConnection(ContentPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
-    
+
         $criteria->addJoin(ContentPeer::AUTHOR_ID, UserPeer::ID, $join_behavior);
 
         $criteria->addJoin(ContentPeer::CURSUS_ID, CursusPeer::ID, $join_behavior);
@@ -1363,12 +1364,12 @@ abstract class BaseContentPeer {
         $criteria->clearOrderByColumns(); // ORDER BY should not affect count
 
         // Set the correct dbName
-        $criteria->setDbName(self::DATABASE_NAME);
+        $criteria->setDbName(ContentPeer::DATABASE_NAME);
 
         if ($con === null) {
             $con = Propel::getConnection(ContentPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
-    
+
         $criteria->addJoin(ContentPeer::AUTHOR_ID, UserPeer::ID, $join_behavior);
 
         $criteria->addJoin(ContentPeer::CURSUS_ID, CursusPeer::ID, $join_behavior);
@@ -1406,7 +1407,7 @@ abstract class BaseContentPeer {
         // $criteria->getDbName() will return the same object if not set to another value
         // so == check is okay and faster
         if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(self::DATABASE_NAME);
+            $criteria->setDbName(ContentPeer::DATABASE_NAME);
         }
 
         ContentPeer::addSelectColumns($criteria);
@@ -1451,7 +1452,7 @@ abstract class BaseContentPeer {
                 if ($key2 !== null) {
                     $obj2 = CursusPeer::getInstanceFromPool($key2);
                     if (!$obj2) {
-    
+
                         $cls = CursusPeer::getOMClass();
 
                     $obj2 = new $cls();
@@ -1470,7 +1471,7 @@ abstract class BaseContentPeer {
                 if ($key3 !== null) {
                     $obj3 = CoursePeer::getInstanceFromPool($key3);
                     if (!$obj3) {
-    
+
                         $cls = CoursePeer::getOMClass();
 
                     $obj3 = new $cls();
@@ -1489,7 +1490,7 @@ abstract class BaseContentPeer {
                 if ($key4 !== null) {
                     $obj4 = ContentTypePeer::getInstanceFromPool($key4);
                     if (!$obj4) {
-    
+
                         $cls = ContentTypePeer::getOMClass();
 
                     $obj4 = new $cls();
@@ -1528,7 +1529,7 @@ abstract class BaseContentPeer {
         // $criteria->getDbName() will return the same object if not set to another value
         // so == check is okay and faster
         if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(self::DATABASE_NAME);
+            $criteria->setDbName(ContentPeer::DATABASE_NAME);
         }
 
         ContentPeer::addSelectColumns($criteria);
@@ -1573,7 +1574,7 @@ abstract class BaseContentPeer {
                 if ($key2 !== null) {
                     $obj2 = UserPeer::getInstanceFromPool($key2);
                     if (!$obj2) {
-    
+
                         $cls = UserPeer::getOMClass();
 
                     $obj2 = new $cls();
@@ -1592,7 +1593,7 @@ abstract class BaseContentPeer {
                 if ($key3 !== null) {
                     $obj3 = CoursePeer::getInstanceFromPool($key3);
                     if (!$obj3) {
-    
+
                         $cls = CoursePeer::getOMClass();
 
                     $obj3 = new $cls();
@@ -1611,7 +1612,7 @@ abstract class BaseContentPeer {
                 if ($key4 !== null) {
                     $obj4 = ContentTypePeer::getInstanceFromPool($key4);
                     if (!$obj4) {
-    
+
                         $cls = ContentTypePeer::getOMClass();
 
                     $obj4 = new $cls();
@@ -1650,7 +1651,7 @@ abstract class BaseContentPeer {
         // $criteria->getDbName() will return the same object if not set to another value
         // so == check is okay and faster
         if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(self::DATABASE_NAME);
+            $criteria->setDbName(ContentPeer::DATABASE_NAME);
         }
 
         ContentPeer::addSelectColumns($criteria);
@@ -1695,7 +1696,7 @@ abstract class BaseContentPeer {
                 if ($key2 !== null) {
                     $obj2 = UserPeer::getInstanceFromPool($key2);
                     if (!$obj2) {
-    
+
                         $cls = UserPeer::getOMClass();
 
                     $obj2 = new $cls();
@@ -1714,7 +1715,7 @@ abstract class BaseContentPeer {
                 if ($key3 !== null) {
                     $obj3 = CursusPeer::getInstanceFromPool($key3);
                     if (!$obj3) {
-    
+
                         $cls = CursusPeer::getOMClass();
 
                     $obj3 = new $cls();
@@ -1733,7 +1734,7 @@ abstract class BaseContentPeer {
                 if ($key4 !== null) {
                     $obj4 = ContentTypePeer::getInstanceFromPool($key4);
                     if (!$obj4) {
-    
+
                         $cls = ContentTypePeer::getOMClass();
 
                     $obj4 = new $cls();
@@ -1772,7 +1773,7 @@ abstract class BaseContentPeer {
         // $criteria->getDbName() will return the same object if not set to another value
         // so == check is okay and faster
         if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(self::DATABASE_NAME);
+            $criteria->setDbName(ContentPeer::DATABASE_NAME);
         }
 
         ContentPeer::addSelectColumns($criteria);
@@ -1817,7 +1818,7 @@ abstract class BaseContentPeer {
                 if ($key2 !== null) {
                     $obj2 = UserPeer::getInstanceFromPool($key2);
                     if (!$obj2) {
-    
+
                         $cls = UserPeer::getOMClass();
 
                     $obj2 = new $cls();
@@ -1836,7 +1837,7 @@ abstract class BaseContentPeer {
                 if ($key3 !== null) {
                     $obj3 = CursusPeer::getInstanceFromPool($key3);
                     if (!$obj3) {
-    
+
                         $cls = CursusPeer::getOMClass();
 
                     $obj3 = new $cls();
@@ -1855,7 +1856,7 @@ abstract class BaseContentPeer {
                 if ($key4 !== null) {
                     $obj4 = CoursePeer::getInstanceFromPool($key4);
                     if (!$obj4) {
-    
+
                         $cls = CoursePeer::getOMClass();
 
                     $obj4 = new $cls();
@@ -1884,7 +1885,7 @@ abstract class BaseContentPeer {
      */
     public static function getTableMap()
     {
-        return Propel::getDatabaseMap(self::DATABASE_NAME)->getTable(self::TABLE_NAME);
+        return Propel::getDatabaseMap(ContentPeer::DATABASE_NAME)->getTable(ContentPeer::TABLE_NAME);
     }
 
     /**
@@ -1936,7 +1937,7 @@ abstract class BaseContentPeer {
 
 
         // Set the correct dbName
-        $criteria->setDbName(self::DATABASE_NAME);
+        $criteria->setDbName(ContentPeer::DATABASE_NAME);
 
         try {
             // use transaction because $criteria could contain info
@@ -1967,7 +1968,7 @@ abstract class BaseContentPeer {
             $con = Propel::getConnection(ContentPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
-        $selectCriteria = new Criteria(self::DATABASE_NAME);
+        $selectCriteria = new Criteria(ContentPeer::DATABASE_NAME);
 
         if ($values instanceof Criteria) {
             $criteria = clone $values; // rename for clarity
@@ -1986,7 +1987,7 @@ abstract class BaseContentPeer {
         }
 
         // set the correct dbName
-        $criteria->setDbName(self::DATABASE_NAME);
+        $criteria->setDbName(ContentPeer::DATABASE_NAME);
 
         return BasePeer::doUpdate($selectCriteria, $criteria, $con);
     }
@@ -2048,12 +2049,12 @@ abstract class BaseContentPeer {
             // create criteria based on pk values
             $criteria = $values->buildPkeyCriteria();
         } else { // it's a primary key, or an array of pks
-            $criteria = new Criteria(self::DATABASE_NAME);
+            $criteria = new Criteria(ContentPeer::DATABASE_NAME);
             $criteria->add(ContentPeer::ID, (array) $values, Criteria::IN);
         }
 
         // Set the correct dbName
-        $criteria->setDbName(self::DATABASE_NAME);
+        $criteria->setDbName(ContentPeer::DATABASE_NAME);
 
         $affectedRows = 0; // initialize var to track total num of affected rows
 
@@ -2061,11 +2062,11 @@ abstract class BaseContentPeer {
             // use transaction because $criteria could contain info
             // for more than one table or we could emulating ON DELETE CASCADE, etc.
             $con->beginTransaction();
-            
+
             // cloning the Criteria in case it's modified by doSelect() or doSelectStmt()
             $c = clone $criteria;
             $affectedRows += ContentPeer::doOnDeleteCascade($c, $con);
-            
+
             // Because this db requires some delete cascade/set null emulation, we have to
             // clear the cached instance *after* the emulation has happened (since
             // instances get re-added by the select statement contained therein).
@@ -2078,7 +2079,7 @@ abstract class BaseContentPeer {
                     ContentPeer::removeInstanceFromPool($singleval);
                 }
             }
-            
+
             $affectedRows += BasePeer::doDelete($criteria, $con);
             ContentPeer::clearRelatedInstancePool();
             $con->commit();
@@ -2115,25 +2116,25 @@ abstract class BaseContentPeer {
 
             // delete related ContentsFiles objects
             $criteria = new Criteria(ContentsFilesPeer::DATABASE_NAME);
-            
+
             $criteria->add(ContentsFilesPeer::CONTENT_ID, $obj->getId());
             $affectedRows += ContentsFilesPeer::doDelete($criteria, $con);
 
             // delete related Comment objects
             $criteria = new Criteria(CommentPeer::DATABASE_NAME);
-            
+
             $criteria->add(CommentPeer::CONTENT_ID, $obj->getId());
             $affectedRows += CommentPeer::doDelete($criteria, $con);
 
             // delete related ContentsTags objects
             $criteria = new Criteria(ContentsTagsPeer::DATABASE_NAME);
-            
+
             $criteria->add(ContentsTagsPeer::CONTENT_ID, $obj->getId());
             $affectedRows += ContentsTagsPeer::doDelete($criteria, $con);
 
             // delete related Report objects
             $criteria = new Criteria(ReportPeer::DATABASE_NAME);
-            
+
             $criteria->add(ReportPeer::CONTENT_ID, $obj->getId());
             $affectedRows += ReportPeer::doDelete($criteria, $con);
         }

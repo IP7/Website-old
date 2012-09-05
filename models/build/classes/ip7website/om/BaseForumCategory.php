@@ -4,13 +4,12 @@
 /**
  * Base class that represents a row from the 'forum_categories' table.
  *
- * 
+ *
  *
  * @package    propel.generator.ip7website.om
  */
-abstract class BaseForumCategory extends BaseObject 
+abstract class BaseForumCategory extends BaseObject implements Persistent
 {
-
     /**
      * Peer class name
      */
@@ -64,11 +63,13 @@ abstract class BaseForumCategory extends BaseObject
      * @var        PropelObjectCollection|ForumCategory[] Collection to store aggregation of ForumCategory objects.
      */
     protected $collForumCategorysRelatedById;
+    protected $collForumCategorysRelatedByIdPartial;
 
     /**
      * @var        PropelObjectCollection|ForumTopic[] Collection to store aggregation of ForumTopic objects.
      */
     protected $collForumTopics;
+    protected $collForumTopicsPartial;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -118,53 +119,49 @@ abstract class BaseForumCategory extends BaseObject
 
     /**
      * Get the [id] column value.
-     * 
-     * @return   int
+     *
+     * @return int
      */
     public function getId()
     {
-
         return $this->id;
     }
 
     /**
      * Get the [name] column value.
-     * 
-     * @return   string
+     *
+     * @return string
      */
     public function getName()
     {
-
         return $this->name;
     }
 
     /**
      * Get the [parent_id] column value.
-     * 
-     * @return   int
+     *
+     * @return int
      */
     public function getParentId()
     {
-
         return $this->parent_id;
     }
 
     /**
      * Get the [access_rights] column value.
-     * 
-     * @return   int
+     *
+     * @return int
      */
     public function getAccessRights()
     {
-
         return $this->access_rights;
     }
 
     /**
      * Set the value of [id] column.
-     * 
-     * @param      int $v new value
-     * @return   ForumCategory The current object (for fluent API support)
+     *
+     * @param int $v new value
+     * @return ForumCategory The current object (for fluent API support)
      */
     public function setId($v)
     {
@@ -183,9 +180,9 @@ abstract class BaseForumCategory extends BaseObject
 
     /**
      * Set the value of [name] column.
-     * 
-     * @param      string $v new value
-     * @return   ForumCategory The current object (for fluent API support)
+     *
+     * @param string $v new value
+     * @return ForumCategory The current object (for fluent API support)
      */
     public function setName($v)
     {
@@ -204,9 +201,9 @@ abstract class BaseForumCategory extends BaseObject
 
     /**
      * Set the value of [parent_id] column.
-     * 
-     * @param      int $v new value
-     * @return   ForumCategory The current object (for fluent API support)
+     *
+     * @param int $v new value
+     * @return ForumCategory The current object (for fluent API support)
      */
     public function setParentId($v)
     {
@@ -229,9 +226,9 @@ abstract class BaseForumCategory extends BaseObject
 
     /**
      * Set the value of [access_rights] column.
-     * 
-     * @param      int $v new value
-     * @return   ForumCategory The current object (for fluent API support)
+     *
+     * @param int $v new value
+     * @return ForumCategory The current object (for fluent API support)
      */
     public function setAccessRights($v)
     {
@@ -258,7 +255,7 @@ abstract class BaseForumCategory extends BaseObject
      */
     public function hasOnlyDefaultValues()
     {
-        // otherwise, everything was equal, so return TRUE
+        // otherwise, everything was equal, so return true
         return true;
     } // hasOnlyDefaultValues()
 
@@ -270,9 +267,9 @@ abstract class BaseForumCategory extends BaseObject
      * for results of JOIN queries where the resultset row includes columns from two or
      * more tables.
      *
-     * @param      array $row The row returned by PDOStatement->fetch(PDO::FETCH_NUM)
-     * @param      int $startcol 0-based offset column which indicates which restultset column to start with.
-     * @param      boolean $rehydrate Whether this object is being re-hydrated from the database.
+     * @param array $row The row returned by PDOStatement->fetch(PDO::FETCH_NUM)
+     * @param int $startcol 0-based offset column which indicates which restultset column to start with.
+     * @param boolean $rehydrate Whether this object is being re-hydrated from the database.
      * @return int             next starting column
      * @throws PropelException - Any caught Exception will be rewrapped as a PropelException.
      */
@@ -325,8 +322,8 @@ abstract class BaseForumCategory extends BaseObject
      *
      * This will only work if the object has been saved and has a valid primary key set.
      *
-     * @param      boolean $deep (optional) Whether to also de-associated any related objects.
-     * @param      PropelPDO $con (optional) The PropelPDO connection to use.
+     * @param boolean $deep (optional) Whether to also de-associated any related objects.
+     * @param PropelPDO $con (optional) The PropelPDO connection to use.
      * @return void
      * @throws PropelException - if this object is deleted, unsaved or doesn't have pk match in db
      */
@@ -368,7 +365,7 @@ abstract class BaseForumCategory extends BaseObject
     /**
      * Removes this object from datastore and sets delete attribute.
      *
-     * @param      PropelPDO $con
+     * @param PropelPDO $con
      * @return void
      * @throws PropelException
      * @throws Exception
@@ -412,7 +409,7 @@ abstract class BaseForumCategory extends BaseObject
      * method.  This method wraps all precipitate database operations in a
      * single transaction.
      *
-     * @param      PropelPDO $con
+     * @param PropelPDO $con
      * @return int             The number of rows affected by this insert/update and any referring fk objects' save() operations.
      * @throws PropelException
      * @throws Exception
@@ -464,7 +461,7 @@ abstract class BaseForumCategory extends BaseObject
      * If the object is new, it inserts it; otherwise an update is performed.
      * All related objects are also updated in this method.
      *
-     * @param      PropelPDO $con
+     * @param PropelPDO $con
      * @return int             The number of rows affected by this insert/update and any referring fk objects' save() operations.
      * @throws PropelException
      * @see        save()
@@ -543,7 +540,7 @@ abstract class BaseForumCategory extends BaseObject
     /**
      * Insert the row in the database.
      *
-     * @param      PropelPDO $con
+     * @param PropelPDO $con
      *
      * @throws PropelException
      * @see        doSave()
@@ -583,16 +580,16 @@ abstract class BaseForumCategory extends BaseObject
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
                     case '`ID`':
-						$stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
+                        $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
                     case '`NAME`':
-						$stmt->bindValue($identifier, $this->name, PDO::PARAM_STR);
+                        $stmt->bindValue($identifier, $this->name, PDO::PARAM_STR);
                         break;
                     case '`PARENT_ID`':
-						$stmt->bindValue($identifier, $this->parent_id, PDO::PARAM_INT);
+                        $stmt->bindValue($identifier, $this->parent_id, PDO::PARAM_INT);
                         break;
                     case '`ACCESS_RIGHTS`':
-						$stmt->bindValue($identifier, $this->access_rights, PDO::PARAM_INT);
+                        $stmt->bindValue($identifier, $this->access_rights, PDO::PARAM_INT);
                         break;
                 }
             }
@@ -603,7 +600,7 @@ abstract class BaseForumCategory extends BaseObject
         }
 
         try {
-			$pk = $con->lastInsertId();
+            $pk = $con->lastInsertId();
         } catch (Exception $e) {
             throw new PropelException('Unable to get autoincrement id.', $e);
         }
@@ -615,7 +612,7 @@ abstract class BaseForumCategory extends BaseObject
     /**
      * Update the row in the database.
      *
-     * @param      PropelPDO $con
+     * @param PropelPDO $con
      *
      * @see        doSave()
      */
@@ -650,7 +647,7 @@ abstract class BaseForumCategory extends BaseObject
      * If $columns is either a column name or an array of column names
      * only those columns are validated.
      *
-     * @param      mixed $columns Column name or an array of column names.
+     * @param mixed $columns Column name or an array of column names.
      * @return boolean Whether all columns pass validation.
      * @see        doValidate()
      * @see        getValidationFailures()
@@ -676,7 +673,7 @@ abstract class BaseForumCategory extends BaseObject
      * also be validated.  If all pass then <code>true</code> is returned; otherwise
      * an aggreagated array of ValidationFailed objects will be returned.
      *
-     * @param      array $columns Array of column names to validate.
+     * @param array $columns Array of column names to validate.
      * @return mixed <code>true</code> if all validations pass; array of <code>ValidationFailed</code> objets otherwise.
      */
     protected function doValidate($columns = null)
@@ -731,11 +728,11 @@ abstract class BaseForumCategory extends BaseObject
     /**
      * Retrieves a field from the object by name passed in as a string.
      *
-     * @param      string $name name
-     * @param      string $type The type of fieldname the $name is of:
-     *                     one of the class type constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME
-     *                     BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM.
-     *                     Defaults to BasePeer::TYPE_PHPNAME
+     * @param string $name name
+     * @param string $type The type of fieldname the $name is of:
+     *               one of the class type constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME
+     *               BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM.
+     *               Defaults to BasePeer::TYPE_PHPNAME
      * @return mixed Value of field.
      */
     public function getByName($name, $type = BasePeer::TYPE_PHPNAME)
@@ -750,7 +747,7 @@ abstract class BaseForumCategory extends BaseObject
      * Retrieves a field from the object by Position as specified in the xml schema.
      * Zero-based.
      *
-     * @param      int $pos position in xml schema
+     * @param int $pos position in xml schema
      * @return mixed Value of field at $pos
      */
     public function getByPosition($pos)
@@ -783,7 +780,7 @@ abstract class BaseForumCategory extends BaseObject
      * @param     string  $keyType (optional) One of the class type constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME,
      *                    BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM.
      *                    Defaults to BasePeer::TYPE_PHPNAME.
-     * @param     boolean $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to TRUE.
+     * @param     boolean $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to true.
      * @param     array $alreadyDumpedObjects List of objects to skip to avoid recursion
      * @param     boolean $includeForeignObjects (optional) Whether to include hydrated related objects. Default to FALSE.
      *
@@ -820,9 +817,9 @@ abstract class BaseForumCategory extends BaseObject
     /**
      * Sets a field from the object by name passed in as a string.
      *
-     * @param      string $name peer name
-     * @param      mixed $value field value
-     * @param      string $type The type of fieldname the $name is of:
+     * @param string $name peer name
+     * @param mixed $value field value
+     * @param string $type The type of fieldname the $name is of:
      *                     one of the class type constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME
      *                     BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM.
      *                     Defaults to BasePeer::TYPE_PHPNAME
@@ -839,8 +836,8 @@ abstract class BaseForumCategory extends BaseObject
      * Sets a field from the object by Position as specified in the xml schema.
      * Zero-based.
      *
-     * @param      int $pos position in xml schema
-     * @param      mixed $value field value
+     * @param int $pos position in xml schema
+     * @param mixed $value field value
      * @return void
      */
     public function setByPosition($pos, $value)
@@ -874,8 +871,8 @@ abstract class BaseForumCategory extends BaseObject
      * BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM.
      * The default key type is the column's BasePeer::TYPE_PHPNAME
      *
-     * @param      array  $arr     An array to populate the object from.
-     * @param      string $keyType The type of keys the array uses.
+     * @param array  $arr     An array to populate the object from.
+     * @param string $keyType The type of keys the array uses.
      * @return void
      */
     public function fromArray($arr, $keyType = BasePeer::TYPE_PHPNAME)
@@ -923,7 +920,7 @@ abstract class BaseForumCategory extends BaseObject
 
     /**
      * Returns the primary key for this object (row).
-     * @return   int
+     * @return int
      */
     public function getPrimaryKey()
     {
@@ -933,7 +930,7 @@ abstract class BaseForumCategory extends BaseObject
     /**
      * Generic method to set the primary key (id column).
      *
-     * @param       int $key Primary key.
+     * @param  int $key Primary key.
      * @return void
      */
     public function setPrimaryKey($key)
@@ -957,9 +954,9 @@ abstract class BaseForumCategory extends BaseObject
      * If desired, this method can also make copies of all associated (fkey referrers)
      * objects.
      *
-     * @param      object $copyObj An object of ForumCategory (or compatible) type.
-     * @param      boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
-     * @param      boolean $makeNew Whether to reset autoincrement PKs and make the object new.
+     * @param object $copyObj An object of ForumCategory (or compatible) type.
+     * @param boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
+     * @param boolean $makeNew Whether to reset autoincrement PKs and make the object new.
      * @throws PropelException
      */
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
@@ -1005,8 +1002,8 @@ abstract class BaseForumCategory extends BaseObject
      * If desired, this method can also make copies of all associated (fkey referrers)
      * objects.
      *
-     * @param      boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
-     * @return                 ForumCategory Clone of current object.
+     * @param boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
+     * @return ForumCategory Clone of current object.
      * @throws PropelException
      */
     public function copy($deepCopy = false)
@@ -1026,7 +1023,7 @@ abstract class BaseForumCategory extends BaseObject
      * same instance for all member of this class. The method could therefore
      * be static, but this would prevent one from overriding the behavior.
      *
-     * @return   ForumCategoryPeer
+     * @return ForumCategoryPeer
      */
     public function getPeer()
     {
@@ -1040,8 +1037,8 @@ abstract class BaseForumCategory extends BaseObject
     /**
      * Declares an association between this object and a ForumCategory object.
      *
-     * @param                  ForumCategory $v
-     * @return                 ForumCategory The current object (for fluent API support)
+     * @param             ForumCategory $v
+     * @return ForumCategory The current object (for fluent API support)
      * @throws PropelException
      */
     public function setParentCategory(ForumCategory $v = null)
@@ -1068,8 +1065,8 @@ abstract class BaseForumCategory extends BaseObject
     /**
      * Get the associated ForumCategory object
      *
-     * @param      PropelPDO $con Optional Connection object.
-     * @return                 ForumCategory The associated ForumCategory object.
+     * @param PropelPDO $con Optional Connection object.
+     * @return ForumCategory The associated ForumCategory object.
      * @throws PropelException
      */
     public function getParentCategory(PropelPDO $con = null)
@@ -1094,7 +1091,7 @@ abstract class BaseForumCategory extends BaseObject
      * Avoids crafting an 'init[$relationName]s' method name
      * that wouldn't work when StandardEnglishPluralizer is used.
      *
-     * @param      string $relationName The name of the relation to initialize
+     * @param string $relationName The name of the relation to initialize
      * @return void
      */
     public function initRelation($relationName)
@@ -1118,7 +1115,18 @@ abstract class BaseForumCategory extends BaseObject
      */
     public function clearForumCategorysRelatedById()
     {
-        $this->collForumCategorysRelatedById = null; // important to set this to NULL since that means it is uninitialized
+        $this->collForumCategorysRelatedById = null; // important to set this to null since that means it is uninitialized
+        $this->collForumCategorysRelatedByIdPartial = null;
+    }
+
+    /**
+     * reset is the collForumCategorysRelatedById collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialForumCategorysRelatedById($v = true)
+    {
+        $this->collForumCategorysRelatedByIdPartial = $v;
     }
 
     /**
@@ -1128,7 +1136,7 @@ abstract class BaseForumCategory extends BaseObject
      * however, you may wish to override this method in your stub class to provide setting appropriate
      * to your application -- for example, setting the initial array to the values stored in database.
      *
-     * @param      boolean $overrideExisting If set to true, the method call initializes
+     * @param boolean $overrideExisting If set to true, the method call initializes
      *                                        the collection even if it is not empty
      *
      * @return void
@@ -1151,14 +1159,15 @@ abstract class BaseForumCategory extends BaseObject
      * If this ForumCategory is new, it will return
      * an empty collection or the current collection; the criteria is ignored on a new object.
      *
-     * @param      Criteria $criteria optional Criteria object to narrow the query
-     * @param      PropelPDO $con optional connection object
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
      * @return PropelObjectCollection|ForumCategory[] List of ForumCategory objects
      * @throws PropelException
      */
     public function getForumCategorysRelatedById($criteria = null, PropelPDO $con = null)
     {
-        if (null === $this->collForumCategorysRelatedById || null !== $criteria) {
+        $partial = $this->collForumCategorysRelatedByIdPartial && !$this->isNew();
+        if (null === $this->collForumCategorysRelatedById || null !== $criteria  || $partial) {
             if ($this->isNew() && null === $this->collForumCategorysRelatedById) {
                 // return empty collection
                 $this->initForumCategorysRelatedById();
@@ -1167,9 +1176,31 @@ abstract class BaseForumCategory extends BaseObject
                     ->filterByParentCategory($this)
                     ->find($con);
                 if (null !== $criteria) {
+                    if (false !== $this->collForumCategorysRelatedByIdPartial && count($collForumCategorysRelatedById)) {
+                      $this->initForumCategorysRelatedById(false);
+
+                      foreach($collForumCategorysRelatedById as $obj) {
+                        if (false == $this->collForumCategorysRelatedById->contains($obj)) {
+                          $this->collForumCategorysRelatedById->append($obj);
+                        }
+                      }
+
+                      $this->collForumCategorysRelatedByIdPartial = true;
+                    }
+
                     return $collForumCategorysRelatedById;
                 }
+
+                if($partial && $this->collForumCategorysRelatedById) {
+                    foreach($this->collForumCategorysRelatedById as $obj) {
+                        if($obj->isNew()) {
+                            $collForumCategorysRelatedById[] = $obj;
+                        }
+                    }
+                }
+
                 $this->collForumCategorysRelatedById = $collForumCategorysRelatedById;
+                $this->collForumCategorysRelatedByIdPartial = false;
             }
         }
 
@@ -1182,8 +1213,8 @@ abstract class BaseForumCategory extends BaseObject
      * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
      * and new objects from the given Propel collection.
      *
-     * @param      PropelCollection $forumCategorysRelatedById A Propel collection.
-     * @param      PropelPDO $con Optional connection object
+     * @param PropelCollection $forumCategorysRelatedById A Propel collection.
+     * @param PropelPDO $con Optional connection object
      */
     public function setForumCategorysRelatedById(PropelCollection $forumCategorysRelatedById, PropelPDO $con = null)
     {
@@ -1199,23 +1230,28 @@ abstract class BaseForumCategory extends BaseObject
         }
 
         $this->collForumCategorysRelatedById = $forumCategorysRelatedById;
+        $this->collForumCategorysRelatedByIdPartial = false;
     }
 
     /**
      * Returns the number of related ForumCategory objects.
      *
-     * @param      Criteria $criteria
-     * @param      boolean $distinct
-     * @param      PropelPDO $con
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
      * @return int             Count of related ForumCategory objects.
      * @throws PropelException
      */
     public function countForumCategorysRelatedById(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
     {
-        if (null === $this->collForumCategorysRelatedById || null !== $criteria) {
+        $partial = $this->collForumCategorysRelatedByIdPartial && !$this->isNew();
+        if (null === $this->collForumCategorysRelatedById || null !== $criteria || $partial) {
             if ($this->isNew() && null === $this->collForumCategorysRelatedById) {
                 return 0;
             } else {
+                if($partial && !$criteria) {
+                    return count($this->getForumCategorysRelatedById());
+                }
                 $query = ForumCategoryQuery::create(null, $criteria);
                 if ($distinct) {
                     $query->distinct();
@@ -1235,12 +1271,13 @@ abstract class BaseForumCategory extends BaseObject
      * through the ForumCategory foreign key attribute.
      *
      * @param    ForumCategory $l ForumCategory
-     * @return   ForumCategory The current object (for fluent API support)
+     * @return ForumCategory The current object (for fluent API support)
      */
     public function addForumCategoryRelatedById(ForumCategory $l)
     {
         if ($this->collForumCategorysRelatedById === null) {
             $this->initForumCategorysRelatedById();
+            $this->collForumCategorysRelatedByIdPartial = true;
         }
         if (!$this->collForumCategorysRelatedById->contains($l)) { // only add it if the **same** object is not already associated
             $this->doAddForumCategoryRelatedById($l);
@@ -1285,7 +1322,18 @@ abstract class BaseForumCategory extends BaseObject
      */
     public function clearForumTopics()
     {
-        $this->collForumTopics = null; // important to set this to NULL since that means it is uninitialized
+        $this->collForumTopics = null; // important to set this to null since that means it is uninitialized
+        $this->collForumTopicsPartial = null;
+    }
+
+    /**
+     * reset is the collForumTopics collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialForumTopics($v = true)
+    {
+        $this->collForumTopicsPartial = $v;
     }
 
     /**
@@ -1295,7 +1343,7 @@ abstract class BaseForumCategory extends BaseObject
      * however, you may wish to override this method in your stub class to provide setting appropriate
      * to your application -- for example, setting the initial array to the values stored in database.
      *
-     * @param      boolean $overrideExisting If set to true, the method call initializes
+     * @param boolean $overrideExisting If set to true, the method call initializes
      *                                        the collection even if it is not empty
      *
      * @return void
@@ -1318,14 +1366,15 @@ abstract class BaseForumCategory extends BaseObject
      * If this ForumCategory is new, it will return
      * an empty collection or the current collection; the criteria is ignored on a new object.
      *
-     * @param      Criteria $criteria optional Criteria object to narrow the query
-     * @param      PropelPDO $con optional connection object
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
      * @return PropelObjectCollection|ForumTopic[] List of ForumTopic objects
      * @throws PropelException
      */
     public function getForumTopics($criteria = null, PropelPDO $con = null)
     {
-        if (null === $this->collForumTopics || null !== $criteria) {
+        $partial = $this->collForumTopicsPartial && !$this->isNew();
+        if (null === $this->collForumTopics || null !== $criteria  || $partial) {
             if ($this->isNew() && null === $this->collForumTopics) {
                 // return empty collection
                 $this->initForumTopics();
@@ -1334,9 +1383,31 @@ abstract class BaseForumCategory extends BaseObject
                     ->filterByCategory($this)
                     ->find($con);
                 if (null !== $criteria) {
+                    if (false !== $this->collForumTopicsPartial && count($collForumTopics)) {
+                      $this->initForumTopics(false);
+
+                      foreach($collForumTopics as $obj) {
+                        if (false == $this->collForumTopics->contains($obj)) {
+                          $this->collForumTopics->append($obj);
+                        }
+                      }
+
+                      $this->collForumTopicsPartial = true;
+                    }
+
                     return $collForumTopics;
                 }
+
+                if($partial && $this->collForumTopics) {
+                    foreach($this->collForumTopics as $obj) {
+                        if($obj->isNew()) {
+                            $collForumTopics[] = $obj;
+                        }
+                    }
+                }
+
                 $this->collForumTopics = $collForumTopics;
+                $this->collForumTopicsPartial = false;
             }
         }
 
@@ -1349,8 +1420,8 @@ abstract class BaseForumCategory extends BaseObject
      * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
      * and new objects from the given Propel collection.
      *
-     * @param      PropelCollection $forumTopics A Propel collection.
-     * @param      PropelPDO $con Optional connection object
+     * @param PropelCollection $forumTopics A Propel collection.
+     * @param PropelPDO $con Optional connection object
      */
     public function setForumTopics(PropelCollection $forumTopics, PropelPDO $con = null)
     {
@@ -1366,23 +1437,28 @@ abstract class BaseForumCategory extends BaseObject
         }
 
         $this->collForumTopics = $forumTopics;
+        $this->collForumTopicsPartial = false;
     }
 
     /**
      * Returns the number of related ForumTopic objects.
      *
-     * @param      Criteria $criteria
-     * @param      boolean $distinct
-     * @param      PropelPDO $con
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
      * @return int             Count of related ForumTopic objects.
      * @throws PropelException
      */
     public function countForumTopics(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
     {
-        if (null === $this->collForumTopics || null !== $criteria) {
+        $partial = $this->collForumTopicsPartial && !$this->isNew();
+        if (null === $this->collForumTopics || null !== $criteria || $partial) {
             if ($this->isNew() && null === $this->collForumTopics) {
                 return 0;
             } else {
+                if($partial && !$criteria) {
+                    return count($this->getForumTopics());
+                }
                 $query = ForumTopicQuery::create(null, $criteria);
                 if ($distinct) {
                     $query->distinct();
@@ -1402,12 +1478,13 @@ abstract class BaseForumCategory extends BaseObject
      * through the ForumTopic foreign key attribute.
      *
      * @param    ForumTopic $l ForumTopic
-     * @return   ForumCategory The current object (for fluent API support)
+     * @return ForumCategory The current object (for fluent API support)
      */
     public function addForumTopic(ForumTopic $l)
     {
         if ($this->collForumTopics === null) {
             $this->initForumTopics();
+            $this->collForumTopicsPartial = true;
         }
         if (!$this->collForumTopics->contains($l)) { // only add it if the **same** object is not already associated
             $this->doAddForumTopic($l);
@@ -1466,7 +1543,7 @@ abstract class BaseForumCategory extends BaseObject
      * objects with circular references (even in PHP 5.3). This is currently necessary
      * when using Propel in certain daemon or large-volumne/high-memory operations.
      *
-     * @param      boolean $deep Whether to also clear the references on all referrer objects.
+     * @param boolean $deep Whether to also clear the references on all referrer objects.
      */
     public function clearAllReferences($deep = false)
     {
@@ -1495,7 +1572,7 @@ abstract class BaseForumCategory extends BaseObject
     }
 
     /**
-     * Return the string representation of this object
+     * return the string representation of this object
      *
      * @return string
      */
@@ -1504,4 +1581,14 @@ abstract class BaseForumCategory extends BaseObject
         return (string) $this->exportTo(ForumCategoryPeer::DEFAULT_STRING_FORMAT);
     }
 
-} // BaseForumCategory
+    /**
+     * return true is the object is in saving state
+     *
+     * @return boolean
+     */
+    public function isAlreadyInSave()
+    {
+        return $this->alreadyInSave;
+    }
+
+}

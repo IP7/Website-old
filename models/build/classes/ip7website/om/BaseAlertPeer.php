@@ -4,11 +4,12 @@
 /**
  * Base static class for performing query and update operations on the 'alerts' table.
  *
- * 
  *
- * @package    propel.generator.ip7website.om
+ *
+ * @package propel.generator.ip7website.om
  */
-abstract class BaseAlertPeer {
+abstract class BaseAlertPeer
+{
 
     /** the default database name for this class */
     const DATABASE_NAME = 'infop7db';
@@ -65,12 +66,12 @@ abstract class BaseAlertPeer {
      * holds an array of fieldnames
      *
      * first dimension keys are the type constants
-     * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
+     * e.g. AlertPeer::$fieldNames[AlertPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
         BasePeer::TYPE_PHPNAME => array ('Id', 'SubscriberId', 'CursusId', 'CourseId', 'TagId', 'ContentTypeId', ),
         BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'subscriberId', 'cursusId', 'courseId', 'tagId', 'contentTypeId', ),
-        BasePeer::TYPE_COLNAME => array (self::ID, self::SUBSCRIBER_ID, self::CURSUS_ID, self::COURSE_ID, self::TAG_ID, self::CONTENT_TYPE_ID, ),
+        BasePeer::TYPE_COLNAME => array (AlertPeer::ID, AlertPeer::SUBSCRIBER_ID, AlertPeer::CURSUS_ID, AlertPeer::COURSE_ID, AlertPeer::TAG_ID, AlertPeer::CONTENT_TYPE_ID, ),
         BasePeer::TYPE_RAW_COLNAME => array ('ID', 'SUBSCRIBER_ID', 'CURSUS_ID', 'COURSE_ID', 'TAG_ID', 'CONTENT_TYPE_ID', ),
         BasePeer::TYPE_FIELDNAME => array ('id', 'subscriber_id', 'cursus_id', 'course_id', 'tag_id', 'content_type_id', ),
         BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
@@ -80,12 +81,12 @@ abstract class BaseAlertPeer {
      * holds an array of keys for quick access to the fieldnames array
      *
      * first dimension keys are the type constants
-     * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
+     * e.g. AlertPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
         BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'SubscriberId' => 1, 'CursusId' => 2, 'CourseId' => 3, 'TagId' => 4, 'ContentTypeId' => 5, ),
         BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'subscriberId' => 1, 'cursusId' => 2, 'courseId' => 3, 'tagId' => 4, 'contentTypeId' => 5, ),
-        BasePeer::TYPE_COLNAME => array (self::ID => 0, self::SUBSCRIBER_ID => 1, self::CURSUS_ID => 2, self::COURSE_ID => 3, self::TAG_ID => 4, self::CONTENT_TYPE_ID => 5, ),
+        BasePeer::TYPE_COLNAME => array (AlertPeer::ID => 0, AlertPeer::SUBSCRIBER_ID => 1, AlertPeer::CURSUS_ID => 2, AlertPeer::COURSE_ID => 3, AlertPeer::TAG_ID => 4, AlertPeer::CONTENT_TYPE_ID => 5, ),
         BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'SUBSCRIBER_ID' => 1, 'CURSUS_ID' => 2, 'COURSE_ID' => 3, 'TAG_ID' => 4, 'CONTENT_TYPE_ID' => 5, ),
         BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'subscriber_id' => 1, 'cursus_id' => 2, 'course_id' => 3, 'tag_id' => 4, 'content_type_id' => 5, ),
         BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
@@ -103,10 +104,10 @@ abstract class BaseAlertPeer {
      */
     public static function translateFieldName($name, $fromType, $toType)
     {
-        $toNames = self::getFieldNames($toType);
-        $key = isset(self::$fieldKeys[$fromType][$name]) ? self::$fieldKeys[$fromType][$name] : null;
+        $toNames = AlertPeer::getFieldNames($toType);
+        $key = isset(AlertPeer::$fieldKeys[$fromType][$name]) ? AlertPeer::$fieldKeys[$fromType][$name] : null;
         if ($key === null) {
-            throw new PropelException("'$name' could not be found in the field names of type '$fromType'. These are: " . print_r(self::$fieldKeys[$fromType], true));
+            throw new PropelException("'$name' could not be found in the field names of type '$fromType'. These are: " . print_r(AlertPeer::$fieldKeys[$fromType], true));
         }
 
         return $toNames[$key];
@@ -123,11 +124,11 @@ abstract class BaseAlertPeer {
      */
     public static function getFieldNames($type = BasePeer::TYPE_PHPNAME)
     {
-        if (!array_key_exists($type, self::$fieldNames)) {
+        if (!array_key_exists($type, AlertPeer::$fieldNames)) {
             throw new PropelException('Method getFieldNames() expects the parameter $type to be one of the class constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME, BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM. ' . $type . ' was given.');
         }
 
-        return self::$fieldNames[$type];
+        return AlertPeer::$fieldNames[$type];
     }
 
     /**
@@ -205,7 +206,7 @@ abstract class BaseAlertPeer {
         }
 
         $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
-        $criteria->setDbName(self::DATABASE_NAME); // Set the correct dbName
+        $criteria->setDbName(AlertPeer::DATABASE_NAME); // Set the correct dbName
 
         if ($con === null) {
             $con = Propel::getConnection(AlertPeer::DATABASE_NAME, Propel::CONNECTION_READ);
@@ -280,7 +281,7 @@ abstract class BaseAlertPeer {
         }
 
         // Set the correct dbName
-        $criteria->setDbName(self::DATABASE_NAME);
+        $criteria->setDbName(AlertPeer::DATABASE_NAME);
 
         // BasePeer returns a PDOStatement
         return BasePeer::doSelect($criteria, $con);
@@ -303,7 +304,7 @@ abstract class BaseAlertPeer {
             if ($key === null) {
                 $key = (string) $obj->getId();
             } // if key === null
-            self::$instances[$key] = $obj;
+            AlertPeer::$instances[$key] = $obj;
         }
     }
 
@@ -333,7 +334,7 @@ abstract class BaseAlertPeer {
                 throw $e;
             }
 
-            unset(self::$instances[$key]);
+            unset(AlertPeer::$instances[$key]);
         }
     } // removeInstanceFromPool()
 
@@ -344,20 +345,20 @@ abstract class BaseAlertPeer {
      * a multi-column primary key, a serialize()d version of the primary key will be returned.
      *
      * @param      string $key The key (@see getPrimaryKeyHash()) for this instance.
-     * @return   Alert Found object or NULL if 1) no instance exists for specified key or 2) instance pooling has been disabled.
+     * @return   Alert Found object or null if 1) no instance exists for specified key or 2) instance pooling has been disabled.
      * @see        getPrimaryKeyHash()
      */
     public static function getInstanceFromPool($key)
     {
         if (Propel::isInstancePoolingEnabled()) {
-            if (isset(self::$instances[$key])) {
-                return self::$instances[$key];
+            if (isset(AlertPeer::$instances[$key])) {
+                return AlertPeer::$instances[$key];
             }
         }
 
         return null; // just to be explicit
     }
-    
+
     /**
      * Clear the instance pool.
      *
@@ -365,9 +366,9 @@ abstract class BaseAlertPeer {
      */
     public static function clearInstancePool()
     {
-        self::$instances = array();
+        AlertPeer::$instances = array();
     }
-    
+
     /**
      * Method to invalidate the instance pool of all tables related to alerts
      * by a foreign key with ON DELETE CASCADE
@@ -384,11 +385,11 @@ abstract class BaseAlertPeer {
      *
      * @param      array $row PropelPDO resultset row.
      * @param      int $startcol The 0-based offset for reading from the resultset row.
-     * @return string A string version of PK or NULL if the components of primary key in result array are all null.
+     * @return string A string version of PK or null if the components of primary key in result array are all null.
      */
     public static function getPrimaryKeyHashFromRow($row, $startcol = 0)
     {
-        // If the PK cannot be derived from the row, return NULL.
+        // If the PK cannot be derived from the row, return null.
         if ($row[$startcol] === null) {
             return null;
         }
@@ -410,7 +411,7 @@ abstract class BaseAlertPeer {
 
         return (int) $row[$startcol];
     }
-    
+
     /**
      * The returned array will contain objects of the default type or
      * objects that inherit from the default.
@@ -421,7 +422,7 @@ abstract class BaseAlertPeer {
     public static function populateObjects(PDOStatement $stmt)
     {
         $results = array();
-    
+
         // set the class once to avoid overhead in the loop
         $cls = AlertPeer::getOMClass();
         // populate the object(s)
@@ -501,7 +502,7 @@ abstract class BaseAlertPeer {
         $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
 
         // Set the correct dbName
-        $criteria->setDbName(self::DATABASE_NAME);
+        $criteria->setDbName(AlertPeer::DATABASE_NAME);
 
         if ($con === null) {
             $con = Propel::getConnection(AlertPeer::DATABASE_NAME, Propel::CONNECTION_READ);
@@ -552,7 +553,7 @@ abstract class BaseAlertPeer {
         $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
 
         // Set the correct dbName
-        $criteria->setDbName(self::DATABASE_NAME);
+        $criteria->setDbName(AlertPeer::DATABASE_NAME);
 
         if ($con === null) {
             $con = Propel::getConnection(AlertPeer::DATABASE_NAME, Propel::CONNECTION_READ);
@@ -603,7 +604,7 @@ abstract class BaseAlertPeer {
         $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
 
         // Set the correct dbName
-        $criteria->setDbName(self::DATABASE_NAME);
+        $criteria->setDbName(AlertPeer::DATABASE_NAME);
 
         if ($con === null) {
             $con = Propel::getConnection(AlertPeer::DATABASE_NAME, Propel::CONNECTION_READ);
@@ -654,7 +655,7 @@ abstract class BaseAlertPeer {
         $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
 
         // Set the correct dbName
-        $criteria->setDbName(self::DATABASE_NAME);
+        $criteria->setDbName(AlertPeer::DATABASE_NAME);
 
         if ($con === null) {
             $con = Propel::getConnection(AlertPeer::DATABASE_NAME, Propel::CONNECTION_READ);
@@ -705,7 +706,7 @@ abstract class BaseAlertPeer {
         $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
 
         // Set the correct dbName
-        $criteria->setDbName(self::DATABASE_NAME);
+        $criteria->setDbName(AlertPeer::DATABASE_NAME);
 
         if ($con === null) {
             $con = Propel::getConnection(AlertPeer::DATABASE_NAME, Propel::CONNECTION_READ);
@@ -741,7 +742,7 @@ abstract class BaseAlertPeer {
 
         // Set the correct dbName if it has not been overridden
         if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(self::DATABASE_NAME);
+            $criteria->setDbName(AlertPeer::DATABASE_NAME);
         }
 
         AlertPeer::addSelectColumns($criteria);
@@ -808,7 +809,7 @@ abstract class BaseAlertPeer {
 
         // Set the correct dbName if it has not been overridden
         if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(self::DATABASE_NAME);
+            $criteria->setDbName(AlertPeer::DATABASE_NAME);
         }
 
         AlertPeer::addSelectColumns($criteria);
@@ -875,7 +876,7 @@ abstract class BaseAlertPeer {
 
         // Set the correct dbName if it has not been overridden
         if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(self::DATABASE_NAME);
+            $criteria->setDbName(AlertPeer::DATABASE_NAME);
         }
 
         AlertPeer::addSelectColumns($criteria);
@@ -942,7 +943,7 @@ abstract class BaseAlertPeer {
 
         // Set the correct dbName if it has not been overridden
         if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(self::DATABASE_NAME);
+            $criteria->setDbName(AlertPeer::DATABASE_NAME);
         }
 
         AlertPeer::addSelectColumns($criteria);
@@ -1009,7 +1010,7 @@ abstract class BaseAlertPeer {
 
         // Set the correct dbName if it has not been overridden
         if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(self::DATABASE_NAME);
+            $criteria->setDbName(AlertPeer::DATABASE_NAME);
         }
 
         AlertPeer::addSelectColumns($criteria);
@@ -1091,7 +1092,7 @@ abstract class BaseAlertPeer {
         $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
 
         // Set the correct dbName
-        $criteria->setDbName(self::DATABASE_NAME);
+        $criteria->setDbName(AlertPeer::DATABASE_NAME);
 
         if ($con === null) {
             $con = Propel::getConnection(AlertPeer::DATABASE_NAME, Propel::CONNECTION_READ);
@@ -1135,7 +1136,7 @@ abstract class BaseAlertPeer {
 
         // Set the correct dbName if it has not been overridden
         if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(self::DATABASE_NAME);
+            $criteria->setDbName(AlertPeer::DATABASE_NAME);
         }
 
         AlertPeer::addSelectColumns($criteria);
@@ -1311,12 +1312,12 @@ abstract class BaseAlertPeer {
         $criteria->clearOrderByColumns(); // ORDER BY should not affect count
 
         // Set the correct dbName
-        $criteria->setDbName(self::DATABASE_NAME);
+        $criteria->setDbName(AlertPeer::DATABASE_NAME);
 
         if ($con === null) {
             $con = Propel::getConnection(AlertPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
-    
+
         $criteria->addJoin(AlertPeer::CURSUS_ID, CursusPeer::ID, $join_behavior);
 
         $criteria->addJoin(AlertPeer::COURSE_ID, CoursePeer::ID, $join_behavior);
@@ -1368,12 +1369,12 @@ abstract class BaseAlertPeer {
         $criteria->clearOrderByColumns(); // ORDER BY should not affect count
 
         // Set the correct dbName
-        $criteria->setDbName(self::DATABASE_NAME);
+        $criteria->setDbName(AlertPeer::DATABASE_NAME);
 
         if ($con === null) {
             $con = Propel::getConnection(AlertPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
-    
+
         $criteria->addJoin(AlertPeer::SUBSCRIBER_ID, UserPeer::ID, $join_behavior);
 
         $criteria->addJoin(AlertPeer::COURSE_ID, CoursePeer::ID, $join_behavior);
@@ -1425,12 +1426,12 @@ abstract class BaseAlertPeer {
         $criteria->clearOrderByColumns(); // ORDER BY should not affect count
 
         // Set the correct dbName
-        $criteria->setDbName(self::DATABASE_NAME);
+        $criteria->setDbName(AlertPeer::DATABASE_NAME);
 
         if ($con === null) {
             $con = Propel::getConnection(AlertPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
-    
+
         $criteria->addJoin(AlertPeer::SUBSCRIBER_ID, UserPeer::ID, $join_behavior);
 
         $criteria->addJoin(AlertPeer::CURSUS_ID, CursusPeer::ID, $join_behavior);
@@ -1482,12 +1483,12 @@ abstract class BaseAlertPeer {
         $criteria->clearOrderByColumns(); // ORDER BY should not affect count
 
         // Set the correct dbName
-        $criteria->setDbName(self::DATABASE_NAME);
+        $criteria->setDbName(AlertPeer::DATABASE_NAME);
 
         if ($con === null) {
             $con = Propel::getConnection(AlertPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
-    
+
         $criteria->addJoin(AlertPeer::SUBSCRIBER_ID, UserPeer::ID, $join_behavior);
 
         $criteria->addJoin(AlertPeer::CURSUS_ID, CursusPeer::ID, $join_behavior);
@@ -1539,12 +1540,12 @@ abstract class BaseAlertPeer {
         $criteria->clearOrderByColumns(); // ORDER BY should not affect count
 
         // Set the correct dbName
-        $criteria->setDbName(self::DATABASE_NAME);
+        $criteria->setDbName(AlertPeer::DATABASE_NAME);
 
         if ($con === null) {
             $con = Propel::getConnection(AlertPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
-    
+
         $criteria->addJoin(AlertPeer::SUBSCRIBER_ID, UserPeer::ID, $join_behavior);
 
         $criteria->addJoin(AlertPeer::CURSUS_ID, CursusPeer::ID, $join_behavior);
@@ -1584,7 +1585,7 @@ abstract class BaseAlertPeer {
         // $criteria->getDbName() will return the same object if not set to another value
         // so == check is okay and faster
         if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(self::DATABASE_NAME);
+            $criteria->setDbName(AlertPeer::DATABASE_NAME);
         }
 
         AlertPeer::addSelectColumns($criteria);
@@ -1634,7 +1635,7 @@ abstract class BaseAlertPeer {
                 if ($key2 !== null) {
                     $obj2 = CursusPeer::getInstanceFromPool($key2);
                     if (!$obj2) {
-    
+
                         $cls = CursusPeer::getOMClass();
 
                     $obj2 = new $cls();
@@ -1653,7 +1654,7 @@ abstract class BaseAlertPeer {
                 if ($key3 !== null) {
                     $obj3 = CoursePeer::getInstanceFromPool($key3);
                     if (!$obj3) {
-    
+
                         $cls = CoursePeer::getOMClass();
 
                     $obj3 = new $cls();
@@ -1672,7 +1673,7 @@ abstract class BaseAlertPeer {
                 if ($key4 !== null) {
                     $obj4 = TagPeer::getInstanceFromPool($key4);
                     if (!$obj4) {
-    
+
                         $cls = TagPeer::getOMClass();
 
                     $obj4 = new $cls();
@@ -1691,7 +1692,7 @@ abstract class BaseAlertPeer {
                 if ($key5 !== null) {
                     $obj5 = ContentTypePeer::getInstanceFromPool($key5);
                     if (!$obj5) {
-    
+
                         $cls = ContentTypePeer::getOMClass();
 
                     $obj5 = new $cls();
@@ -1730,7 +1731,7 @@ abstract class BaseAlertPeer {
         // $criteria->getDbName() will return the same object if not set to another value
         // so == check is okay and faster
         if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(self::DATABASE_NAME);
+            $criteria->setDbName(AlertPeer::DATABASE_NAME);
         }
 
         AlertPeer::addSelectColumns($criteria);
@@ -1780,7 +1781,7 @@ abstract class BaseAlertPeer {
                 if ($key2 !== null) {
                     $obj2 = UserPeer::getInstanceFromPool($key2);
                     if (!$obj2) {
-    
+
                         $cls = UserPeer::getOMClass();
 
                     $obj2 = new $cls();
@@ -1799,7 +1800,7 @@ abstract class BaseAlertPeer {
                 if ($key3 !== null) {
                     $obj3 = CoursePeer::getInstanceFromPool($key3);
                     if (!$obj3) {
-    
+
                         $cls = CoursePeer::getOMClass();
 
                     $obj3 = new $cls();
@@ -1818,7 +1819,7 @@ abstract class BaseAlertPeer {
                 if ($key4 !== null) {
                     $obj4 = TagPeer::getInstanceFromPool($key4);
                     if (!$obj4) {
-    
+
                         $cls = TagPeer::getOMClass();
 
                     $obj4 = new $cls();
@@ -1837,7 +1838,7 @@ abstract class BaseAlertPeer {
                 if ($key5 !== null) {
                     $obj5 = ContentTypePeer::getInstanceFromPool($key5);
                     if (!$obj5) {
-    
+
                         $cls = ContentTypePeer::getOMClass();
 
                     $obj5 = new $cls();
@@ -1876,7 +1877,7 @@ abstract class BaseAlertPeer {
         // $criteria->getDbName() will return the same object if not set to another value
         // so == check is okay and faster
         if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(self::DATABASE_NAME);
+            $criteria->setDbName(AlertPeer::DATABASE_NAME);
         }
 
         AlertPeer::addSelectColumns($criteria);
@@ -1926,7 +1927,7 @@ abstract class BaseAlertPeer {
                 if ($key2 !== null) {
                     $obj2 = UserPeer::getInstanceFromPool($key2);
                     if (!$obj2) {
-    
+
                         $cls = UserPeer::getOMClass();
 
                     $obj2 = new $cls();
@@ -1945,7 +1946,7 @@ abstract class BaseAlertPeer {
                 if ($key3 !== null) {
                     $obj3 = CursusPeer::getInstanceFromPool($key3);
                     if (!$obj3) {
-    
+
                         $cls = CursusPeer::getOMClass();
 
                     $obj3 = new $cls();
@@ -1964,7 +1965,7 @@ abstract class BaseAlertPeer {
                 if ($key4 !== null) {
                     $obj4 = TagPeer::getInstanceFromPool($key4);
                     if (!$obj4) {
-    
+
                         $cls = TagPeer::getOMClass();
 
                     $obj4 = new $cls();
@@ -1983,7 +1984,7 @@ abstract class BaseAlertPeer {
                 if ($key5 !== null) {
                     $obj5 = ContentTypePeer::getInstanceFromPool($key5);
                     if (!$obj5) {
-    
+
                         $cls = ContentTypePeer::getOMClass();
 
                     $obj5 = new $cls();
@@ -2022,7 +2023,7 @@ abstract class BaseAlertPeer {
         // $criteria->getDbName() will return the same object if not set to another value
         // so == check is okay and faster
         if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(self::DATABASE_NAME);
+            $criteria->setDbName(AlertPeer::DATABASE_NAME);
         }
 
         AlertPeer::addSelectColumns($criteria);
@@ -2072,7 +2073,7 @@ abstract class BaseAlertPeer {
                 if ($key2 !== null) {
                     $obj2 = UserPeer::getInstanceFromPool($key2);
                     if (!$obj2) {
-    
+
                         $cls = UserPeer::getOMClass();
 
                     $obj2 = new $cls();
@@ -2091,7 +2092,7 @@ abstract class BaseAlertPeer {
                 if ($key3 !== null) {
                     $obj3 = CursusPeer::getInstanceFromPool($key3);
                     if (!$obj3) {
-    
+
                         $cls = CursusPeer::getOMClass();
 
                     $obj3 = new $cls();
@@ -2110,7 +2111,7 @@ abstract class BaseAlertPeer {
                 if ($key4 !== null) {
                     $obj4 = CoursePeer::getInstanceFromPool($key4);
                     if (!$obj4) {
-    
+
                         $cls = CoursePeer::getOMClass();
 
                     $obj4 = new $cls();
@@ -2129,7 +2130,7 @@ abstract class BaseAlertPeer {
                 if ($key5 !== null) {
                     $obj5 = ContentTypePeer::getInstanceFromPool($key5);
                     if (!$obj5) {
-    
+
                         $cls = ContentTypePeer::getOMClass();
 
                     $obj5 = new $cls();
@@ -2168,7 +2169,7 @@ abstract class BaseAlertPeer {
         // $criteria->getDbName() will return the same object if not set to another value
         // so == check is okay and faster
         if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(self::DATABASE_NAME);
+            $criteria->setDbName(AlertPeer::DATABASE_NAME);
         }
 
         AlertPeer::addSelectColumns($criteria);
@@ -2218,7 +2219,7 @@ abstract class BaseAlertPeer {
                 if ($key2 !== null) {
                     $obj2 = UserPeer::getInstanceFromPool($key2);
                     if (!$obj2) {
-    
+
                         $cls = UserPeer::getOMClass();
 
                     $obj2 = new $cls();
@@ -2237,7 +2238,7 @@ abstract class BaseAlertPeer {
                 if ($key3 !== null) {
                     $obj3 = CursusPeer::getInstanceFromPool($key3);
                     if (!$obj3) {
-    
+
                         $cls = CursusPeer::getOMClass();
 
                     $obj3 = new $cls();
@@ -2256,7 +2257,7 @@ abstract class BaseAlertPeer {
                 if ($key4 !== null) {
                     $obj4 = CoursePeer::getInstanceFromPool($key4);
                     if (!$obj4) {
-    
+
                         $cls = CoursePeer::getOMClass();
 
                     $obj4 = new $cls();
@@ -2275,7 +2276,7 @@ abstract class BaseAlertPeer {
                 if ($key5 !== null) {
                     $obj5 = TagPeer::getInstanceFromPool($key5);
                     if (!$obj5) {
-    
+
                         $cls = TagPeer::getOMClass();
 
                     $obj5 = new $cls();
@@ -2304,7 +2305,7 @@ abstract class BaseAlertPeer {
      */
     public static function getTableMap()
     {
-        return Propel::getDatabaseMap(self::DATABASE_NAME)->getTable(self::TABLE_NAME);
+        return Propel::getDatabaseMap(AlertPeer::DATABASE_NAME)->getTable(AlertPeer::TABLE_NAME);
     }
 
     /**
@@ -2356,7 +2357,7 @@ abstract class BaseAlertPeer {
 
 
         // Set the correct dbName
-        $criteria->setDbName(self::DATABASE_NAME);
+        $criteria->setDbName(AlertPeer::DATABASE_NAME);
 
         try {
             // use transaction because $criteria could contain info
@@ -2387,7 +2388,7 @@ abstract class BaseAlertPeer {
             $con = Propel::getConnection(AlertPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
-        $selectCriteria = new Criteria(self::DATABASE_NAME);
+        $selectCriteria = new Criteria(AlertPeer::DATABASE_NAME);
 
         if ($values instanceof Criteria) {
             $criteria = clone $values; // rename for clarity
@@ -2406,7 +2407,7 @@ abstract class BaseAlertPeer {
         }
 
         // set the correct dbName
-        $criteria->setDbName(self::DATABASE_NAME);
+        $criteria->setDbName(AlertPeer::DATABASE_NAME);
 
         return BasePeer::doUpdate($selectCriteria, $criteria, $con);
     }
@@ -2473,7 +2474,7 @@ abstract class BaseAlertPeer {
             // create criteria based on pk values
             $criteria = $values->buildPkeyCriteria();
         } else { // it's a primary key, or an array of pks
-            $criteria = new Criteria(self::DATABASE_NAME);
+            $criteria = new Criteria(AlertPeer::DATABASE_NAME);
             $criteria->add(AlertPeer::ID, (array) $values, Criteria::IN);
             // invalidate the cache for this object(s)
             foreach ((array) $values as $singleval) {
@@ -2482,7 +2483,7 @@ abstract class BaseAlertPeer {
         }
 
         // Set the correct dbName
-        $criteria->setDbName(self::DATABASE_NAME);
+        $criteria->setDbName(AlertPeer::DATABASE_NAME);
 
         $affectedRows = 0; // initialize var to track total num of affected rows
 
@@ -2490,7 +2491,7 @@ abstract class BaseAlertPeer {
             // use transaction because $criteria could contain info
             // for more than one table or we could emulating ON DELETE CASCADE, etc.
             $con->beginTransaction();
-            
+
             $affectedRows += BasePeer::doDelete($criteria, $con);
             AlertPeer::clearRelatedInstancePool();
             $con->commit();

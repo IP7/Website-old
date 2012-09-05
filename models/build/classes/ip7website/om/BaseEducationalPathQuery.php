@@ -4,72 +4,71 @@
 /**
  * Base class that represents a query for the 'educational_paths' table.
  *
- * 
  *
- * @method     EducationalPathQuery orderById($order = Criteria::ASC) Order by the id column
- * @method     EducationalPathQuery orderByShortName($order = Criteria::ASC) Order by the short_name column
- * @method     EducationalPathQuery orderByName($order = Criteria::ASC) Order by the name column
- * @method     EducationalPathQuery orderByDescription($order = Criteria::ASC) Order by the description column
- * @method     EducationalPathQuery orderByCursusId($order = Criteria::ASC) Order by the cursus_id column
- * @method     EducationalPathQuery orderByResponsableId($order = Criteria::ASC) Order by the responsable_id column
  *
- * @method     EducationalPathQuery groupById() Group by the id column
- * @method     EducationalPathQuery groupByShortName() Group by the short_name column
- * @method     EducationalPathQuery groupByName() Group by the name column
- * @method     EducationalPathQuery groupByDescription() Group by the description column
- * @method     EducationalPathQuery groupByCursusId() Group by the cursus_id column
- * @method     EducationalPathQuery groupByResponsableId() Group by the responsable_id column
+ * @method EducationalPathQuery orderById($order = Criteria::ASC) Order by the id column
+ * @method EducationalPathQuery orderByShortName($order = Criteria::ASC) Order by the short_name column
+ * @method EducationalPathQuery orderByName($order = Criteria::ASC) Order by the name column
+ * @method EducationalPathQuery orderByDescription($order = Criteria::ASC) Order by the description column
+ * @method EducationalPathQuery orderByCursusId($order = Criteria::ASC) Order by the cursus_id column
+ * @method EducationalPathQuery orderByResponsableId($order = Criteria::ASC) Order by the responsable_id column
  *
- * @method     EducationalPathQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
- * @method     EducationalPathQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
- * @method     EducationalPathQuery innerJoin($relation) Adds a INNER JOIN clause to the query
+ * @method EducationalPathQuery groupById() Group by the id column
+ * @method EducationalPathQuery groupByShortName() Group by the short_name column
+ * @method EducationalPathQuery groupByName() Group by the name column
+ * @method EducationalPathQuery groupByDescription() Group by the description column
+ * @method EducationalPathQuery groupByCursusId() Group by the cursus_id column
+ * @method EducationalPathQuery groupByResponsableId() Group by the responsable_id column
  *
- * @method     EducationalPathQuery leftJoinCursus($relationAlias = null) Adds a LEFT JOIN clause to the query using the Cursus relation
- * @method     EducationalPathQuery rightJoinCursus($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Cursus relation
- * @method     EducationalPathQuery innerJoinCursus($relationAlias = null) Adds a INNER JOIN clause to the query using the Cursus relation
+ * @method EducationalPathQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
+ * @method EducationalPathQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
+ * @method EducationalPathQuery innerJoin($relation) Adds a INNER JOIN clause to the query
  *
- * @method     EducationalPathQuery leftJoinResponsable($relationAlias = null) Adds a LEFT JOIN clause to the query using the Responsable relation
- * @method     EducationalPathQuery rightJoinResponsable($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Responsable relation
- * @method     EducationalPathQuery innerJoinResponsable($relationAlias = null) Adds a INNER JOIN clause to the query using the Responsable relation
+ * @method EducationalPathQuery leftJoinCursus($relationAlias = null) Adds a LEFT JOIN clause to the query using the Cursus relation
+ * @method EducationalPathQuery rightJoinCursus($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Cursus relation
+ * @method EducationalPathQuery innerJoinCursus($relationAlias = null) Adds a INNER JOIN clause to the query using the Cursus relation
  *
- * @method     EducationalPathQuery leftJoinUsersPaths($relationAlias = null) Adds a LEFT JOIN clause to the query using the UsersPaths relation
- * @method     EducationalPathQuery rightJoinUsersPaths($relationAlias = null) Adds a RIGHT JOIN clause to the query using the UsersPaths relation
- * @method     EducationalPathQuery innerJoinUsersPaths($relationAlias = null) Adds a INNER JOIN clause to the query using the UsersPaths relation
+ * @method EducationalPathQuery leftJoinResponsable($relationAlias = null) Adds a LEFT JOIN clause to the query using the Responsable relation
+ * @method EducationalPathQuery rightJoinResponsable($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Responsable relation
+ * @method EducationalPathQuery innerJoinResponsable($relationAlias = null) Adds a INNER JOIN clause to the query using the Responsable relation
  *
- * @method     EducationalPathQuery leftJoinEducationalPathsOptionalCourses($relationAlias = null) Adds a LEFT JOIN clause to the query using the EducationalPathsOptionalCourses relation
- * @method     EducationalPathQuery rightJoinEducationalPathsOptionalCourses($relationAlias = null) Adds a RIGHT JOIN clause to the query using the EducationalPathsOptionalCourses relation
- * @method     EducationalPathQuery innerJoinEducationalPathsOptionalCourses($relationAlias = null) Adds a INNER JOIN clause to the query using the EducationalPathsOptionalCourses relation
+ * @method EducationalPathQuery leftJoinUsersPaths($relationAlias = null) Adds a LEFT JOIN clause to the query using the UsersPaths relation
+ * @method EducationalPathQuery rightJoinUsersPaths($relationAlias = null) Adds a RIGHT JOIN clause to the query using the UsersPaths relation
+ * @method EducationalPathQuery innerJoinUsersPaths($relationAlias = null) Adds a INNER JOIN clause to the query using the UsersPaths relation
  *
- * @method     EducationalPathQuery leftJoinEducationalPathsMandatoryCourses($relationAlias = null) Adds a LEFT JOIN clause to the query using the EducationalPathsMandatoryCourses relation
- * @method     EducationalPathQuery rightJoinEducationalPathsMandatoryCourses($relationAlias = null) Adds a RIGHT JOIN clause to the query using the EducationalPathsMandatoryCourses relation
- * @method     EducationalPathQuery innerJoinEducationalPathsMandatoryCourses($relationAlias = null) Adds a INNER JOIN clause to the query using the EducationalPathsMandatoryCourses relation
+ * @method EducationalPathQuery leftJoinEducationalPathsOptionalCourses($relationAlias = null) Adds a LEFT JOIN clause to the query using the EducationalPathsOptionalCourses relation
+ * @method EducationalPathQuery rightJoinEducationalPathsOptionalCourses($relationAlias = null) Adds a RIGHT JOIN clause to the query using the EducationalPathsOptionalCourses relation
+ * @method EducationalPathQuery innerJoinEducationalPathsOptionalCourses($relationAlias = null) Adds a INNER JOIN clause to the query using the EducationalPathsOptionalCourses relation
  *
- * @method     EducationalPathQuery leftJoinSchedule($relationAlias = null) Adds a LEFT JOIN clause to the query using the Schedule relation
- * @method     EducationalPathQuery rightJoinSchedule($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Schedule relation
- * @method     EducationalPathQuery innerJoinSchedule($relationAlias = null) Adds a INNER JOIN clause to the query using the Schedule relation
+ * @method EducationalPathQuery leftJoinEducationalPathsMandatoryCourses($relationAlias = null) Adds a LEFT JOIN clause to the query using the EducationalPathsMandatoryCourses relation
+ * @method EducationalPathQuery rightJoinEducationalPathsMandatoryCourses($relationAlias = null) Adds a RIGHT JOIN clause to the query using the EducationalPathsMandatoryCourses relation
+ * @method EducationalPathQuery innerJoinEducationalPathsMandatoryCourses($relationAlias = null) Adds a INNER JOIN clause to the query using the EducationalPathsMandatoryCourses relation
  *
- * @method     EducationalPath findOne(PropelPDO $con = null) Return the first EducationalPath matching the query
- * @method     EducationalPath findOneOrCreate(PropelPDO $con = null) Return the first EducationalPath matching the query, or a new EducationalPath object populated from the query conditions when no match is found
+ * @method EducationalPathQuery leftJoinSchedule($relationAlias = null) Adds a LEFT JOIN clause to the query using the Schedule relation
+ * @method EducationalPathQuery rightJoinSchedule($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Schedule relation
+ * @method EducationalPathQuery innerJoinSchedule($relationAlias = null) Adds a INNER JOIN clause to the query using the Schedule relation
  *
- * @method     EducationalPath findOneById(int $id) Return the first EducationalPath filtered by the id column
- * @method     EducationalPath findOneByShortName(string $short_name) Return the first EducationalPath filtered by the short_name column
- * @method     EducationalPath findOneByName(string $name) Return the first EducationalPath filtered by the name column
- * @method     EducationalPath findOneByDescription(string $description) Return the first EducationalPath filtered by the description column
- * @method     EducationalPath findOneByCursusId(int $cursus_id) Return the first EducationalPath filtered by the cursus_id column
- * @method     EducationalPath findOneByResponsableId(int $responsable_id) Return the first EducationalPath filtered by the responsable_id column
+ * @method EducationalPath findOne(PropelPDO $con = null) Return the first EducationalPath matching the query
+ * @method EducationalPath findOneOrCreate(PropelPDO $con = null) Return the first EducationalPath matching the query, or a new EducationalPath object populated from the query conditions when no match is found
  *
- * @method     array findById(int $id) Return EducationalPath objects filtered by the id column
- * @method     array findByShortName(string $short_name) Return EducationalPath objects filtered by the short_name column
- * @method     array findByName(string $name) Return EducationalPath objects filtered by the name column
- * @method     array findByDescription(string $description) Return EducationalPath objects filtered by the description column
- * @method     array findByCursusId(int $cursus_id) Return EducationalPath objects filtered by the cursus_id column
- * @method     array findByResponsableId(int $responsable_id) Return EducationalPath objects filtered by the responsable_id column
+ * @method EducationalPath findOneById(int $id) Return the first EducationalPath filtered by the id column
+ * @method EducationalPath findOneByShortName(string $short_name) Return the first EducationalPath filtered by the short_name column
+ * @method EducationalPath findOneByName(string $name) Return the first EducationalPath filtered by the name column
+ * @method EducationalPath findOneByDescription(string $description) Return the first EducationalPath filtered by the description column
+ * @method EducationalPath findOneByCursusId(int $cursus_id) Return the first EducationalPath filtered by the cursus_id column
+ * @method EducationalPath findOneByResponsableId(int $responsable_id) Return the first EducationalPath filtered by the responsable_id column
+ *
+ * @method array findById(int $id) Return EducationalPath objects filtered by the id column
+ * @method array findByShortName(string $short_name) Return EducationalPath objects filtered by the short_name column
+ * @method array findByName(string $name) Return EducationalPath objects filtered by the name column
+ * @method array findByDescription(string $description) Return EducationalPath objects filtered by the description column
+ * @method array findByCursusId(int $cursus_id) Return EducationalPath objects filtered by the cursus_id column
+ * @method array findByResponsableId(int $responsable_id) Return EducationalPath objects filtered by the responsable_id column
  *
  * @package    propel.generator.ip7website.om
  */
 abstract class BaseEducationalPathQuery extends ModelCriteria
 {
-    
     /**
      * Initializes internal state of BaseEducationalPathQuery object.
      *
@@ -115,7 +114,7 @@ abstract class BaseEducationalPathQuery extends ModelCriteria
      * $obj  = $c->findPk(12, $con);
      * </code>
      *
-     * @param mixed $key Primary key to use for the query 
+     * @param mixed $key Primary key to use for the query
      * @param     PropelPDO $con an optional connection object
      *
      * @return   EducationalPath|EducationalPath[]|mixed the result, formatted by the current formatter
@@ -157,7 +156,7 @@ abstract class BaseEducationalPathQuery extends ModelCriteria
         $sql = 'SELECT `ID`, `SHORT_NAME`, `NAME`, `CURSUS_ID`, `RESPONSABLE_ID` FROM `educational_paths` WHERE `ID` = :p0';
         try {
             $stmt = $con->prepare($sql);
-			$stmt->bindValue(':p0', $key, PDO::PARAM_INT);
+            $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
             $stmt->execute();
         } catch (Exception $e) {
             Propel::log($e->getMessage(), Propel::LOG_ERR);
@@ -958,4 +957,4 @@ abstract class BaseEducationalPathQuery extends ModelCriteria
         return $this;
     }
 
-} // BaseEducationalPathQuery
+}

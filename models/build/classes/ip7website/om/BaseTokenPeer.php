@@ -4,11 +4,12 @@
 /**
  * Base static class for performing query and update operations on the 'tokens' table.
  *
- * 
  *
- * @package    propel.generator.ip7website.om
+ *
+ * @package propel.generator.ip7website.om
  */
-abstract class BaseTokenPeer {
+abstract class BaseTokenPeer
+{
 
     /** the default database name for this class */
     const DATABASE_NAME = 'infop7db';
@@ -69,12 +70,12 @@ abstract class BaseTokenPeer {
      * holds an array of fieldnames
      *
      * first dimension keys are the type constants
-     * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
+     * e.g. TokenPeer::$fieldNames[TokenPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
         BasePeer::TYPE_PHPNAME => array ('Id', 'UserId', 'ExpirationDate', 'Rights', 'Value', 'Method', ),
         BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'userId', 'expirationDate', 'rights', 'value', 'method', ),
-        BasePeer::TYPE_COLNAME => array (self::ID, self::USER_ID, self::EXPIRATION_DATE, self::RIGHTS, self::VALUE, self::METHOD, ),
+        BasePeer::TYPE_COLNAME => array (TokenPeer::ID, TokenPeer::USER_ID, TokenPeer::EXPIRATION_DATE, TokenPeer::RIGHTS, TokenPeer::VALUE, TokenPeer::METHOD, ),
         BasePeer::TYPE_RAW_COLNAME => array ('ID', 'USER_ID', 'EXPIRATION_DATE', 'RIGHTS', 'VALUE', 'METHOD', ),
         BasePeer::TYPE_FIELDNAME => array ('id', 'user_id', 'expiration_date', 'rights', 'value', 'method', ),
         BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
@@ -84,12 +85,12 @@ abstract class BaseTokenPeer {
      * holds an array of keys for quick access to the fieldnames array
      *
      * first dimension keys are the type constants
-     * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
+     * e.g. TokenPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
         BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'UserId' => 1, 'ExpirationDate' => 2, 'Rights' => 3, 'Value' => 4, 'Method' => 5, ),
         BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'userId' => 1, 'expirationDate' => 2, 'rights' => 3, 'value' => 4, 'method' => 5, ),
-        BasePeer::TYPE_COLNAME => array (self::ID => 0, self::USER_ID => 1, self::EXPIRATION_DATE => 2, self::RIGHTS => 3, self::VALUE => 4, self::METHOD => 5, ),
+        BasePeer::TYPE_COLNAME => array (TokenPeer::ID => 0, TokenPeer::USER_ID => 1, TokenPeer::EXPIRATION_DATE => 2, TokenPeer::RIGHTS => 3, TokenPeer::VALUE => 4, TokenPeer::METHOD => 5, ),
         BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'USER_ID' => 1, 'EXPIRATION_DATE' => 2, 'RIGHTS' => 3, 'VALUE' => 4, 'METHOD' => 5, ),
         BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'user_id' => 1, 'expiration_date' => 2, 'rights' => 3, 'value' => 4, 'method' => 5, ),
         BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
@@ -97,10 +98,10 @@ abstract class BaseTokenPeer {
 
     /** The enumerated values for this table */
     protected static $enumValueSets = array(
-        self::METHOD => array(
-			TokenPeer::METHOD_GET,
-			TokenPeer::METHOD_POST,
-		),
+        TokenPeer::METHOD => array(
+            TokenPeer::METHOD_GET,
+            TokenPeer::METHOD_POST,
+        ),
     );
 
     /**
@@ -115,10 +116,10 @@ abstract class BaseTokenPeer {
      */
     public static function translateFieldName($name, $fromType, $toType)
     {
-        $toNames = self::getFieldNames($toType);
-        $key = isset(self::$fieldKeys[$fromType][$name]) ? self::$fieldKeys[$fromType][$name] : null;
+        $toNames = TokenPeer::getFieldNames($toType);
+        $key = isset(TokenPeer::$fieldKeys[$fromType][$name]) ? TokenPeer::$fieldKeys[$fromType][$name] : null;
         if ($key === null) {
-            throw new PropelException("'$name' could not be found in the field names of type '$fromType'. These are: " . print_r(self::$fieldKeys[$fromType], true));
+            throw new PropelException("'$name' could not be found in the field names of type '$fromType'. These are: " . print_r(TokenPeer::$fieldKeys[$fromType], true));
         }
 
         return $toNames[$key];
@@ -135,11 +136,11 @@ abstract class BaseTokenPeer {
      */
     public static function getFieldNames($type = BasePeer::TYPE_PHPNAME)
     {
-        if (!array_key_exists($type, self::$fieldNames)) {
+        if (!array_key_exists($type, TokenPeer::$fieldNames)) {
             throw new PropelException('Method getFieldNames() expects the parameter $type to be one of the class constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME, BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM. ' . $type . ' was given.');
         }
 
-        return self::$fieldNames[$type];
+        return TokenPeer::$fieldNames[$type];
     }
 
     /**
@@ -160,7 +161,7 @@ abstract class BaseTokenPeer {
      */
     public static function getValueSet($colname)
     {
-        $valueSets = self::getValueSets();
+        $valueSets = TokenPeer::getValueSets();
 
         return $valueSets[$colname];
     }
@@ -240,7 +241,7 @@ abstract class BaseTokenPeer {
         }
 
         $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
-        $criteria->setDbName(self::DATABASE_NAME); // Set the correct dbName
+        $criteria->setDbName(TokenPeer::DATABASE_NAME); // Set the correct dbName
 
         if ($con === null) {
             $con = Propel::getConnection(TokenPeer::DATABASE_NAME, Propel::CONNECTION_READ);
@@ -315,7 +316,7 @@ abstract class BaseTokenPeer {
         }
 
         // Set the correct dbName
-        $criteria->setDbName(self::DATABASE_NAME);
+        $criteria->setDbName(TokenPeer::DATABASE_NAME);
 
         // BasePeer returns a PDOStatement
         return BasePeer::doSelect($criteria, $con);
@@ -338,7 +339,7 @@ abstract class BaseTokenPeer {
             if ($key === null) {
                 $key = (string) $obj->getId();
             } // if key === null
-            self::$instances[$key] = $obj;
+            TokenPeer::$instances[$key] = $obj;
         }
     }
 
@@ -368,7 +369,7 @@ abstract class BaseTokenPeer {
                 throw $e;
             }
 
-            unset(self::$instances[$key]);
+            unset(TokenPeer::$instances[$key]);
         }
     } // removeInstanceFromPool()
 
@@ -379,20 +380,20 @@ abstract class BaseTokenPeer {
      * a multi-column primary key, a serialize()d version of the primary key will be returned.
      *
      * @param      string $key The key (@see getPrimaryKeyHash()) for this instance.
-     * @return   Token Found object or NULL if 1) no instance exists for specified key or 2) instance pooling has been disabled.
+     * @return   Token Found object or null if 1) no instance exists for specified key or 2) instance pooling has been disabled.
      * @see        getPrimaryKeyHash()
      */
     public static function getInstanceFromPool($key)
     {
         if (Propel::isInstancePoolingEnabled()) {
-            if (isset(self::$instances[$key])) {
-                return self::$instances[$key];
+            if (isset(TokenPeer::$instances[$key])) {
+                return TokenPeer::$instances[$key];
             }
         }
 
         return null; // just to be explicit
     }
-    
+
     /**
      * Clear the instance pool.
      *
@@ -400,9 +401,9 @@ abstract class BaseTokenPeer {
      */
     public static function clearInstancePool()
     {
-        self::$instances = array();
+        TokenPeer::$instances = array();
     }
-    
+
     /**
      * Method to invalidate the instance pool of all tables related to tokens
      * by a foreign key with ON DELETE CASCADE
@@ -419,11 +420,11 @@ abstract class BaseTokenPeer {
      *
      * @param      array $row PropelPDO resultset row.
      * @param      int $startcol The 0-based offset for reading from the resultset row.
-     * @return string A string version of PK or NULL if the components of primary key in result array are all null.
+     * @return string A string version of PK or null if the components of primary key in result array are all null.
      */
     public static function getPrimaryKeyHashFromRow($row, $startcol = 0)
     {
-        // If the PK cannot be derived from the row, return NULL.
+        // If the PK cannot be derived from the row, return null.
         if ($row[$startcol] === null) {
             return null;
         }
@@ -445,7 +446,7 @@ abstract class BaseTokenPeer {
 
         return (int) $row[$startcol];
     }
-    
+
     /**
      * The returned array will contain objects of the default type or
      * objects that inherit from the default.
@@ -456,7 +457,7 @@ abstract class BaseTokenPeer {
     public static function populateObjects(PDOStatement $stmt)
     {
         $results = array();
-    
+
         // set the class once to avoid overhead in the loop
         $cls = TokenPeer::getOMClass();
         // populate the object(s)
@@ -536,7 +537,7 @@ abstract class BaseTokenPeer {
         $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
 
         // Set the correct dbName
-        $criteria->setDbName(self::DATABASE_NAME);
+        $criteria->setDbName(TokenPeer::DATABASE_NAME);
 
         if ($con === null) {
             $con = Propel::getConnection(TokenPeer::DATABASE_NAME, Propel::CONNECTION_READ);
@@ -572,7 +573,7 @@ abstract class BaseTokenPeer {
 
         // Set the correct dbName if it has not been overridden
         if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(self::DATABASE_NAME);
+            $criteria->setDbName(TokenPeer::DATABASE_NAME);
         }
 
         TokenPeer::addSelectColumns($criteria);
@@ -654,7 +655,7 @@ abstract class BaseTokenPeer {
         $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
 
         // Set the correct dbName
-        $criteria->setDbName(self::DATABASE_NAME);
+        $criteria->setDbName(TokenPeer::DATABASE_NAME);
 
         if ($con === null) {
             $con = Propel::getConnection(TokenPeer::DATABASE_NAME, Propel::CONNECTION_READ);
@@ -690,7 +691,7 @@ abstract class BaseTokenPeer {
 
         // Set the correct dbName if it has not been overridden
         if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(self::DATABASE_NAME);
+            $criteria->setDbName(TokenPeer::DATABASE_NAME);
         }
 
         TokenPeer::addSelectColumns($criteria);
@@ -752,7 +753,7 @@ abstract class BaseTokenPeer {
      */
     public static function getTableMap()
     {
-        return Propel::getDatabaseMap(self::DATABASE_NAME)->getTable(self::TABLE_NAME);
+        return Propel::getDatabaseMap(TokenPeer::DATABASE_NAME)->getTable(TokenPeer::TABLE_NAME);
     }
 
     /**
@@ -804,7 +805,7 @@ abstract class BaseTokenPeer {
 
 
         // Set the correct dbName
-        $criteria->setDbName(self::DATABASE_NAME);
+        $criteria->setDbName(TokenPeer::DATABASE_NAME);
 
         try {
             // use transaction because $criteria could contain info
@@ -835,7 +836,7 @@ abstract class BaseTokenPeer {
             $con = Propel::getConnection(TokenPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
-        $selectCriteria = new Criteria(self::DATABASE_NAME);
+        $selectCriteria = new Criteria(TokenPeer::DATABASE_NAME);
 
         if ($values instanceof Criteria) {
             $criteria = clone $values; // rename for clarity
@@ -854,7 +855,7 @@ abstract class BaseTokenPeer {
         }
 
         // set the correct dbName
-        $criteria->setDbName(self::DATABASE_NAME);
+        $criteria->setDbName(TokenPeer::DATABASE_NAME);
 
         return BasePeer::doUpdate($selectCriteria, $criteria, $con);
     }
@@ -921,7 +922,7 @@ abstract class BaseTokenPeer {
             // create criteria based on pk values
             $criteria = $values->buildPkeyCriteria();
         } else { // it's a primary key, or an array of pks
-            $criteria = new Criteria(self::DATABASE_NAME);
+            $criteria = new Criteria(TokenPeer::DATABASE_NAME);
             $criteria->add(TokenPeer::ID, (array) $values, Criteria::IN);
             // invalidate the cache for this object(s)
             foreach ((array) $values as $singleval) {
@@ -930,7 +931,7 @@ abstract class BaseTokenPeer {
         }
 
         // Set the correct dbName
-        $criteria->setDbName(self::DATABASE_NAME);
+        $criteria->setDbName(TokenPeer::DATABASE_NAME);
 
         $affectedRows = 0; // initialize var to track total num of affected rows
 
@@ -938,7 +939,7 @@ abstract class BaseTokenPeer {
             // use transaction because $criteria could contain info
             // for more than one table or we could emulating ON DELETE CASCADE, etc.
             $con->beginTransaction();
-            
+
             $affectedRows += BasePeer::doDelete($criteria, $con);
             TokenPeer::clearRelatedInstancePool();
             $con->commit();

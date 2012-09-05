@@ -460,6 +460,8 @@ CREATE TABLE `content_types`
 (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(32) NOT NULL,
+    `short_name` VARCHAR(16) NOT NULL,
+    `rights` TINYINT DEFAULT 0,
     PRIMARY KEY (`id`)
 ) ENGINE=MyISAM;
 

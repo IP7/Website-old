@@ -4,13 +4,12 @@
 /**
  * Base class that represents a row from the 'users' table.
  *
- * 
+ *
  *
  * @package    propel.generator.ip7website.om
  */
-abstract class BaseUser extends BaseObject 
+abstract class BaseUser extends BaseObject implements Persistent
 {
-
     /**
      * Peer class name
      */
@@ -220,7 +219,7 @@ abstract class BaseUser extends BaseObject
 
     /**
      * Whether the lazy-loaded $description value has been loaded from database.
-     * This is necessary to avoid repeated lookups if $description column is NULL in the db.
+     * This is necessary to avoid repeated lookups if $description column is null in the db.
      * @var        boolean
      */
     protected $description_isLoaded = false;
@@ -233,7 +232,7 @@ abstract class BaseUser extends BaseObject
 
     /**
      * Whether the lazy-loaded $remarks value has been loaded from database.
-     * This is necessary to avoid repeated lookups if $remarks column is NULL in the db.
+     * This is necessary to avoid repeated lookups if $remarks column is null in the db.
      * @var        boolean
      */
     protected $remarks_isLoaded = false;
@@ -247,81 +246,97 @@ abstract class BaseUser extends BaseObject
      * @var        PropelObjectCollection|Cursus[] Collection to store aggregation of Cursus objects.
      */
     protected $collCursusResponsabilitys;
+    protected $collCursusResponsabilitysPartial;
 
     /**
      * @var        PropelObjectCollection|EducationalPath[] Collection to store aggregation of EducationalPath objects.
      */
     protected $collEducationalPathResponsabilitys;
+    protected $collEducationalPathResponsabilitysPartial;
 
     /**
      * @var        PropelObjectCollection|UsersPaths[] Collection to store aggregation of UsersPaths objects.
      */
     protected $collUsersPathss;
+    protected $collUsersPathssPartial;
 
     /**
      * @var        PropelObjectCollection|File[] Collection to store aggregation of File objects.
      */
     protected $collFilesRelatedByAuthorId;
+    protected $collFilesRelatedByAuthorIdPartial;
 
     /**
      * @var        PropelObjectCollection|NewslettersSubscribers[] Collection to store aggregation of NewslettersSubscribers objects.
      */
     protected $collNewslettersSubscriberss;
+    protected $collNewslettersSubscriberssPartial;
 
     /**
      * @var        PropelObjectCollection|Alert[] Collection to store aggregation of Alert objects.
      */
     protected $collAlerts;
+    protected $collAlertsPartial;
 
     /**
      * @var        PropelObjectCollection|Content[] Collection to store aggregation of Content objects.
      */
     protected $collContents;
+    protected $collContentsPartial;
 
     /**
      * @var        PropelObjectCollection|Comment[] Collection to store aggregation of Comment objects.
      */
     protected $collComments;
+    protected $collCommentsPartial;
 
     /**
      * @var        PropelObjectCollection|Report[] Collection to store aggregation of Report objects.
      */
     protected $collReports;
+    protected $collReportsPartial;
 
     /**
      * @var        PropelObjectCollection|Note[] Collection to store aggregation of Note objects.
      */
     protected $collNotes;
+    protected $collNotesPartial;
 
     /**
      * @var        PropelObjectCollection|News[] Collection to store aggregation of News objects.
      */
     protected $collNewss;
+    protected $collNewssPartial;
 
     /**
      * @var        PropelObjectCollection|Ad[] Collection to store aggregation of Ad objects.
      */
     protected $collAds;
+    protected $collAdsPartial;
 
     /**
      * @var        PropelObjectCollection|Transaction[] Collection to store aggregation of Transaction objects.
      */
     protected $collTransactions;
+    protected $collTransactionsPartial;
 
     /**
      * @var        PropelObjectCollection|ForumMessage[] Collection to store aggregation of ForumMessage objects.
      */
     protected $collForumMessages;
+    protected $collForumMessagesPartial;
 
     /**
      * @var        PropelObjectCollection|ScheduledCourse[] Collection to store aggregation of ScheduledCourse objects.
      */
     protected $collScheduledCourses;
+    protected $collScheduledCoursesPartial;
 
     /**
      * @var        PropelObjectCollection|Token[] Collection to store aggregation of Token objects.
      */
     protected $collTokens;
+    protected $collTokensPartial;
 
     /**
      * @var        PropelObjectCollection|EducationalPath[] Collection to store aggregation of EducationalPath objects.
@@ -478,74 +493,68 @@ abstract class BaseUser extends BaseObject
 
     /**
      * Get the [id] column value.
-     * 
-     * @return   int
+     *
+     * @return int
      */
     public function getId()
     {
-
         return $this->id;
     }
 
     /**
      * Get the [username] column value.
-     * 
-     * @return   string
+     *
+     * @return string
      */
     public function getUsername()
     {
-
         return $this->username;
     }
 
     /**
      * Get the [password_hash] column value.
-     * 
-     * @return   string
+     *
+     * @return string
      */
     public function getPasswordHash()
     {
-
         return $this->password_hash;
     }
 
     /**
      * Get the [type] column value.
-     * 
-     * @return   int
+     *
+     * @return int
      */
     public function getType()
     {
-
         return $this->type;
     }
 
     /**
      * Get the [firstname] column value.
-     * 
-     * @return   string
+     *
+     * @return string
      */
     public function getFirstname()
     {
-
         return $this->firstname;
     }
 
     /**
      * Get the [lastname] column value.
-     * 
-     * @return   string
+     *
+     * @return string
      */
     public function getLastname()
     {
-
         return $this->lastname;
     }
 
     /**
      * Get the [gender] column value.
-     * 
-     * @return   int
+     *
+     * @return int
      * @throws PropelException - if the stored enum key is unknown.
      */
     public function getGender()
@@ -563,44 +572,41 @@ abstract class BaseUser extends BaseObject
 
     /**
      * Get the [email] column value.
-     * 
-     * @return   string
+     *
+     * @return string
      */
     public function getEmail()
     {
-
         return $this->email;
     }
 
     /**
      * Get the [phone] column value.
-     * 
-     * @return   string
+     *
+     * @return string
      */
     public function getPhone()
     {
-
         return $this->phone;
     }
 
     /**
      * Get the [website] column value.
-     * 
-     * @return   string
+     *
+     * @return string
      */
     public function getWebsite()
     {
-
         return $this->website;
     }
 
     /**
      * Get the [optionally formatted] temporal [birth_date] column value.
-     * 
      *
-     * @param      string $format The date/time format string (either date()-style or strftime()-style).
-     *							If format is NULL, then the raw DateTime object will be returned.
-     * @return mixed Formatted date/time value as string or DateTime object (if format is NULL), NULL if column is NULL, and 0 if column value is 0000-00-00
+     *
+     * @param string $format The date/time format string (either date()-style or strftime()-style).
+     *				 If format is null, then the raw DateTime object will be returned.
+     * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00
      * @throws PropelException - if unable to parse/validate the date/time value.
      */
     public function getBirthDate($format = '%x')
@@ -609,9 +615,8 @@ abstract class BaseUser extends BaseObject
             return null;
         }
 
-
         if ($this->birth_date === '0000-00-00') {
-            // while technically this is not a default value of NULL,
+            // while technically this is not a default value of null,
             // this seems to be closest in meaning.
             return null;
         } else {
@@ -623,7 +628,7 @@ abstract class BaseUser extends BaseObject
         }
 
         if ($format === null) {
-            // Because propel.useDateTimeClass is TRUE, we return a DateTime object.
+            // Because propel.useDateTimeClass is true, we return a DateTime object.
             return $dt;
         } elseif (strpos($format, '%') !== false) {
             return strftime($format, $dt->format('U'));
@@ -634,11 +639,11 @@ abstract class BaseUser extends BaseObject
 
     /**
      * Get the [optionally formatted] temporal [first_entry] column value.
-     * 
      *
-     * @param      string $format The date/time format string (either date()-style or strftime()-style).
-     *							If format is NULL, then the raw DateTime object will be returned.
-     * @return mixed Formatted date/time value as string or DateTime object (if format is NULL), NULL if column is NULL, and 0 if column value is 0000-00-00
+     *
+     * @param string $format The date/time format string (either date()-style or strftime()-style).
+     *				 If format is null, then the raw DateTime object will be returned.
+     * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00
      * @throws PropelException - if unable to parse/validate the date/time value.
      */
     public function getFirstEntry($format = '%x')
@@ -647,9 +652,8 @@ abstract class BaseUser extends BaseObject
             return null;
         }
 
-
         if ($this->first_entry === '0000-00-00') {
-            // while technically this is not a default value of NULL,
+            // while technically this is not a default value of null,
             // this seems to be closest in meaning.
             return null;
         } else {
@@ -661,7 +665,7 @@ abstract class BaseUser extends BaseObject
         }
 
         if ($format === null) {
-            // Because propel.useDateTimeClass is TRUE, we return a DateTime object.
+            // Because propel.useDateTimeClass is true, we return a DateTime object.
             return $dt;
         } elseif (strpos($format, '%') !== false) {
             return strftime($format, $dt->format('U'));
@@ -672,11 +676,11 @@ abstract class BaseUser extends BaseObject
 
     /**
      * Get the [optionally formatted] temporal [last_entry] column value.
-     * 
      *
-     * @param      string $format The date/time format string (either date()-style or strftime()-style).
-     *							If format is NULL, then the raw DateTime object will be returned.
-     * @return mixed Formatted date/time value as string or DateTime object (if format is NULL), NULL if column is NULL, and 0 if column value is 0000-00-00
+     *
+     * @param string $format The date/time format string (either date()-style or strftime()-style).
+     *				 If format is null, then the raw DateTime object will be returned.
+     * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00
      * @throws PropelException - if unable to parse/validate the date/time value.
      */
     public function getLastEntry($format = '%x')
@@ -685,9 +689,8 @@ abstract class BaseUser extends BaseObject
             return null;
         }
 
-
         if ($this->last_entry === '0000-00-00') {
-            // while technically this is not a default value of NULL,
+            // while technically this is not a default value of null,
             // this seems to be closest in meaning.
             return null;
         } else {
@@ -699,7 +702,7 @@ abstract class BaseUser extends BaseObject
         }
 
         if ($format === null) {
-            // Because propel.useDateTimeClass is TRUE, we return a DateTime object.
+            // Because propel.useDateTimeClass is true, we return a DateTime object.
             return $dt;
         } elseif (strpos($format, '%') !== false) {
             return strftime($format, $dt->format('U'));
@@ -710,11 +713,11 @@ abstract class BaseUser extends BaseObject
 
     /**
      * Get the [optionally formatted] temporal [expiration_date] column value.
-     * 
      *
-     * @param      string $format The date/time format string (either date()-style or strftime()-style).
-     *							If format is NULL, then the raw DateTime object will be returned.
-     * @return mixed Formatted date/time value as string or DateTime object (if format is NULL), NULL if column is NULL, and 0 if column value is 0000-00-00
+     *
+     * @param string $format The date/time format string (either date()-style or strftime()-style).
+     *				 If format is null, then the raw DateTime object will be returned.
+     * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00
      * @throws PropelException - if unable to parse/validate the date/time value.
      */
     public function getExpirationDate($format = '%x')
@@ -723,9 +726,8 @@ abstract class BaseUser extends BaseObject
             return null;
         }
 
-
         if ($this->expiration_date === '0000-00-00') {
-            // while technically this is not a default value of NULL,
+            // while technically this is not a default value of null,
             // this seems to be closest in meaning.
             return null;
         } else {
@@ -737,7 +739,7 @@ abstract class BaseUser extends BaseObject
         }
 
         if ($format === null) {
-            // Because propel.useDateTimeClass is TRUE, we return a DateTime object.
+            // Because propel.useDateTimeClass is true, we return a DateTime object.
             return $dt;
         } elseif (strpos($format, '%') !== false) {
             return strftime($format, $dt->format('U'));
@@ -748,11 +750,11 @@ abstract class BaseUser extends BaseObject
 
     /**
      * Get the [optionally formatted] temporal [last_visit] column value.
-     * 
      *
-     * @param      string $format The date/time format string (either date()-style or strftime()-style).
-     *							If format is NULL, then the raw DateTime object will be returned.
-     * @return mixed Formatted date/time value as string or DateTime object (if format is NULL), NULL if column is NULL, and 0 if column value is 0000-00-00 00:00:00
+     *
+     * @param string $format The date/time format string (either date()-style or strftime()-style).
+     *				 If format is null, then the raw DateTime object will be returned.
+     * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00 00:00:00
      * @throws PropelException - if unable to parse/validate the date/time value.
      */
     public function getLastVisit($format = '{d-m-Y H:i:s}')
@@ -761,9 +763,8 @@ abstract class BaseUser extends BaseObject
             return null;
         }
 
-
         if ($this->last_visit === '0000-00-00 00:00:00') {
-            // while technically this is not a default value of NULL,
+            // while technically this is not a default value of null,
             // this seems to be closest in meaning.
             return null;
         } else {
@@ -775,7 +776,7 @@ abstract class BaseUser extends BaseObject
         }
 
         if ($format === null) {
-            // Because propel.useDateTimeClass is TRUE, we return a DateTime object.
+            // Because propel.useDateTimeClass is true, we return a DateTime object.
             return $dt;
         } elseif (strpos($format, '%') !== false) {
             return strftime($format, $dt->format('U'));
@@ -786,159 +787,145 @@ abstract class BaseUser extends BaseObject
 
     /**
      * Get the [visits_nb] column value.
-     * 
-     * @return   int
+     *
+     * @return int
      */
     public function getVisitsNb()
     {
-
         return $this->visits_nb;
     }
 
     /**
      * Get the [config_show_email] column value.
-     * 
-     * @return   boolean
+     *
+     * @return boolean
      */
     public function getConfigShowEmail()
     {
-
         return $this->config_show_email;
     }
 
     /**
      * Get the [config_show_phone] column value.
-     * 
-     * @return   boolean
+     *
+     * @return boolean
      */
     public function getConfigShowPhone()
     {
-
         return $this->config_show_phone;
     }
 
     /**
      * Get the [config_show_real_name] column value.
-     * 
-     * @return   boolean
+     *
+     * @return boolean
      */
     public function getConfigShowRealName()
     {
-
         return $this->config_show_real_name;
     }
 
     /**
      * Get the [config_show_birthdate] column value.
-     * 
-     * @return   boolean
+     *
+     * @return boolean
      */
     public function getConfigShowBirthdate()
     {
-
         return $this->config_show_birthdate;
     }
 
     /**
      * Get the [config_show_age] column value.
-     * 
-     * @return   boolean
+     *
+     * @return boolean
      */
     public function getConfigShowAge()
     {
-
         return $this->config_show_age;
     }
 
     /**
      * Get the [config_index_profile] column value.
-     * 
-     * @return   boolean
+     *
+     * @return boolean
      */
     public function getConfigIndexProfile()
     {
-
         return $this->config_index_profile;
     }
 
     /**
      * Get the [config_private_profile] column value.
-     * 
-     * @return   boolean
+     *
+     * @return boolean
      */
     public function getConfigPrivateProfile()
     {
-
         return $this->config_private_profile;
     }
 
     /**
      * Get the [deactivated] column value.
-     * 
-     * @return   boolean
+     *
+     * @return boolean
      */
     public function getDeactivated()
     {
-
         return $this->deactivated;
     }
 
     /**
      * Get the [is_a_teacher] column value.
-     * 
-     * @return   boolean
+     *
+     * @return boolean
      */
     public function getIsATeacher()
     {
-
         return $this->is_a_teacher;
     }
 
     /**
      * Get the [is_a_student] column value.
-     * 
-     * @return   boolean
+     *
+     * @return boolean
      */
     public function getIsAStudent()
     {
-
         return $this->is_a_student;
     }
 
     /**
      * Get the [is_an_alumni] column value.
-     * 
-     * @return   boolean
+     *
+     * @return boolean
      */
     public function getIsAnAlumni()
     {
-
         return $this->is_an_alumni;
     }
 
     /**
      * Get the [avatar_id] column value.
-     * 
-     * @return   int
+     *
+     * @return int
      */
     public function getAvatarId()
     {
-
         return $this->avatar_id;
     }
 
     /**
      * Get the [description] column value.
-     * 
-     * @param      PropelPDO $con An optional PropelPDO connection to use for fetching this lazy-loaded column.
-     * @return   string
+     *
+     * @param PropelPDO $con An optional PropelPDO connection to use for fetching this lazy-loaded column.
+     * @return string
      */
     public function getDescription(PropelPDO $con = null)
     {
         if (!$this->description_isLoaded && $this->description === null && !$this->isNew()) {
             $this->loadDescription($con);
         }
-
 
         return $this->description;
     }
@@ -970,16 +957,15 @@ abstract class BaseUser extends BaseObject
     }
     /**
      * Get the [remarks] column value.
-     * 
-     * @param      PropelPDO $con An optional PropelPDO connection to use for fetching this lazy-loaded column.
-     * @return   string
+     *
+     * @param PropelPDO $con An optional PropelPDO connection to use for fetching this lazy-loaded column.
+     * @return string
      */
     public function getRemarks(PropelPDO $con = null)
     {
         if (!$this->remarks_isLoaded && $this->remarks === null && !$this->isNew()) {
             $this->loadRemarks($con);
         }
-
 
         return $this->remarks;
     }
@@ -1011,9 +997,9 @@ abstract class BaseUser extends BaseObject
     }
     /**
      * Set the value of [id] column.
-     * 
-     * @param      int $v new value
-     * @return   User The current object (for fluent API support)
+     *
+     * @param int $v new value
+     * @return User The current object (for fluent API support)
      */
     public function setId($v)
     {
@@ -1032,9 +1018,9 @@ abstract class BaseUser extends BaseObject
 
     /**
      * Set the value of [username] column.
-     * 
-     * @param      string $v new value
-     * @return   User The current object (for fluent API support)
+     *
+     * @param string $v new value
+     * @return User The current object (for fluent API support)
      */
     public function setUsername($v)
     {
@@ -1053,9 +1039,9 @@ abstract class BaseUser extends BaseObject
 
     /**
      * Set the value of [password_hash] column.
-     * 
-     * @param      string $v new value
-     * @return   User The current object (for fluent API support)
+     *
+     * @param string $v new value
+     * @return User The current object (for fluent API support)
      */
     public function setPasswordHash($v)
     {
@@ -1074,9 +1060,9 @@ abstract class BaseUser extends BaseObject
 
     /**
      * Set the value of [type] column.
-     * 
-     * @param      int $v new value
-     * @return   User The current object (for fluent API support)
+     *
+     * @param int $v new value
+     * @return User The current object (for fluent API support)
      */
     public function setType($v)
     {
@@ -1095,9 +1081,9 @@ abstract class BaseUser extends BaseObject
 
     /**
      * Set the value of [firstname] column.
-     * 
-     * @param      string $v new value
-     * @return   User The current object (for fluent API support)
+     *
+     * @param string $v new value
+     * @return User The current object (for fluent API support)
      */
     public function setFirstname($v)
     {
@@ -1116,9 +1102,9 @@ abstract class BaseUser extends BaseObject
 
     /**
      * Set the value of [lastname] column.
-     * 
-     * @param      string $v new value
-     * @return   User The current object (for fluent API support)
+     *
+     * @param string $v new value
+     * @return User The current object (for fluent API support)
      */
     public function setLastname($v)
     {
@@ -1137,9 +1123,9 @@ abstract class BaseUser extends BaseObject
 
     /**
      * Set the value of [gender] column.
-     * 
-     * @param      int $v new value
-     * @return                 User The current object (for fluent API support)
+     *
+     * @param int $v new value
+     * @return User The current object (for fluent API support)
      * @throws PropelException - if the value is not accepted by this enum.
      */
     public function setGender($v)
@@ -1163,9 +1149,9 @@ abstract class BaseUser extends BaseObject
 
     /**
      * Set the value of [email] column.
-     * 
-     * @param      string $v new value
-     * @return   User The current object (for fluent API support)
+     *
+     * @param string $v new value
+     * @return User The current object (for fluent API support)
      */
     public function setEmail($v)
     {
@@ -1184,9 +1170,9 @@ abstract class BaseUser extends BaseObject
 
     /**
      * Set the value of [phone] column.
-     * 
-     * @param      string $v new value
-     * @return   User The current object (for fluent API support)
+     *
+     * @param string $v new value
+     * @return User The current object (for fluent API support)
      */
     public function setPhone($v)
     {
@@ -1205,9 +1191,9 @@ abstract class BaseUser extends BaseObject
 
     /**
      * Set the value of [website] column.
-     * 
-     * @param      string $v new value
-     * @return   User The current object (for fluent API support)
+     *
+     * @param string $v new value
+     * @return User The current object (for fluent API support)
      */
     public function setWebsite($v)
     {
@@ -1226,10 +1212,10 @@ abstract class BaseUser extends BaseObject
 
     /**
      * Sets the value of [birth_date] column to a normalized version of the date/time value specified.
-     * 
-     * @param      mixed $v string, integer (timestamp), or DateTime value.
-     *               Empty strings are treated as NULL.
-     * @return   User The current object (for fluent API support)
+     *
+     * @param mixed $v string, integer (timestamp), or DateTime value.
+     *               Empty strings are treated as null.
+     * @return User The current object (for fluent API support)
      */
     public function setBirthDate($v)
     {
@@ -1249,10 +1235,10 @@ abstract class BaseUser extends BaseObject
 
     /**
      * Sets the value of [first_entry] column to a normalized version of the date/time value specified.
-     * 
-     * @param      mixed $v string, integer (timestamp), or DateTime value.
-     *               Empty strings are treated as NULL.
-     * @return   User The current object (for fluent API support)
+     *
+     * @param mixed $v string, integer (timestamp), or DateTime value.
+     *               Empty strings are treated as null.
+     * @return User The current object (for fluent API support)
      */
     public function setFirstEntry($v)
     {
@@ -1272,10 +1258,10 @@ abstract class BaseUser extends BaseObject
 
     /**
      * Sets the value of [last_entry] column to a normalized version of the date/time value specified.
-     * 
-     * @param      mixed $v string, integer (timestamp), or DateTime value.
-     *               Empty strings are treated as NULL.
-     * @return   User The current object (for fluent API support)
+     *
+     * @param mixed $v string, integer (timestamp), or DateTime value.
+     *               Empty strings are treated as null.
+     * @return User The current object (for fluent API support)
      */
     public function setLastEntry($v)
     {
@@ -1295,10 +1281,10 @@ abstract class BaseUser extends BaseObject
 
     /**
      * Sets the value of [expiration_date] column to a normalized version of the date/time value specified.
-     * 
-     * @param      mixed $v string, integer (timestamp), or DateTime value.
-     *               Empty strings are treated as NULL.
-     * @return   User The current object (for fluent API support)
+     *
+     * @param mixed $v string, integer (timestamp), or DateTime value.
+     *               Empty strings are treated as null.
+     * @return User The current object (for fluent API support)
      */
     public function setExpirationDate($v)
     {
@@ -1318,10 +1304,10 @@ abstract class BaseUser extends BaseObject
 
     /**
      * Sets the value of [last_visit] column to a normalized version of the date/time value specified.
-     * 
-     * @param      mixed $v string, integer (timestamp), or DateTime value.
-     *               Empty strings are treated as NULL.
-     * @return   User The current object (for fluent API support)
+     *
+     * @param mixed $v string, integer (timestamp), or DateTime value.
+     *               Empty strings are treated as null.
+     * @return User The current object (for fluent API support)
      */
     public function setLastVisit($v)
     {
@@ -1341,9 +1327,9 @@ abstract class BaseUser extends BaseObject
 
     /**
      * Set the value of [visits_nb] column.
-     * 
-     * @param      int $v new value
-     * @return   User The current object (for fluent API support)
+     *
+     * @param int $v new value
+     * @return User The current object (for fluent API support)
      */
     public function setVisitsNb($v)
     {
@@ -1366,9 +1352,9 @@ abstract class BaseUser extends BaseObject
      *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
      *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
      * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
-     * 
-     * @param      boolean|integer|string $v The new value
-     * @return   User The current object (for fluent API support)
+     *
+     * @param boolean|integer|string $v The new value
+     * @return User The current object (for fluent API support)
      */
     public function setConfigShowEmail($v)
     {
@@ -1395,9 +1381,9 @@ abstract class BaseUser extends BaseObject
      *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
      *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
      * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
-     * 
-     * @param      boolean|integer|string $v The new value
-     * @return   User The current object (for fluent API support)
+     *
+     * @param boolean|integer|string $v The new value
+     * @return User The current object (for fluent API support)
      */
     public function setConfigShowPhone($v)
     {
@@ -1424,9 +1410,9 @@ abstract class BaseUser extends BaseObject
      *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
      *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
      * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
-     * 
-     * @param      boolean|integer|string $v The new value
-     * @return   User The current object (for fluent API support)
+     *
+     * @param boolean|integer|string $v The new value
+     * @return User The current object (for fluent API support)
      */
     public function setConfigShowRealName($v)
     {
@@ -1453,9 +1439,9 @@ abstract class BaseUser extends BaseObject
      *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
      *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
      * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
-     * 
-     * @param      boolean|integer|string $v The new value
-     * @return   User The current object (for fluent API support)
+     *
+     * @param boolean|integer|string $v The new value
+     * @return User The current object (for fluent API support)
      */
     public function setConfigShowBirthdate($v)
     {
@@ -1482,9 +1468,9 @@ abstract class BaseUser extends BaseObject
      *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
      *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
      * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
-     * 
-     * @param      boolean|integer|string $v The new value
-     * @return   User The current object (for fluent API support)
+     *
+     * @param boolean|integer|string $v The new value
+     * @return User The current object (for fluent API support)
      */
     public function setConfigShowAge($v)
     {
@@ -1511,9 +1497,9 @@ abstract class BaseUser extends BaseObject
      *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
      *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
      * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
-     * 
-     * @param      boolean|integer|string $v The new value
-     * @return   User The current object (for fluent API support)
+     *
+     * @param boolean|integer|string $v The new value
+     * @return User The current object (for fluent API support)
      */
     public function setConfigIndexProfile($v)
     {
@@ -1540,9 +1526,9 @@ abstract class BaseUser extends BaseObject
      *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
      *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
      * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
-     * 
-     * @param      boolean|integer|string $v The new value
-     * @return   User The current object (for fluent API support)
+     *
+     * @param boolean|integer|string $v The new value
+     * @return User The current object (for fluent API support)
      */
     public function setConfigPrivateProfile($v)
     {
@@ -1569,9 +1555,9 @@ abstract class BaseUser extends BaseObject
      *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
      *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
      * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
-     * 
-     * @param      boolean|integer|string $v The new value
-     * @return   User The current object (for fluent API support)
+     *
+     * @param boolean|integer|string $v The new value
+     * @return User The current object (for fluent API support)
      */
     public function setDeactivated($v)
     {
@@ -1598,9 +1584,9 @@ abstract class BaseUser extends BaseObject
      *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
      *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
      * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
-     * 
-     * @param      boolean|integer|string $v The new value
-     * @return   User The current object (for fluent API support)
+     *
+     * @param boolean|integer|string $v The new value
+     * @return User The current object (for fluent API support)
      */
     public function setIsATeacher($v)
     {
@@ -1627,9 +1613,9 @@ abstract class BaseUser extends BaseObject
      *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
      *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
      * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
-     * 
-     * @param      boolean|integer|string $v The new value
-     * @return   User The current object (for fluent API support)
+     *
+     * @param boolean|integer|string $v The new value
+     * @return User The current object (for fluent API support)
      */
     public function setIsAStudent($v)
     {
@@ -1656,9 +1642,9 @@ abstract class BaseUser extends BaseObject
      *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
      *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
      * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
-     * 
-     * @param      boolean|integer|string $v The new value
-     * @return   User The current object (for fluent API support)
+     *
+     * @param boolean|integer|string $v The new value
+     * @return User The current object (for fluent API support)
      */
     public function setIsAnAlumni($v)
     {
@@ -1681,9 +1667,9 @@ abstract class BaseUser extends BaseObject
 
     /**
      * Set the value of [avatar_id] column.
-     * 
-     * @param      int $v new value
-     * @return   User The current object (for fluent API support)
+     *
+     * @param int $v new value
+     * @return User The current object (for fluent API support)
      */
     public function setAvatarId($v)
     {
@@ -1706,9 +1692,9 @@ abstract class BaseUser extends BaseObject
 
     /**
      * Set the value of [description] column.
-     * 
-     * @param      string $v new value
-     * @return   User The current object (for fluent API support)
+     *
+     * @param string $v new value
+     * @return User The current object (for fluent API support)
      */
     public function setDescription($v)
     {
@@ -1733,9 +1719,9 @@ abstract class BaseUser extends BaseObject
 
     /**
      * Set the value of [remarks] column.
-     * 
-     * @param      string $v new value
-     * @return   User The current object (for fluent API support)
+     *
+     * @param string $v new value
+     * @return User The current object (for fluent API support)
      */
     public function setRemarks($v)
     {
@@ -1772,7 +1758,7 @@ abstract class BaseUser extends BaseObject
                 return false;
             }
 
-        // otherwise, everything was equal, so return TRUE
+        // otherwise, everything was equal, so return true
         return true;
     } // hasOnlyDefaultValues()
 
@@ -1784,9 +1770,9 @@ abstract class BaseUser extends BaseObject
      * for results of JOIN queries where the resultset row includes columns from two or
      * more tables.
      *
-     * @param      array $row The row returned by PDOStatement->fetch(PDO::FETCH_NUM)
-     * @param      int $startcol 0-based offset column which indicates which restultset column to start with.
-     * @param      boolean $rehydrate Whether this object is being re-hydrated from the database.
+     * @param array $row The row returned by PDOStatement->fetch(PDO::FETCH_NUM)
+     * @param int $startcol 0-based offset column which indicates which restultset column to start with.
+     * @param boolean $rehydrate Whether this object is being re-hydrated from the database.
      * @return int             next starting column
      * @throws PropelException - Any caught Exception will be rewrapped as a PropelException.
      */
@@ -1863,8 +1849,8 @@ abstract class BaseUser extends BaseObject
      *
      * This will only work if the object has been saved and has a valid primary key set.
      *
-     * @param      boolean $deep (optional) Whether to also de-associated any related objects.
-     * @param      PropelPDO $con (optional) The PropelPDO connection to use.
+     * @param boolean $deep (optional) Whether to also de-associated any related objects.
+     * @param PropelPDO $con (optional) The PropelPDO connection to use.
      * @return void
      * @throws PropelException - if this object is deleted, unsaved or doesn't have pk match in db
      */
@@ -1944,7 +1930,7 @@ abstract class BaseUser extends BaseObject
     /**
      * Removes this object from datastore and sets delete attribute.
      *
-     * @param      PropelPDO $con
+     * @param PropelPDO $con
      * @return void
      * @throws PropelException
      * @throws Exception
@@ -1988,7 +1974,7 @@ abstract class BaseUser extends BaseObject
      * method.  This method wraps all precipitate database operations in a
      * single transaction.
      *
-     * @param      PropelPDO $con
+     * @param PropelPDO $con
      * @return int             The number of rows affected by this insert/update and any referring fk objects' save() operations.
      * @throws PropelException
      * @throws Exception
@@ -2040,7 +2026,7 @@ abstract class BaseUser extends BaseObject
      * If the object is new, it inserts it; otherwise an update is performed.
      * All related objects are also updated in this method.
      *
-     * @param      PropelPDO $con
+     * @param PropelPDO $con
      * @return int             The number of rows affected by this insert/update and any referring fk objects' save() operations.
      * @throws PropelException
      * @see        save()
@@ -2405,7 +2391,7 @@ abstract class BaseUser extends BaseObject
     /**
      * Insert the row in the database.
      *
-     * @param      PropelPDO $con
+     * @param PropelPDO $con
      *
      * @throws PropelException
      * @see        doSave()
@@ -2523,94 +2509,94 @@ abstract class BaseUser extends BaseObject
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
                     case '`ID`':
-						$stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
+                        $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
                     case '`USERNAME`':
-						$stmt->bindValue($identifier, $this->username, PDO::PARAM_STR);
+                        $stmt->bindValue($identifier, $this->username, PDO::PARAM_STR);
                         break;
                     case '`PASSWORD_HASH`':
-						$stmt->bindValue($identifier, $this->password_hash, PDO::PARAM_STR);
+                        $stmt->bindValue($identifier, $this->password_hash, PDO::PARAM_STR);
                         break;
                     case '`TYPE`':
-						$stmt->bindValue($identifier, $this->type, PDO::PARAM_INT);
+                        $stmt->bindValue($identifier, $this->type, PDO::PARAM_INT);
                         break;
                     case '`FIRSTNAME`':
-						$stmt->bindValue($identifier, $this->firstname, PDO::PARAM_STR);
+                        $stmt->bindValue($identifier, $this->firstname, PDO::PARAM_STR);
                         break;
                     case '`LASTNAME`':
-						$stmt->bindValue($identifier, $this->lastname, PDO::PARAM_STR);
+                        $stmt->bindValue($identifier, $this->lastname, PDO::PARAM_STR);
                         break;
                     case '`GENDER`':
-						$stmt->bindValue($identifier, $this->gender, PDO::PARAM_INT);
+                        $stmt->bindValue($identifier, $this->gender, PDO::PARAM_INT);
                         break;
                     case '`EMAIL`':
-						$stmt->bindValue($identifier, $this->email, PDO::PARAM_STR);
+                        $stmt->bindValue($identifier, $this->email, PDO::PARAM_STR);
                         break;
                     case '`PHONE`':
-						$stmt->bindValue($identifier, $this->phone, PDO::PARAM_STR);
+                        $stmt->bindValue($identifier, $this->phone, PDO::PARAM_STR);
                         break;
                     case '`WEBSITE`':
-						$stmt->bindValue($identifier, $this->website, PDO::PARAM_STR);
+                        $stmt->bindValue($identifier, $this->website, PDO::PARAM_STR);
                         break;
                     case '`BIRTH_DATE`':
-						$stmt->bindValue($identifier, $this->birth_date, PDO::PARAM_STR);
+                        $stmt->bindValue($identifier, $this->birth_date, PDO::PARAM_STR);
                         break;
                     case '`FIRST_ENTRY`':
-						$stmt->bindValue($identifier, $this->first_entry, PDO::PARAM_STR);
+                        $stmt->bindValue($identifier, $this->first_entry, PDO::PARAM_STR);
                         break;
                     case '`LAST_ENTRY`':
-						$stmt->bindValue($identifier, $this->last_entry, PDO::PARAM_STR);
+                        $stmt->bindValue($identifier, $this->last_entry, PDO::PARAM_STR);
                         break;
                     case '`EXPIRATION_DATE`':
-						$stmt->bindValue($identifier, $this->expiration_date, PDO::PARAM_STR);
+                        $stmt->bindValue($identifier, $this->expiration_date, PDO::PARAM_STR);
                         break;
                     case '`LAST_VISIT`':
-						$stmt->bindValue($identifier, $this->last_visit, PDO::PARAM_STR);
+                        $stmt->bindValue($identifier, $this->last_visit, PDO::PARAM_STR);
                         break;
                     case '`VISITS_NB`':
-						$stmt->bindValue($identifier, $this->visits_nb, PDO::PARAM_INT);
+                        $stmt->bindValue($identifier, $this->visits_nb, PDO::PARAM_INT);
                         break;
                     case '`CONFIG_SHOW_EMAIL`':
-						$stmt->bindValue($identifier, (int) $this->config_show_email, PDO::PARAM_INT);
+                        $stmt->bindValue($identifier, (int) $this->config_show_email, PDO::PARAM_INT);
                         break;
                     case '`CONFIG_SHOW_PHONE`':
-						$stmt->bindValue($identifier, (int) $this->config_show_phone, PDO::PARAM_INT);
+                        $stmt->bindValue($identifier, (int) $this->config_show_phone, PDO::PARAM_INT);
                         break;
                     case '`CONFIG_SHOW_REAL_NAME`':
-						$stmt->bindValue($identifier, (int) $this->config_show_real_name, PDO::PARAM_INT);
+                        $stmt->bindValue($identifier, (int) $this->config_show_real_name, PDO::PARAM_INT);
                         break;
                     case '`CONFIG_SHOW_BIRTHDATE`':
-						$stmt->bindValue($identifier, (int) $this->config_show_birthdate, PDO::PARAM_INT);
+                        $stmt->bindValue($identifier, (int) $this->config_show_birthdate, PDO::PARAM_INT);
                         break;
                     case '`CONFIG_SHOW_AGE`':
-						$stmt->bindValue($identifier, (int) $this->config_show_age, PDO::PARAM_INT);
+                        $stmt->bindValue($identifier, (int) $this->config_show_age, PDO::PARAM_INT);
                         break;
                     case '`CONFIG_INDEX_PROFILE`':
-						$stmt->bindValue($identifier, (int) $this->config_index_profile, PDO::PARAM_INT);
+                        $stmt->bindValue($identifier, (int) $this->config_index_profile, PDO::PARAM_INT);
                         break;
                     case '`CONFIG_PRIVATE_PROFILE`':
-						$stmt->bindValue($identifier, (int) $this->config_private_profile, PDO::PARAM_INT);
+                        $stmt->bindValue($identifier, (int) $this->config_private_profile, PDO::PARAM_INT);
                         break;
                     case '`DEACTIVATED`':
-						$stmt->bindValue($identifier, (int) $this->deactivated, PDO::PARAM_INT);
+                        $stmt->bindValue($identifier, (int) $this->deactivated, PDO::PARAM_INT);
                         break;
                     case '`IS_A_TEACHER`':
-						$stmt->bindValue($identifier, (int) $this->is_a_teacher, PDO::PARAM_INT);
+                        $stmt->bindValue($identifier, (int) $this->is_a_teacher, PDO::PARAM_INT);
                         break;
                     case '`IS_A_STUDENT`':
-						$stmt->bindValue($identifier, (int) $this->is_a_student, PDO::PARAM_INT);
+                        $stmt->bindValue($identifier, (int) $this->is_a_student, PDO::PARAM_INT);
                         break;
                     case '`IS_AN_ALUMNI`':
-						$stmt->bindValue($identifier, (int) $this->is_an_alumni, PDO::PARAM_INT);
+                        $stmt->bindValue($identifier, (int) $this->is_an_alumni, PDO::PARAM_INT);
                         break;
                     case '`AVATAR_ID`':
-						$stmt->bindValue($identifier, $this->avatar_id, PDO::PARAM_INT);
+                        $stmt->bindValue($identifier, $this->avatar_id, PDO::PARAM_INT);
                         break;
                     case '`DESCRIPTION`':
-						$stmt->bindValue($identifier, $this->description, PDO::PARAM_STR);
+                        $stmt->bindValue($identifier, $this->description, PDO::PARAM_STR);
                         break;
                     case '`REMARKS`':
-						$stmt->bindValue($identifier, $this->remarks, PDO::PARAM_STR);
+                        $stmt->bindValue($identifier, $this->remarks, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -2621,7 +2607,7 @@ abstract class BaseUser extends BaseObject
         }
 
         try {
-			$pk = $con->lastInsertId();
+            $pk = $con->lastInsertId();
         } catch (Exception $e) {
             throw new PropelException('Unable to get autoincrement id.', $e);
         }
@@ -2633,7 +2619,7 @@ abstract class BaseUser extends BaseObject
     /**
      * Update the row in the database.
      *
-     * @param      PropelPDO $con
+     * @param PropelPDO $con
      *
      * @see        doSave()
      */
@@ -2668,7 +2654,7 @@ abstract class BaseUser extends BaseObject
      * If $columns is either a column name or an array of column names
      * only those columns are validated.
      *
-     * @param      mixed $columns Column name or an array of column names.
+     * @param mixed $columns Column name or an array of column names.
      * @return boolean Whether all columns pass validation.
      * @see        doValidate()
      * @see        getValidationFailures()
@@ -2694,7 +2680,7 @@ abstract class BaseUser extends BaseObject
      * also be validated.  If all pass then <code>true</code> is returned; otherwise
      * an aggreagated array of ValidationFailed objects will be returned.
      *
-     * @param      array $columns Array of column names to validate.
+     * @param array $columns Array of column names to validate.
      * @return mixed <code>true</code> if all validations pass; array of <code>ValidationFailed</code> objets otherwise.
      */
     protected function doValidate($columns = null)
@@ -2861,11 +2847,11 @@ abstract class BaseUser extends BaseObject
     /**
      * Retrieves a field from the object by name passed in as a string.
      *
-     * @param      string $name name
-     * @param      string $type The type of fieldname the $name is of:
-     *                     one of the class type constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME
-     *                     BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM.
-     *                     Defaults to BasePeer::TYPE_PHPNAME
+     * @param string $name name
+     * @param string $type The type of fieldname the $name is of:
+     *               one of the class type constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME
+     *               BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM.
+     *               Defaults to BasePeer::TYPE_PHPNAME
      * @return mixed Value of field.
      */
     public function getByName($name, $type = BasePeer::TYPE_PHPNAME)
@@ -2880,7 +2866,7 @@ abstract class BaseUser extends BaseObject
      * Retrieves a field from the object by Position as specified in the xml schema.
      * Zero-based.
      *
-     * @param      int $pos position in xml schema
+     * @param int $pos position in xml schema
      * @return mixed Value of field at $pos
      */
     public function getByPosition($pos)
@@ -2991,7 +2977,7 @@ abstract class BaseUser extends BaseObject
      * @param     string  $keyType (optional) One of the class type constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME,
      *                    BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM.
      *                    Defaults to BasePeer::TYPE_PHPNAME.
-     * @param     boolean $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to TRUE.
+     * @param     boolean $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to true.
      * @param     array $alreadyDumpedObjects List of objects to skip to avoid recursion
      * @param     boolean $includeForeignObjects (optional) Whether to include hydrated related objects. Default to FALSE.
      *
@@ -3096,9 +3082,9 @@ abstract class BaseUser extends BaseObject
     /**
      * Sets a field from the object by name passed in as a string.
      *
-     * @param      string $name peer name
-     * @param      mixed $value field value
-     * @param      string $type The type of fieldname the $name is of:
+     * @param string $name peer name
+     * @param mixed $value field value
+     * @param string $type The type of fieldname the $name is of:
      *                     one of the class type constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME
      *                     BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM.
      *                     Defaults to BasePeer::TYPE_PHPNAME
@@ -3115,8 +3101,8 @@ abstract class BaseUser extends BaseObject
      * Sets a field from the object by Position as specified in the xml schema.
      * Zero-based.
      *
-     * @param      int $pos position in xml schema
-     * @param      mixed $value field value
+     * @param int $pos position in xml schema
+     * @param mixed $value field value
      * @return void
      */
     public function setByPosition($pos, $value)
@@ -3232,8 +3218,8 @@ abstract class BaseUser extends BaseObject
      * BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM.
      * The default key type is the column's BasePeer::TYPE_PHPNAME
      *
-     * @param      array  $arr     An array to populate the object from.
-     * @param      string $keyType The type of keys the array uses.
+     * @param array  $arr     An array to populate the object from.
+     * @param string $keyType The type of keys the array uses.
      * @return void
      */
     public function fromArray($arr, $keyType = BasePeer::TYPE_PHPNAME)
@@ -3333,7 +3319,7 @@ abstract class BaseUser extends BaseObject
 
     /**
      * Returns the primary key for this object (row).
-     * @return   int
+     * @return int
      */
     public function getPrimaryKey()
     {
@@ -3343,7 +3329,7 @@ abstract class BaseUser extends BaseObject
     /**
      * Generic method to set the primary key (id column).
      *
-     * @param       int $key Primary key.
+     * @param  int $key Primary key.
      * @return void
      */
     public function setPrimaryKey($key)
@@ -3367,9 +3353,9 @@ abstract class BaseUser extends BaseObject
      * If desired, this method can also make copies of all associated (fkey referrers)
      * objects.
      *
-     * @param      object $copyObj An object of User (or compatible) type.
-     * @param      boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
-     * @param      boolean $makeNew Whether to reset autoincrement PKs and make the object new.
+     * @param object $copyObj An object of User (or compatible) type.
+     * @param boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
+     * @param boolean $makeNew Whether to reset autoincrement PKs and make the object new.
      * @throws PropelException
      */
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
@@ -3525,8 +3511,8 @@ abstract class BaseUser extends BaseObject
      * If desired, this method can also make copies of all associated (fkey referrers)
      * objects.
      *
-     * @param      boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
-     * @return                 User Clone of current object.
+     * @param boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
+     * @return User Clone of current object.
      * @throws PropelException
      */
     public function copy($deepCopy = false)
@@ -3546,7 +3532,7 @@ abstract class BaseUser extends BaseObject
      * same instance for all member of this class. The method could therefore
      * be static, but this would prevent one from overriding the behavior.
      *
-     * @return   UserPeer
+     * @return UserPeer
      */
     public function getPeer()
     {
@@ -3560,8 +3546,8 @@ abstract class BaseUser extends BaseObject
     /**
      * Declares an association between this object and a File object.
      *
-     * @param                  File $v
-     * @return                 User The current object (for fluent API support)
+     * @param             File $v
+     * @return User The current object (for fluent API support)
      * @throws PropelException
      */
     public function setAvatar(File $v = null)
@@ -3588,8 +3574,8 @@ abstract class BaseUser extends BaseObject
     /**
      * Get the associated File object
      *
-     * @param      PropelPDO $con Optional Connection object.
-     * @return                 File The associated File object.
+     * @param PropelPDO $con Optional Connection object.
+     * @return File The associated File object.
      * @throws PropelException
      */
     public function getAvatar(PropelPDO $con = null)
@@ -3614,7 +3600,7 @@ abstract class BaseUser extends BaseObject
      * Avoids crafting an 'init[$relationName]s' method name
      * that wouldn't work when StandardEnglishPluralizer is used.
      *
-     * @param      string $relationName The name of the relation to initialize
+     * @param string $relationName The name of the relation to initialize
      * @return void
      */
     public function initRelation($relationName)
@@ -3680,7 +3666,18 @@ abstract class BaseUser extends BaseObject
      */
     public function clearCursusResponsabilitys()
     {
-        $this->collCursusResponsabilitys = null; // important to set this to NULL since that means it is uninitialized
+        $this->collCursusResponsabilitys = null; // important to set this to null since that means it is uninitialized
+        $this->collCursusResponsabilitysPartial = null;
+    }
+
+    /**
+     * reset is the collCursusResponsabilitys collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialCursusResponsabilitys($v = true)
+    {
+        $this->collCursusResponsabilitysPartial = $v;
     }
 
     /**
@@ -3690,7 +3687,7 @@ abstract class BaseUser extends BaseObject
      * however, you may wish to override this method in your stub class to provide setting appropriate
      * to your application -- for example, setting the initial array to the values stored in database.
      *
-     * @param      boolean $overrideExisting If set to true, the method call initializes
+     * @param boolean $overrideExisting If set to true, the method call initializes
      *                                        the collection even if it is not empty
      *
      * @return void
@@ -3713,14 +3710,15 @@ abstract class BaseUser extends BaseObject
      * If this User is new, it will return
      * an empty collection or the current collection; the criteria is ignored on a new object.
      *
-     * @param      Criteria $criteria optional Criteria object to narrow the query
-     * @param      PropelPDO $con optional connection object
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
      * @return PropelObjectCollection|Cursus[] List of Cursus objects
      * @throws PropelException
      */
     public function getCursusResponsabilitys($criteria = null, PropelPDO $con = null)
     {
-        if (null === $this->collCursusResponsabilitys || null !== $criteria) {
+        $partial = $this->collCursusResponsabilitysPartial && !$this->isNew();
+        if (null === $this->collCursusResponsabilitys || null !== $criteria  || $partial) {
             if ($this->isNew() && null === $this->collCursusResponsabilitys) {
                 // return empty collection
                 $this->initCursusResponsabilitys();
@@ -3729,9 +3727,31 @@ abstract class BaseUser extends BaseObject
                     ->filterByResponsable($this)
                     ->find($con);
                 if (null !== $criteria) {
+                    if (false !== $this->collCursusResponsabilitysPartial && count($collCursusResponsabilitys)) {
+                      $this->initCursusResponsabilitys(false);
+
+                      foreach($collCursusResponsabilitys as $obj) {
+                        if (false == $this->collCursusResponsabilitys->contains($obj)) {
+                          $this->collCursusResponsabilitys->append($obj);
+                        }
+                      }
+
+                      $this->collCursusResponsabilitysPartial = true;
+                    }
+
                     return $collCursusResponsabilitys;
                 }
+
+                if($partial && $this->collCursusResponsabilitys) {
+                    foreach($this->collCursusResponsabilitys as $obj) {
+                        if($obj->isNew()) {
+                            $collCursusResponsabilitys[] = $obj;
+                        }
+                    }
+                }
+
                 $this->collCursusResponsabilitys = $collCursusResponsabilitys;
+                $this->collCursusResponsabilitysPartial = false;
             }
         }
 
@@ -3744,8 +3764,8 @@ abstract class BaseUser extends BaseObject
      * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
      * and new objects from the given Propel collection.
      *
-     * @param      PropelCollection $cursusResponsabilitys A Propel collection.
-     * @param      PropelPDO $con Optional connection object
+     * @param PropelCollection $cursusResponsabilitys A Propel collection.
+     * @param PropelPDO $con Optional connection object
      */
     public function setCursusResponsabilitys(PropelCollection $cursusResponsabilitys, PropelPDO $con = null)
     {
@@ -3761,23 +3781,28 @@ abstract class BaseUser extends BaseObject
         }
 
         $this->collCursusResponsabilitys = $cursusResponsabilitys;
+        $this->collCursusResponsabilitysPartial = false;
     }
 
     /**
      * Returns the number of related Cursus objects.
      *
-     * @param      Criteria $criteria
-     * @param      boolean $distinct
-     * @param      PropelPDO $con
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
      * @return int             Count of related Cursus objects.
      * @throws PropelException
      */
     public function countCursusResponsabilitys(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
     {
-        if (null === $this->collCursusResponsabilitys || null !== $criteria) {
+        $partial = $this->collCursusResponsabilitysPartial && !$this->isNew();
+        if (null === $this->collCursusResponsabilitys || null !== $criteria || $partial) {
             if ($this->isNew() && null === $this->collCursusResponsabilitys) {
                 return 0;
             } else {
+                if($partial && !$criteria) {
+                    return count($this->getCursusResponsabilitys());
+                }
                 $query = CursusQuery::create(null, $criteria);
                 if ($distinct) {
                     $query->distinct();
@@ -3797,12 +3822,13 @@ abstract class BaseUser extends BaseObject
      * through the Cursus foreign key attribute.
      *
      * @param    Cursus $l Cursus
-     * @return   User The current object (for fluent API support)
+     * @return User The current object (for fluent API support)
      */
     public function addCursusResponsability(Cursus $l)
     {
         if ($this->collCursusResponsabilitys === null) {
             $this->initCursusResponsabilitys();
+            $this->collCursusResponsabilitysPartial = true;
         }
         if (!$this->collCursusResponsabilitys->contains($l)) { // only add it if the **same** object is not already associated
             $this->doAddCursusResponsability($l);
@@ -3848,9 +3874,9 @@ abstract class BaseUser extends BaseObject
      * api reasonable.  You can provide public methods for those you
      * actually need in User.
      *
-     * @param      Criteria $criteria optional Criteria object to narrow the query
-     * @param      PropelPDO $con optional connection object
-     * @param      string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
      * @return PropelObjectCollection|Cursus[] List of Cursus objects
      */
     public function getCursusResponsabilitysJoinNewsletter($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
@@ -3872,7 +3898,18 @@ abstract class BaseUser extends BaseObject
      */
     public function clearEducationalPathResponsabilitys()
     {
-        $this->collEducationalPathResponsabilitys = null; // important to set this to NULL since that means it is uninitialized
+        $this->collEducationalPathResponsabilitys = null; // important to set this to null since that means it is uninitialized
+        $this->collEducationalPathResponsabilitysPartial = null;
+    }
+
+    /**
+     * reset is the collEducationalPathResponsabilitys collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialEducationalPathResponsabilitys($v = true)
+    {
+        $this->collEducationalPathResponsabilitysPartial = $v;
     }
 
     /**
@@ -3882,7 +3919,7 @@ abstract class BaseUser extends BaseObject
      * however, you may wish to override this method in your stub class to provide setting appropriate
      * to your application -- for example, setting the initial array to the values stored in database.
      *
-     * @param      boolean $overrideExisting If set to true, the method call initializes
+     * @param boolean $overrideExisting If set to true, the method call initializes
      *                                        the collection even if it is not empty
      *
      * @return void
@@ -3905,14 +3942,15 @@ abstract class BaseUser extends BaseObject
      * If this User is new, it will return
      * an empty collection or the current collection; the criteria is ignored on a new object.
      *
-     * @param      Criteria $criteria optional Criteria object to narrow the query
-     * @param      PropelPDO $con optional connection object
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
      * @return PropelObjectCollection|EducationalPath[] List of EducationalPath objects
      * @throws PropelException
      */
     public function getEducationalPathResponsabilitys($criteria = null, PropelPDO $con = null)
     {
-        if (null === $this->collEducationalPathResponsabilitys || null !== $criteria) {
+        $partial = $this->collEducationalPathResponsabilitysPartial && !$this->isNew();
+        if (null === $this->collEducationalPathResponsabilitys || null !== $criteria  || $partial) {
             if ($this->isNew() && null === $this->collEducationalPathResponsabilitys) {
                 // return empty collection
                 $this->initEducationalPathResponsabilitys();
@@ -3921,9 +3959,31 @@ abstract class BaseUser extends BaseObject
                     ->filterByResponsable($this)
                     ->find($con);
                 if (null !== $criteria) {
+                    if (false !== $this->collEducationalPathResponsabilitysPartial && count($collEducationalPathResponsabilitys)) {
+                      $this->initEducationalPathResponsabilitys(false);
+
+                      foreach($collEducationalPathResponsabilitys as $obj) {
+                        if (false == $this->collEducationalPathResponsabilitys->contains($obj)) {
+                          $this->collEducationalPathResponsabilitys->append($obj);
+                        }
+                      }
+
+                      $this->collEducationalPathResponsabilitysPartial = true;
+                    }
+
                     return $collEducationalPathResponsabilitys;
                 }
+
+                if($partial && $this->collEducationalPathResponsabilitys) {
+                    foreach($this->collEducationalPathResponsabilitys as $obj) {
+                        if($obj->isNew()) {
+                            $collEducationalPathResponsabilitys[] = $obj;
+                        }
+                    }
+                }
+
                 $this->collEducationalPathResponsabilitys = $collEducationalPathResponsabilitys;
+                $this->collEducationalPathResponsabilitysPartial = false;
             }
         }
 
@@ -3936,8 +3996,8 @@ abstract class BaseUser extends BaseObject
      * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
      * and new objects from the given Propel collection.
      *
-     * @param      PropelCollection $educationalPathResponsabilitys A Propel collection.
-     * @param      PropelPDO $con Optional connection object
+     * @param PropelCollection $educationalPathResponsabilitys A Propel collection.
+     * @param PropelPDO $con Optional connection object
      */
     public function setEducationalPathResponsabilitys(PropelCollection $educationalPathResponsabilitys, PropelPDO $con = null)
     {
@@ -3953,23 +4013,28 @@ abstract class BaseUser extends BaseObject
         }
 
         $this->collEducationalPathResponsabilitys = $educationalPathResponsabilitys;
+        $this->collEducationalPathResponsabilitysPartial = false;
     }
 
     /**
      * Returns the number of related EducationalPath objects.
      *
-     * @param      Criteria $criteria
-     * @param      boolean $distinct
-     * @param      PropelPDO $con
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
      * @return int             Count of related EducationalPath objects.
      * @throws PropelException
      */
     public function countEducationalPathResponsabilitys(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
     {
-        if (null === $this->collEducationalPathResponsabilitys || null !== $criteria) {
+        $partial = $this->collEducationalPathResponsabilitysPartial && !$this->isNew();
+        if (null === $this->collEducationalPathResponsabilitys || null !== $criteria || $partial) {
             if ($this->isNew() && null === $this->collEducationalPathResponsabilitys) {
                 return 0;
             } else {
+                if($partial && !$criteria) {
+                    return count($this->getEducationalPathResponsabilitys());
+                }
                 $query = EducationalPathQuery::create(null, $criteria);
                 if ($distinct) {
                     $query->distinct();
@@ -3989,12 +4054,13 @@ abstract class BaseUser extends BaseObject
      * through the EducationalPath foreign key attribute.
      *
      * @param    EducationalPath $l EducationalPath
-     * @return   User The current object (for fluent API support)
+     * @return User The current object (for fluent API support)
      */
     public function addEducationalPathResponsability(EducationalPath $l)
     {
         if ($this->collEducationalPathResponsabilitys === null) {
             $this->initEducationalPathResponsabilitys();
+            $this->collEducationalPathResponsabilitysPartial = true;
         }
         if (!$this->collEducationalPathResponsabilitys->contains($l)) { // only add it if the **same** object is not already associated
             $this->doAddEducationalPathResponsability($l);
@@ -4040,9 +4106,9 @@ abstract class BaseUser extends BaseObject
      * api reasonable.  You can provide public methods for those you
      * actually need in User.
      *
-     * @param      Criteria $criteria optional Criteria object to narrow the query
-     * @param      PropelPDO $con optional connection object
-     * @param      string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
      * @return PropelObjectCollection|EducationalPath[] List of EducationalPath objects
      */
     public function getEducationalPathResponsabilitysJoinCursus($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
@@ -4064,7 +4130,18 @@ abstract class BaseUser extends BaseObject
      */
     public function clearUsersPathss()
     {
-        $this->collUsersPathss = null; // important to set this to NULL since that means it is uninitialized
+        $this->collUsersPathss = null; // important to set this to null since that means it is uninitialized
+        $this->collUsersPathssPartial = null;
+    }
+
+    /**
+     * reset is the collUsersPathss collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialUsersPathss($v = true)
+    {
+        $this->collUsersPathssPartial = $v;
     }
 
     /**
@@ -4074,7 +4151,7 @@ abstract class BaseUser extends BaseObject
      * however, you may wish to override this method in your stub class to provide setting appropriate
      * to your application -- for example, setting the initial array to the values stored in database.
      *
-     * @param      boolean $overrideExisting If set to true, the method call initializes
+     * @param boolean $overrideExisting If set to true, the method call initializes
      *                                        the collection even if it is not empty
      *
      * @return void
@@ -4097,14 +4174,15 @@ abstract class BaseUser extends BaseObject
      * If this User is new, it will return
      * an empty collection or the current collection; the criteria is ignored on a new object.
      *
-     * @param      Criteria $criteria optional Criteria object to narrow the query
-     * @param      PropelPDO $con optional connection object
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
      * @return PropelObjectCollection|UsersPaths[] List of UsersPaths objects
      * @throws PropelException
      */
     public function getUsersPathss($criteria = null, PropelPDO $con = null)
     {
-        if (null === $this->collUsersPathss || null !== $criteria) {
+        $partial = $this->collUsersPathssPartial && !$this->isNew();
+        if (null === $this->collUsersPathss || null !== $criteria  || $partial) {
             if ($this->isNew() && null === $this->collUsersPathss) {
                 // return empty collection
                 $this->initUsersPathss();
@@ -4113,9 +4191,31 @@ abstract class BaseUser extends BaseObject
                     ->filterByUser($this)
                     ->find($con);
                 if (null !== $criteria) {
+                    if (false !== $this->collUsersPathssPartial && count($collUsersPathss)) {
+                      $this->initUsersPathss(false);
+
+                      foreach($collUsersPathss as $obj) {
+                        if (false == $this->collUsersPathss->contains($obj)) {
+                          $this->collUsersPathss->append($obj);
+                        }
+                      }
+
+                      $this->collUsersPathssPartial = true;
+                    }
+
                     return $collUsersPathss;
                 }
+
+                if($partial && $this->collUsersPathss) {
+                    foreach($this->collUsersPathss as $obj) {
+                        if($obj->isNew()) {
+                            $collUsersPathss[] = $obj;
+                        }
+                    }
+                }
+
                 $this->collUsersPathss = $collUsersPathss;
+                $this->collUsersPathssPartial = false;
             }
         }
 
@@ -4128,8 +4228,8 @@ abstract class BaseUser extends BaseObject
      * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
      * and new objects from the given Propel collection.
      *
-     * @param      PropelCollection $usersPathss A Propel collection.
-     * @param      PropelPDO $con Optional connection object
+     * @param PropelCollection $usersPathss A Propel collection.
+     * @param PropelPDO $con Optional connection object
      */
     public function setUsersPathss(PropelCollection $usersPathss, PropelPDO $con = null)
     {
@@ -4145,23 +4245,28 @@ abstract class BaseUser extends BaseObject
         }
 
         $this->collUsersPathss = $usersPathss;
+        $this->collUsersPathssPartial = false;
     }
 
     /**
      * Returns the number of related UsersPaths objects.
      *
-     * @param      Criteria $criteria
-     * @param      boolean $distinct
-     * @param      PropelPDO $con
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
      * @return int             Count of related UsersPaths objects.
      * @throws PropelException
      */
     public function countUsersPathss(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
     {
-        if (null === $this->collUsersPathss || null !== $criteria) {
+        $partial = $this->collUsersPathssPartial && !$this->isNew();
+        if (null === $this->collUsersPathss || null !== $criteria || $partial) {
             if ($this->isNew() && null === $this->collUsersPathss) {
                 return 0;
             } else {
+                if($partial && !$criteria) {
+                    return count($this->getUsersPathss());
+                }
                 $query = UsersPathsQuery::create(null, $criteria);
                 if ($distinct) {
                     $query->distinct();
@@ -4181,12 +4286,13 @@ abstract class BaseUser extends BaseObject
      * through the UsersPaths foreign key attribute.
      *
      * @param    UsersPaths $l UsersPaths
-     * @return   User The current object (for fluent API support)
+     * @return User The current object (for fluent API support)
      */
     public function addUsersPaths(UsersPaths $l)
     {
         if ($this->collUsersPathss === null) {
             $this->initUsersPathss();
+            $this->collUsersPathssPartial = true;
         }
         if (!$this->collUsersPathss->contains($l)) { // only add it if the **same** object is not already associated
             $this->doAddUsersPaths($l);
@@ -4232,9 +4338,9 @@ abstract class BaseUser extends BaseObject
      * api reasonable.  You can provide public methods for those you
      * actually need in User.
      *
-     * @param      Criteria $criteria optional Criteria object to narrow the query
-     * @param      PropelPDO $con optional connection object
-     * @param      string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
      * @return PropelObjectCollection|UsersPaths[] List of UsersPaths objects
      */
     public function getUsersPathssJoinEducationalPath($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
@@ -4256,7 +4362,18 @@ abstract class BaseUser extends BaseObject
      */
     public function clearFilesRelatedByAuthorId()
     {
-        $this->collFilesRelatedByAuthorId = null; // important to set this to NULL since that means it is uninitialized
+        $this->collFilesRelatedByAuthorId = null; // important to set this to null since that means it is uninitialized
+        $this->collFilesRelatedByAuthorIdPartial = null;
+    }
+
+    /**
+     * reset is the collFilesRelatedByAuthorId collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialFilesRelatedByAuthorId($v = true)
+    {
+        $this->collFilesRelatedByAuthorIdPartial = $v;
     }
 
     /**
@@ -4266,7 +4383,7 @@ abstract class BaseUser extends BaseObject
      * however, you may wish to override this method in your stub class to provide setting appropriate
      * to your application -- for example, setting the initial array to the values stored in database.
      *
-     * @param      boolean $overrideExisting If set to true, the method call initializes
+     * @param boolean $overrideExisting If set to true, the method call initializes
      *                                        the collection even if it is not empty
      *
      * @return void
@@ -4289,14 +4406,15 @@ abstract class BaseUser extends BaseObject
      * If this User is new, it will return
      * an empty collection or the current collection; the criteria is ignored on a new object.
      *
-     * @param      Criteria $criteria optional Criteria object to narrow the query
-     * @param      PropelPDO $con optional connection object
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
      * @return PropelObjectCollection|File[] List of File objects
      * @throws PropelException
      */
     public function getFilesRelatedByAuthorId($criteria = null, PropelPDO $con = null)
     {
-        if (null === $this->collFilesRelatedByAuthorId || null !== $criteria) {
+        $partial = $this->collFilesRelatedByAuthorIdPartial && !$this->isNew();
+        if (null === $this->collFilesRelatedByAuthorId || null !== $criteria  || $partial) {
             if ($this->isNew() && null === $this->collFilesRelatedByAuthorId) {
                 // return empty collection
                 $this->initFilesRelatedByAuthorId();
@@ -4305,9 +4423,31 @@ abstract class BaseUser extends BaseObject
                     ->filterByAuthor($this)
                     ->find($con);
                 if (null !== $criteria) {
+                    if (false !== $this->collFilesRelatedByAuthorIdPartial && count($collFilesRelatedByAuthorId)) {
+                      $this->initFilesRelatedByAuthorId(false);
+
+                      foreach($collFilesRelatedByAuthorId as $obj) {
+                        if (false == $this->collFilesRelatedByAuthorId->contains($obj)) {
+                          $this->collFilesRelatedByAuthorId->append($obj);
+                        }
+                      }
+
+                      $this->collFilesRelatedByAuthorIdPartial = true;
+                    }
+
                     return $collFilesRelatedByAuthorId;
                 }
+
+                if($partial && $this->collFilesRelatedByAuthorId) {
+                    foreach($this->collFilesRelatedByAuthorId as $obj) {
+                        if($obj->isNew()) {
+                            $collFilesRelatedByAuthorId[] = $obj;
+                        }
+                    }
+                }
+
                 $this->collFilesRelatedByAuthorId = $collFilesRelatedByAuthorId;
+                $this->collFilesRelatedByAuthorIdPartial = false;
             }
         }
 
@@ -4320,8 +4460,8 @@ abstract class BaseUser extends BaseObject
      * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
      * and new objects from the given Propel collection.
      *
-     * @param      PropelCollection $filesRelatedByAuthorId A Propel collection.
-     * @param      PropelPDO $con Optional connection object
+     * @param PropelCollection $filesRelatedByAuthorId A Propel collection.
+     * @param PropelPDO $con Optional connection object
      */
     public function setFilesRelatedByAuthorId(PropelCollection $filesRelatedByAuthorId, PropelPDO $con = null)
     {
@@ -4337,23 +4477,28 @@ abstract class BaseUser extends BaseObject
         }
 
         $this->collFilesRelatedByAuthorId = $filesRelatedByAuthorId;
+        $this->collFilesRelatedByAuthorIdPartial = false;
     }
 
     /**
      * Returns the number of related File objects.
      *
-     * @param      Criteria $criteria
-     * @param      boolean $distinct
-     * @param      PropelPDO $con
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
      * @return int             Count of related File objects.
      * @throws PropelException
      */
     public function countFilesRelatedByAuthorId(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
     {
-        if (null === $this->collFilesRelatedByAuthorId || null !== $criteria) {
+        $partial = $this->collFilesRelatedByAuthorIdPartial && !$this->isNew();
+        if (null === $this->collFilesRelatedByAuthorId || null !== $criteria || $partial) {
             if ($this->isNew() && null === $this->collFilesRelatedByAuthorId) {
                 return 0;
             } else {
+                if($partial && !$criteria) {
+                    return count($this->getFilesRelatedByAuthorId());
+                }
                 $query = FileQuery::create(null, $criteria);
                 if ($distinct) {
                     $query->distinct();
@@ -4373,12 +4518,13 @@ abstract class BaseUser extends BaseObject
      * through the File foreign key attribute.
      *
      * @param    File $l File
-     * @return   User The current object (for fluent API support)
+     * @return User The current object (for fluent API support)
      */
     public function addFileRelatedByAuthorId(File $l)
     {
         if ($this->collFilesRelatedByAuthorId === null) {
             $this->initFilesRelatedByAuthorId();
+            $this->collFilesRelatedByAuthorIdPartial = true;
         }
         if (!$this->collFilesRelatedByAuthorId->contains($l)) { // only add it if the **same** object is not already associated
             $this->doAddFileRelatedByAuthorId($l);
@@ -4423,7 +4569,18 @@ abstract class BaseUser extends BaseObject
      */
     public function clearNewslettersSubscriberss()
     {
-        $this->collNewslettersSubscriberss = null; // important to set this to NULL since that means it is uninitialized
+        $this->collNewslettersSubscriberss = null; // important to set this to null since that means it is uninitialized
+        $this->collNewslettersSubscriberssPartial = null;
+    }
+
+    /**
+     * reset is the collNewslettersSubscriberss collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialNewslettersSubscriberss($v = true)
+    {
+        $this->collNewslettersSubscriberssPartial = $v;
     }
 
     /**
@@ -4433,7 +4590,7 @@ abstract class BaseUser extends BaseObject
      * however, you may wish to override this method in your stub class to provide setting appropriate
      * to your application -- for example, setting the initial array to the values stored in database.
      *
-     * @param      boolean $overrideExisting If set to true, the method call initializes
+     * @param boolean $overrideExisting If set to true, the method call initializes
      *                                        the collection even if it is not empty
      *
      * @return void
@@ -4456,14 +4613,15 @@ abstract class BaseUser extends BaseObject
      * If this User is new, it will return
      * an empty collection or the current collection; the criteria is ignored on a new object.
      *
-     * @param      Criteria $criteria optional Criteria object to narrow the query
-     * @param      PropelPDO $con optional connection object
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
      * @return PropelObjectCollection|NewslettersSubscribers[] List of NewslettersSubscribers objects
      * @throws PropelException
      */
     public function getNewslettersSubscriberss($criteria = null, PropelPDO $con = null)
     {
-        if (null === $this->collNewslettersSubscriberss || null !== $criteria) {
+        $partial = $this->collNewslettersSubscriberssPartial && !$this->isNew();
+        if (null === $this->collNewslettersSubscriberss || null !== $criteria  || $partial) {
             if ($this->isNew() && null === $this->collNewslettersSubscriberss) {
                 // return empty collection
                 $this->initNewslettersSubscriberss();
@@ -4472,9 +4630,31 @@ abstract class BaseUser extends BaseObject
                     ->filterBySubscriber($this)
                     ->find($con);
                 if (null !== $criteria) {
+                    if (false !== $this->collNewslettersSubscriberssPartial && count($collNewslettersSubscriberss)) {
+                      $this->initNewslettersSubscriberss(false);
+
+                      foreach($collNewslettersSubscriberss as $obj) {
+                        if (false == $this->collNewslettersSubscriberss->contains($obj)) {
+                          $this->collNewslettersSubscriberss->append($obj);
+                        }
+                      }
+
+                      $this->collNewslettersSubscriberssPartial = true;
+                    }
+
                     return $collNewslettersSubscriberss;
                 }
+
+                if($partial && $this->collNewslettersSubscriberss) {
+                    foreach($this->collNewslettersSubscriberss as $obj) {
+                        if($obj->isNew()) {
+                            $collNewslettersSubscriberss[] = $obj;
+                        }
+                    }
+                }
+
                 $this->collNewslettersSubscriberss = $collNewslettersSubscriberss;
+                $this->collNewslettersSubscriberssPartial = false;
             }
         }
 
@@ -4487,8 +4667,8 @@ abstract class BaseUser extends BaseObject
      * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
      * and new objects from the given Propel collection.
      *
-     * @param      PropelCollection $newslettersSubscriberss A Propel collection.
-     * @param      PropelPDO $con Optional connection object
+     * @param PropelCollection $newslettersSubscriberss A Propel collection.
+     * @param PropelPDO $con Optional connection object
      */
     public function setNewslettersSubscriberss(PropelCollection $newslettersSubscriberss, PropelPDO $con = null)
     {
@@ -4504,23 +4684,28 @@ abstract class BaseUser extends BaseObject
         }
 
         $this->collNewslettersSubscriberss = $newslettersSubscriberss;
+        $this->collNewslettersSubscriberssPartial = false;
     }
 
     /**
      * Returns the number of related NewslettersSubscribers objects.
      *
-     * @param      Criteria $criteria
-     * @param      boolean $distinct
-     * @param      PropelPDO $con
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
      * @return int             Count of related NewslettersSubscribers objects.
      * @throws PropelException
      */
     public function countNewslettersSubscriberss(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
     {
-        if (null === $this->collNewslettersSubscriberss || null !== $criteria) {
+        $partial = $this->collNewslettersSubscriberssPartial && !$this->isNew();
+        if (null === $this->collNewslettersSubscriberss || null !== $criteria || $partial) {
             if ($this->isNew() && null === $this->collNewslettersSubscriberss) {
                 return 0;
             } else {
+                if($partial && !$criteria) {
+                    return count($this->getNewslettersSubscriberss());
+                }
                 $query = NewslettersSubscribersQuery::create(null, $criteria);
                 if ($distinct) {
                     $query->distinct();
@@ -4540,12 +4725,13 @@ abstract class BaseUser extends BaseObject
      * through the NewslettersSubscribers foreign key attribute.
      *
      * @param    NewslettersSubscribers $l NewslettersSubscribers
-     * @return   User The current object (for fluent API support)
+     * @return User The current object (for fluent API support)
      */
     public function addNewslettersSubscribers(NewslettersSubscribers $l)
     {
         if ($this->collNewslettersSubscriberss === null) {
             $this->initNewslettersSubscriberss();
+            $this->collNewslettersSubscriberssPartial = true;
         }
         if (!$this->collNewslettersSubscriberss->contains($l)) { // only add it if the **same** object is not already associated
             $this->doAddNewslettersSubscribers($l);
@@ -4591,9 +4777,9 @@ abstract class BaseUser extends BaseObject
      * api reasonable.  You can provide public methods for those you
      * actually need in User.
      *
-     * @param      Criteria $criteria optional Criteria object to narrow the query
-     * @param      PropelPDO $con optional connection object
-     * @param      string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
      * @return PropelObjectCollection|NewslettersSubscribers[] List of NewslettersSubscribers objects
      */
     public function getNewslettersSubscriberssJoinNewsletter($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
@@ -4615,7 +4801,18 @@ abstract class BaseUser extends BaseObject
      */
     public function clearAlerts()
     {
-        $this->collAlerts = null; // important to set this to NULL since that means it is uninitialized
+        $this->collAlerts = null; // important to set this to null since that means it is uninitialized
+        $this->collAlertsPartial = null;
+    }
+
+    /**
+     * reset is the collAlerts collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialAlerts($v = true)
+    {
+        $this->collAlertsPartial = $v;
     }
 
     /**
@@ -4625,7 +4822,7 @@ abstract class BaseUser extends BaseObject
      * however, you may wish to override this method in your stub class to provide setting appropriate
      * to your application -- for example, setting the initial array to the values stored in database.
      *
-     * @param      boolean $overrideExisting If set to true, the method call initializes
+     * @param boolean $overrideExisting If set to true, the method call initializes
      *                                        the collection even if it is not empty
      *
      * @return void
@@ -4648,14 +4845,15 @@ abstract class BaseUser extends BaseObject
      * If this User is new, it will return
      * an empty collection or the current collection; the criteria is ignored on a new object.
      *
-     * @param      Criteria $criteria optional Criteria object to narrow the query
-     * @param      PropelPDO $con optional connection object
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
      * @return PropelObjectCollection|Alert[] List of Alert objects
      * @throws PropelException
      */
     public function getAlerts($criteria = null, PropelPDO $con = null)
     {
-        if (null === $this->collAlerts || null !== $criteria) {
+        $partial = $this->collAlertsPartial && !$this->isNew();
+        if (null === $this->collAlerts || null !== $criteria  || $partial) {
             if ($this->isNew() && null === $this->collAlerts) {
                 // return empty collection
                 $this->initAlerts();
@@ -4664,9 +4862,31 @@ abstract class BaseUser extends BaseObject
                     ->filterBySubscriber($this)
                     ->find($con);
                 if (null !== $criteria) {
+                    if (false !== $this->collAlertsPartial && count($collAlerts)) {
+                      $this->initAlerts(false);
+
+                      foreach($collAlerts as $obj) {
+                        if (false == $this->collAlerts->contains($obj)) {
+                          $this->collAlerts->append($obj);
+                        }
+                      }
+
+                      $this->collAlertsPartial = true;
+                    }
+
                     return $collAlerts;
                 }
+
+                if($partial && $this->collAlerts) {
+                    foreach($this->collAlerts as $obj) {
+                        if($obj->isNew()) {
+                            $collAlerts[] = $obj;
+                        }
+                    }
+                }
+
                 $this->collAlerts = $collAlerts;
+                $this->collAlertsPartial = false;
             }
         }
 
@@ -4679,8 +4899,8 @@ abstract class BaseUser extends BaseObject
      * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
      * and new objects from the given Propel collection.
      *
-     * @param      PropelCollection $alerts A Propel collection.
-     * @param      PropelPDO $con Optional connection object
+     * @param PropelCollection $alerts A Propel collection.
+     * @param PropelPDO $con Optional connection object
      */
     public function setAlerts(PropelCollection $alerts, PropelPDO $con = null)
     {
@@ -4696,23 +4916,28 @@ abstract class BaseUser extends BaseObject
         }
 
         $this->collAlerts = $alerts;
+        $this->collAlertsPartial = false;
     }
 
     /**
      * Returns the number of related Alert objects.
      *
-     * @param      Criteria $criteria
-     * @param      boolean $distinct
-     * @param      PropelPDO $con
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
      * @return int             Count of related Alert objects.
      * @throws PropelException
      */
     public function countAlerts(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
     {
-        if (null === $this->collAlerts || null !== $criteria) {
+        $partial = $this->collAlertsPartial && !$this->isNew();
+        if (null === $this->collAlerts || null !== $criteria || $partial) {
             if ($this->isNew() && null === $this->collAlerts) {
                 return 0;
             } else {
+                if($partial && !$criteria) {
+                    return count($this->getAlerts());
+                }
                 $query = AlertQuery::create(null, $criteria);
                 if ($distinct) {
                     $query->distinct();
@@ -4732,12 +4957,13 @@ abstract class BaseUser extends BaseObject
      * through the Alert foreign key attribute.
      *
      * @param    Alert $l Alert
-     * @return   User The current object (for fluent API support)
+     * @return User The current object (for fluent API support)
      */
     public function addAlert(Alert $l)
     {
         if ($this->collAlerts === null) {
             $this->initAlerts();
+            $this->collAlertsPartial = true;
         }
         if (!$this->collAlerts->contains($l)) { // only add it if the **same** object is not already associated
             $this->doAddAlert($l);
@@ -4783,9 +5009,9 @@ abstract class BaseUser extends BaseObject
      * api reasonable.  You can provide public methods for those you
      * actually need in User.
      *
-     * @param      Criteria $criteria optional Criteria object to narrow the query
-     * @param      PropelPDO $con optional connection object
-     * @param      string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
      * @return PropelObjectCollection|Alert[] List of Alert objects
      */
     public function getAlertsJoinCursus($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
@@ -4808,9 +5034,9 @@ abstract class BaseUser extends BaseObject
      * api reasonable.  You can provide public methods for those you
      * actually need in User.
      *
-     * @param      Criteria $criteria optional Criteria object to narrow the query
-     * @param      PropelPDO $con optional connection object
-     * @param      string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
      * @return PropelObjectCollection|Alert[] List of Alert objects
      */
     public function getAlertsJoinCourse($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
@@ -4833,9 +5059,9 @@ abstract class BaseUser extends BaseObject
      * api reasonable.  You can provide public methods for those you
      * actually need in User.
      *
-     * @param      Criteria $criteria optional Criteria object to narrow the query
-     * @param      PropelPDO $con optional connection object
-     * @param      string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
      * @return PropelObjectCollection|Alert[] List of Alert objects
      */
     public function getAlertsJoinTag($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
@@ -4858,9 +5084,9 @@ abstract class BaseUser extends BaseObject
      * api reasonable.  You can provide public methods for those you
      * actually need in User.
      *
-     * @param      Criteria $criteria optional Criteria object to narrow the query
-     * @param      PropelPDO $con optional connection object
-     * @param      string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
      * @return PropelObjectCollection|Alert[] List of Alert objects
      */
     public function getAlertsJoinContentType($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
@@ -4882,7 +5108,18 @@ abstract class BaseUser extends BaseObject
      */
     public function clearContents()
     {
-        $this->collContents = null; // important to set this to NULL since that means it is uninitialized
+        $this->collContents = null; // important to set this to null since that means it is uninitialized
+        $this->collContentsPartial = null;
+    }
+
+    /**
+     * reset is the collContents collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialContents($v = true)
+    {
+        $this->collContentsPartial = $v;
     }
 
     /**
@@ -4892,7 +5129,7 @@ abstract class BaseUser extends BaseObject
      * however, you may wish to override this method in your stub class to provide setting appropriate
      * to your application -- for example, setting the initial array to the values stored in database.
      *
-     * @param      boolean $overrideExisting If set to true, the method call initializes
+     * @param boolean $overrideExisting If set to true, the method call initializes
      *                                        the collection even if it is not empty
      *
      * @return void
@@ -4915,14 +5152,15 @@ abstract class BaseUser extends BaseObject
      * If this User is new, it will return
      * an empty collection or the current collection; the criteria is ignored on a new object.
      *
-     * @param      Criteria $criteria optional Criteria object to narrow the query
-     * @param      PropelPDO $con optional connection object
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
      * @return PropelObjectCollection|Content[] List of Content objects
      * @throws PropelException
      */
     public function getContents($criteria = null, PropelPDO $con = null)
     {
-        if (null === $this->collContents || null !== $criteria) {
+        $partial = $this->collContentsPartial && !$this->isNew();
+        if (null === $this->collContents || null !== $criteria  || $partial) {
             if ($this->isNew() && null === $this->collContents) {
                 // return empty collection
                 $this->initContents();
@@ -4931,9 +5169,31 @@ abstract class BaseUser extends BaseObject
                     ->filterByAuthor($this)
                     ->find($con);
                 if (null !== $criteria) {
+                    if (false !== $this->collContentsPartial && count($collContents)) {
+                      $this->initContents(false);
+
+                      foreach($collContents as $obj) {
+                        if (false == $this->collContents->contains($obj)) {
+                          $this->collContents->append($obj);
+                        }
+                      }
+
+                      $this->collContentsPartial = true;
+                    }
+
                     return $collContents;
                 }
+
+                if($partial && $this->collContents) {
+                    foreach($this->collContents as $obj) {
+                        if($obj->isNew()) {
+                            $collContents[] = $obj;
+                        }
+                    }
+                }
+
                 $this->collContents = $collContents;
+                $this->collContentsPartial = false;
             }
         }
 
@@ -4946,8 +5206,8 @@ abstract class BaseUser extends BaseObject
      * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
      * and new objects from the given Propel collection.
      *
-     * @param      PropelCollection $contents A Propel collection.
-     * @param      PropelPDO $con Optional connection object
+     * @param PropelCollection $contents A Propel collection.
+     * @param PropelPDO $con Optional connection object
      */
     public function setContents(PropelCollection $contents, PropelPDO $con = null)
     {
@@ -4963,23 +5223,28 @@ abstract class BaseUser extends BaseObject
         }
 
         $this->collContents = $contents;
+        $this->collContentsPartial = false;
     }
 
     /**
      * Returns the number of related Content objects.
      *
-     * @param      Criteria $criteria
-     * @param      boolean $distinct
-     * @param      PropelPDO $con
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
      * @return int             Count of related Content objects.
      * @throws PropelException
      */
     public function countContents(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
     {
-        if (null === $this->collContents || null !== $criteria) {
+        $partial = $this->collContentsPartial && !$this->isNew();
+        if (null === $this->collContents || null !== $criteria || $partial) {
             if ($this->isNew() && null === $this->collContents) {
                 return 0;
             } else {
+                if($partial && !$criteria) {
+                    return count($this->getContents());
+                }
                 $query = ContentQuery::create(null, $criteria);
                 if ($distinct) {
                     $query->distinct();
@@ -4999,12 +5264,13 @@ abstract class BaseUser extends BaseObject
      * through the Content foreign key attribute.
      *
      * @param    Content $l Content
-     * @return   User The current object (for fluent API support)
+     * @return User The current object (for fluent API support)
      */
     public function addContent(Content $l)
     {
         if ($this->collContents === null) {
             $this->initContents();
+            $this->collContentsPartial = true;
         }
         if (!$this->collContents->contains($l)) { // only add it if the **same** object is not already associated
             $this->doAddContent($l);
@@ -5050,9 +5316,9 @@ abstract class BaseUser extends BaseObject
      * api reasonable.  You can provide public methods for those you
      * actually need in User.
      *
-     * @param      Criteria $criteria optional Criteria object to narrow the query
-     * @param      PropelPDO $con optional connection object
-     * @param      string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
      * @return PropelObjectCollection|Content[] List of Content objects
      */
     public function getContentsJoinCursus($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
@@ -5075,9 +5341,9 @@ abstract class BaseUser extends BaseObject
      * api reasonable.  You can provide public methods for those you
      * actually need in User.
      *
-     * @param      Criteria $criteria optional Criteria object to narrow the query
-     * @param      PropelPDO $con optional connection object
-     * @param      string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
      * @return PropelObjectCollection|Content[] List of Content objects
      */
     public function getContentsJoinCourse($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
@@ -5100,9 +5366,9 @@ abstract class BaseUser extends BaseObject
      * api reasonable.  You can provide public methods for those you
      * actually need in User.
      *
-     * @param      Criteria $criteria optional Criteria object to narrow the query
-     * @param      PropelPDO $con optional connection object
-     * @param      string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
      * @return PropelObjectCollection|Content[] List of Content objects
      */
     public function getContentsJoinContentType($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
@@ -5124,7 +5390,18 @@ abstract class BaseUser extends BaseObject
      */
     public function clearComments()
     {
-        $this->collComments = null; // important to set this to NULL since that means it is uninitialized
+        $this->collComments = null; // important to set this to null since that means it is uninitialized
+        $this->collCommentsPartial = null;
+    }
+
+    /**
+     * reset is the collComments collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialComments($v = true)
+    {
+        $this->collCommentsPartial = $v;
     }
 
     /**
@@ -5134,7 +5411,7 @@ abstract class BaseUser extends BaseObject
      * however, you may wish to override this method in your stub class to provide setting appropriate
      * to your application -- for example, setting the initial array to the values stored in database.
      *
-     * @param      boolean $overrideExisting If set to true, the method call initializes
+     * @param boolean $overrideExisting If set to true, the method call initializes
      *                                        the collection even if it is not empty
      *
      * @return void
@@ -5157,14 +5434,15 @@ abstract class BaseUser extends BaseObject
      * If this User is new, it will return
      * an empty collection or the current collection; the criteria is ignored on a new object.
      *
-     * @param      Criteria $criteria optional Criteria object to narrow the query
-     * @param      PropelPDO $con optional connection object
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
      * @return PropelObjectCollection|Comment[] List of Comment objects
      * @throws PropelException
      */
     public function getComments($criteria = null, PropelPDO $con = null)
     {
-        if (null === $this->collComments || null !== $criteria) {
+        $partial = $this->collCommentsPartial && !$this->isNew();
+        if (null === $this->collComments || null !== $criteria  || $partial) {
             if ($this->isNew() && null === $this->collComments) {
                 // return empty collection
                 $this->initComments();
@@ -5173,9 +5451,31 @@ abstract class BaseUser extends BaseObject
                     ->filterByAuthor($this)
                     ->find($con);
                 if (null !== $criteria) {
+                    if (false !== $this->collCommentsPartial && count($collComments)) {
+                      $this->initComments(false);
+
+                      foreach($collComments as $obj) {
+                        if (false == $this->collComments->contains($obj)) {
+                          $this->collComments->append($obj);
+                        }
+                      }
+
+                      $this->collCommentsPartial = true;
+                    }
+
                     return $collComments;
                 }
+
+                if($partial && $this->collComments) {
+                    foreach($this->collComments as $obj) {
+                        if($obj->isNew()) {
+                            $collComments[] = $obj;
+                        }
+                    }
+                }
+
                 $this->collComments = $collComments;
+                $this->collCommentsPartial = false;
             }
         }
 
@@ -5188,8 +5488,8 @@ abstract class BaseUser extends BaseObject
      * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
      * and new objects from the given Propel collection.
      *
-     * @param      PropelCollection $comments A Propel collection.
-     * @param      PropelPDO $con Optional connection object
+     * @param PropelCollection $comments A Propel collection.
+     * @param PropelPDO $con Optional connection object
      */
     public function setComments(PropelCollection $comments, PropelPDO $con = null)
     {
@@ -5205,23 +5505,28 @@ abstract class BaseUser extends BaseObject
         }
 
         $this->collComments = $comments;
+        $this->collCommentsPartial = false;
     }
 
     /**
      * Returns the number of related Comment objects.
      *
-     * @param      Criteria $criteria
-     * @param      boolean $distinct
-     * @param      PropelPDO $con
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
      * @return int             Count of related Comment objects.
      * @throws PropelException
      */
     public function countComments(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
     {
-        if (null === $this->collComments || null !== $criteria) {
+        $partial = $this->collCommentsPartial && !$this->isNew();
+        if (null === $this->collComments || null !== $criteria || $partial) {
             if ($this->isNew() && null === $this->collComments) {
                 return 0;
             } else {
+                if($partial && !$criteria) {
+                    return count($this->getComments());
+                }
                 $query = CommentQuery::create(null, $criteria);
                 if ($distinct) {
                     $query->distinct();
@@ -5241,12 +5546,13 @@ abstract class BaseUser extends BaseObject
      * through the Comment foreign key attribute.
      *
      * @param    Comment $l Comment
-     * @return   User The current object (for fluent API support)
+     * @return User The current object (for fluent API support)
      */
     public function addComment(Comment $l)
     {
         if ($this->collComments === null) {
             $this->initComments();
+            $this->collCommentsPartial = true;
         }
         if (!$this->collComments->contains($l)) { // only add it if the **same** object is not already associated
             $this->doAddComment($l);
@@ -5292,9 +5598,9 @@ abstract class BaseUser extends BaseObject
      * api reasonable.  You can provide public methods for those you
      * actually need in User.
      *
-     * @param      Criteria $criteria optional Criteria object to narrow the query
-     * @param      PropelPDO $con optional connection object
-     * @param      string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
      * @return PropelObjectCollection|Comment[] List of Comment objects
      */
     public function getCommentsJoinReplyToComment($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
@@ -5317,9 +5623,9 @@ abstract class BaseUser extends BaseObject
      * api reasonable.  You can provide public methods for those you
      * actually need in User.
      *
-     * @param      Criteria $criteria optional Criteria object to narrow the query
-     * @param      PropelPDO $con optional connection object
-     * @param      string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
      * @return PropelObjectCollection|Comment[] List of Comment objects
      */
     public function getCommentsJoinContent($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
@@ -5341,7 +5647,18 @@ abstract class BaseUser extends BaseObject
      */
     public function clearReports()
     {
-        $this->collReports = null; // important to set this to NULL since that means it is uninitialized
+        $this->collReports = null; // important to set this to null since that means it is uninitialized
+        $this->collReportsPartial = null;
+    }
+
+    /**
+     * reset is the collReports collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialReports($v = true)
+    {
+        $this->collReportsPartial = $v;
     }
 
     /**
@@ -5351,7 +5668,7 @@ abstract class BaseUser extends BaseObject
      * however, you may wish to override this method in your stub class to provide setting appropriate
      * to your application -- for example, setting the initial array to the values stored in database.
      *
-     * @param      boolean $overrideExisting If set to true, the method call initializes
+     * @param boolean $overrideExisting If set to true, the method call initializes
      *                                        the collection even if it is not empty
      *
      * @return void
@@ -5374,14 +5691,15 @@ abstract class BaseUser extends BaseObject
      * If this User is new, it will return
      * an empty collection or the current collection; the criteria is ignored on a new object.
      *
-     * @param      Criteria $criteria optional Criteria object to narrow the query
-     * @param      PropelPDO $con optional connection object
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
      * @return PropelObjectCollection|Report[] List of Report objects
      * @throws PropelException
      */
     public function getReports($criteria = null, PropelPDO $con = null)
     {
-        if (null === $this->collReports || null !== $criteria) {
+        $partial = $this->collReportsPartial && !$this->isNew();
+        if (null === $this->collReports || null !== $criteria  || $partial) {
             if ($this->isNew() && null === $this->collReports) {
                 // return empty collection
                 $this->initReports();
@@ -5390,9 +5708,31 @@ abstract class BaseUser extends BaseObject
                     ->filterByAuthor($this)
                     ->find($con);
                 if (null !== $criteria) {
+                    if (false !== $this->collReportsPartial && count($collReports)) {
+                      $this->initReports(false);
+
+                      foreach($collReports as $obj) {
+                        if (false == $this->collReports->contains($obj)) {
+                          $this->collReports->append($obj);
+                        }
+                      }
+
+                      $this->collReportsPartial = true;
+                    }
+
                     return $collReports;
                 }
+
+                if($partial && $this->collReports) {
+                    foreach($this->collReports as $obj) {
+                        if($obj->isNew()) {
+                            $collReports[] = $obj;
+                        }
+                    }
+                }
+
                 $this->collReports = $collReports;
+                $this->collReportsPartial = false;
             }
         }
 
@@ -5405,8 +5745,8 @@ abstract class BaseUser extends BaseObject
      * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
      * and new objects from the given Propel collection.
      *
-     * @param      PropelCollection $reports A Propel collection.
-     * @param      PropelPDO $con Optional connection object
+     * @param PropelCollection $reports A Propel collection.
+     * @param PropelPDO $con Optional connection object
      */
     public function setReports(PropelCollection $reports, PropelPDO $con = null)
     {
@@ -5422,23 +5762,28 @@ abstract class BaseUser extends BaseObject
         }
 
         $this->collReports = $reports;
+        $this->collReportsPartial = false;
     }
 
     /**
      * Returns the number of related Report objects.
      *
-     * @param      Criteria $criteria
-     * @param      boolean $distinct
-     * @param      PropelPDO $con
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
      * @return int             Count of related Report objects.
      * @throws PropelException
      */
     public function countReports(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
     {
-        if (null === $this->collReports || null !== $criteria) {
+        $partial = $this->collReportsPartial && !$this->isNew();
+        if (null === $this->collReports || null !== $criteria || $partial) {
             if ($this->isNew() && null === $this->collReports) {
                 return 0;
             } else {
+                if($partial && !$criteria) {
+                    return count($this->getReports());
+                }
                 $query = ReportQuery::create(null, $criteria);
                 if ($distinct) {
                     $query->distinct();
@@ -5458,12 +5803,13 @@ abstract class BaseUser extends BaseObject
      * through the Report foreign key attribute.
      *
      * @param    Report $l Report
-     * @return   User The current object (for fluent API support)
+     * @return User The current object (for fluent API support)
      */
     public function addReport(Report $l)
     {
         if ($this->collReports === null) {
             $this->initReports();
+            $this->collReportsPartial = true;
         }
         if (!$this->collReports->contains($l)) { // only add it if the **same** object is not already associated
             $this->doAddReport($l);
@@ -5509,9 +5855,9 @@ abstract class BaseUser extends BaseObject
      * api reasonable.  You can provide public methods for those you
      * actually need in User.
      *
-     * @param      Criteria $criteria optional Criteria object to narrow the query
-     * @param      PropelPDO $con optional connection object
-     * @param      string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
      * @return PropelObjectCollection|Report[] List of Report objects
      */
     public function getReportsJoinContent($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
@@ -5533,7 +5879,18 @@ abstract class BaseUser extends BaseObject
      */
     public function clearNotes()
     {
-        $this->collNotes = null; // important to set this to NULL since that means it is uninitialized
+        $this->collNotes = null; // important to set this to null since that means it is uninitialized
+        $this->collNotesPartial = null;
+    }
+
+    /**
+     * reset is the collNotes collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialNotes($v = true)
+    {
+        $this->collNotesPartial = $v;
     }
 
     /**
@@ -5543,7 +5900,7 @@ abstract class BaseUser extends BaseObject
      * however, you may wish to override this method in your stub class to provide setting appropriate
      * to your application -- for example, setting the initial array to the values stored in database.
      *
-     * @param      boolean $overrideExisting If set to true, the method call initializes
+     * @param boolean $overrideExisting If set to true, the method call initializes
      *                                        the collection even if it is not empty
      *
      * @return void
@@ -5566,14 +5923,15 @@ abstract class BaseUser extends BaseObject
      * If this User is new, it will return
      * an empty collection or the current collection; the criteria is ignored on a new object.
      *
-     * @param      Criteria $criteria optional Criteria object to narrow the query
-     * @param      PropelPDO $con optional connection object
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
      * @return PropelObjectCollection|Note[] List of Note objects
      * @throws PropelException
      */
     public function getNotes($criteria = null, PropelPDO $con = null)
     {
-        if (null === $this->collNotes || null !== $criteria) {
+        $partial = $this->collNotesPartial && !$this->isNew();
+        if (null === $this->collNotes || null !== $criteria  || $partial) {
             if ($this->isNew() && null === $this->collNotes) {
                 // return empty collection
                 $this->initNotes();
@@ -5582,9 +5940,31 @@ abstract class BaseUser extends BaseObject
                     ->filterByUser($this)
                     ->find($con);
                 if (null !== $criteria) {
+                    if (false !== $this->collNotesPartial && count($collNotes)) {
+                      $this->initNotes(false);
+
+                      foreach($collNotes as $obj) {
+                        if (false == $this->collNotes->contains($obj)) {
+                          $this->collNotes->append($obj);
+                        }
+                      }
+
+                      $this->collNotesPartial = true;
+                    }
+
                     return $collNotes;
                 }
+
+                if($partial && $this->collNotes) {
+                    foreach($this->collNotes as $obj) {
+                        if($obj->isNew()) {
+                            $collNotes[] = $obj;
+                        }
+                    }
+                }
+
                 $this->collNotes = $collNotes;
+                $this->collNotesPartial = false;
             }
         }
 
@@ -5597,8 +5977,8 @@ abstract class BaseUser extends BaseObject
      * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
      * and new objects from the given Propel collection.
      *
-     * @param      PropelCollection $notes A Propel collection.
-     * @param      PropelPDO $con Optional connection object
+     * @param PropelCollection $notes A Propel collection.
+     * @param PropelPDO $con Optional connection object
      */
     public function setNotes(PropelCollection $notes, PropelPDO $con = null)
     {
@@ -5614,23 +5994,28 @@ abstract class BaseUser extends BaseObject
         }
 
         $this->collNotes = $notes;
+        $this->collNotesPartial = false;
     }
 
     /**
      * Returns the number of related Note objects.
      *
-     * @param      Criteria $criteria
-     * @param      boolean $distinct
-     * @param      PropelPDO $con
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
      * @return int             Count of related Note objects.
      * @throws PropelException
      */
     public function countNotes(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
     {
-        if (null === $this->collNotes || null !== $criteria) {
+        $partial = $this->collNotesPartial && !$this->isNew();
+        if (null === $this->collNotes || null !== $criteria || $partial) {
             if ($this->isNew() && null === $this->collNotes) {
                 return 0;
             } else {
+                if($partial && !$criteria) {
+                    return count($this->getNotes());
+                }
                 $query = NoteQuery::create(null, $criteria);
                 if ($distinct) {
                     $query->distinct();
@@ -5650,12 +6035,13 @@ abstract class BaseUser extends BaseObject
      * through the Note foreign key attribute.
      *
      * @param    Note $l Note
-     * @return   User The current object (for fluent API support)
+     * @return User The current object (for fluent API support)
      */
     public function addNote(Note $l)
     {
         if ($this->collNotes === null) {
             $this->initNotes();
+            $this->collNotesPartial = true;
         }
         if (!$this->collNotes->contains($l)) { // only add it if the **same** object is not already associated
             $this->doAddNote($l);
@@ -5701,9 +6087,9 @@ abstract class BaseUser extends BaseObject
      * api reasonable.  You can provide public methods for those you
      * actually need in User.
      *
-     * @param      Criteria $criteria optional Criteria object to narrow the query
-     * @param      PropelPDO $con optional connection object
-     * @param      string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
      * @return PropelObjectCollection|Note[] List of Note objects
      */
     public function getNotesJoinCourse($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
@@ -5725,7 +6111,18 @@ abstract class BaseUser extends BaseObject
      */
     public function clearNewss()
     {
-        $this->collNewss = null; // important to set this to NULL since that means it is uninitialized
+        $this->collNewss = null; // important to set this to null since that means it is uninitialized
+        $this->collNewssPartial = null;
+    }
+
+    /**
+     * reset is the collNewss collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialNewss($v = true)
+    {
+        $this->collNewssPartial = $v;
     }
 
     /**
@@ -5735,7 +6132,7 @@ abstract class BaseUser extends BaseObject
      * however, you may wish to override this method in your stub class to provide setting appropriate
      * to your application -- for example, setting the initial array to the values stored in database.
      *
-     * @param      boolean $overrideExisting If set to true, the method call initializes
+     * @param boolean $overrideExisting If set to true, the method call initializes
      *                                        the collection even if it is not empty
      *
      * @return void
@@ -5758,14 +6155,15 @@ abstract class BaseUser extends BaseObject
      * If this User is new, it will return
      * an empty collection or the current collection; the criteria is ignored on a new object.
      *
-     * @param      Criteria $criteria optional Criteria object to narrow the query
-     * @param      PropelPDO $con optional connection object
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
      * @return PropelObjectCollection|News[] List of News objects
      * @throws PropelException
      */
     public function getNewss($criteria = null, PropelPDO $con = null)
     {
-        if (null === $this->collNewss || null !== $criteria) {
+        $partial = $this->collNewssPartial && !$this->isNew();
+        if (null === $this->collNewss || null !== $criteria  || $partial) {
             if ($this->isNew() && null === $this->collNewss) {
                 // return empty collection
                 $this->initNewss();
@@ -5774,9 +6172,31 @@ abstract class BaseUser extends BaseObject
                     ->filterByAuthor($this)
                     ->find($con);
                 if (null !== $criteria) {
+                    if (false !== $this->collNewssPartial && count($collNewss)) {
+                      $this->initNewss(false);
+
+                      foreach($collNewss as $obj) {
+                        if (false == $this->collNewss->contains($obj)) {
+                          $this->collNewss->append($obj);
+                        }
+                      }
+
+                      $this->collNewssPartial = true;
+                    }
+
                     return $collNewss;
                 }
+
+                if($partial && $this->collNewss) {
+                    foreach($this->collNewss as $obj) {
+                        if($obj->isNew()) {
+                            $collNewss[] = $obj;
+                        }
+                    }
+                }
+
                 $this->collNewss = $collNewss;
+                $this->collNewssPartial = false;
             }
         }
 
@@ -5789,8 +6209,8 @@ abstract class BaseUser extends BaseObject
      * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
      * and new objects from the given Propel collection.
      *
-     * @param      PropelCollection $newss A Propel collection.
-     * @param      PropelPDO $con Optional connection object
+     * @param PropelCollection $newss A Propel collection.
+     * @param PropelPDO $con Optional connection object
      */
     public function setNewss(PropelCollection $newss, PropelPDO $con = null)
     {
@@ -5806,23 +6226,28 @@ abstract class BaseUser extends BaseObject
         }
 
         $this->collNewss = $newss;
+        $this->collNewssPartial = false;
     }
 
     /**
      * Returns the number of related News objects.
      *
-     * @param      Criteria $criteria
-     * @param      boolean $distinct
-     * @param      PropelPDO $con
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
      * @return int             Count of related News objects.
      * @throws PropelException
      */
     public function countNewss(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
     {
-        if (null === $this->collNewss || null !== $criteria) {
+        $partial = $this->collNewssPartial && !$this->isNew();
+        if (null === $this->collNewss || null !== $criteria || $partial) {
             if ($this->isNew() && null === $this->collNewss) {
                 return 0;
             } else {
+                if($partial && !$criteria) {
+                    return count($this->getNewss());
+                }
                 $query = NewsQuery::create(null, $criteria);
                 if ($distinct) {
                     $query->distinct();
@@ -5842,12 +6267,13 @@ abstract class BaseUser extends BaseObject
      * through the News foreign key attribute.
      *
      * @param    News $l News
-     * @return   User The current object (for fluent API support)
+     * @return User The current object (for fluent API support)
      */
     public function addNews(News $l)
     {
         if ($this->collNewss === null) {
             $this->initNewss();
+            $this->collNewssPartial = true;
         }
         if (!$this->collNewss->contains($l)) { // only add it if the **same** object is not already associated
             $this->doAddNews($l);
@@ -5893,9 +6319,9 @@ abstract class BaseUser extends BaseObject
      * api reasonable.  You can provide public methods for those you
      * actually need in User.
      *
-     * @param      Criteria $criteria optional Criteria object to narrow the query
-     * @param      PropelPDO $con optional connection object
-     * @param      string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
      * @return PropelObjectCollection|News[] List of News objects
      */
     public function getNewssJoinCourse($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
@@ -5918,9 +6344,9 @@ abstract class BaseUser extends BaseObject
      * api reasonable.  You can provide public methods for those you
      * actually need in User.
      *
-     * @param      Criteria $criteria optional Criteria object to narrow the query
-     * @param      PropelPDO $con optional connection object
-     * @param      string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
      * @return PropelObjectCollection|News[] List of News objects
      */
     public function getNewssJoinCursus($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
@@ -5942,7 +6368,18 @@ abstract class BaseUser extends BaseObject
      */
     public function clearAds()
     {
-        $this->collAds = null; // important to set this to NULL since that means it is uninitialized
+        $this->collAds = null; // important to set this to null since that means it is uninitialized
+        $this->collAdsPartial = null;
+    }
+
+    /**
+     * reset is the collAds collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialAds($v = true)
+    {
+        $this->collAdsPartial = $v;
     }
 
     /**
@@ -5952,7 +6389,7 @@ abstract class BaseUser extends BaseObject
      * however, you may wish to override this method in your stub class to provide setting appropriate
      * to your application -- for example, setting the initial array to the values stored in database.
      *
-     * @param      boolean $overrideExisting If set to true, the method call initializes
+     * @param boolean $overrideExisting If set to true, the method call initializes
      *                                        the collection even if it is not empty
      *
      * @return void
@@ -5975,14 +6412,15 @@ abstract class BaseUser extends BaseObject
      * If this User is new, it will return
      * an empty collection or the current collection; the criteria is ignored on a new object.
      *
-     * @param      Criteria $criteria optional Criteria object to narrow the query
-     * @param      PropelPDO $con optional connection object
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
      * @return PropelObjectCollection|Ad[] List of Ad objects
      * @throws PropelException
      */
     public function getAds($criteria = null, PropelPDO $con = null)
     {
-        if (null === $this->collAds || null !== $criteria) {
+        $partial = $this->collAdsPartial && !$this->isNew();
+        if (null === $this->collAds || null !== $criteria  || $partial) {
             if ($this->isNew() && null === $this->collAds) {
                 // return empty collection
                 $this->initAds();
@@ -5991,9 +6429,31 @@ abstract class BaseUser extends BaseObject
                     ->filterByAuthor($this)
                     ->find($con);
                 if (null !== $criteria) {
+                    if (false !== $this->collAdsPartial && count($collAds)) {
+                      $this->initAds(false);
+
+                      foreach($collAds as $obj) {
+                        if (false == $this->collAds->contains($obj)) {
+                          $this->collAds->append($obj);
+                        }
+                      }
+
+                      $this->collAdsPartial = true;
+                    }
+
                     return $collAds;
                 }
+
+                if($partial && $this->collAds) {
+                    foreach($this->collAds as $obj) {
+                        if($obj->isNew()) {
+                            $collAds[] = $obj;
+                        }
+                    }
+                }
+
                 $this->collAds = $collAds;
+                $this->collAdsPartial = false;
             }
         }
 
@@ -6006,8 +6466,8 @@ abstract class BaseUser extends BaseObject
      * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
      * and new objects from the given Propel collection.
      *
-     * @param      PropelCollection $ads A Propel collection.
-     * @param      PropelPDO $con Optional connection object
+     * @param PropelCollection $ads A Propel collection.
+     * @param PropelPDO $con Optional connection object
      */
     public function setAds(PropelCollection $ads, PropelPDO $con = null)
     {
@@ -6023,23 +6483,28 @@ abstract class BaseUser extends BaseObject
         }
 
         $this->collAds = $ads;
+        $this->collAdsPartial = false;
     }
 
     /**
      * Returns the number of related Ad objects.
      *
-     * @param      Criteria $criteria
-     * @param      boolean $distinct
-     * @param      PropelPDO $con
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
      * @return int             Count of related Ad objects.
      * @throws PropelException
      */
     public function countAds(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
     {
-        if (null === $this->collAds || null !== $criteria) {
+        $partial = $this->collAdsPartial && !$this->isNew();
+        if (null === $this->collAds || null !== $criteria || $partial) {
             if ($this->isNew() && null === $this->collAds) {
                 return 0;
             } else {
+                if($partial && !$criteria) {
+                    return count($this->getAds());
+                }
                 $query = AdQuery::create(null, $criteria);
                 if ($distinct) {
                     $query->distinct();
@@ -6059,12 +6524,13 @@ abstract class BaseUser extends BaseObject
      * through the Ad foreign key attribute.
      *
      * @param    Ad $l Ad
-     * @return   User The current object (for fluent API support)
+     * @return User The current object (for fluent API support)
      */
     public function addAd(Ad $l)
     {
         if ($this->collAds === null) {
             $this->initAds();
+            $this->collAdsPartial = true;
         }
         if (!$this->collAds->contains($l)) { // only add it if the **same** object is not already associated
             $this->doAddAd($l);
@@ -6109,7 +6575,18 @@ abstract class BaseUser extends BaseObject
      */
     public function clearTransactions()
     {
-        $this->collTransactions = null; // important to set this to NULL since that means it is uninitialized
+        $this->collTransactions = null; // important to set this to null since that means it is uninitialized
+        $this->collTransactionsPartial = null;
+    }
+
+    /**
+     * reset is the collTransactions collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialTransactions($v = true)
+    {
+        $this->collTransactionsPartial = $v;
     }
 
     /**
@@ -6119,7 +6596,7 @@ abstract class BaseUser extends BaseObject
      * however, you may wish to override this method in your stub class to provide setting appropriate
      * to your application -- for example, setting the initial array to the values stored in database.
      *
-     * @param      boolean $overrideExisting If set to true, the method call initializes
+     * @param boolean $overrideExisting If set to true, the method call initializes
      *                                        the collection even if it is not empty
      *
      * @return void
@@ -6142,14 +6619,15 @@ abstract class BaseUser extends BaseObject
      * If this User is new, it will return
      * an empty collection or the current collection; the criteria is ignored on a new object.
      *
-     * @param      Criteria $criteria optional Criteria object to narrow the query
-     * @param      PropelPDO $con optional connection object
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
      * @return PropelObjectCollection|Transaction[] List of Transaction objects
      * @throws PropelException
      */
     public function getTransactions($criteria = null, PropelPDO $con = null)
     {
-        if (null === $this->collTransactions || null !== $criteria) {
+        $partial = $this->collTransactionsPartial && !$this->isNew();
+        if (null === $this->collTransactions || null !== $criteria  || $partial) {
             if ($this->isNew() && null === $this->collTransactions) {
                 // return empty collection
                 $this->initTransactions();
@@ -6158,9 +6636,31 @@ abstract class BaseUser extends BaseObject
                     ->filterByUser($this)
                     ->find($con);
                 if (null !== $criteria) {
+                    if (false !== $this->collTransactionsPartial && count($collTransactions)) {
+                      $this->initTransactions(false);
+
+                      foreach($collTransactions as $obj) {
+                        if (false == $this->collTransactions->contains($obj)) {
+                          $this->collTransactions->append($obj);
+                        }
+                      }
+
+                      $this->collTransactionsPartial = true;
+                    }
+
                     return $collTransactions;
                 }
+
+                if($partial && $this->collTransactions) {
+                    foreach($this->collTransactions as $obj) {
+                        if($obj->isNew()) {
+                            $collTransactions[] = $obj;
+                        }
+                    }
+                }
+
                 $this->collTransactions = $collTransactions;
+                $this->collTransactionsPartial = false;
             }
         }
 
@@ -6173,8 +6673,8 @@ abstract class BaseUser extends BaseObject
      * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
      * and new objects from the given Propel collection.
      *
-     * @param      PropelCollection $transactions A Propel collection.
-     * @param      PropelPDO $con Optional connection object
+     * @param PropelCollection $transactions A Propel collection.
+     * @param PropelPDO $con Optional connection object
      */
     public function setTransactions(PropelCollection $transactions, PropelPDO $con = null)
     {
@@ -6190,23 +6690,28 @@ abstract class BaseUser extends BaseObject
         }
 
         $this->collTransactions = $transactions;
+        $this->collTransactionsPartial = false;
     }
 
     /**
      * Returns the number of related Transaction objects.
      *
-     * @param      Criteria $criteria
-     * @param      boolean $distinct
-     * @param      PropelPDO $con
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
      * @return int             Count of related Transaction objects.
      * @throws PropelException
      */
     public function countTransactions(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
     {
-        if (null === $this->collTransactions || null !== $criteria) {
+        $partial = $this->collTransactionsPartial && !$this->isNew();
+        if (null === $this->collTransactions || null !== $criteria || $partial) {
             if ($this->isNew() && null === $this->collTransactions) {
                 return 0;
             } else {
+                if($partial && !$criteria) {
+                    return count($this->getTransactions());
+                }
                 $query = TransactionQuery::create(null, $criteria);
                 if ($distinct) {
                     $query->distinct();
@@ -6226,12 +6731,13 @@ abstract class BaseUser extends BaseObject
      * through the Transaction foreign key attribute.
      *
      * @param    Transaction $l Transaction
-     * @return   User The current object (for fluent API support)
+     * @return User The current object (for fluent API support)
      */
     public function addTransaction(Transaction $l)
     {
         if ($this->collTransactions === null) {
             $this->initTransactions();
+            $this->collTransactionsPartial = true;
         }
         if (!$this->collTransactions->contains($l)) { // only add it if the **same** object is not already associated
             $this->doAddTransaction($l);
@@ -6276,7 +6782,18 @@ abstract class BaseUser extends BaseObject
      */
     public function clearForumMessages()
     {
-        $this->collForumMessages = null; // important to set this to NULL since that means it is uninitialized
+        $this->collForumMessages = null; // important to set this to null since that means it is uninitialized
+        $this->collForumMessagesPartial = null;
+    }
+
+    /**
+     * reset is the collForumMessages collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialForumMessages($v = true)
+    {
+        $this->collForumMessagesPartial = $v;
     }
 
     /**
@@ -6286,7 +6803,7 @@ abstract class BaseUser extends BaseObject
      * however, you may wish to override this method in your stub class to provide setting appropriate
      * to your application -- for example, setting the initial array to the values stored in database.
      *
-     * @param      boolean $overrideExisting If set to true, the method call initializes
+     * @param boolean $overrideExisting If set to true, the method call initializes
      *                                        the collection even if it is not empty
      *
      * @return void
@@ -6309,14 +6826,15 @@ abstract class BaseUser extends BaseObject
      * If this User is new, it will return
      * an empty collection or the current collection; the criteria is ignored on a new object.
      *
-     * @param      Criteria $criteria optional Criteria object to narrow the query
-     * @param      PropelPDO $con optional connection object
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
      * @return PropelObjectCollection|ForumMessage[] List of ForumMessage objects
      * @throws PropelException
      */
     public function getForumMessages($criteria = null, PropelPDO $con = null)
     {
-        if (null === $this->collForumMessages || null !== $criteria) {
+        $partial = $this->collForumMessagesPartial && !$this->isNew();
+        if (null === $this->collForumMessages || null !== $criteria  || $partial) {
             if ($this->isNew() && null === $this->collForumMessages) {
                 // return empty collection
                 $this->initForumMessages();
@@ -6325,9 +6843,31 @@ abstract class BaseUser extends BaseObject
                     ->filterByAuthor($this)
                     ->find($con);
                 if (null !== $criteria) {
+                    if (false !== $this->collForumMessagesPartial && count($collForumMessages)) {
+                      $this->initForumMessages(false);
+
+                      foreach($collForumMessages as $obj) {
+                        if (false == $this->collForumMessages->contains($obj)) {
+                          $this->collForumMessages->append($obj);
+                        }
+                      }
+
+                      $this->collForumMessagesPartial = true;
+                    }
+
                     return $collForumMessages;
                 }
+
+                if($partial && $this->collForumMessages) {
+                    foreach($this->collForumMessages as $obj) {
+                        if($obj->isNew()) {
+                            $collForumMessages[] = $obj;
+                        }
+                    }
+                }
+
                 $this->collForumMessages = $collForumMessages;
+                $this->collForumMessagesPartial = false;
             }
         }
 
@@ -6340,8 +6880,8 @@ abstract class BaseUser extends BaseObject
      * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
      * and new objects from the given Propel collection.
      *
-     * @param      PropelCollection $forumMessages A Propel collection.
-     * @param      PropelPDO $con Optional connection object
+     * @param PropelCollection $forumMessages A Propel collection.
+     * @param PropelPDO $con Optional connection object
      */
     public function setForumMessages(PropelCollection $forumMessages, PropelPDO $con = null)
     {
@@ -6357,23 +6897,28 @@ abstract class BaseUser extends BaseObject
         }
 
         $this->collForumMessages = $forumMessages;
+        $this->collForumMessagesPartial = false;
     }
 
     /**
      * Returns the number of related ForumMessage objects.
      *
-     * @param      Criteria $criteria
-     * @param      boolean $distinct
-     * @param      PropelPDO $con
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
      * @return int             Count of related ForumMessage objects.
      * @throws PropelException
      */
     public function countForumMessages(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
     {
-        if (null === $this->collForumMessages || null !== $criteria) {
+        $partial = $this->collForumMessagesPartial && !$this->isNew();
+        if (null === $this->collForumMessages || null !== $criteria || $partial) {
             if ($this->isNew() && null === $this->collForumMessages) {
                 return 0;
             } else {
+                if($partial && !$criteria) {
+                    return count($this->getForumMessages());
+                }
                 $query = ForumMessageQuery::create(null, $criteria);
                 if ($distinct) {
                     $query->distinct();
@@ -6393,12 +6938,13 @@ abstract class BaseUser extends BaseObject
      * through the ForumMessage foreign key attribute.
      *
      * @param    ForumMessage $l ForumMessage
-     * @return   User The current object (for fluent API support)
+     * @return User The current object (for fluent API support)
      */
     public function addForumMessage(ForumMessage $l)
     {
         if ($this->collForumMessages === null) {
             $this->initForumMessages();
+            $this->collForumMessagesPartial = true;
         }
         if (!$this->collForumMessages->contains($l)) { // only add it if the **same** object is not already associated
             $this->doAddForumMessage($l);
@@ -6444,9 +6990,9 @@ abstract class BaseUser extends BaseObject
      * api reasonable.  You can provide public methods for those you
      * actually need in User.
      *
-     * @param      Criteria $criteria optional Criteria object to narrow the query
-     * @param      PropelPDO $con optional connection object
-     * @param      string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
      * @return PropelObjectCollection|ForumMessage[] List of ForumMessage objects
      */
     public function getForumMessagesJoinTopic($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
@@ -6468,7 +7014,18 @@ abstract class BaseUser extends BaseObject
      */
     public function clearScheduledCourses()
     {
-        $this->collScheduledCourses = null; // important to set this to NULL since that means it is uninitialized
+        $this->collScheduledCourses = null; // important to set this to null since that means it is uninitialized
+        $this->collScheduledCoursesPartial = null;
+    }
+
+    /**
+     * reset is the collScheduledCourses collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialScheduledCourses($v = true)
+    {
+        $this->collScheduledCoursesPartial = $v;
     }
 
     /**
@@ -6478,7 +7035,7 @@ abstract class BaseUser extends BaseObject
      * however, you may wish to override this method in your stub class to provide setting appropriate
      * to your application -- for example, setting the initial array to the values stored in database.
      *
-     * @param      boolean $overrideExisting If set to true, the method call initializes
+     * @param boolean $overrideExisting If set to true, the method call initializes
      *                                        the collection even if it is not empty
      *
      * @return void
@@ -6501,14 +7058,15 @@ abstract class BaseUser extends BaseObject
      * If this User is new, it will return
      * an empty collection or the current collection; the criteria is ignored on a new object.
      *
-     * @param      Criteria $criteria optional Criteria object to narrow the query
-     * @param      PropelPDO $con optional connection object
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
      * @return PropelObjectCollection|ScheduledCourse[] List of ScheduledCourse objects
      * @throws PropelException
      */
     public function getScheduledCourses($criteria = null, PropelPDO $con = null)
     {
-        if (null === $this->collScheduledCourses || null !== $criteria) {
+        $partial = $this->collScheduledCoursesPartial && !$this->isNew();
+        if (null === $this->collScheduledCourses || null !== $criteria  || $partial) {
             if ($this->isNew() && null === $this->collScheduledCourses) {
                 // return empty collection
                 $this->initScheduledCourses();
@@ -6517,9 +7075,31 @@ abstract class BaseUser extends BaseObject
                     ->filterByTeacher($this)
                     ->find($con);
                 if (null !== $criteria) {
+                    if (false !== $this->collScheduledCoursesPartial && count($collScheduledCourses)) {
+                      $this->initScheduledCourses(false);
+
+                      foreach($collScheduledCourses as $obj) {
+                        if (false == $this->collScheduledCourses->contains($obj)) {
+                          $this->collScheduledCourses->append($obj);
+                        }
+                      }
+
+                      $this->collScheduledCoursesPartial = true;
+                    }
+
                     return $collScheduledCourses;
                 }
+
+                if($partial && $this->collScheduledCourses) {
+                    foreach($this->collScheduledCourses as $obj) {
+                        if($obj->isNew()) {
+                            $collScheduledCourses[] = $obj;
+                        }
+                    }
+                }
+
                 $this->collScheduledCourses = $collScheduledCourses;
+                $this->collScheduledCoursesPartial = false;
             }
         }
 
@@ -6532,8 +7112,8 @@ abstract class BaseUser extends BaseObject
      * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
      * and new objects from the given Propel collection.
      *
-     * @param      PropelCollection $scheduledCourses A Propel collection.
-     * @param      PropelPDO $con Optional connection object
+     * @param PropelCollection $scheduledCourses A Propel collection.
+     * @param PropelPDO $con Optional connection object
      */
     public function setScheduledCourses(PropelCollection $scheduledCourses, PropelPDO $con = null)
     {
@@ -6549,23 +7129,28 @@ abstract class BaseUser extends BaseObject
         }
 
         $this->collScheduledCourses = $scheduledCourses;
+        $this->collScheduledCoursesPartial = false;
     }
 
     /**
      * Returns the number of related ScheduledCourse objects.
      *
-     * @param      Criteria $criteria
-     * @param      boolean $distinct
-     * @param      PropelPDO $con
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
      * @return int             Count of related ScheduledCourse objects.
      * @throws PropelException
      */
     public function countScheduledCourses(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
     {
-        if (null === $this->collScheduledCourses || null !== $criteria) {
+        $partial = $this->collScheduledCoursesPartial && !$this->isNew();
+        if (null === $this->collScheduledCourses || null !== $criteria || $partial) {
             if ($this->isNew() && null === $this->collScheduledCourses) {
                 return 0;
             } else {
+                if($partial && !$criteria) {
+                    return count($this->getScheduledCourses());
+                }
                 $query = ScheduledCourseQuery::create(null, $criteria);
                 if ($distinct) {
                     $query->distinct();
@@ -6585,12 +7170,13 @@ abstract class BaseUser extends BaseObject
      * through the ScheduledCourse foreign key attribute.
      *
      * @param    ScheduledCourse $l ScheduledCourse
-     * @return   User The current object (for fluent API support)
+     * @return User The current object (for fluent API support)
      */
     public function addScheduledCourse(ScheduledCourse $l)
     {
         if ($this->collScheduledCourses === null) {
             $this->initScheduledCourses();
+            $this->collScheduledCoursesPartial = true;
         }
         if (!$this->collScheduledCourses->contains($l)) { // only add it if the **same** object is not already associated
             $this->doAddScheduledCourse($l);
@@ -6636,9 +7222,9 @@ abstract class BaseUser extends BaseObject
      * api reasonable.  You can provide public methods for those you
      * actually need in User.
      *
-     * @param      Criteria $criteria optional Criteria object to narrow the query
-     * @param      PropelPDO $con optional connection object
-     * @param      string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
      * @return PropelObjectCollection|ScheduledCourse[] List of ScheduledCourse objects
      */
     public function getScheduledCoursesJoinCourse($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
@@ -6660,7 +7246,18 @@ abstract class BaseUser extends BaseObject
      */
     public function clearTokens()
     {
-        $this->collTokens = null; // important to set this to NULL since that means it is uninitialized
+        $this->collTokens = null; // important to set this to null since that means it is uninitialized
+        $this->collTokensPartial = null;
+    }
+
+    /**
+     * reset is the collTokens collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialTokens($v = true)
+    {
+        $this->collTokensPartial = $v;
     }
 
     /**
@@ -6670,7 +7267,7 @@ abstract class BaseUser extends BaseObject
      * however, you may wish to override this method in your stub class to provide setting appropriate
      * to your application -- for example, setting the initial array to the values stored in database.
      *
-     * @param      boolean $overrideExisting If set to true, the method call initializes
+     * @param boolean $overrideExisting If set to true, the method call initializes
      *                                        the collection even if it is not empty
      *
      * @return void
@@ -6693,14 +7290,15 @@ abstract class BaseUser extends BaseObject
      * If this User is new, it will return
      * an empty collection or the current collection; the criteria is ignored on a new object.
      *
-     * @param      Criteria $criteria optional Criteria object to narrow the query
-     * @param      PropelPDO $con optional connection object
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
      * @return PropelObjectCollection|Token[] List of Token objects
      * @throws PropelException
      */
     public function getTokens($criteria = null, PropelPDO $con = null)
     {
-        if (null === $this->collTokens || null !== $criteria) {
+        $partial = $this->collTokensPartial && !$this->isNew();
+        if (null === $this->collTokens || null !== $criteria  || $partial) {
             if ($this->isNew() && null === $this->collTokens) {
                 // return empty collection
                 $this->initTokens();
@@ -6709,9 +7307,31 @@ abstract class BaseUser extends BaseObject
                     ->filterByUser($this)
                     ->find($con);
                 if (null !== $criteria) {
+                    if (false !== $this->collTokensPartial && count($collTokens)) {
+                      $this->initTokens(false);
+
+                      foreach($collTokens as $obj) {
+                        if (false == $this->collTokens->contains($obj)) {
+                          $this->collTokens->append($obj);
+                        }
+                      }
+
+                      $this->collTokensPartial = true;
+                    }
+
                     return $collTokens;
                 }
+
+                if($partial && $this->collTokens) {
+                    foreach($this->collTokens as $obj) {
+                        if($obj->isNew()) {
+                            $collTokens[] = $obj;
+                        }
+                    }
+                }
+
                 $this->collTokens = $collTokens;
+                $this->collTokensPartial = false;
             }
         }
 
@@ -6724,8 +7344,8 @@ abstract class BaseUser extends BaseObject
      * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
      * and new objects from the given Propel collection.
      *
-     * @param      PropelCollection $tokens A Propel collection.
-     * @param      PropelPDO $con Optional connection object
+     * @param PropelCollection $tokens A Propel collection.
+     * @param PropelPDO $con Optional connection object
      */
     public function setTokens(PropelCollection $tokens, PropelPDO $con = null)
     {
@@ -6741,23 +7361,28 @@ abstract class BaseUser extends BaseObject
         }
 
         $this->collTokens = $tokens;
+        $this->collTokensPartial = false;
     }
 
     /**
      * Returns the number of related Token objects.
      *
-     * @param      Criteria $criteria
-     * @param      boolean $distinct
-     * @param      PropelPDO $con
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
      * @return int             Count of related Token objects.
      * @throws PropelException
      */
     public function countTokens(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
     {
-        if (null === $this->collTokens || null !== $criteria) {
+        $partial = $this->collTokensPartial && !$this->isNew();
+        if (null === $this->collTokens || null !== $criteria || $partial) {
             if ($this->isNew() && null === $this->collTokens) {
                 return 0;
             } else {
+                if($partial && !$criteria) {
+                    return count($this->getTokens());
+                }
                 $query = TokenQuery::create(null, $criteria);
                 if ($distinct) {
                     $query->distinct();
@@ -6777,12 +7402,13 @@ abstract class BaseUser extends BaseObject
      * through the Token foreign key attribute.
      *
      * @param    Token $l Token
-     * @return   User The current object (for fluent API support)
+     * @return User The current object (for fluent API support)
      */
     public function addToken(Token $l)
     {
         if ($this->collTokens === null) {
             $this->initTokens();
+            $this->collTokensPartial = true;
         }
         if (!$this->collTokens->contains($l)) { // only add it if the **same** object is not already associated
             $this->doAddToken($l);
@@ -6827,7 +7453,8 @@ abstract class BaseUser extends BaseObject
      */
     public function clearEducationalPaths()
     {
-        $this->collEducationalPaths = null; // important to set this to NULL since that means it is uninitialized
+        $this->collEducationalPaths = null; // important to set this to null since that means it is uninitialized
+        $this->collEducationalPathsPartial = null;
     }
 
     /**
@@ -6855,8 +7482,8 @@ abstract class BaseUser extends BaseObject
      * If this User is new, it will return
      * an empty collection or the current collection; the criteria is ignored on a new object.
      *
-     * @param      Criteria $criteria Optional query object to filter the query
-     * @param      PropelPDO $con Optional connection object
+     * @param Criteria $criteria Optional query object to filter the query
+     * @param PropelPDO $con Optional connection object
      *
      * @return PropelObjectCollection|EducationalPath[] List of EducationalPath objects
      */
@@ -6886,8 +7513,8 @@ abstract class BaseUser extends BaseObject
      * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
      * and new objects from the given Propel collection.
      *
-     * @param      PropelCollection $educationalPaths A Propel collection.
-     * @param      PropelPDO $con Optional connection object
+     * @param PropelCollection $educationalPaths A Propel collection.
+     * @param PropelPDO $con Optional connection object
      */
     public function setEducationalPaths(PropelCollection $educationalPaths, PropelPDO $con = null)
     {
@@ -6909,9 +7536,9 @@ abstract class BaseUser extends BaseObject
      * Gets the number of EducationalPath objects related by a many-to-many relationship
      * to the current object by way of the users_paths cross-reference table.
      *
-     * @param      Criteria $criteria Optional query object to filter the query
-     * @param      boolean $distinct Set to true to force count distinct
-     * @param      PropelPDO $con Optional connection object
+     * @param Criteria $criteria Optional query object to filter the query
+     * @param boolean $distinct Set to true to force count distinct
+     * @param PropelPDO $con Optional connection object
      *
      * @return int the number of related EducationalPath objects
      */
@@ -6968,7 +7595,7 @@ abstract class BaseUser extends BaseObject
      * Remove a EducationalPath object to this object
      * through the users_paths cross reference table.
      *
-     * @param      EducationalPath $educationalPath The UsersPaths object to relate
+     * @param EducationalPath $educationalPath The UsersPaths object to relate
      * @return void
      */
     public function removeEducationalPath(EducationalPath $educationalPath)
@@ -6994,7 +7621,8 @@ abstract class BaseUser extends BaseObject
      */
     public function clearNewsletters()
     {
-        $this->collNewsletters = null; // important to set this to NULL since that means it is uninitialized
+        $this->collNewsletters = null; // important to set this to null since that means it is uninitialized
+        $this->collNewslettersPartial = null;
     }
 
     /**
@@ -7022,8 +7650,8 @@ abstract class BaseUser extends BaseObject
      * If this User is new, it will return
      * an empty collection or the current collection; the criteria is ignored on a new object.
      *
-     * @param      Criteria $criteria Optional query object to filter the query
-     * @param      PropelPDO $con Optional connection object
+     * @param Criteria $criteria Optional query object to filter the query
+     * @param PropelPDO $con Optional connection object
      *
      * @return PropelObjectCollection|Newsletter[] List of Newsletter objects
      */
@@ -7053,8 +7681,8 @@ abstract class BaseUser extends BaseObject
      * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
      * and new objects from the given Propel collection.
      *
-     * @param      PropelCollection $newsletters A Propel collection.
-     * @param      PropelPDO $con Optional connection object
+     * @param PropelCollection $newsletters A Propel collection.
+     * @param PropelPDO $con Optional connection object
      */
     public function setNewsletters(PropelCollection $newsletters, PropelPDO $con = null)
     {
@@ -7076,9 +7704,9 @@ abstract class BaseUser extends BaseObject
      * Gets the number of Newsletter objects related by a many-to-many relationship
      * to the current object by way of the newsletters_subscribers cross-reference table.
      *
-     * @param      Criteria $criteria Optional query object to filter the query
-     * @param      boolean $distinct Set to true to force count distinct
-     * @param      PropelPDO $con Optional connection object
+     * @param Criteria $criteria Optional query object to filter the query
+     * @param boolean $distinct Set to true to force count distinct
+     * @param PropelPDO $con Optional connection object
      *
      * @return int the number of related Newsletter objects
      */
@@ -7135,7 +7763,7 @@ abstract class BaseUser extends BaseObject
      * Remove a Newsletter object to this object
      * through the newsletters_subscribers cross reference table.
      *
-     * @param      Newsletter $newsletter The NewslettersSubscribers object to relate
+     * @param Newsletter $newsletter The NewslettersSubscribers object to relate
      * @return void
      */
     public function removeNewsletter(Newsletter $newsletter)
@@ -7203,7 +7831,7 @@ abstract class BaseUser extends BaseObject
      * objects with circular references (even in PHP 5.3). This is currently necessary
      * when using Propel in certain daemon or large-volumne/high-memory operations.
      *
-     * @param      boolean $deep Whether to also clear the references on all referrer objects.
+     * @param boolean $deep Whether to also clear the references on all referrer objects.
      */
     public function clearAllReferences($deep = false)
     {
@@ -7376,7 +8004,7 @@ abstract class BaseUser extends BaseObject
     }
 
     /**
-     * Return the string representation of this object
+     * return the string representation of this object
      *
      * @return string
      */
@@ -7385,4 +8013,14 @@ abstract class BaseUser extends BaseObject
         return (string) $this->exportTo(UserPeer::DEFAULT_STRING_FORMAT);
     }
 
-} // BaseUser
+    /**
+     * return true is the object is in saving state
+     *
+     * @return boolean
+     */
+    public function isAlreadyInSave()
+    {
+        return $this->alreadyInSave;
+    }
+
+}

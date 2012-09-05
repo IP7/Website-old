@@ -4,52 +4,51 @@
 /**
  * Base class that represents a query for the 'forum_categories' table.
  *
- * 
  *
- * @method     ForumCategoryQuery orderById($order = Criteria::ASC) Order by the id column
- * @method     ForumCategoryQuery orderByName($order = Criteria::ASC) Order by the name column
- * @method     ForumCategoryQuery orderByParentId($order = Criteria::ASC) Order by the parent_id column
- * @method     ForumCategoryQuery orderByAccessRights($order = Criteria::ASC) Order by the access_rights column
  *
- * @method     ForumCategoryQuery groupById() Group by the id column
- * @method     ForumCategoryQuery groupByName() Group by the name column
- * @method     ForumCategoryQuery groupByParentId() Group by the parent_id column
- * @method     ForumCategoryQuery groupByAccessRights() Group by the access_rights column
+ * @method ForumCategoryQuery orderById($order = Criteria::ASC) Order by the id column
+ * @method ForumCategoryQuery orderByName($order = Criteria::ASC) Order by the name column
+ * @method ForumCategoryQuery orderByParentId($order = Criteria::ASC) Order by the parent_id column
+ * @method ForumCategoryQuery orderByAccessRights($order = Criteria::ASC) Order by the access_rights column
  *
- * @method     ForumCategoryQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
- * @method     ForumCategoryQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
- * @method     ForumCategoryQuery innerJoin($relation) Adds a INNER JOIN clause to the query
+ * @method ForumCategoryQuery groupById() Group by the id column
+ * @method ForumCategoryQuery groupByName() Group by the name column
+ * @method ForumCategoryQuery groupByParentId() Group by the parent_id column
+ * @method ForumCategoryQuery groupByAccessRights() Group by the access_rights column
  *
- * @method     ForumCategoryQuery leftJoinParentCategory($relationAlias = null) Adds a LEFT JOIN clause to the query using the ParentCategory relation
- * @method     ForumCategoryQuery rightJoinParentCategory($relationAlias = null) Adds a RIGHT JOIN clause to the query using the ParentCategory relation
- * @method     ForumCategoryQuery innerJoinParentCategory($relationAlias = null) Adds a INNER JOIN clause to the query using the ParentCategory relation
+ * @method ForumCategoryQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
+ * @method ForumCategoryQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
+ * @method ForumCategoryQuery innerJoin($relation) Adds a INNER JOIN clause to the query
  *
- * @method     ForumCategoryQuery leftJoinForumCategoryRelatedById($relationAlias = null) Adds a LEFT JOIN clause to the query using the ForumCategoryRelatedById relation
- * @method     ForumCategoryQuery rightJoinForumCategoryRelatedById($relationAlias = null) Adds a RIGHT JOIN clause to the query using the ForumCategoryRelatedById relation
- * @method     ForumCategoryQuery innerJoinForumCategoryRelatedById($relationAlias = null) Adds a INNER JOIN clause to the query using the ForumCategoryRelatedById relation
+ * @method ForumCategoryQuery leftJoinParentCategory($relationAlias = null) Adds a LEFT JOIN clause to the query using the ParentCategory relation
+ * @method ForumCategoryQuery rightJoinParentCategory($relationAlias = null) Adds a RIGHT JOIN clause to the query using the ParentCategory relation
+ * @method ForumCategoryQuery innerJoinParentCategory($relationAlias = null) Adds a INNER JOIN clause to the query using the ParentCategory relation
  *
- * @method     ForumCategoryQuery leftJoinForumTopic($relationAlias = null) Adds a LEFT JOIN clause to the query using the ForumTopic relation
- * @method     ForumCategoryQuery rightJoinForumTopic($relationAlias = null) Adds a RIGHT JOIN clause to the query using the ForumTopic relation
- * @method     ForumCategoryQuery innerJoinForumTopic($relationAlias = null) Adds a INNER JOIN clause to the query using the ForumTopic relation
+ * @method ForumCategoryQuery leftJoinForumCategoryRelatedById($relationAlias = null) Adds a LEFT JOIN clause to the query using the ForumCategoryRelatedById relation
+ * @method ForumCategoryQuery rightJoinForumCategoryRelatedById($relationAlias = null) Adds a RIGHT JOIN clause to the query using the ForumCategoryRelatedById relation
+ * @method ForumCategoryQuery innerJoinForumCategoryRelatedById($relationAlias = null) Adds a INNER JOIN clause to the query using the ForumCategoryRelatedById relation
  *
- * @method     ForumCategory findOne(PropelPDO $con = null) Return the first ForumCategory matching the query
- * @method     ForumCategory findOneOrCreate(PropelPDO $con = null) Return the first ForumCategory matching the query, or a new ForumCategory object populated from the query conditions when no match is found
+ * @method ForumCategoryQuery leftJoinForumTopic($relationAlias = null) Adds a LEFT JOIN clause to the query using the ForumTopic relation
+ * @method ForumCategoryQuery rightJoinForumTopic($relationAlias = null) Adds a RIGHT JOIN clause to the query using the ForumTopic relation
+ * @method ForumCategoryQuery innerJoinForumTopic($relationAlias = null) Adds a INNER JOIN clause to the query using the ForumTopic relation
  *
- * @method     ForumCategory findOneById(int $id) Return the first ForumCategory filtered by the id column
- * @method     ForumCategory findOneByName(string $name) Return the first ForumCategory filtered by the name column
- * @method     ForumCategory findOneByParentId(int $parent_id) Return the first ForumCategory filtered by the parent_id column
- * @method     ForumCategory findOneByAccessRights(int $access_rights) Return the first ForumCategory filtered by the access_rights column
+ * @method ForumCategory findOne(PropelPDO $con = null) Return the first ForumCategory matching the query
+ * @method ForumCategory findOneOrCreate(PropelPDO $con = null) Return the first ForumCategory matching the query, or a new ForumCategory object populated from the query conditions when no match is found
  *
- * @method     array findById(int $id) Return ForumCategory objects filtered by the id column
- * @method     array findByName(string $name) Return ForumCategory objects filtered by the name column
- * @method     array findByParentId(int $parent_id) Return ForumCategory objects filtered by the parent_id column
- * @method     array findByAccessRights(int $access_rights) Return ForumCategory objects filtered by the access_rights column
+ * @method ForumCategory findOneById(int $id) Return the first ForumCategory filtered by the id column
+ * @method ForumCategory findOneByName(string $name) Return the first ForumCategory filtered by the name column
+ * @method ForumCategory findOneByParentId(int $parent_id) Return the first ForumCategory filtered by the parent_id column
+ * @method ForumCategory findOneByAccessRights(int $access_rights) Return the first ForumCategory filtered by the access_rights column
+ *
+ * @method array findById(int $id) Return ForumCategory objects filtered by the id column
+ * @method array findByName(string $name) Return ForumCategory objects filtered by the name column
+ * @method array findByParentId(int $parent_id) Return ForumCategory objects filtered by the parent_id column
+ * @method array findByAccessRights(int $access_rights) Return ForumCategory objects filtered by the access_rights column
  *
  * @package    propel.generator.ip7website.om
  */
 abstract class BaseForumCategoryQuery extends ModelCriteria
 {
-    
     /**
      * Initializes internal state of BaseForumCategoryQuery object.
      *
@@ -95,7 +94,7 @@ abstract class BaseForumCategoryQuery extends ModelCriteria
      * $obj  = $c->findPk(12, $con);
      * </code>
      *
-     * @param mixed $key Primary key to use for the query 
+     * @param mixed $key Primary key to use for the query
      * @param     PropelPDO $con an optional connection object
      *
      * @return   ForumCategory|ForumCategory[]|mixed the result, formatted by the current formatter
@@ -137,7 +136,7 @@ abstract class BaseForumCategoryQuery extends ModelCriteria
         $sql = 'SELECT `ID`, `NAME`, `PARENT_ID`, `ACCESS_RIGHTS` FROM `forum_categories` WHERE `ID` = :p0';
         try {
             $stmt = $con->prepare($sql);
-			$stmt->bindValue(':p0', $key, PDO::PARAM_INT);
+            $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
             $stmt->execute();
         } catch (Exception $e) {
             Propel::log($e->getMessage(), Propel::LOG_ERR);
@@ -603,4 +602,4 @@ abstract class BaseForumCategoryQuery extends ModelCriteria
         return $this;
     }
 
-} // BaseForumCategoryQuery
+}

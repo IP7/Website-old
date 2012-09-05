@@ -4,40 +4,39 @@
 /**
  * Base class that represents a query for the 'ads_tags' table.
  *
- * 
  *
- * @method     AdsTagsQuery orderByTagId($order = Criteria::ASC) Order by the tag_id column
- * @method     AdsTagsQuery orderByAdId($order = Criteria::ASC) Order by the ad_id column
  *
- * @method     AdsTagsQuery groupByTagId() Group by the tag_id column
- * @method     AdsTagsQuery groupByAdId() Group by the ad_id column
+ * @method AdsTagsQuery orderByTagId($order = Criteria::ASC) Order by the tag_id column
+ * @method AdsTagsQuery orderByAdId($order = Criteria::ASC) Order by the ad_id column
  *
- * @method     AdsTagsQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
- * @method     AdsTagsQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
- * @method     AdsTagsQuery innerJoin($relation) Adds a INNER JOIN clause to the query
+ * @method AdsTagsQuery groupByTagId() Group by the tag_id column
+ * @method AdsTagsQuery groupByAdId() Group by the ad_id column
  *
- * @method     AdsTagsQuery leftJoinTag($relationAlias = null) Adds a LEFT JOIN clause to the query using the Tag relation
- * @method     AdsTagsQuery rightJoinTag($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Tag relation
- * @method     AdsTagsQuery innerJoinTag($relationAlias = null) Adds a INNER JOIN clause to the query using the Tag relation
+ * @method AdsTagsQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
+ * @method AdsTagsQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
+ * @method AdsTagsQuery innerJoin($relation) Adds a INNER JOIN clause to the query
  *
- * @method     AdsTagsQuery leftJoinAd($relationAlias = null) Adds a LEFT JOIN clause to the query using the Ad relation
- * @method     AdsTagsQuery rightJoinAd($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Ad relation
- * @method     AdsTagsQuery innerJoinAd($relationAlias = null) Adds a INNER JOIN clause to the query using the Ad relation
+ * @method AdsTagsQuery leftJoinTag($relationAlias = null) Adds a LEFT JOIN clause to the query using the Tag relation
+ * @method AdsTagsQuery rightJoinTag($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Tag relation
+ * @method AdsTagsQuery innerJoinTag($relationAlias = null) Adds a INNER JOIN clause to the query using the Tag relation
  *
- * @method     AdsTags findOne(PropelPDO $con = null) Return the first AdsTags matching the query
- * @method     AdsTags findOneOrCreate(PropelPDO $con = null) Return the first AdsTags matching the query, or a new AdsTags object populated from the query conditions when no match is found
+ * @method AdsTagsQuery leftJoinAd($relationAlias = null) Adds a LEFT JOIN clause to the query using the Ad relation
+ * @method AdsTagsQuery rightJoinAd($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Ad relation
+ * @method AdsTagsQuery innerJoinAd($relationAlias = null) Adds a INNER JOIN clause to the query using the Ad relation
  *
- * @method     AdsTags findOneByTagId(int $tag_id) Return the first AdsTags filtered by the tag_id column
- * @method     AdsTags findOneByAdId(int $ad_id) Return the first AdsTags filtered by the ad_id column
+ * @method AdsTags findOne(PropelPDO $con = null) Return the first AdsTags matching the query
+ * @method AdsTags findOneOrCreate(PropelPDO $con = null) Return the first AdsTags matching the query, or a new AdsTags object populated from the query conditions when no match is found
  *
- * @method     array findByTagId(int $tag_id) Return AdsTags objects filtered by the tag_id column
- * @method     array findByAdId(int $ad_id) Return AdsTags objects filtered by the ad_id column
+ * @method AdsTags findOneByTagId(int $tag_id) Return the first AdsTags filtered by the tag_id column
+ * @method AdsTags findOneByAdId(int $ad_id) Return the first AdsTags filtered by the ad_id column
+ *
+ * @method array findByTagId(int $tag_id) Return AdsTags objects filtered by the tag_id column
+ * @method array findByAdId(int $ad_id) Return AdsTags objects filtered by the ad_id column
  *
  * @package    propel.generator.ip7website.om
  */
 abstract class BaseAdsTagsQuery extends ModelCriteria
 {
-    
     /**
      * Initializes internal state of BaseAdsTagsQuery object.
      *
@@ -83,7 +82,7 @@ abstract class BaseAdsTagsQuery extends ModelCriteria
      * $obj = $c->findPk(array(12, 34), $con);
      * </code>
      *
-     * @param array $key Primary key to use for the query 
+     * @param array $key Primary key to use for the query
                          A Primary key composition: [$tag_id, $ad_id]
      * @param     PropelPDO $con an optional connection object
      *
@@ -126,8 +125,8 @@ abstract class BaseAdsTagsQuery extends ModelCriteria
         $sql = 'SELECT `TAG_ID`, `AD_ID` FROM `ads_tags` WHERE `TAG_ID` = :p0 AND `AD_ID` = :p1';
         try {
             $stmt = $con->prepare($sql);
-			$stmt->bindValue(':p0', $key[0], PDO::PARAM_INT);
-			$stmt->bindValue(':p1', $key[1], PDO::PARAM_INT);
+            $stmt->bindValue(':p0', $key[0], PDO::PARAM_INT);
+            $stmt->bindValue(':p1', $key[1], PDO::PARAM_INT);
             $stmt->execute();
         } catch (Exception $e) {
             Propel::log($e->getMessage(), Propel::LOG_ERR);
@@ -452,4 +451,4 @@ abstract class BaseAdsTagsQuery extends ModelCriteria
         return $this;
     }
 
-} // BaseAdsTagsQuery
+}

@@ -4,40 +4,47 @@
 /**
  * Base class that represents a query for the 'content_types' table.
  *
- * 
  *
- * @method     ContentTypeQuery orderById($order = Criteria::ASC) Order by the id column
- * @method     ContentTypeQuery orderByName($order = Criteria::ASC) Order by the name column
  *
- * @method     ContentTypeQuery groupById() Group by the id column
- * @method     ContentTypeQuery groupByName() Group by the name column
+ * @method ContentTypeQuery orderById($order = Criteria::ASC) Order by the id column
+ * @method ContentTypeQuery orderByName($order = Criteria::ASC) Order by the name column
+ * @method ContentTypeQuery orderByShortName($order = Criteria::ASC) Order by the short_name column
+ * @method ContentTypeQuery orderByRights($order = Criteria::ASC) Order by the rights column
  *
- * @method     ContentTypeQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
- * @method     ContentTypeQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
- * @method     ContentTypeQuery innerJoin($relation) Adds a INNER JOIN clause to the query
+ * @method ContentTypeQuery groupById() Group by the id column
+ * @method ContentTypeQuery groupByName() Group by the name column
+ * @method ContentTypeQuery groupByShortName() Group by the short_name column
+ * @method ContentTypeQuery groupByRights() Group by the rights column
  *
- * @method     ContentTypeQuery leftJoinAlert($relationAlias = null) Adds a LEFT JOIN clause to the query using the Alert relation
- * @method     ContentTypeQuery rightJoinAlert($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Alert relation
- * @method     ContentTypeQuery innerJoinAlert($relationAlias = null) Adds a INNER JOIN clause to the query using the Alert relation
+ * @method ContentTypeQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
+ * @method ContentTypeQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
+ * @method ContentTypeQuery innerJoin($relation) Adds a INNER JOIN clause to the query
  *
- * @method     ContentTypeQuery leftJoinContent($relationAlias = null) Adds a LEFT JOIN clause to the query using the Content relation
- * @method     ContentTypeQuery rightJoinContent($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Content relation
- * @method     ContentTypeQuery innerJoinContent($relationAlias = null) Adds a INNER JOIN clause to the query using the Content relation
+ * @method ContentTypeQuery leftJoinAlert($relationAlias = null) Adds a LEFT JOIN clause to the query using the Alert relation
+ * @method ContentTypeQuery rightJoinAlert($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Alert relation
+ * @method ContentTypeQuery innerJoinAlert($relationAlias = null) Adds a INNER JOIN clause to the query using the Alert relation
  *
- * @method     ContentType findOne(PropelPDO $con = null) Return the first ContentType matching the query
- * @method     ContentType findOneOrCreate(PropelPDO $con = null) Return the first ContentType matching the query, or a new ContentType object populated from the query conditions when no match is found
+ * @method ContentTypeQuery leftJoinContent($relationAlias = null) Adds a LEFT JOIN clause to the query using the Content relation
+ * @method ContentTypeQuery rightJoinContent($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Content relation
+ * @method ContentTypeQuery innerJoinContent($relationAlias = null) Adds a INNER JOIN clause to the query using the Content relation
  *
- * @method     ContentType findOneById(int $id) Return the first ContentType filtered by the id column
- * @method     ContentType findOneByName(string $name) Return the first ContentType filtered by the name column
+ * @method ContentType findOne(PropelPDO $con = null) Return the first ContentType matching the query
+ * @method ContentType findOneOrCreate(PropelPDO $con = null) Return the first ContentType matching the query, or a new ContentType object populated from the query conditions when no match is found
  *
- * @method     array findById(int $id) Return ContentType objects filtered by the id column
- * @method     array findByName(string $name) Return ContentType objects filtered by the name column
+ * @method ContentType findOneById(int $id) Return the first ContentType filtered by the id column
+ * @method ContentType findOneByName(string $name) Return the first ContentType filtered by the name column
+ * @method ContentType findOneByShortName(string $short_name) Return the first ContentType filtered by the short_name column
+ * @method ContentType findOneByRights(int $rights) Return the first ContentType filtered by the rights column
+ *
+ * @method array findById(int $id) Return ContentType objects filtered by the id column
+ * @method array findByName(string $name) Return ContentType objects filtered by the name column
+ * @method array findByShortName(string $short_name) Return ContentType objects filtered by the short_name column
+ * @method array findByRights(int $rights) Return ContentType objects filtered by the rights column
  *
  * @package    propel.generator.ip7website.om
  */
 abstract class BaseContentTypeQuery extends ModelCriteria
 {
-    
     /**
      * Initializes internal state of BaseContentTypeQuery object.
      *
@@ -83,7 +90,7 @@ abstract class BaseContentTypeQuery extends ModelCriteria
      * $obj  = $c->findPk(12, $con);
      * </code>
      *
-     * @param mixed $key Primary key to use for the query 
+     * @param mixed $key Primary key to use for the query
      * @param     PropelPDO $con an optional connection object
      *
      * @return   ContentType|ContentType[]|mixed the result, formatted by the current formatter
@@ -122,10 +129,10 @@ abstract class BaseContentTypeQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `ID`, `NAME` FROM `content_types` WHERE `ID` = :p0';
+        $sql = 'SELECT `ID`, `NAME`, `SHORT_NAME`, `RIGHTS` FROM `content_types` WHERE `ID` = :p0';
         try {
             $stmt = $con->prepare($sql);
-			$stmt->bindValue(':p0', $key, PDO::PARAM_INT);
+            $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
             $stmt->execute();
         } catch (Exception $e) {
             Propel::log($e->getMessage(), Propel::LOG_ERR);
@@ -265,6 +272,76 @@ abstract class BaseContentTypeQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(ContentTypePeer::NAME, $name, $comparison);
+    }
+
+    /**
+     * Filter the query on the short_name column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByShortName('fooValue');   // WHERE short_name = 'fooValue'
+     * $query->filterByShortName('%fooValue%'); // WHERE short_name LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $shortName The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ContentTypeQuery The current query, for fluid interface
+     */
+    public function filterByShortName($shortName = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($shortName)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $shortName)) {
+                $shortName = str_replace('*', '%', $shortName);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(ContentTypePeer::SHORT_NAME, $shortName, $comparison);
+    }
+
+    /**
+     * Filter the query on the rights column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByRights(1234); // WHERE rights = 1234
+     * $query->filterByRights(array(12, 34)); // WHERE rights IN (12, 34)
+     * $query->filterByRights(array('min' => 12)); // WHERE rights > 12
+     * </code>
+     *
+     * @param     mixed $rights The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ContentTypeQuery The current query, for fluid interface
+     */
+    public function filterByRights($rights = null, $comparison = null)
+    {
+        if (is_array($rights)) {
+            $useMinMax = false;
+            if (isset($rights['min'])) {
+                $this->addUsingAlias(ContentTypePeer::RIGHTS, $rights['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($rights['max'])) {
+                $this->addUsingAlias(ContentTypePeer::RIGHTS, $rights['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(ContentTypePeer::RIGHTS, $rights, $comparison);
     }
 
     /**
@@ -431,4 +508,4 @@ abstract class BaseContentTypeQuery extends ModelCriteria
         return $this;
     }
 
-} // BaseContentTypeQuery
+}

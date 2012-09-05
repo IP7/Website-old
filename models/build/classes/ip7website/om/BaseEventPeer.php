@@ -4,11 +4,12 @@
 /**
  * Base static class for performing query and update operations on the 'events' table.
  *
- * 
  *
- * @package    propel.generator.ip7website.om
+ *
+ * @package propel.generator.ip7website.om
  */
-abstract class BaseEventPeer {
+abstract class BaseEventPeer
+{
 
     /** the default database name for this class */
     const DATABASE_NAME = 'infop7db';
@@ -74,12 +75,12 @@ abstract class BaseEventPeer {
      * holds an array of fieldnames
      *
      * first dimension keys are the type constants
-     * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
+     * e.g. EventPeer::$fieldNames[EventPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
         BasePeer::TYPE_PHPNAME => array ('Id', 'Name', 'EventTypeId', 'Description', 'Date', 'Beginning', 'End', 'Place', 'AccessRights', ),
         BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'name', 'eventTypeId', 'description', 'date', 'beginning', 'end', 'place', 'accessRights', ),
-        BasePeer::TYPE_COLNAME => array (self::ID, self::NAME, self::EVENT_TYPE_ID, self::DESCRIPTION, self::DATE, self::BEGINNING, self::END, self::PLACE, self::ACCESS_RIGHTS, ),
+        BasePeer::TYPE_COLNAME => array (EventPeer::ID, EventPeer::NAME, EventPeer::EVENT_TYPE_ID, EventPeer::DESCRIPTION, EventPeer::DATE, EventPeer::BEGINNING, EventPeer::END, EventPeer::PLACE, EventPeer::ACCESS_RIGHTS, ),
         BasePeer::TYPE_RAW_COLNAME => array ('ID', 'NAME', 'EVENT_TYPE_ID', 'DESCRIPTION', 'DATE', 'BEGINNING', 'END', 'PLACE', 'ACCESS_RIGHTS', ),
         BasePeer::TYPE_FIELDNAME => array ('id', 'name', 'event_type_id', 'description', 'date', 'beginning', 'end', 'place', 'access_rights', ),
         BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
@@ -89,12 +90,12 @@ abstract class BaseEventPeer {
      * holds an array of keys for quick access to the fieldnames array
      *
      * first dimension keys are the type constants
-     * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
+     * e.g. EventPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
         BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Name' => 1, 'EventTypeId' => 2, 'Description' => 3, 'Date' => 4, 'Beginning' => 5, 'End' => 6, 'Place' => 7, 'AccessRights' => 8, ),
         BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'name' => 1, 'eventTypeId' => 2, 'description' => 3, 'date' => 4, 'beginning' => 5, 'end' => 6, 'place' => 7, 'accessRights' => 8, ),
-        BasePeer::TYPE_COLNAME => array (self::ID => 0, self::NAME => 1, self::EVENT_TYPE_ID => 2, self::DESCRIPTION => 3, self::DATE => 4, self::BEGINNING => 5, self::END => 6, self::PLACE => 7, self::ACCESS_RIGHTS => 8, ),
+        BasePeer::TYPE_COLNAME => array (EventPeer::ID => 0, EventPeer::NAME => 1, EventPeer::EVENT_TYPE_ID => 2, EventPeer::DESCRIPTION => 3, EventPeer::DATE => 4, EventPeer::BEGINNING => 5, EventPeer::END => 6, EventPeer::PLACE => 7, EventPeer::ACCESS_RIGHTS => 8, ),
         BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'NAME' => 1, 'EVENT_TYPE_ID' => 2, 'DESCRIPTION' => 3, 'DATE' => 4, 'BEGINNING' => 5, 'END' => 6, 'PLACE' => 7, 'ACCESS_RIGHTS' => 8, ),
         BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'name' => 1, 'event_type_id' => 2, 'description' => 3, 'date' => 4, 'beginning' => 5, 'end' => 6, 'place' => 7, 'access_rights' => 8, ),
         BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
@@ -112,10 +113,10 @@ abstract class BaseEventPeer {
      */
     public static function translateFieldName($name, $fromType, $toType)
     {
-        $toNames = self::getFieldNames($toType);
-        $key = isset(self::$fieldKeys[$fromType][$name]) ? self::$fieldKeys[$fromType][$name] : null;
+        $toNames = EventPeer::getFieldNames($toType);
+        $key = isset(EventPeer::$fieldKeys[$fromType][$name]) ? EventPeer::$fieldKeys[$fromType][$name] : null;
         if ($key === null) {
-            throw new PropelException("'$name' could not be found in the field names of type '$fromType'. These are: " . print_r(self::$fieldKeys[$fromType], true));
+            throw new PropelException("'$name' could not be found in the field names of type '$fromType'. These are: " . print_r(EventPeer::$fieldKeys[$fromType], true));
         }
 
         return $toNames[$key];
@@ -132,11 +133,11 @@ abstract class BaseEventPeer {
      */
     public static function getFieldNames($type = BasePeer::TYPE_PHPNAME)
     {
-        if (!array_key_exists($type, self::$fieldNames)) {
+        if (!array_key_exists($type, EventPeer::$fieldNames)) {
             throw new PropelException('Method getFieldNames() expects the parameter $type to be one of the class constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME, BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM. ' . $type . ' was given.');
         }
 
-        return self::$fieldNames[$type];
+        return EventPeer::$fieldNames[$type];
     }
 
     /**
@@ -220,7 +221,7 @@ abstract class BaseEventPeer {
         }
 
         $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
-        $criteria->setDbName(self::DATABASE_NAME); // Set the correct dbName
+        $criteria->setDbName(EventPeer::DATABASE_NAME); // Set the correct dbName
 
         if ($con === null) {
             $con = Propel::getConnection(EventPeer::DATABASE_NAME, Propel::CONNECTION_READ);
@@ -295,7 +296,7 @@ abstract class BaseEventPeer {
         }
 
         // Set the correct dbName
-        $criteria->setDbName(self::DATABASE_NAME);
+        $criteria->setDbName(EventPeer::DATABASE_NAME);
 
         // BasePeer returns a PDOStatement
         return BasePeer::doSelect($criteria, $con);
@@ -318,7 +319,7 @@ abstract class BaseEventPeer {
             if ($key === null) {
                 $key = (string) $obj->getId();
             } // if key === null
-            self::$instances[$key] = $obj;
+            EventPeer::$instances[$key] = $obj;
         }
     }
 
@@ -348,7 +349,7 @@ abstract class BaseEventPeer {
                 throw $e;
             }
 
-            unset(self::$instances[$key]);
+            unset(EventPeer::$instances[$key]);
         }
     } // removeInstanceFromPool()
 
@@ -359,20 +360,20 @@ abstract class BaseEventPeer {
      * a multi-column primary key, a serialize()d version of the primary key will be returned.
      *
      * @param      string $key The key (@see getPrimaryKeyHash()) for this instance.
-     * @return   Event Found object or NULL if 1) no instance exists for specified key or 2) instance pooling has been disabled.
+     * @return   Event Found object or null if 1) no instance exists for specified key or 2) instance pooling has been disabled.
      * @see        getPrimaryKeyHash()
      */
     public static function getInstanceFromPool($key)
     {
         if (Propel::isInstancePoolingEnabled()) {
-            if (isset(self::$instances[$key])) {
-                return self::$instances[$key];
+            if (isset(EventPeer::$instances[$key])) {
+                return EventPeer::$instances[$key];
             }
         }
 
         return null; // just to be explicit
     }
-    
+
     /**
      * Clear the instance pool.
      *
@@ -380,9 +381,9 @@ abstract class BaseEventPeer {
      */
     public static function clearInstancePool()
     {
-        self::$instances = array();
+        EventPeer::$instances = array();
     }
-    
+
     /**
      * Method to invalidate the instance pool of all tables related to events
      * by a foreign key with ON DELETE CASCADE
@@ -399,11 +400,11 @@ abstract class BaseEventPeer {
      *
      * @param      array $row PropelPDO resultset row.
      * @param      int $startcol The 0-based offset for reading from the resultset row.
-     * @return string A string version of PK or NULL if the components of primary key in result array are all null.
+     * @return string A string version of PK or null if the components of primary key in result array are all null.
      */
     public static function getPrimaryKeyHashFromRow($row, $startcol = 0)
     {
-        // If the PK cannot be derived from the row, return NULL.
+        // If the PK cannot be derived from the row, return null.
         if ($row[$startcol] === null) {
             return null;
         }
@@ -425,7 +426,7 @@ abstract class BaseEventPeer {
 
         return (int) $row[$startcol];
     }
-    
+
     /**
      * The returned array will contain objects of the default type or
      * objects that inherit from the default.
@@ -436,7 +437,7 @@ abstract class BaseEventPeer {
     public static function populateObjects(PDOStatement $stmt)
     {
         $results = array();
-    
+
         // set the class once to avoid overhead in the loop
         $cls = EventPeer::getOMClass();
         // populate the object(s)
@@ -516,7 +517,7 @@ abstract class BaseEventPeer {
         $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
 
         // Set the correct dbName
-        $criteria->setDbName(self::DATABASE_NAME);
+        $criteria->setDbName(EventPeer::DATABASE_NAME);
 
         if ($con === null) {
             $con = Propel::getConnection(EventPeer::DATABASE_NAME, Propel::CONNECTION_READ);
@@ -552,7 +553,7 @@ abstract class BaseEventPeer {
 
         // Set the correct dbName if it has not been overridden
         if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(self::DATABASE_NAME);
+            $criteria->setDbName(EventPeer::DATABASE_NAME);
         }
 
         EventPeer::addSelectColumns($criteria);
@@ -634,7 +635,7 @@ abstract class BaseEventPeer {
         $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
 
         // Set the correct dbName
-        $criteria->setDbName(self::DATABASE_NAME);
+        $criteria->setDbName(EventPeer::DATABASE_NAME);
 
         if ($con === null) {
             $con = Propel::getConnection(EventPeer::DATABASE_NAME, Propel::CONNECTION_READ);
@@ -670,7 +671,7 @@ abstract class BaseEventPeer {
 
         // Set the correct dbName if it has not been overridden
         if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(self::DATABASE_NAME);
+            $criteria->setDbName(EventPeer::DATABASE_NAME);
         }
 
         EventPeer::addSelectColumns($criteria);
@@ -732,7 +733,7 @@ abstract class BaseEventPeer {
      */
     public static function getTableMap()
     {
-        return Propel::getDatabaseMap(self::DATABASE_NAME)->getTable(self::TABLE_NAME);
+        return Propel::getDatabaseMap(EventPeer::DATABASE_NAME)->getTable(EventPeer::TABLE_NAME);
     }
 
     /**
@@ -784,7 +785,7 @@ abstract class BaseEventPeer {
 
 
         // Set the correct dbName
-        $criteria->setDbName(self::DATABASE_NAME);
+        $criteria->setDbName(EventPeer::DATABASE_NAME);
 
         try {
             // use transaction because $criteria could contain info
@@ -815,7 +816,7 @@ abstract class BaseEventPeer {
             $con = Propel::getConnection(EventPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
-        $selectCriteria = new Criteria(self::DATABASE_NAME);
+        $selectCriteria = new Criteria(EventPeer::DATABASE_NAME);
 
         if ($values instanceof Criteria) {
             $criteria = clone $values; // rename for clarity
@@ -834,7 +835,7 @@ abstract class BaseEventPeer {
         }
 
         // set the correct dbName
-        $criteria->setDbName(self::DATABASE_NAME);
+        $criteria->setDbName(EventPeer::DATABASE_NAME);
 
         return BasePeer::doUpdate($selectCriteria, $criteria, $con);
     }
@@ -901,7 +902,7 @@ abstract class BaseEventPeer {
             // create criteria based on pk values
             $criteria = $values->buildPkeyCriteria();
         } else { // it's a primary key, or an array of pks
-            $criteria = new Criteria(self::DATABASE_NAME);
+            $criteria = new Criteria(EventPeer::DATABASE_NAME);
             $criteria->add(EventPeer::ID, (array) $values, Criteria::IN);
             // invalidate the cache for this object(s)
             foreach ((array) $values as $singleval) {
@@ -910,7 +911,7 @@ abstract class BaseEventPeer {
         }
 
         // Set the correct dbName
-        $criteria->setDbName(self::DATABASE_NAME);
+        $criteria->setDbName(EventPeer::DATABASE_NAME);
 
         $affectedRows = 0; // initialize var to track total num of affected rows
 
@@ -918,7 +919,7 @@ abstract class BaseEventPeer {
             // use transaction because $criteria could contain info
             // for more than one table or we could emulating ON DELETE CASCADE, etc.
             $con->beginTransaction();
-            
+
             $affectedRows += BasePeer::doDelete($criteria, $con);
             EventPeer::clearRelatedInstancePool();
             $con->commit();
