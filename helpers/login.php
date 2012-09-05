@@ -74,6 +74,9 @@ function connection($username, $password, $remember=false) {
  **/
 function set_connected($user, $remember=false) {
     $_SESSION['user'] = $user;
+    $_SESSION['messages'] = array();
+    $_SESSION['form_values'] = array();
+
     if ($remember) {
         setcookie(AUTH_COOKIE,
                   '1:'.$user->getId().':'.$user->getPasswordHash(),
