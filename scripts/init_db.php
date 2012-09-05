@@ -1,5 +1,7 @@
 <?php
 
+require_once '../config.php';
+
 // Cursus
 
 $cursus = array(
@@ -177,6 +179,5 @@ if (!$q) {
         $c->setRights($ct[2]);
         $c->save();
     }
-}
 
 ?>
