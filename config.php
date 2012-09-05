@@ -105,7 +105,7 @@ class Config {
                 ),
 
                 'logo' => array(
-                    'src'    => self::$root_uri.'views/static/images/logo32.png',
+                    'src'    => self::$root_uri.'views/static/images/logo32transp.png',
                     'width'  => 32,
                     'height' => 32
                 ),
