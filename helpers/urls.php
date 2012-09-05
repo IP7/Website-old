@@ -16,4 +16,12 @@ function cursus_url($c) {
     return Config::$root_uri.'cursus/'.$c->getShortName();
 }
 
+// return the URL of a course
+function course_url($cursus, $course) {
+    $u  = Config::$root_uri.'cursus/'.$cursus->getShortName();
+    $u .= '/'.$course->getCode();
+
+    return $u;
+}
+
 ?>
