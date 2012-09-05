@@ -163,13 +163,13 @@ class User extends BaseUser {
    **/
   public function getPublicName($sep=' ') {
       return $this->getConfigShowRealName() ? $this->getName() : $this->getUsername();
+  }
 
   /**
    * Return user's rank
    **/
   public function getRank() {
       return $this->getType();
->>>>>>> master
   }
 
   /* == Misc ================================================= */
