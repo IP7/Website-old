@@ -1,4 +1,4 @@
-{% import 'macros.html' as _m %}
+{% import 'utils/macros.html' as _m %}
 {% autoescape 'html_attr' %}
 <!doctype html>
 <html lang="{{ page.lang }}" dir="ltr">
@@ -106,7 +106,7 @@
                 {% endif %}
 
                 {# fil d'ariane #}
-                {% include 'breadcrumbs.html' %}
+                {% include 'utils/breadcrumbs.html' %}
 
                 {# contenu #}
                 <section id="main_content">{% block content %}{% endblock %}</section>

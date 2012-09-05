@@ -3,7 +3,7 @@
 <article class="course">
     <h1>{{ page.course.name }}</h1>
     <section class="intro">{{ page.course.intro }}</section>
-    {% include "news.html" %}
+    {% include "utils/news.html" %}
     {% if page.course.content_types is defined and page.course.content_types is not empty %}
     <div class="tabbed contents">
         <ul class="tabs">
