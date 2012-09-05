@@ -5,13 +5,7 @@
 {% block content %}
 {{ parent() }}
 <form action="{{ page.form.action }}" method="POST" enctype="multipart/form-data">
-    {#
-        TODO: titre
-              contenu
-              type (<select>)
-              token
-    #}
-    <label>Titre&nbsp;: <input type="text" name="title" maxlength="140" value="{{ page.form.values.title }}" autocomplete="off" /></label>
+    <label>Titre&nbsp;: <input type="text" name="title" maxlength="140" value="{{ page.form.values.title }}" required /></label>
     <textarea cols="80" rows="24" name="text" />{{ page.form.values.text }}</textarea>
     <label>Type&nbsp;: <select name="type" selected="{{ page.form.values.type }}">{% for t in page.form.types %}<option value="{{ t.value }}">{{ t.name }}</option>{% endfor %}</select></label>
     {{ _m.token(page.token) }}

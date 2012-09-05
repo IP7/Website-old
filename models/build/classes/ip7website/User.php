@@ -158,6 +158,13 @@ class User extends BaseUser {
     return ($birthdate ? intval($birthdate->diff($today)->format('%Y')) : NULL);
   }
 
+  /**
+   * Return user's rank
+   **/
+  public function getRank() {
+      return $this->getType();
+  }
+
   /* == Misc ================================================= */
 
   /**
