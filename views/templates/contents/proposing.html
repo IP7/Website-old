@@ -1,0 +1,15 @@
+{% extends 'main.html' %}
+{% block meta %}
+{{ _m.robots('noindex') }}
+{% endblock %}
+{% block content %}
+{{ parent() }}
+<form action="{{ page.form.action }}" method="POST" enctype="multipart/form-data">
+    {#
+        TODO: titre
+              contenu
+              type (<select>)
+              token
+    #}
+</form>
+{% endblock %}
