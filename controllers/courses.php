@@ -21,6 +21,17 @@ function display_course() {
     $base_uri  = Config::$root_uri.'cursus/'.$cursus->getShortName().'/';
     $base_uri .= $course->getCode();
 
+    $moderation_bar = null;
+
+    if (is_connected() && user()->isMember()) {
+        $moderation_bar = array(
+            array(
+                'href' => $base_uri.'/proposer',
+                'title' => 'Proposer un contenu'
+            )
+        );
+    }
+
     $breadcrumbs = array(
         array(
             'href'  => Config::$root_uri.'cursus/'.$cursus->getShortName(),
@@ -42,7 +53,9 @@ function display_course() {
             'course' => array(
                 'name'  => $course->getName().' ('.$course->getCode().')',
                 'intro' => $course->getDescription()
-            )
+            ),
+
+            'moderation_bar' => $moderation_bar
         )
     ));
 }

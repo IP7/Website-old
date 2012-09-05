@@ -1,6 +1,7 @@
 {% extends "main.html" %}
 {% block content %}
 <article class="course">
+    {% include 'utils/moderation_bar.html' %}
     <h1>{{ page.course.name }}</h1>
     <section class="intro">{{ page.course.intro }}</section>
     {% include "utils/news.html" %}
