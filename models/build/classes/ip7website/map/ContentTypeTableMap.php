@@ -40,6 +40,8 @@ class ContentTypeTableMap extends TableMap
         // columns
         $this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
         $this->addColumn('NAME', 'Name', 'VARCHAR', true, 32, null);
+        $this->addColumn('SHORT_NAME', 'ShortName', 'VARCHAR', true, 16, null);
+        $this->addColumn('RIGHTS', 'Rights', 'TINYINT', false, null, 0);
         // validators
     } // initialize()
 

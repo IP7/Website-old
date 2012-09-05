@@ -31,6 +31,28 @@ function bonjour() {
     return ($hours > 4 && $hours < 19) ? 'Bonjour' : 'Bonsoir';
 }
 
+// Returns "de" or "d'" with the next word
+function de($next_word) {
+    // We should use "’" (HTML: "&#8217;"), but PHP doesn't accept Unicode,
+    // and Twig would escape the '&' character.
+
+    if (strlen($next_word) == 0) {
+        return 'de';
+    }
+
+    $no_spaces = trim($next_word);
+
+    $first_letter = strtolower($no_spaces[0]);
+
+    $voyels = array( # voyels + h
+        'a','â','e','é','è','ê','h','i','o','u','y'
+    );
+
+    $de = in_array($first_letter, $voyels) ? 'd\'' : 'de ';
+
+    return $de.$next_word;
+}
+
 // format a date for French output
 function date_fr($d) {
     $d = get_datetime($d);

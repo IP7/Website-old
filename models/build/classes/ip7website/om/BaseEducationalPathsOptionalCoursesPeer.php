@@ -4,11 +4,12 @@
 /**
  * Base static class for performing query and update operations on the 'educational_paths_optional_courses' table.
  *
- * 
  *
- * @package    propel.generator.ip7website.om
+ *
+ * @package propel.generator.ip7website.om
  */
-abstract class BaseEducationalPathsOptionalCoursesPeer {
+abstract class BaseEducationalPathsOptionalCoursesPeer
+{
 
     /** the default database name for this class */
     const DATABASE_NAME = 'infop7db';
@@ -53,12 +54,12 @@ abstract class BaseEducationalPathsOptionalCoursesPeer {
      * holds an array of fieldnames
      *
      * first dimension keys are the type constants
-     * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
+     * e.g. EducationalPathsOptionalCoursesPeer::$fieldNames[EducationalPathsOptionalCoursesPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
         BasePeer::TYPE_PHPNAME => array ('CourseId', 'PathId', ),
         BasePeer::TYPE_STUDLYPHPNAME => array ('courseId', 'pathId', ),
-        BasePeer::TYPE_COLNAME => array (self::COURSE_ID, self::PATH_ID, ),
+        BasePeer::TYPE_COLNAME => array (EducationalPathsOptionalCoursesPeer::COURSE_ID, EducationalPathsOptionalCoursesPeer::PATH_ID, ),
         BasePeer::TYPE_RAW_COLNAME => array ('COURSE_ID', 'PATH_ID', ),
         BasePeer::TYPE_FIELDNAME => array ('course_id', 'path_id', ),
         BasePeer::TYPE_NUM => array (0, 1, )
@@ -68,12 +69,12 @@ abstract class BaseEducationalPathsOptionalCoursesPeer {
      * holds an array of keys for quick access to the fieldnames array
      *
      * first dimension keys are the type constants
-     * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
+     * e.g. EducationalPathsOptionalCoursesPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
         BasePeer::TYPE_PHPNAME => array ('CourseId' => 0, 'PathId' => 1, ),
         BasePeer::TYPE_STUDLYPHPNAME => array ('courseId' => 0, 'pathId' => 1, ),
-        BasePeer::TYPE_COLNAME => array (self::COURSE_ID => 0, self::PATH_ID => 1, ),
+        BasePeer::TYPE_COLNAME => array (EducationalPathsOptionalCoursesPeer::COURSE_ID => 0, EducationalPathsOptionalCoursesPeer::PATH_ID => 1, ),
         BasePeer::TYPE_RAW_COLNAME => array ('COURSE_ID' => 0, 'PATH_ID' => 1, ),
         BasePeer::TYPE_FIELDNAME => array ('course_id' => 0, 'path_id' => 1, ),
         BasePeer::TYPE_NUM => array (0, 1, )
@@ -91,10 +92,10 @@ abstract class BaseEducationalPathsOptionalCoursesPeer {
      */
     public static function translateFieldName($name, $fromType, $toType)
     {
-        $toNames = self::getFieldNames($toType);
-        $key = isset(self::$fieldKeys[$fromType][$name]) ? self::$fieldKeys[$fromType][$name] : null;
+        $toNames = EducationalPathsOptionalCoursesPeer::getFieldNames($toType);
+        $key = isset(EducationalPathsOptionalCoursesPeer::$fieldKeys[$fromType][$name]) ? EducationalPathsOptionalCoursesPeer::$fieldKeys[$fromType][$name] : null;
         if ($key === null) {
-            throw new PropelException("'$name' could not be found in the field names of type '$fromType'. These are: " . print_r(self::$fieldKeys[$fromType], true));
+            throw new PropelException("'$name' could not be found in the field names of type '$fromType'. These are: " . print_r(EducationalPathsOptionalCoursesPeer::$fieldKeys[$fromType], true));
         }
 
         return $toNames[$key];
@@ -111,11 +112,11 @@ abstract class BaseEducationalPathsOptionalCoursesPeer {
      */
     public static function getFieldNames($type = BasePeer::TYPE_PHPNAME)
     {
-        if (!array_key_exists($type, self::$fieldNames)) {
+        if (!array_key_exists($type, EducationalPathsOptionalCoursesPeer::$fieldNames)) {
             throw new PropelException('Method getFieldNames() expects the parameter $type to be one of the class constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME, BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM. ' . $type . ' was given.');
         }
 
-        return self::$fieldNames[$type];
+        return EducationalPathsOptionalCoursesPeer::$fieldNames[$type];
     }
 
     /**
@@ -185,7 +186,7 @@ abstract class BaseEducationalPathsOptionalCoursesPeer {
         }
 
         $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
-        $criteria->setDbName(self::DATABASE_NAME); // Set the correct dbName
+        $criteria->setDbName(EducationalPathsOptionalCoursesPeer::DATABASE_NAME); // Set the correct dbName
 
         if ($con === null) {
             $con = Propel::getConnection(EducationalPathsOptionalCoursesPeer::DATABASE_NAME, Propel::CONNECTION_READ);
@@ -260,7 +261,7 @@ abstract class BaseEducationalPathsOptionalCoursesPeer {
         }
 
         // Set the correct dbName
-        $criteria->setDbName(self::DATABASE_NAME);
+        $criteria->setDbName(EducationalPathsOptionalCoursesPeer::DATABASE_NAME);
 
         // BasePeer returns a PDOStatement
         return BasePeer::doSelect($criteria, $con);
@@ -283,7 +284,7 @@ abstract class BaseEducationalPathsOptionalCoursesPeer {
             if ($key === null) {
                 $key = serialize(array((string) $obj->getCourseId(), (string) $obj->getPathId()));
             } // if key === null
-            self::$instances[$key] = $obj;
+            EducationalPathsOptionalCoursesPeer::$instances[$key] = $obj;
         }
     }
 
@@ -313,7 +314,7 @@ abstract class BaseEducationalPathsOptionalCoursesPeer {
                 throw $e;
             }
 
-            unset(self::$instances[$key]);
+            unset(EducationalPathsOptionalCoursesPeer::$instances[$key]);
         }
     } // removeInstanceFromPool()
 
@@ -324,20 +325,20 @@ abstract class BaseEducationalPathsOptionalCoursesPeer {
      * a multi-column primary key, a serialize()d version of the primary key will be returned.
      *
      * @param      string $key The key (@see getPrimaryKeyHash()) for this instance.
-     * @return   EducationalPathsOptionalCourses Found object or NULL if 1) no instance exists for specified key or 2) instance pooling has been disabled.
+     * @return   EducationalPathsOptionalCourses Found object or null if 1) no instance exists for specified key or 2) instance pooling has been disabled.
      * @see        getPrimaryKeyHash()
      */
     public static function getInstanceFromPool($key)
     {
         if (Propel::isInstancePoolingEnabled()) {
-            if (isset(self::$instances[$key])) {
-                return self::$instances[$key];
+            if (isset(EducationalPathsOptionalCoursesPeer::$instances[$key])) {
+                return EducationalPathsOptionalCoursesPeer::$instances[$key];
             }
         }
 
         return null; // just to be explicit
     }
-    
+
     /**
      * Clear the instance pool.
      *
@@ -345,9 +346,9 @@ abstract class BaseEducationalPathsOptionalCoursesPeer {
      */
     public static function clearInstancePool()
     {
-        self::$instances = array();
+        EducationalPathsOptionalCoursesPeer::$instances = array();
     }
-    
+
     /**
      * Method to invalidate the instance pool of all tables related to educational_paths_optional_courses
      * by a foreign key with ON DELETE CASCADE
@@ -364,11 +365,11 @@ abstract class BaseEducationalPathsOptionalCoursesPeer {
      *
      * @param      array $row PropelPDO resultset row.
      * @param      int $startcol The 0-based offset for reading from the resultset row.
-     * @return string A string version of PK or NULL if the components of primary key in result array are all null.
+     * @return string A string version of PK or null if the components of primary key in result array are all null.
      */
     public static function getPrimaryKeyHashFromRow($row, $startcol = 0)
     {
-        // If the PK cannot be derived from the row, return NULL.
+        // If the PK cannot be derived from the row, return null.
         if ($row[$startcol] === null && $row[$startcol + 1] === null) {
             return null;
         }
@@ -390,7 +391,7 @@ abstract class BaseEducationalPathsOptionalCoursesPeer {
 
         return array((int) $row[$startcol], (int) $row[$startcol + 1]);
     }
-    
+
     /**
      * The returned array will contain objects of the default type or
      * objects that inherit from the default.
@@ -401,7 +402,7 @@ abstract class BaseEducationalPathsOptionalCoursesPeer {
     public static function populateObjects(PDOStatement $stmt)
     {
         $results = array();
-    
+
         // set the class once to avoid overhead in the loop
         $cls = EducationalPathsOptionalCoursesPeer::getOMClass();
         // populate the object(s)
@@ -481,7 +482,7 @@ abstract class BaseEducationalPathsOptionalCoursesPeer {
         $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
 
         // Set the correct dbName
-        $criteria->setDbName(self::DATABASE_NAME);
+        $criteria->setDbName(EducationalPathsOptionalCoursesPeer::DATABASE_NAME);
 
         if ($con === null) {
             $con = Propel::getConnection(EducationalPathsOptionalCoursesPeer::DATABASE_NAME, Propel::CONNECTION_READ);
@@ -532,7 +533,7 @@ abstract class BaseEducationalPathsOptionalCoursesPeer {
         $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
 
         // Set the correct dbName
-        $criteria->setDbName(self::DATABASE_NAME);
+        $criteria->setDbName(EducationalPathsOptionalCoursesPeer::DATABASE_NAME);
 
         if ($con === null) {
             $con = Propel::getConnection(EducationalPathsOptionalCoursesPeer::DATABASE_NAME, Propel::CONNECTION_READ);
@@ -568,7 +569,7 @@ abstract class BaseEducationalPathsOptionalCoursesPeer {
 
         // Set the correct dbName if it has not been overridden
         if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(self::DATABASE_NAME);
+            $criteria->setDbName(EducationalPathsOptionalCoursesPeer::DATABASE_NAME);
         }
 
         EducationalPathsOptionalCoursesPeer::addSelectColumns($criteria);
@@ -635,7 +636,7 @@ abstract class BaseEducationalPathsOptionalCoursesPeer {
 
         // Set the correct dbName if it has not been overridden
         if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(self::DATABASE_NAME);
+            $criteria->setDbName(EducationalPathsOptionalCoursesPeer::DATABASE_NAME);
         }
 
         EducationalPathsOptionalCoursesPeer::addSelectColumns($criteria);
@@ -717,7 +718,7 @@ abstract class BaseEducationalPathsOptionalCoursesPeer {
         $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
 
         // Set the correct dbName
-        $criteria->setDbName(self::DATABASE_NAME);
+        $criteria->setDbName(EducationalPathsOptionalCoursesPeer::DATABASE_NAME);
 
         if ($con === null) {
             $con = Propel::getConnection(EducationalPathsOptionalCoursesPeer::DATABASE_NAME, Propel::CONNECTION_READ);
@@ -755,7 +756,7 @@ abstract class BaseEducationalPathsOptionalCoursesPeer {
 
         // Set the correct dbName if it has not been overridden
         if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(self::DATABASE_NAME);
+            $criteria->setDbName(EducationalPathsOptionalCoursesPeer::DATABASE_NAME);
         }
 
         EducationalPathsOptionalCoursesPeer::addSelectColumns($criteria);
@@ -862,12 +863,12 @@ abstract class BaseEducationalPathsOptionalCoursesPeer {
         $criteria->clearOrderByColumns(); // ORDER BY should not affect count
 
         // Set the correct dbName
-        $criteria->setDbName(self::DATABASE_NAME);
+        $criteria->setDbName(EducationalPathsOptionalCoursesPeer::DATABASE_NAME);
 
         if ($con === null) {
             $con = Propel::getConnection(EducationalPathsOptionalCoursesPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
-    
+
         $criteria->addJoin(EducationalPathsOptionalCoursesPeer::PATH_ID, EducationalPathPeer::ID, $join_behavior);
 
         $stmt = BasePeer::doCount($criteria, $con);
@@ -913,12 +914,12 @@ abstract class BaseEducationalPathsOptionalCoursesPeer {
         $criteria->clearOrderByColumns(); // ORDER BY should not affect count
 
         // Set the correct dbName
-        $criteria->setDbName(self::DATABASE_NAME);
+        $criteria->setDbName(EducationalPathsOptionalCoursesPeer::DATABASE_NAME);
 
         if ($con === null) {
             $con = Propel::getConnection(EducationalPathsOptionalCoursesPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
-    
+
         $criteria->addJoin(EducationalPathsOptionalCoursesPeer::COURSE_ID, CoursePeer::ID, $join_behavior);
 
         $stmt = BasePeer::doCount($criteria, $con);
@@ -952,7 +953,7 @@ abstract class BaseEducationalPathsOptionalCoursesPeer {
         // $criteria->getDbName() will return the same object if not set to another value
         // so == check is okay and faster
         if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(self::DATABASE_NAME);
+            $criteria->setDbName(EducationalPathsOptionalCoursesPeer::DATABASE_NAME);
         }
 
         EducationalPathsOptionalCoursesPeer::addSelectColumns($criteria);
@@ -987,7 +988,7 @@ abstract class BaseEducationalPathsOptionalCoursesPeer {
                 if ($key2 !== null) {
                     $obj2 = EducationalPathPeer::getInstanceFromPool($key2);
                     if (!$obj2) {
-    
+
                         $cls = EducationalPathPeer::getOMClass();
 
                     $obj2 = new $cls();
@@ -1026,7 +1027,7 @@ abstract class BaseEducationalPathsOptionalCoursesPeer {
         // $criteria->getDbName() will return the same object if not set to another value
         // so == check is okay and faster
         if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(self::DATABASE_NAME);
+            $criteria->setDbName(EducationalPathsOptionalCoursesPeer::DATABASE_NAME);
         }
 
         EducationalPathsOptionalCoursesPeer::addSelectColumns($criteria);
@@ -1061,7 +1062,7 @@ abstract class BaseEducationalPathsOptionalCoursesPeer {
                 if ($key2 !== null) {
                     $obj2 = CoursePeer::getInstanceFromPool($key2);
                     if (!$obj2) {
-    
+
                         $cls = CoursePeer::getOMClass();
 
                     $obj2 = new $cls();
@@ -1090,7 +1091,7 @@ abstract class BaseEducationalPathsOptionalCoursesPeer {
      */
     public static function getTableMap()
     {
-        return Propel::getDatabaseMap(self::DATABASE_NAME)->getTable(self::TABLE_NAME);
+        return Propel::getDatabaseMap(EducationalPathsOptionalCoursesPeer::DATABASE_NAME)->getTable(EducationalPathsOptionalCoursesPeer::TABLE_NAME);
     }
 
     /**
@@ -1138,7 +1139,7 @@ abstract class BaseEducationalPathsOptionalCoursesPeer {
 
 
         // Set the correct dbName
-        $criteria->setDbName(self::DATABASE_NAME);
+        $criteria->setDbName(EducationalPathsOptionalCoursesPeer::DATABASE_NAME);
 
         try {
             // use transaction because $criteria could contain info
@@ -1169,7 +1170,7 @@ abstract class BaseEducationalPathsOptionalCoursesPeer {
             $con = Propel::getConnection(EducationalPathsOptionalCoursesPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
-        $selectCriteria = new Criteria(self::DATABASE_NAME);
+        $selectCriteria = new Criteria(EducationalPathsOptionalCoursesPeer::DATABASE_NAME);
 
         if ($values instanceof Criteria) {
             $criteria = clone $values; // rename for clarity
@@ -1196,7 +1197,7 @@ abstract class BaseEducationalPathsOptionalCoursesPeer {
         }
 
         // set the correct dbName
-        $criteria->setDbName(self::DATABASE_NAME);
+        $criteria->setDbName(EducationalPathsOptionalCoursesPeer::DATABASE_NAME);
 
         return BasePeer::doUpdate($selectCriteria, $criteria, $con);
     }
@@ -1263,7 +1264,7 @@ abstract class BaseEducationalPathsOptionalCoursesPeer {
             // create criteria based on pk values
             $criteria = $values->buildPkeyCriteria();
         } else { // it's a primary key, or an array of pks
-            $criteria = new Criteria(self::DATABASE_NAME);
+            $criteria = new Criteria(EducationalPathsOptionalCoursesPeer::DATABASE_NAME);
             // primary key is composite; we therefore, expect
             // the primary key passed to be an array of pkey values
             if (count($values) == count($values, COUNT_RECURSIVE)) {
@@ -1280,7 +1281,7 @@ abstract class BaseEducationalPathsOptionalCoursesPeer {
         }
 
         // Set the correct dbName
-        $criteria->setDbName(self::DATABASE_NAME);
+        $criteria->setDbName(EducationalPathsOptionalCoursesPeer::DATABASE_NAME);
 
         $affectedRows = 0; // initialize var to track total num of affected rows
 
@@ -1288,7 +1289,7 @@ abstract class BaseEducationalPathsOptionalCoursesPeer {
             // use transaction because $criteria could contain info
             // for more than one table or we could emulating ON DELETE CASCADE, etc.
             $con->beginTransaction();
-            
+
             $affectedRows += BasePeer::doDelete($criteria, $con);
             EducationalPathsOptionalCoursesPeer::clearRelatedInstancePool();
             $con->commit();

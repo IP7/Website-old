@@ -4,88 +4,87 @@
 /**
  * Base class that represents a query for the 'courses' table.
  *
- * 
  *
- * @method     CourseQuery orderById($order = Criteria::ASC) Order by the id column
- * @method     CourseQuery orderByCursusId($order = Criteria::ASC) Order by the cursus_id column
- * @method     CourseQuery orderBySemester($order = Criteria::ASC) Order by the semester column
- * @method     CourseQuery orderByName($order = Criteria::ASC) Order by the name column
- * @method     CourseQuery orderByCode($order = Criteria::ASC) Order by the code column
- * @method     CourseQuery orderByEcts($order = Criteria::ASC) Order by the ECTS column
- * @method     CourseQuery orderByDescription($order = Criteria::ASC) Order by the description column
  *
- * @method     CourseQuery groupById() Group by the id column
- * @method     CourseQuery groupByCursusId() Group by the cursus_id column
- * @method     CourseQuery groupBySemester() Group by the semester column
- * @method     CourseQuery groupByName() Group by the name column
- * @method     CourseQuery groupByCode() Group by the code column
- * @method     CourseQuery groupByEcts() Group by the ECTS column
- * @method     CourseQuery groupByDescription() Group by the description column
+ * @method CourseQuery orderById($order = Criteria::ASC) Order by the id column
+ * @method CourseQuery orderByCursusId($order = Criteria::ASC) Order by the cursus_id column
+ * @method CourseQuery orderBySemester($order = Criteria::ASC) Order by the semester column
+ * @method CourseQuery orderByName($order = Criteria::ASC) Order by the name column
+ * @method CourseQuery orderByCode($order = Criteria::ASC) Order by the code column
+ * @method CourseQuery orderByEcts($order = Criteria::ASC) Order by the ECTS column
+ * @method CourseQuery orderByDescription($order = Criteria::ASC) Order by the description column
  *
- * @method     CourseQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
- * @method     CourseQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
- * @method     CourseQuery innerJoin($relation) Adds a INNER JOIN clause to the query
+ * @method CourseQuery groupById() Group by the id column
+ * @method CourseQuery groupByCursusId() Group by the cursus_id column
+ * @method CourseQuery groupBySemester() Group by the semester column
+ * @method CourseQuery groupByName() Group by the name column
+ * @method CourseQuery groupByCode() Group by the code column
+ * @method CourseQuery groupByEcts() Group by the ECTS column
+ * @method CourseQuery groupByDescription() Group by the description column
  *
- * @method     CourseQuery leftJoinCursus($relationAlias = null) Adds a LEFT JOIN clause to the query using the Cursus relation
- * @method     CourseQuery rightJoinCursus($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Cursus relation
- * @method     CourseQuery innerJoinCursus($relationAlias = null) Adds a INNER JOIN clause to the query using the Cursus relation
+ * @method CourseQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
+ * @method CourseQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
+ * @method CourseQuery innerJoin($relation) Adds a INNER JOIN clause to the query
  *
- * @method     CourseQuery leftJoinEducationalPathsOptionalCourses($relationAlias = null) Adds a LEFT JOIN clause to the query using the EducationalPathsOptionalCourses relation
- * @method     CourseQuery rightJoinEducationalPathsOptionalCourses($relationAlias = null) Adds a RIGHT JOIN clause to the query using the EducationalPathsOptionalCourses relation
- * @method     CourseQuery innerJoinEducationalPathsOptionalCourses($relationAlias = null) Adds a INNER JOIN clause to the query using the EducationalPathsOptionalCourses relation
+ * @method CourseQuery leftJoinCursus($relationAlias = null) Adds a LEFT JOIN clause to the query using the Cursus relation
+ * @method CourseQuery rightJoinCursus($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Cursus relation
+ * @method CourseQuery innerJoinCursus($relationAlias = null) Adds a INNER JOIN clause to the query using the Cursus relation
  *
- * @method     CourseQuery leftJoinEducationalPathsMandatoryCourses($relationAlias = null) Adds a LEFT JOIN clause to the query using the EducationalPathsMandatoryCourses relation
- * @method     CourseQuery rightJoinEducationalPathsMandatoryCourses($relationAlias = null) Adds a RIGHT JOIN clause to the query using the EducationalPathsMandatoryCourses relation
- * @method     CourseQuery innerJoinEducationalPathsMandatoryCourses($relationAlias = null) Adds a INNER JOIN clause to the query using the EducationalPathsMandatoryCourses relation
+ * @method CourseQuery leftJoinEducationalPathsOptionalCourses($relationAlias = null) Adds a LEFT JOIN clause to the query using the EducationalPathsOptionalCourses relation
+ * @method CourseQuery rightJoinEducationalPathsOptionalCourses($relationAlias = null) Adds a RIGHT JOIN clause to the query using the EducationalPathsOptionalCourses relation
+ * @method CourseQuery innerJoinEducationalPathsOptionalCourses($relationAlias = null) Adds a INNER JOIN clause to the query using the EducationalPathsOptionalCourses relation
  *
- * @method     CourseQuery leftJoinAlert($relationAlias = null) Adds a LEFT JOIN clause to the query using the Alert relation
- * @method     CourseQuery rightJoinAlert($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Alert relation
- * @method     CourseQuery innerJoinAlert($relationAlias = null) Adds a INNER JOIN clause to the query using the Alert relation
+ * @method CourseQuery leftJoinEducationalPathsMandatoryCourses($relationAlias = null) Adds a LEFT JOIN clause to the query using the EducationalPathsMandatoryCourses relation
+ * @method CourseQuery rightJoinEducationalPathsMandatoryCourses($relationAlias = null) Adds a RIGHT JOIN clause to the query using the EducationalPathsMandatoryCourses relation
+ * @method CourseQuery innerJoinEducationalPathsMandatoryCourses($relationAlias = null) Adds a INNER JOIN clause to the query using the EducationalPathsMandatoryCourses relation
  *
- * @method     CourseQuery leftJoinContent($relationAlias = null) Adds a LEFT JOIN clause to the query using the Content relation
- * @method     CourseQuery rightJoinContent($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Content relation
- * @method     CourseQuery innerJoinContent($relationAlias = null) Adds a INNER JOIN clause to the query using the Content relation
+ * @method CourseQuery leftJoinAlert($relationAlias = null) Adds a LEFT JOIN clause to the query using the Alert relation
+ * @method CourseQuery rightJoinAlert($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Alert relation
+ * @method CourseQuery innerJoinAlert($relationAlias = null) Adds a INNER JOIN clause to the query using the Alert relation
  *
- * @method     CourseQuery leftJoinNote($relationAlias = null) Adds a LEFT JOIN clause to the query using the Note relation
- * @method     CourseQuery rightJoinNote($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Note relation
- * @method     CourseQuery innerJoinNote($relationAlias = null) Adds a INNER JOIN clause to the query using the Note relation
+ * @method CourseQuery leftJoinContent($relationAlias = null) Adds a LEFT JOIN clause to the query using the Content relation
+ * @method CourseQuery rightJoinContent($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Content relation
+ * @method CourseQuery innerJoinContent($relationAlias = null) Adds a INNER JOIN clause to the query using the Content relation
  *
- * @method     CourseQuery leftJoinNews($relationAlias = null) Adds a LEFT JOIN clause to the query using the News relation
- * @method     CourseQuery rightJoinNews($relationAlias = null) Adds a RIGHT JOIN clause to the query using the News relation
- * @method     CourseQuery innerJoinNews($relationAlias = null) Adds a INNER JOIN clause to the query using the News relation
+ * @method CourseQuery leftJoinNote($relationAlias = null) Adds a LEFT JOIN clause to the query using the Note relation
+ * @method CourseQuery rightJoinNote($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Note relation
+ * @method CourseQuery innerJoinNote($relationAlias = null) Adds a INNER JOIN clause to the query using the Note relation
  *
- * @method     CourseQuery leftJoinExam($relationAlias = null) Adds a LEFT JOIN clause to the query using the Exam relation
- * @method     CourseQuery rightJoinExam($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Exam relation
- * @method     CourseQuery innerJoinExam($relationAlias = null) Adds a INNER JOIN clause to the query using the Exam relation
+ * @method CourseQuery leftJoinNews($relationAlias = null) Adds a LEFT JOIN clause to the query using the News relation
+ * @method CourseQuery rightJoinNews($relationAlias = null) Adds a RIGHT JOIN clause to the query using the News relation
+ * @method CourseQuery innerJoinNews($relationAlias = null) Adds a INNER JOIN clause to the query using the News relation
  *
- * @method     CourseQuery leftJoinScheduledCourse($relationAlias = null) Adds a LEFT JOIN clause to the query using the ScheduledCourse relation
- * @method     CourseQuery rightJoinScheduledCourse($relationAlias = null) Adds a RIGHT JOIN clause to the query using the ScheduledCourse relation
- * @method     CourseQuery innerJoinScheduledCourse($relationAlias = null) Adds a INNER JOIN clause to the query using the ScheduledCourse relation
+ * @method CourseQuery leftJoinExam($relationAlias = null) Adds a LEFT JOIN clause to the query using the Exam relation
+ * @method CourseQuery rightJoinExam($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Exam relation
+ * @method CourseQuery innerJoinExam($relationAlias = null) Adds a INNER JOIN clause to the query using the Exam relation
  *
- * @method     Course findOne(PropelPDO $con = null) Return the first Course matching the query
- * @method     Course findOneOrCreate(PropelPDO $con = null) Return the first Course matching the query, or a new Course object populated from the query conditions when no match is found
+ * @method CourseQuery leftJoinScheduledCourse($relationAlias = null) Adds a LEFT JOIN clause to the query using the ScheduledCourse relation
+ * @method CourseQuery rightJoinScheduledCourse($relationAlias = null) Adds a RIGHT JOIN clause to the query using the ScheduledCourse relation
+ * @method CourseQuery innerJoinScheduledCourse($relationAlias = null) Adds a INNER JOIN clause to the query using the ScheduledCourse relation
  *
- * @method     Course findOneById(int $id) Return the first Course filtered by the id column
- * @method     Course findOneByCursusId(int $cursus_id) Return the first Course filtered by the cursus_id column
- * @method     Course findOneBySemester(int $semester) Return the first Course filtered by the semester column
- * @method     Course findOneByName(string $name) Return the first Course filtered by the name column
- * @method     Course findOneByCode(string $code) Return the first Course filtered by the code column
- * @method     Course findOneByEcts(double $ECTS) Return the first Course filtered by the ECTS column
- * @method     Course findOneByDescription(string $description) Return the first Course filtered by the description column
+ * @method Course findOne(PropelPDO $con = null) Return the first Course matching the query
+ * @method Course findOneOrCreate(PropelPDO $con = null) Return the first Course matching the query, or a new Course object populated from the query conditions when no match is found
  *
- * @method     array findById(int $id) Return Course objects filtered by the id column
- * @method     array findByCursusId(int $cursus_id) Return Course objects filtered by the cursus_id column
- * @method     array findBySemester(int $semester) Return Course objects filtered by the semester column
- * @method     array findByName(string $name) Return Course objects filtered by the name column
- * @method     array findByCode(string $code) Return Course objects filtered by the code column
- * @method     array findByEcts(double $ECTS) Return Course objects filtered by the ECTS column
- * @method     array findByDescription(string $description) Return Course objects filtered by the description column
+ * @method Course findOneById(int $id) Return the first Course filtered by the id column
+ * @method Course findOneByCursusId(int $cursus_id) Return the first Course filtered by the cursus_id column
+ * @method Course findOneBySemester(int $semester) Return the first Course filtered by the semester column
+ * @method Course findOneByName(string $name) Return the first Course filtered by the name column
+ * @method Course findOneByCode(string $code) Return the first Course filtered by the code column
+ * @method Course findOneByEcts(double $ECTS) Return the first Course filtered by the ECTS column
+ * @method Course findOneByDescription(string $description) Return the first Course filtered by the description column
+ *
+ * @method array findById(int $id) Return Course objects filtered by the id column
+ * @method array findByCursusId(int $cursus_id) Return Course objects filtered by the cursus_id column
+ * @method array findBySemester(int $semester) Return Course objects filtered by the semester column
+ * @method array findByName(string $name) Return Course objects filtered by the name column
+ * @method array findByCode(string $code) Return Course objects filtered by the code column
+ * @method array findByEcts(double $ECTS) Return Course objects filtered by the ECTS column
+ * @method array findByDescription(string $description) Return Course objects filtered by the description column
  *
  * @package    propel.generator.ip7website.om
  */
 abstract class BaseCourseQuery extends ModelCriteria
 {
-    
     /**
      * Initializes internal state of BaseCourseQuery object.
      *
@@ -131,7 +130,7 @@ abstract class BaseCourseQuery extends ModelCriteria
      * $obj  = $c->findPk(12, $con);
      * </code>
      *
-     * @param mixed $key Primary key to use for the query 
+     * @param mixed $key Primary key to use for the query
      * @param     PropelPDO $con an optional connection object
      *
      * @return   Course|Course[]|mixed the result, formatted by the current formatter
@@ -173,7 +172,7 @@ abstract class BaseCourseQuery extends ModelCriteria
         $sql = 'SELECT `ID`, `CURSUS_ID`, `SEMESTER`, `NAME`, `CODE`, `ECTS`, `DESCRIPTION` FROM `courses` WHERE `ID` = :p0';
         try {
             $stmt = $con->prepare($sql);
-			$stmt->bindValue(':p0', $key, PDO::PARAM_INT);
+            $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
             $stmt->execute();
         } catch (Exception $e) {
             Propel::log($e->getMessage(), Propel::LOG_ERR);
@@ -1216,4 +1215,4 @@ abstract class BaseCourseQuery extends ModelCriteria
         return $this;
     }
 
-} // BaseCourseQuery
+}

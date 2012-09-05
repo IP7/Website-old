@@ -236,6 +236,11 @@ function display_moderation_edit_cursus() {
         'page' => array(
             'title' => 'Édition de « '.$cursus->getName().' »',
 
+            'breadcrumbs' => array(
+                1 => array( 'href' => cursus_url($cursus), 'title' => $cursus->getName() ),
+                2 => array( 'href' => url(),               'title' => 'Éditer' )
+            ),
+
             'cursus' => array( 'name' => $cursus->getName(), 'intro' => $cursus->getDescription() ),
 
             'cursus_edit_post_url' => $base_uri

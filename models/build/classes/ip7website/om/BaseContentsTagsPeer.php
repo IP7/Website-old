@@ -4,11 +4,12 @@
 /**
  * Base static class for performing query and update operations on the 'contents_tags' table.
  *
- * 
  *
- * @package    propel.generator.ip7website.om
+ *
+ * @package propel.generator.ip7website.om
  */
-abstract class BaseContentsTagsPeer {
+abstract class BaseContentsTagsPeer
+{
 
     /** the default database name for this class */
     const DATABASE_NAME = 'infop7db';
@@ -53,12 +54,12 @@ abstract class BaseContentsTagsPeer {
      * holds an array of fieldnames
      *
      * first dimension keys are the type constants
-     * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
+     * e.g. ContentsTagsPeer::$fieldNames[ContentsTagsPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
         BasePeer::TYPE_PHPNAME => array ('TagId', 'ContentId', ),
         BasePeer::TYPE_STUDLYPHPNAME => array ('tagId', 'contentId', ),
-        BasePeer::TYPE_COLNAME => array (self::TAG_ID, self::CONTENT_ID, ),
+        BasePeer::TYPE_COLNAME => array (ContentsTagsPeer::TAG_ID, ContentsTagsPeer::CONTENT_ID, ),
         BasePeer::TYPE_RAW_COLNAME => array ('TAG_ID', 'CONTENT_ID', ),
         BasePeer::TYPE_FIELDNAME => array ('tag_id', 'content_id', ),
         BasePeer::TYPE_NUM => array (0, 1, )
@@ -68,12 +69,12 @@ abstract class BaseContentsTagsPeer {
      * holds an array of keys for quick access to the fieldnames array
      *
      * first dimension keys are the type constants
-     * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
+     * e.g. ContentsTagsPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
         BasePeer::TYPE_PHPNAME => array ('TagId' => 0, 'ContentId' => 1, ),
         BasePeer::TYPE_STUDLYPHPNAME => array ('tagId' => 0, 'contentId' => 1, ),
-        BasePeer::TYPE_COLNAME => array (self::TAG_ID => 0, self::CONTENT_ID => 1, ),
+        BasePeer::TYPE_COLNAME => array (ContentsTagsPeer::TAG_ID => 0, ContentsTagsPeer::CONTENT_ID => 1, ),
         BasePeer::TYPE_RAW_COLNAME => array ('TAG_ID' => 0, 'CONTENT_ID' => 1, ),
         BasePeer::TYPE_FIELDNAME => array ('tag_id' => 0, 'content_id' => 1, ),
         BasePeer::TYPE_NUM => array (0, 1, )
@@ -91,10 +92,10 @@ abstract class BaseContentsTagsPeer {
      */
     public static function translateFieldName($name, $fromType, $toType)
     {
-        $toNames = self::getFieldNames($toType);
-        $key = isset(self::$fieldKeys[$fromType][$name]) ? self::$fieldKeys[$fromType][$name] : null;
+        $toNames = ContentsTagsPeer::getFieldNames($toType);
+        $key = isset(ContentsTagsPeer::$fieldKeys[$fromType][$name]) ? ContentsTagsPeer::$fieldKeys[$fromType][$name] : null;
         if ($key === null) {
-            throw new PropelException("'$name' could not be found in the field names of type '$fromType'. These are: " . print_r(self::$fieldKeys[$fromType], true));
+            throw new PropelException("'$name' could not be found in the field names of type '$fromType'. These are: " . print_r(ContentsTagsPeer::$fieldKeys[$fromType], true));
         }
 
         return $toNames[$key];
@@ -111,11 +112,11 @@ abstract class BaseContentsTagsPeer {
      */
     public static function getFieldNames($type = BasePeer::TYPE_PHPNAME)
     {
-        if (!array_key_exists($type, self::$fieldNames)) {
+        if (!array_key_exists($type, ContentsTagsPeer::$fieldNames)) {
             throw new PropelException('Method getFieldNames() expects the parameter $type to be one of the class constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME, BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM. ' . $type . ' was given.');
         }
 
-        return self::$fieldNames[$type];
+        return ContentsTagsPeer::$fieldNames[$type];
     }
 
     /**
@@ -185,7 +186,7 @@ abstract class BaseContentsTagsPeer {
         }
 
         $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
-        $criteria->setDbName(self::DATABASE_NAME); // Set the correct dbName
+        $criteria->setDbName(ContentsTagsPeer::DATABASE_NAME); // Set the correct dbName
 
         if ($con === null) {
             $con = Propel::getConnection(ContentsTagsPeer::DATABASE_NAME, Propel::CONNECTION_READ);
@@ -260,7 +261,7 @@ abstract class BaseContentsTagsPeer {
         }
 
         // Set the correct dbName
-        $criteria->setDbName(self::DATABASE_NAME);
+        $criteria->setDbName(ContentsTagsPeer::DATABASE_NAME);
 
         // BasePeer returns a PDOStatement
         return BasePeer::doSelect($criteria, $con);
@@ -283,7 +284,7 @@ abstract class BaseContentsTagsPeer {
             if ($key === null) {
                 $key = serialize(array((string) $obj->getTagId(), (string) $obj->getContentId()));
             } // if key === null
-            self::$instances[$key] = $obj;
+            ContentsTagsPeer::$instances[$key] = $obj;
         }
     }
 
@@ -313,7 +314,7 @@ abstract class BaseContentsTagsPeer {
                 throw $e;
             }
 
-            unset(self::$instances[$key]);
+            unset(ContentsTagsPeer::$instances[$key]);
         }
     } // removeInstanceFromPool()
 
@@ -324,20 +325,20 @@ abstract class BaseContentsTagsPeer {
      * a multi-column primary key, a serialize()d version of the primary key will be returned.
      *
      * @param      string $key The key (@see getPrimaryKeyHash()) for this instance.
-     * @return   ContentsTags Found object or NULL if 1) no instance exists for specified key or 2) instance pooling has been disabled.
+     * @return   ContentsTags Found object or null if 1) no instance exists for specified key or 2) instance pooling has been disabled.
      * @see        getPrimaryKeyHash()
      */
     public static function getInstanceFromPool($key)
     {
         if (Propel::isInstancePoolingEnabled()) {
-            if (isset(self::$instances[$key])) {
-                return self::$instances[$key];
+            if (isset(ContentsTagsPeer::$instances[$key])) {
+                return ContentsTagsPeer::$instances[$key];
             }
         }
 
         return null; // just to be explicit
     }
-    
+
     /**
      * Clear the instance pool.
      *
@@ -345,9 +346,9 @@ abstract class BaseContentsTagsPeer {
      */
     public static function clearInstancePool()
     {
-        self::$instances = array();
+        ContentsTagsPeer::$instances = array();
     }
-    
+
     /**
      * Method to invalidate the instance pool of all tables related to contents_tags
      * by a foreign key with ON DELETE CASCADE
@@ -364,11 +365,11 @@ abstract class BaseContentsTagsPeer {
      *
      * @param      array $row PropelPDO resultset row.
      * @param      int $startcol The 0-based offset for reading from the resultset row.
-     * @return string A string version of PK or NULL if the components of primary key in result array are all null.
+     * @return string A string version of PK or null if the components of primary key in result array are all null.
      */
     public static function getPrimaryKeyHashFromRow($row, $startcol = 0)
     {
-        // If the PK cannot be derived from the row, return NULL.
+        // If the PK cannot be derived from the row, return null.
         if ($row[$startcol] === null && $row[$startcol + 1] === null) {
             return null;
         }
@@ -390,7 +391,7 @@ abstract class BaseContentsTagsPeer {
 
         return array((int) $row[$startcol], (int) $row[$startcol + 1]);
     }
-    
+
     /**
      * The returned array will contain objects of the default type or
      * objects that inherit from the default.
@@ -401,7 +402,7 @@ abstract class BaseContentsTagsPeer {
     public static function populateObjects(PDOStatement $stmt)
     {
         $results = array();
-    
+
         // set the class once to avoid overhead in the loop
         $cls = ContentsTagsPeer::getOMClass();
         // populate the object(s)
@@ -481,7 +482,7 @@ abstract class BaseContentsTagsPeer {
         $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
 
         // Set the correct dbName
-        $criteria->setDbName(self::DATABASE_NAME);
+        $criteria->setDbName(ContentsTagsPeer::DATABASE_NAME);
 
         if ($con === null) {
             $con = Propel::getConnection(ContentsTagsPeer::DATABASE_NAME, Propel::CONNECTION_READ);
@@ -532,7 +533,7 @@ abstract class BaseContentsTagsPeer {
         $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
 
         // Set the correct dbName
-        $criteria->setDbName(self::DATABASE_NAME);
+        $criteria->setDbName(ContentsTagsPeer::DATABASE_NAME);
 
         if ($con === null) {
             $con = Propel::getConnection(ContentsTagsPeer::DATABASE_NAME, Propel::CONNECTION_READ);
@@ -568,7 +569,7 @@ abstract class BaseContentsTagsPeer {
 
         // Set the correct dbName if it has not been overridden
         if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(self::DATABASE_NAME);
+            $criteria->setDbName(ContentsTagsPeer::DATABASE_NAME);
         }
 
         ContentsTagsPeer::addSelectColumns($criteria);
@@ -635,7 +636,7 @@ abstract class BaseContentsTagsPeer {
 
         // Set the correct dbName if it has not been overridden
         if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(self::DATABASE_NAME);
+            $criteria->setDbName(ContentsTagsPeer::DATABASE_NAME);
         }
 
         ContentsTagsPeer::addSelectColumns($criteria);
@@ -717,7 +718,7 @@ abstract class BaseContentsTagsPeer {
         $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
 
         // Set the correct dbName
-        $criteria->setDbName(self::DATABASE_NAME);
+        $criteria->setDbName(ContentsTagsPeer::DATABASE_NAME);
 
         if ($con === null) {
             $con = Propel::getConnection(ContentsTagsPeer::DATABASE_NAME, Propel::CONNECTION_READ);
@@ -755,7 +756,7 @@ abstract class BaseContentsTagsPeer {
 
         // Set the correct dbName if it has not been overridden
         if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(self::DATABASE_NAME);
+            $criteria->setDbName(ContentsTagsPeer::DATABASE_NAME);
         }
 
         ContentsTagsPeer::addSelectColumns($criteria);
@@ -862,12 +863,12 @@ abstract class BaseContentsTagsPeer {
         $criteria->clearOrderByColumns(); // ORDER BY should not affect count
 
         // Set the correct dbName
-        $criteria->setDbName(self::DATABASE_NAME);
+        $criteria->setDbName(ContentsTagsPeer::DATABASE_NAME);
 
         if ($con === null) {
             $con = Propel::getConnection(ContentsTagsPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
-    
+
         $criteria->addJoin(ContentsTagsPeer::CONTENT_ID, ContentPeer::ID, $join_behavior);
 
         $stmt = BasePeer::doCount($criteria, $con);
@@ -913,12 +914,12 @@ abstract class BaseContentsTagsPeer {
         $criteria->clearOrderByColumns(); // ORDER BY should not affect count
 
         // Set the correct dbName
-        $criteria->setDbName(self::DATABASE_NAME);
+        $criteria->setDbName(ContentsTagsPeer::DATABASE_NAME);
 
         if ($con === null) {
             $con = Propel::getConnection(ContentsTagsPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
-    
+
         $criteria->addJoin(ContentsTagsPeer::TAG_ID, TagPeer::ID, $join_behavior);
 
         $stmt = BasePeer::doCount($criteria, $con);
@@ -952,7 +953,7 @@ abstract class BaseContentsTagsPeer {
         // $criteria->getDbName() will return the same object if not set to another value
         // so == check is okay and faster
         if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(self::DATABASE_NAME);
+            $criteria->setDbName(ContentsTagsPeer::DATABASE_NAME);
         }
 
         ContentsTagsPeer::addSelectColumns($criteria);
@@ -987,7 +988,7 @@ abstract class BaseContentsTagsPeer {
                 if ($key2 !== null) {
                     $obj2 = ContentPeer::getInstanceFromPool($key2);
                     if (!$obj2) {
-    
+
                         $cls = ContentPeer::getOMClass();
 
                     $obj2 = new $cls();
@@ -1026,7 +1027,7 @@ abstract class BaseContentsTagsPeer {
         // $criteria->getDbName() will return the same object if not set to another value
         // so == check is okay and faster
         if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(self::DATABASE_NAME);
+            $criteria->setDbName(ContentsTagsPeer::DATABASE_NAME);
         }
 
         ContentsTagsPeer::addSelectColumns($criteria);
@@ -1061,7 +1062,7 @@ abstract class BaseContentsTagsPeer {
                 if ($key2 !== null) {
                     $obj2 = TagPeer::getInstanceFromPool($key2);
                     if (!$obj2) {
-    
+
                         $cls = TagPeer::getOMClass();
 
                     $obj2 = new $cls();
@@ -1090,7 +1091,7 @@ abstract class BaseContentsTagsPeer {
      */
     public static function getTableMap()
     {
-        return Propel::getDatabaseMap(self::DATABASE_NAME)->getTable(self::TABLE_NAME);
+        return Propel::getDatabaseMap(ContentsTagsPeer::DATABASE_NAME)->getTable(ContentsTagsPeer::TABLE_NAME);
     }
 
     /**
@@ -1138,7 +1139,7 @@ abstract class BaseContentsTagsPeer {
 
 
         // Set the correct dbName
-        $criteria->setDbName(self::DATABASE_NAME);
+        $criteria->setDbName(ContentsTagsPeer::DATABASE_NAME);
 
         try {
             // use transaction because $criteria could contain info
@@ -1169,7 +1170,7 @@ abstract class BaseContentsTagsPeer {
             $con = Propel::getConnection(ContentsTagsPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
-        $selectCriteria = new Criteria(self::DATABASE_NAME);
+        $selectCriteria = new Criteria(ContentsTagsPeer::DATABASE_NAME);
 
         if ($values instanceof Criteria) {
             $criteria = clone $values; // rename for clarity
@@ -1196,7 +1197,7 @@ abstract class BaseContentsTagsPeer {
         }
 
         // set the correct dbName
-        $criteria->setDbName(self::DATABASE_NAME);
+        $criteria->setDbName(ContentsTagsPeer::DATABASE_NAME);
 
         return BasePeer::doUpdate($selectCriteria, $criteria, $con);
     }
@@ -1263,7 +1264,7 @@ abstract class BaseContentsTagsPeer {
             // create criteria based on pk values
             $criteria = $values->buildPkeyCriteria();
         } else { // it's a primary key, or an array of pks
-            $criteria = new Criteria(self::DATABASE_NAME);
+            $criteria = new Criteria(ContentsTagsPeer::DATABASE_NAME);
             // primary key is composite; we therefore, expect
             // the primary key passed to be an array of pkey values
             if (count($values) == count($values, COUNT_RECURSIVE)) {
@@ -1280,7 +1281,7 @@ abstract class BaseContentsTagsPeer {
         }
 
         // Set the correct dbName
-        $criteria->setDbName(self::DATABASE_NAME);
+        $criteria->setDbName(ContentsTagsPeer::DATABASE_NAME);
 
         $affectedRows = 0; // initialize var to track total num of affected rows
 
@@ -1288,7 +1289,7 @@ abstract class BaseContentsTagsPeer {
             // use transaction because $criteria could contain info
             // for more than one table or we could emulating ON DELETE CASCADE, etc.
             $con->beginTransaction();
-            
+
             $affectedRows += BasePeer::doDelete($criteria, $con);
             ContentsTagsPeer::clearRelatedInstancePool();
             $con->commit();

@@ -4,64 +4,63 @@
 /**
  * Base class that represents a query for the 'events' table.
  *
- * 
  *
- * @method     EventQuery orderById($order = Criteria::ASC) Order by the id column
- * @method     EventQuery orderByName($order = Criteria::ASC) Order by the name column
- * @method     EventQuery orderByEventTypeId($order = Criteria::ASC) Order by the event_type_id column
- * @method     EventQuery orderByDescription($order = Criteria::ASC) Order by the description column
- * @method     EventQuery orderByDate($order = Criteria::ASC) Order by the date column
- * @method     EventQuery orderByBeginning($order = Criteria::ASC) Order by the beginning column
- * @method     EventQuery orderByEnd($order = Criteria::ASC) Order by the end column
- * @method     EventQuery orderByPlace($order = Criteria::ASC) Order by the place column
- * @method     EventQuery orderByAccessRights($order = Criteria::ASC) Order by the access_rights column
  *
- * @method     EventQuery groupById() Group by the id column
- * @method     EventQuery groupByName() Group by the name column
- * @method     EventQuery groupByEventTypeId() Group by the event_type_id column
- * @method     EventQuery groupByDescription() Group by the description column
- * @method     EventQuery groupByDate() Group by the date column
- * @method     EventQuery groupByBeginning() Group by the beginning column
- * @method     EventQuery groupByEnd() Group by the end column
- * @method     EventQuery groupByPlace() Group by the place column
- * @method     EventQuery groupByAccessRights() Group by the access_rights column
+ * @method EventQuery orderById($order = Criteria::ASC) Order by the id column
+ * @method EventQuery orderByName($order = Criteria::ASC) Order by the name column
+ * @method EventQuery orderByEventTypeId($order = Criteria::ASC) Order by the event_type_id column
+ * @method EventQuery orderByDescription($order = Criteria::ASC) Order by the description column
+ * @method EventQuery orderByDate($order = Criteria::ASC) Order by the date column
+ * @method EventQuery orderByBeginning($order = Criteria::ASC) Order by the beginning column
+ * @method EventQuery orderByEnd($order = Criteria::ASC) Order by the end column
+ * @method EventQuery orderByPlace($order = Criteria::ASC) Order by the place column
+ * @method EventQuery orderByAccessRights($order = Criteria::ASC) Order by the access_rights column
  *
- * @method     EventQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
- * @method     EventQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
- * @method     EventQuery innerJoin($relation) Adds a INNER JOIN clause to the query
+ * @method EventQuery groupById() Group by the id column
+ * @method EventQuery groupByName() Group by the name column
+ * @method EventQuery groupByEventTypeId() Group by the event_type_id column
+ * @method EventQuery groupByDescription() Group by the description column
+ * @method EventQuery groupByDate() Group by the date column
+ * @method EventQuery groupByBeginning() Group by the beginning column
+ * @method EventQuery groupByEnd() Group by the end column
+ * @method EventQuery groupByPlace() Group by the place column
+ * @method EventQuery groupByAccessRights() Group by the access_rights column
  *
- * @method     EventQuery leftJoinEventType($relationAlias = null) Adds a LEFT JOIN clause to the query using the EventType relation
- * @method     EventQuery rightJoinEventType($relationAlias = null) Adds a RIGHT JOIN clause to the query using the EventType relation
- * @method     EventQuery innerJoinEventType($relationAlias = null) Adds a INNER JOIN clause to the query using the EventType relation
+ * @method EventQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
+ * @method EventQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
+ * @method EventQuery innerJoin($relation) Adds a INNER JOIN clause to the query
  *
- * @method     Event findOne(PropelPDO $con = null) Return the first Event matching the query
- * @method     Event findOneOrCreate(PropelPDO $con = null) Return the first Event matching the query, or a new Event object populated from the query conditions when no match is found
+ * @method EventQuery leftJoinEventType($relationAlias = null) Adds a LEFT JOIN clause to the query using the EventType relation
+ * @method EventQuery rightJoinEventType($relationAlias = null) Adds a RIGHT JOIN clause to the query using the EventType relation
+ * @method EventQuery innerJoinEventType($relationAlias = null) Adds a INNER JOIN clause to the query using the EventType relation
  *
- * @method     Event findOneById(int $id) Return the first Event filtered by the id column
- * @method     Event findOneByName(string $name) Return the first Event filtered by the name column
- * @method     Event findOneByEventTypeId(int $event_type_id) Return the first Event filtered by the event_type_id column
- * @method     Event findOneByDescription(string $description) Return the first Event filtered by the description column
- * @method     Event findOneByDate(string $date) Return the first Event filtered by the date column
- * @method     Event findOneByBeginning(string $beginning) Return the first Event filtered by the beginning column
- * @method     Event findOneByEnd(string $end) Return the first Event filtered by the end column
- * @method     Event findOneByPlace(string $place) Return the first Event filtered by the place column
- * @method     Event findOneByAccessRights(int $access_rights) Return the first Event filtered by the access_rights column
+ * @method Event findOne(PropelPDO $con = null) Return the first Event matching the query
+ * @method Event findOneOrCreate(PropelPDO $con = null) Return the first Event matching the query, or a new Event object populated from the query conditions when no match is found
  *
- * @method     array findById(int $id) Return Event objects filtered by the id column
- * @method     array findByName(string $name) Return Event objects filtered by the name column
- * @method     array findByEventTypeId(int $event_type_id) Return Event objects filtered by the event_type_id column
- * @method     array findByDescription(string $description) Return Event objects filtered by the description column
- * @method     array findByDate(string $date) Return Event objects filtered by the date column
- * @method     array findByBeginning(string $beginning) Return Event objects filtered by the beginning column
- * @method     array findByEnd(string $end) Return Event objects filtered by the end column
- * @method     array findByPlace(string $place) Return Event objects filtered by the place column
- * @method     array findByAccessRights(int $access_rights) Return Event objects filtered by the access_rights column
+ * @method Event findOneById(int $id) Return the first Event filtered by the id column
+ * @method Event findOneByName(string $name) Return the first Event filtered by the name column
+ * @method Event findOneByEventTypeId(int $event_type_id) Return the first Event filtered by the event_type_id column
+ * @method Event findOneByDescription(string $description) Return the first Event filtered by the description column
+ * @method Event findOneByDate(string $date) Return the first Event filtered by the date column
+ * @method Event findOneByBeginning(string $beginning) Return the first Event filtered by the beginning column
+ * @method Event findOneByEnd(string $end) Return the first Event filtered by the end column
+ * @method Event findOneByPlace(string $place) Return the first Event filtered by the place column
+ * @method Event findOneByAccessRights(int $access_rights) Return the first Event filtered by the access_rights column
+ *
+ * @method array findById(int $id) Return Event objects filtered by the id column
+ * @method array findByName(string $name) Return Event objects filtered by the name column
+ * @method array findByEventTypeId(int $event_type_id) Return Event objects filtered by the event_type_id column
+ * @method array findByDescription(string $description) Return Event objects filtered by the description column
+ * @method array findByDate(string $date) Return Event objects filtered by the date column
+ * @method array findByBeginning(string $beginning) Return Event objects filtered by the beginning column
+ * @method array findByEnd(string $end) Return Event objects filtered by the end column
+ * @method array findByPlace(string $place) Return Event objects filtered by the place column
+ * @method array findByAccessRights(int $access_rights) Return Event objects filtered by the access_rights column
  *
  * @package    propel.generator.ip7website.om
  */
 abstract class BaseEventQuery extends ModelCriteria
 {
-    
     /**
      * Initializes internal state of BaseEventQuery object.
      *
@@ -107,7 +106,7 @@ abstract class BaseEventQuery extends ModelCriteria
      * $obj  = $c->findPk(12, $con);
      * </code>
      *
-     * @param mixed $key Primary key to use for the query 
+     * @param mixed $key Primary key to use for the query
      * @param     PropelPDO $con an optional connection object
      *
      * @return   Event|Event[]|mixed the result, formatted by the current formatter
@@ -149,7 +148,7 @@ abstract class BaseEventQuery extends ModelCriteria
         $sql = 'SELECT `ID`, `NAME`, `EVENT_TYPE_ID`, `DESCRIPTION`, `DATE`, `BEGINNING`, `END`, `PLACE`, `ACCESS_RIGHTS` FROM `events` WHERE `ID` = :p0';
         try {
             $stmt = $con->prepare($sql);
-			$stmt->bindValue(':p0', $key, PDO::PARAM_INT);
+            $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
             $stmt->execute();
         } catch (Exception $e) {
             Propel::log($e->getMessage(), Propel::LOG_ERR);
@@ -654,4 +653,4 @@ abstract class BaseEventQuery extends ModelCriteria
         return $this;
     }
 
-} // BaseEventQuery
+}

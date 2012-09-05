@@ -4,13 +4,12 @@
 /**
  * Base class that represents a row from the 'contents' table.
  *
- * 
+ *
  *
  * @package    propel.generator.ip7website.om
  */
-abstract class BaseContent extends BaseObject 
+abstract class BaseContent extends BaseObject implements Persistent
 {
-
     /**
      * Peer class name
      */
@@ -82,7 +81,7 @@ abstract class BaseContent extends BaseObject
 
     /**
      * Whether the lazy-loaded $text value has been loaded from database.
-     * This is necessary to avoid repeated lookups if $text column is NULL in the db.
+     * This is necessary to avoid repeated lookups if $text column is null in the db.
      * @var        boolean
      */
     protected $text_isLoaded = false;
@@ -123,21 +122,25 @@ abstract class BaseContent extends BaseObject
      * @var        PropelObjectCollection|ContentsFiles[] Collection to store aggregation of ContentsFiles objects.
      */
     protected $collContentsFiless;
+    protected $collContentsFilessPartial;
 
     /**
      * @var        PropelObjectCollection|Comment[] Collection to store aggregation of Comment objects.
      */
     protected $collComments;
+    protected $collCommentsPartial;
 
     /**
      * @var        PropelObjectCollection|ContentsTags[] Collection to store aggregation of ContentsTags objects.
      */
     protected $collContentsTagss;
+    protected $collContentsTagssPartial;
 
     /**
      * @var        PropelObjectCollection|Report[] Collection to store aggregation of Report objects.
      */
     protected $collReports;
+    protected $collReportsPartial;
 
     /**
      * @var        PropelObjectCollection|File[] Collection to store aggregation of File objects.
@@ -221,44 +224,41 @@ abstract class BaseContent extends BaseObject
 
     /**
      * Get the [id] column value.
-     * 
-     * @return   int
+     *
+     * @return int
      */
     public function getId()
     {
-
         return $this->id;
     }
 
     /**
      * Get the [author_id] column value.
-     * 
-     * @return   int
+     *
+     * @return int
      */
     public function getAuthorId()
     {
-
         return $this->author_id;
     }
 
     /**
      * Get the [content_type_id] column value.
-     * 
-     * @return   int
+     *
+     * @return int
      */
     public function getContentTypeId()
     {
-
         return $this->content_type_id;
     }
 
     /**
      * Get the [optionally formatted] temporal [date] column value.
-     * 
      *
-     * @param      string $format The date/time format string (either date()-style or strftime()-style).
-     *							If format is NULL, then the raw DateTime object will be returned.
-     * @return mixed Formatted date/time value as string or DateTime object (if format is NULL), NULL if column is NULL, and 0 if column value is 0000-00-00 00:00:00
+     *
+     * @param string $format The date/time format string (either date()-style or strftime()-style).
+     *				 If format is null, then the raw DateTime object will be returned.
+     * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00 00:00:00
      * @throws PropelException - if unable to parse/validate the date/time value.
      */
     public function getDate($format = '{d-m-Y H:i:s}')
@@ -267,9 +267,8 @@ abstract class BaseContent extends BaseObject
             return null;
         }
 
-
         if ($this->date === '0000-00-00 00:00:00') {
-            // while technically this is not a default value of NULL,
+            // while technically this is not a default value of null,
             // this seems to be closest in meaning.
             return null;
         } else {
@@ -281,7 +280,7 @@ abstract class BaseContent extends BaseObject
         }
 
         if ($format === null) {
-            // Because propel.useDateTimeClass is TRUE, we return a DateTime object.
+            // Because propel.useDateTimeClass is true, we return a DateTime object.
             return $dt;
         } elseif (strpos($format, '%') !== false) {
             return strftime($format, $dt->format('U'));
@@ -292,49 +291,45 @@ abstract class BaseContent extends BaseObject
 
     /**
      * Get the [access_rights] column value.
-     * 
-     * @return   int
+     *
+     * @return int
      */
     public function getAccessRights()
     {
-
         return $this->access_rights;
     }
 
     /**
      * Get the [validated] column value.
-     * 
-     * @return   boolean
+     *
+     * @return boolean
      */
     public function getValidated()
     {
-
         return $this->validated;
     }
 
     /**
      * Get the [title] column value.
-     * 
-     * @return   string
+     *
+     * @return string
      */
     public function getTitle()
     {
-
         return $this->title;
     }
 
     /**
      * Get the [text] column value.
-     * 
-     * @param      PropelPDO $con An optional PropelPDO connection to use for fetching this lazy-loaded column.
-     * @return   string
+     *
+     * @param PropelPDO $con An optional PropelPDO connection to use for fetching this lazy-loaded column.
+     * @return string
      */
     public function getText(PropelPDO $con = null)
     {
         if (!$this->text_isLoaded && $this->text === null && !$this->isNew()) {
             $this->loadText($con);
         }
-
 
         return $this->text;
     }
@@ -366,31 +361,29 @@ abstract class BaseContent extends BaseObject
     }
     /**
      * Get the [cursus_id] column value.
-     * 
-     * @return   int
+     *
+     * @return int
      */
     public function getCursusId()
     {
-
         return $this->cursus_id;
     }
 
     /**
      * Get the [course_id] column value.
-     * 
-     * @return   int
+     *
+     * @return int
      */
     public function getCourseId()
     {
-
         return $this->course_id;
     }
 
     /**
      * Set the value of [id] column.
-     * 
-     * @param      int $v new value
-     * @return   Content The current object (for fluent API support)
+     *
+     * @param int $v new value
+     * @return Content The current object (for fluent API support)
      */
     public function setId($v)
     {
@@ -409,9 +402,9 @@ abstract class BaseContent extends BaseObject
 
     /**
      * Set the value of [author_id] column.
-     * 
-     * @param      int $v new value
-     * @return   Content The current object (for fluent API support)
+     *
+     * @param int $v new value
+     * @return Content The current object (for fluent API support)
      */
     public function setAuthorId($v)
     {
@@ -434,9 +427,9 @@ abstract class BaseContent extends BaseObject
 
     /**
      * Set the value of [content_type_id] column.
-     * 
-     * @param      int $v new value
-     * @return   Content The current object (for fluent API support)
+     *
+     * @param int $v new value
+     * @return Content The current object (for fluent API support)
      */
     public function setContentTypeId($v)
     {
@@ -459,10 +452,10 @@ abstract class BaseContent extends BaseObject
 
     /**
      * Sets the value of [date] column to a normalized version of the date/time value specified.
-     * 
-     * @param      mixed $v string, integer (timestamp), or DateTime value.
-     *               Empty strings are treated as NULL.
-     * @return   Content The current object (for fluent API support)
+     *
+     * @param mixed $v string, integer (timestamp), or DateTime value.
+     *               Empty strings are treated as null.
+     * @return Content The current object (for fluent API support)
      */
     public function setDate($v)
     {
@@ -482,9 +475,9 @@ abstract class BaseContent extends BaseObject
 
     /**
      * Set the value of [access_rights] column.
-     * 
-     * @param      int $v new value
-     * @return   Content The current object (for fluent API support)
+     *
+     * @param int $v new value
+     * @return Content The current object (for fluent API support)
      */
     public function setAccessRights($v)
     {
@@ -507,9 +500,9 @@ abstract class BaseContent extends BaseObject
      *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
      *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
      * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
-     * 
-     * @param      boolean|integer|string $v The new value
-     * @return   Content The current object (for fluent API support)
+     *
+     * @param boolean|integer|string $v The new value
+     * @return Content The current object (for fluent API support)
      */
     public function setValidated($v)
     {
@@ -532,9 +525,9 @@ abstract class BaseContent extends BaseObject
 
     /**
      * Set the value of [title] column.
-     * 
-     * @param      string $v new value
-     * @return   Content The current object (for fluent API support)
+     *
+     * @param string $v new value
+     * @return Content The current object (for fluent API support)
      */
     public function setTitle($v)
     {
@@ -553,9 +546,9 @@ abstract class BaseContent extends BaseObject
 
     /**
      * Set the value of [text] column.
-     * 
-     * @param      string $v new value
-     * @return   Content The current object (for fluent API support)
+     *
+     * @param string $v new value
+     * @return Content The current object (for fluent API support)
      */
     public function setText($v)
     {
@@ -580,9 +573,9 @@ abstract class BaseContent extends BaseObject
 
     /**
      * Set the value of [cursus_id] column.
-     * 
-     * @param      int $v new value
-     * @return   Content The current object (for fluent API support)
+     *
+     * @param int $v new value
+     * @return Content The current object (for fluent API support)
      */
     public function setCursusId($v)
     {
@@ -605,9 +598,9 @@ abstract class BaseContent extends BaseObject
 
     /**
      * Set the value of [course_id] column.
-     * 
-     * @param      int $v new value
-     * @return   Content The current object (for fluent API support)
+     *
+     * @param int $v new value
+     * @return Content The current object (for fluent API support)
      */
     public function setCourseId($v)
     {
@@ -638,7 +631,7 @@ abstract class BaseContent extends BaseObject
      */
     public function hasOnlyDefaultValues()
     {
-        // otherwise, everything was equal, so return TRUE
+        // otherwise, everything was equal, so return true
         return true;
     } // hasOnlyDefaultValues()
 
@@ -650,9 +643,9 @@ abstract class BaseContent extends BaseObject
      * for results of JOIN queries where the resultset row includes columns from two or
      * more tables.
      *
-     * @param      array $row The row returned by PDOStatement->fetch(PDO::FETCH_NUM)
-     * @param      int $startcol 0-based offset column which indicates which restultset column to start with.
-     * @param      boolean $rehydrate Whether this object is being re-hydrated from the database.
+     * @param array $row The row returned by PDOStatement->fetch(PDO::FETCH_NUM)
+     * @param int $startcol 0-based offset column which indicates which restultset column to start with.
+     * @param boolean $rehydrate Whether this object is being re-hydrated from the database.
      * @return int             next starting column
      * @throws PropelException - Any caught Exception will be rewrapped as a PropelException.
      */
@@ -719,8 +712,8 @@ abstract class BaseContent extends BaseObject
      *
      * This will only work if the object has been saved and has a valid primary key set.
      *
-     * @param      boolean $deep (optional) Whether to also de-associated any related objects.
-     * @param      PropelPDO $con (optional) The PropelPDO connection to use.
+     * @param boolean $deep (optional) Whether to also de-associated any related objects.
+     * @param PropelPDO $con (optional) The PropelPDO connection to use.
      * @return void
      * @throws PropelException - if this object is deleted, unsaved or doesn't have pk match in db
      */
@@ -775,7 +768,7 @@ abstract class BaseContent extends BaseObject
     /**
      * Removes this object from datastore and sets delete attribute.
      *
-     * @param      PropelPDO $con
+     * @param PropelPDO $con
      * @return void
      * @throws PropelException
      * @throws Exception
@@ -819,7 +812,7 @@ abstract class BaseContent extends BaseObject
      * method.  This method wraps all precipitate database operations in a
      * single transaction.
      *
-     * @param      PropelPDO $con
+     * @param PropelPDO $con
      * @return int             The number of rows affected by this insert/update and any referring fk objects' save() operations.
      * @throws PropelException
      * @throws Exception
@@ -871,7 +864,7 @@ abstract class BaseContent extends BaseObject
      * If the object is new, it inserts it; otherwise an update is performed.
      * All related objects are also updated in this method.
      *
-     * @param      PropelPDO $con
+     * @param PropelPDO $con
      * @return int             The number of rows affected by this insert/update and any referring fk objects' save() operations.
      * @throws PropelException
      * @see        save()
@@ -1046,7 +1039,7 @@ abstract class BaseContent extends BaseObject
     /**
      * Insert the row in the database.
      *
-     * @param      PropelPDO $con
+     * @param PropelPDO $con
      *
      * @throws PropelException
      * @see        doSave()
@@ -1104,34 +1097,34 @@ abstract class BaseContent extends BaseObject
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
                     case '`ID`':
-						$stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
+                        $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
                     case '`AUTHOR_ID`':
-						$stmt->bindValue($identifier, $this->author_id, PDO::PARAM_INT);
+                        $stmt->bindValue($identifier, $this->author_id, PDO::PARAM_INT);
                         break;
                     case '`CONTENT_TYPE_ID`':
-						$stmt->bindValue($identifier, $this->content_type_id, PDO::PARAM_INT);
+                        $stmt->bindValue($identifier, $this->content_type_id, PDO::PARAM_INT);
                         break;
                     case '`DATE`':
-						$stmt->bindValue($identifier, $this->date, PDO::PARAM_STR);
+                        $stmt->bindValue($identifier, $this->date, PDO::PARAM_STR);
                         break;
                     case '`ACCESS_RIGHTS`':
-						$stmt->bindValue($identifier, $this->access_rights, PDO::PARAM_INT);
+                        $stmt->bindValue($identifier, $this->access_rights, PDO::PARAM_INT);
                         break;
                     case '`VALIDATED`':
-						$stmt->bindValue($identifier, (int) $this->validated, PDO::PARAM_INT);
+                        $stmt->bindValue($identifier, (int) $this->validated, PDO::PARAM_INT);
                         break;
                     case '`TITLE`':
-						$stmt->bindValue($identifier, $this->title, PDO::PARAM_STR);
+                        $stmt->bindValue($identifier, $this->title, PDO::PARAM_STR);
                         break;
                     case '`TEXT`':
-						$stmt->bindValue($identifier, $this->text, PDO::PARAM_STR);
+                        $stmt->bindValue($identifier, $this->text, PDO::PARAM_STR);
                         break;
                     case '`CURSUS_ID`':
-						$stmt->bindValue($identifier, $this->cursus_id, PDO::PARAM_INT);
+                        $stmt->bindValue($identifier, $this->cursus_id, PDO::PARAM_INT);
                         break;
                     case '`COURSE_ID`':
-						$stmt->bindValue($identifier, $this->course_id, PDO::PARAM_INT);
+                        $stmt->bindValue($identifier, $this->course_id, PDO::PARAM_INT);
                         break;
                 }
             }
@@ -1142,7 +1135,7 @@ abstract class BaseContent extends BaseObject
         }
 
         try {
-			$pk = $con->lastInsertId();
+            $pk = $con->lastInsertId();
         } catch (Exception $e) {
             throw new PropelException('Unable to get autoincrement id.', $e);
         }
@@ -1154,7 +1147,7 @@ abstract class BaseContent extends BaseObject
     /**
      * Update the row in the database.
      *
-     * @param      PropelPDO $con
+     * @param PropelPDO $con
      *
      * @see        doSave()
      */
@@ -1189,7 +1182,7 @@ abstract class BaseContent extends BaseObject
      * If $columns is either a column name or an array of column names
      * only those columns are validated.
      *
-     * @param      mixed $columns Column name or an array of column names.
+     * @param mixed $columns Column name or an array of column names.
      * @return boolean Whether all columns pass validation.
      * @see        doValidate()
      * @see        getValidationFailures()
@@ -1215,7 +1208,7 @@ abstract class BaseContent extends BaseObject
      * also be validated.  If all pass then <code>true</code> is returned; otherwise
      * an aggreagated array of ValidationFailed objects will be returned.
      *
-     * @param      array $columns Array of column names to validate.
+     * @param array $columns Array of column names to validate.
      * @return mixed <code>true</code> if all validations pass; array of <code>ValidationFailed</code> objets otherwise.
      */
     protected function doValidate($columns = null)
@@ -1304,11 +1297,11 @@ abstract class BaseContent extends BaseObject
     /**
      * Retrieves a field from the object by name passed in as a string.
      *
-     * @param      string $name name
-     * @param      string $type The type of fieldname the $name is of:
-     *                     one of the class type constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME
-     *                     BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM.
-     *                     Defaults to BasePeer::TYPE_PHPNAME
+     * @param string $name name
+     * @param string $type The type of fieldname the $name is of:
+     *               one of the class type constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME
+     *               BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM.
+     *               Defaults to BasePeer::TYPE_PHPNAME
      * @return mixed Value of field.
      */
     public function getByName($name, $type = BasePeer::TYPE_PHPNAME)
@@ -1323,7 +1316,7 @@ abstract class BaseContent extends BaseObject
      * Retrieves a field from the object by Position as specified in the xml schema.
      * Zero-based.
      *
-     * @param      int $pos position in xml schema
+     * @param int $pos position in xml schema
      * @return mixed Value of field at $pos
      */
     public function getByPosition($pos)
@@ -1374,7 +1367,7 @@ abstract class BaseContent extends BaseObject
      * @param     string  $keyType (optional) One of the class type constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME,
      *                    BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM.
      *                    Defaults to BasePeer::TYPE_PHPNAME.
-     * @param     boolean $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to TRUE.
+     * @param     boolean $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to true.
      * @param     array $alreadyDumpedObjects List of objects to skip to avoid recursion
      * @param     boolean $includeForeignObjects (optional) Whether to include hydrated related objects. Default to FALSE.
      *
@@ -1432,9 +1425,9 @@ abstract class BaseContent extends BaseObject
     /**
      * Sets a field from the object by name passed in as a string.
      *
-     * @param      string $name peer name
-     * @param      mixed $value field value
-     * @param      string $type The type of fieldname the $name is of:
+     * @param string $name peer name
+     * @param mixed $value field value
+     * @param string $type The type of fieldname the $name is of:
      *                     one of the class type constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME
      *                     BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM.
      *                     Defaults to BasePeer::TYPE_PHPNAME
@@ -1451,8 +1444,8 @@ abstract class BaseContent extends BaseObject
      * Sets a field from the object by Position as specified in the xml schema.
      * Zero-based.
      *
-     * @param      int $pos position in xml schema
-     * @param      mixed $value field value
+     * @param int $pos position in xml schema
+     * @param mixed $value field value
      * @return void
      */
     public function setByPosition($pos, $value)
@@ -1504,8 +1497,8 @@ abstract class BaseContent extends BaseObject
      * BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM.
      * The default key type is the column's BasePeer::TYPE_PHPNAME
      *
-     * @param      array  $arr     An array to populate the object from.
-     * @param      string $keyType The type of keys the array uses.
+     * @param array  $arr     An array to populate the object from.
+     * @param string $keyType The type of keys the array uses.
      * @return void
      */
     public function fromArray($arr, $keyType = BasePeer::TYPE_PHPNAME)
@@ -1565,7 +1558,7 @@ abstract class BaseContent extends BaseObject
 
     /**
      * Returns the primary key for this object (row).
-     * @return   int
+     * @return int
      */
     public function getPrimaryKey()
     {
@@ -1575,7 +1568,7 @@ abstract class BaseContent extends BaseObject
     /**
      * Generic method to set the primary key (id column).
      *
-     * @param       int $key Primary key.
+     * @param  int $key Primary key.
      * @return void
      */
     public function setPrimaryKey($key)
@@ -1599,9 +1592,9 @@ abstract class BaseContent extends BaseObject
      * If desired, this method can also make copies of all associated (fkey referrers)
      * objects.
      *
-     * @param      object $copyObj An object of Content (or compatible) type.
-     * @param      boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
-     * @param      boolean $makeNew Whether to reset autoincrement PKs and make the object new.
+     * @param object $copyObj An object of Content (or compatible) type.
+     * @param boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
+     * @param boolean $makeNew Whether to reset autoincrement PKs and make the object new.
      * @throws PropelException
      */
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
@@ -1665,8 +1658,8 @@ abstract class BaseContent extends BaseObject
      * If desired, this method can also make copies of all associated (fkey referrers)
      * objects.
      *
-     * @param      boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
-     * @return                 Content Clone of current object.
+     * @param boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
+     * @return Content Clone of current object.
      * @throws PropelException
      */
     public function copy($deepCopy = false)
@@ -1686,7 +1679,7 @@ abstract class BaseContent extends BaseObject
      * same instance for all member of this class. The method could therefore
      * be static, but this would prevent one from overriding the behavior.
      *
-     * @return   ContentPeer
+     * @return ContentPeer
      */
     public function getPeer()
     {
@@ -1700,8 +1693,8 @@ abstract class BaseContent extends BaseObject
     /**
      * Declares an association between this object and a User object.
      *
-     * @param                  User $v
-     * @return                 Content The current object (for fluent API support)
+     * @param             User $v
+     * @return Content The current object (for fluent API support)
      * @throws PropelException
      */
     public function setAuthor(User $v = null)
@@ -1728,8 +1721,8 @@ abstract class BaseContent extends BaseObject
     /**
      * Get the associated User object
      *
-     * @param      PropelPDO $con Optional Connection object.
-     * @return                 User The associated User object.
+     * @param PropelPDO $con Optional Connection object.
+     * @return User The associated User object.
      * @throws PropelException
      */
     public function getAuthor(PropelPDO $con = null)
@@ -1751,8 +1744,8 @@ abstract class BaseContent extends BaseObject
     /**
      * Declares an association between this object and a Cursus object.
      *
-     * @param                  Cursus $v
-     * @return                 Content The current object (for fluent API support)
+     * @param             Cursus $v
+     * @return Content The current object (for fluent API support)
      * @throws PropelException
      */
     public function setCursus(Cursus $v = null)
@@ -1779,8 +1772,8 @@ abstract class BaseContent extends BaseObject
     /**
      * Get the associated Cursus object
      *
-     * @param      PropelPDO $con Optional Connection object.
-     * @return                 Cursus The associated Cursus object.
+     * @param PropelPDO $con Optional Connection object.
+     * @return Cursus The associated Cursus object.
      * @throws PropelException
      */
     public function getCursus(PropelPDO $con = null)
@@ -1802,8 +1795,8 @@ abstract class BaseContent extends BaseObject
     /**
      * Declares an association between this object and a Course object.
      *
-     * @param                  Course $v
-     * @return                 Content The current object (for fluent API support)
+     * @param             Course $v
+     * @return Content The current object (for fluent API support)
      * @throws PropelException
      */
     public function setCourse(Course $v = null)
@@ -1830,8 +1823,8 @@ abstract class BaseContent extends BaseObject
     /**
      * Get the associated Course object
      *
-     * @param      PropelPDO $con Optional Connection object.
-     * @return                 Course The associated Course object.
+     * @param PropelPDO $con Optional Connection object.
+     * @return Course The associated Course object.
      * @throws PropelException
      */
     public function getCourse(PropelPDO $con = null)
@@ -1853,8 +1846,8 @@ abstract class BaseContent extends BaseObject
     /**
      * Declares an association between this object and a ContentType object.
      *
-     * @param                  ContentType $v
-     * @return                 Content The current object (for fluent API support)
+     * @param             ContentType $v
+     * @return Content The current object (for fluent API support)
      * @throws PropelException
      */
     public function setContentType(ContentType $v = null)
@@ -1881,8 +1874,8 @@ abstract class BaseContent extends BaseObject
     /**
      * Get the associated ContentType object
      *
-     * @param      PropelPDO $con Optional Connection object.
-     * @return                 ContentType The associated ContentType object.
+     * @param PropelPDO $con Optional Connection object.
+     * @return ContentType The associated ContentType object.
      * @throws PropelException
      */
     public function getContentType(PropelPDO $con = null)
@@ -1907,7 +1900,7 @@ abstract class BaseContent extends BaseObject
      * Avoids crafting an 'init[$relationName]s' method name
      * that wouldn't work when StandardEnglishPluralizer is used.
      *
-     * @param      string $relationName The name of the relation to initialize
+     * @param string $relationName The name of the relation to initialize
      * @return void
      */
     public function initRelation($relationName)
@@ -1937,7 +1930,18 @@ abstract class BaseContent extends BaseObject
      */
     public function clearContentsFiless()
     {
-        $this->collContentsFiless = null; // important to set this to NULL since that means it is uninitialized
+        $this->collContentsFiless = null; // important to set this to null since that means it is uninitialized
+        $this->collContentsFilessPartial = null;
+    }
+
+    /**
+     * reset is the collContentsFiless collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialContentsFiless($v = true)
+    {
+        $this->collContentsFilessPartial = $v;
     }
 
     /**
@@ -1947,7 +1951,7 @@ abstract class BaseContent extends BaseObject
      * however, you may wish to override this method in your stub class to provide setting appropriate
      * to your application -- for example, setting the initial array to the values stored in database.
      *
-     * @param      boolean $overrideExisting If set to true, the method call initializes
+     * @param boolean $overrideExisting If set to true, the method call initializes
      *                                        the collection even if it is not empty
      *
      * @return void
@@ -1970,14 +1974,15 @@ abstract class BaseContent extends BaseObject
      * If this Content is new, it will return
      * an empty collection or the current collection; the criteria is ignored on a new object.
      *
-     * @param      Criteria $criteria optional Criteria object to narrow the query
-     * @param      PropelPDO $con optional connection object
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
      * @return PropelObjectCollection|ContentsFiles[] List of ContentsFiles objects
      * @throws PropelException
      */
     public function getContentsFiless($criteria = null, PropelPDO $con = null)
     {
-        if (null === $this->collContentsFiless || null !== $criteria) {
+        $partial = $this->collContentsFilessPartial && !$this->isNew();
+        if (null === $this->collContentsFiless || null !== $criteria  || $partial) {
             if ($this->isNew() && null === $this->collContentsFiless) {
                 // return empty collection
                 $this->initContentsFiless();
@@ -1986,9 +1991,31 @@ abstract class BaseContent extends BaseObject
                     ->filterByContent($this)
                     ->find($con);
                 if (null !== $criteria) {
+                    if (false !== $this->collContentsFilessPartial && count($collContentsFiless)) {
+                      $this->initContentsFiless(false);
+
+                      foreach($collContentsFiless as $obj) {
+                        if (false == $this->collContentsFiless->contains($obj)) {
+                          $this->collContentsFiless->append($obj);
+                        }
+                      }
+
+                      $this->collContentsFilessPartial = true;
+                    }
+
                     return $collContentsFiless;
                 }
+
+                if($partial && $this->collContentsFiless) {
+                    foreach($this->collContentsFiless as $obj) {
+                        if($obj->isNew()) {
+                            $collContentsFiless[] = $obj;
+                        }
+                    }
+                }
+
                 $this->collContentsFiless = $collContentsFiless;
+                $this->collContentsFilessPartial = false;
             }
         }
 
@@ -2001,8 +2028,8 @@ abstract class BaseContent extends BaseObject
      * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
      * and new objects from the given Propel collection.
      *
-     * @param      PropelCollection $contentsFiless A Propel collection.
-     * @param      PropelPDO $con Optional connection object
+     * @param PropelCollection $contentsFiless A Propel collection.
+     * @param PropelPDO $con Optional connection object
      */
     public function setContentsFiless(PropelCollection $contentsFiless, PropelPDO $con = null)
     {
@@ -2018,23 +2045,28 @@ abstract class BaseContent extends BaseObject
         }
 
         $this->collContentsFiless = $contentsFiless;
+        $this->collContentsFilessPartial = false;
     }
 
     /**
      * Returns the number of related ContentsFiles objects.
      *
-     * @param      Criteria $criteria
-     * @param      boolean $distinct
-     * @param      PropelPDO $con
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
      * @return int             Count of related ContentsFiles objects.
      * @throws PropelException
      */
     public function countContentsFiless(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
     {
-        if (null === $this->collContentsFiless || null !== $criteria) {
+        $partial = $this->collContentsFilessPartial && !$this->isNew();
+        if (null === $this->collContentsFiless || null !== $criteria || $partial) {
             if ($this->isNew() && null === $this->collContentsFiless) {
                 return 0;
             } else {
+                if($partial && !$criteria) {
+                    return count($this->getContentsFiless());
+                }
                 $query = ContentsFilesQuery::create(null, $criteria);
                 if ($distinct) {
                     $query->distinct();
@@ -2054,12 +2086,13 @@ abstract class BaseContent extends BaseObject
      * through the ContentsFiles foreign key attribute.
      *
      * @param    ContentsFiles $l ContentsFiles
-     * @return   Content The current object (for fluent API support)
+     * @return Content The current object (for fluent API support)
      */
     public function addContentsFiles(ContentsFiles $l)
     {
         if ($this->collContentsFiless === null) {
             $this->initContentsFiless();
+            $this->collContentsFilessPartial = true;
         }
         if (!$this->collContentsFiless->contains($l)) { // only add it if the **same** object is not already associated
             $this->doAddContentsFiles($l);
@@ -2105,9 +2138,9 @@ abstract class BaseContent extends BaseObject
      * api reasonable.  You can provide public methods for those you
      * actually need in Content.
      *
-     * @param      Criteria $criteria optional Criteria object to narrow the query
-     * @param      PropelPDO $con optional connection object
-     * @param      string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
      * @return PropelObjectCollection|ContentsFiles[] List of ContentsFiles objects
      */
     public function getContentsFilessJoinFile($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
@@ -2129,7 +2162,18 @@ abstract class BaseContent extends BaseObject
      */
     public function clearComments()
     {
-        $this->collComments = null; // important to set this to NULL since that means it is uninitialized
+        $this->collComments = null; // important to set this to null since that means it is uninitialized
+        $this->collCommentsPartial = null;
+    }
+
+    /**
+     * reset is the collComments collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialComments($v = true)
+    {
+        $this->collCommentsPartial = $v;
     }
 
     /**
@@ -2139,7 +2183,7 @@ abstract class BaseContent extends BaseObject
      * however, you may wish to override this method in your stub class to provide setting appropriate
      * to your application -- for example, setting the initial array to the values stored in database.
      *
-     * @param      boolean $overrideExisting If set to true, the method call initializes
+     * @param boolean $overrideExisting If set to true, the method call initializes
      *                                        the collection even if it is not empty
      *
      * @return void
@@ -2162,14 +2206,15 @@ abstract class BaseContent extends BaseObject
      * If this Content is new, it will return
      * an empty collection or the current collection; the criteria is ignored on a new object.
      *
-     * @param      Criteria $criteria optional Criteria object to narrow the query
-     * @param      PropelPDO $con optional connection object
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
      * @return PropelObjectCollection|Comment[] List of Comment objects
      * @throws PropelException
      */
     public function getComments($criteria = null, PropelPDO $con = null)
     {
-        if (null === $this->collComments || null !== $criteria) {
+        $partial = $this->collCommentsPartial && !$this->isNew();
+        if (null === $this->collComments || null !== $criteria  || $partial) {
             if ($this->isNew() && null === $this->collComments) {
                 // return empty collection
                 $this->initComments();
@@ -2178,9 +2223,31 @@ abstract class BaseContent extends BaseObject
                     ->filterByContent($this)
                     ->find($con);
                 if (null !== $criteria) {
+                    if (false !== $this->collCommentsPartial && count($collComments)) {
+                      $this->initComments(false);
+
+                      foreach($collComments as $obj) {
+                        if (false == $this->collComments->contains($obj)) {
+                          $this->collComments->append($obj);
+                        }
+                      }
+
+                      $this->collCommentsPartial = true;
+                    }
+
                     return $collComments;
                 }
+
+                if($partial && $this->collComments) {
+                    foreach($this->collComments as $obj) {
+                        if($obj->isNew()) {
+                            $collComments[] = $obj;
+                        }
+                    }
+                }
+
                 $this->collComments = $collComments;
+                $this->collCommentsPartial = false;
             }
         }
 
@@ -2193,8 +2260,8 @@ abstract class BaseContent extends BaseObject
      * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
      * and new objects from the given Propel collection.
      *
-     * @param      PropelCollection $comments A Propel collection.
-     * @param      PropelPDO $con Optional connection object
+     * @param PropelCollection $comments A Propel collection.
+     * @param PropelPDO $con Optional connection object
      */
     public function setComments(PropelCollection $comments, PropelPDO $con = null)
     {
@@ -2210,23 +2277,28 @@ abstract class BaseContent extends BaseObject
         }
 
         $this->collComments = $comments;
+        $this->collCommentsPartial = false;
     }
 
     /**
      * Returns the number of related Comment objects.
      *
-     * @param      Criteria $criteria
-     * @param      boolean $distinct
-     * @param      PropelPDO $con
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
      * @return int             Count of related Comment objects.
      * @throws PropelException
      */
     public function countComments(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
     {
-        if (null === $this->collComments || null !== $criteria) {
+        $partial = $this->collCommentsPartial && !$this->isNew();
+        if (null === $this->collComments || null !== $criteria || $partial) {
             if ($this->isNew() && null === $this->collComments) {
                 return 0;
             } else {
+                if($partial && !$criteria) {
+                    return count($this->getComments());
+                }
                 $query = CommentQuery::create(null, $criteria);
                 if ($distinct) {
                     $query->distinct();
@@ -2246,12 +2318,13 @@ abstract class BaseContent extends BaseObject
      * through the Comment foreign key attribute.
      *
      * @param    Comment $l Comment
-     * @return   Content The current object (for fluent API support)
+     * @return Content The current object (for fluent API support)
      */
     public function addComment(Comment $l)
     {
         if ($this->collComments === null) {
             $this->initComments();
+            $this->collCommentsPartial = true;
         }
         if (!$this->collComments->contains($l)) { // only add it if the **same** object is not already associated
             $this->doAddComment($l);
@@ -2297,9 +2370,9 @@ abstract class BaseContent extends BaseObject
      * api reasonable.  You can provide public methods for those you
      * actually need in Content.
      *
-     * @param      Criteria $criteria optional Criteria object to narrow the query
-     * @param      PropelPDO $con optional connection object
-     * @param      string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
      * @return PropelObjectCollection|Comment[] List of Comment objects
      */
     public function getCommentsJoinReplyToComment($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
@@ -2322,9 +2395,9 @@ abstract class BaseContent extends BaseObject
      * api reasonable.  You can provide public methods for those you
      * actually need in Content.
      *
-     * @param      Criteria $criteria optional Criteria object to narrow the query
-     * @param      PropelPDO $con optional connection object
-     * @param      string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
      * @return PropelObjectCollection|Comment[] List of Comment objects
      */
     public function getCommentsJoinAuthor($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
@@ -2346,7 +2419,18 @@ abstract class BaseContent extends BaseObject
      */
     public function clearContentsTagss()
     {
-        $this->collContentsTagss = null; // important to set this to NULL since that means it is uninitialized
+        $this->collContentsTagss = null; // important to set this to null since that means it is uninitialized
+        $this->collContentsTagssPartial = null;
+    }
+
+    /**
+     * reset is the collContentsTagss collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialContentsTagss($v = true)
+    {
+        $this->collContentsTagssPartial = $v;
     }
 
     /**
@@ -2356,7 +2440,7 @@ abstract class BaseContent extends BaseObject
      * however, you may wish to override this method in your stub class to provide setting appropriate
      * to your application -- for example, setting the initial array to the values stored in database.
      *
-     * @param      boolean $overrideExisting If set to true, the method call initializes
+     * @param boolean $overrideExisting If set to true, the method call initializes
      *                                        the collection even if it is not empty
      *
      * @return void
@@ -2379,14 +2463,15 @@ abstract class BaseContent extends BaseObject
      * If this Content is new, it will return
      * an empty collection or the current collection; the criteria is ignored on a new object.
      *
-     * @param      Criteria $criteria optional Criteria object to narrow the query
-     * @param      PropelPDO $con optional connection object
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
      * @return PropelObjectCollection|ContentsTags[] List of ContentsTags objects
      * @throws PropelException
      */
     public function getContentsTagss($criteria = null, PropelPDO $con = null)
     {
-        if (null === $this->collContentsTagss || null !== $criteria) {
+        $partial = $this->collContentsTagssPartial && !$this->isNew();
+        if (null === $this->collContentsTagss || null !== $criteria  || $partial) {
             if ($this->isNew() && null === $this->collContentsTagss) {
                 // return empty collection
                 $this->initContentsTagss();
@@ -2395,9 +2480,31 @@ abstract class BaseContent extends BaseObject
                     ->filterByContent($this)
                     ->find($con);
                 if (null !== $criteria) {
+                    if (false !== $this->collContentsTagssPartial && count($collContentsTagss)) {
+                      $this->initContentsTagss(false);
+
+                      foreach($collContentsTagss as $obj) {
+                        if (false == $this->collContentsTagss->contains($obj)) {
+                          $this->collContentsTagss->append($obj);
+                        }
+                      }
+
+                      $this->collContentsTagssPartial = true;
+                    }
+
                     return $collContentsTagss;
                 }
+
+                if($partial && $this->collContentsTagss) {
+                    foreach($this->collContentsTagss as $obj) {
+                        if($obj->isNew()) {
+                            $collContentsTagss[] = $obj;
+                        }
+                    }
+                }
+
                 $this->collContentsTagss = $collContentsTagss;
+                $this->collContentsTagssPartial = false;
             }
         }
 
@@ -2410,8 +2517,8 @@ abstract class BaseContent extends BaseObject
      * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
      * and new objects from the given Propel collection.
      *
-     * @param      PropelCollection $contentsTagss A Propel collection.
-     * @param      PropelPDO $con Optional connection object
+     * @param PropelCollection $contentsTagss A Propel collection.
+     * @param PropelPDO $con Optional connection object
      */
     public function setContentsTagss(PropelCollection $contentsTagss, PropelPDO $con = null)
     {
@@ -2427,23 +2534,28 @@ abstract class BaseContent extends BaseObject
         }
 
         $this->collContentsTagss = $contentsTagss;
+        $this->collContentsTagssPartial = false;
     }
 
     /**
      * Returns the number of related ContentsTags objects.
      *
-     * @param      Criteria $criteria
-     * @param      boolean $distinct
-     * @param      PropelPDO $con
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
      * @return int             Count of related ContentsTags objects.
      * @throws PropelException
      */
     public function countContentsTagss(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
     {
-        if (null === $this->collContentsTagss || null !== $criteria) {
+        $partial = $this->collContentsTagssPartial && !$this->isNew();
+        if (null === $this->collContentsTagss || null !== $criteria || $partial) {
             if ($this->isNew() && null === $this->collContentsTagss) {
                 return 0;
             } else {
+                if($partial && !$criteria) {
+                    return count($this->getContentsTagss());
+                }
                 $query = ContentsTagsQuery::create(null, $criteria);
                 if ($distinct) {
                     $query->distinct();
@@ -2463,12 +2575,13 @@ abstract class BaseContent extends BaseObject
      * through the ContentsTags foreign key attribute.
      *
      * @param    ContentsTags $l ContentsTags
-     * @return   Content The current object (for fluent API support)
+     * @return Content The current object (for fluent API support)
      */
     public function addContentsTags(ContentsTags $l)
     {
         if ($this->collContentsTagss === null) {
             $this->initContentsTagss();
+            $this->collContentsTagssPartial = true;
         }
         if (!$this->collContentsTagss->contains($l)) { // only add it if the **same** object is not already associated
             $this->doAddContentsTags($l);
@@ -2514,9 +2627,9 @@ abstract class BaseContent extends BaseObject
      * api reasonable.  You can provide public methods for those you
      * actually need in Content.
      *
-     * @param      Criteria $criteria optional Criteria object to narrow the query
-     * @param      PropelPDO $con optional connection object
-     * @param      string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
      * @return PropelObjectCollection|ContentsTags[] List of ContentsTags objects
      */
     public function getContentsTagssJoinTag($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
@@ -2538,7 +2651,18 @@ abstract class BaseContent extends BaseObject
      */
     public function clearReports()
     {
-        $this->collReports = null; // important to set this to NULL since that means it is uninitialized
+        $this->collReports = null; // important to set this to null since that means it is uninitialized
+        $this->collReportsPartial = null;
+    }
+
+    /**
+     * reset is the collReports collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialReports($v = true)
+    {
+        $this->collReportsPartial = $v;
     }
 
     /**
@@ -2548,7 +2672,7 @@ abstract class BaseContent extends BaseObject
      * however, you may wish to override this method in your stub class to provide setting appropriate
      * to your application -- for example, setting the initial array to the values stored in database.
      *
-     * @param      boolean $overrideExisting If set to true, the method call initializes
+     * @param boolean $overrideExisting If set to true, the method call initializes
      *                                        the collection even if it is not empty
      *
      * @return void
@@ -2571,14 +2695,15 @@ abstract class BaseContent extends BaseObject
      * If this Content is new, it will return
      * an empty collection or the current collection; the criteria is ignored on a new object.
      *
-     * @param      Criteria $criteria optional Criteria object to narrow the query
-     * @param      PropelPDO $con optional connection object
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
      * @return PropelObjectCollection|Report[] List of Report objects
      * @throws PropelException
      */
     public function getReports($criteria = null, PropelPDO $con = null)
     {
-        if (null === $this->collReports || null !== $criteria) {
+        $partial = $this->collReportsPartial && !$this->isNew();
+        if (null === $this->collReports || null !== $criteria  || $partial) {
             if ($this->isNew() && null === $this->collReports) {
                 // return empty collection
                 $this->initReports();
@@ -2587,9 +2712,31 @@ abstract class BaseContent extends BaseObject
                     ->filterByContent($this)
                     ->find($con);
                 if (null !== $criteria) {
+                    if (false !== $this->collReportsPartial && count($collReports)) {
+                      $this->initReports(false);
+
+                      foreach($collReports as $obj) {
+                        if (false == $this->collReports->contains($obj)) {
+                          $this->collReports->append($obj);
+                        }
+                      }
+
+                      $this->collReportsPartial = true;
+                    }
+
                     return $collReports;
                 }
+
+                if($partial && $this->collReports) {
+                    foreach($this->collReports as $obj) {
+                        if($obj->isNew()) {
+                            $collReports[] = $obj;
+                        }
+                    }
+                }
+
                 $this->collReports = $collReports;
+                $this->collReportsPartial = false;
             }
         }
 
@@ -2602,8 +2749,8 @@ abstract class BaseContent extends BaseObject
      * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
      * and new objects from the given Propel collection.
      *
-     * @param      PropelCollection $reports A Propel collection.
-     * @param      PropelPDO $con Optional connection object
+     * @param PropelCollection $reports A Propel collection.
+     * @param PropelPDO $con Optional connection object
      */
     public function setReports(PropelCollection $reports, PropelPDO $con = null)
     {
@@ -2619,23 +2766,28 @@ abstract class BaseContent extends BaseObject
         }
 
         $this->collReports = $reports;
+        $this->collReportsPartial = false;
     }
 
     /**
      * Returns the number of related Report objects.
      *
-     * @param      Criteria $criteria
-     * @param      boolean $distinct
-     * @param      PropelPDO $con
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
      * @return int             Count of related Report objects.
      * @throws PropelException
      */
     public function countReports(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
     {
-        if (null === $this->collReports || null !== $criteria) {
+        $partial = $this->collReportsPartial && !$this->isNew();
+        if (null === $this->collReports || null !== $criteria || $partial) {
             if ($this->isNew() && null === $this->collReports) {
                 return 0;
             } else {
+                if($partial && !$criteria) {
+                    return count($this->getReports());
+                }
                 $query = ReportQuery::create(null, $criteria);
                 if ($distinct) {
                     $query->distinct();
@@ -2655,12 +2807,13 @@ abstract class BaseContent extends BaseObject
      * through the Report foreign key attribute.
      *
      * @param    Report $l Report
-     * @return   Content The current object (for fluent API support)
+     * @return Content The current object (for fluent API support)
      */
     public function addReport(Report $l)
     {
         if ($this->collReports === null) {
             $this->initReports();
+            $this->collReportsPartial = true;
         }
         if (!$this->collReports->contains($l)) { // only add it if the **same** object is not already associated
             $this->doAddReport($l);
@@ -2706,9 +2859,9 @@ abstract class BaseContent extends BaseObject
      * api reasonable.  You can provide public methods for those you
      * actually need in Content.
      *
-     * @param      Criteria $criteria optional Criteria object to narrow the query
-     * @param      PropelPDO $con optional connection object
-     * @param      string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
      * @return PropelObjectCollection|Report[] List of Report objects
      */
     public function getReportsJoinAuthor($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
@@ -2730,7 +2883,8 @@ abstract class BaseContent extends BaseObject
      */
     public function clearFiles()
     {
-        $this->collFiles = null; // important to set this to NULL since that means it is uninitialized
+        $this->collFiles = null; // important to set this to null since that means it is uninitialized
+        $this->collFilesPartial = null;
     }
 
     /**
@@ -2758,8 +2912,8 @@ abstract class BaseContent extends BaseObject
      * If this Content is new, it will return
      * an empty collection or the current collection; the criteria is ignored on a new object.
      *
-     * @param      Criteria $criteria Optional query object to filter the query
-     * @param      PropelPDO $con Optional connection object
+     * @param Criteria $criteria Optional query object to filter the query
+     * @param PropelPDO $con Optional connection object
      *
      * @return PropelObjectCollection|File[] List of File objects
      */
@@ -2789,8 +2943,8 @@ abstract class BaseContent extends BaseObject
      * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
      * and new objects from the given Propel collection.
      *
-     * @param      PropelCollection $files A Propel collection.
-     * @param      PropelPDO $con Optional connection object
+     * @param PropelCollection $files A Propel collection.
+     * @param PropelPDO $con Optional connection object
      */
     public function setFiles(PropelCollection $files, PropelPDO $con = null)
     {
@@ -2812,9 +2966,9 @@ abstract class BaseContent extends BaseObject
      * Gets the number of File objects related by a many-to-many relationship
      * to the current object by way of the contents_files cross-reference table.
      *
-     * @param      Criteria $criteria Optional query object to filter the query
-     * @param      boolean $distinct Set to true to force count distinct
-     * @param      PropelPDO $con Optional connection object
+     * @param Criteria $criteria Optional query object to filter the query
+     * @param boolean $distinct Set to true to force count distinct
+     * @param PropelPDO $con Optional connection object
      *
      * @return int the number of related File objects
      */
@@ -2871,7 +3025,7 @@ abstract class BaseContent extends BaseObject
      * Remove a File object to this object
      * through the contents_files cross reference table.
      *
-     * @param      File $file The ContentsFiles object to relate
+     * @param File $file The ContentsFiles object to relate
      * @return void
      */
     public function removeFile(File $file)
@@ -2897,7 +3051,8 @@ abstract class BaseContent extends BaseObject
      */
     public function clearTags()
     {
-        $this->collTags = null; // important to set this to NULL since that means it is uninitialized
+        $this->collTags = null; // important to set this to null since that means it is uninitialized
+        $this->collTagsPartial = null;
     }
 
     /**
@@ -2925,8 +3080,8 @@ abstract class BaseContent extends BaseObject
      * If this Content is new, it will return
      * an empty collection or the current collection; the criteria is ignored on a new object.
      *
-     * @param      Criteria $criteria Optional query object to filter the query
-     * @param      PropelPDO $con Optional connection object
+     * @param Criteria $criteria Optional query object to filter the query
+     * @param PropelPDO $con Optional connection object
      *
      * @return PropelObjectCollection|Tag[] List of Tag objects
      */
@@ -2956,8 +3111,8 @@ abstract class BaseContent extends BaseObject
      * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
      * and new objects from the given Propel collection.
      *
-     * @param      PropelCollection $tags A Propel collection.
-     * @param      PropelPDO $con Optional connection object
+     * @param PropelCollection $tags A Propel collection.
+     * @param PropelPDO $con Optional connection object
      */
     public function setTags(PropelCollection $tags, PropelPDO $con = null)
     {
@@ -2979,9 +3134,9 @@ abstract class BaseContent extends BaseObject
      * Gets the number of Tag objects related by a many-to-many relationship
      * to the current object by way of the contents_tags cross-reference table.
      *
-     * @param      Criteria $criteria Optional query object to filter the query
-     * @param      boolean $distinct Set to true to force count distinct
-     * @param      PropelPDO $con Optional connection object
+     * @param Criteria $criteria Optional query object to filter the query
+     * @param boolean $distinct Set to true to force count distinct
+     * @param PropelPDO $con Optional connection object
      *
      * @return int the number of related Tag objects
      */
@@ -3038,7 +3193,7 @@ abstract class BaseContent extends BaseObject
      * Remove a Tag object to this object
      * through the contents_tags cross reference table.
      *
-     * @param      Tag $tag The ContentsTags object to relate
+     * @param Tag $tag The ContentsTags object to relate
      * @return void
      */
     public function removeTag(Tag $tag)
@@ -3085,7 +3240,7 @@ abstract class BaseContent extends BaseObject
      * objects with circular references (even in PHP 5.3). This is currently necessary
      * when using Propel in certain daemon or large-volumne/high-memory operations.
      *
-     * @param      boolean $deep Whether to also clear the references on all referrer objects.
+     * @param boolean $deep Whether to also clear the references on all referrer objects.
      */
     public function clearAllReferences($deep = false)
     {
@@ -3153,7 +3308,7 @@ abstract class BaseContent extends BaseObject
     }
 
     /**
-     * Return the string representation of this object
+     * return the string representation of this object
      *
      * @return string
      */
@@ -3162,4 +3317,14 @@ abstract class BaseContent extends BaseObject
         return (string) $this->exportTo(ContentPeer::DEFAULT_STRING_FORMAT);
     }
 
-} // BaseContent
+    /**
+     * return true is the object is in saving state
+     *
+     * @return boolean
+     */
+    public function isAlreadyInSave()
+    {
+        return $this->alreadyInSave;
+    }
+
+}

@@ -4,11 +4,12 @@
 /**
  * Base static class for performing query and update operations on the 'exams' table.
  *
- * 
  *
- * @package    propel.generator.ip7website.om
+ *
+ * @package propel.generator.ip7website.om
  */
-abstract class BaseExamPeer {
+abstract class BaseExamPeer
+{
 
     /** the default database name for this class */
     const DATABASE_NAME = 'infop7db';
@@ -65,12 +66,12 @@ abstract class BaseExamPeer {
      * holds an array of fieldnames
      *
      * first dimension keys are the type constants
-     * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
+     * e.g. ExamPeer::$fieldNames[ExamPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
         BasePeer::TYPE_PHPNAME => array ('Id', 'CourseId', 'Date', 'Beginning', 'End', 'Comments', ),
         BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'courseId', 'date', 'beginning', 'end', 'comments', ),
-        BasePeer::TYPE_COLNAME => array (self::ID, self::COURSE_ID, self::DATE, self::BEGINNING, self::END, self::COMMENTS, ),
+        BasePeer::TYPE_COLNAME => array (ExamPeer::ID, ExamPeer::COURSE_ID, ExamPeer::DATE, ExamPeer::BEGINNING, ExamPeer::END, ExamPeer::COMMENTS, ),
         BasePeer::TYPE_RAW_COLNAME => array ('ID', 'COURSE_ID', 'DATE', 'BEGINNING', 'END', 'COMMENTS', ),
         BasePeer::TYPE_FIELDNAME => array ('id', 'course_id', 'date', 'beginning', 'end', 'comments', ),
         BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
@@ -80,12 +81,12 @@ abstract class BaseExamPeer {
      * holds an array of keys for quick access to the fieldnames array
      *
      * first dimension keys are the type constants
-     * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
+     * e.g. ExamPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
         BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'CourseId' => 1, 'Date' => 2, 'Beginning' => 3, 'End' => 4, 'Comments' => 5, ),
         BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'courseId' => 1, 'date' => 2, 'beginning' => 3, 'end' => 4, 'comments' => 5, ),
-        BasePeer::TYPE_COLNAME => array (self::ID => 0, self::COURSE_ID => 1, self::DATE => 2, self::BEGINNING => 3, self::END => 4, self::COMMENTS => 5, ),
+        BasePeer::TYPE_COLNAME => array (ExamPeer::ID => 0, ExamPeer::COURSE_ID => 1, ExamPeer::DATE => 2, ExamPeer::BEGINNING => 3, ExamPeer::END => 4, ExamPeer::COMMENTS => 5, ),
         BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'COURSE_ID' => 1, 'DATE' => 2, 'BEGINNING' => 3, 'END' => 4, 'COMMENTS' => 5, ),
         BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'course_id' => 1, 'date' => 2, 'beginning' => 3, 'end' => 4, 'comments' => 5, ),
         BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
@@ -103,10 +104,10 @@ abstract class BaseExamPeer {
      */
     public static function translateFieldName($name, $fromType, $toType)
     {
-        $toNames = self::getFieldNames($toType);
-        $key = isset(self::$fieldKeys[$fromType][$name]) ? self::$fieldKeys[$fromType][$name] : null;
+        $toNames = ExamPeer::getFieldNames($toType);
+        $key = isset(ExamPeer::$fieldKeys[$fromType][$name]) ? ExamPeer::$fieldKeys[$fromType][$name] : null;
         if ($key === null) {
-            throw new PropelException("'$name' could not be found in the field names of type '$fromType'. These are: " . print_r(self::$fieldKeys[$fromType], true));
+            throw new PropelException("'$name' could not be found in the field names of type '$fromType'. These are: " . print_r(ExamPeer::$fieldKeys[$fromType], true));
         }
 
         return $toNames[$key];
@@ -123,11 +124,11 @@ abstract class BaseExamPeer {
      */
     public static function getFieldNames($type = BasePeer::TYPE_PHPNAME)
     {
-        if (!array_key_exists($type, self::$fieldNames)) {
+        if (!array_key_exists($type, ExamPeer::$fieldNames)) {
             throw new PropelException('Method getFieldNames() expects the parameter $type to be one of the class constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME, BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM. ' . $type . ' was given.');
         }
 
-        return self::$fieldNames[$type];
+        return ExamPeer::$fieldNames[$type];
     }
 
     /**
@@ -205,7 +206,7 @@ abstract class BaseExamPeer {
         }
 
         $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
-        $criteria->setDbName(self::DATABASE_NAME); // Set the correct dbName
+        $criteria->setDbName(ExamPeer::DATABASE_NAME); // Set the correct dbName
 
         if ($con === null) {
             $con = Propel::getConnection(ExamPeer::DATABASE_NAME, Propel::CONNECTION_READ);
@@ -280,7 +281,7 @@ abstract class BaseExamPeer {
         }
 
         // Set the correct dbName
-        $criteria->setDbName(self::DATABASE_NAME);
+        $criteria->setDbName(ExamPeer::DATABASE_NAME);
 
         // BasePeer returns a PDOStatement
         return BasePeer::doSelect($criteria, $con);
@@ -303,7 +304,7 @@ abstract class BaseExamPeer {
             if ($key === null) {
                 $key = (string) $obj->getId();
             } // if key === null
-            self::$instances[$key] = $obj;
+            ExamPeer::$instances[$key] = $obj;
         }
     }
 
@@ -333,7 +334,7 @@ abstract class BaseExamPeer {
                 throw $e;
             }
 
-            unset(self::$instances[$key]);
+            unset(ExamPeer::$instances[$key]);
         }
     } // removeInstanceFromPool()
 
@@ -344,20 +345,20 @@ abstract class BaseExamPeer {
      * a multi-column primary key, a serialize()d version of the primary key will be returned.
      *
      * @param      string $key The key (@see getPrimaryKeyHash()) for this instance.
-     * @return   Exam Found object or NULL if 1) no instance exists for specified key or 2) instance pooling has been disabled.
+     * @return   Exam Found object or null if 1) no instance exists for specified key or 2) instance pooling has been disabled.
      * @see        getPrimaryKeyHash()
      */
     public static function getInstanceFromPool($key)
     {
         if (Propel::isInstancePoolingEnabled()) {
-            if (isset(self::$instances[$key])) {
-                return self::$instances[$key];
+            if (isset(ExamPeer::$instances[$key])) {
+                return ExamPeer::$instances[$key];
             }
         }
 
         return null; // just to be explicit
     }
-    
+
     /**
      * Clear the instance pool.
      *
@@ -365,9 +366,9 @@ abstract class BaseExamPeer {
      */
     public static function clearInstancePool()
     {
-        self::$instances = array();
+        ExamPeer::$instances = array();
     }
-    
+
     /**
      * Method to invalidate the instance pool of all tables related to exams
      * by a foreign key with ON DELETE CASCADE
@@ -384,11 +385,11 @@ abstract class BaseExamPeer {
      *
      * @param      array $row PropelPDO resultset row.
      * @param      int $startcol The 0-based offset for reading from the resultset row.
-     * @return string A string version of PK or NULL if the components of primary key in result array are all null.
+     * @return string A string version of PK or null if the components of primary key in result array are all null.
      */
     public static function getPrimaryKeyHashFromRow($row, $startcol = 0)
     {
-        // If the PK cannot be derived from the row, return NULL.
+        // If the PK cannot be derived from the row, return null.
         if ($row[$startcol] === null) {
             return null;
         }
@@ -410,7 +411,7 @@ abstract class BaseExamPeer {
 
         return (int) $row[$startcol];
     }
-    
+
     /**
      * The returned array will contain objects of the default type or
      * objects that inherit from the default.
@@ -421,7 +422,7 @@ abstract class BaseExamPeer {
     public static function populateObjects(PDOStatement $stmt)
     {
         $results = array();
-    
+
         // set the class once to avoid overhead in the loop
         $cls = ExamPeer::getOMClass();
         // populate the object(s)
@@ -501,7 +502,7 @@ abstract class BaseExamPeer {
         $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
 
         // Set the correct dbName
-        $criteria->setDbName(self::DATABASE_NAME);
+        $criteria->setDbName(ExamPeer::DATABASE_NAME);
 
         if ($con === null) {
             $con = Propel::getConnection(ExamPeer::DATABASE_NAME, Propel::CONNECTION_READ);
@@ -537,7 +538,7 @@ abstract class BaseExamPeer {
 
         // Set the correct dbName if it has not been overridden
         if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(self::DATABASE_NAME);
+            $criteria->setDbName(ExamPeer::DATABASE_NAME);
         }
 
         ExamPeer::addSelectColumns($criteria);
@@ -619,7 +620,7 @@ abstract class BaseExamPeer {
         $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
 
         // Set the correct dbName
-        $criteria->setDbName(self::DATABASE_NAME);
+        $criteria->setDbName(ExamPeer::DATABASE_NAME);
 
         if ($con === null) {
             $con = Propel::getConnection(ExamPeer::DATABASE_NAME, Propel::CONNECTION_READ);
@@ -655,7 +656,7 @@ abstract class BaseExamPeer {
 
         // Set the correct dbName if it has not been overridden
         if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(self::DATABASE_NAME);
+            $criteria->setDbName(ExamPeer::DATABASE_NAME);
         }
 
         ExamPeer::addSelectColumns($criteria);
@@ -717,7 +718,7 @@ abstract class BaseExamPeer {
      */
     public static function getTableMap()
     {
-        return Propel::getDatabaseMap(self::DATABASE_NAME)->getTable(self::TABLE_NAME);
+        return Propel::getDatabaseMap(ExamPeer::DATABASE_NAME)->getTable(ExamPeer::TABLE_NAME);
     }
 
     /**
@@ -769,7 +770,7 @@ abstract class BaseExamPeer {
 
 
         // Set the correct dbName
-        $criteria->setDbName(self::DATABASE_NAME);
+        $criteria->setDbName(ExamPeer::DATABASE_NAME);
 
         try {
             // use transaction because $criteria could contain info
@@ -800,7 +801,7 @@ abstract class BaseExamPeer {
             $con = Propel::getConnection(ExamPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
-        $selectCriteria = new Criteria(self::DATABASE_NAME);
+        $selectCriteria = new Criteria(ExamPeer::DATABASE_NAME);
 
         if ($values instanceof Criteria) {
             $criteria = clone $values; // rename for clarity
@@ -819,7 +820,7 @@ abstract class BaseExamPeer {
         }
 
         // set the correct dbName
-        $criteria->setDbName(self::DATABASE_NAME);
+        $criteria->setDbName(ExamPeer::DATABASE_NAME);
 
         return BasePeer::doUpdate($selectCriteria, $criteria, $con);
     }
@@ -886,7 +887,7 @@ abstract class BaseExamPeer {
             // create criteria based on pk values
             $criteria = $values->buildPkeyCriteria();
         } else { // it's a primary key, or an array of pks
-            $criteria = new Criteria(self::DATABASE_NAME);
+            $criteria = new Criteria(ExamPeer::DATABASE_NAME);
             $criteria->add(ExamPeer::ID, (array) $values, Criteria::IN);
             // invalidate the cache for this object(s)
             foreach ((array) $values as $singleval) {
@@ -895,7 +896,7 @@ abstract class BaseExamPeer {
         }
 
         // Set the correct dbName
-        $criteria->setDbName(self::DATABASE_NAME);
+        $criteria->setDbName(ExamPeer::DATABASE_NAME);
 
         $affectedRows = 0; // initialize var to track total num of affected rows
 
@@ -903,7 +904,7 @@ abstract class BaseExamPeer {
             // use transaction because $criteria could contain info
             // for more than one table or we could emulating ON DELETE CASCADE, etc.
             $con->beginTransaction();
-            
+
             $affectedRows += BasePeer::doDelete($criteria, $con);
             ExamPeer::clearRelatedInstancePool();
             $con->commit();

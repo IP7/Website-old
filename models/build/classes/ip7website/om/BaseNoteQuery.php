@@ -4,48 +4,47 @@
 /**
  * Base class that represents a query for the 'notes' table.
  *
- * 
  *
- * @method     NoteQuery orderById($order = Criteria::ASC) Order by the id column
- * @method     NoteQuery orderByUserId($order = Criteria::ASC) Order by the user_id column
- * @method     NoteQuery orderByCourseId($order = Criteria::ASC) Order by the course_id column
- * @method     NoteQuery orderByScore($order = Criteria::ASC) Order by the score column
  *
- * @method     NoteQuery groupById() Group by the id column
- * @method     NoteQuery groupByUserId() Group by the user_id column
- * @method     NoteQuery groupByCourseId() Group by the course_id column
- * @method     NoteQuery groupByScore() Group by the score column
+ * @method NoteQuery orderById($order = Criteria::ASC) Order by the id column
+ * @method NoteQuery orderByUserId($order = Criteria::ASC) Order by the user_id column
+ * @method NoteQuery orderByCourseId($order = Criteria::ASC) Order by the course_id column
+ * @method NoteQuery orderByScore($order = Criteria::ASC) Order by the score column
  *
- * @method     NoteQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
- * @method     NoteQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
- * @method     NoteQuery innerJoin($relation) Adds a INNER JOIN clause to the query
+ * @method NoteQuery groupById() Group by the id column
+ * @method NoteQuery groupByUserId() Group by the user_id column
+ * @method NoteQuery groupByCourseId() Group by the course_id column
+ * @method NoteQuery groupByScore() Group by the score column
  *
- * @method     NoteQuery leftJoinUser($relationAlias = null) Adds a LEFT JOIN clause to the query using the User relation
- * @method     NoteQuery rightJoinUser($relationAlias = null) Adds a RIGHT JOIN clause to the query using the User relation
- * @method     NoteQuery innerJoinUser($relationAlias = null) Adds a INNER JOIN clause to the query using the User relation
+ * @method NoteQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
+ * @method NoteQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
+ * @method NoteQuery innerJoin($relation) Adds a INNER JOIN clause to the query
  *
- * @method     NoteQuery leftJoinCourse($relationAlias = null) Adds a LEFT JOIN clause to the query using the Course relation
- * @method     NoteQuery rightJoinCourse($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Course relation
- * @method     NoteQuery innerJoinCourse($relationAlias = null) Adds a INNER JOIN clause to the query using the Course relation
+ * @method NoteQuery leftJoinUser($relationAlias = null) Adds a LEFT JOIN clause to the query using the User relation
+ * @method NoteQuery rightJoinUser($relationAlias = null) Adds a RIGHT JOIN clause to the query using the User relation
+ * @method NoteQuery innerJoinUser($relationAlias = null) Adds a INNER JOIN clause to the query using the User relation
  *
- * @method     Note findOne(PropelPDO $con = null) Return the first Note matching the query
- * @method     Note findOneOrCreate(PropelPDO $con = null) Return the first Note matching the query, or a new Note object populated from the query conditions when no match is found
+ * @method NoteQuery leftJoinCourse($relationAlias = null) Adds a LEFT JOIN clause to the query using the Course relation
+ * @method NoteQuery rightJoinCourse($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Course relation
+ * @method NoteQuery innerJoinCourse($relationAlias = null) Adds a INNER JOIN clause to the query using the Course relation
  *
- * @method     Note findOneById(int $id) Return the first Note filtered by the id column
- * @method     Note findOneByUserId(int $user_id) Return the first Note filtered by the user_id column
- * @method     Note findOneByCourseId(int $course_id) Return the first Note filtered by the course_id column
- * @method     Note findOneByScore(double $score) Return the first Note filtered by the score column
+ * @method Note findOne(PropelPDO $con = null) Return the first Note matching the query
+ * @method Note findOneOrCreate(PropelPDO $con = null) Return the first Note matching the query, or a new Note object populated from the query conditions when no match is found
  *
- * @method     array findById(int $id) Return Note objects filtered by the id column
- * @method     array findByUserId(int $user_id) Return Note objects filtered by the user_id column
- * @method     array findByCourseId(int $course_id) Return Note objects filtered by the course_id column
- * @method     array findByScore(double $score) Return Note objects filtered by the score column
+ * @method Note findOneById(int $id) Return the first Note filtered by the id column
+ * @method Note findOneByUserId(int $user_id) Return the first Note filtered by the user_id column
+ * @method Note findOneByCourseId(int $course_id) Return the first Note filtered by the course_id column
+ * @method Note findOneByScore(double $score) Return the first Note filtered by the score column
+ *
+ * @method array findById(int $id) Return Note objects filtered by the id column
+ * @method array findByUserId(int $user_id) Return Note objects filtered by the user_id column
+ * @method array findByCourseId(int $course_id) Return Note objects filtered by the course_id column
+ * @method array findByScore(double $score) Return Note objects filtered by the score column
  *
  * @package    propel.generator.ip7website.om
  */
 abstract class BaseNoteQuery extends ModelCriteria
 {
-    
     /**
      * Initializes internal state of BaseNoteQuery object.
      *
@@ -91,7 +90,7 @@ abstract class BaseNoteQuery extends ModelCriteria
      * $obj  = $c->findPk(12, $con);
      * </code>
      *
-     * @param mixed $key Primary key to use for the query 
+     * @param mixed $key Primary key to use for the query
      * @param     PropelPDO $con an optional connection object
      *
      * @return   Note|Note[]|mixed the result, formatted by the current formatter
@@ -133,7 +132,7 @@ abstract class BaseNoteQuery extends ModelCriteria
         $sql = 'SELECT `ID`, `USER_ID`, `COURSE_ID`, `SCORE` FROM `notes` WHERE `ID` = :p0';
         try {
             $stmt = $con->prepare($sql);
-			$stmt->bindValue(':p0', $key, PDO::PARAM_INT);
+            $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
             $stmt->execute();
         } catch (Exception $e) {
             Propel::log($e->getMessage(), Propel::LOG_ERR);
@@ -541,4 +540,4 @@ abstract class BaseNoteQuery extends ModelCriteria
         return $this;
     }
 
-} // BaseNoteQuery
+}

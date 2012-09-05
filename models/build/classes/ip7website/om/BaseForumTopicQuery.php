@@ -4,52 +4,51 @@
 /**
  * Base class that represents a query for the 'forum_topics' table.
  *
- * 
  *
- * @method     ForumTopicQuery orderById($order = Criteria::ASC) Order by the id column
- * @method     ForumTopicQuery orderByCategoryId($order = Criteria::ASC) Order by the category_id column
- * @method     ForumTopicQuery orderByTitle($order = Criteria::ASC) Order by the title column
- * @method     ForumTopicQuery orderByIsLocked($order = Criteria::ASC) Order by the is_locked column
- * @method     ForumTopicQuery orderByIsAnnouncement($order = Criteria::ASC) Order by the is_announcement column
  *
- * @method     ForumTopicQuery groupById() Group by the id column
- * @method     ForumTopicQuery groupByCategoryId() Group by the category_id column
- * @method     ForumTopicQuery groupByTitle() Group by the title column
- * @method     ForumTopicQuery groupByIsLocked() Group by the is_locked column
- * @method     ForumTopicQuery groupByIsAnnouncement() Group by the is_announcement column
+ * @method ForumTopicQuery orderById($order = Criteria::ASC) Order by the id column
+ * @method ForumTopicQuery orderByCategoryId($order = Criteria::ASC) Order by the category_id column
+ * @method ForumTopicQuery orderByTitle($order = Criteria::ASC) Order by the title column
+ * @method ForumTopicQuery orderByIsLocked($order = Criteria::ASC) Order by the is_locked column
+ * @method ForumTopicQuery orderByIsAnnouncement($order = Criteria::ASC) Order by the is_announcement column
  *
- * @method     ForumTopicQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
- * @method     ForumTopicQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
- * @method     ForumTopicQuery innerJoin($relation) Adds a INNER JOIN clause to the query
+ * @method ForumTopicQuery groupById() Group by the id column
+ * @method ForumTopicQuery groupByCategoryId() Group by the category_id column
+ * @method ForumTopicQuery groupByTitle() Group by the title column
+ * @method ForumTopicQuery groupByIsLocked() Group by the is_locked column
+ * @method ForumTopicQuery groupByIsAnnouncement() Group by the is_announcement column
  *
- * @method     ForumTopicQuery leftJoinCategory($relationAlias = null) Adds a LEFT JOIN clause to the query using the Category relation
- * @method     ForumTopicQuery rightJoinCategory($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Category relation
- * @method     ForumTopicQuery innerJoinCategory($relationAlias = null) Adds a INNER JOIN clause to the query using the Category relation
+ * @method ForumTopicQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
+ * @method ForumTopicQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
+ * @method ForumTopicQuery innerJoin($relation) Adds a INNER JOIN clause to the query
  *
- * @method     ForumTopicQuery leftJoinForumMessage($relationAlias = null) Adds a LEFT JOIN clause to the query using the ForumMessage relation
- * @method     ForumTopicQuery rightJoinForumMessage($relationAlias = null) Adds a RIGHT JOIN clause to the query using the ForumMessage relation
- * @method     ForumTopicQuery innerJoinForumMessage($relationAlias = null) Adds a INNER JOIN clause to the query using the ForumMessage relation
+ * @method ForumTopicQuery leftJoinCategory($relationAlias = null) Adds a LEFT JOIN clause to the query using the Category relation
+ * @method ForumTopicQuery rightJoinCategory($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Category relation
+ * @method ForumTopicQuery innerJoinCategory($relationAlias = null) Adds a INNER JOIN clause to the query using the Category relation
  *
- * @method     ForumTopic findOne(PropelPDO $con = null) Return the first ForumTopic matching the query
- * @method     ForumTopic findOneOrCreate(PropelPDO $con = null) Return the first ForumTopic matching the query, or a new ForumTopic object populated from the query conditions when no match is found
+ * @method ForumTopicQuery leftJoinForumMessage($relationAlias = null) Adds a LEFT JOIN clause to the query using the ForumMessage relation
+ * @method ForumTopicQuery rightJoinForumMessage($relationAlias = null) Adds a RIGHT JOIN clause to the query using the ForumMessage relation
+ * @method ForumTopicQuery innerJoinForumMessage($relationAlias = null) Adds a INNER JOIN clause to the query using the ForumMessage relation
  *
- * @method     ForumTopic findOneById(int $id) Return the first ForumTopic filtered by the id column
- * @method     ForumTopic findOneByCategoryId(int $category_id) Return the first ForumTopic filtered by the category_id column
- * @method     ForumTopic findOneByTitle(string $title) Return the first ForumTopic filtered by the title column
- * @method     ForumTopic findOneByIsLocked(boolean $is_locked) Return the first ForumTopic filtered by the is_locked column
- * @method     ForumTopic findOneByIsAnnouncement(boolean $is_announcement) Return the first ForumTopic filtered by the is_announcement column
+ * @method ForumTopic findOne(PropelPDO $con = null) Return the first ForumTopic matching the query
+ * @method ForumTopic findOneOrCreate(PropelPDO $con = null) Return the first ForumTopic matching the query, or a new ForumTopic object populated from the query conditions when no match is found
  *
- * @method     array findById(int $id) Return ForumTopic objects filtered by the id column
- * @method     array findByCategoryId(int $category_id) Return ForumTopic objects filtered by the category_id column
- * @method     array findByTitle(string $title) Return ForumTopic objects filtered by the title column
- * @method     array findByIsLocked(boolean $is_locked) Return ForumTopic objects filtered by the is_locked column
- * @method     array findByIsAnnouncement(boolean $is_announcement) Return ForumTopic objects filtered by the is_announcement column
+ * @method ForumTopic findOneById(int $id) Return the first ForumTopic filtered by the id column
+ * @method ForumTopic findOneByCategoryId(int $category_id) Return the first ForumTopic filtered by the category_id column
+ * @method ForumTopic findOneByTitle(string $title) Return the first ForumTopic filtered by the title column
+ * @method ForumTopic findOneByIsLocked(boolean $is_locked) Return the first ForumTopic filtered by the is_locked column
+ * @method ForumTopic findOneByIsAnnouncement(boolean $is_announcement) Return the first ForumTopic filtered by the is_announcement column
+ *
+ * @method array findById(int $id) Return ForumTopic objects filtered by the id column
+ * @method array findByCategoryId(int $category_id) Return ForumTopic objects filtered by the category_id column
+ * @method array findByTitle(string $title) Return ForumTopic objects filtered by the title column
+ * @method array findByIsLocked(boolean $is_locked) Return ForumTopic objects filtered by the is_locked column
+ * @method array findByIsAnnouncement(boolean $is_announcement) Return ForumTopic objects filtered by the is_announcement column
  *
  * @package    propel.generator.ip7website.om
  */
 abstract class BaseForumTopicQuery extends ModelCriteria
 {
-    
     /**
      * Initializes internal state of BaseForumTopicQuery object.
      *
@@ -95,7 +94,7 @@ abstract class BaseForumTopicQuery extends ModelCriteria
      * $obj  = $c->findPk(12, $con);
      * </code>
      *
-     * @param mixed $key Primary key to use for the query 
+     * @param mixed $key Primary key to use for the query
      * @param     PropelPDO $con an optional connection object
      *
      * @return   ForumTopic|ForumTopic[]|mixed the result, formatted by the current formatter
@@ -137,7 +136,7 @@ abstract class BaseForumTopicQuery extends ModelCriteria
         $sql = 'SELECT `ID`, `CATEGORY_ID`, `TITLE`, `IS_LOCKED`, `IS_ANNOUNCEMENT` FROM `forum_topics` WHERE `ID` = :p0';
         try {
             $stmt = $con->prepare($sql);
-			$stmt->bindValue(':p0', $key, PDO::PARAM_INT);
+            $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
             $stmt->execute();
         } catch (Exception $e) {
             Propel::log($e->getMessage(), Propel::LOG_ERR);
@@ -542,4 +541,4 @@ abstract class BaseForumTopicQuery extends ModelCriteria
         return $this;
     }
 
-} // BaseForumTopicQuery
+}

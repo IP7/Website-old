@@ -136,7 +136,7 @@ if (!$q) {
     $admin->save();
 }
 
-// Content Proposed
+// Proposed Content
 $q = ContentQuery::create()->findOneById(1);
 if (!$q){
 	$content = new Content();
@@ -157,4 +157,26 @@ if (!$q){
 	$report->setText('Reporté car tout est écrit en latin. Et que le latin c\'le mal !');
 	$report->save();
 }
+
+// Content types
+$q = ContentTypeQuery::create()->count();
+if (!$q) {
+    $cts = array(
+        array( 'examen',         'examen',    0 ),
+        array( 'TP',             'tp',        0 ),
+        array( 'TD',             'td',        0 ),
+        array( 'examen corrigé', 'exam_corr', MEMBER_RANK ),
+        array( 'TP corrigé',     'tp_corr',   MEMBER_RANK ),
+        array( 'TD corrigé',     'td_corr',   MEMBER_RANK )
+    );
+
+    foreach ($cts as $k => $ct) {
+        $c = new ContentType();
+        $c->setName($ct[0]);
+        $c->setShortName($ct[1]);
+        $c->setRights($ct[2]);
+        $c->save();
+    }
+}
+
 ?>

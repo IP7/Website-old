@@ -1,0 +1,15 @@
+{% extends 'main.html' %}
+{% block meta %}
+{{ _m.robots('noindex') }}
+{% endblock %}
+{% block content %}
+<article class="content_preview">
+{{ parent() }}
+<h2>{{ page.content.title }}</h2>
+<div>{{ page.content.text|raw }}</div>
+</article>
+<form action="{{ page.form.action }}" method="POST">
+{{ _m.token(page.form.token) }}
+{{ _m.submit('Proposer') }}
+</form>
+{% endblock %}

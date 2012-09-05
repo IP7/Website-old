@@ -4,11 +4,12 @@
 /**
  * Base static class for performing query and update operations on the 'transactions' table.
  *
- * 
  *
- * @package    propel.generator.ip7website.om
+ *
+ * @package propel.generator.ip7website.om
  */
-abstract class BaseTransactionPeer {
+abstract class BaseTransactionPeer
+{
 
     /** the default database name for this class */
     const DATABASE_NAME = 'infop7db';
@@ -62,12 +63,12 @@ abstract class BaseTransactionPeer {
      * holds an array of fieldnames
      *
      * first dimension keys are the type constants
-     * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
+     * e.g. TransactionPeer::$fieldNames[TransactionPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
         BasePeer::TYPE_PHPNAME => array ('Id', 'Description', 'Amount', 'UserId', 'Validated', ),
         BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'description', 'amount', 'userId', 'validated', ),
-        BasePeer::TYPE_COLNAME => array (self::ID, self::DESCRIPTION, self::AMOUNT, self::USER_ID, self::VALIDATED, ),
+        BasePeer::TYPE_COLNAME => array (TransactionPeer::ID, TransactionPeer::DESCRIPTION, TransactionPeer::AMOUNT, TransactionPeer::USER_ID, TransactionPeer::VALIDATED, ),
         BasePeer::TYPE_RAW_COLNAME => array ('ID', 'DESCRIPTION', 'AMOUNT', 'USER_ID', 'VALIDATED', ),
         BasePeer::TYPE_FIELDNAME => array ('id', 'description', 'amount', 'user_id', 'validated', ),
         BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
@@ -77,12 +78,12 @@ abstract class BaseTransactionPeer {
      * holds an array of keys for quick access to the fieldnames array
      *
      * first dimension keys are the type constants
-     * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
+     * e.g. TransactionPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
         BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Description' => 1, 'Amount' => 2, 'UserId' => 3, 'Validated' => 4, ),
         BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'description' => 1, 'amount' => 2, 'userId' => 3, 'validated' => 4, ),
-        BasePeer::TYPE_COLNAME => array (self::ID => 0, self::DESCRIPTION => 1, self::AMOUNT => 2, self::USER_ID => 3, self::VALIDATED => 4, ),
+        BasePeer::TYPE_COLNAME => array (TransactionPeer::ID => 0, TransactionPeer::DESCRIPTION => 1, TransactionPeer::AMOUNT => 2, TransactionPeer::USER_ID => 3, TransactionPeer::VALIDATED => 4, ),
         BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'DESCRIPTION' => 1, 'AMOUNT' => 2, 'USER_ID' => 3, 'VALIDATED' => 4, ),
         BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'description' => 1, 'amount' => 2, 'user_id' => 3, 'validated' => 4, ),
         BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
@@ -100,10 +101,10 @@ abstract class BaseTransactionPeer {
      */
     public static function translateFieldName($name, $fromType, $toType)
     {
-        $toNames = self::getFieldNames($toType);
-        $key = isset(self::$fieldKeys[$fromType][$name]) ? self::$fieldKeys[$fromType][$name] : null;
+        $toNames = TransactionPeer::getFieldNames($toType);
+        $key = isset(TransactionPeer::$fieldKeys[$fromType][$name]) ? TransactionPeer::$fieldKeys[$fromType][$name] : null;
         if ($key === null) {
-            throw new PropelException("'$name' could not be found in the field names of type '$fromType'. These are: " . print_r(self::$fieldKeys[$fromType], true));
+            throw new PropelException("'$name' could not be found in the field names of type '$fromType'. These are: " . print_r(TransactionPeer::$fieldKeys[$fromType], true));
         }
 
         return $toNames[$key];
@@ -120,11 +121,11 @@ abstract class BaseTransactionPeer {
      */
     public static function getFieldNames($type = BasePeer::TYPE_PHPNAME)
     {
-        if (!array_key_exists($type, self::$fieldNames)) {
+        if (!array_key_exists($type, TransactionPeer::$fieldNames)) {
             throw new PropelException('Method getFieldNames() expects the parameter $type to be one of the class constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME, BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM. ' . $type . ' was given.');
         }
 
-        return self::$fieldNames[$type];
+        return TransactionPeer::$fieldNames[$type];
     }
 
     /**
@@ -200,7 +201,7 @@ abstract class BaseTransactionPeer {
         }
 
         $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
-        $criteria->setDbName(self::DATABASE_NAME); // Set the correct dbName
+        $criteria->setDbName(TransactionPeer::DATABASE_NAME); // Set the correct dbName
 
         if ($con === null) {
             $con = Propel::getConnection(TransactionPeer::DATABASE_NAME, Propel::CONNECTION_READ);
@@ -275,7 +276,7 @@ abstract class BaseTransactionPeer {
         }
 
         // Set the correct dbName
-        $criteria->setDbName(self::DATABASE_NAME);
+        $criteria->setDbName(TransactionPeer::DATABASE_NAME);
 
         // BasePeer returns a PDOStatement
         return BasePeer::doSelect($criteria, $con);
@@ -298,7 +299,7 @@ abstract class BaseTransactionPeer {
             if ($key === null) {
                 $key = (string) $obj->getId();
             } // if key === null
-            self::$instances[$key] = $obj;
+            TransactionPeer::$instances[$key] = $obj;
         }
     }
 
@@ -328,7 +329,7 @@ abstract class BaseTransactionPeer {
                 throw $e;
             }
 
-            unset(self::$instances[$key]);
+            unset(TransactionPeer::$instances[$key]);
         }
     } // removeInstanceFromPool()
 
@@ -339,20 +340,20 @@ abstract class BaseTransactionPeer {
      * a multi-column primary key, a serialize()d version of the primary key will be returned.
      *
      * @param      string $key The key (@see getPrimaryKeyHash()) for this instance.
-     * @return   Transaction Found object or NULL if 1) no instance exists for specified key or 2) instance pooling has been disabled.
+     * @return   Transaction Found object or null if 1) no instance exists for specified key or 2) instance pooling has been disabled.
      * @see        getPrimaryKeyHash()
      */
     public static function getInstanceFromPool($key)
     {
         if (Propel::isInstancePoolingEnabled()) {
-            if (isset(self::$instances[$key])) {
-                return self::$instances[$key];
+            if (isset(TransactionPeer::$instances[$key])) {
+                return TransactionPeer::$instances[$key];
             }
         }
 
         return null; // just to be explicit
     }
-    
+
     /**
      * Clear the instance pool.
      *
@@ -360,9 +361,9 @@ abstract class BaseTransactionPeer {
      */
     public static function clearInstancePool()
     {
-        self::$instances = array();
+        TransactionPeer::$instances = array();
     }
-    
+
     /**
      * Method to invalidate the instance pool of all tables related to transactions
      * by a foreign key with ON DELETE CASCADE
@@ -379,11 +380,11 @@ abstract class BaseTransactionPeer {
      *
      * @param      array $row PropelPDO resultset row.
      * @param      int $startcol The 0-based offset for reading from the resultset row.
-     * @return string A string version of PK or NULL if the components of primary key in result array are all null.
+     * @return string A string version of PK or null if the components of primary key in result array are all null.
      */
     public static function getPrimaryKeyHashFromRow($row, $startcol = 0)
     {
-        // If the PK cannot be derived from the row, return NULL.
+        // If the PK cannot be derived from the row, return null.
         if ($row[$startcol] === null) {
             return null;
         }
@@ -405,7 +406,7 @@ abstract class BaseTransactionPeer {
 
         return (int) $row[$startcol];
     }
-    
+
     /**
      * The returned array will contain objects of the default type or
      * objects that inherit from the default.
@@ -416,7 +417,7 @@ abstract class BaseTransactionPeer {
     public static function populateObjects(PDOStatement $stmt)
     {
         $results = array();
-    
+
         // set the class once to avoid overhead in the loop
         $cls = TransactionPeer::getOMClass();
         // populate the object(s)
@@ -496,7 +497,7 @@ abstract class BaseTransactionPeer {
         $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
 
         // Set the correct dbName
-        $criteria->setDbName(self::DATABASE_NAME);
+        $criteria->setDbName(TransactionPeer::DATABASE_NAME);
 
         if ($con === null) {
             $con = Propel::getConnection(TransactionPeer::DATABASE_NAME, Propel::CONNECTION_READ);
@@ -532,7 +533,7 @@ abstract class BaseTransactionPeer {
 
         // Set the correct dbName if it has not been overridden
         if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(self::DATABASE_NAME);
+            $criteria->setDbName(TransactionPeer::DATABASE_NAME);
         }
 
         TransactionPeer::addSelectColumns($criteria);
@@ -614,7 +615,7 @@ abstract class BaseTransactionPeer {
         $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
 
         // Set the correct dbName
-        $criteria->setDbName(self::DATABASE_NAME);
+        $criteria->setDbName(TransactionPeer::DATABASE_NAME);
 
         if ($con === null) {
             $con = Propel::getConnection(TransactionPeer::DATABASE_NAME, Propel::CONNECTION_READ);
@@ -650,7 +651,7 @@ abstract class BaseTransactionPeer {
 
         // Set the correct dbName if it has not been overridden
         if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(self::DATABASE_NAME);
+            $criteria->setDbName(TransactionPeer::DATABASE_NAME);
         }
 
         TransactionPeer::addSelectColumns($criteria);
@@ -712,7 +713,7 @@ abstract class BaseTransactionPeer {
      */
     public static function getTableMap()
     {
-        return Propel::getDatabaseMap(self::DATABASE_NAME)->getTable(self::TABLE_NAME);
+        return Propel::getDatabaseMap(TransactionPeer::DATABASE_NAME)->getTable(TransactionPeer::TABLE_NAME);
     }
 
     /**
@@ -764,7 +765,7 @@ abstract class BaseTransactionPeer {
 
 
         // Set the correct dbName
-        $criteria->setDbName(self::DATABASE_NAME);
+        $criteria->setDbName(TransactionPeer::DATABASE_NAME);
 
         try {
             // use transaction because $criteria could contain info
@@ -795,7 +796,7 @@ abstract class BaseTransactionPeer {
             $con = Propel::getConnection(TransactionPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
-        $selectCriteria = new Criteria(self::DATABASE_NAME);
+        $selectCriteria = new Criteria(TransactionPeer::DATABASE_NAME);
 
         if ($values instanceof Criteria) {
             $criteria = clone $values; // rename for clarity
@@ -814,7 +815,7 @@ abstract class BaseTransactionPeer {
         }
 
         // set the correct dbName
-        $criteria->setDbName(self::DATABASE_NAME);
+        $criteria->setDbName(TransactionPeer::DATABASE_NAME);
 
         return BasePeer::doUpdate($selectCriteria, $criteria, $con);
     }
@@ -881,7 +882,7 @@ abstract class BaseTransactionPeer {
             // create criteria based on pk values
             $criteria = $values->buildPkeyCriteria();
         } else { // it's a primary key, or an array of pks
-            $criteria = new Criteria(self::DATABASE_NAME);
+            $criteria = new Criteria(TransactionPeer::DATABASE_NAME);
             $criteria->add(TransactionPeer::ID, (array) $values, Criteria::IN);
             // invalidate the cache for this object(s)
             foreach ((array) $values as $singleval) {
@@ -890,7 +891,7 @@ abstract class BaseTransactionPeer {
         }
 
         // Set the correct dbName
-        $criteria->setDbName(self::DATABASE_NAME);
+        $criteria->setDbName(TransactionPeer::DATABASE_NAME);
 
         $affectedRows = 0; // initialize var to track total num of affected rows
 
@@ -898,7 +899,7 @@ abstract class BaseTransactionPeer {
             // use transaction because $criteria could contain info
             // for more than one table or we could emulating ON DELETE CASCADE, etc.
             $con->beginTransaction();
-            
+
             $affectedRows += BasePeer::doDelete($criteria, $con);
             TransactionPeer::clearRelatedInstancePool();
             $con->commit();

@@ -4,13 +4,12 @@
 /**
  * Base class that represents a row from the 'educational_paths_optional_courses' table.
  *
- * 
+ *
  *
  * @package    propel.generator.ip7website.om
  */
-abstract class BaseEducationalPathsOptionalCourses extends BaseObject 
+abstract class BaseEducationalPathsOptionalCourses extends BaseObject implements Persistent
 {
-
     /**
      * Peer class name
      */
@@ -68,31 +67,29 @@ abstract class BaseEducationalPathsOptionalCourses extends BaseObject
 
     /**
      * Get the [course_id] column value.
-     * 
-     * @return   int
+     *
+     * @return int
      */
     public function getCourseId()
     {
-
         return $this->course_id;
     }
 
     /**
      * Get the [path_id] column value.
-     * 
-     * @return   int
+     *
+     * @return int
      */
     public function getPathId()
     {
-
         return $this->path_id;
     }
 
     /**
      * Set the value of [course_id] column.
-     * 
-     * @param      int $v new value
-     * @return   EducationalPathsOptionalCourses The current object (for fluent API support)
+     *
+     * @param int $v new value
+     * @return EducationalPathsOptionalCourses The current object (for fluent API support)
      */
     public function setCourseId($v)
     {
@@ -115,9 +112,9 @@ abstract class BaseEducationalPathsOptionalCourses extends BaseObject
 
     /**
      * Set the value of [path_id] column.
-     * 
-     * @param      int $v new value
-     * @return   EducationalPathsOptionalCourses The current object (for fluent API support)
+     *
+     * @param int $v new value
+     * @return EducationalPathsOptionalCourses The current object (for fluent API support)
      */
     public function setPathId($v)
     {
@@ -148,7 +145,7 @@ abstract class BaseEducationalPathsOptionalCourses extends BaseObject
      */
     public function hasOnlyDefaultValues()
     {
-        // otherwise, everything was equal, so return TRUE
+        // otherwise, everything was equal, so return true
         return true;
     } // hasOnlyDefaultValues()
 
@@ -160,9 +157,9 @@ abstract class BaseEducationalPathsOptionalCourses extends BaseObject
      * for results of JOIN queries where the resultset row includes columns from two or
      * more tables.
      *
-     * @param      array $row The row returned by PDOStatement->fetch(PDO::FETCH_NUM)
-     * @param      int $startcol 0-based offset column which indicates which restultset column to start with.
-     * @param      boolean $rehydrate Whether this object is being re-hydrated from the database.
+     * @param array $row The row returned by PDOStatement->fetch(PDO::FETCH_NUM)
+     * @param int $startcol 0-based offset column which indicates which restultset column to start with.
+     * @param boolean $rehydrate Whether this object is being re-hydrated from the database.
      * @return int             next starting column
      * @throws PropelException - Any caught Exception will be rewrapped as a PropelException.
      */
@@ -216,8 +213,8 @@ abstract class BaseEducationalPathsOptionalCourses extends BaseObject
      *
      * This will only work if the object has been saved and has a valid primary key set.
      *
-     * @param      boolean $deep (optional) Whether to also de-associated any related objects.
-     * @param      PropelPDO $con (optional) The PropelPDO connection to use.
+     * @param boolean $deep (optional) Whether to also de-associated any related objects.
+     * @param PropelPDO $con (optional) The PropelPDO connection to use.
      * @return void
      * @throws PropelException - if this object is deleted, unsaved or doesn't have pk match in db
      */
@@ -256,7 +253,7 @@ abstract class BaseEducationalPathsOptionalCourses extends BaseObject
     /**
      * Removes this object from datastore and sets delete attribute.
      *
-     * @param      PropelPDO $con
+     * @param PropelPDO $con
      * @return void
      * @throws PropelException
      * @throws Exception
@@ -300,7 +297,7 @@ abstract class BaseEducationalPathsOptionalCourses extends BaseObject
      * method.  This method wraps all precipitate database operations in a
      * single transaction.
      *
-     * @param      PropelPDO $con
+     * @param PropelPDO $con
      * @return int             The number of rows affected by this insert/update and any referring fk objects' save() operations.
      * @throws PropelException
      * @throws Exception
@@ -352,7 +349,7 @@ abstract class BaseEducationalPathsOptionalCourses extends BaseObject
      * If the object is new, it inserts it; otherwise an update is performed.
      * All related objects are also updated in this method.
      *
-     * @param      PropelPDO $con
+     * @param PropelPDO $con
      * @return int             The number of rows affected by this insert/update and any referring fk objects' save() operations.
      * @throws PropelException
      * @see        save()
@@ -403,7 +400,7 @@ abstract class BaseEducationalPathsOptionalCourses extends BaseObject
     /**
      * Insert the row in the database.
      *
-     * @param      PropelPDO $con
+     * @param PropelPDO $con
      *
      * @throws PropelException
      * @see        doSave()
@@ -433,10 +430,10 @@ abstract class BaseEducationalPathsOptionalCourses extends BaseObject
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
                     case '`COURSE_ID`':
-						$stmt->bindValue($identifier, $this->course_id, PDO::PARAM_INT);
+                        $stmt->bindValue($identifier, $this->course_id, PDO::PARAM_INT);
                         break;
                     case '`PATH_ID`':
-						$stmt->bindValue($identifier, $this->path_id, PDO::PARAM_INT);
+                        $stmt->bindValue($identifier, $this->path_id, PDO::PARAM_INT);
                         break;
                 }
             }
@@ -452,7 +449,7 @@ abstract class BaseEducationalPathsOptionalCourses extends BaseObject
     /**
      * Update the row in the database.
      *
-     * @param      PropelPDO $con
+     * @param PropelPDO $con
      *
      * @see        doSave()
      */
@@ -487,7 +484,7 @@ abstract class BaseEducationalPathsOptionalCourses extends BaseObject
      * If $columns is either a column name or an array of column names
      * only those columns are validated.
      *
-     * @param      mixed $columns Column name or an array of column names.
+     * @param mixed $columns Column name or an array of column names.
      * @return boolean Whether all columns pass validation.
      * @see        doValidate()
      * @see        getValidationFailures()
@@ -513,7 +510,7 @@ abstract class BaseEducationalPathsOptionalCourses extends BaseObject
      * also be validated.  If all pass then <code>true</code> is returned; otherwise
      * an aggreagated array of ValidationFailed objects will be returned.
      *
-     * @param      array $columns Array of column names to validate.
+     * @param array $columns Array of column names to validate.
      * @return mixed <code>true</code> if all validations pass; array of <code>ValidationFailed</code> objets otherwise.
      */
     protected function doValidate($columns = null)
@@ -558,11 +555,11 @@ abstract class BaseEducationalPathsOptionalCourses extends BaseObject
     /**
      * Retrieves a field from the object by name passed in as a string.
      *
-     * @param      string $name name
-     * @param      string $type The type of fieldname the $name is of:
-     *                     one of the class type constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME
-     *                     BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM.
-     *                     Defaults to BasePeer::TYPE_PHPNAME
+     * @param string $name name
+     * @param string $type The type of fieldname the $name is of:
+     *               one of the class type constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME
+     *               BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM.
+     *               Defaults to BasePeer::TYPE_PHPNAME
      * @return mixed Value of field.
      */
     public function getByName($name, $type = BasePeer::TYPE_PHPNAME)
@@ -577,7 +574,7 @@ abstract class BaseEducationalPathsOptionalCourses extends BaseObject
      * Retrieves a field from the object by Position as specified in the xml schema.
      * Zero-based.
      *
-     * @param      int $pos position in xml schema
+     * @param int $pos position in xml schema
      * @return mixed Value of field at $pos
      */
     public function getByPosition($pos)
@@ -604,7 +601,7 @@ abstract class BaseEducationalPathsOptionalCourses extends BaseObject
      * @param     string  $keyType (optional) One of the class type constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME,
      *                    BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM.
      *                    Defaults to BasePeer::TYPE_PHPNAME.
-     * @param     boolean $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to TRUE.
+     * @param     boolean $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to true.
      * @param     array $alreadyDumpedObjects List of objects to skip to avoid recursion
      * @param     boolean $includeForeignObjects (optional) Whether to include hydrated related objects. Default to FALSE.
      *
@@ -636,9 +633,9 @@ abstract class BaseEducationalPathsOptionalCourses extends BaseObject
     /**
      * Sets a field from the object by name passed in as a string.
      *
-     * @param      string $name peer name
-     * @param      mixed $value field value
-     * @param      string $type The type of fieldname the $name is of:
+     * @param string $name peer name
+     * @param mixed $value field value
+     * @param string $type The type of fieldname the $name is of:
      *                     one of the class type constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME
      *                     BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM.
      *                     Defaults to BasePeer::TYPE_PHPNAME
@@ -655,8 +652,8 @@ abstract class BaseEducationalPathsOptionalCourses extends BaseObject
      * Sets a field from the object by Position as specified in the xml schema.
      * Zero-based.
      *
-     * @param      int $pos position in xml schema
-     * @param      mixed $value field value
+     * @param int $pos position in xml schema
+     * @param mixed $value field value
      * @return void
      */
     public function setByPosition($pos, $value)
@@ -684,8 +681,8 @@ abstract class BaseEducationalPathsOptionalCourses extends BaseObject
      * BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM.
      * The default key type is the column's BasePeer::TYPE_PHPNAME
      *
-     * @param      array  $arr     An array to populate the object from.
-     * @param      string $keyType The type of keys the array uses.
+     * @param array  $arr     An array to populate the object from.
+     * @param string $keyType The type of keys the array uses.
      * @return void
      */
     public function fromArray($arr, $keyType = BasePeer::TYPE_PHPNAME)
@@ -745,7 +742,7 @@ abstract class BaseEducationalPathsOptionalCourses extends BaseObject
     /**
      * Set the [composite] primary key.
      *
-     * @param      array $keys The elements of the composite key (order must match the order in XML file).
+     * @param array $keys The elements of the composite key (order must match the order in XML file).
      * @return void
      */
     public function setPrimaryKey($keys)
@@ -770,9 +767,9 @@ abstract class BaseEducationalPathsOptionalCourses extends BaseObject
      * If desired, this method can also make copies of all associated (fkey referrers)
      * objects.
      *
-     * @param      object $copyObj An object of EducationalPathsOptionalCourses (or compatible) type.
-     * @param      boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
-     * @param      boolean $makeNew Whether to reset autoincrement PKs and make the object new.
+     * @param object $copyObj An object of EducationalPathsOptionalCourses (or compatible) type.
+     * @param boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
+     * @param boolean $makeNew Whether to reset autoincrement PKs and make the object new.
      * @throws PropelException
      */
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
@@ -804,8 +801,8 @@ abstract class BaseEducationalPathsOptionalCourses extends BaseObject
      * If desired, this method can also make copies of all associated (fkey referrers)
      * objects.
      *
-     * @param      boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
-     * @return                 EducationalPathsOptionalCourses Clone of current object.
+     * @param boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
+     * @return EducationalPathsOptionalCourses Clone of current object.
      * @throws PropelException
      */
     public function copy($deepCopy = false)
@@ -825,7 +822,7 @@ abstract class BaseEducationalPathsOptionalCourses extends BaseObject
      * same instance for all member of this class. The method could therefore
      * be static, but this would prevent one from overriding the behavior.
      *
-     * @return   EducationalPathsOptionalCoursesPeer
+     * @return EducationalPathsOptionalCoursesPeer
      */
     public function getPeer()
     {
@@ -839,8 +836,8 @@ abstract class BaseEducationalPathsOptionalCourses extends BaseObject
     /**
      * Declares an association between this object and a Course object.
      *
-     * @param                  Course $v
-     * @return                 EducationalPathsOptionalCourses The current object (for fluent API support)
+     * @param             Course $v
+     * @return EducationalPathsOptionalCourses The current object (for fluent API support)
      * @throws PropelException
      */
     public function setOptionalCourse(Course $v = null)
@@ -867,8 +864,8 @@ abstract class BaseEducationalPathsOptionalCourses extends BaseObject
     /**
      * Get the associated Course object
      *
-     * @param      PropelPDO $con Optional Connection object.
-     * @return                 Course The associated Course object.
+     * @param PropelPDO $con Optional Connection object.
+     * @return Course The associated Course object.
      * @throws PropelException
      */
     public function getOptionalCourse(PropelPDO $con = null)
@@ -890,8 +887,8 @@ abstract class BaseEducationalPathsOptionalCourses extends BaseObject
     /**
      * Declares an association between this object and a EducationalPath object.
      *
-     * @param                  EducationalPath $v
-     * @return                 EducationalPathsOptionalCourses The current object (for fluent API support)
+     * @param             EducationalPath $v
+     * @return EducationalPathsOptionalCourses The current object (for fluent API support)
      * @throws PropelException
      */
     public function setOptionalEducationalPath(EducationalPath $v = null)
@@ -918,8 +915,8 @@ abstract class BaseEducationalPathsOptionalCourses extends BaseObject
     /**
      * Get the associated EducationalPath object
      *
-     * @param      PropelPDO $con Optional Connection object.
-     * @return                 EducationalPath The associated EducationalPath object.
+     * @param PropelPDO $con Optional Connection object.
+     * @return EducationalPath The associated EducationalPath object.
      * @throws PropelException
      */
     public function getOptionalEducationalPath(PropelPDO $con = null)
@@ -960,7 +957,7 @@ abstract class BaseEducationalPathsOptionalCourses extends BaseObject
      * objects with circular references (even in PHP 5.3). This is currently necessary
      * when using Propel in certain daemon or large-volumne/high-memory operations.
      *
-     * @param      boolean $deep Whether to also clear the references on all referrer objects.
+     * @param boolean $deep Whether to also clear the references on all referrer objects.
      */
     public function clearAllReferences($deep = false)
     {
@@ -972,7 +969,7 @@ abstract class BaseEducationalPathsOptionalCourses extends BaseObject
     }
 
     /**
-     * Return the string representation of this object
+     * return the string representation of this object
      *
      * @return string
      */
@@ -981,4 +978,14 @@ abstract class BaseEducationalPathsOptionalCourses extends BaseObject
         return (string) $this->exportTo(EducationalPathsOptionalCoursesPeer::DEFAULT_STRING_FORMAT);
     }
 
-} // BaseEducationalPathsOptionalCourses
+    /**
+     * return true is the object is in saving state
+     *
+     * @return boolean
+     */
+    public function isAlreadyInSave()
+    {
+        return $this->alreadyInSave;
+    }
+
+}

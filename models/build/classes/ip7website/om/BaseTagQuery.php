@@ -4,44 +4,43 @@
 /**
  * Base class that represents a query for the 'tags' table.
  *
- * 
  *
- * @method     TagQuery orderById($order = Criteria::ASC) Order by the id column
- * @method     TagQuery orderByName($order = Criteria::ASC) Order by the name column
  *
- * @method     TagQuery groupById() Group by the id column
- * @method     TagQuery groupByName() Group by the name column
+ * @method TagQuery orderById($order = Criteria::ASC) Order by the id column
+ * @method TagQuery orderByName($order = Criteria::ASC) Order by the name column
  *
- * @method     TagQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
- * @method     TagQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
- * @method     TagQuery innerJoin($relation) Adds a INNER JOIN clause to the query
+ * @method TagQuery groupById() Group by the id column
+ * @method TagQuery groupByName() Group by the name column
  *
- * @method     TagQuery leftJoinAlert($relationAlias = null) Adds a LEFT JOIN clause to the query using the Alert relation
- * @method     TagQuery rightJoinAlert($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Alert relation
- * @method     TagQuery innerJoinAlert($relationAlias = null) Adds a INNER JOIN clause to the query using the Alert relation
+ * @method TagQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
+ * @method TagQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
+ * @method TagQuery innerJoin($relation) Adds a INNER JOIN clause to the query
  *
- * @method     TagQuery leftJoinContentsTags($relationAlias = null) Adds a LEFT JOIN clause to the query using the ContentsTags relation
- * @method     TagQuery rightJoinContentsTags($relationAlias = null) Adds a RIGHT JOIN clause to the query using the ContentsTags relation
- * @method     TagQuery innerJoinContentsTags($relationAlias = null) Adds a INNER JOIN clause to the query using the ContentsTags relation
+ * @method TagQuery leftJoinAlert($relationAlias = null) Adds a LEFT JOIN clause to the query using the Alert relation
+ * @method TagQuery rightJoinAlert($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Alert relation
+ * @method TagQuery innerJoinAlert($relationAlias = null) Adds a INNER JOIN clause to the query using the Alert relation
  *
- * @method     TagQuery leftJoinAdsTags($relationAlias = null) Adds a LEFT JOIN clause to the query using the AdsTags relation
- * @method     TagQuery rightJoinAdsTags($relationAlias = null) Adds a RIGHT JOIN clause to the query using the AdsTags relation
- * @method     TagQuery innerJoinAdsTags($relationAlias = null) Adds a INNER JOIN clause to the query using the AdsTags relation
+ * @method TagQuery leftJoinContentsTags($relationAlias = null) Adds a LEFT JOIN clause to the query using the ContentsTags relation
+ * @method TagQuery rightJoinContentsTags($relationAlias = null) Adds a RIGHT JOIN clause to the query using the ContentsTags relation
+ * @method TagQuery innerJoinContentsTags($relationAlias = null) Adds a INNER JOIN clause to the query using the ContentsTags relation
  *
- * @method     Tag findOne(PropelPDO $con = null) Return the first Tag matching the query
- * @method     Tag findOneOrCreate(PropelPDO $con = null) Return the first Tag matching the query, or a new Tag object populated from the query conditions when no match is found
+ * @method TagQuery leftJoinAdsTags($relationAlias = null) Adds a LEFT JOIN clause to the query using the AdsTags relation
+ * @method TagQuery rightJoinAdsTags($relationAlias = null) Adds a RIGHT JOIN clause to the query using the AdsTags relation
+ * @method TagQuery innerJoinAdsTags($relationAlias = null) Adds a INNER JOIN clause to the query using the AdsTags relation
  *
- * @method     Tag findOneById(int $id) Return the first Tag filtered by the id column
- * @method     Tag findOneByName(string $name) Return the first Tag filtered by the name column
+ * @method Tag findOne(PropelPDO $con = null) Return the first Tag matching the query
+ * @method Tag findOneOrCreate(PropelPDO $con = null) Return the first Tag matching the query, or a new Tag object populated from the query conditions when no match is found
  *
- * @method     array findById(int $id) Return Tag objects filtered by the id column
- * @method     array findByName(string $name) Return Tag objects filtered by the name column
+ * @method Tag findOneById(int $id) Return the first Tag filtered by the id column
+ * @method Tag findOneByName(string $name) Return the first Tag filtered by the name column
+ *
+ * @method array findById(int $id) Return Tag objects filtered by the id column
+ * @method array findByName(string $name) Return Tag objects filtered by the name column
  *
  * @package    propel.generator.ip7website.om
  */
 abstract class BaseTagQuery extends ModelCriteria
 {
-    
     /**
      * Initializes internal state of BaseTagQuery object.
      *
@@ -87,7 +86,7 @@ abstract class BaseTagQuery extends ModelCriteria
      * $obj  = $c->findPk(12, $con);
      * </code>
      *
-     * @param mixed $key Primary key to use for the query 
+     * @param mixed $key Primary key to use for the query
      * @param     PropelPDO $con an optional connection object
      *
      * @return   Tag|Tag[]|mixed the result, formatted by the current formatter
@@ -129,7 +128,7 @@ abstract class BaseTagQuery extends ModelCriteria
         $sql = 'SELECT `ID`, `NAME` FROM `tags` WHERE `ID` = :p0';
         try {
             $stmt = $con->prepare($sql);
-			$stmt->bindValue(':p0', $key, PDO::PARAM_INT);
+            $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
             $stmt->execute();
         } catch (Exception $e) {
             Propel::log($e->getMessage(), Propel::LOG_ERR);
@@ -543,4 +542,4 @@ abstract class BaseTagQuery extends ModelCriteria
         return $this;
     }
 
-} // BaseTagQuery
+}

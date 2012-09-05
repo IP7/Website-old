@@ -4,11 +4,12 @@
 /**
  * Base static class for performing query and update operations on the 'notes' table.
  *
- * 
  *
- * @package    propel.generator.ip7website.om
+ *
+ * @package propel.generator.ip7website.om
  */
-abstract class BaseNotePeer {
+abstract class BaseNotePeer
+{
 
     /** the default database name for this class */
     const DATABASE_NAME = 'infop7db';
@@ -59,12 +60,12 @@ abstract class BaseNotePeer {
      * holds an array of fieldnames
      *
      * first dimension keys are the type constants
-     * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
+     * e.g. NotePeer::$fieldNames[NotePeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
         BasePeer::TYPE_PHPNAME => array ('Id', 'UserId', 'CourseId', 'Score', ),
         BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'userId', 'courseId', 'score', ),
-        BasePeer::TYPE_COLNAME => array (self::ID, self::USER_ID, self::COURSE_ID, self::SCORE, ),
+        BasePeer::TYPE_COLNAME => array (NotePeer::ID, NotePeer::USER_ID, NotePeer::COURSE_ID, NotePeer::SCORE, ),
         BasePeer::TYPE_RAW_COLNAME => array ('ID', 'USER_ID', 'COURSE_ID', 'SCORE', ),
         BasePeer::TYPE_FIELDNAME => array ('id', 'user_id', 'course_id', 'score', ),
         BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
@@ -74,12 +75,12 @@ abstract class BaseNotePeer {
      * holds an array of keys for quick access to the fieldnames array
      *
      * first dimension keys are the type constants
-     * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
+     * e.g. NotePeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
         BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'UserId' => 1, 'CourseId' => 2, 'Score' => 3, ),
         BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'userId' => 1, 'courseId' => 2, 'score' => 3, ),
-        BasePeer::TYPE_COLNAME => array (self::ID => 0, self::USER_ID => 1, self::COURSE_ID => 2, self::SCORE => 3, ),
+        BasePeer::TYPE_COLNAME => array (NotePeer::ID => 0, NotePeer::USER_ID => 1, NotePeer::COURSE_ID => 2, NotePeer::SCORE => 3, ),
         BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'USER_ID' => 1, 'COURSE_ID' => 2, 'SCORE' => 3, ),
         BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'user_id' => 1, 'course_id' => 2, 'score' => 3, ),
         BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
@@ -97,10 +98,10 @@ abstract class BaseNotePeer {
      */
     public static function translateFieldName($name, $fromType, $toType)
     {
-        $toNames = self::getFieldNames($toType);
-        $key = isset(self::$fieldKeys[$fromType][$name]) ? self::$fieldKeys[$fromType][$name] : null;
+        $toNames = NotePeer::getFieldNames($toType);
+        $key = isset(NotePeer::$fieldKeys[$fromType][$name]) ? NotePeer::$fieldKeys[$fromType][$name] : null;
         if ($key === null) {
-            throw new PropelException("'$name' could not be found in the field names of type '$fromType'. These are: " . print_r(self::$fieldKeys[$fromType], true));
+            throw new PropelException("'$name' could not be found in the field names of type '$fromType'. These are: " . print_r(NotePeer::$fieldKeys[$fromType], true));
         }
 
         return $toNames[$key];
@@ -117,11 +118,11 @@ abstract class BaseNotePeer {
      */
     public static function getFieldNames($type = BasePeer::TYPE_PHPNAME)
     {
-        if (!array_key_exists($type, self::$fieldNames)) {
+        if (!array_key_exists($type, NotePeer::$fieldNames)) {
             throw new PropelException('Method getFieldNames() expects the parameter $type to be one of the class constants BasePeer::TYPE_PHPNAME, BasePeer::TYPE_STUDLYPHPNAME, BasePeer::TYPE_COLNAME, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_NUM. ' . $type . ' was given.');
         }
 
-        return self::$fieldNames[$type];
+        return NotePeer::$fieldNames[$type];
     }
 
     /**
@@ -195,7 +196,7 @@ abstract class BaseNotePeer {
         }
 
         $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
-        $criteria->setDbName(self::DATABASE_NAME); // Set the correct dbName
+        $criteria->setDbName(NotePeer::DATABASE_NAME); // Set the correct dbName
 
         if ($con === null) {
             $con = Propel::getConnection(NotePeer::DATABASE_NAME, Propel::CONNECTION_READ);
@@ -270,7 +271,7 @@ abstract class BaseNotePeer {
         }
 
         // Set the correct dbName
-        $criteria->setDbName(self::DATABASE_NAME);
+        $criteria->setDbName(NotePeer::DATABASE_NAME);
 
         // BasePeer returns a PDOStatement
         return BasePeer::doSelect($criteria, $con);
@@ -293,7 +294,7 @@ abstract class BaseNotePeer {
             if ($key === null) {
                 $key = (string) $obj->getId();
             } // if key === null
-            self::$instances[$key] = $obj;
+            NotePeer::$instances[$key] = $obj;
         }
     }
 
@@ -323,7 +324,7 @@ abstract class BaseNotePeer {
                 throw $e;
             }
 
-            unset(self::$instances[$key]);
+            unset(NotePeer::$instances[$key]);
         }
     } // removeInstanceFromPool()
 
@@ -334,20 +335,20 @@ abstract class BaseNotePeer {
      * a multi-column primary key, a serialize()d version of the primary key will be returned.
      *
      * @param      string $key The key (@see getPrimaryKeyHash()) for this instance.
-     * @return   Note Found object or NULL if 1) no instance exists for specified key or 2) instance pooling has been disabled.
+     * @return   Note Found object or null if 1) no instance exists for specified key or 2) instance pooling has been disabled.
      * @see        getPrimaryKeyHash()
      */
     public static function getInstanceFromPool($key)
     {
         if (Propel::isInstancePoolingEnabled()) {
-            if (isset(self::$instances[$key])) {
-                return self::$instances[$key];
+            if (isset(NotePeer::$instances[$key])) {
+                return NotePeer::$instances[$key];
             }
         }
 
         return null; // just to be explicit
     }
-    
+
     /**
      * Clear the instance pool.
      *
@@ -355,9 +356,9 @@ abstract class BaseNotePeer {
      */
     public static function clearInstancePool()
     {
-        self::$instances = array();
+        NotePeer::$instances = array();
     }
-    
+
     /**
      * Method to invalidate the instance pool of all tables related to notes
      * by a foreign key with ON DELETE CASCADE
@@ -374,11 +375,11 @@ abstract class BaseNotePeer {
      *
      * @param      array $row PropelPDO resultset row.
      * @param      int $startcol The 0-based offset for reading from the resultset row.
-     * @return string A string version of PK or NULL if the components of primary key in result array are all null.
+     * @return string A string version of PK or null if the components of primary key in result array are all null.
      */
     public static function getPrimaryKeyHashFromRow($row, $startcol = 0)
     {
-        // If the PK cannot be derived from the row, return NULL.
+        // If the PK cannot be derived from the row, return null.
         if ($row[$startcol] === null) {
             return null;
         }
@@ -400,7 +401,7 @@ abstract class BaseNotePeer {
 
         return (int) $row[$startcol];
     }
-    
+
     /**
      * The returned array will contain objects of the default type or
      * objects that inherit from the default.
@@ -411,7 +412,7 @@ abstract class BaseNotePeer {
     public static function populateObjects(PDOStatement $stmt)
     {
         $results = array();
-    
+
         // set the class once to avoid overhead in the loop
         $cls = NotePeer::getOMClass();
         // populate the object(s)
@@ -491,7 +492,7 @@ abstract class BaseNotePeer {
         $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
 
         // Set the correct dbName
-        $criteria->setDbName(self::DATABASE_NAME);
+        $criteria->setDbName(NotePeer::DATABASE_NAME);
 
         if ($con === null) {
             $con = Propel::getConnection(NotePeer::DATABASE_NAME, Propel::CONNECTION_READ);
@@ -542,7 +543,7 @@ abstract class BaseNotePeer {
         $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
 
         // Set the correct dbName
-        $criteria->setDbName(self::DATABASE_NAME);
+        $criteria->setDbName(NotePeer::DATABASE_NAME);
 
         if ($con === null) {
             $con = Propel::getConnection(NotePeer::DATABASE_NAME, Propel::CONNECTION_READ);
@@ -578,7 +579,7 @@ abstract class BaseNotePeer {
 
         // Set the correct dbName if it has not been overridden
         if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(self::DATABASE_NAME);
+            $criteria->setDbName(NotePeer::DATABASE_NAME);
         }
 
         NotePeer::addSelectColumns($criteria);
@@ -645,7 +646,7 @@ abstract class BaseNotePeer {
 
         // Set the correct dbName if it has not been overridden
         if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(self::DATABASE_NAME);
+            $criteria->setDbName(NotePeer::DATABASE_NAME);
         }
 
         NotePeer::addSelectColumns($criteria);
@@ -727,7 +728,7 @@ abstract class BaseNotePeer {
         $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
 
         // Set the correct dbName
-        $criteria->setDbName(self::DATABASE_NAME);
+        $criteria->setDbName(NotePeer::DATABASE_NAME);
 
         if ($con === null) {
             $con = Propel::getConnection(NotePeer::DATABASE_NAME, Propel::CONNECTION_READ);
@@ -765,7 +766,7 @@ abstract class BaseNotePeer {
 
         // Set the correct dbName if it has not been overridden
         if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(self::DATABASE_NAME);
+            $criteria->setDbName(NotePeer::DATABASE_NAME);
         }
 
         NotePeer::addSelectColumns($criteria);
@@ -872,12 +873,12 @@ abstract class BaseNotePeer {
         $criteria->clearOrderByColumns(); // ORDER BY should not affect count
 
         // Set the correct dbName
-        $criteria->setDbName(self::DATABASE_NAME);
+        $criteria->setDbName(NotePeer::DATABASE_NAME);
 
         if ($con === null) {
             $con = Propel::getConnection(NotePeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
-    
+
         $criteria->addJoin(NotePeer::COURSE_ID, CoursePeer::ID, $join_behavior);
 
         $stmt = BasePeer::doCount($criteria, $con);
@@ -923,12 +924,12 @@ abstract class BaseNotePeer {
         $criteria->clearOrderByColumns(); // ORDER BY should not affect count
 
         // Set the correct dbName
-        $criteria->setDbName(self::DATABASE_NAME);
+        $criteria->setDbName(NotePeer::DATABASE_NAME);
 
         if ($con === null) {
             $con = Propel::getConnection(NotePeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
-    
+
         $criteria->addJoin(NotePeer::USER_ID, UserPeer::ID, $join_behavior);
 
         $stmt = BasePeer::doCount($criteria, $con);
@@ -962,7 +963,7 @@ abstract class BaseNotePeer {
         // $criteria->getDbName() will return the same object if not set to another value
         // so == check is okay and faster
         if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(self::DATABASE_NAME);
+            $criteria->setDbName(NotePeer::DATABASE_NAME);
         }
 
         NotePeer::addSelectColumns($criteria);
@@ -997,7 +998,7 @@ abstract class BaseNotePeer {
                 if ($key2 !== null) {
                     $obj2 = CoursePeer::getInstanceFromPool($key2);
                     if (!$obj2) {
-    
+
                         $cls = CoursePeer::getOMClass();
 
                     $obj2 = new $cls();
@@ -1036,7 +1037,7 @@ abstract class BaseNotePeer {
         // $criteria->getDbName() will return the same object if not set to another value
         // so == check is okay and faster
         if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(self::DATABASE_NAME);
+            $criteria->setDbName(NotePeer::DATABASE_NAME);
         }
 
         NotePeer::addSelectColumns($criteria);
@@ -1071,7 +1072,7 @@ abstract class BaseNotePeer {
                 if ($key2 !== null) {
                     $obj2 = UserPeer::getInstanceFromPool($key2);
                     if (!$obj2) {
-    
+
                         $cls = UserPeer::getOMClass();
 
                     $obj2 = new $cls();
@@ -1100,7 +1101,7 @@ abstract class BaseNotePeer {
      */
     public static function getTableMap()
     {
-        return Propel::getDatabaseMap(self::DATABASE_NAME)->getTable(self::TABLE_NAME);
+        return Propel::getDatabaseMap(NotePeer::DATABASE_NAME)->getTable(NotePeer::TABLE_NAME);
     }
 
     /**
@@ -1152,7 +1153,7 @@ abstract class BaseNotePeer {
 
 
         // Set the correct dbName
-        $criteria->setDbName(self::DATABASE_NAME);
+        $criteria->setDbName(NotePeer::DATABASE_NAME);
 
         try {
             // use transaction because $criteria could contain info
@@ -1183,7 +1184,7 @@ abstract class BaseNotePeer {
             $con = Propel::getConnection(NotePeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
-        $selectCriteria = new Criteria(self::DATABASE_NAME);
+        $selectCriteria = new Criteria(NotePeer::DATABASE_NAME);
 
         if ($values instanceof Criteria) {
             $criteria = clone $values; // rename for clarity
@@ -1202,7 +1203,7 @@ abstract class BaseNotePeer {
         }
 
         // set the correct dbName
-        $criteria->setDbName(self::DATABASE_NAME);
+        $criteria->setDbName(NotePeer::DATABASE_NAME);
 
         return BasePeer::doUpdate($selectCriteria, $criteria, $con);
     }
@@ -1269,7 +1270,7 @@ abstract class BaseNotePeer {
             // create criteria based on pk values
             $criteria = $values->buildPkeyCriteria();
         } else { // it's a primary key, or an array of pks
-            $criteria = new Criteria(self::DATABASE_NAME);
+            $criteria = new Criteria(NotePeer::DATABASE_NAME);
             $criteria->add(NotePeer::ID, (array) $values, Criteria::IN);
             // invalidate the cache for this object(s)
             foreach ((array) $values as $singleval) {
@@ -1278,7 +1279,7 @@ abstract class BaseNotePeer {
         }
 
         // Set the correct dbName
-        $criteria->setDbName(self::DATABASE_NAME);
+        $criteria->setDbName(NotePeer::DATABASE_NAME);
 
         $affectedRows = 0; // initialize var to track total num of affected rows
 
@@ -1286,7 +1287,7 @@ abstract class BaseNotePeer {
             // use transaction because $criteria could contain info
             // for more than one table or we could emulating ON DELETE CASCADE, etc.
             $con->beginTransaction();
-            
+
             $affectedRows += BasePeer::doDelete($criteria, $con);
             NotePeer::clearRelatedInstancePool();
             $con->commit();

@@ -4,40 +4,39 @@
 /**
  * Base class that represents a query for the 'educational_paths_mandatory_courses' table.
  *
- * 
  *
- * @method     EducationalPathsMandatoryCoursesQuery orderByCourseId($order = Criteria::ASC) Order by the course_id column
- * @method     EducationalPathsMandatoryCoursesQuery orderByPathId($order = Criteria::ASC) Order by the path_id column
  *
- * @method     EducationalPathsMandatoryCoursesQuery groupByCourseId() Group by the course_id column
- * @method     EducationalPathsMandatoryCoursesQuery groupByPathId() Group by the path_id column
+ * @method EducationalPathsMandatoryCoursesQuery orderByCourseId($order = Criteria::ASC) Order by the course_id column
+ * @method EducationalPathsMandatoryCoursesQuery orderByPathId($order = Criteria::ASC) Order by the path_id column
  *
- * @method     EducationalPathsMandatoryCoursesQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
- * @method     EducationalPathsMandatoryCoursesQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
- * @method     EducationalPathsMandatoryCoursesQuery innerJoin($relation) Adds a INNER JOIN clause to the query
+ * @method EducationalPathsMandatoryCoursesQuery groupByCourseId() Group by the course_id column
+ * @method EducationalPathsMandatoryCoursesQuery groupByPathId() Group by the path_id column
  *
- * @method     EducationalPathsMandatoryCoursesQuery leftJoinMandatoryCourse($relationAlias = null) Adds a LEFT JOIN clause to the query using the MandatoryCourse relation
- * @method     EducationalPathsMandatoryCoursesQuery rightJoinMandatoryCourse($relationAlias = null) Adds a RIGHT JOIN clause to the query using the MandatoryCourse relation
- * @method     EducationalPathsMandatoryCoursesQuery innerJoinMandatoryCourse($relationAlias = null) Adds a INNER JOIN clause to the query using the MandatoryCourse relation
+ * @method EducationalPathsMandatoryCoursesQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
+ * @method EducationalPathsMandatoryCoursesQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
+ * @method EducationalPathsMandatoryCoursesQuery innerJoin($relation) Adds a INNER JOIN clause to the query
  *
- * @method     EducationalPathsMandatoryCoursesQuery leftJoinMandatoryEducationalPath($relationAlias = null) Adds a LEFT JOIN clause to the query using the MandatoryEducationalPath relation
- * @method     EducationalPathsMandatoryCoursesQuery rightJoinMandatoryEducationalPath($relationAlias = null) Adds a RIGHT JOIN clause to the query using the MandatoryEducationalPath relation
- * @method     EducationalPathsMandatoryCoursesQuery innerJoinMandatoryEducationalPath($relationAlias = null) Adds a INNER JOIN clause to the query using the MandatoryEducationalPath relation
+ * @method EducationalPathsMandatoryCoursesQuery leftJoinMandatoryCourse($relationAlias = null) Adds a LEFT JOIN clause to the query using the MandatoryCourse relation
+ * @method EducationalPathsMandatoryCoursesQuery rightJoinMandatoryCourse($relationAlias = null) Adds a RIGHT JOIN clause to the query using the MandatoryCourse relation
+ * @method EducationalPathsMandatoryCoursesQuery innerJoinMandatoryCourse($relationAlias = null) Adds a INNER JOIN clause to the query using the MandatoryCourse relation
  *
- * @method     EducationalPathsMandatoryCourses findOne(PropelPDO $con = null) Return the first EducationalPathsMandatoryCourses matching the query
- * @method     EducationalPathsMandatoryCourses findOneOrCreate(PropelPDO $con = null) Return the first EducationalPathsMandatoryCourses matching the query, or a new EducationalPathsMandatoryCourses object populated from the query conditions when no match is found
+ * @method EducationalPathsMandatoryCoursesQuery leftJoinMandatoryEducationalPath($relationAlias = null) Adds a LEFT JOIN clause to the query using the MandatoryEducationalPath relation
+ * @method EducationalPathsMandatoryCoursesQuery rightJoinMandatoryEducationalPath($relationAlias = null) Adds a RIGHT JOIN clause to the query using the MandatoryEducationalPath relation
+ * @method EducationalPathsMandatoryCoursesQuery innerJoinMandatoryEducationalPath($relationAlias = null) Adds a INNER JOIN clause to the query using the MandatoryEducationalPath relation
  *
- * @method     EducationalPathsMandatoryCourses findOneByCourseId(int $course_id) Return the first EducationalPathsMandatoryCourses filtered by the course_id column
- * @method     EducationalPathsMandatoryCourses findOneByPathId(int $path_id) Return the first EducationalPathsMandatoryCourses filtered by the path_id column
+ * @method EducationalPathsMandatoryCourses findOne(PropelPDO $con = null) Return the first EducationalPathsMandatoryCourses matching the query
+ * @method EducationalPathsMandatoryCourses findOneOrCreate(PropelPDO $con = null) Return the first EducationalPathsMandatoryCourses matching the query, or a new EducationalPathsMandatoryCourses object populated from the query conditions when no match is found
  *
- * @method     array findByCourseId(int $course_id) Return EducationalPathsMandatoryCourses objects filtered by the course_id column
- * @method     array findByPathId(int $path_id) Return EducationalPathsMandatoryCourses objects filtered by the path_id column
+ * @method EducationalPathsMandatoryCourses findOneByCourseId(int $course_id) Return the first EducationalPathsMandatoryCourses filtered by the course_id column
+ * @method EducationalPathsMandatoryCourses findOneByPathId(int $path_id) Return the first EducationalPathsMandatoryCourses filtered by the path_id column
+ *
+ * @method array findByCourseId(int $course_id) Return EducationalPathsMandatoryCourses objects filtered by the course_id column
+ * @method array findByPathId(int $path_id) Return EducationalPathsMandatoryCourses objects filtered by the path_id column
  *
  * @package    propel.generator.ip7website.om
  */
 abstract class BaseEducationalPathsMandatoryCoursesQuery extends ModelCriteria
 {
-    
     /**
      * Initializes internal state of BaseEducationalPathsMandatoryCoursesQuery object.
      *
@@ -83,7 +82,7 @@ abstract class BaseEducationalPathsMandatoryCoursesQuery extends ModelCriteria
      * $obj = $c->findPk(array(12, 34), $con);
      * </code>
      *
-     * @param array $key Primary key to use for the query 
+     * @param array $key Primary key to use for the query
                          A Primary key composition: [$course_id, $path_id]
      * @param     PropelPDO $con an optional connection object
      *
@@ -126,8 +125,8 @@ abstract class BaseEducationalPathsMandatoryCoursesQuery extends ModelCriteria
         $sql = 'SELECT `COURSE_ID`, `PATH_ID` FROM `educational_paths_mandatory_courses` WHERE `COURSE_ID` = :p0 AND `PATH_ID` = :p1';
         try {
             $stmt = $con->prepare($sql);
-			$stmt->bindValue(':p0', $key[0], PDO::PARAM_INT);
-			$stmt->bindValue(':p1', $key[1], PDO::PARAM_INT);
+            $stmt->bindValue(':p0', $key[0], PDO::PARAM_INT);
+            $stmt->bindValue(':p1', $key[1], PDO::PARAM_INT);
             $stmt->execute();
         } catch (Exception $e) {
             Propel::log($e->getMessage(), Propel::LOG_ERR);
@@ -452,4 +451,4 @@ abstract class BaseEducationalPathsMandatoryCoursesQuery extends ModelCriteria
         return $this;
     }
 
-} // BaseEducationalPathsMandatoryCoursesQuery
+}

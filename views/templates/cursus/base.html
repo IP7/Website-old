@@ -1,4 +1,3 @@
-{% import 'macros.html' as _m %}
 {% extends 'main.html' %}
 {% block content %}
 {# Menu des matières #}
@@ -51,19 +50,13 @@
     </section>
 </aside>
 {% endif %}
-{% if page.moderation_bar is defined and page.moderation_bar %}
-<ul class="moderation bar">
-    {% for el in page.moderation_bar %}
-    <li>{{ _m.a(el.href, el.title) }}</li>
-    {% endfor %}
-</ul>
-{% endif %}
+{% include 'utils/moderation_bar.html' %}
 <article class="cursus">
 {# Intro #}
 <h1>{{ page.cursus.name }} ({{ page.cursus.path_name }})</h1>
 <section class="intro">{{ page.cursus.introduction }}</section>
 {# News #}
-{% include 'news.html' %}
+{% include 'utils/news.html' %}
 </article>
 {% if page.cursus.other_links is defined and page.cursus.other_links is not empty %}
 {# Menu 'Autres ressources' #}
