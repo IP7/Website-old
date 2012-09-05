@@ -78,7 +78,8 @@ dispatch('/cursus/:cursus/parcours/:path', 'display_educational_path');
 
 ## course
 dispatch('/cursus/:cursus/:course', 'display_course');
-## content view
+## contents
+dispatch('/cursus/:cursus/:course/proposer', 'display_proposing_content_form');
 dispatch('/cursus/:cursus/:course/:id', 'display_content_view');
 
 ## admin home
