@@ -76,6 +76,8 @@ Author: Michel Fortin
 Author URI: http://michelf.com/
 */
 
+/*
+
 if (isset($wp_version)) {
 	# More details about how it works here:
 	# <http://michelf.com/weblog/2005/wordpress-text-flow-vs-markdown/>
@@ -206,7 +208,7 @@ if (strcasecmp(substr(__FILE__, -16), "classTextile.php") == 0) {
 	}
 }
 
-
+*/
 
 #
 # Markdown Parser Class
