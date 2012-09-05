@@ -3,14 +3,13 @@
 {% block content %}
 
 	{{ parent() }}
-
 	
 	{% if page.report is not empty %}
-		<em><p> Reporté par : {{ page.report.author }}, le {{ page.report.reportDate }}. </p>
-		<p> Raison : {{ page.report.reason }} </p></em>
-		<form action='{{ page.report.href }}' method='POST'>
-		{{ _m.hiddenId('report', page.report.reportId) }}
-		{{ _m.hiddenId('content', page.report.contentId) }}
+    <p>Signalé par&nbsp;: {{ page.report.author }}, le {{ page.report.reportDate }}.<br />
+		Raison&nbsp;: {{ page.report.reason }} </p>
+		<form action="{{ page.report.href }}" method="POST">
+		{{ _m.hidden('report', page.report.reportId) }}
+		{{ _m.hidden('content', page.report.contentId) }}
 		{% for option in page.report.options %}
 			{{ _m.submit(option.title, '', '', option.title) }}
 		{% endfor %}
@@ -18,9 +17,9 @@
 	{% endif %}
 
 
-	<p><h3> {{ page.content.title }} </h3></p>
-	<p> {{ page.content.cursus }} — {{ page.content.courseName }} ( {{ page.content.courseCode }} ) </p>
-	<p><em> Posté par : {#{ page.content.username }#} le {{ page.content.date }} </em></p>
-	<p> {{ page.content.contentText }} </p>
+	<h3>{{ page.content.title }}</h3>
+	<p>{{ page.content.cursus }} — {{ page.content.courseName }} ({{ page.content.courseCode }})</p>
+	<p>Posté par&nbsp;: {#{ page.content.username }#} le {{ page.content.date }}.</p>
+	<p>{{ page.content.contentText }}</p>
 
 {% endblock %}
