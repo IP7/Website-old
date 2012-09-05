@@ -5,7 +5,7 @@
 /**
  * Skeleton subclass for representing a row from the 'content_types' table.
  *
- * 
+ *
  *
  * You should add additional methods to this class to meet the
  * application requirements.  This class will only be generated as
@@ -13,6 +13,6 @@
  *
  * @package    propel.generator.ip7website
  */
-class ContentType extends BaseContentType {
-
-} // ContentType
+class ContentType extends BaseContentType
+{
+}

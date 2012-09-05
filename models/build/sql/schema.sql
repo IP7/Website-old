@@ -462,7 +462,9 @@ CREATE TABLE `content_types`
     `name` VARCHAR(32) NOT NULL,
     `short_name` VARCHAR(16) NOT NULL,
     `rights` TINYINT DEFAULT 0,
-    PRIMARY KEY (`id`)
+    PRIMARY KEY (`id`),
+    UNIQUE INDEX `content_types_U_1` (`name`),
+    UNIQUE INDEX `content_types_U_2` (`short_name`)
 ) ENGINE=MyISAM;
 
 -- ---------------------------------------------------------------------

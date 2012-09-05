@@ -625,6 +625,16 @@
 
         <!-- droits d'accès -->
         <column name="rights"     type="TINYINT" defaultExpr="0" />
+
+        <!-- == index & clefs étrangères == -->
+
+        <unique>
+            <unique-column name="name" />
+        </unique>
+
+        <unique>
+            <unique-column name="short_name" />
+        </unique>
     </table>
 
     <!-- === commentaires === -->
