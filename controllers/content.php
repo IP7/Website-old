@@ -55,7 +55,7 @@ function display_content_view(){
 
 }
 
-function display_proposing_content_form() {
+function display_member_proposing_content_form() {
 
     $cursus_name = params('cursus');
     $course_name = params('course');
@@ -74,11 +74,17 @@ function display_proposing_content_form() {
         halt(NOT_FOUND);
     }
 
-    if (!is_connected() || !user()->isMember()) {
-        halt(HTTP_FORBIDDEN, "L'accès à cette page est réservé aux membres.");
-    }
-
     $url = course_url($cursus, $course).'/proposer';
+
+    $tpl_content_types = array();
+
+    $content_types = ContentTypeQuery::create()->find();
+
+    foreach ($tontent_types as $t) {
+        $tpl_content_types []= array(
+            array( 'value' => $t->getId(), 'name' => $t->getName() )
+        );
+    }
 
     return tpl_render('contents/proposing.html', array(
         'page' => array(
@@ -99,11 +105,25 @@ function display_proposing_content_form() {
                 )
             ),
 
+            'token' => generate_post_token(user()),
+
             'form' => array(
-                'action' => $url
+                'action' => $url.'/prévisualiser',
+
+                'values' => array(
+                    'title' => '',
+                    'text' => '',
+                    'type' => ''
+                ),
+
+                'types' => $tpl_content_types
             )
         )
     ));
+}
+
+function display_member_proposed_content_preview() {
+
 }
 
 ?>
