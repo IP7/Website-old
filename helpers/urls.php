@@ -24,4 +24,9 @@ function course_url($cursus, $course) {
     return $u;
 }
 
+// return the URL of an user
+function user_url($user) {
+    return Config::$root_uri.'p/'.$user->getUsername();
+}
+
 ?>
