@@ -35,21 +35,31 @@ function display_profile_page($username=NULL, $is_my_profile=false) {
 
     $tpl_user = tpl_user($user, true);
 
+    $msg_str = '';
+    $msg_type = '';
+    $moderation_bar = array();
+
     // if the accound is deactivated
     if (!$user->isActivated()) {
 
-        $title = 'Profil de '.$tpl_user['displayed_name'];
+        if (!is_connected() || !user()->isAdmin()) {
+            $title = 'Profil de '.$tpl_user['displayed_name'];
 
-        return tpl_render('deactivated_profile.html', array(
-            'page' => array(
-                'user' => $tpl_user,
-                'title' => $title,
+            return tpl_render('deactivated_profile.html', array(
+                'page' => array(
+                    'user' => $tpl_user,
+                    'title' => $title,
 
-                'breadcrumbs' => array(
-                    1 => array( 'title' => $title, 'href' => url() )
+                    'breadcrumbs' => array(
+                        1 => array( 'title' => $title, 'href' => url() )
+                    )
                 )
-            )
-        ));
+            ));    
+        }
+
+        // if I'm an admin
+        $msg_str =  'Ce compte a été désactivé.';
+        $msg_type = 'notice';
     }
 
     // I can edit if it's me or an admin
@@ -58,13 +68,13 @@ function display_profile_page($username=NULL, $is_my_profile=false) {
     // I can see the options if it's me or an admin
     $can_see_options = $can_edit;
 
-    $edit_button = false;
-
     if ($can_edit) {
         $edit_button = array( 'title' => 'Éditer' );
         // if this is me, go to /profile/edit to edit the profile, else
         // go to /p/the_username/edit
         $edit_button['href'] = Config::$root_uri.( $me ? 'profile/edit' : 'p/'.$user->getUsername().'/edit');
+
+        $moderation_bar []= $edit_button;
     }
 
     // displaying options
@@ -104,11 +114,14 @@ function display_profile_page($username=NULL, $is_my_profile=false) {
 
     $profile = array(
         'page' => array(
-            'edit_button' => $edit_button,
+            'message' => $msg_str,
+            'message_type' => $msg_type,
 
             'title' => $me ? 'Mon profil' : 'Profil de '.$tpl_user['displayed_name'],
 
-            'user' => $tpl_user
+            'user' => $tpl_user,
+
+            'moderation_bar' => $moderation_bar
         )
     );
 
@@ -140,11 +153,23 @@ function display_edit_profile_page($username=NULL, $is_my_profile=false) {
                 ? user()
                 : UserQuery::create()->findOneByUsername($username));
 
+    if (!$user) {
+        halt(NOT_FOUND);
+    }
+
     $tpl_user = tpl_user($user, true);
+
+    if (is_connected() && user()->isAdmin() && user()->getUsername() != $username) {
+        $tpl_user['options'] []= array(
+            'name'  => 'activate',
+            'title' => 'Activer',
+            'value' => $user->isActivated()
+        );
+    }
 
     return tpl_render('profile/edit.html', array(
         'page' => array(
-            'title' => 'Édition du profil'.($me ? '' : ' de '.$tpl_user['displayed_name']),
+            'title' => 'Édition du profil'.($me ? '' : ' '.Lang\de($tpl_user['displayed_name'])),
 
             'user' => $tpl_user,
 
@@ -246,6 +271,11 @@ function post_edit_profile_page($username=NULL) {
     }
 
     $user->setConfig($opts);
+
+    if (user()->isAdmin() && user()->getUsername() != $username) { 
+        // If I'm an admin and the edited profile is not mine
+        $user->setDeactivated(!has_post('activate'));
+    }
 
     $user->save();
 
