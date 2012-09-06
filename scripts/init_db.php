@@ -87,7 +87,9 @@ foreach($cursus as $k => $v) {
             $s_n = $n + 1;
 
             foreach ($s as $code => $course) {
-                $c = CourseQuery::create()->findOneByCode($code);
+                $c = CourseQuery::create()
+                        ->filterByCursus($cursus[$k])
+                        ->findOneByCode($code);
 
                 if (!$c) {
                     $c = new Course();
