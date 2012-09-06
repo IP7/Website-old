@@ -78,19 +78,19 @@ function date_fr($d) {
     $today = new \DateTime();
 
     if ($today->format('d/m/Y') == $str) {
-        return 'Aujourd\'hui';
+        return 'aujourd\'hui';
     }
 
     $diff = $d->diff($today);
 
     if (intval($diff->format('%r%d')) == 1) {
-        return 'Hier';
+        return 'hier';
     }
     else if (intval($diff->format('%r%d')) == -1) {
-        return 'Demain';
+        return 'demain';
     }
 
-    return $str;
+    return 'le '.$str;
 }
 
 ?>
