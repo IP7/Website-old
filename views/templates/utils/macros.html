@@ -16,6 +16,11 @@
 {{ _self.a(href, value, title, hreflang, external, ['button']) }}
 {% endmacro %}
 
+{# a.user #}
+{% macro a_user(u) %}
+{{ _self.a(u.href, u.name, null, null, null, ['user']) }}
+{% endmacro %}
+
 {# abbr #}
 {% macro abbr(title, abbr_txt) %}
     {% if abbr_txt is defined and abbr_txt %}
