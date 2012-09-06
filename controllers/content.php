@@ -1,21 +1,47 @@
 <?php
 
-function display_content_view(){
+function display_course_content() {
 
-	$contentId = (int)params('id');
-	$cursusSN = (string)params('cursus');
-	$courseCode = (string)params('course');
+	$content_id  = (int)params('id');
+	$cursus_sn   = (string)params('cursus');
+	$course_code = (string)params('course');
 
-	$content	= ContentQuery::create()->findOneById($contentId);
-	$user		= $content->getAuthor();
-	$course	= $content->getCourse();
-	$cursus	= $content->getCursus();
+	$content = ContentQuery::create()->findOneById($content_id);
 
-	$report = ReportQuery::create()->findOneByContentId($contentId);
+    if (!$content) {
+        halt(NOT_FOUND);
+    }
+
+	$user    = $content->getAuthor();
+	$course	 = $content->getCourse();
+	$cursus	 = $content->getCursus();
+
+    if (!$course || !$cursus) {
+        halt(NOT_FOUND);
+    }
+
+    if ($course->getCode() != $course_code || $cursus->getShortName() != $cursus_sn) {
+        redirect_to('/cursus/'.$cursus->getShortName().'/'.$course->getCode().'/'.$content_id);
+    }
+
+	$report = ReportQuery::create()->findOneByContent($content);
+
+    $tpl_report = null;
+
+    if ($report && is_connected() && user()->isAdmin()) {
+        $tpl_report = array(
+            'id'     => $report->getId(),
+            'author' => $report->getAuthor()->getPublicName(),
+            'date'   => Lang\date_fr($report->getDate()),
+            'form'   => array(
+                'action' => Config::$root_uri.'/admin/reports'
+            )
+        );
+    }
+
+
 	$reportArray = Array();
 
-	if ( ((strtoupper($cursusSN) != $cursus->getShortName()) && (strtoupper($courseCode) != $course->getCode())) || !$content->isValidate() )
-		halt(NOT_FOUND);
 
 	if ( user()->isAdmin() && $report instanceof Report ){
 
@@ -95,10 +121,9 @@ function display_member_proposing_content_form() {
 
     $token = generate_post_token(user());
 
-    $_SESSION['forms_data'][$token] = array(
-        'course' => $course,
-        'cursus' => $cursus
-    );
+    $fd = FormData::create($token)
+            ->store('course', $course)
+            ->store('cursus', $cursus);
 
     return tpl_render('contents/proposing.html', array(
         'page' => array(
@@ -145,9 +170,9 @@ function display_post_member_proposed_content_preview() {
         halt(HTTP_FORBIDDEN, 'Le jeton d\'authentification est invalide ou a expiré.');
     }
 
-    $forms_data = $_SESSION['forms_data'];
+    $fd = FormData::create($token);
 
-    if (!array_key_exists($token, $forms_data)) {
+    if (!$fd->exists()) {
         halt(
             HTTP_INTERNAL_SERVER_ERROR,
               'Un problème interne est survenu avec le jeton d\'authentification'
@@ -155,13 +180,11 @@ function display_post_member_proposed_content_preview() {
         );
     }
 
-    $course = $forms_data[$token]['course'];
-    $cursus = $forms_data[$token]['cursus'];
-
+    // transfer of course/cursus to a new token
     $token2 = generate_post_token(user());
+    $fd2 = FormData::create($token)->store($fd->get());
 
-    $_SESSION['forms_data'][$token2] = $_SESSION['forms_data'][$token];
-    unset($_SESSION['forms_data'][$token]);
+    $fd->destroy();
 
     if (has_post('type', true)) {
         $c_type = ContentTypeQuery::create()->findOneById(intval($_POST['type']));
@@ -174,15 +197,15 @@ function display_post_member_proposed_content_preview() {
                     . 'ce type de contenu.'
                 );
             }
-            $_SESSION['forms_data'][$token2]['type'] = $c_type;
+            $fd2->store('type', $c_type);
         }
     }
 
     $text = has_post('text') ? format_text($_POST['text']) : '';
 
     // passing content informations via $_SESSION instead of <input type="hidden"/>
-    $_SESSION['forms_data'][$token2]['title'] = $_POST['title'];
-    $_SESSION['forms_data'][$token2]['text']  = $_POST['text'];
+    $fd2->store('title', get_string('title', 'post'));
+    $fd2->store('text', get_string('text', 'post'));
 
     return tpl_render('contents/proposing_preview.html', array(
         'page' => array(
@@ -197,7 +220,7 @@ function display_post_member_proposed_content_preview() {
 
             'form' => array(
                 'token' => $token2,
-                'action' => course_url($cursus, $course).'/proposer'
+                'action' => course_url($fd2->get('cursus'), $fd2->get('course')).'/proposer'
             )
         )
     ));
@@ -210,25 +233,15 @@ function display_post_member_proposed_content() {
         halt(HTTP_FORBIDDEN, 'Le jeton d\'authentification est invalide ou a expiré.');
     }
 
-    $forms_data = $_SESSION['forms_data'];
+    $fd = FormData::create($token);
 
-    if (!array_key_exists($token, $forms_data)) {
-        halt(
-            HTTP_INTERNAL_SERVER_ERROR,
-              'Un problème interne est survenu avec le jeton d\'authentification'
-            . ', veuillez réessayer.'
-        );
-    }
+    $course = $fd->get('course');
+    $cursus = $fd->get('cursus');
 
-    $forms_data = $forms_data[$token];
+    $title  = $fd->get('title');
+    $text   = $fd->get('text');
 
-    $course = $forms_data['course'];
-    $cursus = $forms_data['cursus'];
-
-    $title = $forms_data['title'];
-    $text  = $forms_data['text'];
-
-    unset($_SESSION['forms_data'][$token]);
+    $fd->destroy();
 
     $c = new Content();
     $c->setTitle($title);

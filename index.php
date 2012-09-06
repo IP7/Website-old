@@ -82,7 +82,7 @@ dispatch('/cursus/:cursus/:course', 'display_course');
 dispatch('/cursus/:cursus/:course/proposer', 'display_member_proposing_content_form');
 dispatch_post('/cursus/:cursus/:course/proposer', 'display_post_member_proposed_content');
 dispatch_post('/cursus/:cursus/:course/proposer/prévisualiser', 'display_post_member_proposed_content_preview');
-dispatch('/cursus/:cursus/:course/:id', 'display_content_view');
+dispatch('/cursus/:cursus/:course/:id', 'display_course_content');
 
 ## admin home
 dispatch('/admin', 'display_admin_home');
