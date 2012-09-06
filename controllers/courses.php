@@ -65,7 +65,7 @@ function display_course() {
             ),
 
             'scripts' => array(
-                array( 'src'  => Config::$root_uri.'views/static/js/tabs.min.js')
+                array( 'src'  => Config::$root_uri.'views/static/js/tabs.js')
             ),
 
             'moderation_bar' => $moderation_bar

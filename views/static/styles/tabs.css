@@ -15,9 +15,11 @@
 .tab {
     display:inline-block;
     border:1px solid;
-    border-bottom-color:white;
     margin-bottom:-1px;
     padding:4px 8px;
+}
+.tab.selected {
+    border-bottom-color:white;
 }
 .tab a {
     color:black;
