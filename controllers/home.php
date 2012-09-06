@@ -113,6 +113,10 @@ function post_connection() {
 
 function display_forgotten_password($message=null, $message_type=null) {
 
+    if (is_connected()) {
+        redirect_to('/');
+    }
+
     return tpl_render('forgotten_password.html', array(
         'page' => array(
             'title'        => 'Mot de passe oublié',
