@@ -37,33 +37,45 @@ function display_course_content() {
         halt(HTTP_FORBIDDEN, 'Vous n\'avez pas le droit d\'accéder à ce contenu.');
     }
 
-	$report = ReportQuery::create()->findOneByContent($content);
+    $msg_str  = null;
+    $msg_type = null;
 
     $tpl_report = null;
 
-    if ($report && is_connected() && user()->isAdmin()) {
+    if (!$content->getValidated()) {
+        if (!is_connected() || (user()->getId() != $user->getId() && !user()->isAdmin())) {
+            halt(NOT_FOUND);
+        }
+        $msg_str  = 'Ce contenu est en attente de validation.';
+        $msg_type = 'notice';
+    }
+    else {
+        $report = ReportQuery::create()->findOneByContent($content);
 
-        $post_token = generate_post_token(user());
+        if ($report && is_connected() && user()->isAdmin()) {
 
-        FormData::create($post_token)->store('report', $report);
+            $post_token = generate_post_token(user());
 
-        $r_author = $report->getAuthor();
+            FormData::create($post_token)->store('report', $report);
 
-        $tpl_report = array(
-            'author' => array(
-                'name' => $r_author->getPublicName(),
-                'href' => user_url($r_author)
-            ),
-            'date'   => array(
-                'text'     => Lang\date_fr($report->getDate()),
-                'datetime' => datetime_attr($report->getDate())
-            ),
-            'form'   => array(
-                'action'      => Config::$root_uri.'/admin/reports',
-                'post_token'  => $post_token
-            ),
-            'explication' => $report->getText()
-        );
+            $r_author = $report->getAuthor();
+
+            $tpl_report = array(
+                'author' => array(
+                    'name' => $r_author->getPublicName(),
+                    'href' => user_url($r_author)
+                ),
+                'date'   => array(
+                    'text'     => Lang\date_fr($report->getDate()),
+                    'datetime' => datetime_attr($report->getDate())
+                ),
+                'form'   => array(
+                    'action'      => Config::$root_uri.'/admin/reports',
+                    'post_token'  => $post_token
+                ),
+                'explication' => $report->getText()
+            );
+        }
     }
 
     $type_name = null;
@@ -107,8 +119,11 @@ function display_course_content() {
                 )
             ),
 
-            'report' => $tpl_report,
-            'content' => $tpl_content
+            'report'   => $tpl_report,
+            'content'  => $tpl_content,
+
+            'message'      => $msg_str,
+            'message_type' => $msg_type
         )
     ));
 
@@ -211,7 +226,7 @@ function display_post_member_proposed_content_preview() {
 
     // transfer of course/cursus to a new token
     $token2 = generate_post_token(user());
-    $fd2 = FormData::create($token)->store($fd->get());
+    $fd2 = FormData::create($token2)->store($fd->get());
 
     $fd->destroy();
 
@@ -258,17 +273,19 @@ function display_post_member_proposed_content_preview() {
 function display_post_member_proposed_content() {
     $token = $_POST['t'];
 
-    if (!use_token($token, 'POST')) {
+    $fd = FormData::create($token);
+
+    if (!use_token($token, 'POST') || !$fd->exists()) {
         halt(HTTP_FORBIDDEN, 'Le jeton d\'authentification est invalide ou a expiré.');
     }
-
-    $fd = FormData::create($token);
 
     $course = $fd->get('course');
     $cursus = $fd->get('cursus');
 
     $title  = $fd->get('title');
     $text   = $fd->get('text');
+
+    $type   = $fd->get('type');
 
     $fd->destroy();
 
@@ -280,18 +297,9 @@ function display_post_member_proposed_content() {
     $c->setCursus($cursus);
     $c->setCourse($course);
 
-    if (has_post('type')) {
-
-        $type_id = intval($_POST['type']);
-
-        if ($type_id > 0) {
-            $type = ContentTypeQuery::create()->findOneById($type_id);
-
-            if ($type) {
-                $c->setType($type);
-                $c->setRights($type->getRights());
-            }
-        }
+    if ($type) {
+        $c->setContentType($type);
+        $c->setAccessRights($type->getRights());
     }
 
     if (!$c->validate()) {
