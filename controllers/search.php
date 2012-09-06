@@ -13,12 +13,23 @@ function display_search_results() {
 
     $results = perform_search($q);
 
+    $nb = 0;
+
+    foreach ($results as $category) {
+        $nb += count($category['values']);
+    }
+
+    $tpl_results = $nb ? array( 'categories' => $results ) : array();
+    $title  = $nb ? 'Résultats' : 'Aucun résultat';
+    $title .= ' de recherche pour « '.truncate_string($_GET['q'], 30).' »';
+
     return tpl_render('search.html', array(
         'page' => array(
-            'title' => 'Résultats de recherche pour « '.$_GET['q'].' »',
-            'results' => array(
-                'categories' => $results
-            )
+            'title'   => $title,
+            'results' => $tpl_results,
+
+            'keywords'    => preg_split("/\s+/", $q),
+            'description' => truncate_string($title)
         )
     ));
 }
