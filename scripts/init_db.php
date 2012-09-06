@@ -99,12 +99,20 @@ foreach($cursus as $k => $v) {
                     $c->setSemester($s_n);
                 }
 
+                $has_paths = $c->getMandatoryEducationalPaths();
+
                 foreach ($course[3] as $_ => $mandatory_for) {
-                    $c->addMandatoryEducationalPath($paths_refs[$mandatory_for]);
+                    if (!in_array($paths_refs[$mandatory_for], $has_paths)) {
+                        $c->addMandatoryEducationalPath($paths_refs[$mandatory_for]);
+                    }
                 }
 
+                $has_paths = $c->getOptionalEducationalPaths();
+
                 foreach ($course[4] as $_ => $optional_for) {
-                    $c->addOptionalEducationalPath($paths_refs[$optional_for]);
+                    if (!in_array($paths_refs[$optional_for], $has_paths)) {
+                        $c->addOptionalEducationalPath($paths_refs[$optional_for]);
+                    }
                 }
 
                 $c->save();
