@@ -203,7 +203,7 @@ function display_cursus_with_multiple_educational_paths($cursus, $msg_str, $msg_
 
             'cursus'       => array(
                 'name'              => $cursus->getName(),
-                'introduction     ' => $cursus->getDescription(),
+                'introduction'      => $cursus->getDescription(),
 
                 'educational_paths' => $tpl_paths
             )
