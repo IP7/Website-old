@@ -30,7 +30,7 @@ function send_welcome_message($user) {
         time() + Durations::ONE_DAY
     );
 
-    $message  = bonjour().' et bienvenue sur le site de l\'association IP7,';
+    $message  = Lang\bonjour().' et bienvenue sur le site de l\'association IP7,';
     $message .= "\r\n\r\nVotre inscription s'est bien déroulée, il ne manque plus";
     $message .= "qu'à définir vos identifiants de connexion. Cliquez sur le le lien";
     $message .= " suivant pour le faire :\r\n\r\n\thttp://www.infop7.org/connexion?t=$token";
