@@ -41,17 +41,18 @@ function display_course_content() {
 
     $tpl_report = null;
 
-    $post_token = generate_token(user());
-    $td = FormData::create($post_token)->store('id', $report->getId());
-
     if ($report && is_connected() && user()->isAdmin()) {
+
+        $post_token = generate_post_token(user());
+
+        FormData::create($post_token)->store('report', $report);
 
         $r_author = $report->getAuthor();
 
         $tpl_report = array(
             'author' => array(
                 'name' => $r_author->getPublicName(),
-                'href' => Config::$root_uri.'p/'.$r_author->getUsername()
+                'href' => user_url($r_author)
             ),
             'date'   => array(
                 'text'     => Lang\date_fr($report->getDate()),

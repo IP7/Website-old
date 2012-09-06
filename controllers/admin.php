@@ -55,73 +55,100 @@ function display_admin_home($message, $message_type) {
 
 # === MODERATION ===============================================================
 
-function display_admin_content_report($msg = null){
+function display_admin_content_report($msg_str=null, $msg_type=null){
 
-	$query = ReportQuery::create()
-                ->limit(50)
-                ->orderById()
-                ->find();
+	$reports = ReportQuery::create()
+                     ->limit(50)
+                     ->orderById()
+                     ->find();
 
-	$contentReport = Array();
+	$tpl_reports = array();
 
-	if ( $query != null ){
+	if ( $reports ){
 
-		foreach ( $query as $cR ){
+		foreach ( $reports as $r ){
 
-			$user = $cR->getAuthor();
-			$content = $cR->getContent();
+			$user = $r->getAuthor();
+			$content = $r->getContent();
 	
-			$uri = Config::$root_uri . 'cursus/' . $content->getCursus()->getShortName() . '/' . $content->getCourse()->getCode() . '/' . $content->getId();
+			$uri = course_url($content->getCursus(), $content->getCourse()) . '/' . $content->getId();
 
-			$contentReport []= Array(
-                'id' => $cR->getId(),
-                'href' => $uri,
-					 'hrefUser' => Config::$root_uri . 'p/' . $user->getUsername(),
-                'pseudo' => $user->getUsername(),
-                'title' => $content->getTitle(),
-                'reportDate' => $cR->getDate(),
-                'reason' => $cR->getText(),
+            $tpl_reports []= array(
+
+                'id'          => $r->getId(),
+                'href'        => $uri,
+
+                'author'      => array(
+                    'name' => $user->getPublicName(),
+                    'href' => user_url($user)
+                ),
+
+                'content'     => array(
+                    'title' => $content->getTitle()
+                ),
+
+                'date'        => tpl_date($r->getDate()),
+                'explication' => $r->getText(),
             );
 
 		}
 
 	}
 
-	return Config::$tpl->render('admin/content_report.html', tpl_array(admin_tpl_default(),array(
-					'page' => array(
-						'title' => 'Contenu reporté',
-						'msg' => $msg,
-						'reports' => $contentReport
-					)
-			)));
+    return Config::$tpl->render('admin/content_report.html', tpl_array(admin_tpl_default(),array(
+        'page' => array(
+            'title'    => 'Contenus signalés',
+
+            'breadcrumbs' => array(
+                1 => array( 'href' => url(), 'title' => 'Contenus signalés' )
+            ),
+
+            'msg_str'  => $msg_str,
+            'msg_type' => $msg_type,
+            'reports'  => $tpl_reports
+        )
+    )));
 
 }
 
 function post_admin_content_report(){
 
-	$msg = null;
-	$content = ContentQuery::create()->findOneById((int)$_POST['content']);
-	$report = ReportQuery::create()->findOneById((int)$_POST['report']);	
+    $msg_str = null;
+    $msg_type = null;
 
-	if ( !has_post('Valider') && !has_post('Supprimer') )
+    if (!has_post('t')) {
+        halt(HTTP_BAD_REQUEST);
+    }
+
+    $token = $_POST['t'];
+
+    $fd = FormData::create($token);
+
+    if ((!use_token($token, 'POST')) || (!$fd->exists())) {
+        halt(HTTP_FORBIDDEN, 'Le jeton d\'authentification est invalide ou a expiré.');
+    }
+
+    $report = $fd->get('report');
+
+	if ( !has_post('validate') && !has_post('cancel') )
 		return display_admin_content_report();
 
-	if ( has_post('Valider') ){
+	if ( has_post('validate') ){
 	
-		$content->delete();
+		$content = $report->getContent()->delete();
 		$report->delete();
-		$msg = "Le contenu et le report ont bien été supprimé";	
+		$msg_str = 'Le contenu a bien été supprimé.';	
 
 	}
 		
-	if ( has_post('Supprimer') ){
+	if ( has_post('cancel') ){
 	
-		$report->delete();
-		$msg = 'Le report a bien été supprimé';
+        $report->delete();
+        $msg_str = 'Le signalement a bien été annulé.';
 
 	}
 
-	return display_admin_content_report($msg);
+	return display_admin_content_report($msg_str, 'notice');
 
 }
 

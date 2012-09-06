@@ -3,22 +3,19 @@
 {{ parent() }}
 
 	{% if page.reports is empty %}
-		<p>Aucun report actuellement</p>
-	
+		<p>Aucun contenu signalé actuellement.</p>
 	{% else %}
-	
-		{% if page.msg is not empty %}<p> {{ page.msg }} </p>{% endif %}
 
 		<table id="reportList" border="1">
-			<tr><th>Titre du contenu</th><th>Date de report</th><th>Pseudo</th><th>Raison</th><th id="empty"></th></tr>
+			<tr><th>Titre du contenu</th><th>Date du signalement</th><th>Auteur</th><th>Raison</th><th class="empty"></th></tr>
 
-			{% for contentReport in page.reports %}
+			{% for r in page.reports %}
 			<tr>
-				<td class="contentTitle"> {{ contentReport.title }} </td>
-				<td class="reportDate"> {{ contentReport.reportDate }} </td>
-				<td class="pseudo"> {{ _m.a(contentReport.hrefUser, contentReport.pseudo) }} </td>
-				<td class="reason"> {{ contentReport.reason }} </td>
-				<td class="view"><a href='{{ contentReport.href }}' /><button>Voir</button></a></td>
+				<td>{{ r.content.title }}</td>
+				<td>{{ _m.date(r.date) }}</td>
+				<td>{{ _m.a_user(r.author) }}</td>
+				<td>{{ r.explication }}</td>
+				<td><a href="{{ r.href }}" class="button" />Voir</a></td>
 			</tr>
 			{% endfor %}
 
