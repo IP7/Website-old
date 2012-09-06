@@ -26,19 +26,22 @@ function tpl_course_contents($cursus, $course) {
                 ->where('Access_Rights <= ?', $user_rights, PDO::PARAM_INT)
                 ->find();
 
-        foreach ($cts as $c) {
-            $tpl_cts []= array(
-                'href'  => course_url($cursus, $course).'/'.$c->getId(),
-                'title' => $c->getTitle()
+        if (count($cts)) {
+
+            foreach ($cts as $c) {
+                $tpl_cts []= array(
+                    'href'  => course_url($cursus, $course).'/'.$c->getId(),
+                    'title' => $c->getTitle()
+                );
+            }
+
+            $tpl_contents []= array(
+                'short_name' => $t->getShortName(),
+                'title'      => Lang\plurial($t->getName()),
+
+                'contents'   => $tpl_cts
             );
         }
-
-        $tpl_contents []= array(
-            'short_name' => $t->getShortName(),
-            'title'      => Lang\plurial($t->getName()),
-
-            'contents'   => $tpl_cts
-        );
     }
 
     return $tpl_contents;
