@@ -1,5 +1,4 @@
 {% extends 'main.html' %}
-{% import 'macros.html' as _m %}
 {% block content_attrs %} itemscope itemtype="http://schema.org/SearchResultsPage"{% endblock %}
 {% block content %}
 <h1>{{ page.title }}</h1>
@@ -10,7 +9,9 @@
         <h4>{{ c.title }}</h4>
         <ol>
                 {% for r in c.values %}
+                    {% if r.href is defined and r.title is defined %}
             <li class="search_result">{{ _m.a(r.href, r.title) }}</li>
+                    {% endif %}
                 {% endfor %}
         </ol>
     </section>
