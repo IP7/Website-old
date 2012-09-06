@@ -4,7 +4,7 @@
     <section class="report">
     <p>Signalé par <a href="{{ page.report.author.href }}" class="user">{{ page.report.author.name }}</a>, {#
     #} <date datetime="{{ page.report.date.datetime }}">{{ page.report.date.text }}</date>, raison&nbsp;:{#
-        #}«&nbsp;{{ page.report.explication }}&nbsp;».</p>
+        #} «&nbsp;{{ page.report.explication }}&nbsp;».</p>
         <form action="{{ page.report.form.action }}" method="POST">
             {{ _m.token( page.report.form.post_token ) }}
             {{ _m.submit('Supprimer le contenu', null, null, 'validate') }}
