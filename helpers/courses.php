@@ -22,7 +22,8 @@ function tpl_course_contents($cursus, $course) {
 
         $cts = ContentQuery::create()
                 ->filterByContentType($t)
-                #->filterByValidated(1)
+                ->filterByCourse($course)
+                ->filterByValidated(1)
                 ->where('Access_Rights <= ?', $user_rights, PDO::PARAM_INT)
                 ->find();
 
