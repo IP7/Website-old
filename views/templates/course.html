@@ -9,12 +9,12 @@
     <div class="tabbed contents">
         <ul class="tabs">
             {% for ct_type in page.course.content_types %}
-            <li class="tab">{{ _m.a('#tb_' ~ ct_type, ct_type.title) }}</li>
+            <li class="tab">{{ _m.a('#tb_' ~ ct_type.short_name, ct_type.title) }}</li>
             {% endfor %}
         </ul>
         <div class="tabs_contents">
             {% for ct_type in page.course.content_types %}
-            <div class="tab_content" id="#tb_{{ ct_type }}">{#
+            <div class="tab_content" id="#tb_{{ ct_type.short_name }}">{#
                 #}{% if ct_type.intro is defined and ct_type.intro %}<p>{{ ct_type.intro }}</p>{% endif %}<ul>{#
                 #}{% for ct in ct_type.contents %}
                     <li>{{ _m.a(ct.href, ct.title) }}</li>

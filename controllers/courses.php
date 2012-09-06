@@ -55,7 +55,9 @@ function display_course() {
 
             'course'         => array(
                 'name'  => $course->getName().' ('.$course->getCode().')',
-                'intro' => $course->getDescription()
+                'intro' => $course->getDescription(),
+
+                'content_types' => tpl_course_contents($cursus, $course)
             ),
 
             'moderation_bar' => $moderation_bar
