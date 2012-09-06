@@ -31,7 +31,7 @@ function display_legals_page() {
 }
 
 function display_admin_migrate_db_page() {
-    return Config::$tpl->render('admin_db_migration.html', tpl_array(
+    return Config::$tpl->render('admin/db_migration.html', tpl_array(
         admin_tpl_default(),
         array(
             'page' => array(
