@@ -315,10 +315,16 @@ function display_init_my_profile_page($token=null, $message=null, $message_type=
         halt(HTTP_FORBIDDEN);
     }
 
-    $token = $_SESSION['token'];
-    $user = $token['user'];
+    $token    = $_SESSION['token'];
+    $user     = $token['user'];
+
+    if (!$user) {
+        // to prevent 'Call to a member function getUsername() on a non-object'
+        halt(HTTP_FORBIDDEN);
+    }
+
     $username = $user->getUsername();
-    $rights = $token['rights'];
+    $rights   = $token['rights'];
 
     $post_token = generate_token($user, $rights, time() + 3600 * 24, true);
 
