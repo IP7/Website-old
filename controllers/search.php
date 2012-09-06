@@ -9,7 +9,7 @@ function display_search_results() {
     $q = $_GET['q'];
 
     // alias
-    if ($q === '42') { $q = '*'; }
+    if ($q === '42') { $q = '%'; }
 
     $results = perform_search($q);
 
