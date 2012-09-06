@@ -55,21 +55,26 @@ function display_connection($message=null, $message_type=null) {
 
     return tpl_render('connection.html', array(
         'page' => array(
-            'title' => 'Connexion',
-            'form' => array( 'action' => Config::$root_uri.'connexion'.$u ),
-            'breadcrumbs' => false,
+            'title'                  => 'Connexion',
+            'form'                   => array(
+                'action' => Config::$root_uri.'connexion'.$u
+            ),
+            'breadcrumbs'            => false,
+
+            'keywords'               => array( 'connexion' ),
+            'description'            => 'Connexion',
 
             'forgotten_password_url' => Config::$root_uri.'oubli',
 
-            'styles' => array(
+            'styles'                 => array(
                 array(
-                    'href' => Config::$root_uri.'views/static/styles/connection.css',
+                    'href'  => Config::$root_uri.'views/static/styles/connection.css',
                     'media' => 'all'
                 )
             ),
 
-            'message' => $message,
-            'message_type' => $message_type
+            'message'                => $message,
+            'message_type'           => $message_type
         )
     ));
 }
@@ -110,12 +115,16 @@ function display_forgotten_password($message=null, $message_type=null) {
 
     return tpl_render('forgotten_password.html', array(
         'page' => array(
-            'title' => 'Mot de passe oublié',
-            'form' => array(
-                'action' => Config::$root_uri.'oubli',
+            'title'        => 'Mot de passe oublié',
+
+            'keywords'     => array( 'mot de passe', 'mdp', 'oublié' ),
+            'description'  => 'Procédure de réinitialisation du mot de passe.',
+
+            'form'         => array(
+                'action'     => Config::$root_uri.'oubli',
                 'post_token' => generate_post_token()
             ),
-            'message' => $message,
+            'message'      => $message,
             'message_type' => $message_type
         )
     ));

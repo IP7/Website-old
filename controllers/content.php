@@ -48,6 +48,10 @@ function display_content_view(){
 
 	return Config::$tpl->render('content_view.html', tpl_array(admin_tpl_default(),array(
 					'page' => Array(
+                        'title' => $content->getTitle(),
+                        'keywords' => array( $cursus->getName(), $course->getName(), $course->getCode() ),
+                        'description' => '',
+
 						'report' => $reportArray,
 						'content' => $contentArray
 					)

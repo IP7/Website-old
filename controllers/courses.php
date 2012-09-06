@@ -45,12 +45,15 @@ function display_course() {
 
     return tpl_render('course.html', array(
         'page' => array(
-            'title' => $course->getName().' ('.$course->getCode().')',
-            'breadcrumbs' => $breadcrumbs,
+            'title'          => $course->getName().' ('.$course->getCode().')',
+            'breadcrumbs'    => $breadcrumbs,
 
-            'news' => false,
+            'keywords'       => array( $course->getName(), $course->getCode() ),
+            'description'    => truncate_string($course->getDescription()),
 
-            'course' => array(
+            'news'           => false,
+
+            'course'         => array(
                 'name'  => $course->getName().' ('.$course->getCode().')',
                 'intro' => $course->getDescription()
             ),

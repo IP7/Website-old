@@ -145,25 +145,31 @@ function display_cursus() {
 
     return Config::$tpl->render('cursus/base.html', tpl_array(array(
         'page' => array(
-            'title' => $cursus->getName(),
+            'title'           => $cursus->getName(),
 
-            'breadcrumb' => $breadcrumb,
+            'breadcrumb'      => $breadcrumb,
 
-            'news' => $news,
+            'keywords'        => array(
+                $cursus->getName(), $cursus->getShortName(),
+                $path->getName(), $path->getShortName()
+            ),
+            'description'     => truncate_string($path->getDescription()),
 
-            'cursus' => array(
-                'name' => $cursus->getName(),
+            'news'            => $news,
+
+            'cursus'          => array(
+                'name'         => $cursus->getName(),
                 'introduction' => $cursus->getDescription(),
 
-                'path_name' => $path->getName(),
+                'path_name'    => $path->getName(),
 
-                'courses' => $courses,
-                'news' => $news,
-                'other_links' => $other_links
+                'courses'      => $courses,
+                'news'         => $news,
+                'other_links'  => $other_links
             ),
 
             // moderation
-            'moderation_bar' => $moderation_bar,
+            'moderation_bar'  => $moderation_bar,
             'add_news_button' => $add_news
 
         )
@@ -190,11 +196,14 @@ function display_cursus_with_multiple_educational_paths($cursus, $msg_str, $msg_
             'message'      => $msg_str,
             'message_type' => $msg_type,
 
-            'news' => false,
+            'keywords'     => array( $cursus->getName(), $cursus->getShortName() ),
+            'description'  => truncate_string($cursus->getDescription()),
 
-            'cursus' => array(
-                'name' => $cursus->getName(),
-                'introduction' => $cursus->getDescription(),
+            'news'         => false,
+
+            'cursus'       => array(
+                'name'              => $cursus->getName(),
+                'introduction     ' => $cursus->getDescription(),
 
                 'educational_paths' => $tpl_paths
             )
@@ -207,6 +216,9 @@ function display_empty_cursus($cursus, $base_uri, $breadcrumb) {
         'page' => array(
             'title' => $cursus->getName(),
             'breadcrumb' => $breadcrumb,
+
+            'keywords'     => array( $cursus->getName(), $cursus->getShortName() ),
+            'description'  => truncate_string($cursus->getDescription()),
 
             'cursus' => array(
                 'name' => $cursus->getName(),

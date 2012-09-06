@@ -140,25 +140,28 @@ function display_educational_path() {
 
     return Config::$tpl->render('cursus/educational_path.html', tpl_array(array(
         'page' => array(
-            'title' => $path->getName(),
+            'title'           => $path->getName(),
 
-            'breadcrumbs' => $breadcrumbs,
+            'breadcrumbs'     => $breadcrumbs,
 
-            'news' => $news,
+            'keywords'        => array( $path->getName(), $path->getShortName() ),
+            'description'     => truncate_string($path->getDescription()),
 
-            'cursus' => array(
-                'name' => $cursus->getName(),
+            'news'            => $news,
+
+            'cursus'          => array(
+                'name'         => $cursus->getName(),
                 'introduction' => $path->getDescription(),
 
-                'path_name' => $path->getName(),
+                'path_name'    => $path->getName(),
 
-                'courses' => $courses,
-                'news' => $news,
-                'other_links' => $other_links
+                'courses'      => $courses,
+                'news'         => $news,
+                'other_links'  => $other_links
             ),
 
             // moderation
-            'moderation_bar' => $moderation_bar,
+            'moderation_bar'  => $moderation_bar,
             'add_news_button' => $add_news
 
         )
