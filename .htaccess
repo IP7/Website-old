@@ -5,7 +5,7 @@ AddDefaultCharset UTF-8
 <IfModule mod_rewrite.c>
 
 Options +FollowSymlinks
-Options +Indexes
+Options -Indexes
 RewriteEngine on
 
 # Redirect admin.infop7.org to www.infop7.org/admin
