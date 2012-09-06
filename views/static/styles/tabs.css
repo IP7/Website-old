@@ -1,8 +1,3 @@
-/* Test */
-.tabbed_contents, .tabs, .tab, .tabs_contents, .tab_content {
-    sborder:1px solid red;
-}
-
 .tab, .tab_content {
     border-color:#444;
 }
