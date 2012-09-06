@@ -125,7 +125,7 @@ function tpl_render($tp, $values) {
 
 // return an array which represents a date
 function tpl_date($d) {
-  return array( 'date' => date_fr($d), 'datetime_attr' => datetime_attr($d));
+  return array( 'date' => Lang\date_fr($d), 'datetime_attr' => datetime_attr($d));
 }
 
 ?>

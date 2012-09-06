@@ -96,7 +96,7 @@ function display_educational_path() {
 
             $news []= array(
                 'datetime_attr' => datetime_attr($n->getDate()),
-                'datetime'      => date_fr($n->getDate()),
+                'datetime'      => Lang\date_fr($n->getDate()),
                 'title'         => $n->getTitle(),
                 'content'       => $n->getText(),
                 'author'        => $author

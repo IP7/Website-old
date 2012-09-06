@@ -48,7 +48,7 @@ function send_connection_token_email($user) {
     $subject = 'Mot de passe oublié';
     $token   = generate_token($user, Token::canChangePassword, time()+Durations::ONE_DAY);
 
-    $message = bonjour().', vous trouverez ci-dessous un lien vous'
+    $message = Lang\bonjour().', vous trouverez ci-dessous un lien vous'
              . ' permettant de vous connecter à votre compte pour réinitialiser'
              . ' votre mot de passe :'
              . "\r\n\r\n\thttp://www.infop7.org/connexion?t=$token\r\n\r\n"

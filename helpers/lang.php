@@ -1,4 +1,5 @@
 <?php
+namespace Lang;
 
 /* adapt a string to the gender of the user
  * if $gender is 'F', $female_suffix is appended, $male_suffix if it's 'M', and
@@ -53,6 +54,17 @@ function de($next_word) {
     return $de.$next_word;
 }
 
+// make a string plurial
+function plurial($s) {
+
+    if (strtoupper($s) === $s) {
+        return $s;
+    }
+
+    // really basic function
+    return preg_replace("/[A-Z]?[-a-zâäàéèêëîôöùûü]+/", "\\0s", $s);
+}
+
 // format a date for French output
 function date_fr($d) {
     $d = get_datetime($d);
@@ -63,7 +75,7 @@ function date_fr($d) {
 
     $str = $d->format('d/m/Y'); 
 
-    $today = new DateTime();
+    $today = new \DateTime();
 
     if ($today->format('d/m/Y') == $str) {
         return 'Aujourd\'hui';

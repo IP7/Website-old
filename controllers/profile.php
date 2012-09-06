@@ -72,7 +72,7 @@ function display_profile_page($username=NULL, $is_my_profile=false) {
         foreach ($tpl_user['options'] as $k => $opt) {
             $tpl_user['options'][$k] = array(
                 'title' => $opt['title'],
-                'value' => bool_to_fr($opt['value'])
+                'value' => Lang\bool_to_fr($opt['value'])
             );
         }
     }

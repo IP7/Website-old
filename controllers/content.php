@@ -102,7 +102,7 @@ function display_member_proposing_content_form() {
 
     return tpl_render('contents/proposing.html', array(
         'page' => array(
-            'title' => 'Proposer un contenu '.de($course->getCode()),
+            'title' => 'Proposer un contenu '.Lang\de($course->getCode()),
 
             'breadcrumbs' => array(
                 1 => array(

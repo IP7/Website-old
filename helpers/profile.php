@@ -7,15 +7,15 @@ function tpl_user($user, $extended=false) {
     $avatar = null;
 
     if ($user->isAlumni()) {
-        $userStatus .= adapt_to_gender($user, 'Ancien étudiant');
+        $userStatus .= Lang\adapt_to_gender($user, 'Ancien étudiant');
     }
     else if ($user->isStudent()) {
-        $userStatus .= adapt_to_gender($user, 'Étudiant');
+        $userStatus .= Lang\adapt_to_gender($user, 'Étudiant');
     }
 
     if ($user->isTeacher()) {
         $userStatus .= ($userStatus=='') ? 'E' : ' e';
-        $userStatus .= adapt_to_gender($user, 'nseignant');
+        $userStatus .= Lang\adapt_to_gender($user, 'nseignant');
     }
 
     if ($user->getAvatar()) {
