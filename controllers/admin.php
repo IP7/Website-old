@@ -152,37 +152,51 @@ function post_admin_content_report(){
 
 }
 
-function display_admin_content_proposed(){
+function display_admin_proposed_content(){
 
-	$query = ContentQuery::create()
+	$contents = ContentQuery::create()
 							->limit(50)
 							->orderById()
 							->findByValidated(0);
 
-	$contentProposed = Array();
-	$msg = '';
+	$tpl_contents = Array();
 
-	if ( $query != null ){
+	$msg = null;
 
-		foreach ( $query as $cP ){
+	if ($contents){
 
-			$user   = $cP->getAuthor();
-			$cursus = $cP->getCursus();
-			$course = $cP->getCourse();
+		foreach ( $contents as $c ){
 
-			$uri = Config::$root_uri . "admin/content/proposed/" . $cP->getId();
+			$user   = $c->getAuthor();
+			$cursus = $c->getCursus();
+			$course = $c->getCourse();
 
-			$contentProposed []=	Array(
-						'id' => $cP->getId(),
-						'title' => $cP->getTitle(),
-						'href' => $uri,
-						'cursus' => $cursus->getShortName(),
-						'course' => $course->getCode(),
-						'pseudo' => $user->getUsername(),
-						'proposedDate' => $cP->getDate()
-					);
+			$uri = Config::$root_uri . 'admin/content/proposed/' . $c->getId();
 
+            $tpl_c = array(
+                'title' => $c->getTitle(),
+                'href'  => $uri,
+                'date'  => tpl_date($c->getDate()),
+                'author' => array(
+                    'href' => user_url($user),
+                    'name' => $user->getPublicName()
+                )
+            );
 
+            if ($cursus) {
+
+                $tpl_c['cursus'] = array(
+                    'name' => $cursus->getShortName()
+                );
+
+                if ($course) {
+                    $tpl_c ['course'] = array(
+                        'name' => $course->getCode()
+                    );
+                }
+            }
+
+			$tpl_contents []= $tpl_c;
 		}
 
 		if ( has_get('n',false) ){
@@ -190,13 +204,13 @@ function display_admin_content_proposed(){
 				$msg = get_message($_GET['n']);
 		}
 			
-		return Config::$tpl->render('admin/content_proposed.html', tpl_array(admin_tpl_default(),array(
-						'page' => Array(
-							'title' => 'Contenu proposé',
-							'msg' => $msg,
-							'proposed' => $contentProposed
-						)
-				)));
+		return Config::$tpl->render('admin/content_proposed.html', tpl_array(admin_tpl_default(), array(
+            'page' => Array(
+                'title' => 'Contenu proposé',
+                'message' => $msg,
+                'contents' => $tpl_contents
+            )
+        )));
 
 	}
 

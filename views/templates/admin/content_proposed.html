@@ -2,24 +2,22 @@
 {% block admin_content %}
 {{ parent() }}
 
-	{% if page.proposed is empty %}
-		<p>Aucun contenu proposé actuellement</p>
+	{% if page.contents is empty %}
+		<p>Aucun contenu proposé actuellement.</p>
 
 	{% else %}
 
-		{% if page.msg is not empty %}<p> {{ page.msg }} </p>{% endif %}
-
 		<table id="proposedList" border="1">
-			<tr><th>Titre</th><th>Année</th><th>Cours</th><th>Pseudo</th><th>Date</th><th class="empty"</th></tr>
+			<tr><th>Titre</th><th>Cursus</th><th>Cours</th><th>Pseudo</th><th>Date</th><th class="empty"</th></tr>
 
-			{% for contentProposed in page.proposed %}
+			{% for c in page.contents %}
 			<tr>
-				<td class="title"> {{ contentProposed.title }} </td>
-				<td class="cursus"> {{ contentProposed.cursus }} </td>
-				<td class="course"> {{ contentProposed.course }} </td>
-				<td class="pseudo"> {{ contentProposed.pseudo }} </td>
-				<td class="date"> {{ contentProposed.proposedDate }} </td>
-				<td class="view"><a href="{{ contentProposed.href }}"><button>Voir</button></a></td>
+				<td>{{ c.title }}</td>
+                <td>{% if c.cursus is defined %}{{ c.cursus.name }}{% endif %}</td>
+                <td>{% if c.course is defined %}{{ c.course.name }}{% endif %}</td>
+				<td>{{ _m.a_user(c.author) }}</td>
+				<td>{{ _m.date(c.date) }}</td>
+				<td><a href="{{ c.href }}" class="button">Voir</a></td>
 			</tr>
 			{% endfor %}
 

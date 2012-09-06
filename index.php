@@ -90,7 +90,7 @@ dispatch('/admin', 'display_admin_home');
 dispatch('/admin/moderation', 'display_admin_moderation');
 dispatch('/admin/reports', 'display_admin_content_report');
 dispatch_post('/admin/reports', 'post_admin_content_report');
-dispatch('/admin/content/proposed', 'display_admin_content_proposed');
+dispatch('/admin/content/proposed', 'display_admin_proposed_content');
 dispatch('/admin/content/proposed/:id', 'display_admin_content_view');
 dispatch('/admin/content/proposed/:id/:action', 'post_admin_content_action');
 ## finances
