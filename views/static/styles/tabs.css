@@ -1,0 +1,33 @@
+/* Test */
+.tabbed_contents, .tabs, .tab, .tabs_contents, .tab_content {
+    sborder:1px solid red;
+}
+
+.tab, .tab_content {
+    border-color:#444;
+}
+
+.tabs {
+    list-style-type:none;
+    margin-bottom:0;
+    padding-left:5px;
+}
+.tab {
+    display:inline-block;
+    border:1px solid;
+    border-bottom-color:white;
+    margin-bottom:-1px;
+    padding:4px 8px;
+}
+.tab a {
+    color:black;
+    text-decoration:none;
+}
+
+.tab_content {
+    display:none;
+    border:1px solid;
+}
+.tab_content:target {
+    display:block;
+}

@@ -60,6 +60,14 @@ function display_course() {
                 'content_types' => tpl_course_contents($cursus, $course)
             ),
 
+            'styles' => array(
+                array( 'href' => Config::$root_uri.'views/static/styles/tabs.css')
+            ),
+
+            'scripts' => array(
+                array( 'src'  => Config::$root_uri.'views/static/js/tabs.min.js')
+            ),
+
             'moderation_bar' => $moderation_bar
         )
     ));
