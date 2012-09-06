@@ -480,7 +480,6 @@ function display_admin_members() {
 
             $options = array(
                 array( 'href' => $activate_href, 'title' => $activate_title,),
-                array( 'href' => $uri.'/renew',  'title' => 'Renouveler' ),
                 array( 'href' => $uri.'/edit',   'title' => 'Modifier' )
             );
 
