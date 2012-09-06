@@ -261,17 +261,21 @@ function post_admin_content_action(){
 
 function display_admin_add_member($values=null, $msg=null, $msg_type=null) {
 
-    $cursus = CursusQuery::create()
-        ->limit(10) // should not be so high, so this limit is ok
-        ->orderByShortName()
+    $paths = EducationalPathQuery::create()
+        ->limit(15) // should not be so high, so this limit is ok
+        ->orderByCursusId()
         ->find();
 
-    $tpl_cursus = array();
+    $tpl_paths = array();
 
-    foreach ($cursus as $k => $c) {
-        $tpl_cursus []= array(
-            'id'   => $c->getId(),
-            'name' => $c->getShortName()
+    foreach ($paths as $k => $p) {
+
+        $cursus = $p->getCursus();
+        if (!$cursus) { continue; }
+
+        $tpl_paths []= array(
+            'value' => $p->getId(),
+            'name'  => $cursus->getShortName().' parcours '.$p->getShortName()
         );
     }
 
@@ -294,9 +298,9 @@ function display_admin_add_member($values=null, $msg=null, $msg_type=null) {
                     'min' => date('Y-m-d', time() - Durations::ONE_YEAR*100) // 100 years ago
                 ),
 
-                'post_token' => generate_post_token(null, 0, time()+Durations::ONE_MINUTE*20),
+                'post_token' => generate_post_token(user(), 0, time()+20*Durations::ONE_MINUTE),
 
-                'cursus' => $cursus,
+                'educational_paths' => $tpl_paths,
                 'values' => $values
             )
         )
@@ -311,7 +315,7 @@ function post_admin_add_member() {
         return display_admin_add_member();
     }
     
-    if (!use_token($_POST['t'])) {
+    if (!use_token($_POST['t'], 'POST')) {
         return display_admin_add_member(
             $_POST,
             'Le token a expiré. Veuillez réessayer',
@@ -372,20 +376,20 @@ function post_admin_add_member() {
 
     $user->setRemarks(get_string('remarks', 'post'));
 
-    $cursus = array();
+    $paths = array();
 
-    if (has_post('cursus')) {
-        foreach ($_POST['cursus'] as $id) {
-            $c = CursusQuery::create()->findOneById($id);
-            if ($c != NULL) {
-                $cursus [] = $c;
+    if (has_post('educpaths')) {
+        foreach ($_POST['educpaths'] as $id) {
+            $p = EducationalPathQuery::create()->findOneById($id);
+            if ($p != NULL) {
+                $paths []= $p;
             }
         }
     }
 
     $fee = null;
 
-    if (get_string('fee', 'post') != '1') { // TODO why is there `!= '1'` here??
+    if (has_post('fee')) {
         $user->setFirstEntry(time());
         $user->setLastEntry(time());
         $user->setExpirationDate(next_expiration_date());
@@ -414,8 +418,8 @@ function post_admin_add_member() {
             $fee->save();
         }
 
-        foreach ($cursus as $c) {
-            $user->addCursus($c);
+        foreach ($paths as $p) {
+            $user->addEducationalPath($p);
         }
 
         send_welcome_message($user);

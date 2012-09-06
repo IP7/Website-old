@@ -13,9 +13,9 @@
         #}<label class="inline">{{ _m.checkbox("alumni", '1') }} Ancien étudiant</label>{#
         #}<label class="inline">{{ _m.checkbox("teacher", '1') }} Enseignant</label>{#
         #}</p>
-    <label>Cursus&nbsp;:<select name="cursus[]" multiple>
-        {% for c in page.add_form.cursus %}
-            <option value="{{ c.id }}">{{ c.name }}</option>
+    <label>Cursus&nbsp;:<select name="educpaths[]" multiple>
+        {% for e in page.add_form.educational_paths %}
+            <option value="{{ e.value }}">{{ e.name }}</option>
         {% endfor %}
     </select></label>
     <label>Remarques&nbsp;:<input type="text" name="remarks" maxlength="255" /></label>
