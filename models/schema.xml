@@ -125,6 +125,8 @@
                  (e-mail de validation). -->
             <rule name="match"     value="/^[-+\w\.]+@[-\.\w]+\.[a-z]{2,4}$/"
                                              message="L'adresse e-mail n'est pas valide." />
+
+            <rule name="unique"              message="L'email est déjà pris." />
         </validator>
 
         <validator column="visits_nb">

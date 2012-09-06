@@ -81,6 +81,7 @@ class UserTableMap extends TableMap
         $this->addValidator('LASTNAME', 'minLength', 'propel.validator.MinLengthValidator', '1', 'Le nom doit faire au moins 1 caractère.');
         $this->addValidator('EMAIL', 'minLength', 'propel.validator.MinLengthValidator', '6', 'L\'e-mail doit faire au moins 6 caractères.');
         $this->addValidator('EMAIL', 'match', 'propel.validator.MatchValidator', '/^[-+\w\.]+@[-\.\w]+\.[a-z]{2,4}$/', 'L\'adresse e-mail n\'est pas valide.');
+        $this->addValidator('EMAIL', 'unique', 'propel.validator.UniqueValidator', '', 'L\'email est déjà pris.');
         $this->addValidator('VISITS_NB', 'minValue', 'propel.validator.MinValueValidator', '0', 'Le nombre de visites ne peut pas être négatif.');
     } // initialize()
 
