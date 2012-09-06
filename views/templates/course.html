@@ -6,6 +6,7 @@
     <section class="intro">{{ page.course.intro }}</section>
     {% include "utils/news.html" %}
     {% if page.course.content_types is defined and page.course.content_types is not empty %}
+    <h2>Contenus</h2>
     <div class="tabbed_contents">
         <ul class="tabs">
             {% for ct_type in page.course.content_types %}
