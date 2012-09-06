@@ -92,9 +92,18 @@ function display_course_content() {
             'description' => '',
 
             'breadcrumbs' => array(
-                1 => array( 'href' => cursus_url($cursus),         'title' => $cursus->getShortName()),
-                2 => array( 'href' => course_url($cursus,$course), 'title' => $course->getCode()),
-                3 => array( 'href' => url(),                       'title' => $content->getTitle())
+                1 => array(
+                    'href'  => cursus_url($cursus),
+                    'title' => $cursus->getName()
+                ),
+                2 => array(
+                    'href'  => course_url($cursus,$course),
+                    'title' => $course->getCode()
+                ),
+                3 => array(
+                    'href'  => url(),
+                    'title' => $content->getTitle()
+                )
             ),
 
             'report' => $tpl_report,
@@ -285,11 +294,11 @@ function display_post_member_proposed_content() {
     }
 
     if (!$c->validate()) {
-        //TODO
+        return 'validation error.'; //TODO
     }
     else {
         $c->save();
-        return "ok."; //TODO
+        redirect_to('/cursus/'.$cursus->getShortName().'/'.$course->getCode().'/'.$c->getId());
     }
 }
 
