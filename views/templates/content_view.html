@@ -1,25 +1,25 @@
 {% extends 'main.html' %}
-
 {% block content %}
+	{% if page.report is defined and page.report %}
+    <section class="report">
+    <p>Signalé par <a href="{{ page.report.author.href }}" class="user">{{ page.report.author.name }}</a>, {#
+    #} <date datetime="{{ page.report.date.datetime }}">{{ page.report.date.text }}</date>, raison&nbsp;:{#
+        #}«&nbsp;{{ page.report.explication }}&nbsp;».</p>
+        <form action="{{ page.report.form.action }}" method="POST">
+            {{ _m.token( page.report.form.post_token ) }}
+            {{ _m.submit('Supprimer le contenu', null, null, 'validate') }}
+            {{ _m.submit('Annuler le signalement', null, null, 'cancel') }}
+        </form>
+    </section>
+    {% endif %}
 
-	{{ parent() }}
-	
-	{% if page.report is not empty %}
-    <p>Signalé par&nbsp;: {{ page.report.author }}, le {{ page.report.reportDate }}.<br />
-		Raison&nbsp;: {{ page.report.reason }} </p>
-		<form action="{{ page.report.href }}" method="POST">
-		{{ _m.hidden('report', page.report.reportId) }}
-		{{ _m.hidden('content', page.report.contentId) }}
-		{% for option in page.report.options %}
-			{{ _m.submit(option.title, '', '', option.title) }}
-		{% endfor %}
-		</form>
-	{% endif %}
-
-
-	<h3>{{ page.content.title }}</h3>
-	<p>{{ page.content.cursus }} — {{ page.content.courseName }} ({{ page.content.courseCode }})</p>
-	<p>Posté par&nbsp;: {#{ page.content.username }#} le {{ page.content.date }}.</p>
-	<p>{{ page.content.contentText }}</p>
+    <article class="user_content">
+        <header class="content_header">
+            <h1>{{ page.content.title }}</h1>
+            <p>Posté par <a href="{{ page.content.author.href }}" class="user" rel="author">{{ page.content.author.name }}</a>{#
+            #} <date datetime="{{ page.content.date.datetime }}">{{ page.content.date.text }}</date>.</p>
+        </header>
+        <section class="user_content_text">{{ page.content.text|raw }}</section>
+    </article>
 
 {% endblock %}

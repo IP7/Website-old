@@ -24,64 +24,83 @@ function display_course_content() {
         redirect_to('/cursus/'.$cursus->getShortName().'/'.$course->getCode().'/'.$content_id);
     }
 
+    $rights = $content->getAccessRights();
+
+    $type = $content->getContentType();
+
+    if ($type && $type->getRights() > $rights) {
+        $rights = $type->getRights();
+    }
+
+    if (   (!is_connected() && $rights > 0)
+        || (is_connected()  && $rights > user()->getRank())) {
+        halt(HTTP_FORBIDDEN, 'Vous n\'avez pas le droit d\'accéder à ce contenu.');
+    }
+
 	$report = ReportQuery::create()->findOneByContent($content);
 
     $tpl_report = null;
 
+    $post_token = generate_token(user());
+    $td = FormData::create($post_token)->store('id', $report->getId());
+
     if ($report && is_connected() && user()->isAdmin()) {
+
+        $r_author = $report->getAuthor();
+
         $tpl_report = array(
-            'id'     => $report->getId(),
-            'author' => $report->getAuthor()->getPublicName(),
-            'date'   => Lang\date_fr($report->getDate()),
+            'author' => array(
+                'name' => $r_author->getPublicName(),
+                'href' => Config::$root_uri.'p/'.$r_author->getUsername()
+            ),
+            'date'   => array(
+                'text'     => Lang\date_fr($report->getDate()),
+                'datetime' => datetime_attr($report->getDate())
+            ),
             'form'   => array(
-                'action' => Config::$root_uri.'/admin/reports'
-            )
+                'action'      => Config::$root_uri.'/admin/reports',
+                'post_token'  => $post_token
+            ),
+            'explication' => $report->getText()
         );
     }
 
+    $type_name = null;
 
-	$reportArray = Array();
+    if ($type) {
+        $type_name = $type->getName();
+    }
 
+    $tpl_content = array(
+        'title'  => $content->getTitle(),
+        'text'   => format_text($content->getText()),
+        'date'   => array(
+            'text'     => Lang\date_fr($content->getDate()),
+            'datetime' => datetime_attr($content->getDate())
+        ),
+        'author' => array(
+            'name' => $user->getPublicName(),
+            'href' => Config::$root_uri.'p/'.$user->getUsername()
+        ),
+        'type'   => $type_name
+    );
 
-	if ( user()->isAdmin() && $report instanceof Report ){
+	return tpl_render('content_view.html', array(
+        'page' => Array(
+            'title' => $content->getTitle(),
+            'keywords' => array( $cursus->getName(), $course->getName(), $course->getCode() ),
+            'description' => '',
 
-		$option = Array(
-				Array(	'title' => 'Valider'),
-				Array(	'title' => 'Supprimer')
-			);
-	
-		$reportArray = Array(
-				'reportId' => $report->getId(),
-				'contentId' => $contentId,
-				'author' => $report->getAuthor()->getUsername(),
-				'reportDate' => $report->getDate(),
-				'reason' => $report->getText(),
-				'href' => Config::$root_uri . 'admin/reports',
-				'options' => $option
-			);
+            'breadcrumbs' => array(
+                1 => array( 'href' => cursus_url($cursus),         'title' => $cursus->getShortName()),
+                2 => array( 'href' => course_url($cursus,$course), 'title' => $course->getCode()),
+                3 => array( 'href' => url(),                       'title' => $content->getTitle())
+            ),
 
-	}
-
-	$contentArray = Array(
-				'title' => $content->getTitle(),
-				'cursus' => $cursus->getName(),
-				'contentText' => $content->getText(),
-				'courseName' => $course->getName(),
-				'courseCode' => $course->getCode(),
-				'date' => $content->getDate(),
-				'username' => $user->getUsername()
-			);
-
-	return Config::$tpl->render('content_view.html', tpl_array(admin_tpl_default(),array(
-					'page' => Array(
-                        'title' => $content->getTitle(),
-                        'keywords' => array( $cursus->getName(), $course->getName(), $course->getCode() ),
-                        'description' => '',
-
-						'report' => $reportArray,
-						'content' => $contentArray
-					)
-		)));
+            'report' => $tpl_report,
+            'content' => $tpl_content
+        )
+    ));
 
 }
 
