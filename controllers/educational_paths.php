@@ -23,7 +23,7 @@ function display_educational_path() {
         redirect_to('/cursus/'.$cursus->getShortName(), array('status' => HTTP_MOVED_PERMANENTLY));
     }
 
-    $cursus_uri = Config::$root_uri.'cursus/'.$cursus->getShortName().'/';
+    $cursus_uri = cursus_url($cursus);
     $base_uri = $cursus_uri.'parcours/'.$path->getShortName().'/';
 
     $breadcrumbs = array(
@@ -89,8 +89,8 @@ function display_educational_path() {
 
             if ($a) {
                 $author = array(
-                    'href' => Config::$root_uri.'p/'.$a->getUsername(),
-                    'name' => ($a->getConfigShowRealName() ? $a->getName() : $a->getUsername())
+                    'href' => user_url($a),
+                    'name' => $a->getPublicName()
                 );
             }
 
@@ -133,8 +133,8 @@ function display_educational_path() {
 
     if ($resp_q != null) {
         $responsable = array(
-            'href'  => Config::$root_uri.'/p/'.$resp_q->getUsername(),
-            'title' => ($resp_q->getConfigShowRealName() ? $resp_q->getName() : $resp_q->getUsername())
+            'href'  => user_url($resp_q),
+            'title' => $resp_q->getPublicName()
         );
     }
 
@@ -169,4 +169,3 @@ function display_educational_path() {
 }
 
 ?>
-
