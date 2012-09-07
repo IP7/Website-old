@@ -488,8 +488,12 @@ function display_admin_members() {
     if ($q != NULL) {
         foreach ($q as $m) {
 
+            if (is_temp_username($m->getUsername())) {
+                continue;
+            }
+
             $activated = $m->isActivated();
-            $uri = Config::$root_uri.'admin/membre/'.$m->getUsername();
+            $uri = user_url($m);
 
             $lastentry = $m->getLastEntry();
 
@@ -512,21 +516,13 @@ function display_admin_members() {
                 $type = 'membre';
             }
 
-            $activate_href = $uri.'/'.($activated?'off':'on');
-            $activate_title = 'Désactiver';
-
-            if (!$activated) {
-                $activate_title = ($m->getFirstEntry() != NULL) ? 'Réactiver' : 'Activer';
-            }
-
             $options = array(
-                array( 'href' => $activate_href, 'title' => $activate_title,),
                 array( 'href' => $uri.'/edit',   'title' => 'Modifier' )
             );
 
             $members []= array(
                 'id' => $m->getId(),
-                'href' => Config::$root_uri.'p/'.$m->getUsername(),
+                'href' => $uri,
                 'pseudo' => $m->getUsername(),
                 'name' => $m->getName(),
                 'type' => $type,
