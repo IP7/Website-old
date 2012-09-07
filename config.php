@@ -20,7 +20,7 @@ define('ALREADY_CONNECTED', -4);
 # - access rights constants
 #   (numbers MUST be between -127 and +127)
 #
-# define('VISITOR_RANK', 0);
+define('VISITOR_RANK', 0);
 define('MEMBER_RANK', 50);
 define('MODERATOR_RANK', 80);
 define('ADMIN_RANK', 100);

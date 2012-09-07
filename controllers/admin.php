@@ -367,9 +367,9 @@ function post_admin_add_member() {
     // required fields
 
     $required_fields = array(
-        'lastname' => 'Le nom',
+        'lastname'  => 'Le nom',
         'firstname' => 'Le prénom',
-        'email' => 'L\'email'
+        'email'     => 'L\'email'
     );
 
     foreach ($required_fields as $name => $label) {
@@ -442,7 +442,8 @@ function post_admin_add_member() {
         $fee->setValidated(true);
     }
 
-    if (get_string('activate', 'post')) {
+    if (get_string('activated', 'post')) {
+        var_dump("foo");
         $user->setDeactivated(0);
     }
 
