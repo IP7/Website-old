@@ -15,4 +15,8 @@
  */
 class TokenQuery extends BaseTokenQuery
 {
+    public function filterByValue($v) {
+        $v = str_replace('%', '', $v);
+        parent::filterByValue(str_replace(array('%', '*', '_'), '', $v));
+    }
 }
