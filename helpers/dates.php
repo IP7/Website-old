@@ -41,16 +41,13 @@ function get_date_from_input($inp) {
 
     $year = $month = $day = NULL;
 
-    if (intval($tokens[0]) > 50) {
+    if (intval($tokens[0]) > 31) {
         // YYYY-MM-DD
-        $year  = $tokens[0];
-        $month = $tokens[1];
-        $day   = $tokens[2];
+        list($year, $month, $day) = $tokens;
     }
     else {
-        $year  = $tokens[2];
-        $month = $tokens[1];
-        $day   = $tokens[0];
+        // DD-MM-YYYY
+        list($day, $month, $year) = $tokens;
     }
 
     if ($year < 1900) {

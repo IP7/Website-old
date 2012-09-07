@@ -73,8 +73,7 @@ function filter_name($name, $from=null) {
 function filter_email($email, $from=null) {
     $email = get_string($email, $from);
 
-    // may be changed to be more accurate
-    return preg_match('/^[-+.a-zA-Z0-9]+@[-a-zA-Z0-9]+\.[a-z]{2,4}$/', $email);
+    return preg_match('/@/', $email);
 }
 
 // filter a French phone number
