@@ -378,6 +378,13 @@ function post_admin_add_member() {
         $message_type = $message_type || 'error';
     }
 
+    $user = UserQuery::create()->findOneByEmail(get_string('email', 'post'));
+
+    if ($user) {
+        $message .= (($message!='')?' ':'').'L\'email est déjà pris.';
+        $message_type = $message_type || 'error';
+    }
+
     if ($message_type != null) {
         return display_admin_add_member($_POST, $message, $message_type);
     }
@@ -443,7 +450,6 @@ function post_admin_add_member() {
     }
 
     if (get_string('activated', 'post')) {
-        var_dump("foo");
         $user->setDeactivated(0);
     }
 
