@@ -18,6 +18,10 @@ function configure() {
 
 function before($route) {
 
+    foreach ($route['params'] as $k => $v) {
+        params($k, escape_mysql_wildcards($v));
+    }
+
     try_autoconnect();
 
     if (stristr($route['callback'], 'admin')) {
