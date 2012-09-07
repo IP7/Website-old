@@ -3,7 +3,7 @@
 function user_to_search_result($u) {
     return array(
         'title' => $u->getPublicName(),
-        'href'  => Config::$root_uri.'/p/'.$u->getUsername()
+        'href'  => user_url($u)
     );
 }
 
@@ -56,17 +56,20 @@ function search_users($q, $limit=10) {
                 ->condition('lastname', 'Lastname like ?', $q, PDO::PARAM_STR)
 
                 ->combine(array('firstname', 'lastname'), 'or', 'name_parts')
+
+                // we don't search in first/last names if the user doesn't want to
+                // show their real name
                 ->condition('publicname', 'Config_Show_Real_Name = \'1\'')
                 ->combine(array('name_parts', 'publicname'), 'and', 'name')
 
-                // email
+                // email (idem)
                 ->condition('email1', 'Config_Show_Email = ?', '1', PDO::PARAM_INT)
                 ->condition('email2', 'Email like ?', $q, PDO::PARAM_STR)
 
                 ->combine(array('email1', 'email2'), 'and', 'email')
-                ->where(array('username', 'name', 'email'), 'or')
+                ->where(array('username', 'name', 'email'), 'or');
 
-                ->find();
+    $users = (is_connected() && user()->isAdmin()) ? $users->find() : $users->findByDeactivated(0);
 
     $results = array();
 
