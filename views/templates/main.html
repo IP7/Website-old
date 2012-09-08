@@ -102,7 +102,7 @@
 
                 {# message (notification) éventuel #}
                 {% if page.message is defined and page.message %}
-                <div class="msg{% if page.message_type is defined and page.message_type %} {{ page.message_type }}_msg{% endif %}">{{ page.message|e }}<p></div>
+                <div class="msg{% if page.message_type is defined and page.message_type %} {{ page.message_type }}_msg{% else %} notice_msg{% endif %}">{{ page.message|e }}<p></div>
                 {% endif %}
 
                 {# fil d'ariane #}
