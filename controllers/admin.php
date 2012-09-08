@@ -26,8 +26,8 @@ function display_admin_home($message, $message_type) {
                         'title'   => 'Modération',
                         'id'      => 'mod',
                         'actions' => array(
-                            array('title' => 'Contenu signalé', 'href' => $admin_uri.'/reports'),
-                            array('title' => 'Contenu proposé', 'href' => $admin_uri.'/content/proposed')
+                            array('title' => 'Contenus signalés', 'href' => $admin_uri.'/reports'),
+                            array('title' => 'Contenus proposés', 'href' => $admin_uri.'/content/proposed')
                         )
                     ),
                     array(
@@ -36,7 +36,7 @@ function display_admin_home($message, $message_type) {
                         'actions' => array (
                             array('title' => 'Ajouter un membre',      'href' => $admin_uri.'/membres/add'),
                             array('title' => 'Gérer les membres',      'href' => $admin_uri.'/membres'),
-                            array('title' => 'Gérer les transactions', 'href' => $admin_uri.'/transactions')
+                            #array('title' => 'Gérer les transactions', 'href' => $admin_uri.'/transactions')
                         )
                     ),
                     array(
