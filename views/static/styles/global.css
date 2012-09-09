@@ -63,8 +63,35 @@ pre {
 
 /* -- Left/right menus ------------------------------------ */
 
+.submenu ul {
+    list-style-type:none;
+    padding-left:5px;
+}
+
 aside.submenu {
     max-width:100px;
+}
+
+aside.submenu a {
+    text-decoration:none;
+    color:#111;
+}
+
+aside.submenu a:visited {
+    color:#444;
+}
+
+aside.submenu h4,
+aside.submenu h5,
+aside.submenu h6 { white-space:nowrap; }
+
+aside.submenu h4 { margin:10px auto 5px; }
+aside.submenu h5 { margin: 6px auto 3px; }
+aside.submenu h6 { margin: 3px auto 3px; }
+
+aside.submenu .semester,
+aside.submenu .semester nav {
+    padding-left:5px;
 }
 
 /* == Breadcrumbs ========================================= */
