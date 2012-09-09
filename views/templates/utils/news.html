@@ -14,7 +14,7 @@
                 #}<a rel="author" href="{{ news.author.href }}" itemprop="accountablePerson">({{ news.author.name }})</a>{#
             #}{% endif %}{#
             #}{% if news.moderation_bar is defined and news.moderation_bar %}{#
-            #} (<ul class="moderation text">{% for el in news.moderation_bar %}{#
+            #} (<ul class="moderation bar">{% for el in news.moderation_bar %}{#
                 #}<li>{{ _m.a(el.href, el.title) }}</li>{#
                 #}{% endfor %}</ul>){#
             #}{% endif %}{#

@@ -10,13 +10,6 @@
         {% endfor %}
     </ul>
 </aside>
-{% if page.moderation_bar is defined and page.moderation_bar %}
-<ul class="moderation bar">
-    {% for el in page.moderation_bar %}
-    <li>{{ _m.a(el.href, el.title) }}</li>
-    {% endfor %}
-</ul>
-{% endif %}
 <article class="cursus">
 {# Intro #}
 <h1>{{ page.cursus.name }}</h1>
