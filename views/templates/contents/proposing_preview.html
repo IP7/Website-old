@@ -7,9 +7,9 @@
     {{ parent() }}
     <h2>{{ page.content.title }}</h2>
     <div>{{ page.content.text|raw }}</div>
+    <form action="{{ page.form.action }}" method="POST">
+    {{ _m.token(page.form.token) }}
+    {{ _m.submit('Proposer') }}
+    </form>
 </article>
-<form action="{{ page.form.action }}" method="POST">
-{{ _m.token(page.form.token) }}
-{{ _m.submit('Proposer') }}
-</form>
 {% endblock %}

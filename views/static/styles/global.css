@@ -227,6 +227,16 @@ form label,
     padding-right:16px;
 }
 
+/* -- Moderation bar(s) ----------------------------------- */
+
+.moderation.bar {
+    font-size:0.9em;
+}
+
+.moderation.bar a:visited {
+    color:inherit;
+}
+
 /* == Main content ======================================== */
 
 /* IE */
@@ -235,6 +245,7 @@ body > #container { height: auto; min-height:100%; }
 
 #main_content {
     display:table;
+    border-collapse:separate;
     width:100%;
     padding: 0 40px 3em 40px;
 }
@@ -246,6 +257,7 @@ body > #container { height: auto; min-height:100%; }
 
 #main_content > article {
     text-align:left;
+    padding-left:20px;
 }
 
 /* == Footers ============================================= */
