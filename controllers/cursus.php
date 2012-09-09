@@ -127,10 +127,10 @@ function display_cursus() {
             'title' => 'Éditer'
         );
 
-        $add_news = array(
+        $add_news = null;/*array(
             'href' => $base_uri.'add_news',
-            'title' => 'Ajouter une news'
-        );
+            'title' => 'Ajouter une actualité'
+        );*/
     }
 
     $resp_q = $cursus->getResponsable();
@@ -147,7 +147,7 @@ function display_cursus() {
         'page' => array(
             'title'           => $cursus->getName(),
 
-            'breadcrumb'      => $breadcrumb,
+            'breadcrumbs'     => $breadcrumb,
 
             'keywords'        => array(
                 $cursus->getName(), $cursus->getShortName(),
