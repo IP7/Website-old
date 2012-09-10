@@ -8,10 +8,7 @@ function get_datetime($s) {
         }
         catch (Exception $e) {
             error_log($e);
-            /* Propel seems to return some dates surrounded by curly brackets,
-               e.g.: '{ 2010-08-04 }'. Using substr(X, 1, -1) deletes these curly
-               brackets from X. */
-            return new DateTime(substr($s, 1, -1));
+            return null;
         }
     }
     return $s;

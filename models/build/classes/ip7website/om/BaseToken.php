@@ -136,7 +136,7 @@ abstract class BaseToken extends BaseObject implements Persistent
      * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00 00:00:00
      * @throws PropelException - if unable to parse/validate the date/time value.
      */
-    public function getExpirationDate($format = '{d-m-Y H:i:s}')
+    public function getExpirationDate($format = 'd-m-Y H:i:s')
     {
         if ($this->expiration_date === null) {
             return null;
