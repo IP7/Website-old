@@ -12,3 +12,4 @@ doc
 /models/build/migrations
 migration.sql
 models/runtime-conf.xml
+models/buildtime-conf.xml
