@@ -11,3 +11,4 @@ doc
 /tests/local_config.php
 /models/build/migrations
 migration.sql
+models/runtime-conf.xml
