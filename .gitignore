@@ -11,5 +11,6 @@ doc
 /tests/local_config.php
 /models/build/migrations
 migration.sql
-models/runtime-conf.xml
-models/buildtime-conf.xml
+/models/runtime-conf.xml
+/models/buildtime-conf.xml
+/models/build/conf/ip7website-conf.php
