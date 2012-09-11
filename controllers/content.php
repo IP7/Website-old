@@ -24,16 +24,16 @@ function display_course_content() {
         redirect_to('/cursus/'.$cursus->getShortName().'/'.$course->getCode().'/'.$content_id);
     }
 
-    $rights = $content->getAccessRights();
+    $rights    = $content->getAccessRights();
+    $user_rank = is_connected() ? user()->getRank() : 0;
 
-    $type = $content->getContentType();
+    $type      = $content->getContentType();
 
     if ($type && $type->getRights() > $rights) {
         $rights = $type->getRights();
     }
 
-    if (   (!is_connected() && $rights > 0)
-        || (is_connected()  && $rights > user()->getRank())) {
+    if ($rights > $user_rank) {
         halt(HTTP_FORBIDDEN, 'Vous n\'avez pas le droit d\'accéder à ce contenu.');
     }
 
@@ -41,7 +41,9 @@ function display_course_content() {
     $msg_type = null;
 
     $tpl_report = null;
-	 $tpl_proposed = null;
+	$tpl_proposed = null;
+
+    $tpl_files = null;
 
     if (!$content->getValidated()) {
         if (!is_connected() || (user()->getId() != $user->getId() && !user()->isAdmin())) {
@@ -90,11 +92,23 @@ function display_course_content() {
         }
     }
 
-    $type_name = null;
+    $files = FileQuery::create()
+                ->filterByAccessRights(array(
+                    'min' => 0,
+                    'max' => $user_rank
+                ))
+                ->limit(10)
+                ->findByContent($content);
 
-    if ($type) {
-        $type_name = $type->getName();
+    if ($files) {
+        $tpl_files = array();
+
+        foreach ($files as $f) {
+            $tpl_files []= tpl_file($f);
+        }
     }
+
+    $type_name = $type ? $type->getName() : null;
 
     $tpl_content = array(
         'title'  => $content->getTitle(),
@@ -103,6 +117,7 @@ function display_course_content() {
             'text'     => Lang\date_fr($content->getDate()),
             'datetime' => datetime_attr($content->getDate())
         ),
+        'files'  => $tpl_files,
         'author' => array(
             'name' => $user->getPublicName(),
             'href' => Config::$root_uri.'p/'.$user->getUsername()

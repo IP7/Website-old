@@ -1,9 +1,8 @@
 {% extends 'main.html' %}
 {% block content %}
 
-	{% if page.proposed is not empty %}
+	{% if page.proposed is defined and page.proposed is not empty %}
 	<section class="proposed">
-		<p>{{ page.message }}</p>
 		<form action="{{ page.proposed.form.action }}" method="POST">
 			{{ _m.token(page.proposed.form.post_token) }}
 			{{ _m.submit('Valider le contenu', null, null, 'validate') }}
@@ -31,6 +30,16 @@
             #} <date datetime="{{ page.content.date.datetime }}">{{ page.content.date.text }}</date>.</p>
         </header>
         <section class="user_content_text">{{ page.content.text|raw }}</section>
+        {% if page.content.files is defined and page.content.files is not empty %}
+        <aside class="user_content_files">
+            <h3>Fichiers</h3>
+            <ul class="fileslist">
+            {% for f in page.content.files %}
+            <li>{{ _m.a(f.url, f.title) }}{% if f.description is defined and f.description %}&nbsp;: {{ f.description }}{% endif %}</li>
+            {% endfor %}
+            </ul>
+        </aside>
+        {% endif %}
     </article>
 
 {% endblock %}

@@ -29,4 +29,19 @@ function empty_dir_recur($path) {
     return true;
 }
 
+/**
+ * Return an array representing a file
+ **/
+function tpl_file($file) {
+    if (!$file) {
+        return array();
+    }
+
+    return array(
+        'title'       => $file->getName(),
+        'url'         => Config::$root_uri.'file/'.$file->getId(),
+        'description' => $file->getDescription()
+    );
+}
+
 ?>
