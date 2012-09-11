@@ -88,6 +88,9 @@ dispatch_post('/cursus/:cursus/:course/proposer', 'display_post_member_proposed_
 dispatch_post('/cursus/:cursus/:course/proposer/prévisualiser', 'display_post_member_proposed_content_preview');
 dispatch('/cursus/:cursus/:course/:id', 'display_course_content');
 
+## contents' files
+dispatch('/file/:id', 'serve_user_file');
+
 ## admin home
 dispatch('/admin', 'display_admin_home');
 ## moderation 
