@@ -57,6 +57,7 @@ abstract class BaseFilePeer
     const ACCESS_RIGHTS = 'files.ACCESS_RIGHTS';
 
     /** The enumerated values for the FILE_TYPE field */
+    const FILE_TYPE_ARCHIVE = 'archive';
     const FILE_TYPE_TEXT = 'text';
     const FILE_TYPE_IMAGE = 'image';
     const FILE_TYPE_VIDEO = 'video';
@@ -109,6 +110,7 @@ abstract class BaseFilePeer
     /** The enumerated values for this table */
     protected static $enumValueSets = array(
         FilePeer::FILE_TYPE => array(
+            FilePeer::FILE_TYPE_ARCHIVE,
             FilePeer::FILE_TYPE_TEXT,
             FilePeer::FILE_TYPE_IMAGE,
             FilePeer::FILE_TYPE_VIDEO,

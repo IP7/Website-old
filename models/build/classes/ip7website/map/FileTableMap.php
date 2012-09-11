@@ -45,12 +45,13 @@ class FileTableMap extends TableMap
         $this->addColumn('DESCRIPTION', 'Description', 'VARCHAR', false, 255, null);
         $this->addColumn('FILE_TYPE', 'FileType', 'ENUM', false, null, null);
         $this->getColumn('FILE_TYPE', false)->setValueSet(array (
-  0 => 'text',
-  1 => 'image',
-  2 => 'video',
-  3 => 'audio',
-  4 => 'pdf',
-  5 => 'binary',
+  0 => 'archive',
+  1 => 'text',
+  2 => 'image',
+  3 => 'video',
+  4 => 'audio',
+  5 => 'pdf',
+  6 => 'binary',
 ));
         $this->addColumn('PATH', 'Path', 'VARCHAR', true, 255, null);
         $this->addColumn('ACCESS_RIGHTS', 'AccessRights', 'TINYINT', false, null, 0);
