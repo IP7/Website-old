@@ -110,7 +110,7 @@ function display_course_content() {
         'type'   => $type_name
     );
 
-	return tpl_render('content_view.html', array(
+	return tpl_render('contents/base.html', array(
         'page' => Array(
             'title' => $content->getTitle(),
             'keywords' => array( $cursus->getName(), $course->getName(), $course->getCode() ),
