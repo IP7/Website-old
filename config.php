@@ -32,8 +32,9 @@ define('AUTH_COOKIE_EXPIRE', time()+60*60*24*30);
 #
 define('SESSION_COOKIE', 's');
 #
-# - avatars
+# - avatars & users files
 define('AVATAR_MAX_SIZE', 65536); # 65 kio
+define('USER_FILE_MAX_SIZE', 2097152); # 2 Mio
 #
 ###
 
@@ -110,7 +111,8 @@ class Config {
                     'height' => 32
                 ),
 
-                'avatar_max_size' => AVATAR_MAX_SIZE,
+                'avatar_max_size'      => AVATAR_MAX_SIZE,
+                'file_upload_max_size' => USER_FILE_MAX_SIZE,
 
                 'title' => 'IP7',
 
