@@ -97,7 +97,6 @@ dispatch_post('/admin/reports', 'post_admin_content_report');
 dispatch('/admin/content/proposed', 'display_admin_proposed_content');
 dispatch_post('/admin/content/proposed', 'post_admin_proposed_content');
 dispatch('/admin/content/proposed/:id', 'display_admin_content_view');
-#dispatch('/admin/content/proposed/:id/:action', 'post_admin_content_action');
 ## finances
 dispatch('/admin/membres', 'display_admin_members');
 dispatch('/admin/membres/add', 'display_admin_add_member');
