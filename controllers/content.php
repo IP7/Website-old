@@ -41,13 +41,25 @@ function display_course_content() {
     $msg_type = null;
 
     $tpl_report = null;
+	 $tpl_proposed = null;
 
     if (!$content->getValidated()) {
         if (!is_connected() || (user()->getId() != $user->getId() && !user()->isAdmin())) {
             halt(NOT_FOUND);
         }
-        $msg_str  = 'Ce contenu est en attente de validation.';
-        $msg_type = 'notice';
+       $msg_str  = 'Ce contenu est en attente de validation.';
+       $msg_type = 'notice';
+
+		$post_token = generate_post_token(user());
+		FormData::create($post_token)->store('proposed', $content);
+
+		$tpl_proposed = array(
+			'form' => array(
+				'action' => Config::$root_uri. 'admin/content/proposed',
+				'post_token' => $post_token
+			)
+		);
+
     }
     else {
         $report = ReportQuery::create()->findOneByContent($content);
@@ -70,7 +82,7 @@ function display_course_content() {
                     'datetime' => datetime_attr($report->getDate())
                 ),
                 'form'   => array(
-                    'action'      => Config::$root_uri.'/admin/reports',
+                    'action'      => Config::$root_uri.'admin/reports',
                     'post_token'  => $post_token
                 ),
                 'explication' => $report->getText()
@@ -119,8 +131,9 @@ function display_course_content() {
                 )
             ),
 
+				'proposed' => $tpl_proposed,
             'report'   => $tpl_report,
-            'content'  => $tpl_content,
+    	      'content'  => $tpl_content,
 
             'message'      => $msg_str,
             'message_type' => $msg_type

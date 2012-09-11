@@ -152,7 +152,7 @@ function post_admin_content_report(){
 
 }
 
-function display_admin_proposed_content(){
+function display_admin_proposed_content($msg_str=null, $msg_type=null){
 
 	$contents = ContentQuery::create()
 							->limit(50)
@@ -160,8 +160,6 @@ function display_admin_proposed_content(){
 							->findByValidated(0);
 
 	$tpl_contents = Array();
-
-	$msg = null;
 
 	if ($contents){
 
@@ -199,102 +197,57 @@ function display_admin_proposed_content(){
 			$tpl_contents []= $tpl_c;
 		}
 
-		if ( has_get('n',false) ){
-			if ( array_key_exists($_GET['n'],$_SESSION['message']) )
-				$msg = get_message($_GET['n']);
-		}
-			
 		return Config::$tpl->render('admin/content_proposed.html', tpl_array(admin_tpl_default(), array(
             'page' => Array(
                 'title' => 'Contenu proposé',
-                'message' => $msg,
-                'contents' => $tpl_contents
-            )
+                'contents' => $tpl_contents,
+				    'msg_str'  => $msg_str,
+					 'msg_type' => $msg_type
+				)
         )));
 
 	}
 
 }
 
-function display_admin_content_view(){
+function post_admin_proposed_content(){
 
-	$contentId = (int)params('id');
+   $msg_str = null;
+   $msg_type = null;
 
-	$content	= ContentQuery::create()->findOneById($contentId);
-	$user		= $content->getAuthor();
-	$cursus	= $content->getCursus();
-	$course	= $content->getCourse();
+   if (!has_post('t')) {
+       halt(HTTP_BAD_REQUEST);
+   }
 
-	$uri = Config::$root_uri . 'admin/content/proposed/' . $contentId;
+   $token = $_POST['t'];
 
-	if ( $content->getValidated() )
-		halt(NOT_FOUND);
+   $fd = FormData::create($token);
 
-	else{
-		$contentArray = Array(
-					'title' => $content->getTitle(),
-					'cursus' => $cursus->getName(),
-					'contentText' => $content->getText(),
-					'courseName' => $course->getName(),
-					'courseCode' => $course->getCode(),
-					'date' => $content->getDate(),
-					'username' => $user->getUsername()
-				);
+   if ((!use_token($token, 'POST')) || (!$fd->exists())) {
+       halt(HTTP_FORBIDDEN, 'Le jeton d\'authentification est invalide ou a expiré.');
+   }
 
-		$option = Array(
-				Array(	'href' => $uri . '/validate',
-							'title' => 'Valider'),
-				Array(	'href' => $uri . '/delete',
-							'title' => 'Supprimer')
-			);
+   $content = $fd->get('proposed');
+
+	if ( !has_post('validate') && !has_post('delete') )
+		return display_admin_proposed_content();
+
+	if ( has_post('validate') ){
+	
+		$content->setValidated(1);
+		$content->save();
+		$msg_str = 'Le contenu a bien été validé.';	
+
 	}
-
-	return Config::$tpl->render('admin/content_view.html', tpl_array(admin_tpl_default(),array(
-					'page' => Array(
-						'title' => 'Contenu proposé',
-						'content' => $contentArray,
-						'options' => $option
-					)
-		)));
-
-}
-
-function post_admin_content_action(){
-
-	$id = (int)params('id');
-	$action = (string)params('action');
-
-	$content = ContentQuery::create()
-							->findOneById($id);
-
-	if ( ($content instanceOf Content) && !$content->getValidated() ){
-
-		$msg = 'Le contenu a bien été ';
-		$uri = 'admin/content/proposed';
-
-		if ( $action == 'validate' ){
-			$content->setValidated(true);
-			$content->save();
-
-			$idMessage = set_message($msg . 'validé.');
-
-			redirect_to($uri, Array('n' => $idMessage));
-		}	
-
-		else if ( $action == 'delete' ){
-			$content->delete();
-			
-			$idMessage = set_message($msg . 'supprimé.');
-			redirect_to($uri, Array('n' => $idMessage));
-		}	
-
-		else
-			halt(NOT_FOUND);
+		
+	if ( has_post('delete') ){
+	
+        $content->delete();
+        $msg_str = 'Le contenu a bien été supprimé.';
 
 	}
 
-	else
-		halt(NOT_FOUND);
+	return display_admin_proposed_content($msg_str, 'notice');
 
 }
 

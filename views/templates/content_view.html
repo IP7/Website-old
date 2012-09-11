@@ -1,5 +1,16 @@
 {% extends 'main.html' %}
 {% block content %}
+
+	{% if page.proposed is not empty %}
+	<section class="proposed">
+		<p>{{ page.message }}</p>
+		<form action="{{ page.proposed.form.action }}" method="POST">
+			{{ _m.token(page.proposed.form.post_token) }}
+			{{ _m.submit('Valider le contenu', null, null, 'validate') }}
+			{{ _m.submit('Supprimer le contenu', null, null, 'delete') }}
+		</form>
+	{% endif %}
+
 	{% if page.report is defined and page.report %}
     <section class="report">
     <p>Signalé par <a href="{{ page.report.author.href }}" class="user">{{ page.report.author.name }}</a>, {#
