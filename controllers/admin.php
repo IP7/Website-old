@@ -169,7 +169,7 @@ function display_admin_proposed_content($msg_str=null, $msg_type=null){
 			$cursus = $c->getCursus();
 			$course = $c->getCourse();
 
-			$uri = Config::$root_uri . 'admin/content/proposed/' . $c->getId();
+			$uri = Config::$root_uri . 'cursus/' . $cursus->getShortName() . '/' . $course->getCode() . '/' . $c->getId();
 
             $tpl_c = array(
                 'title' => $c->getTitle(),
