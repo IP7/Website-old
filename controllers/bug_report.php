@@ -38,7 +38,8 @@ function post_bug_report(){
         $to = 'contact@infop7.org';
         $subject = 'Signalement de bug : ' . $_POST['title'];
         $message = 'Auteur : '.$username . "\r\nIP : " . $_SERVER['REMOTE_ADDR'] . "\r\n";
-        $message .= 'UA : '.$_SERVER['HTTP_USER_AGENT'] . "\r\n\r\n";
+        $message .= 'UA : '.$_SERVER['HTTP_USER_AGENT'] . "\r\n";
+        $message .= 'Site version : '.IP7WEBSITE_VERSION."\r\n\r\n";
         $message .= 'Description : '.$_POST['description'] . "\r\n\r\n";
 
         if ( send_email_to($to, 'Bug report', $subject, $message, $username) ){
