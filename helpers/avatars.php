@@ -63,7 +63,7 @@ function upload_avatar($user, &$msgstr, &$msgtype) {
 
     $db_file->setName('avatar_of_'.strtolower($user->getUsername()).'.png');
     $db_file->setFileType('image');
-    $db_file->setAccessRights(0);
+    $db_file->setAccessRights($user->getConfigPrivateProfile() ? MEMBER_RANK : 0);
     $db_file->setPath($new_path);
     $db_file->setAuthor($user);
     $user->setAvatar($db_file);
