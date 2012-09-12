@@ -5,6 +5,19 @@ function serve_user_file() {
 
     $f = FileQuery::create()->findOneById($id);
 
+    return _serve_user_file($f);
+}
+
+function serve_user_file_by_name() {
+    $name = params('name');
+    $f = FileQuery::create()->findOneByName($name);
+
+    return _serve_user_file($f);
+}
+
+// helper
+function _serve_user_file($f) {
+
     if (!$f) {
         halt(NOT_FOUND);
     }
