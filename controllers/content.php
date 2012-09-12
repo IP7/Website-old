@@ -24,16 +24,16 @@ function display_course_content() {
         redirect_to('/cursus/'.$cursus->getShortName().'/'.$course->getCode().'/'.$content_id);
     }
 
-    $rights = $content->getAccessRights();
+    $rights    = $content->getAccessRights();
+    $user_rank = is_connected() ? user()->getRank() : 0;
 
-    $type = $content->getContentType();
+    $type      = $content->getContentType();
 
     if ($type && $type->getRights() > $rights) {
         $rights = $type->getRights();
     }
 
-    if (   (!is_connected() && $rights > 0)
-        || (is_connected()  && $rights > user()->getRank())) {
+    if ($rights > $user_rank) {
         halt(HTTP_FORBIDDEN, 'Vous n\'avez pas le droit d\'accéder à ce contenu.');
     }
 
@@ -41,7 +41,9 @@ function display_course_content() {
     $msg_type = null;
 
     $tpl_report = null;
-	 $tpl_proposed = null;
+	$tpl_proposed = null;
+
+    $tpl_files = null;
 
     if (!$content->getValidated()) {
         if (!is_connected() || (user()->getId() != $user->getId() && !user()->isAdmin())) {
@@ -90,11 +92,23 @@ function display_course_content() {
         }
     }
 
-    $type_name = null;
+    $files = FileQuery::create()
+                ->filterByAccessRights(array(
+                    'min' => 0,
+                    'max' => $user_rank
+                ))
+                ->limit(10)
+                ->findByContent($content);
 
-    if ($type) {
-        $type_name = $type->getName();
+    if ($files) {
+        $tpl_files = array();
+
+        foreach ($files as $f) {
+            $tpl_files []= tpl_file($f);
+        }
     }
+
+    $type_name = $type ? $type->getName() : null;
 
     $tpl_content = array(
         'title'  => $content->getTitle(),
@@ -103,6 +117,7 @@ function display_course_content() {
             'text'     => Lang\date_fr($content->getDate()),
             'datetime' => datetime_attr($content->getDate())
         ),
+        'files'  => $tpl_files,
         'author' => array(
             'name' => $user->getPublicName(),
             'href' => Config::$root_uri.'p/'.$user->getUsername()
@@ -110,7 +125,7 @@ function display_course_content() {
         'type'   => $type_name
     );
 
-	return tpl_render('content_view.html', array(
+	return tpl_render('contents/base.html', array(
         'page' => Array(
             'title' => $content->getTitle(),
             'keywords' => array( $cursus->getName(), $course->getName(), $course->getCode() ),
@@ -212,6 +227,8 @@ function display_member_proposing_content_form() {
                     'type' => ''
                 ),
 
+                'max_files_nb' => 5,
+
                 'types' => $tpl_content_types
             )
         )
@@ -220,6 +237,11 @@ function display_member_proposing_content_form() {
 
 function display_post_member_proposed_content_preview() {
     check_sent_content();
+
+    $msg_str = '';
+    $msg_type = null;
+
+    // ** Token **
 
     $token = $_POST['t'];
 
@@ -240,8 +262,9 @@ function display_post_member_proposed_content_preview() {
     // transfer of course/cursus to a new token
     $token2 = generate_post_token(user());
     $fd2 = FormData::create($token2)->store($fd->get());
-
     $fd->destroy();
+
+    // ** Content type **
 
     if (has_post('type', true)) {
         $c_type = ContentTypeQuery::create()->findOneById(intval($_POST['type']));
@@ -258,21 +281,61 @@ function display_post_member_proposed_content_preview() {
         }
     }
 
-    $text = has_post('text') ? format_text($_POST['text']) : '';
+    // ** Title **
 
     // passing content informations via $_SESSION instead of <input type="hidden"/>
-    $fd2->store('title', get_string('title', 'post'));
+    $title = get_string('title', 'post');
+
+    $title_exists = ContentQuery::create()
+                        ->filterByCursus($fd2->get('cursus'))
+                        ->filterByCourse($fd2->get('course'))
+                        ->findOneByTitle($title);
+
+    if ($title_exists) {
+        halt(HTTP_BAD_REQUEST, 'Ce titre est déjà pris.');
+    }
+
+    $fd2->store('title', $title);
+
+    // ** Files **
+
+    if (has_file('userfiles')) {
+        $desc = has_post('desc') ? $_POST['desc'] : '';
+
+        $fd2->store('files',
+                upload_user_file(user(), 'userfiles', $desc, &$msg_str, &$msg_type));
+    }
+
+    $tpl_files = array();
+
+    foreach($fd2->get('files') as $k => $file) {
+        $tpl_files []= array( 'name' => $file->getName() );
+    }
+
+    // ** Text **
+
+    $text = has_post('text') ? format_text($_POST['text']) : '';
+
+    if (!count($fd2->get('files')) && !$text) {
+        halt(HTTP_BAD_REQUEST, 'Ce contenu est vide.');
+    }
+
     $fd2->store('text', get_string('text', 'post'));
+
 
     return tpl_render('contents/proposing_preview.html', array(
         'page' => array(
-            'title' => 'Prévisualisation de « '.$_POST['title'].' »',
+            'title' => 'Prévisualisation de « '.$title.' »',
+
+            'message'      => $msg_str,
+            'message_type' => $msg_type,
 
             'breadcrumbs' => false,
 
             'content' => array(
-                'title' => $_POST['title'],
-                'text'  => $text
+                'title' => $title,
+                'text'  => $text,
+                'files' => $tpl_files
             ),
 
             'form' => array(
@@ -300,6 +363,8 @@ function display_post_member_proposed_content() {
 
     $type   = $fd->get('type');
 
+    $files = $fd->get('files');
+
     $fd->destroy();
 
     $c = new Content();
@@ -313,6 +378,10 @@ function display_post_member_proposed_content() {
     if ($type) {
         $c->setContentType($type);
         $c->setAccessRights($type->getRights());
+    }
+
+    foreach ($files as $k => $file) {
+        $c->addFile($file);
     }
 
     if (!$c->validate()) {

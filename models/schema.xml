@@ -348,14 +348,15 @@
         <column name="description"   type="VARCHAR" />
 
         <!-- type du fichier
-                - text : tout ce qui est full text (non binaire)
+                - archive, compressée ou non : archive ZIP, TAR, TGZ, etc
+                - text  : tout ce qui est full text (non binaire)
                 - image : images
                 - video : vidéos
                 - audio : sons
                 - pdf   : PDF,PS & assimilés
                 - binary : autres fichiers binaires
         -->
-        <column name="file_type"     type="ENUM" valueSet="text,image,video,audio,pdf,binary" />
+        <column name="file_type"     type="ENUM" valueSet="archive,text,image,video,audio,pdf,binary" />
 
         <!-- == accès == -->
 

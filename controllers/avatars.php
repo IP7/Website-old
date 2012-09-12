@@ -21,10 +21,10 @@ function serve_avatar_with_size($id, $size) {
     $path_with_size = preg_replace('/\(.[a-z]+)$/', '-'.$size.'\\0', $path);
 
     if (file_exists($path_with_size)) {
-        return render_file($path_with_size);
+        return render_file($path_with_size, true);
     }
     if (file_exists($path)) {
-        return render_file($path);
+        return render_file($path, true);
     }
 
     return serve_default_avatar();

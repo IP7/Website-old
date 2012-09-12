@@ -150,19 +150,6 @@ function try_autoconnect() {
     return false;
 }
 
-// generate a random string
-function get_random_string($length=10) {
-    // without 'l' and 'I', and 'o', 'O', '0' to avoid confusion
-    $c = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz123456789";
-    $c_len = strlen($c)-1;
-    $s = '';
-
-    for($i=0; $i < $length; $i++) {
-        $s .= $c[rand(0, $c_len)];
-    }
-    return str_shuffle($s);
-}
-
 // generate a random password
 function get_random_password($length=10) {
     return get_random_string($length);
