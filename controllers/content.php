@@ -238,6 +238,8 @@ function display_member_proposing_content_form() {
 function display_post_member_proposed_content_preview() {
     check_sent_content();
 
+    // ** Token **
+
     $token = $_POST['t'];
 
     if (!use_token($token, 'POST')) {
@@ -259,6 +261,8 @@ function display_post_member_proposed_content_preview() {
     $fd2 = FormData::create($token2)->store($fd->get());
     $fd->destroy();
 
+    // ** Content type **
+
     if (has_post('type', true)) {
         $c_type = ContentTypeQuery::create()->findOneById(intval($_POST['type']));
 
@@ -274,6 +278,8 @@ function display_post_member_proposed_content_preview() {
         }
     }
 
+    // ** Title **
+
     // passing content informations via $_SESSION instead of <input type="hidden"/>
     $title = get_string('title', 'post');
 
@@ -288,17 +294,33 @@ function display_post_member_proposed_content_preview() {
 
     $fd2->store('title', $title);
 
+    // ** Files **
+
+    $files_ids = array();
+
+    if (has_file('userfiles')) {
+
+    }
+
+    // ** Text **
+
     $text = has_post('text') ? format_text($_POST['text']) : '';
+
+    if (!count($files_ids) && !$text) {
+        halt(HTTP_BAD_REQUEST, 'Ce contenu est vide.');
+    }
+
     $fd2->store('text', get_string('text', 'post'));
+
 
     return tpl_render('contents/proposing_preview.html', array(
         'page' => array(
-            'title' => 'Prévisualisation de « '.$_POST['title'].' »',
+            'title' => 'Prévisualisation de « '.$title.' »',
 
             'breadcrumbs' => false,
 
             'content' => array(
-                'title' => $_POST['title'],
+                'title' => $title,
                 'text'  => $text
             ),
 
