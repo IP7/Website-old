@@ -2,6 +2,17 @@ SetEnv PHP_VER 5_3
 SetEnv SESSION_USE_TRANS_SID 0
 AddDefaultCharset UTF-8
 
+#<IfModule mod_expires.c>
+#	<FilesMatch "\.(gif|jpg|jpeg|png|css|js|ico)$">
+#		ExpiresActive On
+#		ExpiresDefault "access plus 10 years"
+#	</FilesMatch>
+#</IfModule>
+
+<FilesMatch "\.(gif|jpg|jpeg|png|css|js|ico)$">
+	FileETag none
+</FilesMatch>
+
 <IfModule mod_rewrite.c>
 
 Options +FollowSymlinks
