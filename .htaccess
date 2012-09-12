@@ -27,8 +27,6 @@ RewriteRule ^(.*)$ http://www.infop7.org/admin/$1 [L,R=301]
 RewriteCond %{HTTP_HOST} !^dev.infop7.org$ [NC]
 RewriteCond %{HTTP_HOST} !^static1.infop7.org$ [NC]
 RewriteCond %{HTTP_HOST} !^static2.infop7.org$ [NC]
-RewriteCond %{HTTP_HOST} !^alpha.infop7.org$ [NC]
-RewriteCond %{HTTP_HOST} !^beta.infop7.org$ [NC]
 RewriteCond %{HTTP_HOST} !^test.infop7.org$ [NC]
 RewriteCond %{HTTP_HOST} !^www.infop7.org$ [NC]
 # except for local tests
