@@ -152,7 +152,7 @@ function post_forgotten_password() {
     }
 
     // bad token
-    if (!use_token($_POST['t'])) {
+    if (!use_token($_POST['t'], 'POST')) {
         return display_forgotten_password();
     }
 
