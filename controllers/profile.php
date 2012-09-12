@@ -412,7 +412,11 @@ function display_init_my_profile_page($token=null, $message=null, $message_type=
 
                 'fields' => $fields
             ),
-            'infos' => $infos
+            'infos' => $infos,
+
+            'scripts' => array(
+                array( 'src' => Config::$root_uri.'views/static/js/subscription.js' )
+            )
         )
     ));
 }
