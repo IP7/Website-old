@@ -9,6 +9,9 @@ require_once dirname(__FILE__).'/lib/vendors/php_markdown_extra/markdown.php';
 
 ### Constants ###
 #
+# add '@xxxxxxxx' with the commit when putting online
+define('IP7WEBSITE_VERSION', '1');
+#
 # - login constants
 #
 define('CONNECTION_OK', 2);
