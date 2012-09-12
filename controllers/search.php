@@ -29,7 +29,14 @@ function display_search_results() {
             'results' => $tpl_results,
 
             'keywords'    => preg_split("/\s+/", $q),
-            'description' => truncate_string($title)
+            'description' => truncate_string($title),
+
+            'styles' => array(
+                array(
+                    'href' => Config::$root_uri.'views/static/styles/search.css',
+                    'media' => 'all'
+                )
+            )
         )
     ));
 }
