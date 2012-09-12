@@ -112,6 +112,7 @@ dispatch('/admin/migrate', 'display_admin_migrate_db_page');
 dispatch('/contact', 'display_contact_page');
 dispatch('/sitemap', 'display_sitemap_page');
 dispatch('/legals',   'display_legals_page');
+dispatch('/bug_report', 'display_bug_report');
 
 ## content
 dispatch('/avatar/:id',       'serve_avatar');
