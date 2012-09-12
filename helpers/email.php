@@ -1,21 +1,35 @@
 <?php
 
-function send_email_to($user, $from, $subject, $message) {
+function send_email_to_user($user, $from, $subject, $message, $from_name='IP7') {
+
+    $to = null;
 
     if (is_array($user)) {
+        $to = array();
         foreach ($user as $k => $u) {
-            if (!send_email_to($u, $from, $subject, $message)) {
+            $to []= $u->getEmail();
+        }
+    }
+    else { $to = $user->getEmail(); }
+
+    return send_email_to($to, $from, $subject, $message, $from_name);
+}
+
+function send_email_to($to, $from, $subject, $message, $from_name='IP7') {
+    if (is_array($to)) {
+        foreach ($to as $k => $t) {
+            if (!send_email_to($t, $from, $subject, $message)) {
                 return false;
             }
         }
         return true;
     }
 
-    $to      = $user->getEmail();
+    $to      = trim($to);
     $subject = trim($subject);
     $message = trim($message);
 
-    $headers = 'From: IP7 <'.trim($from).">\r\n";
+    $headers = 'From: '.$from_name.' <'.trim($from).">\r\n";
 
     return mail($to, $subject, $message, $headers);
 }
@@ -38,7 +52,7 @@ function send_welcome_message($user) {
     $message .= " pourrez ensuite vous connecter et éditer votre profil.\r\nCe ";
     $message .= "message a été envoyé automatiquement, il est inutile d'y répondre.";
 
-    return send_email_to($user, 'tresorerie@infop7.org', $subject, $message);
+    return send_email_to_user($user, 'tresorerie@infop7.org', $subject, $message);
 }
 
 // send an unique URL to the given user, which allows him/her to connect
@@ -54,7 +68,7 @@ function send_connection_token_email($user) {
              . "\r\n\r\n\thttp://www.infop7.org/connexion?t=$token\r\n\r\n"
              . 'Ce lien expire dans 24 heures et n\'est valable qu\'une seule fois.';
 
-    return send_email_to($user, 'noreply@infop7.org', $subject, $message);
+    return send_email_to_user($user, 'noreply@infop7.org', $subject, $message);
 }
 
 // returns the URL of the mail provider of the user, or NULL if it
