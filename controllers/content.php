@@ -238,6 +238,9 @@ function display_member_proposing_content_form() {
 function display_post_member_proposed_content_preview() {
     check_sent_content();
 
+    $msg_str = '';
+    $msg_type = null;
+
     // ** Token **
 
     $token = $_POST['t'];
@@ -296,17 +299,24 @@ function display_post_member_proposed_content_preview() {
 
     // ** Files **
 
-    $files_ids = array();
-
     if (has_file('userfiles')) {
+        $desc = has_post('desc') ? $_POST['desc'] : '';
 
+        $fd2->store('files',
+                upload_user_file(user(), 'userfiles', $desc, &$msg_str, &$msg_type));
+    }
+
+    $tpl_files = array();
+
+    foreach($fd2->get('files') as $k => $file) {
+        $tpl_files []= array( 'name' => $file->getName() );
     }
 
     // ** Text **
 
     $text = has_post('text') ? format_text($_POST['text']) : '';
 
-    if (!count($files_ids) && !$text) {
+    if (!count($fd2->get('files')) && !$text) {
         halt(HTTP_BAD_REQUEST, 'Ce contenu est vide.');
     }
 
@@ -317,11 +327,15 @@ function display_post_member_proposed_content_preview() {
         'page' => array(
             'title' => 'Prévisualisation de « '.$title.' »',
 
+            'message'      => $msg_str,
+            'message_type' => $msg_type,
+
             'breadcrumbs' => false,
 
             'content' => array(
                 'title' => $title,
-                'text'  => $text
+                'text'  => $text,
+                'files' => $tpl_files
             ),
 
             'form' => array(
@@ -349,6 +363,8 @@ function display_post_member_proposed_content() {
 
     $type   = $fd->get('type');
 
+    $files = $fd->get('files');
+
     $fd->destroy();
 
     $c = new Content();
@@ -362,6 +378,10 @@ function display_post_member_proposed_content() {
     if ($type) {
         $c->setContentType($type);
         $c->setAccessRights($type->getRights());
+    }
+
+    foreach ($files as $k => $file) {
+        $c->addFile($file);
     }
 
     if (!$c->validate()) {
