@@ -230,6 +230,10 @@ function display_member_proposing_content_form() {
                 'max_files_nb' => 5,
 
                 'types' => $tpl_content_types
+            ),
+
+            'scripts' => array(
+                array( 'src' => Config::$root_uri.'views/static/js/proposing-content.js' )
             )
         )
     ));
