@@ -60,4 +60,3 @@ if (PHPUnit_MAIN_METHOD == 'MyClassTest::main') {
 }
 
 ?>
-

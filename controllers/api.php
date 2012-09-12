@@ -14,4 +14,3 @@ function json_check_username() {
 }
 
 ?>
-
