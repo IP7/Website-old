@@ -62,8 +62,10 @@ function use_token($token_string, $used_method='GET') {
     // delete the token in the DB, but the PHP object still exists
     $token->delete();
 
+    $expiration_date = strtotime($token->getExpirationDate());
+
     // if the token's expiration date is over
-    if ($token->getExpirationDate() > 0 && $token->getExpirationDate() < time()) {
+    if ($expiration_date > 0 && $expiration_date < time()) {
         return false;
     }
 
