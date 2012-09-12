@@ -11,6 +11,14 @@ function display_admin_home($message, $message_type) {
     do_maintenance(&$message, &$message_type);
 
     $token = generate_token(null, 0, time() + Durations::ONE_MINUTE*2);
+    
+    if ( has_get('t') ){
+
+        $message = $_SESSION['msg'][$_GET['t']];
+        $message_type = 'notice';
+
+        unset($_SESSION['msg'][$_GET['t']]);
+    }
 
     return Config::$tpl->render('admin/main.html', tpl_array(
         admin_tpl_default(),
@@ -202,7 +210,7 @@ function display_admin_proposed_content($msg_str=null, $msg_type=null){
                 'title' => 'Contenu proposé',
                 'contents' => $tpl_contents,
 				    'msg_str'  => $msg_str,
-					 'msg_type' => $msg_type
+					'msg_type' => $msg_type
 				)
         )));
 
@@ -425,7 +433,10 @@ function post_admin_add_member() {
 
         send_welcome_message($user);
 
-        redirect_to(Config::$root_uri.'admin/', array( 'status' => HTTP_SEE_OTHER ));
+        $random_key = get_random_string(13);
+        $_SESSION['msg'][$random_key] = 'Le compte a bien été enregistré';
+
+        redirect_to('admin/', array( 'status' => HTTP_SEE_OTHER, 't' => $random_key ));
     }
 
     foreach ($user->getValidationFailures() as $failure) {
