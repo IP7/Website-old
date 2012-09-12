@@ -21,8 +21,6 @@ function display_home() {
 
             'breadcrumbs' => false,
 
-            'intro' => 'Bienvenue sur le site de l\'association IP7.',
-
             'news' => array()
         ),
     )));
