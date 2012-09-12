@@ -15,6 +15,7 @@ html {
 }
 
 .inline-block { display:inline-block; }
+.hidden { visibility:hidden; }
 
 a {
     outline:none;
