@@ -495,6 +495,11 @@ function display_admin_members() {
     return Config::$tpl->render('admin/members.html', tpl_array(admin_tpl_default(),array(
         'page' => array(
             'title' => 'Membres',
+
+            'breadcrumbs' => array(
+                2 => array( 'href' => url(), 'title' => 'Membres' )
+            ),
+
             'members' => $members,
             'add_member_link' => Config::$root_uri.'admin/membres/add'
         )
