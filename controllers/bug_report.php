@@ -7,9 +7,9 @@ function display_bug_report($msg_str=null, $msg_type=null){
 
     return Config::$tpl->render('bug_report.html', tpl_array(array(
         'page' => Array(
-		    'title' => 'Signalement de bugs',
-            'msg_str' => $msg_str,
-            'msg_type' => $msg_type
+		    'title' => 'Signaler un bug',
+            'message' => $msg_str,
+            'message_type' => $msg_type
         )
     )));
 
@@ -17,45 +17,45 @@ function display_bug_report($msg_str=null, $msg_type=null){
 
 function post_bug_report(){
 
-    $msg_str = null;
+    $msg_str = '';
     $msg_type = null;
 
-    if ( empty($_POST['title']) || empty($_POST['description']) ){
-
-        $msg_str = 'L\'un des deux champs est vide';
+    if (!has_post('title') || !has_post('description')) {
         $msg_type = 'error';
+        $msg_str = 'Veuillez préciser ';
+        $has_title = true;
 
+        if (!has_post('title')) { $msg_str .= 'un titre'; $has_title = false; }
+        if (!has_post('description')) { $msg_str .= ($has_title ? 'et ' : '').'une description'; }
+
+        $msg_str .= '.';
     }
 
-    else{
+    else {
 
-        if ( !is_connected() )
-            $username = 'anonymous';
-        else
-            $username = user()->getPublicName();
+        $username = is_connected() ? user()->getPublicName() : 'anonymous';
 
         $to = 'contact@infop7.org';
-        $subject = 'Report de bug : ' . $_POST['title'];
-        $message = $username . ' -- ' . $_SERVER['REMOTE_ADDR'] . "\r\n";
-        $message .= $_SERVER['HTTP_USER_AGENT'] . "\r\n\r\n";
-        $message .= $_POST['description'] . "\r\n\r\n";
-        $message .= 'Message généré le ' . date("d/m/y \à H:i:s");
+        $subject = 'Signalement de bug : ' . $_POST['title'];
+        $message = 'Auteur : '.$username . "\r\nIP : " . $_SERVER['REMOTE_ADDR'] . "\r\n";
+        $message .= 'UA : '.$_SERVER['HTTP_USER_AGENT'] . "\r\n\r\n";
+        $message .= 'Description : '.$_POST['description'] . "\r\n\r\n";
 
         if ( send_email_to($to, 'Bug report', $subject, $message, $username) ){
 
-            $msg_str = 'Le rapport a bien été envoyé';
-            $msg_type = 'notice';
+            $msg_str = 'Merci ! Le signalement a bien été enregistré.';
+            $msg_type = 'success';
         }
 
-        else{
-
-            $msg_str = 'Une erreur a été détécté lors de l\'envoi';
+        else {
+            $msg_str  = 'Une erreur a été détectée lors de l\'enregistrement.';
+            $msg_str .= 'Veuillez réessayer. Si l\'erreur persiste, contactez-nous.';
             $msg_type = 'error';
         }
 
     }
 
-    return display_bug_report($msg_str,$msg_type);
+    return display_bug_report($msg_str, $msg_type);
 
 }
 

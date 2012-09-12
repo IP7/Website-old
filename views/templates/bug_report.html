@@ -1,18 +1,14 @@
 {% extends "main.html" %}
 {% block content %}
+    {{ parent() }}
 
-    {% if page.msg_str is not empty %}
-        <p>{{ page.msg_str }}</p>
-    {% endif %}
-
-    <h1>{{ page.title }}</h1>
+    <p class="help">Pour signaler efficacement un bug, précisez sur quelle page il est, ce que vous avez fait avant, et comment le reproduire.</p>
     
-    <form action="" method="POST">
-        <p>Titre&nbsp;: <input type="text" placeholder="Tapez votre titre ici" name="title"/></p>
-        <p>Description&nbsp;: <textarea rows="2" cols="20" name="description"></textarea></p>
+    <form action="" method="POST" id="bug_report">
+        <p>Titre&nbsp;: <input type="text" name="title" required /></p>
+        <p>Description&nbsp;: <textarea rows="2" cols="20" name="description" required></textarea></p>
         <p>{{ _m.submit('Envoyer',null,null,null) }}</p>
     </form>
 
 
 {% endblock %}
-

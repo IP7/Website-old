@@ -93,7 +93,7 @@ function global_footer_links() {
         ),
         array(
             'href'  => Config::$root_uri . 'bug',
-            'title' => 'Report de bug'
+            'title' => 'Signaler un bug'
         )
     );
 
