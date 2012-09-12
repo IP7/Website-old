@@ -227,6 +227,8 @@ function display_member_proposing_content_form() {
                     'type' => ''
                 ),
 
+                'max_files_nb' => 5,
+
                 'types' => $tpl_content_types
             )
         )
@@ -255,7 +257,6 @@ function display_post_member_proposed_content_preview() {
     // transfer of course/cursus to a new token
     $token2 = generate_post_token(user());
     $fd2 = FormData::create($token2)->store($fd->get());
-
     $fd->destroy();
 
     if (has_post('type', true)) {
@@ -273,10 +274,21 @@ function display_post_member_proposed_content_preview() {
         }
     }
 
-    $text = has_post('text') ? format_text($_POST['text']) : '';
-
     // passing content informations via $_SESSION instead of <input type="hidden"/>
-    $fd2->store('title', get_string('title', 'post'));
+    $title = get_string('title', 'post');
+
+    $title_exists = ContentQuery::create()
+                        ->filterByCursus($fd2->get('cursus'))
+                        ->filterByCourse($fd2->get('course'))
+                        ->findOneByTitle($title);
+
+    if ($title_exists) {
+        halt(HTTP_BAD_REQUEST, 'Ce titre est déjà pris.');
+    }
+
+    $fd2->store('title', $title);
+
+    $text = has_post('text') ? format_text($_POST['text']) : '';
     $fd2->store('text', get_string('text', 'post'));
 
     return tpl_render('contents/proposing_preview.html', array(
