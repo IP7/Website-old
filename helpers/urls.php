@@ -8,7 +8,12 @@ function url() {
 // return the current URL without the Config::$root_uri prefix
 function config_url() {
     $u = url();
-    return str_ireplace(Config::$root_uri, '', $u);
+    $root_uri_len = strlen(Config::$root_uri);
+
+    if (substr($u, 0, $root_uri_len) == Config::$root_uri) {
+        $u = substr($u, $root_uri_len);
+    }
+    return $u;
 }
 
 // return the URL of a cursus
