@@ -132,4 +132,19 @@ function tpl_date($d) {
   return array( 'date' => Lang\date_fr($d), 'datetime_attr' => datetime_attr($d));
 }
 
+/**
+ * Return an array representing a file
+ **/
+function tpl_file($file) {
+    if (!$file) {
+        return array();
+    }
+
+    return array(
+        'title'       => $file->getName(),
+        'url'         => Config::$root_uri.'file/'.$file->getId().'/'.filename_encode($file->getName()),
+        'description' => $file->getDescription()
+    );
+}
+
 ?>

@@ -90,7 +90,7 @@ dispatch('/cursus/:cursus/:course/:id', 'display_course_content');
 
 ## contents' files
 dispatch('/file/:id', 'serve_user_file');
-dispatch('/filename/:name', 'serve_user_file_by_name');
+dispatch('/file/:id/:name', 'serve_user_file_by_id_and_name');
 
 ## admin home
 dispatch('/admin', 'display_admin_home');

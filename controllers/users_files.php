@@ -8,10 +8,21 @@ function serve_user_file() {
     return _serve_user_file($f);
 }
 
-function serve_user_file_by_name() {
+function serve_user_file_by_id_and_name() {
+    $id = intval(params('id'));
     $name = params('name');
-    $f = FileQuery::create()->findOneByName($name);
+    $f = FileQuery::create()->findOneById($id);
 
+    if ($f) {
+        $encoded_filename = filename_encode($f->getName());
+
+        if ($encoded_filename !== $name) {
+            redirect_to(
+                '/file/'.$id.'/'.$encoded_filename,
+                array('status' => HTTP_MOVED_PERMANENTLY)
+            );
+        }
+    }
     return _serve_user_file($f);
 }
 

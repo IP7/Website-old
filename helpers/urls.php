@@ -34,4 +34,10 @@ function user_url($user) {
     return Config::$root_uri.'p/'.$user->getUsername();
 }
 
+/* return an URL part for the name of a file, e.g.:
+        user_file_name2url("Foo bar.pdf) --> "Foo-bar.pdf" */
+function filename_encode($fn) {
+    return preg_replace('/[^-.a-zA-Z0-9]+/', '-', $fn);
+}
+
 ?>

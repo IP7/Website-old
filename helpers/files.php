@@ -30,21 +30,6 @@ function empty_dir_recur($path) {
 }
 
 /**
- * Return an array representing a file
- **/
-function tpl_file($file) {
-    if (!$file) {
-        return array();
-    }
-
-    return array(
-        'title'       => $file->getName(),
-        'url'         => Config::$root_uri.'file/'.$file->getId(),
-        'description' => $file->getDescription()
-    );
-}
-
-/**
  * Upload one or more user file and return their ids.
  *
  * @author : the author of the file(s).
