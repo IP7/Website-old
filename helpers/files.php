@@ -61,6 +61,10 @@ function upload_user_file($author, $file_key, $description,
     $files_arr = array();
 
     for ($i=0,$l=count($files['tmp_name']);$i<$l && $i<$max_files;$i++) {
+        if (!$files['name'][$i]) {
+            continue;
+        }
+
         $file = array(
             'tmp_name' => $files['tmp_name'][$i],
             'name'     => $files['name'][$i]
