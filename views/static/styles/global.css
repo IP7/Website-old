@@ -29,19 +29,32 @@ body { background-color: #FAFAFA; }
 .filepath,
 code,
 pre {
-    font-family: 'dejavu sans mono', monospace;
+   font-family: 'dejavu sans mono', monospace;
+   background: #EEE; 
+   padding-left: 2px;
+   padding-right: 2px;
 }
 
-.filepath, code {
+.filepath,
+code {
     -webkit-border-radius: 2px;
        -moz-border-radius: 2px;
         -ms-border-radius: 2px;
          -o-border-radius: 2px;
             border-radius: 2px;
-   background: #EEE; 
-   padding-left: 2px;
-   padding-right: 2px;
-   font-size:small;
+}
+
+.filepath {
+    font-size:small;
+}
+
+pre {
+    padding:5px 10px;
+    -webkit-border-radius: 8px;
+       -moz-border-radius: 8px;
+        -ms-border-radius: 8px;
+         -o-border-radius: 8px;
+            border-radius: 8px;
 }
 
 /* == Nav bars ============================================ */
