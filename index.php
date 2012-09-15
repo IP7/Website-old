@@ -121,6 +121,7 @@ dispatch('/avatar/:id/:size', 'serve_avatar_with_size');
 
 ## API
 dispatch('/api/1/users/exists.json', 'json_check_username');
+dispatch('/api/1/search.json',       'json_search');
 
 ## tests
 dispatch('/test/init_db', 'display_test_init_db');
