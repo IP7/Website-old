@@ -5,6 +5,7 @@
 *.jar
 *.zip
 *.min.css
+*.min.js
 /cache
 docs
 doc
