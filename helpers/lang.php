@@ -57,7 +57,9 @@ function de($next_word) {
 // make a string plurial
 function plurial($s) {
 
-    if (strtoupper($s) === $s) {
+    if (!strlen($s)
+        || (strtoupper($s) === $s) # if it's an abreviation (no 's' in French)
+        || (substr($s, strlen($s)-1) === 's')) {
         return $s;
     }
 
