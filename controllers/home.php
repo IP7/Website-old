@@ -65,10 +65,7 @@ function display_connection($message=null, $message_type=null) {
             'forgotten_password_url' => Config::$root_uri.'oubli',
 
             'styles'                 => array(
-                array(
-                    'href'  => Config::$root_uri.'views/static/styles/connection.css',
-                    'media' => 'all'
-                )
+                array( 'href' => css_url('connection'), 'media' => 'all' )
             ),
 
             'message'                => $message,

@@ -233,7 +233,7 @@ function display_member_proposing_content_form() {
             ),
 
             'scripts' => array(
-                array( 'src' => Config::$root_uri.'views/static/js/proposing-content.js' )
+                array( 'src' => js_url('proposing-content') )
             )
         )
     ));

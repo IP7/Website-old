@@ -415,7 +415,7 @@ function display_init_my_profile_page($token=null, $message=null, $message_type=
             'infos' => $infos,
 
             'scripts' => array(
-                array( 'src' => Config::$root_uri.'views/static/js/subscription.js' )
+                array( 'src' => js_url('subscription') )
             )
         )
     ));

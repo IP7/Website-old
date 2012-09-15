@@ -40,4 +40,25 @@ function filename_encode($fn) {
     return preg_replace('/[^-.a-zA-Z0-9]+/', '-', $fn);
 }
 
+// return the URL for a CSS file
+function css_url($name) {
+    return css_or_js_url('styles', $name, 'css');
+}
+
+// return the URL for a JS file
+function js_url($name) {
+    return css_or_js_url('scripts', $name, 'js');
+}
+
+// return the URL for a CSS or JS file
+function css_or_js_url($dir, $name, $ext) {
+    $path = Config::$app_dir.'/views/static/'.$dir.'/'.$name;
+
+    if (file_exists($path.'.min.'.$ext)) {
+        $name = $name.'.min';
+    }
+
+    return Config::$root_uri.'views/static/'.$dir.'/'.$name.'.'.$ext;
+}
+
 ?>

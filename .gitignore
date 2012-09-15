@@ -2,6 +2,9 @@
 *.swp
 *.swo
 *.pdf
+*.jar
+*.zip
+*.min.css
 /cache
 docs
 doc

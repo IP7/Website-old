@@ -61,11 +61,11 @@ function display_course() {
             ),
 
             'styles' => array(
-                array( 'href' => Config::$root_uri.'views/static/styles/tabs.css')
+                array( 'href' => css_url('tabs') )
             ),
 
             'scripts' => array(
-                array( 'src'  => Config::$root_uri.'views/static/js/tabs.js')
+                array( 'src'  => js_url('tabs') )
             ),
 
             'moderation_bar' => $moderation_bar

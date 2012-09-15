@@ -32,10 +32,7 @@ function display_search_results() {
             'description' => truncate_string($title),
 
             'styles' => array(
-                array(
-                    'href' => Config::$root_uri.'views/static/styles/search.css',
-                    'media' => 'all'
-                )
+                array( 'href' => css_url('search'), 'media' => 'all' )
             )
         )
     ));
