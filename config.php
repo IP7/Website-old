@@ -70,7 +70,7 @@ class Config {
     private static function tpl_init() {
 
         $styles = self::$root_uri.'views/static/styles';
-        $scripts = self::$root_uri.'views/static/js';
+        $scripts = self::$root_uri.'views/static/scripts';
 
         Twig_Autoloader::register();
 

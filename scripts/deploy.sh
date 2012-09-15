@@ -33,7 +33,7 @@ java -jar yuicompressor-2.4.7.jar -o '.css:.min.css' $CSS_DIR/*.css && echo 'don
 
 # 3. Minifying JS
 echo -n '2. Minifying JS: '
-rm -f $CSS_DIR/*.min.js
+rm -f $JS_DIR/*.min.js
 java -jar yuicompressor-2.4.7.jar -o '.js:.min.js' $JS_DIR/*.js && echo 'done.'
 
 # 4. Deploying through FTP
