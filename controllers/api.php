@@ -15,11 +15,19 @@ function json_check_username() {
 
 // 
 function json_global_search() {
-    $results = has_get('q')
-                ? perform_search(get_string('q', 'GET'), false, 5)
-                : array();
+    if (!has_get('q')) {
+        return json(array('response' => array()));
+    }
 
-    // TODO return one array with type of contents in it
+    $raw_results = perform_search(escape_mysql_wildcards(get_string('q', 'GET')), false, 5);
+
+    $results = array();
+
+    foreach ($raw_results as $k => $cat_results) {
+        foreach ($cat_results['values'] as $_ => $v) {
+            $results []= $v;
+        }
+    }
 
     return json(array('response' => $results));
 }
