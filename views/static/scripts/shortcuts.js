@@ -1,4 +1,4 @@
-$(function(d){
+$(function(d,u,l,r){
     var search = (d=document).getElementById('q'),
         b      = d.body,
         transform_body = function(v) {
@@ -37,8 +37,9 @@ $(function(d){
     });
 
     // Konami code
-    Mousetrap.bind('up up down down left right left right b a', function(){
-        transform_body();
+    // up up down down left right left right (obfuscated)
+    Mousetrap.bind((u='up ')+u+(d='down ')+d+(l='left ')+(r='right ')+l+r+' b a', function(){
+        transform_body('rotate(180deg)');
         b.dataset['k'] = true;
     });
 
@@ -46,6 +47,6 @@ $(function(d){
     Mousetrap.bind('esc', function(){
         if (!b.dataset['k']) {return;}
         b.dataset['k'] = false;
-        transform_body();
+        transform_body('');
     });
 });
