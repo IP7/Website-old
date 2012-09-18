@@ -1,5 +1,6 @@
 $(function() {
     var cache = {},
+        urls = {},
     lastXhr;
     $("#q").autocomplete({
         minLength: 2,
@@ -9,13 +10,23 @@ $(function() {
                 return response(cache[term]);
             }
 
-            lastXhr = $.getJSON('/api/1/search.json', {q:term}, function( data, status, xhr ) {
-                cache[term] = data;
+            lastXhr = $.getJSON('/api/1/search.json', {q:term}, function( data, status, xhr,/*placeholder:*/results) {
+                results = data['response'];
                 if (xhr === lastXhr) {
-                    // TODO format data
-                    response(data);
+
+                    response(cache[term] = results.map(function(r){
+                        urls[r.title] = r.href;
+                        return r.title;
+                    }));
                 }
             });
+        },
+        select: function(u, o) {
+            if (u = urls[o.item.label]) {
+                window.location.pathname = u;
+            }
         }
     });
+
+    $(document.head).append($('<link>').attr({rel:'stylesheet', href:'/views/static/styles/jquery-ui-1.8.23.custom.css'}));
 });
