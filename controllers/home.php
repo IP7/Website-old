@@ -8,8 +8,9 @@ function display_home() {
     if (has_post('disconnect')) {
         disconnection();
 
-        if (has_post('u')) {
-            redirect_to($_POST['u'], array('status' => HTTP_SEE_OTHER));
+        if (has_post('u') && $_POST['u'][0] == '/') {
+            $u = explode('?', get_string('u', 'post'));
+            redirect_to($u[0], array('status' => HTTP_SEE_OTHER));
         }
     }
 
@@ -97,9 +98,9 @@ function post_connection() {
         else {
             $u = '/';
             if (has_get('u') && $_GET['u'][0] == '/') {
-                $u = $_GET['u'];
+                $u = explode('?', $_GET['u']);
             }
-            redirect_to($u, array('status' => HTTP_SEE_OTHER));
+            redirect_to($u[0], array('status' => HTTP_SEE_OTHER));
         }
     }
 
