@@ -2,25 +2,6 @@ SetEnv PHP_VER 5_3
 SetEnv SESSION_USE_TRANS_SID 0
 AddDefaultCharset UTF-8
 
-#<IfModule mod_expires.c>
-#	<FilesMatch "\.(gif|jpg|jpeg|png|css|js|ico)$">
-#		ExpiresActive On
-#		ExpiresDefault "access plus 10 years"
-#	</FilesMatch>
-#</IfModule>
-
-# Don't compress images
-SetEnvIfNoCase Request_URI \.(?:gif|jpe?g|png|ico)$ no-gzip dont-vary
-
-# Gzip compression
-<IfModule mod_deflate.c>
-<filesMatch "\.(js|css|html)$">
-SetOutputFilter DEFLATE
-</filesMatch>
-</IfModule>
-
-FileETag none
-
 <IfModule mod_rewrite.c>
 
 Options +FollowSymlinks
@@ -55,3 +36,33 @@ RewriteRule ^(.*)$   index.php?uri=/$1    [NC,L,QSA]
 # substitution string to the existing string, instead of replacing it.
 
 </IfModule>
+
+# pages Expiration 
+#<IfModule mod_expires.c>
+ExpiresActive On
+ExpiresByType image/gif A2600000
+ExpiresByType image/png A2600000
+ExpiresByType image/jpeg A2600000
+ExpiresByType text/javascript A2600000
+ExpiresByType text/plain A2600000
+ExpiresByType application/javascript A2600000
+ExpiresByType application/x-javascript A2600000
+ExpiresByType image/ico A2600000
+ExpiresByType image/icon A2600000
+ExpiresByType image/x-icon A2600000
+ExpiresByType text/css A2600000
+ExpiresByType application/x-httpd-php A14400
+ExpiresByType text/html "modification plus 1 seconds"
+#</IfModule>
+
+# Don't compress images
+SetEnvIfNoCase Request_URI \.(?:gif|jpe?g|png|ico)$ no-gzip dont-vary
+
+# Gzip compression
+<IfModule mod_deflate.c>
+<filesMatch "\.(js|css|html)$">
+SetOutputFilter DEFLATE
+</filesMatch>
+</IfModule>
+
+FileETag none
