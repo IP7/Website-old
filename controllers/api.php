@@ -32,4 +32,48 @@ function json_global_search() {
     return json(array('response' => $results));
 }
 
+function json_get_last_contents() {
+    $limit = 10;
+
+    if (has_get('l')) {
+        $limit = intval($_GET['l']);
+    }
+
+    if ($limit <= 0) {
+        return json(array('response' => array()));
+    }
+
+    $user_rights = is_connected() ? user()->getRank() : 0;
+
+    $contents = ContentQuery::create()
+                    ->joinWith('Content.Cursus')
+                    ->joinWith('Content.Course')
+                    ->filterByValidated(1)
+                        ->useContentTypeQuery()
+                        ->where('Rights <= ?', $user_rights, PDO::PARAM_INT)
+                        ->endUse()
+                    ->orderByDate('desc')
+                    ->limit($limit)
+                    ->find();
+
+    $tpl_contents = array();
+
+    foreach ($contents as $c) {
+
+        $cursus = $c->getCursus();
+        $course = $c->getCourse();
+
+        $tpl_contents []= array(
+            'href'  => content_url($cursus, $course, $c),
+            'title' => $c->getTitle(),
+            'date'  => $c->getDate(),
+
+            'cursus' => $cursus ? $cursus->getShortName() : null,
+            'course' => $course ? $course->getCode() : null
+        );
+    }
+
+    return json(array('response' => $tpl_contents));
+}
+
 ?>
