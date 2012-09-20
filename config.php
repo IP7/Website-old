@@ -113,7 +113,7 @@ class Config {
                 ),
 
                 'logo' => array(
-                    'src'    => self::$root_uri.'views/static/images/logo32transp.png',
+                    'href'   => self::$root_uri.'views/static/images/logo32transp.png',
                     'width'  => 32,
                     'height' => 32
                 ),

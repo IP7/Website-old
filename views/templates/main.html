@@ -67,7 +67,7 @@
                     <nav id="global_header_nav">
                     {# logo #}
                         <a href="{{ site.root|raw }}" title="Retour à l’accueil" id="main_logo_link">
-                            <img src="{{ site.logo.src|raw }}" width="{{ site.logo.width }}" height="{{ site.logo.height }}" alt="IP7" class="logo" />
+                            <img src="{{ site.logo.href|raw }}" width="{{ site.logo.width }}" height="{{ site.logo.height }}" alt="IP7" class="logo" />
                         </a>
 
                     {# navigation #}
@@ -129,13 +129,11 @@
             </footer>
 
             {# autres scripts #}
-            {# fonction ultra-basique pour charger les scripts à la suite en asynchrone
+            {# bout de code ultra-basique pour charger les scripts à la suite en asynchrone
 
-            var _l=function(){var g;[].slice.call(arguments).reverse().forEach(function(s){g=$.getScript.bind($,s,g)});if(g)g()};
-
-                Elle utilise la fonction $.getScript("<url>"[, callback]) de jQuery, et l'appelle de façon
+                Il utilise la fonction $.getScript("<url>"[, callback]) de jQuery, et l'appelle de façon
                 à ce que les scripts soient inclus à la suite, par ex:
-                    _l("foo.js", "bar.js", "baz.js") appelle en fait:
+                    pour ["foo.js", "bar.js", "baz.js"] ça donne:
                         $.getScript("foo.js",
                                     function(){
                                         $.getScript("bar.js",
