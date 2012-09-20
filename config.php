@@ -31,7 +31,7 @@ define('ADMIN_RANK', 100);
 #
 # - cookie
 define('AUTH_COOKIE', 'a');
-define('AUTH_COOKIE_EXPIRE', time()+60*60*24*30);
+define('AUTH_COOKIE_EXPIRE', $_SERVER['REQUEST_TIME']+2592000); # one month
 #
 define('SESSION_COOKIE', 's');
 #
