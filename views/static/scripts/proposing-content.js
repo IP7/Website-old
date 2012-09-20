@@ -3,7 +3,6 @@ $(function(){
         dc = d.createElement.bind(d),
         f  = d.getElementsByClassName('files_inputs')[0],
         maxf = f.dataset['max'],
-        maxf_s = Math.floor(maxf/1000000),
 
         inps = [],
 
@@ -25,7 +24,7 @@ $(function(){
                 addInp();
             };
             p.className = 'microcopy';
-            p.innerText = 'Facultatif, '+maxf_s+'Mio max.';
+            p.innerText = 'Facultatif, 10Mio max.';
 
             // description
             j.name = 'desc[]';
