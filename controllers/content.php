@@ -49,18 +49,22 @@ function display_course_content() {
         if (!is_connected() || (user()->getId() != $user->getId() && !user()->isAdmin())) {
             halt(NOT_FOUND);
         }
-       $msg_str  = 'Ce contenu est en attente de validation.';
-       $msg_type = 'notice';
+        $msg_str  = 'Ce contenu est en attente de validation.';
+        $msg_type = 'notice';
 
-		$post_token = generate_post_token(user());
-		FormData::create($post_token)->store('proposed', $content);
+        $tpl_proposed = null;
 
-		$tpl_proposed = array(
-			'form' => array(
-				'action' => Config::$root_uri. 'admin/content/proposed',
-				'post_token' => $post_token
-			)
-		);
+        if (is_connected() && user()->isAdmin()) {
+            $post_token = generate_post_token(user());
+            FormData::create($post_token)->store('proposed', $content);
+
+            $tpl_proposed = array(
+                'form' => array(
+                    'action' => Config::$root_uri. 'admin/content/proposed',
+                    'post_token' => $post_token
+                )
+            );
+        }
 
     }
     else {
@@ -146,9 +150,9 @@ function display_course_content() {
                 )
             ),
 
-				'proposed' => $tpl_proposed,
+            'proposed' => $tpl_proposed,
             'report'   => $tpl_report,
-    	      'content'  => $tpl_content,
+            'content'  => $tpl_content,
 
             'message'      => $msg_str,
             'message_type' => $msg_type
