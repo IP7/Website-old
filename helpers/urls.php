@@ -29,7 +29,13 @@ function course_url($cursus, $course) {
     return $u;
 }
 
-// return the URL of an user
+// return the URL of a content
+function content_url($cursus, $course, $content) {
+    if (!$cursus) { return ''; }
+    return course_url($cursus, $course) . '/' . $content->getId();
+}
+
+// return the URL of an user's profile
 function user_url($user) {
     return Config::$root_uri.'p/'.$user->getUsername();
 }
