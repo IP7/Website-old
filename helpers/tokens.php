@@ -31,8 +31,11 @@ function generate_token($user=null, $rights_array=0, $expiration_date=null, $pos
     $token = new Token();
     $token->setUser($user);
     $token->setRights($rights);
-    if ($expiration_date > time()) {
+    if ($expiration_date > $_SERVER['REQUEST_TIME']) {
         $token->setExpirationDate($expiration_date);
+    }
+    else {
+        $token->setExpirationDate($_SERVER['REQUEST_TIME'] + Durations::ONE_MONTH);
     }
 
     $token->setMethod($post_method ? 'POST' : 'GET');
