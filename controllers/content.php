@@ -227,7 +227,7 @@ function display_member_proposing_content_form() {
                     'type' => ''
                 ),
 
-                'max_files_nb' => 8,
+                'max_files_nb' => MAX_FILES_PER_CONTENT,
 
                 'types' => $tpl_content_types
             ),

@@ -39,7 +39,7 @@ function empty_dir_recur($path) {
  *
  **/
 function upload_user_file($author, $file_key, $description,
-            &$msg_str=null, &$msg_type=null, $access_rights=0, $max_files=5) {
+            &$msg_str=null, &$msg_type=null, $access_rights=0) {
 
     $path_root = Config::$app_dir.'/../data/usersfiles/';
 
@@ -60,7 +60,7 @@ function upload_user_file($author, $file_key, $description,
 
     $files_arr = array();
 
-    for ($i=0,$l=count($files['tmp_name']);$i<$l && $i<$max_files;$i++) {
+    for ($i=0,$l=count($files['tmp_name']);$i<$l && $i<MAX_FILES_PER_CONTENT;$i++) {
         if (!$files['name'][$i]) {
             continue;
         }
