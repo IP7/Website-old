@@ -1,4 +1,4 @@
-{% if page.news is not empty %}
+{% if page.news is defined and page.news is not empty %}
 <section id="news">
 {% autoescape %}
     <h3>Actualités</h3>
