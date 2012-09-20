@@ -120,8 +120,9 @@ dispatch('/avatar/:id',       'serve_avatar');
 dispatch('/avatar/:id/:size', 'serve_avatar_with_size');
 
 ## API
-dispatch('/api/1/users/exists.json', 'json_check_username');
-dispatch('/api/1/search.json',       'json_global_search');
+dispatch('/api/1/users/exists.json',  'json_check_username');
+dispatch('/api/1/search.json',        'json_global_search');
+dispatch('/api/1/contents/last.json', 'json_get_last_contents');
 
 ## tests
 dispatch('/test/init_db', 'display_test_init_db');

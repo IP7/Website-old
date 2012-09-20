@@ -14,17 +14,29 @@ function display_home() {
         }
     }
 
+    $tpl_name = (is_connected() ? 'connected_' : '').'home.html';
+
+    $scripts = null;
+
+    if (is_connected()) {
+        $scripts = array(
+            array( 'href' => js_url('connected_home') )
+        );
+    }
+
     # Rendering
-    return Config::$tpl->render('home.html', tpl_array(array(
+    return tpl_render($tpl_name, array(
 
         'page' => array(
             'title' => 'Accueil',
 
             'breadcrumbs' => false,
 
-            'news' => array()
-        ),
-    )));
+            'news' => array(),
+
+            'scripts' => $scripts
+        )
+    ));
 
 }
 
