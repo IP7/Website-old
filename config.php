@@ -108,7 +108,7 @@ class Config {
                 ),
                 'scripts'           => array(
                     array( 'href' => $scripts.'/jquery-ui-1.8.23.custom.js' ),
-                    array( 'href' => $scripts.'/mousetrap.js'),
+                    array( 'href' => $scripts.'/mousetrap.min.js'),
                     array( 'href' => $scripts.'/search.min.js' ),
                     array( 'href' => $scripts.'/shortcuts.min.js' )
                 ),
