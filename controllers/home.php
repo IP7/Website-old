@@ -14,7 +14,7 @@ function display_home() {
         }
     }
 
-    $tpl_name = (is_connected() ? 'connected_' : '').'home.html';
+    $tpl_name = is_connected() ? 'connected_home.html' : 'home.html';
 
     $scripts = null;
 
