@@ -16,7 +16,7 @@ $(function(){
         t = document.createElement('h2'),
         ul = document.createElement('ul');
 
-        loader.src = './views/static/loader.gif';
+        loader.src = '/views/static/loader.gif';
         t.innerText = 'Les derniers contenus ajoutés';
 
         div.appendChild(t);
@@ -26,7 +26,7 @@ $(function(){
             if (ul.parentNode === div) { div.removeChild(ul); }
             div.appendChild(loader);
 
-            $.ajax('./api/1/contents/last.json', {
+            $.ajax('/api/1/contents/last.json', {
                 data: { l:10 },
                 error: display_error,
                 success: function(response) {
