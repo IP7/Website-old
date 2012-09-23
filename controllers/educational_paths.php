@@ -24,7 +24,7 @@ function display_educational_path() {
     }
 
     $cursus_uri = cursus_url($cursus);
-    $base_uri = $cursus_uri.'parcours/'.$path->getShortName().'/';
+    $base_uri = $cursus_uri.'/parcours/'.$path->getShortName().'/';
 
     $breadcrumbs = array(
         1 => array(
