@@ -94,17 +94,6 @@ $(function(){
 
                 type_inp.value = index;
                 title_inp.onblur = null;
-
-                /*
-                for (i=0; i<l; i++) {
-                    index = types.indexOf(words[i].toLocaleLowerCase());
-                    if (index > -1) {
-                        type_inp.value = index;
-                        break;
-                        title_inp.onBlur = null;
-                    }
-                }
-                */
             };
         }
 
