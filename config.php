@@ -104,7 +104,8 @@ class Config {
 
                 # Scripts
                 'rendering_scripts' => array(
-                    array( 'href' => $scripts.'/jquery-1.8.0.min.js' )
+                    array( 'href' => $scripts.'/jquery-1.8.0.min.js' ),
+                    array( 'href' => $scripts.'/polyfills.min.js' )
                 ),
                 'scripts'           => array(
                     array( 'href' => $scripts.'/jquery-ui-1.8.23.custom.js' ),
