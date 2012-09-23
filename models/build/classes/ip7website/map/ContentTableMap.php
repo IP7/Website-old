@@ -48,6 +48,7 @@ class ContentTableMap extends TableMap
         $this->addColumn('TEXT', 'Text', 'LONGVARCHAR', false, null, null);
         $this->addForeignKey('CURSUS_ID', 'CursusId', 'INTEGER', 'cursus', 'ID', false, null, null);
         $this->addForeignKey('COURSE_ID', 'CourseId', 'INTEGER', 'courses', 'ID', false, null, null);
+        $this->addColumn('YEAR', 'Year', 'INTEGER', false, null, null);
         // validators
     } // initialize()
 

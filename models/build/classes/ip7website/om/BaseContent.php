@@ -99,6 +99,12 @@ abstract class BaseContent extends BaseObject implements Persistent
     protected $course_id;
 
     /**
+     * The value for the year field.
+     * @var        int
+     */
+    protected $year;
+
+    /**
      * @var        User
      */
     protected $aAuthor;
@@ -380,6 +386,16 @@ abstract class BaseContent extends BaseObject implements Persistent
     }
 
     /**
+     * Get the [year] column value.
+     *
+     * @return int
+     */
+    public function getYear()
+    {
+        return $this->year;
+    }
+
+    /**
      * Set the value of [id] column.
      *
      * @param int $v new value
@@ -622,6 +638,27 @@ abstract class BaseContent extends BaseObject implements Persistent
     } // setCourseId()
 
     /**
+     * Set the value of [year] column.
+     *
+     * @param int $v new value
+     * @return Content The current object (for fluent API support)
+     */
+    public function setYear($v)
+    {
+        if ($v !== null) {
+            $v = (int) $v;
+        }
+
+        if ($this->year !== $v) {
+            $this->year = $v;
+            $this->modifiedColumns[] = ContentPeer::YEAR;
+        }
+
+
+        return $this;
+    } // setYear()
+
+    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -662,6 +699,7 @@ abstract class BaseContent extends BaseObject implements Persistent
             $this->title = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
             $this->cursus_id = ($row[$startcol + 7] !== null) ? (int) $row[$startcol + 7] : null;
             $this->course_id = ($row[$startcol + 8] !== null) ? (int) $row[$startcol + 8] : null;
+            $this->year = ($row[$startcol + 9] !== null) ? (int) $row[$startcol + 9] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -670,7 +708,7 @@ abstract class BaseContent extends BaseObject implements Persistent
                 $this->ensureConsistency();
             }
 
-            return $startcol + 9; // 9 = ContentPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 10; // 10 = ContentPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating Content object", $e);
@@ -1085,6 +1123,9 @@ abstract class BaseContent extends BaseObject implements Persistent
         if ($this->isColumnModified(ContentPeer::COURSE_ID)) {
             $modifiedColumns[':p' . $index++]  = '`COURSE_ID`';
         }
+        if ($this->isColumnModified(ContentPeer::YEAR)) {
+            $modifiedColumns[':p' . $index++]  = '`YEAR`';
+        }
 
         $sql = sprintf(
             'INSERT INTO `contents` (%s) VALUES (%s)',
@@ -1125,6 +1166,9 @@ abstract class BaseContent extends BaseObject implements Persistent
                         break;
                     case '`COURSE_ID`':
                         $stmt->bindValue($identifier, $this->course_id, PDO::PARAM_INT);
+                        break;
+                    case '`YEAR`':
+                        $stmt->bindValue($identifier, $this->year, PDO::PARAM_INT);
                         break;
                 }
             }
@@ -1352,6 +1396,9 @@ abstract class BaseContent extends BaseObject implements Persistent
             case 9:
                 return $this->getCourseId();
                 break;
+            case 10:
+                return $this->getYear();
+                break;
             default:
                 return null;
                 break;
@@ -1391,6 +1438,7 @@ abstract class BaseContent extends BaseObject implements Persistent
             $keys[7] => ($includeLazyLoadColumns) ? $this->getText() : null,
             $keys[8] => $this->getCursusId(),
             $keys[9] => $this->getCourseId(),
+            $keys[10] => $this->getYear(),
         );
         if ($includeForeignObjects) {
             if (null !== $this->aAuthor) {
@@ -1481,6 +1529,9 @@ abstract class BaseContent extends BaseObject implements Persistent
             case 9:
                 $this->setCourseId($value);
                 break;
+            case 10:
+                $this->setYear($value);
+                break;
         } // switch()
     }
 
@@ -1515,6 +1566,7 @@ abstract class BaseContent extends BaseObject implements Persistent
         if (array_key_exists($keys[7], $arr)) $this->setText($arr[$keys[7]]);
         if (array_key_exists($keys[8], $arr)) $this->setCursusId($arr[$keys[8]]);
         if (array_key_exists($keys[9], $arr)) $this->setCourseId($arr[$keys[9]]);
+        if (array_key_exists($keys[10], $arr)) $this->setYear($arr[$keys[10]]);
     }
 
     /**
@@ -1536,6 +1588,7 @@ abstract class BaseContent extends BaseObject implements Persistent
         if ($this->isColumnModified(ContentPeer::TEXT)) $criteria->add(ContentPeer::TEXT, $this->text);
         if ($this->isColumnModified(ContentPeer::CURSUS_ID)) $criteria->add(ContentPeer::CURSUS_ID, $this->cursus_id);
         if ($this->isColumnModified(ContentPeer::COURSE_ID)) $criteria->add(ContentPeer::COURSE_ID, $this->course_id);
+        if ($this->isColumnModified(ContentPeer::YEAR)) $criteria->add(ContentPeer::YEAR, $this->year);
 
         return $criteria;
     }
@@ -1608,6 +1661,7 @@ abstract class BaseContent extends BaseObject implements Persistent
         $copyObj->setText($this->getText());
         $copyObj->setCursusId($this->getCursusId());
         $copyObj->setCourseId($this->getCourseId());
+        $copyObj->setYear($this->getYear());
 
         if ($deepCopy && !$this->startCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -3224,6 +3278,7 @@ abstract class BaseContent extends BaseObject implements Persistent
         $this->text_isLoaded = false;
         $this->cursus_id = null;
         $this->course_id = null;
+        $this->year = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->clearAllReferences();

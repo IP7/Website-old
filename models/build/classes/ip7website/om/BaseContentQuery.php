@@ -16,6 +16,7 @@
  * @method ContentQuery orderByText($order = Criteria::ASC) Order by the text column
  * @method ContentQuery orderByCursusId($order = Criteria::ASC) Order by the cursus_id column
  * @method ContentQuery orderByCourseId($order = Criteria::ASC) Order by the course_id column
+ * @method ContentQuery orderByYear($order = Criteria::ASC) Order by the year column
  *
  * @method ContentQuery groupById() Group by the id column
  * @method ContentQuery groupByAuthorId() Group by the author_id column
@@ -27,6 +28,7 @@
  * @method ContentQuery groupByText() Group by the text column
  * @method ContentQuery groupByCursusId() Group by the cursus_id column
  * @method ContentQuery groupByCourseId() Group by the course_id column
+ * @method ContentQuery groupByYear() Group by the year column
  *
  * @method ContentQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method ContentQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -77,6 +79,7 @@
  * @method Content findOneByText(string $text) Return the first Content filtered by the text column
  * @method Content findOneByCursusId(int $cursus_id) Return the first Content filtered by the cursus_id column
  * @method Content findOneByCourseId(int $course_id) Return the first Content filtered by the course_id column
+ * @method Content findOneByYear(int $year) Return the first Content filtered by the year column
  *
  * @method array findById(int $id) Return Content objects filtered by the id column
  * @method array findByAuthorId(int $author_id) Return Content objects filtered by the author_id column
@@ -88,6 +91,7 @@
  * @method array findByText(string $text) Return Content objects filtered by the text column
  * @method array findByCursusId(int $cursus_id) Return Content objects filtered by the cursus_id column
  * @method array findByCourseId(int $course_id) Return Content objects filtered by the course_id column
+ * @method array findByYear(int $year) Return Content objects filtered by the year column
  *
  * @package    propel.generator.ip7website.om
  */
@@ -177,7 +181,7 @@ abstract class BaseContentQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `ID`, `AUTHOR_ID`, `CONTENT_TYPE_ID`, `DATE`, `ACCESS_RIGHTS`, `VALIDATED`, `TITLE`, `CURSUS_ID`, `COURSE_ID` FROM `contents` WHERE `ID` = :p0';
+        $sql = 'SELECT `ID`, `AUTHOR_ID`, `CONTENT_TYPE_ID`, `DATE`, `ACCESS_RIGHTS`, `VALIDATED`, `TITLE`, `CURSUS_ID`, `COURSE_ID`, `YEAR` FROM `contents` WHERE `ID` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -632,6 +636,47 @@ abstract class BaseContentQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(ContentPeer::COURSE_ID, $courseId, $comparison);
+    }
+
+    /**
+     * Filter the query on the year column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByYear(1234); // WHERE year = 1234
+     * $query->filterByYear(array(12, 34)); // WHERE year IN (12, 34)
+     * $query->filterByYear(array('min' => 12)); // WHERE year > 12
+     * </code>
+     *
+     * @param     mixed $year The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ContentQuery The current query, for fluid interface
+     */
+    public function filterByYear($year = null, $comparison = null)
+    {
+        if (is_array($year)) {
+            $useMinMax = false;
+            if (isset($year['min'])) {
+                $this->addUsingAlias(ContentPeer::YEAR, $year['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($year['max'])) {
+                $this->addUsingAlias(ContentPeer::YEAR, $year['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(ContentPeer::YEAR, $year, $comparison);
     }
 
     /**

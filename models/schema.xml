@@ -577,6 +577,9 @@
         <!-- matière concernée (s'il y en a une) -->
         <column name="course_id"     type="INTEGER" />
 
+        <!-- année scolaire (première année, par ex 2011-2012 -> 2011) -->
+        <column name="year"          type="INTEGER" />
+
         <!-- == index & clefs étrangères == -->
 
         <foreign-key foreignTable="users" onDelete="SETNULL" onUpdate="CASCADE" phpName="Author">

@@ -399,6 +399,7 @@ CREATE TABLE `contents`
     `text` TEXT,
     `cursus_id` INTEGER,
     `course_id` INTEGER,
+    `year` INTEGER,
     PRIMARY KEY (`id`),
     INDEX `contents_FI_1` (`author_id`),
     INDEX `contents_FI_2` (`cursus_id`),
