@@ -2,7 +2,7 @@
 {% block admin_content %}
 {{ parent() }}
 <p>{{ _m.a(page.add_member_link, "Ajouter un membre") }}</p>
-<table id="members_list" border="1">
+<table class="members_list" border="1">
     <tr>{#<td class="empty"></td>#}<th>Pseudo</th><th>Nom</th><th>Type</th><th>Dernière inscription</th><td class="empty"></td></tr>
     {% for member in page.members %}
     <tr>{#<td>{{ _m.checkbox('members[]', member.id) }}#}</td>{#
@@ -10,8 +10,19 @@
       #}<td class="name">{{ _m.a(member.href, member.name) }}</td>{#
       #}<td class="type">{{ member.type }}</td>{#
       #}<td class="lastentry">{{ member.last_entry }}</td>{#
-      #}<td class="options"><ul>{% for opt in member.options %}<li class="option">{{ _m.a(opt.href, opt.title) }}</li>{% endfor %}</ul></td>{#
+      #}<td class="options"><a class="button" href="{{ member.edit_url }}">Modifier</a></td>{#
   #}</tr>
     {% endfor %}
 </table>
+
+    {% if page.almost_members is defined and page.almost_members is not empty %}
+<table class="members_list" border="1">
+    <tr><th>Email</th><td class="empty"></td></tr>
+    {% for m in page.almost_members %}
+    <tr><td>{{ m.email }}</td><td><a class="button" data-id="{{ m.id }}" {#
+                                    #}href="#" onclick="send_activation_email()">Re-envoyer le mail d’activation</a>{#
+            #}<a class="button" data-id="{{ m.id }}" href="#" onclick="delete_user()">Supprimer</a></td></tr>
+    {% endfor %}
+</table>
+    {% endif %}
 {% endblock %}

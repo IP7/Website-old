@@ -43,8 +43,7 @@ function display_admin_home($message, $message_type) {
                         'id'      => 'tres',
                         'actions' => array (
                             array('title' => 'Ajouter un membre',      'href' => $admin_uri.'/membres/add'),
-                            array('title' => 'Gérer les membres',      'href' => $admin_uri.'/membres'),
-                            #array('title' => 'Gérer les transactions', 'href' => $admin_uri.'/transactions')
+                            array('title' => 'Gérer les membres',      'href' => $admin_uri.'/membres')
                         )
                     ),
                     array(
@@ -156,7 +155,7 @@ function post_admin_content_report(){
 
 	}
 
-	return display_admin_content_report($msg_str, 'notice');
+	return display_admin_content_report($msg_str, 'success');
 
 }
 
@@ -259,7 +258,7 @@ function post_admin_proposed_content(){
 
 	}
 
-	return display_admin_proposed_content($msg_str, 'notice');
+	return display_admin_proposed_content($msg_str, 'success');
 
 }
 
@@ -403,8 +402,8 @@ function post_admin_add_member() {
     $fee = null;
 
     if (has_post('fee')) {
-        $user->setFirstEntry(time());
-        $user->setLastEntry(time());
+        $user->setFirstEntry($_SERVER['REQUEST_TIME']);
+        $user->setLastEntry($_SERVER['REQUEST_TIME']);
         $user->setExpirationDate(next_expiration_date());
 
         $fee = new Transaction(); 
@@ -459,11 +458,17 @@ function display_admin_members() {
             ->find();
 
     $members = array();
+    $almost_members = array();
 
     if ($q != NULL) {
         foreach ($q as $m) {
 
             if (is_temp_username($m->getUsername())) {
+                $almost_members []= array(
+                    'id'    => $m->getId(),
+                    'email' => $m->getEmail()
+                );
+
                 continue;
             }
 
@@ -491,18 +496,14 @@ function display_admin_members() {
                 $type = 'membre';
             }
 
-            $options = array(
-                array( 'href' => $uri.'/edit',   'title' => 'Modifier' )
-            );
-
             $members []= array(
-                'id' => $m->getId(),
-                'href' => $uri,
-                'pseudo' => $m->getUsername(),
-                'name' => $m->getName(),
-                'type' => $type,
+                'id'         => $m->getId(),
+                'href'       => $uri,
+                'pseudo'     => $m->getUsername(),
+                'name'       => $m->getName(),
+                'type'       => $type,
                 'last_entry' => $lastentry,
-                'options' => $options
+                'edit_url'   => $uri.'/edit'
             );
         }
     }
@@ -515,8 +516,13 @@ function display_admin_members() {
                 2 => array( 'href' => url(), 'title' => 'Membres' )
             ),
 
-            'members' => $members,
-            'add_member_link' => Config::$root_uri.'admin/membres/add'
+            'members'         => $members,
+            'almost_members'  => $almost_members,
+            'add_member_link' => Config::$root_uri.'admin/membres/add',
+
+            'scripts' => array(
+                array( 'href' => js_url( 'admin_members' ) )
+            )
         )
     )));
 }
