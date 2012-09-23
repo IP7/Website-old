@@ -37,6 +37,8 @@ function display_course_content() {
         halt(HTTP_FORBIDDEN, 'Vous n\'avez pas le droit d\'accéder à ce contenu.');
     }
 
+    $year      = $content->getYear();
+
     $msg_str  = null;
     $msg_type = null;
 
@@ -67,7 +69,7 @@ function display_course_content() {
         }
 
     }
-    else {
+    else if (is_connected() && user()->isAdmin()) {
         $report = ReportQuery::create()->findOneByContent($content);
 
         if ($report && is_connected() && user()->isAdmin()) {
@@ -112,7 +114,19 @@ function display_course_content() {
         }
     }
 
-    $type_name = $type ? $type->getName() : null;
+    $tpl_type = !$type ? null : array(
+        'title' => $type->getName(),
+        'href'  => ($cursus && $course) ? course_url($cursus, $course).'/#tb_'.$type->getShortName() : '#'
+    );
+
+    $tpl_year = null;
+
+    if ($year) {
+        $tpl_year = array(
+            'begin' => $year,
+            'end'   => $year+1
+        );
+    }
 
     $tpl_content = array(
         'title'  => $content->getTitle(),
@@ -126,7 +140,7 @@ function display_course_content() {
             'name' => $user->getPublicName(),
             'href' => Config::$root_uri.'p/'.$user->getUsername()
         ),
-        'type'   => $type_name
+        'type'   => $tpl_type
     );
 
 	return tpl_render('contents/base.html', array(
@@ -274,6 +288,8 @@ function display_post_member_proposed_content_preview() {
 
     // ** Content type **
 
+    $c_type_title = null;
+
     if (has_post('type', true)) {
         $c_type = ContentTypeQuery::create()->findOneById(intval($_POST['type']));
 
@@ -286,6 +302,8 @@ function display_post_member_proposed_content_preview() {
                 );
             }
             $fd2->store('type', $c_type);
+
+            $c_type_title = array('title' => $c_type->getName());
         }
     }
 
@@ -331,12 +349,18 @@ function display_post_member_proposed_content_preview() {
     $fd2->store('text', get_string('text', 'post'));
 
     // ** Year **
-
-    $year = null;
+    $tpl_year = null;
 
     if (has_post('year')) {
         $year = intval(get_string('year', 'post'));
-        $fd2->store('year', intval(get_string('year', 'post')));
+
+        if ($year) {
+            $fd2->store('year', intval(get_string('year', 'post')));
+            $tpl_year = array(
+                'begin' => $year,
+                'end'   => $year+1
+            );
+        }
     }
 
     return tpl_render('contents/proposing_preview.html', array(
@@ -351,7 +375,8 @@ function display_post_member_proposed_content_preview() {
             'content' => array(
                 'title' => $title,
                 'text'  => $text,
-                'year'  => $year,
+                'type'  => $c_type_title,
+                'year'  => $tpl_year,
                 'files' => $tpl_files
             ),
 

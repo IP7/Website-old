@@ -25,6 +25,13 @@
 
     <article class="user_content">
         <header class="content_header">
+            {% if page.content.year is defined and page.content.year %}
+            <date datetime="{{ page.content.year.begin }}-09-01T00:00:00Z/P1Y" class="content-year">{#
+            #}{{ page.content.year.begin }}/{{ page.content.year.end }}</date>
+            {% endif %}
+            {% if page.content.type is defined and page.content.type %}
+            <span class="content-type"><a href="{{ page.content.type.href }}">{{ page.content.type.title }}</a></span>
+            {% endif %}
             <h1>{{ page.content.title }}</h1>
             <p>Posté par <a href="{{ page.content.author.href }}" class="user" rel="author">{{ page.content.author.name }}</a>{#
             #} <date datetime="{{ page.content.date.datetime }}">{{ page.content.date.text }}</date>.</p>
