@@ -330,6 +330,14 @@ function display_post_member_proposed_content_preview() {
 
     $fd2->store('text', get_string('text', 'post'));
 
+    // ** Year **
+
+    $year = null;
+
+    if (has_post('year')) {
+        $year = intval(get_string('year', 'post'));
+        $fd2->store('year', intval(get_string('year', 'post')));
+    }
 
     return tpl_render('contents/proposing_preview.html', array(
         'page' => array(
@@ -343,6 +351,7 @@ function display_post_member_proposed_content_preview() {
             'content' => array(
                 'title' => $title,
                 'text'  => $text,
+                'year'  => $year,
                 'files' => $tpl_files
             ),
 
@@ -369,19 +378,23 @@ function display_post_member_proposed_content() {
     $title  = $fd->get('title');
     $text   = $fd->get('text');
 
+    $year   = $fd->get('year');
+
     $type   = $fd->get('type');
 
-    $files = $fd->get('files');
+    $files  = $fd->get('files');
 
     $fd->destroy();
 
     $c = new Content();
+
     $c->setTitle($title);
     $c->setText($text);
     $c->setAuthor(user());
     $c->setDate(time());
     $c->setCursus($cursus);
     $c->setCourse($course);
+    $c->setYear($year);
 
     if ($type) {
         $c->setContentType($type);
@@ -393,7 +406,7 @@ function display_post_member_proposed_content() {
     }
 
     if (!$c->validate()) {
-        return 'validation error.'; //TODO
+        halt(HTTP_INTERNAL_SERVER_ERROR, "Le contenu n'est pas valide.");
     }
     else {
         $c->save();
