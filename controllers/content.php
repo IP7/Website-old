@@ -307,6 +307,22 @@ function display_post_member_proposed_content_preview() {
         }
     }
 
+    // ** Year **
+    $tpl_year = null;
+    $year = null;
+
+    if (has_post('year')) {
+        $year = intval(get_string('year', 'post'));
+
+        if ($year) {
+            $fd2->store('year', intval(get_string('year', 'post')));
+            $tpl_year = array(
+                'begin' => $year,
+                'end'   => $year+1
+            );
+        }
+    }
+
     // ** Title **
 
     // passing content informations via $_SESSION instead of <input type="hidden"/>
@@ -315,6 +331,7 @@ function display_post_member_proposed_content_preview() {
     $title_exists = ContentQuery::create()
                         ->filterByCursus($fd2->get('cursus'))
                         ->filterByCourse($fd2->get('course'))
+                        ->filterByYear($year)
                         ->findOneByTitle($title);
 
     if ($title_exists) {
@@ -347,21 +364,6 @@ function display_post_member_proposed_content_preview() {
     }
 
     $fd2->store('text', get_string('text', 'post'));
-
-    // ** Year **
-    $tpl_year = null;
-
-    if (has_post('year')) {
-        $year = intval(get_string('year', 'post'));
-
-        if ($year) {
-            $fd2->store('year', intval(get_string('year', 'post')));
-            $tpl_year = array(
-                'begin' => $year,
-                'end'   => $year+1
-            );
-        }
-    }
 
     return tpl_render('contents/proposing_preview.html', array(
         'page' => array(
