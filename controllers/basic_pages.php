@@ -30,6 +30,14 @@ function display_legals_page() {
     ));
 }
 
+function display_apropos_page() {
+    return tpl_render('apropos.html', array(
+        'page' => array(
+            'title' => 'À Propos d\'IP7'
+        )
+    ));
+}
+
 function display_admin_migrate_db_page() {
     return Config::$tpl->render('admin/db_migration.html', tpl_array(
         admin_tpl_default(),
@@ -43,5 +51,6 @@ function display_admin_migrate_db_page() {
         )
     ));
 }
+
 
 ?>

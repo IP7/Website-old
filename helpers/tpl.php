@@ -92,6 +92,10 @@ function global_footer_links() {
             'title' => 'Contact'
         ),
         array(
+            'href'  => Config::$root_uri.'a-propos',
+            'title' => 'À Propos'
+        ),
+        array(
             'href'  => Config::$root_uri . 'bug',
             'title' => 'Signaler un bug'
         )

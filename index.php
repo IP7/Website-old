@@ -114,6 +114,7 @@ dispatch('/sitemap', 'display_sitemap_page');
 dispatch('/legals',   'display_legals_page');
 dispatch('/bug', 'display_bug_report');
 dispatch_post('/bug', 'post_bug_report');
+dispatch('/a-propos', 'display_apropos_page');
 
 ## content
 dispatch('/avatar/:id',       'serve_avatar');

@@ -1,0 +1,64 @@
+{% extends 'main.html' %}
+{% block content %}
+{{ parent() }}
+
+<h2 id="h-asso">L’Association</h2>
+
+<p>IP7 («&nbsp;<b>I</b>nformatique <b>P</b>aris <b>7</b>&nbsp;») est une association de filière en informatique à <a href="//www.univ-paris-diderot.fr" rel="external">Paris Diderot</a>, créée durant l’été 2012 afin d’aider les étudiants en informatique dans leurs études, en fournissant des polycopiés de cours, des corrigés, un annuaire d’anciens, et de manière générale de l’entraide entre étudiants. L’association est encore très jeune, et ses activités évolueront au cours de cette première année d’existence.</p>
+
+<h3 id="h-asso-adhesion">Adhésion</h3>
+
+<p>Il n’est actuellement pas encore possible d’adhérer à l’association, celle-ci n’étant pas encore déclarée en préfecture. Cependant, si vous souhaitez dès maintenant vous investir dans la vie de l’association ou obtenir plus d’informations, n’hésitez pas à nous contacter.</p>
+
+<h2 id="h-site">Site Web</h2>
+
+<p>Le code source complet du site Web est en accès libre sur <a href="//github.com/IP7/Website" hreflang="en" lang="en" rel="external">Github</a>.</p>
+
+<h3 id="h-site-inscription">Inscription</h3>
+
+<p>L’inscription au site Web va de pair avec l’adhésion à l’association. Ainsi, les membres d’IP7 ont automatiquement un compte sur le site. Inversement, il n’est pas possible d’avoir un compte sans être membre.</p>
+
+<h3 id="h-site-bugs" lang="en">Bugs</h3>
+
+<p>Vous avez trouvé un bug sur le site ? Vous pouvez le signaler sur <a href="//github.com/IP7/Website/issues" lang="en" hreflang="en" rel="external">Github</a> si vous y avez un compte, remplir notre <a href="/bug">formulaire de signalement</a>, ou nous <a href="/contact">contacter</a> directement.</p>
+
+<h2 id="h-mailing-lists">Newsletter</h2>
+
+<p>Une newsletter publique est envoyé tous les mois, elle est d’abord destinée aux étudiants et enseignants en informatique à Paris Diderot, mais tout le monde peut s’y abonner. Elle comporte des informations sur l’université, la vie de l’association, les évènements concernant l’informatique à Paris, des actualités générales et des bons plans pour les étudiants. Pour vous y abonner, envoyez un e-mail vide à <span class="email">public-subscribe@infop7.org</span>, et suivez les instructions qui vous seront ensuite automatiquement envoyées. Votre e-mail ne sera jamais utilisé pour autre chose que l’envoi de cette newsletter sans votre consentement.</p>
+
+{#
+
+
+
+
+
+#}
+
+<div class="social">
+    {# -- scripts -- #}
+
+    {# Facebook #}
+    <div id="fb-root"></div>
+    <script>(function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s); js.id = id;
+      js.src = "//connect.facebook.net/fr_FR/all.js#xfbml=1&appId=308724165723";
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));</script>
+
+    {# Twitter #}
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+
+    {# -- buttons/links -- #}
+<ul>
+    {# Facebook #}
+    <li><div class="fb-like" data-href="https://www.facebook.com/infoparis7" data-send="false" data-layout="button_count" data-width="90" data-show-faces="false" data-font="arial"></div></li>
+    {# Twitter #}
+    <li><a href="https://twitter.com/info_p7" class="twitter-follow-button" data-show-count="false" data-lang="fr" data-dnt="true">Suivre @info_p7</a></li>
+    {# IRC #}
+    <li>IRC&nbsp;: <a href="irc://irc.freenode.com/ip7">#ip7</a></li>
+</ul>
+</div>
+
+{% endblock %}
