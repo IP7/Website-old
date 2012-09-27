@@ -145,7 +145,7 @@
                         );
 
             #}
-            <script>var g;[
+            <script>$.ajaxSetup({cache: true});(function(g){[
             {% if site.scripts is not empty %}
                 {% for script in site.scripts %}
                     "{{ script.href|raw }}",
@@ -156,6 +156,6 @@
                     "{{ script.href|raw }}",
                 {% endfor %}
             {% endif %}
-            ].reverse().forEach(function(s){g=$.getScript.bind($,s,g)});if(g)g();delete g</script>
+            ].reverse().forEach(function(s){g=$.getScript.bind($,s,g)});if(g)g()})()</script>
         </body>
 </html>
