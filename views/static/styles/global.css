@@ -258,6 +258,33 @@ form label,
     padding-right:16px;
 }
 
+/* -- Messages -------------------------------------------- */
+
+.msg {
+    border: 2px solid black;
+    -webkit-border-radius: 2px;
+       -moz-border-radius: 2px;
+        -ms-border-radius: 2px;
+         -o-border-radius: 2px;
+            border-radius: 2px;
+    
+    min-width: 200px;
+    margin: auto 40px 20px 40px;
+    padding:5px 10px;
+}
+.msg p {
+    margin:0;
+}
+.msg p::before { margin-right:10px; }
+
+.error_msg p::before   {content:'✗'}
+.notice_msg p::before  {content:'⚠'}
+.success_msg p::before {content:'✓'}
+
+.error_msg   {background-color:#DAA;border-color:#F55}
+.notice_msg  {background-color:#FD9;border-color:#FA0}
+.success_msg {background-color:#ADA;border-color:#4D4}
+
 /* -- Moderation bar(s) ----------------------------------- */
 
 .moderation.bar {
