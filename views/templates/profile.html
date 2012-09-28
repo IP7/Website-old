@@ -4,7 +4,7 @@
 {% endblock %}
 {% block content %}
 
-    {% block profile_title %}<h1>Profil de {{ page.user.displayed_name }}</h1>{% endblock %}
+    {% block profile_title %}<h1>{{ page.user.displayed_name }}</h1>{% endblock %}
 
     <section class="profile" itemtype="http://schema.org/Person" itemscope>
         {% block profile %}

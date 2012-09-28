@@ -84,12 +84,6 @@ abstract class BaseFile extends BaseObject implements Persistent
     protected $aAuthor;
 
     /**
-     * @var        PropelObjectCollection|User[] Collection to store aggregation of User objects.
-     */
-    protected $collUsersRelatedByAvatarId;
-    protected $collUsersRelatedByAvatarIdPartial;
-
-    /**
      * @var        PropelObjectCollection|ContentsFiles[] Collection to store aggregation of ContentsFiles objects.
      */
     protected $collContentsFiless;
@@ -119,12 +113,6 @@ abstract class BaseFile extends BaseObject implements Persistent
      * @var		PropelObjectCollection
      */
     protected $contentsScheduledForDeletion = null;
-
-    /**
-     * An array of objects scheduled for deletion.
-     * @var		PropelObjectCollection
-     */
-    protected $usersRelatedByAvatarIdScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
@@ -561,8 +549,6 @@ abstract class BaseFile extends BaseObject implements Persistent
         if ($deep) {  // also de-associate any related objects?
 
             $this->aAuthor = null;
-            $this->collUsersRelatedByAvatarId = null;
-
             $this->collContentsFiless = null;
 
             $this->collContents = null;
@@ -718,24 +704,6 @@ abstract class BaseFile extends BaseObject implements Persistent
                 foreach ($this->getContents() as $content) {
                     if ($content->isModified()) {
                         $content->save($con);
-                    }
-                }
-            }
-
-            if ($this->usersRelatedByAvatarIdScheduledForDeletion !== null) {
-                if (!$this->usersRelatedByAvatarIdScheduledForDeletion->isEmpty()) {
-                    foreach ($this->usersRelatedByAvatarIdScheduledForDeletion as $userRelatedByAvatarId) {
-                        // need to save related object because we set the relation to null
-                        $userRelatedByAvatarId->save($con);
-                    }
-                    $this->usersRelatedByAvatarIdScheduledForDeletion = null;
-                }
-            }
-
-            if ($this->collUsersRelatedByAvatarId !== null) {
-                foreach ($this->collUsersRelatedByAvatarId as $referrerFK) {
-                    if (!$referrerFK->isDeleted()) {
-                        $affectedRows += $referrerFK->save($con);
                     }
                 }
             }
@@ -953,14 +921,6 @@ abstract class BaseFile extends BaseObject implements Persistent
             }
 
 
-                if ($this->collUsersRelatedByAvatarId !== null) {
-                    foreach ($this->collUsersRelatedByAvatarId as $referrerFK) {
-                        if (!$referrerFK->validate($columns)) {
-                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
-                        }
-                    }
-                }
-
                 if ($this->collContentsFiless !== null) {
                     foreach ($this->collContentsFiless as $referrerFK) {
                         if (!$referrerFK->validate($columns)) {
@@ -1069,9 +1029,6 @@ abstract class BaseFile extends BaseObject implements Persistent
         if ($includeForeignObjects) {
             if (null !== $this->aAuthor) {
                 $result['Author'] = $this->aAuthor->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
-            }
-            if (null !== $this->collUsersRelatedByAvatarId) {
-                $result['UsersRelatedByAvatarId'] = $this->collUsersRelatedByAvatarId->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
             if (null !== $this->collContentsFiless) {
                 $result['ContentsFiless'] = $this->collContentsFiless->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
@@ -1267,12 +1224,6 @@ abstract class BaseFile extends BaseObject implements Persistent
             // store object hash to prevent cycle
             $this->startCopy = true;
 
-            foreach ($this->getUsersRelatedByAvatarId() as $relObj) {
-                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addUserRelatedByAvatarId($relObj->copy($deepCopy));
-                }
-            }
-
             foreach ($this->getContentsFiless() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
                     $copyObj->addContentsFiles($relObj->copy($deepCopy));
@@ -1349,7 +1300,7 @@ abstract class BaseFile extends BaseObject implements Persistent
         // Add binding for other direction of this n:n relationship.
         // If this object has already been added to the User object, it will not be re-added.
         if ($v !== null) {
-            $v->addFileRelatedByAuthorId($this);
+            $v->addFile($this);
         }
 
 
@@ -1373,7 +1324,7 @@ abstract class BaseFile extends BaseObject implements Persistent
                 to this object.  This level of coupling may, however, be
                 undesirable since it could result in an only partially populated collection
                 in the referenced object.
-                $this->aAuthor->addFilesRelatedByAuthorId($this);
+                $this->aAuthor->addFiles($this);
              */
         }
 
@@ -1391,218 +1342,8 @@ abstract class BaseFile extends BaseObject implements Persistent
      */
     public function initRelation($relationName)
     {
-        if ('UserRelatedByAvatarId' == $relationName) {
-            $this->initUsersRelatedByAvatarId();
-        }
         if ('ContentsFiles' == $relationName) {
             $this->initContentsFiless();
-        }
-    }
-
-    /**
-     * Clears out the collUsersRelatedByAvatarId collection
-     *
-     * This does not modify the database; however, it will remove any associated objects, causing
-     * them to be refetched by subsequent calls to accessor method.
-     *
-     * @return void
-     * @see        addUsersRelatedByAvatarId()
-     */
-    public function clearUsersRelatedByAvatarId()
-    {
-        $this->collUsersRelatedByAvatarId = null; // important to set this to null since that means it is uninitialized
-        $this->collUsersRelatedByAvatarIdPartial = null;
-    }
-
-    /**
-     * reset is the collUsersRelatedByAvatarId collection loaded partially
-     *
-     * @return void
-     */
-    public function resetPartialUsersRelatedByAvatarId($v = true)
-    {
-        $this->collUsersRelatedByAvatarIdPartial = $v;
-    }
-
-    /**
-     * Initializes the collUsersRelatedByAvatarId collection.
-     *
-     * By default this just sets the collUsersRelatedByAvatarId collection to an empty array (like clearcollUsersRelatedByAvatarId());
-     * however, you may wish to override this method in your stub class to provide setting appropriate
-     * to your application -- for example, setting the initial array to the values stored in database.
-     *
-     * @param boolean $overrideExisting If set to true, the method call initializes
-     *                                        the collection even if it is not empty
-     *
-     * @return void
-     */
-    public function initUsersRelatedByAvatarId($overrideExisting = true)
-    {
-        if (null !== $this->collUsersRelatedByAvatarId && !$overrideExisting) {
-            return;
-        }
-        $this->collUsersRelatedByAvatarId = new PropelObjectCollection();
-        $this->collUsersRelatedByAvatarId->setModel('User');
-    }
-
-    /**
-     * Gets an array of User objects which contain a foreign key that references this object.
-     *
-     * If the $criteria is not null, it is used to always fetch the results from the database.
-     * Otherwise the results are fetched from the database the first time, then cached.
-     * Next time the same method is called without $criteria, the cached collection is returned.
-     * If this File is new, it will return
-     * an empty collection or the current collection; the criteria is ignored on a new object.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @return PropelObjectCollection|User[] List of User objects
-     * @throws PropelException
-     */
-    public function getUsersRelatedByAvatarId($criteria = null, PropelPDO $con = null)
-    {
-        $partial = $this->collUsersRelatedByAvatarIdPartial && !$this->isNew();
-        if (null === $this->collUsersRelatedByAvatarId || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collUsersRelatedByAvatarId) {
-                // return empty collection
-                $this->initUsersRelatedByAvatarId();
-            } else {
-                $collUsersRelatedByAvatarId = UserQuery::create(null, $criteria)
-                    ->filterByAvatar($this)
-                    ->find($con);
-                if (null !== $criteria) {
-                    if (false !== $this->collUsersRelatedByAvatarIdPartial && count($collUsersRelatedByAvatarId)) {
-                      $this->initUsersRelatedByAvatarId(false);
-
-                      foreach($collUsersRelatedByAvatarId as $obj) {
-                        if (false == $this->collUsersRelatedByAvatarId->contains($obj)) {
-                          $this->collUsersRelatedByAvatarId->append($obj);
-                        }
-                      }
-
-                      $this->collUsersRelatedByAvatarIdPartial = true;
-                    }
-
-                    return $collUsersRelatedByAvatarId;
-                }
-
-                if($partial && $this->collUsersRelatedByAvatarId) {
-                    foreach($this->collUsersRelatedByAvatarId as $obj) {
-                        if($obj->isNew()) {
-                            $collUsersRelatedByAvatarId[] = $obj;
-                        }
-                    }
-                }
-
-                $this->collUsersRelatedByAvatarId = $collUsersRelatedByAvatarId;
-                $this->collUsersRelatedByAvatarIdPartial = false;
-            }
-        }
-
-        return $this->collUsersRelatedByAvatarId;
-    }
-
-    /**
-     * Sets a collection of UserRelatedByAvatarId objects related by a one-to-many relationship
-     * to the current object.
-     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
-     * and new objects from the given Propel collection.
-     *
-     * @param PropelCollection $usersRelatedByAvatarId A Propel collection.
-     * @param PropelPDO $con Optional connection object
-     */
-    public function setUsersRelatedByAvatarId(PropelCollection $usersRelatedByAvatarId, PropelPDO $con = null)
-    {
-        $this->usersRelatedByAvatarIdScheduledForDeletion = $this->getUsersRelatedByAvatarId(new Criteria(), $con)->diff($usersRelatedByAvatarId);
-
-        foreach ($this->usersRelatedByAvatarIdScheduledForDeletion as $userRelatedByAvatarIdRemoved) {
-            $userRelatedByAvatarIdRemoved->setAvatar(null);
-        }
-
-        $this->collUsersRelatedByAvatarId = null;
-        foreach ($usersRelatedByAvatarId as $userRelatedByAvatarId) {
-            $this->addUserRelatedByAvatarId($userRelatedByAvatarId);
-        }
-
-        $this->collUsersRelatedByAvatarId = $usersRelatedByAvatarId;
-        $this->collUsersRelatedByAvatarIdPartial = false;
-    }
-
-    /**
-     * Returns the number of related User objects.
-     *
-     * @param Criteria $criteria
-     * @param boolean $distinct
-     * @param PropelPDO $con
-     * @return int             Count of related User objects.
-     * @throws PropelException
-     */
-    public function countUsersRelatedByAvatarId(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
-    {
-        $partial = $this->collUsersRelatedByAvatarIdPartial && !$this->isNew();
-        if (null === $this->collUsersRelatedByAvatarId || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collUsersRelatedByAvatarId) {
-                return 0;
-            } else {
-                if($partial && !$criteria) {
-                    return count($this->getUsersRelatedByAvatarId());
-                }
-                $query = UserQuery::create(null, $criteria);
-                if ($distinct) {
-                    $query->distinct();
-                }
-
-                return $query
-                    ->filterByAvatar($this)
-                    ->count($con);
-            }
-        } else {
-            return count($this->collUsersRelatedByAvatarId);
-        }
-    }
-
-    /**
-     * Method called to associate a User object to this object
-     * through the User foreign key attribute.
-     *
-     * @param    User $l User
-     * @return File The current object (for fluent API support)
-     */
-    public function addUserRelatedByAvatarId(User $l)
-    {
-        if ($this->collUsersRelatedByAvatarId === null) {
-            $this->initUsersRelatedByAvatarId();
-            $this->collUsersRelatedByAvatarIdPartial = true;
-        }
-        if (!$this->collUsersRelatedByAvatarId->contains($l)) { // only add it if the **same** object is not already associated
-            $this->doAddUserRelatedByAvatarId($l);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param	UserRelatedByAvatarId $userRelatedByAvatarId The userRelatedByAvatarId object to add.
-     */
-    protected function doAddUserRelatedByAvatarId($userRelatedByAvatarId)
-    {
-        $this->collUsersRelatedByAvatarId[]= $userRelatedByAvatarId;
-        $userRelatedByAvatarId->setAvatar($this);
-    }
-
-    /**
-     * @param	UserRelatedByAvatarId $userRelatedByAvatarId The userRelatedByAvatarId object to remove.
-     */
-    public function removeUserRelatedByAvatarId($userRelatedByAvatarId)
-    {
-        if ($this->getUsersRelatedByAvatarId()->contains($userRelatedByAvatarId)) {
-            $this->collUsersRelatedByAvatarId->remove($this->collUsersRelatedByAvatarId->search($userRelatedByAvatarId));
-            if (null === $this->usersRelatedByAvatarIdScheduledForDeletion) {
-                $this->usersRelatedByAvatarIdScheduledForDeletion = clone $this->collUsersRelatedByAvatarId;
-                $this->usersRelatedByAvatarIdScheduledForDeletion->clear();
-            }
-            $this->usersRelatedByAvatarIdScheduledForDeletion[]= $userRelatedByAvatarId;
-            $userRelatedByAvatarId->setAvatar(null);
         }
     }
 
@@ -2040,11 +1781,6 @@ abstract class BaseFile extends BaseObject implements Persistent
     public function clearAllReferences($deep = false)
     {
         if ($deep) {
-            if ($this->collUsersRelatedByAvatarId) {
-                foreach ($this->collUsersRelatedByAvatarId as $o) {
-                    $o->clearAllReferences($deep);
-                }
-            }
             if ($this->collContentsFiless) {
                 foreach ($this->collContentsFiless as $o) {
                     $o->clearAllReferences($deep);
@@ -2057,10 +1793,6 @@ abstract class BaseFile extends BaseObject implements Persistent
             }
         } // if ($deep)
 
-        if ($this->collUsersRelatedByAvatarId instanceof PropelCollection) {
-            $this->collUsersRelatedByAvatarId->clearIterator();
-        }
-        $this->collUsersRelatedByAvatarId = null;
         if ($this->collContentsFiless instanceof PropelCollection) {
             $this->collContentsFiless->clearIterator();
         }

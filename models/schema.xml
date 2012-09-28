@@ -87,9 +87,6 @@
         <!-- si c'est un ancien étudiant -->
         <column name="is_an_alumni"          type="BOOLEAN" defaultExpr="0" />
 
-        <!-- avatar (= id de fichier) -->
-        <column name="avatar_id"             type="INTEGER" />
-
         <!-- description -->
         <column name="description"           type="LONGVARCHAR" size="512" lazyLoad="true" />
 
@@ -98,10 +95,6 @@
 
 
         <!-- == index & clefs étrangères == -->
-
-        <foreign-key foreignTable="files" onDelete="SETNULL" onUpdate="CASCADE" phpName="Avatar">
-            <reference local="avatar_id" foreign="id" />
-        </foreign-key>
 
         <validator column="username">
             <rule name="minLength" value="3" message="Le pseudo doit faire au moins ${value} caractères." />

@@ -33,7 +33,6 @@
  * @method UserQuery orderByIsATeacher($order = Criteria::ASC) Order by the is_a_teacher column
  * @method UserQuery orderByIsAStudent($order = Criteria::ASC) Order by the is_a_student column
  * @method UserQuery orderByIsAnAlumni($order = Criteria::ASC) Order by the is_an_alumni column
- * @method UserQuery orderByAvatarId($order = Criteria::ASC) Order by the avatar_id column
  * @method UserQuery orderByDescription($order = Criteria::ASC) Order by the description column
  * @method UserQuery orderByRemarks($order = Criteria::ASC) Order by the remarks column
  *
@@ -64,17 +63,12 @@
  * @method UserQuery groupByIsATeacher() Group by the is_a_teacher column
  * @method UserQuery groupByIsAStudent() Group by the is_a_student column
  * @method UserQuery groupByIsAnAlumni() Group by the is_an_alumni column
- * @method UserQuery groupByAvatarId() Group by the avatar_id column
  * @method UserQuery groupByDescription() Group by the description column
  * @method UserQuery groupByRemarks() Group by the remarks column
  *
  * @method UserQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method UserQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
  * @method UserQuery innerJoin($relation) Adds a INNER JOIN clause to the query
- *
- * @method UserQuery leftJoinAvatar($relationAlias = null) Adds a LEFT JOIN clause to the query using the Avatar relation
- * @method UserQuery rightJoinAvatar($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Avatar relation
- * @method UserQuery innerJoinAvatar($relationAlias = null) Adds a INNER JOIN clause to the query using the Avatar relation
  *
  * @method UserQuery leftJoinCursusResponsability($relationAlias = null) Adds a LEFT JOIN clause to the query using the CursusResponsability relation
  * @method UserQuery rightJoinCursusResponsability($relationAlias = null) Adds a RIGHT JOIN clause to the query using the CursusResponsability relation
@@ -88,9 +82,9 @@
  * @method UserQuery rightJoinUsersPaths($relationAlias = null) Adds a RIGHT JOIN clause to the query using the UsersPaths relation
  * @method UserQuery innerJoinUsersPaths($relationAlias = null) Adds a INNER JOIN clause to the query using the UsersPaths relation
  *
- * @method UserQuery leftJoinFileRelatedByAuthorId($relationAlias = null) Adds a LEFT JOIN clause to the query using the FileRelatedByAuthorId relation
- * @method UserQuery rightJoinFileRelatedByAuthorId($relationAlias = null) Adds a RIGHT JOIN clause to the query using the FileRelatedByAuthorId relation
- * @method UserQuery innerJoinFileRelatedByAuthorId($relationAlias = null) Adds a INNER JOIN clause to the query using the FileRelatedByAuthorId relation
+ * @method UserQuery leftJoinFile($relationAlias = null) Adds a LEFT JOIN clause to the query using the File relation
+ * @method UserQuery rightJoinFile($relationAlias = null) Adds a RIGHT JOIN clause to the query using the File relation
+ * @method UserQuery innerJoinFile($relationAlias = null) Adds a INNER JOIN clause to the query using the File relation
  *
  * @method UserQuery leftJoinNewslettersSubscribers($relationAlias = null) Adds a LEFT JOIN clause to the query using the NewslettersSubscribers relation
  * @method UserQuery rightJoinNewslettersSubscribers($relationAlias = null) Adds a RIGHT JOIN clause to the query using the NewslettersSubscribers relation
@@ -170,7 +164,6 @@
  * @method User findOneByIsATeacher(boolean $is_a_teacher) Return the first User filtered by the is_a_teacher column
  * @method User findOneByIsAStudent(boolean $is_a_student) Return the first User filtered by the is_a_student column
  * @method User findOneByIsAnAlumni(boolean $is_an_alumni) Return the first User filtered by the is_an_alumni column
- * @method User findOneByAvatarId(int $avatar_id) Return the first User filtered by the avatar_id column
  * @method User findOneByDescription(string $description) Return the first User filtered by the description column
  * @method User findOneByRemarks(string $remarks) Return the first User filtered by the remarks column
  *
@@ -201,7 +194,6 @@
  * @method array findByIsATeacher(boolean $is_a_teacher) Return User objects filtered by the is_a_teacher column
  * @method array findByIsAStudent(boolean $is_a_student) Return User objects filtered by the is_a_student column
  * @method array findByIsAnAlumni(boolean $is_an_alumni) Return User objects filtered by the is_an_alumni column
- * @method array findByAvatarId(int $avatar_id) Return User objects filtered by the avatar_id column
  * @method array findByDescription(string $description) Return User objects filtered by the description column
  * @method array findByRemarks(string $remarks) Return User objects filtered by the remarks column
  *
@@ -293,7 +285,7 @@ abstract class BaseUserQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `ID`, `USERNAME`, `PASSWORD_HASH`, `TYPE`, `FIRSTNAME`, `LASTNAME`, `GENDER`, `EMAIL`, `PHONE`, `WEBSITE`, `BIRTH_DATE`, `FIRST_ENTRY`, `LAST_ENTRY`, `EXPIRATION_DATE`, `LAST_VISIT`, `VISITS_NB`, `CONFIG_SHOW_EMAIL`, `CONFIG_SHOW_PHONE`, `CONFIG_SHOW_REAL_NAME`, `CONFIG_SHOW_BIRTHDATE`, `CONFIG_SHOW_AGE`, `CONFIG_INDEX_PROFILE`, `CONFIG_PRIVATE_PROFILE`, `DEACTIVATED`, `IS_A_TEACHER`, `IS_A_STUDENT`, `IS_AN_ALUMNI`, `AVATAR_ID` FROM `users` WHERE `ID` = :p0';
+        $sql = 'SELECT `ID`, `USERNAME`, `PASSWORD_HASH`, `TYPE`, `FIRSTNAME`, `LASTNAME`, `GENDER`, `EMAIL`, `PHONE`, `WEBSITE`, `BIRTH_DATE`, `FIRST_ENTRY`, `LAST_ENTRY`, `EXPIRATION_DATE`, `LAST_VISIT`, `VISITS_NB`, `CONFIG_SHOW_EMAIL`, `CONFIG_SHOW_PHONE`, `CONFIG_SHOW_REAL_NAME`, `CONFIG_SHOW_BIRTHDATE`, `CONFIG_SHOW_AGE`, `CONFIG_INDEX_PROFILE`, `CONFIG_PRIVATE_PROFILE`, `DEACTIVATED`, `IS_A_TEACHER`, `IS_A_STUDENT`, `IS_AN_ALUMNI` FROM `users` WHERE `ID` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -1241,49 +1233,6 @@ abstract class BaseUserQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the avatar_id column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByAvatarId(1234); // WHERE avatar_id = 1234
-     * $query->filterByAvatarId(array(12, 34)); // WHERE avatar_id IN (12, 34)
-     * $query->filterByAvatarId(array('min' => 12)); // WHERE avatar_id > 12
-     * </code>
-     *
-     * @see       filterByAvatar()
-     *
-     * @param     mixed $avatarId The value to use as filter.
-     *              Use scalar values for equality.
-     *              Use array values for in_array() equivalent.
-     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return UserQuery The current query, for fluid interface
-     */
-    public function filterByAvatarId($avatarId = null, $comparison = null)
-    {
-        if (is_array($avatarId)) {
-            $useMinMax = false;
-            if (isset($avatarId['min'])) {
-                $this->addUsingAlias(UserPeer::AVATAR_ID, $avatarId['min'], Criteria::GREATER_EQUAL);
-                $useMinMax = true;
-            }
-            if (isset($avatarId['max'])) {
-                $this->addUsingAlias(UserPeer::AVATAR_ID, $avatarId['max'], Criteria::LESS_EQUAL);
-                $useMinMax = true;
-            }
-            if ($useMinMax) {
-                return $this;
-            }
-            if (null === $comparison) {
-                $comparison = Criteria::IN;
-            }
-        }
-
-        return $this->addUsingAlias(UserPeer::AVATAR_ID, $avatarId, $comparison);
-    }
-
-    /**
      * Filter the query on the description column
      *
      * Example usage:
@@ -1339,82 +1288,6 @@ abstract class BaseUserQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(UserPeer::REMARKS, $remarks, $comparison);
-    }
-
-    /**
-     * Filter the query by a related File object
-     *
-     * @param   File|PropelObjectCollection $file The related object(s) to use as filter
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return   UserQuery The current query, for fluid interface
-     * @throws   PropelException - if the provided filter is invalid.
-     */
-    public function filterByAvatar($file, $comparison = null)
-    {
-        if ($file instanceof File) {
-            return $this
-                ->addUsingAlias(UserPeer::AVATAR_ID, $file->getId(), $comparison);
-        } elseif ($file instanceof PropelObjectCollection) {
-            if (null === $comparison) {
-                $comparison = Criteria::IN;
-            }
-
-            return $this
-                ->addUsingAlias(UserPeer::AVATAR_ID, $file->toKeyValue('PrimaryKey', 'Id'), $comparison);
-        } else {
-            throw new PropelException('filterByAvatar() only accepts arguments of type File or PropelCollection');
-        }
-    }
-
-    /**
-     * Adds a JOIN clause to the query using the Avatar relation
-     *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return UserQuery The current query, for fluid interface
-     */
-    public function joinAvatar($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
-    {
-        $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('Avatar');
-
-        // create a ModelJoin object for this join
-        $join = new ModelJoin();
-        $join->setJoinType($joinType);
-        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
-        if ($previousJoin = $this->getPreviousJoin()) {
-            $join->setPreviousJoin($previousJoin);
-        }
-
-        // add the ModelJoin to the current object
-        if ($relationAlias) {
-            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
-            $this->addJoinObject($join, $relationAlias);
-        } else {
-            $this->addJoinObject($join, 'Avatar');
-        }
-
-        return $this;
-    }
-
-    /**
-     * Use the Avatar relation File object
-     *
-     * @see       useQuery()
-     *
-     * @param     string $relationAlias optional alias for the relation,
-     *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return   FileQuery A secondary query class using the current class as primary query
-     */
-    public function useAvatarQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
-    {
-        return $this
-            ->joinAvatar($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'Avatar', 'FileQuery');
     }
 
     /**
@@ -1648,33 +1521,33 @@ abstract class BaseUserQuery extends ModelCriteria
      * @return   UserQuery The current query, for fluid interface
      * @throws   PropelException - if the provided filter is invalid.
      */
-    public function filterByFileRelatedByAuthorId($file, $comparison = null)
+    public function filterByFile($file, $comparison = null)
     {
         if ($file instanceof File) {
             return $this
                 ->addUsingAlias(UserPeer::ID, $file->getAuthorId(), $comparison);
         } elseif ($file instanceof PropelObjectCollection) {
             return $this
-                ->useFileRelatedByAuthorIdQuery()
+                ->useFileQuery()
                 ->filterByPrimaryKeys($file->getPrimaryKeys())
                 ->endUse();
         } else {
-            throw new PropelException('filterByFileRelatedByAuthorId() only accepts arguments of type File or PropelCollection');
+            throw new PropelException('filterByFile() only accepts arguments of type File or PropelCollection');
         }
     }
 
     /**
-     * Adds a JOIN clause to the query using the FileRelatedByAuthorId relation
+     * Adds a JOIN clause to the query using the File relation
      *
      * @param     string $relationAlias optional alias for the relation
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
      * @return UserQuery The current query, for fluid interface
      */
-    public function joinFileRelatedByAuthorId($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    public function joinFile($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('FileRelatedByAuthorId');
+        $relationMap = $tableMap->getRelation('File');
 
         // create a ModelJoin object for this join
         $join = new ModelJoin();
@@ -1689,14 +1562,14 @@ abstract class BaseUserQuery extends ModelCriteria
             $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
             $this->addJoinObject($join, $relationAlias);
         } else {
-            $this->addJoinObject($join, 'FileRelatedByAuthorId');
+            $this->addJoinObject($join, 'File');
         }
 
         return $this;
     }
 
     /**
-     * Use the FileRelatedByAuthorId relation File object
+     * Use the File relation File object
      *
      * @see       useQuery()
      *
@@ -1706,11 +1579,11 @@ abstract class BaseUserQuery extends ModelCriteria
      *
      * @return   FileQuery A secondary query class using the current class as primary query
      */
-    public function useFileRelatedByAuthorIdQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    public function useFileQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         return $this
-            ->joinFileRelatedByAuthorId($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'FileRelatedByAuthorId', 'FileQuery');
+            ->joinFile($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'File', 'FileQuery');
     }
 
     /**

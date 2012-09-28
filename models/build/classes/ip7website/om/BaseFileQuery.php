@@ -32,10 +32,6 @@
  * @method FileQuery rightJoinAuthor($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Author relation
  * @method FileQuery innerJoinAuthor($relationAlias = null) Adds a INNER JOIN clause to the query using the Author relation
  *
- * @method FileQuery leftJoinUserRelatedByAvatarId($relationAlias = null) Adds a LEFT JOIN clause to the query using the UserRelatedByAvatarId relation
- * @method FileQuery rightJoinUserRelatedByAvatarId($relationAlias = null) Adds a RIGHT JOIN clause to the query using the UserRelatedByAvatarId relation
- * @method FileQuery innerJoinUserRelatedByAvatarId($relationAlias = null) Adds a INNER JOIN clause to the query using the UserRelatedByAvatarId relation
- *
  * @method FileQuery leftJoinContentsFiles($relationAlias = null) Adds a LEFT JOIN clause to the query using the ContentsFiles relation
  * @method FileQuery rightJoinContentsFiles($relationAlias = null) Adds a RIGHT JOIN clause to the query using the ContentsFiles relation
  * @method FileQuery innerJoinContentsFiles($relationAlias = null) Adds a INNER JOIN clause to the query using the ContentsFiles relation
@@ -587,80 +583,6 @@ abstract class BaseFileQuery extends ModelCriteria
         return $this
             ->joinAuthor($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'Author', 'UserQuery');
-    }
-
-    /**
-     * Filter the query by a related User object
-     *
-     * @param   User|PropelObjectCollection $user  the related object to use as filter
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return   FileQuery The current query, for fluid interface
-     * @throws   PropelException - if the provided filter is invalid.
-     */
-    public function filterByUserRelatedByAvatarId($user, $comparison = null)
-    {
-        if ($user instanceof User) {
-            return $this
-                ->addUsingAlias(FilePeer::ID, $user->getAvatarId(), $comparison);
-        } elseif ($user instanceof PropelObjectCollection) {
-            return $this
-                ->useUserRelatedByAvatarIdQuery()
-                ->filterByPrimaryKeys($user->getPrimaryKeys())
-                ->endUse();
-        } else {
-            throw new PropelException('filterByUserRelatedByAvatarId() only accepts arguments of type User or PropelCollection');
-        }
-    }
-
-    /**
-     * Adds a JOIN clause to the query using the UserRelatedByAvatarId relation
-     *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return FileQuery The current query, for fluid interface
-     */
-    public function joinUserRelatedByAvatarId($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
-    {
-        $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('UserRelatedByAvatarId');
-
-        // create a ModelJoin object for this join
-        $join = new ModelJoin();
-        $join->setJoinType($joinType);
-        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
-        if ($previousJoin = $this->getPreviousJoin()) {
-            $join->setPreviousJoin($previousJoin);
-        }
-
-        // add the ModelJoin to the current object
-        if ($relationAlias) {
-            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
-            $this->addJoinObject($join, $relationAlias);
-        } else {
-            $this->addJoinObject($join, 'UserRelatedByAvatarId');
-        }
-
-        return $this;
-    }
-
-    /**
-     * Use the UserRelatedByAvatarId relation User object
-     *
-     * @see       useQuery()
-     *
-     * @param     string $relationAlias optional alias for the relation,
-     *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return   UserQuery A secondary query class using the current class as primary query
-     */
-    public function useUserRelatedByAvatarIdQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
-    {
-        return $this
-            ->joinUserRelatedByAvatarId($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'UserRelatedByAvatarId', 'UserQuery');
     }
 
     /**

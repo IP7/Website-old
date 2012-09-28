@@ -38,16 +38,9 @@ CREATE TABLE `users`
     `is_a_teacher` TINYINT(1) DEFAULT 0,
     `is_a_student` TINYINT(1) DEFAULT 0,
     `is_an_alumni` TINYINT(1) DEFAULT 0,
-    `avatar_id` INTEGER,
     `description` TEXT(512),
     `remarks` VARCHAR(255),
-    PRIMARY KEY (`id`),
-    INDEX `users_FI_1` (`avatar_id`),
-    CONSTRAINT `users_FK_1`
-        FOREIGN KEY (`avatar_id`)
-        REFERENCES `files` (`id`)
-        ON UPDATE CASCADE
-        ON DELETE SET NULL
+    PRIMARY KEY (`id`)
 ) ENGINE=MyISAM;
 
 -- ---------------------------------------------------------------------

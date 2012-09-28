@@ -43,7 +43,7 @@ function display_profile_page($username=NULL, $is_my_profile=false) {
     if (!$user->isActivated()) {
 
         if (!is_connected() || !user()->isAdmin()) {
-            $title = 'Profil de '.$tpl_user['displayed_name'];
+            $title = $tpl_user['displayed_name'];
 
             return tpl_render('deactivated_profile.html', array(
                 'page' => array(
@@ -117,7 +117,7 @@ function display_profile_page($username=NULL, $is_my_profile=false) {
             'message' => $msg_str,
             'message_type' => $msg_type,
 
-            'title' => $me ? 'Mon profil' : 'Profil de '.$tpl_user['displayed_name'],
+            'title' => $me ? 'Mon profil' : $tpl_user['displayed_name'],
 
             'user' => $tpl_user,
 

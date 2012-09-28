@@ -24,13 +24,13 @@ abstract class BaseUserPeer
     const TM_CLASS = 'UserTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 30;
+    const NUM_COLUMNS = 29;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 2;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 28;
+    const NUM_HYDRATE_COLUMNS = 27;
 
     /** the column name for the ID field */
     const ID = 'users.ID';
@@ -113,9 +113,6 @@ abstract class BaseUserPeer
     /** the column name for the IS_AN_ALUMNI field */
     const IS_AN_ALUMNI = 'users.IS_AN_ALUMNI';
 
-    /** the column name for the AVATAR_ID field */
-    const AVATAR_ID = 'users.AVATAR_ID';
-
     /** the column name for the DESCRIPTION field */
     const DESCRIPTION = 'users.DESCRIPTION';
 
@@ -146,12 +143,12 @@ abstract class BaseUserPeer
      * e.g. UserPeer::$fieldNames[UserPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'Username', 'PasswordHash', 'Type', 'Firstname', 'Lastname', 'Gender', 'Email', 'Phone', 'Website', 'BirthDate', 'FirstEntry', 'LastEntry', 'ExpirationDate', 'LastVisit', 'VisitsNb', 'ConfigShowEmail', 'ConfigShowPhone', 'ConfigShowRealName', 'ConfigShowBirthdate', 'ConfigShowAge', 'ConfigIndexProfile', 'ConfigPrivateProfile', 'Deactivated', 'IsATeacher', 'IsAStudent', 'IsAnAlumni', 'AvatarId', 'Description', 'Remarks', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'username', 'passwordHash', 'type', 'firstname', 'lastname', 'gender', 'email', 'phone', 'website', 'birthDate', 'firstEntry', 'lastEntry', 'expirationDate', 'lastVisit', 'visitsNb', 'configShowEmail', 'configShowPhone', 'configShowRealName', 'configShowBirthdate', 'configShowAge', 'configIndexProfile', 'configPrivateProfile', 'deactivated', 'isATeacher', 'isAStudent', 'isAnAlumni', 'avatarId', 'description', 'remarks', ),
-        BasePeer::TYPE_COLNAME => array (UserPeer::ID, UserPeer::USERNAME, UserPeer::PASSWORD_HASH, UserPeer::TYPE, UserPeer::FIRSTNAME, UserPeer::LASTNAME, UserPeer::GENDER, UserPeer::EMAIL, UserPeer::PHONE, UserPeer::WEBSITE, UserPeer::BIRTH_DATE, UserPeer::FIRST_ENTRY, UserPeer::LAST_ENTRY, UserPeer::EXPIRATION_DATE, UserPeer::LAST_VISIT, UserPeer::VISITS_NB, UserPeer::CONFIG_SHOW_EMAIL, UserPeer::CONFIG_SHOW_PHONE, UserPeer::CONFIG_SHOW_REAL_NAME, UserPeer::CONFIG_SHOW_BIRTHDATE, UserPeer::CONFIG_SHOW_AGE, UserPeer::CONFIG_INDEX_PROFILE, UserPeer::CONFIG_PRIVATE_PROFILE, UserPeer::DEACTIVATED, UserPeer::IS_A_TEACHER, UserPeer::IS_A_STUDENT, UserPeer::IS_AN_ALUMNI, UserPeer::AVATAR_ID, UserPeer::DESCRIPTION, UserPeer::REMARKS, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'USERNAME', 'PASSWORD_HASH', 'TYPE', 'FIRSTNAME', 'LASTNAME', 'GENDER', 'EMAIL', 'PHONE', 'WEBSITE', 'BIRTH_DATE', 'FIRST_ENTRY', 'LAST_ENTRY', 'EXPIRATION_DATE', 'LAST_VISIT', 'VISITS_NB', 'CONFIG_SHOW_EMAIL', 'CONFIG_SHOW_PHONE', 'CONFIG_SHOW_REAL_NAME', 'CONFIG_SHOW_BIRTHDATE', 'CONFIG_SHOW_AGE', 'CONFIG_INDEX_PROFILE', 'CONFIG_PRIVATE_PROFILE', 'DEACTIVATED', 'IS_A_TEACHER', 'IS_A_STUDENT', 'IS_AN_ALUMNI', 'AVATAR_ID', 'DESCRIPTION', 'REMARKS', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'username', 'password_hash', 'type', 'firstname', 'lastname', 'gender', 'email', 'phone', 'website', 'birth_date', 'first_entry', 'last_entry', 'expiration_date', 'last_visit', 'visits_nb', 'config_show_email', 'config_show_phone', 'config_show_real_name', 'config_show_birthdate', 'config_show_age', 'config_index_profile', 'config_private_profile', 'deactivated', 'is_a_teacher', 'is_a_student', 'is_an_alumni', 'avatar_id', 'description', 'remarks', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'Username', 'PasswordHash', 'Type', 'Firstname', 'Lastname', 'Gender', 'Email', 'Phone', 'Website', 'BirthDate', 'FirstEntry', 'LastEntry', 'ExpirationDate', 'LastVisit', 'VisitsNb', 'ConfigShowEmail', 'ConfigShowPhone', 'ConfigShowRealName', 'ConfigShowBirthdate', 'ConfigShowAge', 'ConfigIndexProfile', 'ConfigPrivateProfile', 'Deactivated', 'IsATeacher', 'IsAStudent', 'IsAnAlumni', 'Description', 'Remarks', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'username', 'passwordHash', 'type', 'firstname', 'lastname', 'gender', 'email', 'phone', 'website', 'birthDate', 'firstEntry', 'lastEntry', 'expirationDate', 'lastVisit', 'visitsNb', 'configShowEmail', 'configShowPhone', 'configShowRealName', 'configShowBirthdate', 'configShowAge', 'configIndexProfile', 'configPrivateProfile', 'deactivated', 'isATeacher', 'isAStudent', 'isAnAlumni', 'description', 'remarks', ),
+        BasePeer::TYPE_COLNAME => array (UserPeer::ID, UserPeer::USERNAME, UserPeer::PASSWORD_HASH, UserPeer::TYPE, UserPeer::FIRSTNAME, UserPeer::LASTNAME, UserPeer::GENDER, UserPeer::EMAIL, UserPeer::PHONE, UserPeer::WEBSITE, UserPeer::BIRTH_DATE, UserPeer::FIRST_ENTRY, UserPeer::LAST_ENTRY, UserPeer::EXPIRATION_DATE, UserPeer::LAST_VISIT, UserPeer::VISITS_NB, UserPeer::CONFIG_SHOW_EMAIL, UserPeer::CONFIG_SHOW_PHONE, UserPeer::CONFIG_SHOW_REAL_NAME, UserPeer::CONFIG_SHOW_BIRTHDATE, UserPeer::CONFIG_SHOW_AGE, UserPeer::CONFIG_INDEX_PROFILE, UserPeer::CONFIG_PRIVATE_PROFILE, UserPeer::DEACTIVATED, UserPeer::IS_A_TEACHER, UserPeer::IS_A_STUDENT, UserPeer::IS_AN_ALUMNI, UserPeer::DESCRIPTION, UserPeer::REMARKS, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'USERNAME', 'PASSWORD_HASH', 'TYPE', 'FIRSTNAME', 'LASTNAME', 'GENDER', 'EMAIL', 'PHONE', 'WEBSITE', 'BIRTH_DATE', 'FIRST_ENTRY', 'LAST_ENTRY', 'EXPIRATION_DATE', 'LAST_VISIT', 'VISITS_NB', 'CONFIG_SHOW_EMAIL', 'CONFIG_SHOW_PHONE', 'CONFIG_SHOW_REAL_NAME', 'CONFIG_SHOW_BIRTHDATE', 'CONFIG_SHOW_AGE', 'CONFIG_INDEX_PROFILE', 'CONFIG_PRIVATE_PROFILE', 'DEACTIVATED', 'IS_A_TEACHER', 'IS_A_STUDENT', 'IS_AN_ALUMNI', 'DESCRIPTION', 'REMARKS', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'username', 'password_hash', 'type', 'firstname', 'lastname', 'gender', 'email', 'phone', 'website', 'birth_date', 'first_entry', 'last_entry', 'expiration_date', 'last_visit', 'visits_nb', 'config_show_email', 'config_show_phone', 'config_show_real_name', 'config_show_birthdate', 'config_show_age', 'config_index_profile', 'config_private_profile', 'deactivated', 'is_a_teacher', 'is_a_student', 'is_an_alumni', 'description', 'remarks', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, )
     );
 
     /**
@@ -161,12 +158,12 @@ abstract class BaseUserPeer
      * e.g. UserPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Username' => 1, 'PasswordHash' => 2, 'Type' => 3, 'Firstname' => 4, 'Lastname' => 5, 'Gender' => 6, 'Email' => 7, 'Phone' => 8, 'Website' => 9, 'BirthDate' => 10, 'FirstEntry' => 11, 'LastEntry' => 12, 'ExpirationDate' => 13, 'LastVisit' => 14, 'VisitsNb' => 15, 'ConfigShowEmail' => 16, 'ConfigShowPhone' => 17, 'ConfigShowRealName' => 18, 'ConfigShowBirthdate' => 19, 'ConfigShowAge' => 20, 'ConfigIndexProfile' => 21, 'ConfigPrivateProfile' => 22, 'Deactivated' => 23, 'IsATeacher' => 24, 'IsAStudent' => 25, 'IsAnAlumni' => 26, 'AvatarId' => 27, 'Description' => 28, 'Remarks' => 29, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'username' => 1, 'passwordHash' => 2, 'type' => 3, 'firstname' => 4, 'lastname' => 5, 'gender' => 6, 'email' => 7, 'phone' => 8, 'website' => 9, 'birthDate' => 10, 'firstEntry' => 11, 'lastEntry' => 12, 'expirationDate' => 13, 'lastVisit' => 14, 'visitsNb' => 15, 'configShowEmail' => 16, 'configShowPhone' => 17, 'configShowRealName' => 18, 'configShowBirthdate' => 19, 'configShowAge' => 20, 'configIndexProfile' => 21, 'configPrivateProfile' => 22, 'deactivated' => 23, 'isATeacher' => 24, 'isAStudent' => 25, 'isAnAlumni' => 26, 'avatarId' => 27, 'description' => 28, 'remarks' => 29, ),
-        BasePeer::TYPE_COLNAME => array (UserPeer::ID => 0, UserPeer::USERNAME => 1, UserPeer::PASSWORD_HASH => 2, UserPeer::TYPE => 3, UserPeer::FIRSTNAME => 4, UserPeer::LASTNAME => 5, UserPeer::GENDER => 6, UserPeer::EMAIL => 7, UserPeer::PHONE => 8, UserPeer::WEBSITE => 9, UserPeer::BIRTH_DATE => 10, UserPeer::FIRST_ENTRY => 11, UserPeer::LAST_ENTRY => 12, UserPeer::EXPIRATION_DATE => 13, UserPeer::LAST_VISIT => 14, UserPeer::VISITS_NB => 15, UserPeer::CONFIG_SHOW_EMAIL => 16, UserPeer::CONFIG_SHOW_PHONE => 17, UserPeer::CONFIG_SHOW_REAL_NAME => 18, UserPeer::CONFIG_SHOW_BIRTHDATE => 19, UserPeer::CONFIG_SHOW_AGE => 20, UserPeer::CONFIG_INDEX_PROFILE => 21, UserPeer::CONFIG_PRIVATE_PROFILE => 22, UserPeer::DEACTIVATED => 23, UserPeer::IS_A_TEACHER => 24, UserPeer::IS_A_STUDENT => 25, UserPeer::IS_AN_ALUMNI => 26, UserPeer::AVATAR_ID => 27, UserPeer::DESCRIPTION => 28, UserPeer::REMARKS => 29, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'USERNAME' => 1, 'PASSWORD_HASH' => 2, 'TYPE' => 3, 'FIRSTNAME' => 4, 'LASTNAME' => 5, 'GENDER' => 6, 'EMAIL' => 7, 'PHONE' => 8, 'WEBSITE' => 9, 'BIRTH_DATE' => 10, 'FIRST_ENTRY' => 11, 'LAST_ENTRY' => 12, 'EXPIRATION_DATE' => 13, 'LAST_VISIT' => 14, 'VISITS_NB' => 15, 'CONFIG_SHOW_EMAIL' => 16, 'CONFIG_SHOW_PHONE' => 17, 'CONFIG_SHOW_REAL_NAME' => 18, 'CONFIG_SHOW_BIRTHDATE' => 19, 'CONFIG_SHOW_AGE' => 20, 'CONFIG_INDEX_PROFILE' => 21, 'CONFIG_PRIVATE_PROFILE' => 22, 'DEACTIVATED' => 23, 'IS_A_TEACHER' => 24, 'IS_A_STUDENT' => 25, 'IS_AN_ALUMNI' => 26, 'AVATAR_ID' => 27, 'DESCRIPTION' => 28, 'REMARKS' => 29, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'username' => 1, 'password_hash' => 2, 'type' => 3, 'firstname' => 4, 'lastname' => 5, 'gender' => 6, 'email' => 7, 'phone' => 8, 'website' => 9, 'birth_date' => 10, 'first_entry' => 11, 'last_entry' => 12, 'expiration_date' => 13, 'last_visit' => 14, 'visits_nb' => 15, 'config_show_email' => 16, 'config_show_phone' => 17, 'config_show_real_name' => 18, 'config_show_birthdate' => 19, 'config_show_age' => 20, 'config_index_profile' => 21, 'config_private_profile' => 22, 'deactivated' => 23, 'is_a_teacher' => 24, 'is_a_student' => 25, 'is_an_alumni' => 26, 'avatar_id' => 27, 'description' => 28, 'remarks' => 29, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Username' => 1, 'PasswordHash' => 2, 'Type' => 3, 'Firstname' => 4, 'Lastname' => 5, 'Gender' => 6, 'Email' => 7, 'Phone' => 8, 'Website' => 9, 'BirthDate' => 10, 'FirstEntry' => 11, 'LastEntry' => 12, 'ExpirationDate' => 13, 'LastVisit' => 14, 'VisitsNb' => 15, 'ConfigShowEmail' => 16, 'ConfigShowPhone' => 17, 'ConfigShowRealName' => 18, 'ConfigShowBirthdate' => 19, 'ConfigShowAge' => 20, 'ConfigIndexProfile' => 21, 'ConfigPrivateProfile' => 22, 'Deactivated' => 23, 'IsATeacher' => 24, 'IsAStudent' => 25, 'IsAnAlumni' => 26, 'Description' => 27, 'Remarks' => 28, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'username' => 1, 'passwordHash' => 2, 'type' => 3, 'firstname' => 4, 'lastname' => 5, 'gender' => 6, 'email' => 7, 'phone' => 8, 'website' => 9, 'birthDate' => 10, 'firstEntry' => 11, 'lastEntry' => 12, 'expirationDate' => 13, 'lastVisit' => 14, 'visitsNb' => 15, 'configShowEmail' => 16, 'configShowPhone' => 17, 'configShowRealName' => 18, 'configShowBirthdate' => 19, 'configShowAge' => 20, 'configIndexProfile' => 21, 'configPrivateProfile' => 22, 'deactivated' => 23, 'isATeacher' => 24, 'isAStudent' => 25, 'isAnAlumni' => 26, 'description' => 27, 'remarks' => 28, ),
+        BasePeer::TYPE_COLNAME => array (UserPeer::ID => 0, UserPeer::USERNAME => 1, UserPeer::PASSWORD_HASH => 2, UserPeer::TYPE => 3, UserPeer::FIRSTNAME => 4, UserPeer::LASTNAME => 5, UserPeer::GENDER => 6, UserPeer::EMAIL => 7, UserPeer::PHONE => 8, UserPeer::WEBSITE => 9, UserPeer::BIRTH_DATE => 10, UserPeer::FIRST_ENTRY => 11, UserPeer::LAST_ENTRY => 12, UserPeer::EXPIRATION_DATE => 13, UserPeer::LAST_VISIT => 14, UserPeer::VISITS_NB => 15, UserPeer::CONFIG_SHOW_EMAIL => 16, UserPeer::CONFIG_SHOW_PHONE => 17, UserPeer::CONFIG_SHOW_REAL_NAME => 18, UserPeer::CONFIG_SHOW_BIRTHDATE => 19, UserPeer::CONFIG_SHOW_AGE => 20, UserPeer::CONFIG_INDEX_PROFILE => 21, UserPeer::CONFIG_PRIVATE_PROFILE => 22, UserPeer::DEACTIVATED => 23, UserPeer::IS_A_TEACHER => 24, UserPeer::IS_A_STUDENT => 25, UserPeer::IS_AN_ALUMNI => 26, UserPeer::DESCRIPTION => 27, UserPeer::REMARKS => 28, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'USERNAME' => 1, 'PASSWORD_HASH' => 2, 'TYPE' => 3, 'FIRSTNAME' => 4, 'LASTNAME' => 5, 'GENDER' => 6, 'EMAIL' => 7, 'PHONE' => 8, 'WEBSITE' => 9, 'BIRTH_DATE' => 10, 'FIRST_ENTRY' => 11, 'LAST_ENTRY' => 12, 'EXPIRATION_DATE' => 13, 'LAST_VISIT' => 14, 'VISITS_NB' => 15, 'CONFIG_SHOW_EMAIL' => 16, 'CONFIG_SHOW_PHONE' => 17, 'CONFIG_SHOW_REAL_NAME' => 18, 'CONFIG_SHOW_BIRTHDATE' => 19, 'CONFIG_SHOW_AGE' => 20, 'CONFIG_INDEX_PROFILE' => 21, 'CONFIG_PRIVATE_PROFILE' => 22, 'DEACTIVATED' => 23, 'IS_A_TEACHER' => 24, 'IS_A_STUDENT' => 25, 'IS_AN_ALUMNI' => 26, 'DESCRIPTION' => 27, 'REMARKS' => 28, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'username' => 1, 'password_hash' => 2, 'type' => 3, 'firstname' => 4, 'lastname' => 5, 'gender' => 6, 'email' => 7, 'phone' => 8, 'website' => 9, 'birth_date' => 10, 'first_entry' => 11, 'last_entry' => 12, 'expiration_date' => 13, 'last_visit' => 14, 'visits_nb' => 15, 'config_show_email' => 16, 'config_show_phone' => 17, 'config_show_real_name' => 18, 'config_show_birthdate' => 19, 'config_show_age' => 20, 'config_index_profile' => 21, 'config_private_profile' => 22, 'deactivated' => 23, 'is_a_teacher' => 24, 'is_a_student' => 25, 'is_an_alumni' => 26, 'description' => 27, 'remarks' => 28, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, )
     );
 
     /** The enumerated values for this table */
@@ -299,7 +296,6 @@ abstract class BaseUserPeer
             $criteria->addSelectColumn(UserPeer::IS_A_TEACHER);
             $criteria->addSelectColumn(UserPeer::IS_A_STUDENT);
             $criteria->addSelectColumn(UserPeer::IS_AN_ALUMNI);
-            $criteria->addSelectColumn(UserPeer::AVATAR_ID);
         } else {
             $criteria->addSelectColumn($alias . '.ID');
             $criteria->addSelectColumn($alias . '.USERNAME');
@@ -328,7 +324,6 @@ abstract class BaseUserPeer
             $criteria->addSelectColumn($alias . '.IS_A_TEACHER');
             $criteria->addSelectColumn($alias . '.IS_A_STUDENT');
             $criteria->addSelectColumn($alias . '.IS_AN_ALUMNI');
-            $criteria->addSelectColumn($alias . '.AVATAR_ID');
         }
     }
 
@@ -670,244 +665,6 @@ abstract class BaseUserPeer
         }
 
         return array($obj, $col);
-    }
-
-
-    /**
-     * Returns the number of rows matching criteria, joining the related Avatar table
-     *
-     * @param      Criteria $criteria
-     * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
-     * @param      PropelPDO $con
-     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-     * @return int Number of matching rows.
-     */
-    public static function doCountJoinAvatar(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        // we're going to modify criteria, so copy it first
-        $criteria = clone $criteria;
-
-        // We need to set the primary table name, since in the case that there are no WHERE columns
-        // it will be impossible for the BasePeer::createSelectSql() method to determine which
-        // tables go into the FROM clause.
-        $criteria->setPrimaryTableName(UserPeer::TABLE_NAME);
-
-        if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
-            $criteria->setDistinct();
-        }
-
-        if (!$criteria->hasSelectClause()) {
-            UserPeer::addSelectColumns($criteria);
-        }
-
-        $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
-
-        // Set the correct dbName
-        $criteria->setDbName(UserPeer::DATABASE_NAME);
-
-        if ($con === null) {
-            $con = Propel::getConnection(UserPeer::DATABASE_NAME, Propel::CONNECTION_READ);
-        }
-
-        $criteria->addJoin(UserPeer::AVATAR_ID, FilePeer::ID, $join_behavior);
-
-        $stmt = BasePeer::doCount($criteria, $con);
-
-        if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $count = (int) $row[0];
-        } else {
-            $count = 0; // no rows returned; we infer that means 0 matches.
-        }
-        $stmt->closeCursor();
-
-        return $count;
-    }
-
-
-    /**
-     * Selects a collection of User objects pre-filled with their File objects.
-     * @param      Criteria  $criteria
-     * @param      PropelPDO $con
-     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-     * @return array           Array of User objects.
-     * @throws PropelException Any exceptions caught during processing will be
-     *		 rethrown wrapped into a PropelException.
-     */
-    public static function doSelectJoinAvatar(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $criteria = clone $criteria;
-
-        // Set the correct dbName if it has not been overridden
-        if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(UserPeer::DATABASE_NAME);
-        }
-
-        UserPeer::addSelectColumns($criteria);
-        $startcol = UserPeer::NUM_HYDRATE_COLUMNS;
-        FilePeer::addSelectColumns($criteria);
-
-        $criteria->addJoin(UserPeer::AVATAR_ID, FilePeer::ID, $join_behavior);
-
-        $stmt = BasePeer::doSelect($criteria, $con);
-        $results = array();
-
-        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $key1 = UserPeer::getPrimaryKeyHashFromRow($row, 0);
-            if (null !== ($obj1 = UserPeer::getInstanceFromPool($key1))) {
-                // We no longer rehydrate the object, since this can cause data loss.
-                // See http://www.propelorm.org/ticket/509
-                // $obj1->hydrate($row, 0, true); // rehydrate
-            } else {
-
-                $cls = UserPeer::getOMClass();
-
-                $obj1 = new $cls();
-                $obj1->hydrate($row);
-                UserPeer::addInstanceToPool($obj1, $key1);
-            } // if $obj1 already loaded
-
-            $key2 = FilePeer::getPrimaryKeyHashFromRow($row, $startcol);
-            if ($key2 !== null) {
-                $obj2 = FilePeer::getInstanceFromPool($key2);
-                if (!$obj2) {
-
-                    $cls = FilePeer::getOMClass();
-
-                    $obj2 = new $cls();
-                    $obj2->hydrate($row, $startcol);
-                    FilePeer::addInstanceToPool($obj2, $key2);
-                } // if obj2 already loaded
-
-                // Add the $obj1 (User) to $obj2 (File)
-                $obj2->addUserRelatedByAvatarId($obj1);
-
-            } // if joined row was not null
-
-            $results[] = $obj1;
-        }
-        $stmt->closeCursor();
-
-        return $results;
-    }
-
-
-    /**
-     * Returns the number of rows matching criteria, joining all related tables
-     *
-     * @param      Criteria $criteria
-     * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
-     * @param      PropelPDO $con
-     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-     * @return int Number of matching rows.
-     */
-    public static function doCountJoinAll(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        // we're going to modify criteria, so copy it first
-        $criteria = clone $criteria;
-
-        // We need to set the primary table name, since in the case that there are no WHERE columns
-        // it will be impossible for the BasePeer::createSelectSql() method to determine which
-        // tables go into the FROM clause.
-        $criteria->setPrimaryTableName(UserPeer::TABLE_NAME);
-
-        if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
-            $criteria->setDistinct();
-        }
-
-        if (!$criteria->hasSelectClause()) {
-            UserPeer::addSelectColumns($criteria);
-        }
-
-        $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
-
-        // Set the correct dbName
-        $criteria->setDbName(UserPeer::DATABASE_NAME);
-
-        if ($con === null) {
-            $con = Propel::getConnection(UserPeer::DATABASE_NAME, Propel::CONNECTION_READ);
-        }
-
-        $criteria->addJoin(UserPeer::AVATAR_ID, FilePeer::ID, $join_behavior);
-
-        $stmt = BasePeer::doCount($criteria, $con);
-
-        if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $count = (int) $row[0];
-        } else {
-            $count = 0; // no rows returned; we infer that means 0 matches.
-        }
-        $stmt->closeCursor();
-
-        return $count;
-    }
-
-    /**
-     * Selects a collection of User objects pre-filled with all related objects.
-     *
-     * @param      Criteria  $criteria
-     * @param      PropelPDO $con
-     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-     * @return array           Array of User objects.
-     * @throws PropelException Any exceptions caught during processing will be
-     *		 rethrown wrapped into a PropelException.
-     */
-    public static function doSelectJoinAll(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $criteria = clone $criteria;
-
-        // Set the correct dbName if it has not been overridden
-        if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(UserPeer::DATABASE_NAME);
-        }
-
-        UserPeer::addSelectColumns($criteria);
-        $startcol2 = UserPeer::NUM_HYDRATE_COLUMNS;
-
-        FilePeer::addSelectColumns($criteria);
-        $startcol3 = $startcol2 + FilePeer::NUM_HYDRATE_COLUMNS;
-
-        $criteria->addJoin(UserPeer::AVATAR_ID, FilePeer::ID, $join_behavior);
-
-        $stmt = BasePeer::doSelect($criteria, $con);
-        $results = array();
-
-        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $key1 = UserPeer::getPrimaryKeyHashFromRow($row, 0);
-            if (null !== ($obj1 = UserPeer::getInstanceFromPool($key1))) {
-                // We no longer rehydrate the object, since this can cause data loss.
-                // See http://www.propelorm.org/ticket/509
-                // $obj1->hydrate($row, 0, true); // rehydrate
-            } else {
-                $cls = UserPeer::getOMClass();
-
-                $obj1 = new $cls();
-                $obj1->hydrate($row);
-                UserPeer::addInstanceToPool($obj1, $key1);
-            } // if obj1 already loaded
-
-            // Add objects for joined File rows
-
-            $key2 = FilePeer::getPrimaryKeyHashFromRow($row, $startcol2);
-            if ($key2 !== null) {
-                $obj2 = FilePeer::getInstanceFromPool($key2);
-                if (!$obj2) {
-
-                    $cls = FilePeer::getOMClass();
-
-                    $obj2 = new $cls();
-                    $obj2->hydrate($row, $startcol2);
-                    FilePeer::addInstanceToPool($obj2, $key2);
-                } // if obj2 loaded
-
-                // Add the $obj1 (User) to the collection in $obj2 (File)
-                $obj2->addUserRelatedByAvatarId($obj1);
-            } // if joined row not null
-
-            $results[] = $obj1;
-        }
-        $stmt->closeCursor();
-
-        return $results;
     }
 
     /**

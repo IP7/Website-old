@@ -206,12 +206,6 @@ abstract class BaseUser extends BaseObject implements Persistent
     protected $is_an_alumni;
 
     /**
-     * The value for the avatar_id field.
-     * @var        int
-     */
-    protected $avatar_id;
-
-    /**
      * The value for the description field.
      * @var        string
      */
@@ -238,11 +232,6 @@ abstract class BaseUser extends BaseObject implements Persistent
     protected $remarks_isLoaded = false;
 
     /**
-     * @var        File
-     */
-    protected $aAvatar;
-
-    /**
      * @var        PropelObjectCollection|Cursus[] Collection to store aggregation of Cursus objects.
      */
     protected $collCursusResponsabilitys;
@@ -263,8 +252,8 @@ abstract class BaseUser extends BaseObject implements Persistent
     /**
      * @var        PropelObjectCollection|File[] Collection to store aggregation of File objects.
      */
-    protected $collFilesRelatedByAuthorId;
-    protected $collFilesRelatedByAuthorIdPartial;
+    protected $collFiles;
+    protected $collFilesPartial;
 
     /**
      * @var        PropelObjectCollection|NewslettersSubscribers[] Collection to store aggregation of NewslettersSubscribers objects.
@@ -396,7 +385,7 @@ abstract class BaseUser extends BaseObject implements Persistent
      * An array of objects scheduled for deletion.
      * @var		PropelObjectCollection
      */
-    protected $filesRelatedByAuthorIdScheduledForDeletion = null;
+    protected $filesScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
@@ -903,16 +892,6 @@ abstract class BaseUser extends BaseObject implements Persistent
     public function getIsAnAlumni()
     {
         return $this->is_an_alumni;
-    }
-
-    /**
-     * Get the [avatar_id] column value.
-     *
-     * @return int
-     */
-    public function getAvatarId()
-    {
-        return $this->avatar_id;
     }
 
     /**
@@ -1666,31 +1645,6 @@ abstract class BaseUser extends BaseObject implements Persistent
     } // setIsAnAlumni()
 
     /**
-     * Set the value of [avatar_id] column.
-     *
-     * @param int $v new value
-     * @return User The current object (for fluent API support)
-     */
-    public function setAvatarId($v)
-    {
-        if ($v !== null) {
-            $v = (int) $v;
-        }
-
-        if ($this->avatar_id !== $v) {
-            $this->avatar_id = $v;
-            $this->modifiedColumns[] = UserPeer::AVATAR_ID;
-        }
-
-        if ($this->aAvatar !== null && $this->aAvatar->getId() !== $v) {
-            $this->aAvatar = null;
-        }
-
-
-        return $this;
-    } // setAvatarId()
-
-    /**
      * Set the value of [description] column.
      *
      * @param string $v new value
@@ -1807,7 +1761,6 @@ abstract class BaseUser extends BaseObject implements Persistent
             $this->is_a_teacher = ($row[$startcol + 24] !== null) ? (boolean) $row[$startcol + 24] : null;
             $this->is_a_student = ($row[$startcol + 25] !== null) ? (boolean) $row[$startcol + 25] : null;
             $this->is_an_alumni = ($row[$startcol + 26] !== null) ? (boolean) $row[$startcol + 26] : null;
-            $this->avatar_id = ($row[$startcol + 27] !== null) ? (int) $row[$startcol + 27] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -1816,7 +1769,7 @@ abstract class BaseUser extends BaseObject implements Persistent
                 $this->ensureConsistency();
             }
 
-            return $startcol + 28; // 28 = UserPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 27; // 27 = UserPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating User object", $e);
@@ -1839,9 +1792,6 @@ abstract class BaseUser extends BaseObject implements Persistent
     public function ensureConsistency()
     {
 
-        if ($this->aAvatar !== null && $this->avatar_id !== $this->aAvatar->getId()) {
-            $this->aAvatar = null;
-        }
     } // ensureConsistency
 
     /**
@@ -1889,14 +1839,13 @@ abstract class BaseUser extends BaseObject implements Persistent
 
         if ($deep) {  // also de-associate any related objects?
 
-            $this->aAvatar = null;
             $this->collCursusResponsabilitys = null;
 
             $this->collEducationalPathResponsabilitys = null;
 
             $this->collUsersPathss = null;
 
-            $this->collFilesRelatedByAuthorId = null;
+            $this->collFiles = null;
 
             $this->collNewslettersSubscriberss = null;
 
@@ -2037,18 +1986,6 @@ abstract class BaseUser extends BaseObject implements Persistent
         if (!$this->alreadyInSave) {
             $this->alreadyInSave = true;
 
-            // We call the save method on the following object(s) if they
-            // were passed to this object by their coresponding set
-            // method.  This object relates to these object(s) by a
-            // foreign key reference.
-
-            if ($this->aAvatar !== null) {
-                if ($this->aAvatar->isModified() || $this->aAvatar->isNew()) {
-                    $affectedRows += $this->aAvatar->save($con);
-                }
-                $this->setAvatar($this->aAvatar);
-            }
-
             if ($this->isNew() || $this->isModified()) {
                 // persist changes
                 if ($this->isNew()) {
@@ -2153,18 +2090,18 @@ abstract class BaseUser extends BaseObject implements Persistent
                 }
             }
 
-            if ($this->filesRelatedByAuthorIdScheduledForDeletion !== null) {
-                if (!$this->filesRelatedByAuthorIdScheduledForDeletion->isEmpty()) {
-                    foreach ($this->filesRelatedByAuthorIdScheduledForDeletion as $fileRelatedByAuthorId) {
+            if ($this->filesScheduledForDeletion !== null) {
+                if (!$this->filesScheduledForDeletion->isEmpty()) {
+                    foreach ($this->filesScheduledForDeletion as $file) {
                         // need to save related object because we set the relation to null
-                        $fileRelatedByAuthorId->save($con);
+                        $file->save($con);
                     }
-                    $this->filesRelatedByAuthorIdScheduledForDeletion = null;
+                    $this->filesScheduledForDeletion = null;
                 }
             }
 
-            if ($this->collFilesRelatedByAuthorId !== null) {
-                foreach ($this->collFilesRelatedByAuthorId as $referrerFK) {
+            if ($this->collFiles !== null) {
+                foreach ($this->collFiles as $referrerFK) {
                     if (!$referrerFK->isDeleted()) {
                         $affectedRows += $referrerFK->save($con);
                     }
@@ -2488,9 +2425,6 @@ abstract class BaseUser extends BaseObject implements Persistent
         if ($this->isColumnModified(UserPeer::IS_AN_ALUMNI)) {
             $modifiedColumns[':p' . $index++]  = '`IS_AN_ALUMNI`';
         }
-        if ($this->isColumnModified(UserPeer::AVATAR_ID)) {
-            $modifiedColumns[':p' . $index++]  = '`AVATAR_ID`';
-        }
         if ($this->isColumnModified(UserPeer::DESCRIPTION)) {
             $modifiedColumns[':p' . $index++]  = '`DESCRIPTION`';
         }
@@ -2588,9 +2522,6 @@ abstract class BaseUser extends BaseObject implements Persistent
                         break;
                     case '`IS_AN_ALUMNI`':
                         $stmt->bindValue($identifier, (int) $this->is_an_alumni, PDO::PARAM_INT);
-                        break;
-                    case '`AVATAR_ID`':
-                        $stmt->bindValue($identifier, $this->avatar_id, PDO::PARAM_INT);
                         break;
                     case '`DESCRIPTION`':
                         $stmt->bindValue($identifier, $this->description, PDO::PARAM_STR);
@@ -2692,18 +2623,6 @@ abstract class BaseUser extends BaseObject implements Persistent
             $failureMap = array();
 
 
-            // We call the validate method on the following object(s) if they
-            // were passed to this object by their coresponding set
-            // method.  This object relates to these object(s) by a
-            // foreign key reference.
-
-            if ($this->aAvatar !== null) {
-                if (!$this->aAvatar->validate($columns)) {
-                    $failureMap = array_merge($failureMap, $this->aAvatar->getValidationFailures());
-                }
-            }
-
-
             if (($retval = UserPeer::doValidate($this, $columns)) !== true) {
                 $failureMap = array_merge($failureMap, $retval);
             }
@@ -2733,8 +2652,8 @@ abstract class BaseUser extends BaseObject implements Persistent
                     }
                 }
 
-                if ($this->collFilesRelatedByAuthorId !== null) {
-                    foreach ($this->collFilesRelatedByAuthorId as $referrerFK) {
+                if ($this->collFiles !== null) {
+                    foreach ($this->collFiles as $referrerFK) {
                         if (!$referrerFK->validate($columns)) {
                             $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
                         }
@@ -2954,12 +2873,9 @@ abstract class BaseUser extends BaseObject implements Persistent
                 return $this->getIsAnAlumni();
                 break;
             case 27:
-                return $this->getAvatarId();
-                break;
-            case 28:
                 return $this->getDescription();
                 break;
-            case 29:
+            case 28:
                 return $this->getRemarks();
                 break;
             default:
@@ -3018,14 +2934,10 @@ abstract class BaseUser extends BaseObject implements Persistent
             $keys[24] => $this->getIsATeacher(),
             $keys[25] => $this->getIsAStudent(),
             $keys[26] => $this->getIsAnAlumni(),
-            $keys[27] => $this->getAvatarId(),
-            $keys[28] => ($includeLazyLoadColumns) ? $this->getDescription() : null,
-            $keys[29] => ($includeLazyLoadColumns) ? $this->getRemarks() : null,
+            $keys[27] => ($includeLazyLoadColumns) ? $this->getDescription() : null,
+            $keys[28] => ($includeLazyLoadColumns) ? $this->getRemarks() : null,
         );
         if ($includeForeignObjects) {
-            if (null !== $this->aAvatar) {
-                $result['Avatar'] = $this->aAvatar->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
-            }
             if (null !== $this->collCursusResponsabilitys) {
                 $result['CursusResponsabilitys'] = $this->collCursusResponsabilitys->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
@@ -3035,8 +2947,8 @@ abstract class BaseUser extends BaseObject implements Persistent
             if (null !== $this->collUsersPathss) {
                 $result['UsersPathss'] = $this->collUsersPathss->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
-            if (null !== $this->collFilesRelatedByAuthorId) {
-                $result['FilesRelatedByAuthorId'] = $this->collFilesRelatedByAuthorId->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            if (null !== $this->collFiles) {
+                $result['Files'] = $this->collFiles->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
             if (null !== $this->collNewslettersSubscriberss) {
                 $result['NewslettersSubscriberss'] = $this->collNewslettersSubscriberss->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
@@ -3194,12 +3106,9 @@ abstract class BaseUser extends BaseObject implements Persistent
                 $this->setIsAnAlumni($value);
                 break;
             case 27:
-                $this->setAvatarId($value);
-                break;
-            case 28:
                 $this->setDescription($value);
                 break;
-            case 29:
+            case 28:
                 $this->setRemarks($value);
                 break;
         } // switch()
@@ -3253,9 +3162,8 @@ abstract class BaseUser extends BaseObject implements Persistent
         if (array_key_exists($keys[24], $arr)) $this->setIsATeacher($arr[$keys[24]]);
         if (array_key_exists($keys[25], $arr)) $this->setIsAStudent($arr[$keys[25]]);
         if (array_key_exists($keys[26], $arr)) $this->setIsAnAlumni($arr[$keys[26]]);
-        if (array_key_exists($keys[27], $arr)) $this->setAvatarId($arr[$keys[27]]);
-        if (array_key_exists($keys[28], $arr)) $this->setDescription($arr[$keys[28]]);
-        if (array_key_exists($keys[29], $arr)) $this->setRemarks($arr[$keys[29]]);
+        if (array_key_exists($keys[27], $arr)) $this->setDescription($arr[$keys[27]]);
+        if (array_key_exists($keys[28], $arr)) $this->setRemarks($arr[$keys[28]]);
     }
 
     /**
@@ -3294,7 +3202,6 @@ abstract class BaseUser extends BaseObject implements Persistent
         if ($this->isColumnModified(UserPeer::IS_A_TEACHER)) $criteria->add(UserPeer::IS_A_TEACHER, $this->is_a_teacher);
         if ($this->isColumnModified(UserPeer::IS_A_STUDENT)) $criteria->add(UserPeer::IS_A_STUDENT, $this->is_a_student);
         if ($this->isColumnModified(UserPeer::IS_AN_ALUMNI)) $criteria->add(UserPeer::IS_AN_ALUMNI, $this->is_an_alumni);
-        if ($this->isColumnModified(UserPeer::AVATAR_ID)) $criteria->add(UserPeer::AVATAR_ID, $this->avatar_id);
         if ($this->isColumnModified(UserPeer::DESCRIPTION)) $criteria->add(UserPeer::DESCRIPTION, $this->description);
         if ($this->isColumnModified(UserPeer::REMARKS)) $criteria->add(UserPeer::REMARKS, $this->remarks);
 
@@ -3386,7 +3293,6 @@ abstract class BaseUser extends BaseObject implements Persistent
         $copyObj->setIsATeacher($this->getIsATeacher());
         $copyObj->setIsAStudent($this->getIsAStudent());
         $copyObj->setIsAnAlumni($this->getIsAnAlumni());
-        $copyObj->setAvatarId($this->getAvatarId());
         $copyObj->setDescription($this->getDescription());
         $copyObj->setRemarks($this->getRemarks());
 
@@ -3415,9 +3321,9 @@ abstract class BaseUser extends BaseObject implements Persistent
                 }
             }
 
-            foreach ($this->getFilesRelatedByAuthorId() as $relObj) {
+            foreach ($this->getFiles() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addFileRelatedByAuthorId($relObj->copy($deepCopy));
+                    $copyObj->addFile($relObj->copy($deepCopy));
                 }
             }
 
@@ -3543,57 +3449,6 @@ abstract class BaseUser extends BaseObject implements Persistent
         return self::$peer;
     }
 
-    /**
-     * Declares an association between this object and a File object.
-     *
-     * @param             File $v
-     * @return User The current object (for fluent API support)
-     * @throws PropelException
-     */
-    public function setAvatar(File $v = null)
-    {
-        if ($v === null) {
-            $this->setAvatarId(NULL);
-        } else {
-            $this->setAvatarId($v->getId());
-        }
-
-        $this->aAvatar = $v;
-
-        // Add binding for other direction of this n:n relationship.
-        // If this object has already been added to the File object, it will not be re-added.
-        if ($v !== null) {
-            $v->addUserRelatedByAvatarId($this);
-        }
-
-
-        return $this;
-    }
-
-
-    /**
-     * Get the associated File object
-     *
-     * @param PropelPDO $con Optional Connection object.
-     * @return File The associated File object.
-     * @throws PropelException
-     */
-    public function getAvatar(PropelPDO $con = null)
-    {
-        if ($this->aAvatar === null && ($this->avatar_id !== null)) {
-            $this->aAvatar = FileQuery::create()->findPk($this->avatar_id, $con);
-            /* The following can be used additionally to
-                guarantee the related object contains a reference
-                to this object.  This level of coupling may, however, be
-                undesirable since it could result in an only partially populated collection
-                in the referenced object.
-                $this->aAvatar->addUsersRelatedByAvatarId($this);
-             */
-        }
-
-        return $this->aAvatar;
-    }
-
 
     /**
      * Initializes a collection based on the name of a relation.
@@ -3614,8 +3469,8 @@ abstract class BaseUser extends BaseObject implements Persistent
         if ('UsersPaths' == $relationName) {
             $this->initUsersPathss();
         }
-        if ('FileRelatedByAuthorId' == $relationName) {
-            $this->initFilesRelatedByAuthorId();
+        if ('File' == $relationName) {
+            $this->initFiles();
         }
         if ('NewslettersSubscribers' == $relationName) {
             $this->initNewslettersSubscriberss();
@@ -4352,34 +4207,34 @@ abstract class BaseUser extends BaseObject implements Persistent
     }
 
     /**
-     * Clears out the collFilesRelatedByAuthorId collection
+     * Clears out the collFiles collection
      *
      * This does not modify the database; however, it will remove any associated objects, causing
      * them to be refetched by subsequent calls to accessor method.
      *
      * @return void
-     * @see        addFilesRelatedByAuthorId()
+     * @see        addFiles()
      */
-    public function clearFilesRelatedByAuthorId()
+    public function clearFiles()
     {
-        $this->collFilesRelatedByAuthorId = null; // important to set this to null since that means it is uninitialized
-        $this->collFilesRelatedByAuthorIdPartial = null;
+        $this->collFiles = null; // important to set this to null since that means it is uninitialized
+        $this->collFilesPartial = null;
     }
 
     /**
-     * reset is the collFilesRelatedByAuthorId collection loaded partially
+     * reset is the collFiles collection loaded partially
      *
      * @return void
      */
-    public function resetPartialFilesRelatedByAuthorId($v = true)
+    public function resetPartialFiles($v = true)
     {
-        $this->collFilesRelatedByAuthorIdPartial = $v;
+        $this->collFilesPartial = $v;
     }
 
     /**
-     * Initializes the collFilesRelatedByAuthorId collection.
+     * Initializes the collFiles collection.
      *
-     * By default this just sets the collFilesRelatedByAuthorId collection to an empty array (like clearcollFilesRelatedByAuthorId());
+     * By default this just sets the collFiles collection to an empty array (like clearcollFiles());
      * however, you may wish to override this method in your stub class to provide setting appropriate
      * to your application -- for example, setting the initial array to the values stored in database.
      *
@@ -4388,13 +4243,13 @@ abstract class BaseUser extends BaseObject implements Persistent
      *
      * @return void
      */
-    public function initFilesRelatedByAuthorId($overrideExisting = true)
+    public function initFiles($overrideExisting = true)
     {
-        if (null !== $this->collFilesRelatedByAuthorId && !$overrideExisting) {
+        if (null !== $this->collFiles && !$overrideExisting) {
             return;
         }
-        $this->collFilesRelatedByAuthorId = new PropelObjectCollection();
-        $this->collFilesRelatedByAuthorId->setModel('File');
+        $this->collFiles = new PropelObjectCollection();
+        $this->collFiles->setModel('File');
     }
 
     /**
@@ -4411,73 +4266,73 @@ abstract class BaseUser extends BaseObject implements Persistent
      * @return PropelObjectCollection|File[] List of File objects
      * @throws PropelException
      */
-    public function getFilesRelatedByAuthorId($criteria = null, PropelPDO $con = null)
+    public function getFiles($criteria = null, PropelPDO $con = null)
     {
-        $partial = $this->collFilesRelatedByAuthorIdPartial && !$this->isNew();
-        if (null === $this->collFilesRelatedByAuthorId || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collFilesRelatedByAuthorId) {
+        $partial = $this->collFilesPartial && !$this->isNew();
+        if (null === $this->collFiles || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collFiles) {
                 // return empty collection
-                $this->initFilesRelatedByAuthorId();
+                $this->initFiles();
             } else {
-                $collFilesRelatedByAuthorId = FileQuery::create(null, $criteria)
+                $collFiles = FileQuery::create(null, $criteria)
                     ->filterByAuthor($this)
                     ->find($con);
                 if (null !== $criteria) {
-                    if (false !== $this->collFilesRelatedByAuthorIdPartial && count($collFilesRelatedByAuthorId)) {
-                      $this->initFilesRelatedByAuthorId(false);
+                    if (false !== $this->collFilesPartial && count($collFiles)) {
+                      $this->initFiles(false);
 
-                      foreach($collFilesRelatedByAuthorId as $obj) {
-                        if (false == $this->collFilesRelatedByAuthorId->contains($obj)) {
-                          $this->collFilesRelatedByAuthorId->append($obj);
+                      foreach($collFiles as $obj) {
+                        if (false == $this->collFiles->contains($obj)) {
+                          $this->collFiles->append($obj);
                         }
                       }
 
-                      $this->collFilesRelatedByAuthorIdPartial = true;
+                      $this->collFilesPartial = true;
                     }
 
-                    return $collFilesRelatedByAuthorId;
+                    return $collFiles;
                 }
 
-                if($partial && $this->collFilesRelatedByAuthorId) {
-                    foreach($this->collFilesRelatedByAuthorId as $obj) {
+                if($partial && $this->collFiles) {
+                    foreach($this->collFiles as $obj) {
                         if($obj->isNew()) {
-                            $collFilesRelatedByAuthorId[] = $obj;
+                            $collFiles[] = $obj;
                         }
                     }
                 }
 
-                $this->collFilesRelatedByAuthorId = $collFilesRelatedByAuthorId;
-                $this->collFilesRelatedByAuthorIdPartial = false;
+                $this->collFiles = $collFiles;
+                $this->collFilesPartial = false;
             }
         }
 
-        return $this->collFilesRelatedByAuthorId;
+        return $this->collFiles;
     }
 
     /**
-     * Sets a collection of FileRelatedByAuthorId objects related by a one-to-many relationship
+     * Sets a collection of File objects related by a one-to-many relationship
      * to the current object.
      * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
      * and new objects from the given Propel collection.
      *
-     * @param PropelCollection $filesRelatedByAuthorId A Propel collection.
+     * @param PropelCollection $files A Propel collection.
      * @param PropelPDO $con Optional connection object
      */
-    public function setFilesRelatedByAuthorId(PropelCollection $filesRelatedByAuthorId, PropelPDO $con = null)
+    public function setFiles(PropelCollection $files, PropelPDO $con = null)
     {
-        $this->filesRelatedByAuthorIdScheduledForDeletion = $this->getFilesRelatedByAuthorId(new Criteria(), $con)->diff($filesRelatedByAuthorId);
+        $this->filesScheduledForDeletion = $this->getFiles(new Criteria(), $con)->diff($files);
 
-        foreach ($this->filesRelatedByAuthorIdScheduledForDeletion as $fileRelatedByAuthorIdRemoved) {
-            $fileRelatedByAuthorIdRemoved->setAuthor(null);
+        foreach ($this->filesScheduledForDeletion as $fileRemoved) {
+            $fileRemoved->setAuthor(null);
         }
 
-        $this->collFilesRelatedByAuthorId = null;
-        foreach ($filesRelatedByAuthorId as $fileRelatedByAuthorId) {
-            $this->addFileRelatedByAuthorId($fileRelatedByAuthorId);
+        $this->collFiles = null;
+        foreach ($files as $file) {
+            $this->addFile($file);
         }
 
-        $this->collFilesRelatedByAuthorId = $filesRelatedByAuthorId;
-        $this->collFilesRelatedByAuthorIdPartial = false;
+        $this->collFiles = $files;
+        $this->collFilesPartial = false;
     }
 
     /**
@@ -4489,15 +4344,15 @@ abstract class BaseUser extends BaseObject implements Persistent
      * @return int             Count of related File objects.
      * @throws PropelException
      */
-    public function countFilesRelatedByAuthorId(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    public function countFiles(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
     {
-        $partial = $this->collFilesRelatedByAuthorIdPartial && !$this->isNew();
-        if (null === $this->collFilesRelatedByAuthorId || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collFilesRelatedByAuthorId) {
+        $partial = $this->collFilesPartial && !$this->isNew();
+        if (null === $this->collFiles || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collFiles) {
                 return 0;
             } else {
                 if($partial && !$criteria) {
-                    return count($this->getFilesRelatedByAuthorId());
+                    return count($this->getFiles());
                 }
                 $query = FileQuery::create(null, $criteria);
                 if ($distinct) {
@@ -4509,7 +4364,7 @@ abstract class BaseUser extends BaseObject implements Persistent
                     ->count($con);
             }
         } else {
-            return count($this->collFilesRelatedByAuthorId);
+            return count($this->collFiles);
         }
     }
 
@@ -4520,41 +4375,41 @@ abstract class BaseUser extends BaseObject implements Persistent
      * @param    File $l File
      * @return User The current object (for fluent API support)
      */
-    public function addFileRelatedByAuthorId(File $l)
+    public function addFile(File $l)
     {
-        if ($this->collFilesRelatedByAuthorId === null) {
-            $this->initFilesRelatedByAuthorId();
-            $this->collFilesRelatedByAuthorIdPartial = true;
+        if ($this->collFiles === null) {
+            $this->initFiles();
+            $this->collFilesPartial = true;
         }
-        if (!$this->collFilesRelatedByAuthorId->contains($l)) { // only add it if the **same** object is not already associated
-            $this->doAddFileRelatedByAuthorId($l);
+        if (!$this->collFiles->contains($l)) { // only add it if the **same** object is not already associated
+            $this->doAddFile($l);
         }
 
         return $this;
     }
 
     /**
-     * @param	FileRelatedByAuthorId $fileRelatedByAuthorId The fileRelatedByAuthorId object to add.
+     * @param	File $file The file object to add.
      */
-    protected function doAddFileRelatedByAuthorId($fileRelatedByAuthorId)
+    protected function doAddFile($file)
     {
-        $this->collFilesRelatedByAuthorId[]= $fileRelatedByAuthorId;
-        $fileRelatedByAuthorId->setAuthor($this);
+        $this->collFiles[]= $file;
+        $file->setAuthor($this);
     }
 
     /**
-     * @param	FileRelatedByAuthorId $fileRelatedByAuthorId The fileRelatedByAuthorId object to remove.
+     * @param	File $file The file object to remove.
      */
-    public function removeFileRelatedByAuthorId($fileRelatedByAuthorId)
+    public function removeFile($file)
     {
-        if ($this->getFilesRelatedByAuthorId()->contains($fileRelatedByAuthorId)) {
-            $this->collFilesRelatedByAuthorId->remove($this->collFilesRelatedByAuthorId->search($fileRelatedByAuthorId));
-            if (null === $this->filesRelatedByAuthorIdScheduledForDeletion) {
-                $this->filesRelatedByAuthorIdScheduledForDeletion = clone $this->collFilesRelatedByAuthorId;
-                $this->filesRelatedByAuthorIdScheduledForDeletion->clear();
+        if ($this->getFiles()->contains($file)) {
+            $this->collFiles->remove($this->collFiles->search($file));
+            if (null === $this->filesScheduledForDeletion) {
+                $this->filesScheduledForDeletion = clone $this->collFiles;
+                $this->filesScheduledForDeletion->clear();
             }
-            $this->filesRelatedByAuthorIdScheduledForDeletion[]= $fileRelatedByAuthorId;
-            $fileRelatedByAuthorId->setAuthor(null);
+            $this->filesScheduledForDeletion[]= $file;
+            $file->setAuthor(null);
         }
     }
 
@@ -7810,7 +7665,6 @@ abstract class BaseUser extends BaseObject implements Persistent
         $this->is_a_teacher = null;
         $this->is_a_student = null;
         $this->is_an_alumni = null;
-        $this->avatar_id = null;
         $this->description = null;
         $this->description_isLoaded = false;
         $this->remarks = null;
@@ -7851,8 +7705,8 @@ abstract class BaseUser extends BaseObject implements Persistent
                     $o->clearAllReferences($deep);
                 }
             }
-            if ($this->collFilesRelatedByAuthorId) {
-                foreach ($this->collFilesRelatedByAuthorId as $o) {
+            if ($this->collFiles) {
+                foreach ($this->collFiles as $o) {
                     $o->clearAllReferences($deep);
                 }
             }
@@ -7940,10 +7794,10 @@ abstract class BaseUser extends BaseObject implements Persistent
             $this->collUsersPathss->clearIterator();
         }
         $this->collUsersPathss = null;
-        if ($this->collFilesRelatedByAuthorId instanceof PropelCollection) {
-            $this->collFilesRelatedByAuthorId->clearIterator();
+        if ($this->collFiles instanceof PropelCollection) {
+            $this->collFiles->clearIterator();
         }
-        $this->collFilesRelatedByAuthorId = null;
+        $this->collFiles = null;
         if ($this->collNewslettersSubscriberss instanceof PropelCollection) {
             $this->collNewslettersSubscriberss->clearIterator();
         }
@@ -8000,7 +7854,6 @@ abstract class BaseUser extends BaseObject implements Persistent
             $this->collNewsletters->clearIterator();
         }
         $this->collNewsletters = null;
-        $this->aAvatar = null;
     }
 
     /**

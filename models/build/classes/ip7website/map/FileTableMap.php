@@ -67,7 +67,6 @@ class FileTableMap extends TableMap
     public function buildRelations()
     {
         $this->addRelation('Author', 'User', RelationMap::MANY_TO_ONE, array('author_id' => 'id', ), 'SET NULL', 'CASCADE');
-        $this->addRelation('UserRelatedByAvatarId', 'User', RelationMap::ONE_TO_MANY, array('id' => 'avatar_id', ), 'SET NULL', 'CASCADE', 'UsersRelatedByAvatarId');
         $this->addRelation('ContentsFiles', 'ContentsFiles', RelationMap::ONE_TO_MANY, array('id' => 'file_id', ), 'CASCADE', 'CASCADE', 'ContentsFiless');
         $this->addRelation('Content', 'Content', RelationMap::MANY_TO_MANY, array(), 'CASCADE', 'CASCADE', 'Contents');
     } // buildRelations()

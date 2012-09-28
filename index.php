@@ -116,10 +116,6 @@ dispatch('/bug', 'display_bug_report');
 dispatch_post('/bug', 'post_bug_report');
 dispatch('/a-propos', 'display_apropos_page');
 
-## content
-dispatch('/avatar/:id',       'serve_avatar');
-dispatch('/avatar/:id/:size', 'serve_avatar_with_size');
-
 ## API
 dispatch('/api/1/users/exists.json',  'json_check_username');
 dispatch('/api/1/search.json',        'json_global_search');

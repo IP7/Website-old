@@ -20,11 +20,12 @@ function tpl_user($user, $extended=false) {
 
     if ($user->getAvatar()) {
 
-        $avatar_size = '32';
+        $avatar_size = '128';
+        $avatar_url  = '//www.gravatar.com/avatar/'.md5(strtolower(trim($user->getEmail())));
+        $avatar_url .= '?s='.$avatar_size.'&d=retro';
 
-        $a = $user->getAvatar();
         $avatar = array(
-            'href'   => Config::$root_uri.'avatar/'.$user->getId().'/'.$avatar_size.'.png',
+            'href'   => $avatar_url,
             'height' => $avatar_size,
             'width'  => $avatar_size
         );

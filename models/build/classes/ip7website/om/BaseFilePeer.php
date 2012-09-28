@@ -430,9 +430,6 @@ abstract class BaseFilePeer
      */
     public static function clearRelatedInstancePool()
     {
-        // Invalidate objects in UserPeer instance pool,
-        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-        UserPeer::clearInstancePool();
         // Invalidate objects in ContentsFilesPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         ContentsFilesPeer::clearInstancePool();
@@ -639,7 +636,7 @@ abstract class BaseFilePeer
                 } // if obj2 already loaded
 
                 // Add the $obj1 (File) to $obj2 (User)
-                $obj2->addFileRelatedByAuthorId($obj1);
+                $obj2->addFile($obj1);
 
             } // if joined row was not null
 
@@ -760,7 +757,7 @@ abstract class BaseFilePeer
                 } // if obj2 loaded
 
                 // Add the $obj1 (File) to the collection in $obj2 (User)
-                $obj2->addFileRelatedByAuthorId($obj1);
+                $obj2->addFile($obj1);
             } // if joined row not null
 
             $results[] = $obj1;
@@ -904,7 +901,6 @@ abstract class BaseFilePeer
             // for more than one table or we could emulating ON DELETE CASCADE, etc.
             $con->beginTransaction();
             $affectedRows += FilePeer::doOnDeleteCascade(new Criteria(FilePeer::DATABASE_NAME), $con);
-            FilePeer::doOnDeleteSetNull(new Criteria(FilePeer::DATABASE_NAME), $con);
             $affectedRows += BasePeer::doDeleteAll(FilePeer::TABLE_NAME, $con, FilePeer::DATABASE_NAME);
             // Because this db requires some delete cascade/set null emulation, we have to
             // clear the cached instance *after* the emulation has happened (since
@@ -962,10 +958,6 @@ abstract class BaseFilePeer
             $c = clone $criteria;
             $affectedRows += FilePeer::doOnDeleteCascade($c, $con);
 
-            // cloning the Criteria in case it's modified by doSelect() or doSelectStmt()
-            $c = clone $criteria;
-            FilePeer::doOnDeleteSetNull($c, $con);
-
             // Because this db requires some delete cascade/set null emulation, we have to
             // clear the cached instance *after* the emulation has happened (since
             // instances get re-added by the select statement contained therein).
@@ -1021,37 +1013,6 @@ abstract class BaseFilePeer
         }
 
         return $affectedRows;
-    }
-
-    /**
-     * This is a method for emulating ON DELETE SET NULL DBs that don't support this
-     * feature (like MySQL or SQLite).
-     *
-     * This method is not very speedy because it must perform a query first to get
-     * the implicated records and then perform the deletes by calling those Peer classes.
-     *
-     * This method should be used within a transaction if possible.
-     *
-     * @param      Criteria $criteria
-     * @param      PropelPDO $con
-     * @return void
-     */
-    protected static function doOnDeleteSetNull(Criteria $criteria, PropelPDO $con)
-    {
-
-        // first find the objects that are implicated by the $criteria
-        $objects = FilePeer::doSelect($criteria, $con);
-        foreach ($objects as $obj) {
-
-            // set fkey col in related User rows to null
-            $selectCriteria = new Criteria(FilePeer::DATABASE_NAME);
-            $updateValues = new Criteria(FilePeer::DATABASE_NAME);
-            $selectCriteria->add(UserPeer::AVATAR_ID, $obj->getId());
-            $updateValues->add(UserPeer::AVATAR_ID, null);
-
-            BasePeer::doUpdate($selectCriteria, $updateValues, $con); // use BasePeer because generated Peer doUpdate() methods only update using pkey
-
-        }
     }
 
     /**
