@@ -4,7 +4,6 @@ require_once dirname(__FILE__).'/lib/vendors/Twig/Autoloader.php';
 require_once dirname(__FILE__).'/lib/vendors/limonade/limonade.php';
 require_once dirname(__FILE__).'/lib/vendors/phpass/PasswordHash.php';
 require_once dirname(__FILE__).'/lib/vendors/propel/runtime/lib/Propel.php';
-require_once dirname(__FILE__).'/lib/vendors/simple_image/simple_image.php';
 require_once dirname(__FILE__).'/lib/vendors/php_markdown_extra/markdown.php';
 
 ### Constants ###

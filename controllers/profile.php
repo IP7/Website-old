@@ -200,8 +200,6 @@ function post_edit_profile_page($username=NULL) {
     $msgstr = '';
     $msgtype = false;
 
-    upload_avatar($user, &$msgstr, &$msgtype);
-
     if (has_post('new_password')) {
         if (!has_post('old_password')) {
             $msgstr = ($msgstr?' ':'').'Veuillez entrer votre ancien mot de passe pour le changer.';

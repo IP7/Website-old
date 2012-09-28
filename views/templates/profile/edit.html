@@ -2,11 +2,8 @@
 {% block content %}
 <h1>{{ page.title }}</h1>
 
-<form action="{{ page.edit_form.action }}" method="POST" id="edit_form" enctype="multipart/form-data">
+<form action="{{ page.edit_form.action }}" method="POST" id="edit_form">
 
-    <input type="hidden" name="MAX_FILE_SIZE" value="{{ site.avatar_max_size }}" />
-    <label>Avatar&nbsp;:<input type="file" name="avatar" accept="image/gif,image/jpeg,image/png" />{#
-        #}<p class="microcopy">Une image <abbr>GIF</abbr>, <abbr>JPEG</abbr> ou <abbr>PNG</abbr>, max 128x128 pixels et 64 kio.</p></label>
     <label>Site Web&nbsp;:<input type="url" name="website" autocomplete="off" placeholder="http://"{#
             #}{% if page.user.website is defined and page.user.website %} value="{{ page.user.website }}"{% endif %} maxlength="200" /></label>
     <label>Ancien mot de passe&nbsp;:<input type="password" autocomplete="off" name="old_password" /></label>
@@ -18,6 +15,8 @@
                                                 #} checked{% endif %} /> Femme</label>{#
                               #}<label><input type="radio" name="gender" value="N" {% if page.user.gender is defined and page.user.gender == 'N' %}{#
                                                 #} checked{% endif %} /> Non précisé</label>
+
+    <p>Pour modifier votre avatar, rendez-vous sur <a href="//fr.gravatar.com/">Gravatar</a>.</p>
 
     <label class="explicit" for="desc">Présentation&nbsp;:</label>
     <textarea id="desc" name="description" cols="80" rows="25">{{ page.user.description }}</textarea>
