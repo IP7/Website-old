@@ -211,6 +211,20 @@ function display_member_proposing_content_form() {
 
     $token = generate_post_token(user());
 
+    // years
+    $current_year = date('Y');
+    if (intval(date('m')) > 7) { $current_year -= 1; }
+
+    $tpl_years = array();
+
+    for ($i=$current_year, $l=$current_year-5; $i>$l; $i--) {
+        $tpl_years []= array(
+            'value' => $i,
+            'name'  => $i.'/'.($i+1)
+        );
+    }
+
+
     $fd = FormData::create($token)
             ->store('course', $course)
             ->store('cursus', $cursus);
@@ -244,6 +258,8 @@ function display_member_proposing_content_form() {
                     'text' => '',
                     'type' => ''
                 ),
+
+                'years' => $tpl_years,
 
                 'max_files_nb' => MAX_FILES_PER_CONTENT,
 
