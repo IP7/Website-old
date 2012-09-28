@@ -162,8 +162,11 @@ function display_educational_path() {
 
             // moderation
             'moderation_bar'  => $moderation_bar,
-            'add_news_button' => $add_news
+            'add_news_button' => $add_news,
 
+            'scripts' => array(
+                array( 'href' => js_url('menus') )
+            )
         )
     )));
 }
