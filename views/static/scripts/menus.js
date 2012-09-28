@@ -19,7 +19,7 @@
         b.dataset['v'] = 1;
         b.className = 'show-hide-button';
         b.onclick = toggle_menu.bind(null, b, $u);
-        t.insertBefore(b, t.firstChild);
+        t.appendChild/*insertBefore*/(b/*, t.firstChild*/);
         
     });
     
