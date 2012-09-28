@@ -18,18 +18,15 @@ function tpl_user($user, $extended=false) {
         $userStatus .= Lang\adapt_to_gender($user, 'nseignant');
     }
 
-    if ($user->getAvatar()) {
+    $avatar_size = '128';
+    $avatar_url  = '//www.gravatar.com/avatar/'.md5(strtolower(trim($user->getEmail())));
+    $avatar_url .= '?s='.$avatar_size.'&d=retro';
 
-        $avatar_size = '128';
-        $avatar_url  = '//www.gravatar.com/avatar/'.md5(strtolower(trim($user->getEmail())));
-        $avatar_url .= '?s='.$avatar_size.'&d=retro';
-
-        $avatar = array(
-            'href'   => $avatar_url,
-            'height' => $avatar_size,
-            'width'  => $avatar_size
-        );
-    }
+    $avatar = array(
+        'href'   => $avatar_url,
+        'height' => $avatar_size,
+        'width'  => $avatar_size
+    );
 
     $tpl_user = array(
         'name'        => $user->getName(),
