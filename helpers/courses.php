@@ -29,8 +29,26 @@ function tpl_course_contents($cursus, $course) {
 
         if (count($cts)) {
 
+            $no_year = array();
+
             foreach ($cts as $c) {
-                $tpl_cts []= array(
+                $year = 0+$c->getYear();
+
+                if ($year < 2000) {
+                    $no_year []= array(
+                        'href'  => course_url($cursus, $course).'/'.$c->getId(),
+                        'title' => $c->getTitle()
+                    );
+                    continue;
+                }
+                if (!array_key_exists($year, $tpl_cts)) {
+                    $tpl_cts[$year] = array(
+                        'title'    => $year.'/'.($year+1),
+                        'contents' => array()
+                    );
+                }
+
+                $tpl_cts [$year]['contents'] []= array(
                     'href'  => course_url($cursus, $course).'/'.$c->getId(),
                     'title' => $c->getTitle()
                 );
@@ -40,7 +58,8 @@ function tpl_course_contents($cursus, $course) {
                 'short_name' => $t->getShortName(),
                 'title'      => Lang\plurial($t->getName()),
 
-                'contents'   => $tpl_cts
+                'years'   => $tpl_cts,
+                'no_year' => $no_year
             );
         }
     }

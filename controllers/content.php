@@ -212,8 +212,7 @@ function display_member_proposing_content_form() {
     $token = generate_post_token(user());
 
     // years
-    $current_year = date('Y');
-    if (intval(date('m')) > 7) { $current_year -= 1; }
+    $current_year = get_current_year();
 
     $tpl_years = array();
 

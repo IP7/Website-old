@@ -56,3 +56,10 @@
 .tab_content:target {
     display:block;
 }
+
+.tab_content h3 {
+    margin:10px auto 10px 15px;
+}
+.tab_content ul {
+    margin-top:5px;
+}

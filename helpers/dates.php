@@ -28,6 +28,16 @@ function next_expiration_date() {
     return $year.'-07-31T00:00:00+01:00';
 }
 
+// return the current year, for courses, e.g.:
+//  sept-dec 20XX -> 20XX
+//  jan-aug  20XX -> 20XX - 1
+//
+//  so  sept  2012 -> 2012
+//  but april 2012 -> 2011
+function get_current_year() {
+    return date('Y') - (intval(date('m')) < 7);
+}
+
 // return a date from an user input
 function get_date_from_input($inp) {
     $tokens = preg_split('/\D+/', trim($inp));

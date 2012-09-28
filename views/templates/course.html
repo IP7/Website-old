@@ -14,12 +14,24 @@
         </ul>
         <div class="tabs_contents">
             {% for ct_type in page.course.content_types %}
-            <div class="tab_content" id="tb_{{ ct_type.short_name }}">{#
-                #}{% if ct_type.intro is defined and ct_type.intro %}<p>{{ ct_type.intro }}</p>{% endif %}<ul>{#
-                #}{% for ct in ct_type.contents %}
+            <div class="tab_content" id="tb_{{ ct_type.short_name }}">
+                {% if ct_type.intro is defined and ct_type.intro %}<p>{{ ct_type.intro }}</p>{% endif %}
+                {% if ct_type.no_year is not empty %}
+                <ul>
+                    {% for ct in ct_type.no_year %}
                     <li>{{ _m.a(ct.href, ct.title) }}</li>
-                {% endfor %}{#
-            #}</ul></div>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+                {% for y in ct_type.years %}
+                <h3>{{ y.title }}</h3>
+                <ul>
+                    {% for ct in y.contents %}
+                    <li>{{ _m.a(ct.href, ct.title) }}</li>
+                    {% endfor %}
+                </ul>
+                {% endfor %}
+            </div>
             {% endfor %}
         </div>
     </div>
