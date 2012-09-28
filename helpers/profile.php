@@ -30,8 +30,6 @@ function tpl_user($user, $extended=false) {
 
     $tpl_user = array(
         'name'        => $user->getName(),
-        'firstname'   => $user->getFirstName(),
-        'lastname'    => $user->getLastName(),
         'pseudo'      => $user->getUsername(),
         'displayed_name' => $displayed_name,
 

@@ -100,10 +100,6 @@ function display_profile_page($username=NULL, $is_my_profile=false) {
         $tpl_user['phone'] = false;
     }
 
-    if (!$user->getConfigShowRealName()) {
-        $tpl_user['firstname'] = $tpl_user['lastname'] = false;
-    }
-
     if (!$user->getConfigShowBirthdate()) {
         $tpl_user['birthdate'] = false;
     }
