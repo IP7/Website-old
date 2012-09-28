@@ -48,8 +48,11 @@ function search_users($q, $limit=10) {
     $users = UserQuery::create()
                 ->filterByPublicProfile()
 
+                ->condition('no_tmp',   'Username not like ?', '_tmp_%', PDO::PARAM_STR)
+
                 // usernames
                 ->condition('username', 'Username like ?', $q, PDO::PARAM_STR)
+
                 // first names
                 ->condition('firstname', 'Firstname like ?', $q, PDO::PARAM_STR)
                 // last name
@@ -67,7 +70,10 @@ function search_users($q, $limit=10) {
                 ->condition('email2', 'Email like ?', $q, PDO::PARAM_STR)
 
                 ->combine(array('email1', 'email2'), 'and', 'email')
-                ->where(array('username', 'name', 'email'), 'or');
+
+                ->combine(array('username', 'name', 'email'), 'or', 'q')
+
+                ->where(array('no_tmp', 'q'), 'and');
 
     $users = (is_connected() && user()->isAdmin()) ? $users->find() : $users->findByDeactivated(0);
 
