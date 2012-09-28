@@ -4,7 +4,7 @@
         bs = ['▲', '▼'];
     
     function toggle_menu(b, $list) {
-        $list.toggle();
+        $list.slideToggle(50);
         b.innerHTML = bs[b.dataset['v']=(+b.dataset['v']+1)%2];
     }
     
@@ -18,6 +18,7 @@
         b.innerHTML = '▼';
         b.dataset['v'] = 1;
         b.className = 'show-hide-button';
+        b.style.cursor = 'pointer';
         b.onclick = toggle_menu.bind(null, b, $u);
         t.appendChild/*insertBefore*/(b/*, t.firstChild*/);
         
