@@ -360,6 +360,19 @@ body > #container { height: auto; min-height:100%; }
 .profile .infos h1 .username-wrapper {opacity:0.4}
 .profile .infos .description { padding:10px }
 
+.profile-bar .avatar-small,
+.profile-bar .user,
+.logout-bar-link { vertical-align:middle }
+
+.profile-bar .user {
+    margin-left:3px;
+    margin-right:5px;
+}
+
+.logout-bar-link {
+    opacity:0.8;
+}
+
 /* == Footers ============================================= */
 
 /* -- Main Footer ----------------------------------------- */

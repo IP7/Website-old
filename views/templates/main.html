@@ -84,8 +84,21 @@
                             {% for link in site.global_links.others %}
                             {{ _m.navlink(link.href, link.title) }}
                             {% endfor %}
-                            {% if site.connection_button is defined and site.connection_button %}
-                            {{ _m.connection_button(site.connection_button) }}
+
+                            {% if site.user.connected %}
+                            <li class="profile-bar-wrapper">{#
+                                #}<a class="profile-bar" href="{{ site.user.profile_url }}" title="Mon Profil">{#
+                                    #}<img class="avatar-small" height="25" width="25" src="{{ site.user.avatar25 }}" />{#
+                                    #}<span class="me user">{{ site.user.displayed_name }}</span>{#
+
+                                #}</a>{% if site.connection_button is defined and site.connection_button %}
+                                <span class="logout-bar-link">({{ _m.connection_button(site.connection_button) }})</span>{#
+                            #}</li>
+                                {% endif %}
+                            {% else %}
+                                {% if site.connection_button is defined and site.connection_button %}
+                                <li class="navlink">{{ _m.connection_button(site.connection_button) }}</li>
+                                {% endif %}
                             {% endif %}
                         </ul>
                         {% endblock %}
