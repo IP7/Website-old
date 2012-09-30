@@ -39,8 +39,7 @@ function global_menu_links() {
     if (is_connected()) {
 
         $others_links = array(
-        #    array( 'href' => Config::$root_uri.'forum',     'title' => 'Forum' ),
-            array( 'href' => Config::$root_uri.'profile',   'title' => 'Mon Profil')
+            #array( 'href' => Config::$root_uri.'profile',   'title' => 'Mon Profil')
         );
 
         $connection_button['title']  = 'Déconnexion';
@@ -64,11 +63,24 @@ function global_menu_links() {
             Config::$root_uri.'connexion'.($url ? '?u=/'.$url : '');
     }
 
+    $user = array(
+        'connected' => is_connected()
+    );
+
+    if (is_connected()) {
+        $user['displayed_name'] = user()->getPublicName();
+        $user['avatar25'] = gravatar_url(user(), 25);
+        $user['profile_url'] = Config::$root_uri.'p/'.user()->getUsername();
+    }
+
     return array(
         'site' => array(
             'global_links' => array(
                 'others' => $others_links
             ),
+
+            'user' => $user,
+
             'connection_button' => $connection_button
         )
     );
