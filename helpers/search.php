@@ -23,7 +23,7 @@ function educational_path_to_search_result($e) {
     }
 
     return array(
-        'title' => $e->getName().' ('.$e->getShortName().')',
+        'title' => $e->getName().' ('.$c->getShortName().' '.$e->getShortName().')',
         'href'  => cursus_url($c).'/parcours/'.$e->getShortName()
     );
 }
