@@ -1,5 +1,13 @@
 <?php
 
+# Return the URL of the avatar of the given user
+function gravatar_url($user, $size=128) {
+    $avatar_url  = '//www.gravatar.com/avatar/'.md5(strtolower(trim($user->getEmail())));
+    $avatar_url .= '?s='.$size.'&d=retro';
+
+    return $avatar_url;
+}
+
 function tpl_user($user, $extended=false) {
     $displayed_name = $user->getPublicName();
 
@@ -18,22 +26,16 @@ function tpl_user($user, $extended=false) {
         $userStatus .= Lang\adapt_to_gender($user, 'nseignant');
     }
 
-    $avatar_size = '128';
-    $avatar_url  = '//www.gravatar.com/avatar/'.md5(strtolower(trim($user->getEmail())));
-    $avatar_url .= '?s='.$avatar_size.'&d=retro';
-
-    $avatar = array(
-        'href'   => $avatar_url,
-        'height' => $avatar_size,
-        'width'  => $avatar_size
-    );
-
     $tpl_user = array(
         'name'        => $user->getName(),
         'pseudo'      => $user->getUsername(),
         'displayed_name' => $displayed_name,
 
-        'avatar'      => $avatar,
+        'avatar'      => array(
+            'href'   => $gravatar_url($user, 128),
+            'height' => 128,
+            'width'  => 128
+        ),
 
         'gender'      => $user->getGender(),
         'status'      => $userStatus,
