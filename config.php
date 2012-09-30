@@ -92,6 +92,8 @@ class Config {
 
                 'authorsfile'     => array( 'href' => self::$root_uri.'humans.txt' ),
 
+                'connexion_href'  => self::$root_uri.'connexion',
+
                 # Styles
                 'styles'          => array(
                     array( 'href' => $styles.'/normalize.min.css',    'media' => 'screen' ),
