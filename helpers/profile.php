@@ -32,7 +32,7 @@ function tpl_user($user, $extended=false) {
         'displayed_name' => $displayed_name,
 
         'avatar'      => array(
-            'href'   => $gravatar_url($user, 128),
+            'href'   => gravatar_url($user, 128),
             'height' => 128,
             'width'  => 128
         ),
