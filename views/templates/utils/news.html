@@ -1,7 +1,7 @@
 {% if page.news is defined and page.news is not empty %}
 <section id="news">
 {% autoescape %}
-    <h3>Actualités</h3>
+    <h2>Actualités</h2>
     {% if page.add_news_button is defined and page.add_news_button %}
     {{ _m.a_button(page.add_news_button.href, page.add_news_button.title) }}
     {% endif %}
@@ -11,12 +11,7 @@
         #}<header>[<time datetime="{{ news.datetime_attr }}" itemprop="datePublished">{{ news.datetime }}</time>] <h6 itemprop="name">{{ news.title }}</h6></header>{#
             #}<article>{{ news.content }}</article>{#
             #}{% if news.author is defined and news.author %}{#
-                #}<a rel="author" href="{{ news.author.href }}" itemprop="accountablePerson">({{ news.author.name }})</a>{#
-            #}{% endif %}{#
-            #}{% if news.moderation_bar is defined and news.moderation_bar %}{#
-            #} (<ul class="moderation bar">{% for el in news.moderation_bar %}{#
-                #}<li>{{ _m.a(el.href, el.title) }}</li>{#
-                #}{% endfor %}</ul>){#
+            #}<a rel="author" class="user" href="{{ news.author.href }}" itemprop="accountablePerson">({{ news.author.name }})</a>{#
             #}{% endif %}{#
 #}</li>
     {% endfor %}

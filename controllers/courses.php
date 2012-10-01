@@ -32,6 +32,8 @@ function display_course() {
         );
     }
 
+    $news = get_news($cursus, $course);
+
     $breadcrumbs = array(
         array(
             'href'  => Config::$root_uri.'cursus/'.$cursus->getShortName(),
@@ -51,7 +53,7 @@ function display_course() {
             'keywords'       => array( $course->getName(), $course->getCode() ),
             'description'    => truncate_string($course->getDescription()),
 
-            'news'           => false,
+            'news'           => tpl_news($news),
 
             'course'         => array(
                 'name'  => $course->getName().' ('.$course->getCode().')',

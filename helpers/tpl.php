@@ -148,6 +148,31 @@ function tpl_date($d) {
   return array( 'date' => Lang\date_fr($d), 'datetime_attr' => datetime_attr($d));
 }
 
+// return an array of news, formatted for templates
+function tpl_news($n) {
+    $tpl_n = array();
+
+    foreach ($n as $news) {
+
+        $author = $news->getAuthor();
+
+        $tpl_author = !$author ? null : array(
+            'href' => Config::$root_uri.'p/'.$author->getUsername(),
+            'name' => $author->getPublicName()
+        );
+
+        $tpl_n []= array(
+            'datetime_attr' => datetime_attr($news->getDate()),
+            'datetime'      => Lang\date_fr($news->getDate()),
+            'title'         => $news->getTitle(),
+            'content'       => $news->getText(),
+            'author'        => $tpl_author
+        );
+    }
+
+    return $tpl_n;
+}
+
 /**
  * Return an array representing a file
  **/
