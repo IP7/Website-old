@@ -10,6 +10,7 @@ function get_news($cursus=null, $course=null) {
                 ->filterByCourse($course)
                 ->where('Access_Rights <= ?', $user_rights, PDO::PARAM_INT)
                 ->limit(10)
+                ->orderByDate('asc')
                 ->find();
 
 }
