@@ -1,18 +1,20 @@
 {% if page.news is defined and page.news is not empty %}
-<section id="news">
+<section>
 {% autoescape %}
     <h2>Actualités</h2>
     {% if page.add_news_button is defined and page.add_news_button %}
     {{ _m.a_button(page.add_news_button.href, page.add_news_button.title) }}
     {% endif %}
-    <ul>
+    <ul class="news-list">
     {% for news in page.news %}
     <li class="news" itemscope itemptype="http://schema.org/NewsArticle">{#
-        #}<header>[<time datetime="{{ news.datetime_attr }}" itemprop="datePublished">{{ news.datetime }}</time>] <h6 itemprop="name">{{ news.title }}</h6></header>{#
-            #}<article>{{ news.content }}</article>{#
-            #}{% if news.author is defined and news.author %}{#
-            #}<a rel="author" class="user" href="{{ news.author.href }}" itemprop="accountablePerson">({{ news.author.name }})</a>{#
-            #}{% endif %}{#
+    #}<header><h3 itemprop="name" class="title">{{ news.title }}</h3></header>{#
+        #}<article class="content">{{ news.content }}</article>{#
+        #}<div class="metadata">{#
+            #}<time datetime="{{ news.datetime_attr }}" itemprop="datePublished">{{ news.datetime }}</time>{#
+            #}{% if news.author is defined and news.author %}, par {#
+                #}<a rel="author" class="user" href="{{ news.author.href }}" itemprop="accountablePerson">{{ news.author.name }}</a>{#
+            #}{% endif %}</div>{#
 #}</li>
     {% endfor %}
     </ul>

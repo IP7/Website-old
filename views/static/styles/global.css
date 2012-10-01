@@ -26,7 +26,16 @@ a {
     border:none;
 }
 
+a.user {
+    text-decoration:inherit;
+    color:black;
+}
+
 body { background-color: #FAFAFA; }
+
+p, li {
+    max-width:100ex;
+}
 
 /* == Code ================================================ */
 
@@ -318,6 +327,32 @@ body > #container { height: auto; min-height:100%; }
     padding-left:20px;
 }
 
+/* == News ================================================ */
+
+.news-list {
+    list-style-type:none;
+    margin-bottom:50px;
+    padding-left:10px;
+    overflow:auto;
+    max-width:101ex;
+    max-height:500px;
+}
+.news {
+    margin-bottom:30px;
+    padding-bottom:1px;
+    border-bottom:1px solid #EEE;
+    padding-right:15px;
+}
+.news .metadata {
+    font-size:0.8em;
+    color:#333;
+    text-align:right;
+}
+.news h3 {
+    margin-top:0;
+    margin-bottom:10px;
+}
+
 /* == Profiles ============================================ */
 
 .profile {/* display:table;*/margin-top:40px }
@@ -371,6 +406,12 @@ body > #container { height: auto; min-height:100%; }
 
 .logout-bar-link {
     opacity:0.8;
+}
+
+/* -- Courses --------------------------------------------- */
+
+.course .intro {
+    margin-bottom:60px;
 }
 
 /* == Footers ============================================= */
