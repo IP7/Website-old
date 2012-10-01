@@ -410,7 +410,8 @@ body > #container { height: auto; min-height:100%; }
 
 /* -- Courses --------------------------------------------- */
 
-.course .intro {
+.course .intro,
+.cursus .intro {
     margin-bottom:60px;
 }
 
