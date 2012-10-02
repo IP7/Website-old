@@ -36,7 +36,7 @@
             <p>Posté par <a href="{{ page.content.author.href }}" class="user" rel="author">{{ page.content.author.name }}</a>{#
             #} <date datetime="{{ page.content.date.datetime }}">{{ page.content.date.text }}</date>.</p>
         </header>
-        <section class="user_content_text">{{ page.content.text|raw }}</section>
+        <section class="user_content_text">{{ page.content.text|md2html|raw }}</section>
         {% if page.content.files is defined and page.content.files is not empty %}
         <aside class="user_content_files">
             <h3>Fichiers</h3>

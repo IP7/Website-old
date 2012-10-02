@@ -85,6 +85,11 @@ class Config {
 
         self::$tpl = new Twig_Environment($loader, self::$default_twig_env);
 
+        # Twig extensions
+        require_once dirname(__FILE__).'/lib/vendors/Twig/Extension/Markdown2HTMLfilter.php';
+        self::$tpl->addExtension(new \IP7Website\Twig\Extension\Markdown2HTMLfilter());
+
+        # default template values
         self::$default_tpl_values = array(
 
             'site' => array(

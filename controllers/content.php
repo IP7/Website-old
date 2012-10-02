@@ -130,7 +130,7 @@ function display_course_content() {
 
     $tpl_content = array(
         'title'  => $content->getTitle(),
-        'text'   => format_text($content->getText()),
+        'text'   => $content->getText(),
         'date'   => array(
             'text'     => Lang\date_fr($content->getDate()),
             'datetime' => datetime_attr($content->getDate())
@@ -372,7 +372,7 @@ function display_post_member_proposed_content_preview() {
 
     // ** Text **
 
-    $text = has_post('text') ? format_text($_POST['text']) : '';
+    $text = has_post('text') ? $_POST['text'] : '';
 
     if (!count($fd2->get('files')) && !$text) {
         halt(HTTP_BAD_REQUEST, 'Ce contenu est vide.');
