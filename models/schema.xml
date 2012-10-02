@@ -157,10 +157,6 @@
             <reference local="responsable_id" foreign="id" />
         </foreign-key>
 
-        <foreign-key foreignTable="newsletters" onDelete="SETNULL" onUpdate="CASCADE" phpName="Newsletter">
-            <reference local="newsletter_id" foreign="id" />
-        </foreign-key>
-
         <validator column="name">
             <rule name="minLength" value="1" message="Le nom doit faire au moins ${value} caractère." />
             <rule name="unique" message="Le nom existe déjà." />
@@ -378,62 +374,6 @@
             <rule name="notMatch"  value="/^[a-z]:\/\//i"
                                              message="Le fichier ne peut être distant." />
         </validator>
-    </table>
-
-    <!-- === newsletter === -->
-    <table name="newsletters" phpName="Newsletter">
-        <!-- id -->
-        <column name="id"   type="INTEGER" required="true" primaryKey="true" autoIncrement="true"/>
-
-        <!-- nom -->
-        <column name="name" type="VARCHAR" required="true" />
-
-        <!-- courte description -->
-        <column name="description" type="VARCHAR" />
-
-        <unique>
-            <unique-column name="name" />
-        </unique>
-    </table>
-
-    <!-- message de newsletter -->
-    <table name="newsletters_posts" phpName="NewsletterPost">
-
-        <!-- id -->
-        <column name="id"            type="INTEGER" required="true" primaryKey="true" autoIncrement="true"/>
-
-        <!-- id de la newsletter correspondante -->
-        <column name="newsletter_id" type="INTEGER" />
-        
-        <!-- date d'envoi -->
-        <column name="date"          type="TIMESTAMP" required="true" />
-
-        <!-- contenu -->
-        <column name="text"          type="LONGVARCHAR" required="true" lazyLoad="true" />
-
-        <!-- == index & clefs étrangères == -->
-
-        <foreign-key foreignTable="newsletters" onDelete="SETNULL" onUpdate="CASCADE" phpName="Newsletter">
-            <reference local="newsletter_id" foreign="id" />
-        </foreign-key>
-    </table>
-
-    <!-- abonnés aux newsletters -->
-    <table name="newsletters_subscribers" isCrossRef="true">
-
-        <!-- id de l'abonné -->
-        <column name="subscriber_id" type="INTEGER" primaryKey="true"/>
-        <!-- id de la newsletter -->
-        <column name="newsletter_id" type="INTEGER" primaryKey="true"/>
-
-        <!-- == index & clefs étrangères == -->
-
-        <foreign-key foreignTable="users" onDelete="CASCADE" onUpdate="CASCADE" phpName="Subscriber">
-            <reference local="subscriber_id" foreign="id"/>
-        </foreign-key>
-        <foreign-key foreignTable="newsletters" onDelete="CASCADE" onUpdate="CASCADE" phpName="Newsletter">
-            <reference local="newsletter_id" foreign="id"/>
-        </foreign-key>
     </table>
 
     <!-- == alertes == -->
