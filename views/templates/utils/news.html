@@ -7,14 +7,14 @@
     {% endif %}
     <ul class="news-list">
     {% for news in page.news %}
-    <li class="news" itemscope itemptype="http://schema.org/NewsArticle">{#
-    #}<header><h3 itemprop="name" class="title">{{ news.title }}</h3></header>{#
+    <li class="news" itemscope itemptype="http://schema.org/NewsArticle" data-id="{{ news.id }}" data-can-edit="{{ news.can_edit }}">{#
+    #}<h3 itemprop="name" class="title">{{ news.title }}</h3>{#
         #}<article class="content">{{ news.content|md2html|raw }}</article>{#
         #}<div class="metadata">{#
             #}<time datetime="{{ news.datetime_attr }}" itemprop="datePublished">{{ news.datetime }}</time>{#
             #}{% if news.author is defined and news.author %}, par {#
                 #}<a rel="author" class="user" href="{{ news.author.href }}" itemprop="accountablePerson">{{ news.author.name }}</a>{#
-            #}{% endif %}</div>{#
+                #}{% endif %}</div>{#
 #}</li>
     {% endfor %}
     </ul>

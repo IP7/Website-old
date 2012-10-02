@@ -166,8 +166,11 @@ function tpl_news($n) {
             'datetime'      => Lang\date_fr($news->getDate()),
             'title'         => $news->getTitle(),
             'content'       => $news->getText(),
-            'author'        => $tpl_author
-        );
+            'author'        => $tpl_author,
+            'id'            => $news->getId(),
+
+            'can_edit'      => is_connected() && (user()->isAdmin() || user() === $author)
+         );
     }
 
     return $tpl_n;
