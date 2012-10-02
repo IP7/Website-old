@@ -69,7 +69,7 @@ $(function() {
 
         // TODO add a loading image
 
-        $.ajax('../api/1/news/get_one.json', {
+        $.ajax('/api/1/news/get_one.json', {
             data: { id: id },
             success: function(resp) {
                 if (!resp['response']) {
