@@ -76,4 +76,24 @@ function json_get_last_contents() {
     return json(array('response' => $tpl_contents));
 }
 
+function json_get_news_by_id() {
+    $id = get_string('id', 'GET');
+    if (!$id) { return json(array('error' => 'Bad id.')); }
+
+    $user_rights = is_connected() ? user()->getRank() : 0;
+
+    $news = NewsQuery::create()
+                ->where('Access_Rights <= ?', $user_rights, PDO::PARAM_INT)
+                ->findOneById($id);
+
+    if (!$news) { return json(array('error' => 'Bad id.')); }
+
+    return json(array(
+        'response' => array(
+            'title'  => $news->getTitle(),
+            'text'   => $news->getText()
+        )
+    ));
+}
+
 ?>

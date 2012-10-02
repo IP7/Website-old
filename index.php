@@ -120,6 +120,7 @@ dispatch('/a-propos', 'display_apropos_page');
 dispatch('/api/1/users/exists.json',  'json_check_username');
 dispatch('/api/1/search.json',        'json_global_search');
 dispatch('/api/1/contents/last.json', 'json_get_last_contents');
+dispatch('/api/1/news/get_one.json',  'json_get_news_by_id');
 
 ## tests
 dispatch('/test/init_db', 'display_test_init_db');

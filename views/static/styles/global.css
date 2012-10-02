@@ -37,6 +37,11 @@ p, li {
     max-width:100ex;
 }
 
+[contenteditable="true"] {
+    background-color:white;
+    outline:1px solid #DDD;
+}
+
 /* == Code ================================================ */
 
 .filepath,
@@ -162,6 +167,7 @@ textarea {
 /* buttons */
 input[type="button"], input[type="submit"],
 input[type="reset"],
+span.button,
 a.button {
     position:relative;
     border: 1px solid #666;
@@ -178,6 +184,14 @@ a.button {
     background-color:#222;
     color:#DDD;
     text-shadow:0px 1px 2px #666;
+}
+
+span.button.disabled,
+a.button.disabled {
+    cursor: default;
+    background-color:inherit;
+    color:inherit;
+    text-shadow:inherit;
 }
 
 input[type="button"]:active,
@@ -342,6 +356,7 @@ body > #container { height: auto; min-height:100%; }
     padding-bottom:1px;
     border-bottom:1px solid #EEE;
     padding-right:15px;
+    position:relative;
 }
 .news .metadata {
     font-size:0.8em;
@@ -351,6 +366,12 @@ body > #container { height: auto; min-height:100%; }
 .news h3 {
     margin-top:0;
     margin-bottom:10px;
+}
+
+span.news-edit-button {
+    position:absolute;
+    top:0;
+    right:0;
 }
 
 /* == Profiles ============================================ */
@@ -430,13 +451,9 @@ body > #container { height: auto; min-height:100%; }
     font-size:0.8em;
 }
 
-#global_footer_nav ul {
-    margin:0;
-}
+#global_footer_nav ul { margin:0; }
 
-#global_footer_nav li {
-    margin-top:4px;
-}
+#global_footer_nav li { margin-top:4px; }
 
 #global_footer_nav a {
     text-decoration:inherit;

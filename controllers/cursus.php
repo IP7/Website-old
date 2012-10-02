@@ -140,7 +140,8 @@ function display_cursus() {
             'add_news_button' => $add_news,
 
             'scripts' => array(
-                array( 'href' => js_url('menus') )
+                array( 'href' => js_url('menus') ),
+                array( 'href' => js_url('news') )
             )
         )
     )));
