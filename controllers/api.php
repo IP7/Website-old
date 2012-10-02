@@ -90,8 +90,9 @@ function json_get_news_by_id() {
 
     return json(array(
         'response' => array(
-            'title'  => $news->getTitle(),
-            'text'   => $news->getText()
+            'title'   => $news->getTitle(),
+            'md_text' => $news->getText(),
+            'text'    => tpl_render('md.html', array('content'=>$news->getText()))
         )
     ));
 }
