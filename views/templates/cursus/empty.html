@@ -3,6 +3,6 @@
 <article class="cursus">
 {# Intro #}
 <h1>{{ page.cursus.name }}</h1>
-<section class="intro">{{ page.cursus.introduction }}</section>
+<section class="intro">{{ page.cursus.introduction|md2html|raw }}</section>
 </article>
 {% endblock %}

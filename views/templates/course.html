@@ -2,7 +2,7 @@
 {% block content %}
 <article class="course">
     <h1>{{ page.course.name }}</h1>
-    <section class="intro">{{ page.course.intro }}</section>
+    <section class="intro">{{ page.course.intro|md2html|raw }}</section>
     {% include "utils/news.html" %}
     {% if page.course.content_types is defined and page.course.content_types is not empty %}
     <h2>Contenus</h2>
