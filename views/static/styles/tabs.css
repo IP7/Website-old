@@ -1,4 +1,4 @@
-.tab, .tab_content {
+.tab, .tab-content {
     border-color:#444;
 }
 
@@ -13,6 +13,7 @@
     margin-bottom:-1px;
     padding:4px 8px;
     background-color:#EEE;
+    cursor:pointer;
     -webkit-border-top-right-radius: 2px;
        -moz-border-top-right-radius: 2px;
         -ms-border-top-right-radius: 2px;
@@ -23,6 +24,12 @@
         -ms-border-top-left-radius: 2px;
          -o-border-top-left-radius: 2px;
             border-top-left-radius: 2px;
+    -webkit-user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+         -o-user-select: none;
+            user-select: none;
+    
     
 }
 .tab.selected {
@@ -39,11 +46,11 @@
     text-decoration:none;
 }
 
-.tab_contents {
+.tab-contents {
     background-color:white;
 }
 
-.tab_content {
+.tab-content {
     display:none;
     border:1px solid;
     -webkit-border-radius: 2px;
@@ -53,13 +60,13 @@
             border-radius: 2px;
     
 }
-.tab_content:target {
+.tab-content.displayed {
     display:block;
 }
 
-.tab_content h3 {
+.tab-content h3 {
     margin:10px auto 10px 15px;
 }
-.tab_content ul {
+.tab-content ul {
     margin-top:5px;
 }
