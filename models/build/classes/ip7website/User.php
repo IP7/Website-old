@@ -84,6 +84,16 @@ class User extends BaseUser {
     return false;
   }
 
+  /**
+   * Return true if the user is the responsible for
+   * the given cursus.
+   **/
+  public function isResponsibleFor($cursus) {
+    if (!($cursus instanceof Cursus)) { return false; }
+
+    return $this === $cursus->getResponsable();
+  }
+
   /* == Settings ============================================= */
 
   /**

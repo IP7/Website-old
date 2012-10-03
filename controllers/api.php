@@ -77,7 +77,7 @@ function json_get_last_contents() {
 }
 
 function json_get_news_by_id() {
-    $id = get_string('id', 'GET');
+    $id = intval(get_string('id', 'GET'));
     if (!$id) { return json(array('error' => 'Bad id.')); }
 
     $user_rights = is_connected() ? user()->getRank() : 0;
@@ -93,6 +93,52 @@ function json_get_news_by_id() {
             'title'   => $news->getTitle(),
             'md_text' => $news->getText(),
             'text'    => tpl_render('utils/md.html', array('content'=>$news->getText()))
+        )
+    ));
+}
+
+function json_post_update_news() {
+    $id = intval(get_string('id', 'POST'));
+    if (!$id) { return json(array('error' => 'Bad id.')); }
+
+    if (!is_connected() || !user()->isAdmin()) {
+        halt(HTTP_FORBIDDEN);
+    }
+
+    $news = NewsQuery::create()->findOneById($id);
+    if (!$news) { return json(array('error' => 'Bad id.')); }
+
+    if ($news->getAccessRights() > user()->getRank()) {
+        halt(HTTP_FORBIDDEN);
+    }
+
+    if (!user()->isAdmin()) {
+        $cursus = $news->getCursus();
+        if (!$cursus || !user()->isResponsibleFor($cursus)) {
+            halt(HTTP_FORBIDDEN);
+        }
+    }
+
+    $title = get_string('title', 'POST');
+    $body  = get_string('body',  'POST');
+
+    if (!$title || strlen($title) > 255)  {
+        return json(array('error' => 'Bad title.'));
+    }
+
+    if (!$body || strlen($body) > 1024) {
+        return json(array('error' => 'Bad body'));
+    }
+
+    $news->setTitle($title);
+    $news->setText($body);
+    $news->save();
+
+    return json(array(
+        'response' => array(
+            'title'   => $title,
+            'md_text' => $body,
+            'text'    => tpl_render('utils/md.html', array('content'=>$body))
         )
     ));
 }
