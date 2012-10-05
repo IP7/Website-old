@@ -4,7 +4,7 @@ $(function(){
         $tb_contents = $('.tab-content[data-type]'),
 
         selected = 'selected',
-        displayed = 'displayed'
+        displayed = 'displayed',
 
         $old_tab = $tabs.first(),
         $old_tb_content = $tb_contents.first();
