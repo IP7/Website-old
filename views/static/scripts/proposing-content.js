@@ -30,14 +30,14 @@ $(function(){
                     addInp();
             };
             p.className = 'microcopy';
-            p.innerText = 'Facultatif, 10Mio max.';
+            p.textContent = 'Facultatif, 10Mio max.';
 
             // description
             j.name = 'desc[]';
             j.type = 'text';
             j.onchange = i.onchange;
             q.className = 'microcopy';
-            q.innerText = 'Facultatif';
+            q.textContent = 'Facultatif';
 
             [t,i,p].forEach(function(e){l.appendChild(e)});
             [u,j,q].forEach(function(e){k.appendChild(e)});
@@ -57,7 +57,7 @@ $(function(){
             // for each type, an array of its words
             var types = [].slice.apply(type_inp.options)
                             .map(function(o){
-                                return o.innerText
+                                return o.textContent
                                             .replace(/^\s+|\s+$/g,'') // strip
                                             .toLocaleLowerCase()
                                             .split(/\s+/);

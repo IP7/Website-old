@@ -7,7 +7,7 @@ $(function(){
 
         var display_error = function(e) {
                 e = document.createElement('p');
-                e.innerText = 'Une erreur est survenue lors du téléchargement.';
+                e.textContent = 'Une erreur est survenue lors du téléchargement.';
                 div.replaceChild(e, loader);
                 window.setTimeout(function(){$(div).fadeOut(1000)},5000);
         },
@@ -17,7 +17,7 @@ $(function(){
         ul = document.createElement('ul');
 
         loader.src = '/views/static/loader.gif';
-        t.innerText = 'Les derniers contenus ajoutés';
+        t.textContent = 'Les derniers contenus ajoutés';
 
         div.appendChild(t);
 
