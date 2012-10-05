@@ -120,6 +120,7 @@ dispatch('/api/1/search.json',           'json_global_search');
 dispatch('/api/1/contents/last.json',    'json_get_last_contents');
 dispatch('/api/1/news/get_one.json',     'json_get_news_by_id');
 dispatch_post('/api/1/news/update.json', 'json_post_update_news');
+dispatch_post('/api/1/news/delete.json', 'json_post_delete_news');
 
 ## tests
 dispatch('/test/init_db', 'display_test_init_db');

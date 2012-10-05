@@ -8,7 +8,7 @@ function get_news($cursus=null, $course=null) {
     $q = NewsQuery::create()
                 ->where('Access_Rights <= ?', $user_rights, PDO::PARAM_INT)
                 ->limit(10)
-                ->orderByDate('asc');
+                ->orderByDate('desc');
 
     if ($cursus) {
         $q = $q->filterByCursus($cursus);

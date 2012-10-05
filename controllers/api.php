@@ -143,4 +143,31 @@ function json_post_update_news() {
     ));
 }
 
+function json_post_delete_news() {
+    $id = intval(get_string('id', 'POST'));
+    if (!$id) { return json(array('error' => 'Bad id.')); }
+
+    if (!is_connected() || !user()->isAdmin()) {
+        halt(HTTP_FORBIDDEN);
+    }
+
+    $news = NewsQuery::create()->findOneById($id);
+    if (!$news) { return json(array('error' => 'Bad id.')); }
+
+    if ($news->getAccessRights() > user()->getRank()) {
+        halt(HTTP_FORBIDDEN);
+    }
+
+    if (!user()->isAdmin()) {
+        $cursus = $news->getCursus();
+        if (!$cursus || !user()->isResponsibleFor($cursus)) {
+            halt(HTTP_FORBIDDEN);
+        }
+    }
+
+    $news->delete();
+
+    return json(array('response' => 'ok'));
+}
+
 ?>

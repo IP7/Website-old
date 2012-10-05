@@ -13,23 +13,27 @@ $(function() {
 
     // fill the news object
     [].forEach.call(dom_news, function(li) {
+        var dc = document.createElement.bind(document);
 
-        var be = document.createElement('span'), // 'edit' button
-            bs = document.createElement('span'), // 'save' button
-            bc = document.createElement('span'), // 'cancel' button
-            b_set = document.createElement('div'); // buttons container
+        var be = dc('span'), // 'edit' button
+            bs = dc('span'), // 'save' button
+            bc = dc('span'), // 'cancel' button
+            bd = dc('span'), // 'delete' button
+            b_set = dc('div'); // buttons container
 
-        be.className = bs.className = bc.className = 'button';
+        be.className = bs.className = bc.className = bd.className = 'button';
         b_set.className = 'news-buttons-set';
 
-        be.innerText = 'éditer';
-        bs.innerText = 'enregistrer';
-        bc.innerText = 'annuler';
+        be.textContent = 'éditer';
+        bs.textContent = 'enregistrer';
+        bc.textContent = 'annuler';
+        bd.textContent = 'supprimer';
 
         // -- initialization --
         
-        // only the edit button is visible
+        // only edit & delete buttons is visible
         b_set.appendChild(be);
+        b_set.appendChild(bd);
         li.appendChild(b_set);
 
         news[li.dataset['id']] = {
@@ -38,6 +42,7 @@ $(function() {
                 edit   : be,
                 save   : bs,
                 cancel : bc,
+                delete : bd,
 
                 'set'  : b_set
             },
@@ -66,6 +71,11 @@ $(function() {
             if (!news[id = li.dataset['id']].edited) {return}
             cancel_edit(id);
         };
+
+        bd.onclick = function(id) {
+            if (!news[id = li.dataset['id']]) {return}
+            _delete(id);
+        };
     });
 
     function cancel_edit(id) {
@@ -79,7 +89,7 @@ $(function() {
         n.title_el.removeAttribute('contenteditable');
         n.body_el.removeAttribute('contenteditable');
 
-        if (n.old_title) n.title_el.innerText = n.old_title;
+        if (n.old_title) n.title_el.textContent = n.old_title;
         if (n.old_text)  n.body_el.innerHTML  = n.old_text;
 
         bt.edit.classList.remove('disabled');
@@ -109,8 +119,8 @@ $(function() {
                 n.title_el.setAttribute('contenteditable', true);
                 n.body_el.setAttribute('contenteditable', true);
 
-                n.title_el.innerText = resp.title;
-                n.body_el.innerText  = resp.md_text;
+                n.title_el.textContent = resp.title;
+                n.body_el.textContent  = resp.md_text;
 
                 n.old_title = resp['title'];
                 n.old_text  = resp['text'];
@@ -142,6 +152,21 @@ $(function() {
                 n.old_text  = resp['text'];
 
                 cancel_edit(id);
+            }
+        });
+    }
+
+    function _delete(id) {
+        var n = news[id];
+        if (!n) {return}
+        $.ajax('../api/1/news/delete.json', {
+            type: 'POST',
+            data: { id : id },
+            success: function(resp) {
+                $(n.el).fadeOut(1000, function() {
+                    n.el.parentElement.removeChild(n.el);
+                });
+                delete news[id];
             }
         });
     }
