@@ -170,4 +170,9 @@ function json_post_delete_news() {
     return json(array('response' => 'ok'));
 }
 
+function json_post_create_news() {
+    //TODO
+    return json(array('error' => 'not implemented'));
+}
+
 ?>
