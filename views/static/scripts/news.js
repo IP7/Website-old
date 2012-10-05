@@ -98,7 +98,7 @@ $(function() {
         bt.edit.classList.add('disabled');
         bt.set.replaceChild(bt.cancel, bt.edit);
 
-        $.ajax('/api/1/news/get_one.json', {
+        $.ajax('../api/1/news/get_one.json', {
             data: { id: id },
             success: function(resp) {
                 if (!resp['response']) {
@@ -124,7 +124,26 @@ $(function() {
     }
 
     function save(id) {
-        // TODO
+        var n = news[id];
+        if (!n || !n.edited) {return}
+        $.ajax('../api/1/news/update.json', {
+            type: 'POST',
+            data: {
+                id    : id,
+                title : n.title_el.textContent,
+                body  : n.body_el.textContent
+            },
+            success: function(resp) {
+                if (!resp['response']) {return}
+
+                resp = resp['response'];
+
+                n.old_title = resp['title'];
+                n.old_text  = resp['text'];
+
+                cancel_edit(id);
+            }
+        });
     }
 
 });
