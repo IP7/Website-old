@@ -1,7 +1,5 @@
 $(function() {
 
-    // TODO add a form to add news
-
     // News DOM elements (<li>)
     var dom_news = document.querySelectorAll('.news[data-id][data-can-edit="1"]'),
 
@@ -78,6 +76,19 @@ $(function() {
         };
     });
 
+    // add a button to create news
+    // TODO: display the button only if the user has the right to add a news
+    var news_div = document.getElementsByClassName('news-container')[0];
+
+    if (news_div) {
+        var b_create = document.createElement('span');
+        b_create.className = 'small button';
+        b_create.textContent = 'Nouvelle Actualité';
+        b_create.onclick = create;
+        console.log(news_div.children);
+        news_div.insertBefore(b_create, news_div.children[1]);
+    }
+
     function cancel_edit(id) {
         var n  = news[id],
             bt = n.buttons;
@@ -108,7 +119,7 @@ $(function() {
         bt.edit.classList.add('disabled');
         bt.set.replaceChild(bt.cancel, bt.edit);
 
-        $.ajax('../api/1/news/get_one.json', {
+        $.ajax('/api/1/news/get_one.json', {
             data: { id: id },
             success: function(resp) {
                 if (!resp['response']) {
@@ -136,7 +147,7 @@ $(function() {
     function save(id) {
         var n = news[id];
         if (!n || !n.edited) {return}
-        $.ajax('../api/1/news/update.json', {
+        $.ajax('/api/1/news/update.json', {
             type: 'POST',
             data: {
                 id    : id,
@@ -159,7 +170,7 @@ $(function() {
     function _delete(id) {
         var n = news[id];
         if (!n) {return}
-        $.ajax('../api/1/news/delete.json', {
+        $.ajax('/api/1/news/delete.json', {
             type: 'POST',
             data: { id : id },
             success: function(resp) {
@@ -169,6 +180,32 @@ $(function() {
                 delete news[id];
             }
         });
+    }
+
+    function create() {
+        var ref =    document.querySelector('article.course')
+                  || document.querySelector('article.cursus');
+
+        if (!ref) {return} // change this to add news on home page
+
+        var course_id = ref.dataset['course-id'],
+            cursus_id = ref.dataset['cursus-id'];
+
+        //TODO
+
+        /*
+        $.ajax('/api/1/news/create.json', {
+            type: 'POST',
+            data: {
+                course : course_id,
+                cursus : cursus_id,
+                title  : '', //TODO
+                body   : '' //TODO
+            },
+            success: function(resp) {
+                //TODO
+            }
+        });*/
     }
 
 });
