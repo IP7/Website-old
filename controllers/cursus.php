@@ -125,6 +125,7 @@ function display_cursus() {
             'news'            => tpl_news($news),
 
             'cursus'          => array(
+                'id'           => $cursus->getId(),
                 'name'         => $cursus->getName(),
                 'introduction' => $cursus->getDescription(),
 
@@ -173,6 +174,7 @@ function display_cursus_with_multiple_educational_paths($cursus, $msg_str, $msg_
             'news'         => false,
 
             'cursus'       => array(
+                'id'                => $cursus->getId(),
                 'name'              => $cursus->getName(),
                 'introduction'      => $cursus->getDescription(),
 
@@ -192,7 +194,8 @@ function display_empty_cursus($cursus, $base_uri, $breadcrumb) {
             'description'  => truncate_string($cursus->getDescription()),
 
             'cursus' => array(
-                'name' => $cursus->getName(),
+                'id'           => $cursus->getId(),
+                'name'         => $cursus->getName(),
                 'introduction' => $cursus->getDescription(),
             ),
 

@@ -1,6 +1,6 @@
 {% extends "main.html" %}
 {% block content %}
-<article class="course">
+<article class="course" data-course-id="{{ page.course.id }}" data-cursus-id="{{ page.cursus.id }}">
     <h1>{{ page.course.name }}</h1>
     <section class="intro">{{ page.course.intro|md2html|raw }}</section>
     {% include "utils/news.html" %}

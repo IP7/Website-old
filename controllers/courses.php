@@ -59,7 +59,13 @@ function display_course() {
                 'name'  => $course->getName().' ('.$course->getCode().')',
                 'intro' => $course->getDescription(),
 
+                'id'    => $course->getId(),
+
                 'content_types' => tpl_course_contents($cursus, $course)
+            ),
+
+            'cursus'         => array(
+                'id'    => $cursus->getId()
             ),
 
             'styles' => array(

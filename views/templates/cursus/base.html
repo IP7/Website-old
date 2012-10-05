@@ -50,7 +50,7 @@
     </section>
 </aside>
 {% endif %}
-<article class="cursus">
+<article class="cursus" data-cursus-id="{{ page.cursus.id }}">
 {# Intro #}
 <h1>{{ page.cursus.path_name }} ({{ page.cursus.name }})</h1>
 <section class="intro">{{ page.cursus.introduction|md2html|raw }}</section>
