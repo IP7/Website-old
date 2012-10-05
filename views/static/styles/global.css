@@ -200,6 +200,11 @@ a.button {
     
 }
 
+span.small.button,
+a.small.button {
+    font-size:0.8em;
+}
+
 span.button.disabled,
 a.button.disabled {
     cursor: default;
@@ -360,7 +365,7 @@ body > #container { height: auto; min-height:100%; }
 .news-list {
     list-style-type:none;
     margin-bottom:50px;
-    padding-left:10px;
+    padding-left:0;
     overflow:auto;
     width:101ex;
     max-height:500px;
@@ -386,6 +391,9 @@ body > #container { height: auto; min-height:100%; }
     margin-bottom:16px;
 }
 
+.news .button-set {
+    margin-bottom:5px;
+}
 
 /* == Profiles ============================================ */
 
