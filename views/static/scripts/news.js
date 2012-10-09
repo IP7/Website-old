@@ -77,7 +77,6 @@ $(function() {
     });
 
     // add a button to create news
-    // TODO: display the button only if the user has the right to add a news
     var news_div = document.getElementsByClassName('news-container')[0];
 
     if (news_div) {
