@@ -93,11 +93,6 @@ function display_cursus() {
             'href' => $base_uri.'edit',
             'title' => 'Éditer'
         );
-
-        $add_news = null;/*array(
-            'href' => $base_uri.'add_news',
-            'title' => 'Ajouter une actualité'
-        );*/
     }
 
     $resp_q = $cursus->getResponsable();
@@ -110,7 +105,7 @@ function display_cursus() {
         );
     }
 
-    return Config::$tpl->render('cursus/base.html', tpl_array(array(
+    $tpl_cursus = array(
         'page' => array(
             'title'           => $cursus->getName(),
 
@@ -141,11 +136,16 @@ function display_cursus() {
             'add_news_button' => $add_news,
 
             'scripts' => array(
-                array( 'href' => js_url('menus') ),
-                array( 'href' => js_url('news') )
+                array( 'href' => js_url('menus') )
             )
         )
-    )));
+    );
+
+    if (is_connected() && (user()->isAdmin() || user()->getId() === $cursus->getResponsableId())) {
+        $tpl_cursus['page']['scripts'] []= array( 'href' => js_url('news') );
+    }
+
+    return tpl_render('cursus/base.html', $tpl_cursus);
 }
 
 function display_cursus_with_multiple_educational_paths($cursus, $msg_str, $msg_type, $base_uri, $breadcrumb) {
