@@ -73,7 +73,8 @@ function display_course() {
             ),
 
             'scripts' => array(
-                array( 'href'  => js_url('tabs') )
+                array( 'href'  => js_url('tabs') ),
+                array( 'href'  => js_url('edit') )
             ),
 
             'moderation_bar' => $moderation_bar
