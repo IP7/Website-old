@@ -1,3 +1,4 @@
+// For iOS <= 4
 Function.prototype.bind = Function.prototype.bind || function (){
     var that = this,
         args = [].slice.apply(arguments),
@@ -10,3 +11,10 @@ Function.prototype.bind = Function.prototype.bind || function (){
         );
     };
 };
+
+// For IE <= 8
+if (!document.body.textContent) {
+    HTMLElement.prototype.__defineGetter__('textContent', function() {
+        return this.innerText;
+    });
+}
