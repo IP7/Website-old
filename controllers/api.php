@@ -178,4 +178,12 @@ function json_post_create_news() {
     return json(array('error' => 'not implemented'));
 }
 
+function json_get_course_intro() { // ?id=<course id>
+    return json_get_description_of_course_or_cursus('course');
+}
+
+function json_get_cursus_intro() { // ?id=<cursus id>
+    return json_get_description_of_course_or_cursus('cursus');
+}
+
 ?>
