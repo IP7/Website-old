@@ -11,7 +11,7 @@ $(function() {
             }
 
             lastXhr = $.getJSON('/api/1/search.json', {q:term}, function( data, status, xhr,/*placeholder:*/results) {
-                results = data['response'];
+                results = data['data'];
                 if (xhr === lastXhr) {
 
                     response(cache[term] = results.map(function(r){

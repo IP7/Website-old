@@ -30,10 +30,10 @@ $(function(){
                 data: { l:10 },
                 error: display_error,
                 success: function(response) {
-                    if (!response || !response.response || !response.response.length) {
+                    if (!response || !response.data || !response.data.length) {
                         return display_error();
                     }
-                    var contents = response.response,
+                    var contents = response.data,
                         len      = contents.length,
                         i        = 0,
                         li, a, c;

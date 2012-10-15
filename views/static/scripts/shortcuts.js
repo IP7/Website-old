@@ -39,7 +39,7 @@ $(function(d,u,l,r){
     // Konami code
     // up up down down left right left right (obfuscated)
     Mousetrap.bind((u='up ')+u+(d='down ')+d+(l='left ')+(r='right ')+l+r+' b a', function(){
-        transform_body('rotate(180deg)');
+        transform_body('rot'+'ate(18'+'0deg)');
         b.dataset['k'] = true;
     });
 

@@ -40,7 +40,7 @@ $(function() {
                 edit   : be,
                 save   : bs,
                 cancel : bc,
-                delete : bd,
+               'delete': bd,
 
                 'set'  : b_set
             },
@@ -121,10 +121,10 @@ $(function() {
         $.ajax('/api/1/news/get_one.json', {
             data: { id: id },
             success: function(resp) {
-                if (!resp['response']) {
+                if (!resp['data']) {
                     cancel_edit(id);
                 }
-                resp = resp['response'];
+                resp = resp['data'];
 
                 n.title_el.setAttribute('contenteditable', true);
                 n.body_el.setAttribute('contenteditable', true);
@@ -154,9 +154,9 @@ $(function() {
                 body  : n.body_el.textContent
             },
             success: function(resp) {
-                if (!resp['response']) {return}
+                if (!resp['data']) {return}
 
-                resp = resp['response'];
+                resp = resp['data'];
 
                 n.old_title = resp['title'];
                 n.old_text  = resp['text'];

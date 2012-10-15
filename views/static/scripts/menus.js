@@ -20,7 +20,7 @@
         b.className = 'show-hide-button';
         b.style.cursor = 'pointer';
         b.onclick = toggle_menu.bind(null, b, $u);
-        t.appendChild/*insertBefore*/(b/*, t.firstChild*/);
+        t.appendChild(b);
         
     });
     

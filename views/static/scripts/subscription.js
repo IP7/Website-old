@@ -4,13 +4,13 @@
 
         $inp.keydown(function() {
             $inp.removeClass('valid invalid');
-        })
+        });
 
         $inp.blur(function(){
             $.ajax('/api/1/users/exists.json', {
                 data: { username: $inp.val() },
                 success: function(resp) {
-                    $inp.addClass(resp['response'] ? 'invalid' : 'valid');
+                    $inp.addClass(resp['data'] ? 'invalid' : 'valid');
                 }
             });
         });

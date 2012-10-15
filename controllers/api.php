@@ -4,19 +4,19 @@
 // and return the response with JSON
 function json_check_username() {
     if (!has_get('username')) {
-        return '';
+        return json(array('error' => 'no username provided.'));
     }
     $u = get_string('username', 'GET');
 
     $user = UserQuery::create()->findOneByUsername($u);
 
-    return json(array('response' => ($user ? true : false)));
+    return json(array('data' => ($user ? true : false)));
 }
 
 // 
 function json_global_search() {
     if (!has_get('q')) {
-        return json(array('response' => array()));
+        return json(array('data' => array()));
     }
 
     $raw_results = perform_search(escape_mysql_wildcards(get_string('q', 'GET')), false, 5);
@@ -29,7 +29,7 @@ function json_global_search() {
         }
     }
 
-    return json(array('response' => $results));
+    return json(array('data' => $results));
 }
 
 function json_get_last_contents() {
@@ -40,7 +40,7 @@ function json_get_last_contents() {
     }
 
     if ($limit <= 0) {
-        return json(array('response' => array()));
+        return json(array('data' => array()));
     }
 
     $user_rights = is_connected() ? user()->getRank() : 0;
@@ -52,6 +52,7 @@ function json_get_last_contents() {
                         ->useContentTypeQuery()
                         ->where('Rights <= ?', $user_rights, PDO::PARAM_INT)
                         ->endUse()
+                    ->where('Access_Rights <= ?', $user_rights, PDO::PARAM_INT)
                     ->orderByDate('desc')
                     ->limit($limit)
                     ->find();
@@ -73,7 +74,7 @@ function json_get_last_contents() {
         );
     }
 
-    return json(array('response' => $tpl_contents));
+    return json(array('data' => $tpl_contents));
 }
 
 function json_get_news_by_id() {
@@ -89,10 +90,12 @@ function json_get_news_by_id() {
     if (!$news) { return json(array('error' => 'Bad id.')); }
 
     return json(array(
-        'response' => array(
-            'title'   => $news->getTitle(),
-            'md_text' => $news->getText(),
-            'text'    => tpl_render('utils/md.html', array('content'=>$news->getText()))
+        'data' => array(
+            array(
+                'title'   => $news->getTitle(),
+                'md_text' => $news->getText(),
+                'text'    => tpl_render('utils/md.html', array('content'=>$news->getText()))
+            )
         )
     ));
 }
@@ -135,7 +138,7 @@ function json_post_update_news() {
     $news->save();
 
     return json(array(
-        'response' => array(
+        'data' => array(
             'title'   => $title,
             'md_text' => $body,
             'text'    => tpl_render('utils/md.html', array('content'=>$body))
@@ -167,7 +170,7 @@ function json_post_delete_news() {
 
     $news->delete();
 
-    return json(array('response' => 'ok'));
+    return json(array('status' => 'ok'));
 }
 
 function json_post_create_news() {
