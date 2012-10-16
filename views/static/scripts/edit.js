@@ -15,6 +15,7 @@
         buttons[b[0]].innerText = b[1];
         buttons[b[0]].onclick = b[2];
     });
+    introduction.appendChild(buttons.edit);
                 
     function edit() 
     {
@@ -26,9 +27,9 @@
         introduction.setAttribute('contenteditable', edit_mode);
         introduction.focus();
                                                             
-        document.body.removeChild(buttons.edit);
-        document.body.appendChild(buttons.save);
-        document.body.appendChild(buttons.cancel);
+        introduction.removeChild(buttons.edit);
+        introduction.appendChild(buttons.save);
+        introduction.appendChild(buttons.cancel);
     
     }
                     
@@ -41,9 +42,9 @@
                                                 
         introduction.setAttribute('contenteditable', edit_mode);
                                                     
-        document.body.removeChild(buttons.save);
-        document.body.removeChild(buttons.cancel);
-        document.body.appendChild(buttons.edit);        
+        introduction.removeChild(buttons.save);
+        introduction.removeChild(buttons.cancel);
+        introduction.appendChild(buttons.edit);        
         
     }
                         
@@ -55,6 +56,5 @@
     
     }
                             
-    document.body.appendChild(buttons.edit);
 
 })();
