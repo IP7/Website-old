@@ -158,7 +158,7 @@
                         );
 
             #}
-            <script>$.ajaxSetup({cache: true});(function(g){[
+            {#            <script>$.ajaxSetup({cache: true});(function(g){[
             {% if site.scripts is not empty %}
                 {% for script in site.scripts %}
                     "{{ script.href|raw }}",
@@ -170,5 +170,16 @@
                 {% endfor %}
             {% endif %}
             ].reverse().forEach(function(s){g=$.getScript.bind($,s,g)});if(g)g()})()</script>
+            #}
+            {% if site.scripts is not empty %}
+                {% for script in site.scripts %}
+                    <script src="{{ script.href|raw }}"></script>
+                {% endfor %}
+            {% endif %}
+            {% if page.scripts is defined and page.scripts is not empty %}
+                {% for script in page.scripts %}
+                    <script src="{{ script.href|raw }}"></script>
+                {% endfor %}
+            {% endif %}
         </body>
 </html>
