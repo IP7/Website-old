@@ -7,7 +7,7 @@
     {% endif %}
     <ul class="news-list">
     {% for news in page.news %}
-    <li class="news" itemscope itemptype="http://schema.org/NewsArticle" data-id="{{ news.id }}" data-can-edit="{{ news.can_edit }}">{#
+    <li class="news" itemscope itemptype="http://schema.org/NewsArticle" data-id="{{ news.id }}">{#
     #}<h3 itemprop="name" class="title">{{ news.title }}</h3>{#
         #}<article class="content">{{ news.content|md2html|raw }}</article>{#
         #}<div class="metadata">{#

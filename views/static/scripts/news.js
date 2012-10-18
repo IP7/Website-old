@@ -1,7 +1,25 @@
 $(function() {
 
+    // shortcuts
+    var d  = document,
+        dc = d.createElement.bind(d);
+
+
+    var base_api = '/api/1/news/';
+
+    var cursus = d.getElementsByClassName('cursus')[0],
+        course = d.getElementsByClassName('course')[0],
+        course_id = 0,
+
+        cursus_id = cursus ? cursus.dataset['cursus-id'] : 0;
+
+    if (course) {
+        cursus_id = course.dataset['cursus-id'];
+        course_id = course.dataset['course-id'];
+    }
+
     // News DOM elements (<li>)
-    var dom_news = document.querySelectorAll('.news[data-id][data-can-edit="1"]'),
+    var dom_news = d.querySelectorAll('.news[data-id]'),
 
     // cache for news informations
         news = {};
@@ -11,21 +29,22 @@ $(function() {
 
     // fill the news object
     [].forEach.call(dom_news, function(li) {
-        var dc = document.createElement.bind(document);
 
         var be = dc('span'), // 'edit' button
             bs = dc('span'), // 'save' button
             bc = dc('span'), // 'cancel' button
             bd = dc('span'), // 'delete' button
-            b_set = dc('div'); // buttons container
+            b_set = dc('div'), // buttons container
+
+            id = li.dataset['id'];
 
         be.className = bs.className = bc.className = bd.className = 'button';
-        b_set.className = 'news-buttons-set';
+        b_set.className = 'buttons-set';
 
-        be.textContent = 'éditer';
-        bs.textContent = 'enregistrer';
-        bc.textContent = 'annuler';
-        bd.textContent = 'supprimer';
+        be.textContent = 'Modifier';
+        bs.textContent = 'Enregistrer';
+        bc.textContent = 'Annuler';
+        bd.textContent = 'Supprimer';
 
         // -- initialization --
         
@@ -34,7 +53,7 @@ $(function() {
         b_set.appendChild(bd);
         li.appendChild(b_set);
 
-        news[li.dataset['id']] = {
+        news[id] = {
             // buttons
             buttons : {
                 edit   : be,
@@ -42,7 +61,7 @@ $(function() {
                 cancel : bc,
                'delete': bd,
 
-                'set'  : b_set
+               'set'   : b_set
             },
 
             // the news element is not currently edited
@@ -51,27 +70,39 @@ $(function() {
             // dom element
             el: li,
 
-            title_el : li.childNodes[0],
-            body_el  : li.childNodes[1]
+            title_el : li.getElementsByClassName('title')[0],
+            body_el  : li.getElementsByClassName('content')[0]
         };
 
-        be.onclick = function(id) {
-            if (news[id = li.dataset['id']].edited) {return}
+        be.onclick = news[id].body_el.ondblclick = function() {
+
+            if (news[id].edited)
+                return;
+
             edit(id);
         };
 
-        bs.onclick = function(id) {
-            if (!news[id = li.dataset['id']].edited) {return}
+        bs.onclick = function() {
+
+            if (!news[id].edited)
+                return;
+
             save(id);
         };
 
-        bc.onclick = function(id) {
-            if (!news[id = li.dataset['id']].edited) {return}
+        bc.onclick = function() {
+            
+            if (!news[id].edited)
+                return;
+
             cancel_edit(id);
         };
 
-        bd.onclick = function(id) {
-            if (!news[id = li.dataset['id']]) {return}
+        bd.onclick = function() {
+            
+            if (!news[id])
+                return;
+
             _delete(id);
         };
     });
@@ -80,12 +111,11 @@ $(function() {
     var news_div = document.getElementsByClassName('news-container')[0];
 
     if (news_div) {
-        var b_create = document.createElement('span');
+        var b_create = dc('span');
         b_create.className = 'small button';
         b_create.textContent = 'Nouvelle Actualité';
         b_create.onclick = create;
-        console.log(news_div.children);
-        news_div.insertBefore(b_create, news_div.children[1]);
+        news_div.insertBefore(b_create, dom_news[0].parentElement);
     }
 
     function cancel_edit(id) {
@@ -102,9 +132,10 @@ $(function() {
         if (n.old_title) n.title_el.textContent = n.old_title;
         if (n.old_text)  n.body_el.innerHTML  = n.old_text;
 
-        bt.edit.classList.remove('disabled');
-
+        // remove the 'save' button
         if (bt.save.parentElement) bt.set.removeChild(bt.save);
+
+        // replace 'cancel' with 'edit'
         bt.set.replaceChild(bt.edit, bt.cancel);
     }
 
@@ -115,16 +146,16 @@ $(function() {
         if (n.edited) {return}
 
         n.edited = true;
-        bt.edit.classList.add('disabled');
+        
         bt.set.replaceChild(bt.cancel, bt.edit);
 
-        $.ajax('/api/1/news/get_one.json', {
+        $.ajax(base_api+'get_one.json', {
             data: { id: id },
             success: function(resp) {
                 if (!resp['data']) {
                     cancel_edit(id);
                 }
-                resp = resp['data'];
+                resp = resp['data'][0];
 
                 n.title_el.setAttribute('contenteditable', true);
                 n.body_el.setAttribute('contenteditable', true);
@@ -144,9 +175,14 @@ $(function() {
     }
 
     function save(id) {
-        var n = news[id];
+        var n = news[id],
+            bt = n.buttons;
+
         if (!n || !n.edited) {return}
-        $.ajax('/api/1/news/update.json', {
+
+        bt.save.classList.add('disabled');
+
+        $.ajax(base_api+'update.json', {
             type: 'POST',
             data: {
                 id    : id,
@@ -156,12 +192,16 @@ $(function() {
             success: function(resp) {
                 if (!resp['data']) {return}
 
-                resp = resp['data'];
+                resp = resp['data'][0];
 
                 n.old_title = resp['title'];
                 n.old_text  = resp['text'];
 
+                bt.save.classList.remove('disabled');
                 cancel_edit(id);
+            },
+            error: function() {
+                bt.save.classList.remove('disabled');
             }
         });
     }
@@ -169,7 +209,7 @@ $(function() {
     function _delete(id) {
         var n = news[id];
         if (!n) {return}
-        $.ajax('/api/1/news/delete.json', {
+        $.ajax(base_api+'delete.json', {
             type: 'POST',
             data: { id : id },
             success: function(resp) {
@@ -182,29 +222,7 @@ $(function() {
     }
 
     function create() {
-        var ref =    document.querySelector('article.course')
-                  || document.querySelector('article.cursus');
-
-        if (!ref) {return} // change this to add news on home page
-
-        var course_id = ref.dataset['course-id'],
-            cursus_id = ref.dataset['cursus-id'];
-
-        //TODO
-
-        /*
-        $.ajax('/api/1/news/create.json', {
-            type: 'POST',
-            data: {
-                course : course_id,
-                cursus : cursus_id,
-                title  : '', //TODO
-                body   : '' //TODO
-            },
-            success: function(resp) {
-                //TODO
-            }
-        });*/
+        // TODO add form with buttons → $.ajax(base_api+'create.json', etc)
     }
 
 });

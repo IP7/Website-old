@@ -122,11 +122,13 @@ function json_post_update_news() {
 
     return json(array(
         'data' => array(
-            'title'   => $news->getTitle(),
-            'md_text' => $news->getText(),
-            'text'    => tpl_render('utils/md.html', array(
-                'content' => $news->getText()
-            ))
+            array(
+                'title'   => $news->getTitle(),
+                'md_text' => $news->getText(),
+                'text'    => tpl_render('utils/md.html', array(
+                    'content' => $news->getText()
+                ))
+            )
         )
     ));
 }
