@@ -150,6 +150,7 @@ function display_educational_path() {
             'news'            => $news,
 
             'cursus'          => array(
+                'id'           => $cursus->getId(),
                 'name'         => $cursus->getName(),
                 'introduction' => $path->getDescription(),
 
