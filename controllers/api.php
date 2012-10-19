@@ -185,6 +185,19 @@ function json_post_create_news() {
             'md_text' => $news->getText(),
             'text'    => tpl_render('utils/md.html', array(
                 'content' => $news->getText()
+            )),
+            'html'    => tpl_render('utils/one_news.html', array(
+                'news' => array(
+                    'id'            => $news->getId(),
+                    'title'         => $news->getTitle(),
+                    'content'       => $news->getText(),
+                    'datetime_attr' => datetime_attr($news->getDate()),
+                    'datetime'      => Lang\date_fr($news->getDate()),
+                    'author'        => array(
+                        'href' => Config::$root_uri.'p/'.user()->getUsername(),
+                        'name' => user()->getPublicName()
+                    )
+                )
             ))
         )
     ));
