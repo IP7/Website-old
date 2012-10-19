@@ -22,7 +22,7 @@ RewriteCond %{HTTP_HOST} !^test.infop7.org$ [NC]
 RewriteCond %{HTTP_HOST} !^www.infop7.org$ [NC]
 RewriteCond %{HTTP_HOST} !^wiki.infop7.org$ [NC]
 # except for local tests
-RewriteCond %{HTTP_HOST} !^localhost$ [NC]
+RewriteCond %{HTTP_HOST} !localhost$ [NC]
 
 RewriteRule ^(.*)$ http://www.infop7.org/$1 [L,R=301]
 
