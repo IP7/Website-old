@@ -160,16 +160,16 @@ function json_post_delete_news() {
     return json(array('status' => 'ok'));
 }
 
-// ?cu_id=<cursus_id>&co_id=<course_id>&title=<title>&text=<text>
+// post cu_id=<cursus_id>&co_id=<course_id>&title=<title>&text=<text>
 function json_post_create_news() {
 
-    $cursus_id = get_string('cu_id', 'POST');
-    $course_id = get_string('co_id', 'POST');
+    $cursus_id = intval(get_string('cu_id', 'POST'));
+    $course_id = intval(get_string('co_id', 'POST'));
     $title     = get_string('title', 'POST');
     $text      = get_string('text',  'POST');
 
-    $cursus = ($cursus_id > 0) ? CursusQuery::findOneById($cursus_id) : null;
-    $course = ($course_id > 0) ? CourseQuery::findOneById($course_id) : null;
+    $cursus = ($cursus_id > 0) ? CursusQuery::create()->findOneById($cursus_id) : null;
+    $course = ($course_id > 0) ? CourseQuery::create()->findOneById($course_id) : null;
 
     $news = null;
 

@@ -61,6 +61,7 @@ function check_and_save_news($title, $body, &$news, $cursus=null, $course=null) 
 
     $news->setTitle($title);
     $news->setText($body);
+
     $news->save();
 
 }

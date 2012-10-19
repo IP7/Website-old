@@ -7,16 +7,18 @@ $(function() {
 
     var base_api = '/api/1/news/';
 
-    var cursus = d.getElementsByClassName('cursus')[0],
-        course = d.getElementsByClassName('course')[0],
+    var cursus = d.querySelector('article.cursus'),
+        course = d.querySelector('article.course'),
         course_id = 0,
 
-        cursus_id = cursus ? cursus.dataset['cursus-id'] : 0;
+        cursus_id = cursus ? cursus.dataset['cursusId'] : 0;
 
     if (course) {
-        cursus_id = course.dataset['cursus-id'];
-        course_id = course.dataset['course-id'];
+        cursus_id = course.dataset['cursusId'];
+        course_id = course.dataset['courseId'];
     }
+
+    console.log(cursus_id, course_id);
 
     // News DOM elements (<li>)
     var dom_news = d.querySelectorAll('.news[data-id]'),
@@ -259,10 +261,6 @@ $(function() {
             cancel_b.onclick = cancel_create;
 
             submit_b.onclick = function() {
-                console.log('title: '+title.textContent);
-                console.log('text: '+text.textContent);
-                // TODO  $.ajax(base_api+'create.json', etc)
-
                 submit_b.classList.add('disabled');
 
                 $.ajax(base_api+'create.json', {
@@ -274,16 +272,20 @@ $(function() {
                     },
                     type : 'POST',
                     success : function(resp) {
-                        if (!resp['data']) {return}
+                        if (!resp['data']) {
+                            submit_b.classList.remove('disabled');
+                            return;
+                        }
 
                         var news_list = d.getElementsByClassName('news-list')[0],
                             tmp_node  = dc('ul');
 
-                        console.log(resp);
-
                         tmp_node.innerHTML = resp['data'].html;
                         news_list.insertBefore(tmp_node.firstChild, news_list.firstChild);
                         cancel_create();
+                    },
+                    error: function() {
+                        submit_b.classList.remove('disabled');
                     }
                 });
             };
