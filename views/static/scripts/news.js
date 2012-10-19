@@ -20,6 +20,7 @@ $(function() {
 
     // News DOM elements (<li>)
     var dom_news = d.querySelectorAll('.news[data-id]'),
+        dom_news_root = d.getElementsByClassName('news-container')[0],
 
     // cache for news informations
         news = {};
@@ -108,10 +109,12 @@ $(function() {
     });
 
     // add a button to create news
-    var news_div = document.getElementsByClassName('news-container')[0];
+    var news_div = document.getElementsByClassName('news-container')[0],
+        b_create,
+        new_news_form;
 
     if (news_div) {
-        var b_create = dc('span');
+        b_create = dc('span');
         b_create.className = 'small button';
         b_create.textContent = 'Nouvelle Actualité';
         b_create.onclick = create;
@@ -222,7 +225,85 @@ $(function() {
     }
 
     function create() {
-        // TODO add form with buttons → $.ajax(base_api+'create.json', etc)
-    }
 
+        function cancel_create() {
+            if (!new_news_form || !new_news_form.parentElement)
+                return;
+
+            dom_news_root.replaceChild(b_create, new_news_form);
+        }
+
+        if (!new_news_form) {
+
+            var form  = dc('div'),
+            title = dc('h3'),
+            text  = dc('div'),
+            submit_b = dc('span'),
+            cancel_b = dc('span'),
+            b_set = dc('div');
+
+            form.className  = 'news';
+            title.className = 'title';
+            text.className  = 'content';
+            b_set.className = 'buttons-set';
+
+            submit_b.className = cancel_b.className = 'button';
+
+            title.setAttribute('contenteditable', true);
+            text.setAttribute('contenteditable', true);
+            submit_b.type = 'submit';
+
+            submit_b.textContent = 'Enregistrer';
+            cancel_b.textContent = 'Annuler';
+
+            cancel_b.onclick = cancel_create;
+
+            submit_b.onclick = function() {
+                console.log('title: '+title.textContent);
+                console.log('text: '+text.textContent);
+                // TODO  $.ajax(base_api+'create.json', etc)
+
+                submit_b.classList.add('disabled');
+
+                $.ajax(base_api+'create.json', {
+                    data: {
+                        cu_id : cursus_id,
+                        co_id : course_id,
+                        text  : text.textContent,
+                        title : title.textContent
+                    },
+                    type : 'POST',
+                    success : function(resp) {
+                        if (!resp['data']) {return}
+
+                        var news_list = d.getElementsByClassName('news-list')[0],
+                            tmp_node  = dc('ul');
+
+                        console.log(resp);
+
+                        tmp_node.innerHTML = resp['data'].html;
+                        news_list.insertBefore(tmp_node.firstChild, news_list.firstChild);
+                        cancel_create();
+                    }
+                });
+            };
+
+            form.appendChild(title);
+            form.appendChild(text);
+            b_set.appendChild(submit_b);
+            b_set.appendChild(cancel_b);
+            form.appendChild(b_set);
+
+            new_news_form = form;
+        }
+
+        new_news_form.children[0].textContent = '';
+        new_news_form.children[1].textContent = '';
+
+        dom_news_root.replaceChild(new_news_form, b_create);
+
+        new_news_form.children[0].focus();
+
+        new_news_form.getElementsByClassName('button')[0].classList.remove('disabled');
+    }
 });
