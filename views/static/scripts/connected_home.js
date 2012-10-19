@@ -1,7 +1,7 @@
 $(function(){
     (function display_last_contents() {
 
-        var div    = document.getElementById('last_contents');
+        var div = document.getElementById('last_contents');
 
         if (!div) { return; }
 
@@ -13,17 +13,19 @@ $(function(){
         },
 
         loader = document.createElement('image'),
-        t = document.createElement('h2'),
-        ul = document.createElement('ul');
+        t      = document.createElement('h2'),
+        ul     = document.createElement('ul');
 
-        loader.src = '/views/static/loader.gif';
+        loader.src    = '/views/static/loader.gif';
         t.textContent = 'Les derniers contenus ajoutés';
 
         div.appendChild(t);
 
         (function update_last_contents() {
 
-            if (ul.parentNode === div) { div.removeChild(ul); }
+            if (ul.parentNode === div)
+                div.removeChild(ul);
+            
             div.appendChild(loader);
 
             $.ajax('/api/1/contents/last.json', {
