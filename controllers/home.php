@@ -78,11 +78,18 @@ function display_connection($message=null, $message_type=null) {
             'forgotten_password_url' => Config::$root_uri.'oubli',
 
             'styles'                 => array(
-                array( 'href' => css_url('connection'), 'media' => 'all' )
+                array( 'href' => css_url('pretty_inputs'), 'media' => 'all' ),
+                array( 'href' => css_url('connection'),    'media' => 'all' )
             ),
 
             'message'                => $message,
-            'message_type'           => $message_type
+            'message_type'           => $message_type,
+
+            'scripts'                => array(
+                array( 'href' => js_url('pretty_inputs') ),
+                array( 'href' => js_url('gravatar') ),
+                array( 'href' => js_url('connection') )
+            )
         )
     ));
 }

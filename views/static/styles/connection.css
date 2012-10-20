@@ -1,24 +1,24 @@
-#connection .label::after {
-    content:" :";
+.connection-container {
+    text-align:center;
 }
 
-#connection .helplink {
+#avatar {
+    -webkit-border-radius: 5px;
+       -moz-border-radius: 5px;
+        -ms-border-radius: 5px;
+         -o-border-radius: 5px;
+            border-radius: 5px;
+}
+
+form.connection {
+    display:inline-block;
+}
+
+form.connection .helplink {
     font-size:0.9em;
 }
 
-#connection {
-    display:table;
-    border-spacing:5px;
-}
-
-.field {
-    display:table-row;
-}
-
-#connection .label {
-    width:40%;
-}
-
-#connection .label, #connection input {
-    display:table-cell;
+form.connection input,
+form.connection label {
+    text-align:left;
 }
