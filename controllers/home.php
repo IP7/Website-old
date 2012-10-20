@@ -96,7 +96,6 @@ function post_connection() {
 
         $password = get_string('password', 'post', false);
 
-        # sanitization made by Propel
         $res = connection(
             get_string('username', 'post'),
             $password,

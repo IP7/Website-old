@@ -12,7 +12,7 @@ function user() {
 
 /**
  * Verify if user's credentials are valid. If so,
- * return the corresping User object. If the credentials
+ * return the corresponding User object. If the credentials
  * are invalid, return DEACTIVATED_ACCOUNT or
  * WRONG_USERNAME_OR_PASSWORD.
  *
@@ -25,7 +25,10 @@ function check_user_credentials($username, $password){
     $password = (string)$password;
 
     $user = UserQuery::create()
-                ->findOneByUsername($username);
+                ->condition('email', 'Email = ?', $username, PDO::PARAM_STR)
+                ->condition('username', 'Username = ?', $username, PDO::PARAM_STR)
+                ->where(array('email', 'username'), 'or')
+                ->findOne();
 
     // Bad username
     if ($user == NULL) { return WRONG_USERNAME_OR_PASSWORD; }
