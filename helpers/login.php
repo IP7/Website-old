@@ -92,6 +92,7 @@ function set_connected($user, $remember=false) {
     if (!isset($_SESSION['visit_counted'])) {
         $user->incrementVisitsNb();
         $user->setLastVisit(new DateTime());
+        $user->save();
         $_SESSION['visit_counted'] = true;
     }
     $_SESSION['message'] = array();
