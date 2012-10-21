@@ -1,3 +1,57 @@
+/*
+div.input-field {
+    position:relative;
+    margin:25px;
+}
+
+div.input-field input[type="text"],
+div.input-field input[type="email"],
+div.input-field input[type="password"] {
+    border:1px solid #BBB;
+    -webkit-border-radius: 10px;
+       -moz-border-radius: 10px;
+        -ms-border-radius: 10px;
+         -o-border-radius: 10px;
+            border-radius: 10px;
+    
+    -webkit-box-shadow: inset 0px 2px 10px #DDD;
+       -moz-box-shadow: inset 0px 2px 10px #DDD;
+        -ms-box-shadow: inset 0px 2px 10px #DDD;
+         -o-box-shadow: inset 0px 2px 10px #DDD;
+            box-shadow: inset 0px 2px 10px #DDD;
+}
+
+div.input-field label {
+    position:absolute;
+    left:4px;
+    margin:0;
+    color:#333;
+    cursor:text;
+    -webkit-transition: color 0.2s linear 0;
+       -moz-transition: color 0.2s linear 0;
+        -ms-transition: color 0.2s linear 0;
+         -o-transition: color 0.2s linear 0;
+            transition: color 0.2s linear 0;
+}
+div.input-field input[type="text"],
+div.input-field input[type="email"],
+div.input-field input[type="password"],
+div.input-field label {   
+    outline:none;
+    padding:10px 5px;
+    font-size:1.2em;
+    font-family:georgia, serif;
+}
+
+div.input-field.focused label {
+    color:#CCC;
+}
+div.input-field input[type="text"]:focus,
+div.input-field input[type="email"]:focus,
+div.input-field input[type="password"]:focus {
+    border-color:#AAA;
+}
+*/
 .connection-container {
     text-align:center;
 }
@@ -18,7 +72,48 @@ form.connection .helplink {
     font-size:0.9em;
 }
 
-form.connection input,
-form.connection label {
+form.connection .input-field {
+    margin:25px auto;
     text-align:left;
+}
+
+form.connection .input-field + .input-field {
+    margin-bottom:0px;
+}
+
+form.connection .checkbox-field {
+    margin-top:5px;
+    margin-bottom:5px;
+    cursor:pointer;
+    -webkit-user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+         -o-user-select: none;
+            user-select: none;
+    
+    position:relative;
+    left:-6px;
+}
+
+input[type="checkbox"]:not(:checked) + span {
+    color:#666;
+}
+
+input.connect-button {
+    outline:none;
+    position:relative;
+    padding:10px;
+    font-size:1.2em;
+    margin:0px auto 5px auto;
+    width:100%;
+    -webkit-border-radius: 10px;
+       -moz-border-radius: 10px;
+        -ms-border-radius: 10px;
+         -o-border-radius: 10px;
+            border-radius: 10px;
+}
+
+.forgotten-password-button {
+    color:#222;
+    text-decoration:none;
 }

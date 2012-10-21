@@ -2,6 +2,7 @@
 
     var username = document.getElementById('_inp_username'),
         avatar   = document.getElementById('avatar'),
+        iforgot  = document.getElementById('iforgot'),
         cache    = {};
 
     username.onkeydown =
@@ -22,6 +23,10 @@
         }
 
         avatar.src = cache[text] = gravatar(text, 100);
+    };
+
+    iforgot.onclick = function() {
+        this.href += '?username=' + username.value;
     };
 
 })();
