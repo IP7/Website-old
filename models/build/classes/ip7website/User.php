@@ -189,7 +189,6 @@ class User extends BaseUser {
    **/
   public function incrementVisitsNb() {
     $this->setVisitsNb($this->getVisitsNb()+1);
-    $this->save();
   }
 }
 
