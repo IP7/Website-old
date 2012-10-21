@@ -140,6 +140,7 @@ function display_forgotten_password($message=null, $message_type=null) {
 
             'form'         => array(
                 'action'     => Config::$root_uri.'oubli',
+                'username'   => has_get('username') ? get_string('username', 'GET') : '',
                 'post_token' => generate_post_token()
             ),
             'message'      => $message,
@@ -149,18 +150,22 @@ function display_forgotten_password($message=null, $message_type=null) {
 }
 
 function post_forgotten_password() {
-    if (!has_post('email') || !has_post('t')) {
+    if (!has_post('username') || !has_post('t')) {
         return display_forgotten_password();
     }
 
-    $email = get_string('email', 'POST');
+    $username = get_string('username', 'POST');
 
-    $user = UserQuery::create()->findOneByEmail($email);
+    $user = UserQuery::create()
+                ->condition('email', 'Email = ?', $username, PDO::PARAM_STR)
+                ->condition('username', 'Username = ?', $username, PDO::PARAM_STR)
+                ->where(array('email', 'username'), 'or')
+                ->findOne();
 
     // bad email
     if (!$user) {
         return display_forgotten_password(
-            'Aucun utilisateur n\'a cette adresse email.',
+            'Aucun utilisateur n\'a cette adresse email ou ce pseudo.',
             'error'
         );
     }
