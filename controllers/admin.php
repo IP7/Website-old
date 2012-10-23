@@ -13,11 +13,7 @@ function display_admin_home($message, $message_type) {
     $token = generate_token(null, 0, time() + Durations::ONE_MINUTE*2);
     
     if ( has_get('t') ){
-
-        $message = $_SESSION['msg'][$_GET['t']];
-        $message_type = 'notice';
-
-        unset($_SESSION['msg'][$_GET['t']]);
+        $message = get_message(get_string('t', 'GET'));
     }
 
     return Config::$tpl->render('admin/main.html', tpl_array(
@@ -436,10 +432,9 @@ function post_admin_add_member() {
 
         send_welcome_message($user);
 
-        $random_key = get_random_string(13);
-        $_SESSION['msg'][$random_key] = 'Le compte a bien été enregistré';
+        $msg_key = set_message('Le compte a bien été enregistré');
 
-        redirect_to('admin/', array( 'status' => HTTP_SEE_OTHER, 't' => $random_key ));
+        redirect_to('admin/', array( 'status' => HTTP_SEE_OTHER, 't' => $msg_key ));
     }
 
     foreach ($user->getValidationFailures() as $failure) {
