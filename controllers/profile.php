@@ -320,7 +320,7 @@ function display_init_my_profile_page($token=null, $message=null, $message_type=
     $username = $user->getUsername();
     $rights   = $token['rights'];
 
-    $post_token = generate_token($user, $rights, time() + 3600 * 24, true);
+    $post_token = generate_token($user, $rights, $_SERVER['REQUEST_TIME'] + 3600 * 24, true);
 
     $fields = array();
     $infos = array();
@@ -409,7 +409,7 @@ function display_init_my_profile_page($token=null, $message=null, $message_type=
             'infos' => $infos,
 
             'scripts' => array(
-                array( 'src' => js_url('subscription') )
+                array( 'href' => js_url('subscription') )
             )
         )
     ));
