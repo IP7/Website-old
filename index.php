@@ -18,7 +18,7 @@ function configure() {
 
 function before($route) {
 
-    // Override X-Powered-By & Server headers
+    // Override X-Powered-By header
     header('X-Powered-By: Electricity', true);
 
     foreach ($route['params'] as $k => $v) {
