@@ -121,9 +121,13 @@ dispatch('/a-propos', 'display_apropos_page');
 dispatch('/api/1/users/exists.json',     'json_check_username');
 dispatch('/api/1/search.json',           'json_global_search');
 dispatch('/api/1/contents/last.json',    'json_get_last_contents');
+
+dispatch('/api/1/cursus/intro.json',      'json_get_cursus_intro');
+dispatch('/api/1/course/intro.json',      'json_get_course_intro');
+dispatch_post('/api/1/cursus/intro.json', 'json_post_cursus_intro');
+dispatch_post('/api/1/course/intro.json', 'json_post_course_intro');
+
 dispatch('/api/1/news/get_one.json',     'json_get_news_by_id');
-dispatch('/api/1/cursus/intro.json',     'json_get_cursus_intro');
-dispatch('/api/1/course/intro.json',     'json_get_course_intro');
 dispatch_post('/api/1/news/update.json', 'json_post_update_news');
 dispatch_post('/api/1/news/delete.json', 'json_post_delete_news');
 dispatch_post('/api/1/news/create.json', 'json_post_create_news');

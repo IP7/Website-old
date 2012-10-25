@@ -211,4 +211,12 @@ function json_get_cursus_intro() { // ?id=<cursus id>
     return json_get_description_of_course_or_cursus('cursus');
 }
 
+function json_post_course_intro() { // id=<course id>, text=<text>
+    return json_post_description_of_course_or_cursus('course');
+}
+
+function json_post_cursus_intro() { // id=<cursus id>, text=<text>
+    return json_post_description_of_course_or_cursus('cursus');
+}
+
 ?>
