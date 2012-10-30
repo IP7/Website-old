@@ -28,7 +28,7 @@ function before($route) {
     try_autoconnect();
 
     if (stristr($route['callback'], 'admin')) {
-        if (!is_connected() || !user()->isAdmin()) {
+        if (!is_connected() || !user()->isAdmin()) { // FIXME cf issue #220
             halt(HTTP_FORBIDDEN, "L'accès à cette page est réservé aux administrateurs.");
         }
     }
@@ -95,6 +95,7 @@ dispatch('/file/:id/:name', 'serve_user_file_by_id_and_name');
 
 ## admin home
 dispatch('/admin', 'display_admin_home');
+
 ## moderation 
 dispatch('/admin/moderation',            'display_admin_moderation');
 dispatch('/admin/reports',               'display_admin_content_report');
@@ -102,10 +103,11 @@ dispatch_post('/admin/reports',          'post_admin_content_report');
 dispatch('/admin/content/proposed',      'display_admin_proposed_content');
 dispatch_post('/admin/content/proposed', 'post_admin_proposed_content');
 
-## finances
+## members
 dispatch('/admin/membres',          'display_admin_members');
 dispatch('/admin/membres/add',      'display_admin_add_member');
 dispatch_post('/admin/membres/add', 'post_admin_add_member');
+
 ## maintenance
 dispatch('/admin/migrate', 'display_admin_migrate_db_page');
 
