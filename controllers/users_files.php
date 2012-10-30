@@ -40,14 +40,12 @@ function _serve_user_file($f) {
         halt(NOT_FOUND);
     }
 
-    $access_rights = $f->getAccessRights();
+    $user_rights = is_connected() ? user()->getRank() : 0;
 
-    if (($access_rights >= MEMBER_RANK)
-        && (!is_connected() || (user()->getRank() < $access_rights))) {
+    if ($user_rights < $f->getAccessRights()) {
         return halt(HTTP_FORBIDDEN);
     }
 
     return render_file($path, true);
 }
 
-?>
