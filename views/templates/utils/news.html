@@ -2,9 +2,6 @@
 <section class="news-container">
 {% autoescape %}
     <h2>Actualités</h2>
-    {% if page.add_news_button is defined and page.add_news_button %}
-    {{ _m.a_button(page.add_news_button.href, page.add_news_button.title) }}
-    {% endif %}
     <ul class="news-list">
     {% for news in page.news %}
         {% include 'utils/one_news.html' %}
@@ -13,7 +10,5 @@
 {% endautoescape %}
 </section>
 {% else %}
-    {% if page.add_news_button is defined and page.add_news_button %}
-{{ _m.a_button(page.add_news_button.href, page.add_news_button.title) }}
-    {% endif %}
+    <section class="news-container" data-empty="true"></section>
 {% endif %}

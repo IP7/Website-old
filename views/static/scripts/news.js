@@ -18,8 +18,6 @@ $(function() {
         course_id = course.dataset['courseId'];
     }
 
-    console.log(cursus_id, course_id);
-
     // News DOM elements (<li>)
     var dom_news = d.querySelectorAll('.news[data-id]'),
         dom_news_root = d.getElementsByClassName('news-container')[0],
@@ -27,8 +25,7 @@ $(function() {
     // cache for news informations
         news = {};
 
-    // if there is no news, exit
-    if (!dom_news.length) { return; }
+    if (!dom_news_root) { return; }
 
     // fill the news object
     [].forEach.call(dom_news, function(li) {
@@ -111,16 +108,33 @@ $(function() {
     });
 
     // add a button to create news
-    var news_div = document.getElementsByClassName('news-container')[0],
-        b_create,
+    var b_create,
         new_news_form;
 
-    if (news_div) {
+    if (dom_news_root) {
+
+        if (dom_news_root.dataset['empty']) {
+            var t = dc('h2'),
+                u = dc('ul');
+
+            t.textContent = 'Actualités';
+            u.className = 'news-list';
+
+            dom_news_root.appendChild(t);
+            dom_news_root.appendChild(u);
+            delete dom_news_root.dataset['empty'];
+        }
+
         b_create = dc('span');
         b_create.className = 'small button';
         b_create.textContent = 'Nouvelle Actualité';
         b_create.onclick = create;
-        news_div.insertBefore(b_create, dom_news[0].parentElement);
+
+        if (dom_news.length) {
+            dom_news_root.insertBefore(b_create, dom_news[0].parentElement);
+        } else {
+            dom_news_root.appendChild(b_create);
+        }
     }
 
     function cancel_edit(id) {
