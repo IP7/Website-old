@@ -216,7 +216,7 @@ function display_member_proposing_content_form() {
 
     $tpl_years = array();
 
-    for ($i=$current_year, $l=$current_year-5; $i>$l; $i--) {
+    for ($i=$current_year, $l=$current_year-6; $i>=$l; $i--) {
         $tpl_years []= array(
             'value' => $i,
             'name'  => $i.'/'.($i+1)
