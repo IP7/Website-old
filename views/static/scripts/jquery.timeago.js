@@ -167,3 +167,10 @@
   document.createElement("abbr");
   document.createElement("time");
 }(jQuery));
+
+
+// --- End of plugin ---
+
+$(document).ready(function() {
+    $('time').timeago();
+});

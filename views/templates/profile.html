@@ -24,7 +24,7 @@
           #}{% endif %}
             {% if page.user.birthdate is defined and page.user.birthdate %}{#
                 #}<dt>Date de naissance&nbsp;:</dt>{#
-                #}<dd><date datetime="{{ page.user.birthdate.datetime_attr }}" itemprop="birthDate" itemscope>{{ page.user.birthdate.date }}</date>{#
+                #}<dd><time datetime="{{ page.user.birthdate.datetime_attr }}" itemprop="birthDate" itemscope>{{ page.user.birthdate.date }}</time>{#
                     #}{% if page.user.age is defined and page.user.age %} ({{ page.user.age }} ans)</dd>{% endif %}
             {% else %}{#
               #}{% if page.user.age is defined and page.user.age %}{#

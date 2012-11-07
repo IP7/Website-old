@@ -13,7 +13,7 @@
 	{% if page.report is defined and page.report %}
     <section class="report">
     <p>Signalé par <a href="{{ page.report.author.href }}" class="user">{{ page.report.author.name }}</a>, {#
-    #} <date datetime="{{ page.report.date.datetime }}">{{ page.report.date.text }}</date>, raison&nbsp;:{#
+    #} <time datetime="{{ page.report.date.datetime }}">{{ page.report.date.text }}</time>, raison&nbsp;:{#
         #} «&nbsp;{{ page.report.explication }}&nbsp;».</p>
         <form action="{{ page.report.form.action }}" method="POST">
             {{ _m.token( page.report.form.post_token ) }}
@@ -26,15 +26,15 @@
     <article class="user_content">
         <header class="content_header">
             {% if page.content.year is defined and page.content.year %}
-            <date datetime="{{ page.content.year.begin }}-09-01T00:00:00Z/P1Y" class="content-year">{#
-            #}{{ page.content.year.begin }}/{{ page.content.year.end }}</date>
+            <time datetime="{{ page.content.year.begin }}-09-01T00:00:00Z/P1Y" class="content-year">{#
+            #}{{ page.content.year.begin }}/{{ page.content.year.end }}</time>
             {% endif %}
             {% if page.content.type is defined and page.content.type %}
             <span class="content-type"><a href="{{ page.content.type.href }}">{{ page.content.type.title }}</a></span>
             {% endif %}
             <h1>{{ page.content.title }}</h1>
             <p>Posté par <a href="{{ page.content.author.href }}" class="user" rel="author">{{ page.content.author.name }}</a>{#
-            #} <date datetime="{{ page.content.date.datetime }}">{{ page.content.date.text }}</date>.</p>
+            #} <time datetime="{{ page.content.date.datetime }}">{{ page.content.date.text }}</time>.</p>
         </header>
         <section class="user_content_text">{{ page.content.text|md2html|raw }}</section>
         {% if page.content.files is defined and page.content.files is not empty %}

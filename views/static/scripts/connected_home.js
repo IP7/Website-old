@@ -38,17 +38,30 @@ $(function(){
                     var contents = response.data,
                         len      = contents.length,
                         i        = 0,
-                        li, a, c;
+                        li, a, c, date;
 
                     while (ul.hasChildNodes()) { ul.removeChild(ul.lastChild); }
 
                     for (; i < len; i++) {
                         c = contents[i];
                         li = document.createElement('li');
+                        date = c.date;
+
+                        /* invert month and day, since server response is DD-MM-YYYY
+                           instead of MM-DD-YYYY */
+                        date = date.slice(3,5) + '-' + date.slice(0,2) + date.slice(5);
+
                         li.innerHTML = '<a href="' + c.href + '">' + c.title + '</a>'
-                                    +  ' (' + c.course + ', ' + c.cursus + '), le '
-                                    +  '<date datetime="' + c.date + '">'
-                                    +  c.date.replace(' ', ' à ') + '</date>';
+                                    +  ' (' + c.course + ', ' + c.cursus + '), '
+                                    +  '<time datetime="' + new Date(date).toISOString() + '">'
+                                    +  'le ' + c.date.replace(' ', ' à ') + '</time>';
+
+                        if ($.timeago) {
+                            // reusing the 'date' variable for the <time/> element
+                            date = li.getElementsByTagName('time')[0];
+                            if (date)
+                                $(date).timeago();
+                        }
 
                         ul.appendChild(li); 
                     }

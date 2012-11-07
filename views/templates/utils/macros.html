@@ -33,7 +33,7 @@
 {# date #}
 {% macro date(dt) %}
 {% if dt.date is defined and dt.date %}{#
-  #}<date{% if dt.datetime_attr is defined and dt.datetime_attr %} datetime="{{ dt.datetime_attr }}"{% endif %}>{{ dt.date }}</date>{#
+  #}<time{% if dt.datetime_attr is defined and dt.datetime_attr %} datetime="{{ dt.datetime_attr }}"{% endif %}>{{ dt.date }}</time>{#
 #}{% endif %}
 {% endmacro %}
 
