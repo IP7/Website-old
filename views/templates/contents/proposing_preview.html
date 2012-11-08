@@ -18,7 +18,7 @@
         {% if (page.content.type is defined) or (page.content.year is defined) %}
     <h2>Informations complémentaires</h2>
     <ul>
-        {% if page.content.type is defined %}<li>Type&nbsp;: {{ page.content.type.title }}</li>{% endif %}
+        {% if page.content.type is defined %}<li>Type&nbsp;: {{ page.content.type }}</li>{% endif %}
         {% if page.content.year is defined %}<li>Année&nbsp;: {{ page.content.year.begin }}/{{ page.content.year.end }}</li>{% endif %}
     </ul>
         {% endif %}

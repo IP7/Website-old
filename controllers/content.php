@@ -318,7 +318,7 @@ function display_post_member_proposed_content_preview() {
             }
             $fd2->store('type', $c_type);
 
-            $c_type_title = array('title' => $c_type->getName());
+            $c_type_title = $c_type->getName();
         }
     }
 
