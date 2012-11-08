@@ -36,10 +36,10 @@ abstract class BaseTag extends BaseObject implements Persistent
     protected $id;
 
     /**
-     * The value for the name field.
+     * The value for the title field.
      * @var        string
      */
-    protected $name;
+    protected $title;
 
     /**
      * @var        PropelObjectCollection|Alert[] Collection to store aggregation of Alert objects.
@@ -124,13 +124,13 @@ abstract class BaseTag extends BaseObject implements Persistent
     }
 
     /**
-     * Get the [name] column value.
+     * Get the [title] column value.
      *
      * @return string
      */
-    public function getName()
+    public function getTitle()
     {
-        return $this->name;
+        return $this->title;
     }
 
     /**
@@ -155,25 +155,25 @@ abstract class BaseTag extends BaseObject implements Persistent
     } // setId()
 
     /**
-     * Set the value of [name] column.
+     * Set the value of [title] column.
      *
      * @param string $v new value
      * @return Tag The current object (for fluent API support)
      */
-    public function setName($v)
+    public function setTitle($v)
     {
         if ($v !== null) {
             $v = (string) $v;
         }
 
-        if ($this->name !== $v) {
-            $this->name = $v;
-            $this->modifiedColumns[] = TagPeer::NAME;
+        if ($this->title !== $v) {
+            $this->title = $v;
+            $this->modifiedColumns[] = TagPeer::TITLE;
         }
 
 
         return $this;
-    } // setName()
+    } // setTitle()
 
     /**
      * Indicates whether the columns in this object are only set to default values.
@@ -208,7 +208,7 @@ abstract class BaseTag extends BaseObject implements Persistent
         try {
 
             $this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
-            $this->name = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
+            $this->title = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -532,8 +532,8 @@ abstract class BaseTag extends BaseObject implements Persistent
         if ($this->isColumnModified(TagPeer::ID)) {
             $modifiedColumns[':p' . $index++]  = '`ID`';
         }
-        if ($this->isColumnModified(TagPeer::NAME)) {
-            $modifiedColumns[':p' . $index++]  = '`NAME`';
+        if ($this->isColumnModified(TagPeer::TITLE)) {
+            $modifiedColumns[':p' . $index++]  = '`TITLE`';
         }
 
         $sql = sprintf(
@@ -549,8 +549,8 @@ abstract class BaseTag extends BaseObject implements Persistent
                     case '`ID`':
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
-                    case '`NAME`':
-                        $stmt->bindValue($identifier, $this->name, PDO::PARAM_STR);
+                    case '`TITLE`':
+                        $stmt->bindValue($identifier, $this->title, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -714,7 +714,7 @@ abstract class BaseTag extends BaseObject implements Persistent
                 return $this->getId();
                 break;
             case 1:
-                return $this->getName();
+                return $this->getTitle();
                 break;
             default:
                 return null;
@@ -746,7 +746,7 @@ abstract class BaseTag extends BaseObject implements Persistent
         $keys = TagPeer::getFieldNames($keyType);
         $result = array(
             $keys[0] => $this->getId(),
-            $keys[1] => $this->getName(),
+            $keys[1] => $this->getTitle(),
         );
         if ($includeForeignObjects) {
             if (null !== $this->collAlerts) {
@@ -796,7 +796,7 @@ abstract class BaseTag extends BaseObject implements Persistent
                 $this->setId($value);
                 break;
             case 1:
-                $this->setName($value);
+                $this->setTitle($value);
                 break;
         } // switch()
     }
@@ -823,7 +823,7 @@ abstract class BaseTag extends BaseObject implements Persistent
         $keys = TagPeer::getFieldNames($keyType);
 
         if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
-        if (array_key_exists($keys[1], $arr)) $this->setName($arr[$keys[1]]);
+        if (array_key_exists($keys[1], $arr)) $this->setTitle($arr[$keys[1]]);
     }
 
     /**
@@ -836,7 +836,7 @@ abstract class BaseTag extends BaseObject implements Persistent
         $criteria = new Criteria(TagPeer::DATABASE_NAME);
 
         if ($this->isColumnModified(TagPeer::ID)) $criteria->add(TagPeer::ID, $this->id);
-        if ($this->isColumnModified(TagPeer::NAME)) $criteria->add(TagPeer::NAME, $this->name);
+        if ($this->isColumnModified(TagPeer::TITLE)) $criteria->add(TagPeer::TITLE, $this->title);
 
         return $criteria;
     }
@@ -900,7 +900,7 @@ abstract class BaseTag extends BaseObject implements Persistent
      */
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
-        $copyObj->setName($this->getName());
+        $copyObj->setTitle($this->getTitle());
 
         if ($deepCopy && !$this->startCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -2112,7 +2112,7 @@ abstract class BaseTag extends BaseObject implements Persistent
     public function clear()
     {
         $this->id = null;
-        $this->name = null;
+        $this->title = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->clearAllReferences();

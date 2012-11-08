@@ -48,11 +48,11 @@ abstract class BaseContentType extends BaseObject implements Persistent
     protected $short_name;
 
     /**
-     * The value for the rights field.
+     * The value for the access_rights field.
      * Note: this column has a database default value of: (expression) 0
      * @var        int
      */
-    protected $rights;
+    protected $access_rights;
 
     /**
      * @var        PropelObjectCollection|Alert[] Collection to store aggregation of Alert objects.
@@ -143,13 +143,13 @@ abstract class BaseContentType extends BaseObject implements Persistent
     }
 
     /**
-     * Get the [rights] column value.
+     * Get the [access_rights] column value.
      *
      * @return int
      */
-    public function getRights()
+    public function getAccessRights()
     {
-        return $this->rights;
+        return $this->access_rights;
     }
 
     /**
@@ -216,25 +216,25 @@ abstract class BaseContentType extends BaseObject implements Persistent
     } // setShortName()
 
     /**
-     * Set the value of [rights] column.
+     * Set the value of [access_rights] column.
      *
      * @param int $v new value
      * @return ContentType The current object (for fluent API support)
      */
-    public function setRights($v)
+    public function setAccessRights($v)
     {
         if ($v !== null) {
             $v = (int) $v;
         }
 
-        if ($this->rights !== $v) {
-            $this->rights = $v;
-            $this->modifiedColumns[] = ContentTypePeer::RIGHTS;
+        if ($this->access_rights !== $v) {
+            $this->access_rights = $v;
+            $this->modifiedColumns[] = ContentTypePeer::ACCESS_RIGHTS;
         }
 
 
         return $this;
-    } // setRights()
+    } // setAccessRights()
 
     /**
      * Indicates whether the columns in this object are only set to default values.
@@ -271,7 +271,7 @@ abstract class BaseContentType extends BaseObject implements Persistent
             $this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
             $this->name = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
             $this->short_name = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
-            $this->rights = ($row[$startcol + 3] !== null) ? (int) $row[$startcol + 3] : null;
+            $this->access_rights = ($row[$startcol + 3] !== null) ? (int) $row[$startcol + 3] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -541,8 +541,8 @@ abstract class BaseContentType extends BaseObject implements Persistent
         if ($this->isColumnModified(ContentTypePeer::SHORT_NAME)) {
             $modifiedColumns[':p' . $index++]  = '`SHORT_NAME`';
         }
-        if ($this->isColumnModified(ContentTypePeer::RIGHTS)) {
-            $modifiedColumns[':p' . $index++]  = '`RIGHTS`';
+        if ($this->isColumnModified(ContentTypePeer::ACCESS_RIGHTS)) {
+            $modifiedColumns[':p' . $index++]  = '`ACCESS_RIGHTS`';
         }
 
         $sql = sprintf(
@@ -564,8 +564,8 @@ abstract class BaseContentType extends BaseObject implements Persistent
                     case '`SHORT_NAME`':
                         $stmt->bindValue($identifier, $this->short_name, PDO::PARAM_STR);
                         break;
-                    case '`RIGHTS`':
-                        $stmt->bindValue($identifier, $this->rights, PDO::PARAM_INT);
+                    case '`ACCESS_RIGHTS`':
+                        $stmt->bindValue($identifier, $this->access_rights, PDO::PARAM_INT);
                         break;
                 }
             }
@@ -727,7 +727,7 @@ abstract class BaseContentType extends BaseObject implements Persistent
                 return $this->getShortName();
                 break;
             case 3:
-                return $this->getRights();
+                return $this->getAccessRights();
                 break;
             default:
                 return null;
@@ -761,7 +761,7 @@ abstract class BaseContentType extends BaseObject implements Persistent
             $keys[0] => $this->getId(),
             $keys[1] => $this->getName(),
             $keys[2] => $this->getShortName(),
-            $keys[3] => $this->getRights(),
+            $keys[3] => $this->getAccessRights(),
         );
         if ($includeForeignObjects) {
             if (null !== $this->collAlerts) {
@@ -814,7 +814,7 @@ abstract class BaseContentType extends BaseObject implements Persistent
                 $this->setShortName($value);
                 break;
             case 3:
-                $this->setRights($value);
+                $this->setAccessRights($value);
                 break;
         } // switch()
     }
@@ -843,7 +843,7 @@ abstract class BaseContentType extends BaseObject implements Persistent
         if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
         if (array_key_exists($keys[1], $arr)) $this->setName($arr[$keys[1]]);
         if (array_key_exists($keys[2], $arr)) $this->setShortName($arr[$keys[2]]);
-        if (array_key_exists($keys[3], $arr)) $this->setRights($arr[$keys[3]]);
+        if (array_key_exists($keys[3], $arr)) $this->setAccessRights($arr[$keys[3]]);
     }
 
     /**
@@ -858,7 +858,7 @@ abstract class BaseContentType extends BaseObject implements Persistent
         if ($this->isColumnModified(ContentTypePeer::ID)) $criteria->add(ContentTypePeer::ID, $this->id);
         if ($this->isColumnModified(ContentTypePeer::NAME)) $criteria->add(ContentTypePeer::NAME, $this->name);
         if ($this->isColumnModified(ContentTypePeer::SHORT_NAME)) $criteria->add(ContentTypePeer::SHORT_NAME, $this->short_name);
-        if ($this->isColumnModified(ContentTypePeer::RIGHTS)) $criteria->add(ContentTypePeer::RIGHTS, $this->rights);
+        if ($this->isColumnModified(ContentTypePeer::ACCESS_RIGHTS)) $criteria->add(ContentTypePeer::ACCESS_RIGHTS, $this->access_rights);
 
         return $criteria;
     }
@@ -924,7 +924,7 @@ abstract class BaseContentType extends BaseObject implements Persistent
     {
         $copyObj->setName($this->getName());
         $copyObj->setShortName($this->getShortName());
-        $copyObj->setRights($this->getRights());
+        $copyObj->setAccessRights($this->getAccessRights());
 
         if ($deepCopy && !$this->startCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -1611,7 +1611,7 @@ abstract class BaseContentType extends BaseObject implements Persistent
         $this->id = null;
         $this->name = null;
         $this->short_name = null;
-        $this->rights = null;
+        $this->access_rights = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->clearAllReferences();

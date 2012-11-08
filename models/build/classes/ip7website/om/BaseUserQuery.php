@@ -9,7 +9,7 @@
  * @method UserQuery orderById($order = Criteria::ASC) Order by the id column
  * @method UserQuery orderByUsername($order = Criteria::ASC) Order by the username column
  * @method UserQuery orderByPasswordHash($order = Criteria::ASC) Order by the password_hash column
- * @method UserQuery orderByType($order = Criteria::ASC) Order by the type column
+ * @method UserQuery orderByRights($order = Criteria::ASC) Order by the rights column
  * @method UserQuery orderByFirstname($order = Criteria::ASC) Order by the firstname column
  * @method UserQuery orderByLastname($order = Criteria::ASC) Order by the lastname column
  * @method UserQuery orderByGender($order = Criteria::ASC) Order by the gender column
@@ -21,7 +21,7 @@
  * @method UserQuery orderByLastEntry($order = Criteria::ASC) Order by the last_entry column
  * @method UserQuery orderByExpirationDate($order = Criteria::ASC) Order by the expiration_date column
  * @method UserQuery orderByLastVisit($order = Criteria::ASC) Order by the last_visit column
- * @method UserQuery orderByVisitsNb($order = Criteria::ASC) Order by the visits_nb column
+ * @method UserQuery orderByVisitsCount($order = Criteria::ASC) Order by the visits_count column
  * @method UserQuery orderByConfigShowEmail($order = Criteria::ASC) Order by the config_show_email column
  * @method UserQuery orderByConfigShowPhone($order = Criteria::ASC) Order by the config_show_phone column
  * @method UserQuery orderByConfigShowRealName($order = Criteria::ASC) Order by the config_show_real_name column
@@ -39,7 +39,7 @@
  * @method UserQuery groupById() Group by the id column
  * @method UserQuery groupByUsername() Group by the username column
  * @method UserQuery groupByPasswordHash() Group by the password_hash column
- * @method UserQuery groupByType() Group by the type column
+ * @method UserQuery groupByRights() Group by the rights column
  * @method UserQuery groupByFirstname() Group by the firstname column
  * @method UserQuery groupByLastname() Group by the lastname column
  * @method UserQuery groupByGender() Group by the gender column
@@ -51,7 +51,7 @@
  * @method UserQuery groupByLastEntry() Group by the last_entry column
  * @method UserQuery groupByExpirationDate() Group by the expiration_date column
  * @method UserQuery groupByLastVisit() Group by the last_visit column
- * @method UserQuery groupByVisitsNb() Group by the visits_nb column
+ * @method UserQuery groupByVisitsCount() Group by the visits_count column
  * @method UserQuery groupByConfigShowEmail() Group by the config_show_email column
  * @method UserQuery groupByConfigShowPhone() Group by the config_show_phone column
  * @method UserQuery groupByConfigShowRealName() Group by the config_show_real_name column
@@ -136,7 +136,7 @@
  * @method User findOneById(int $id) Return the first User filtered by the id column
  * @method User findOneByUsername(string $username) Return the first User filtered by the username column
  * @method User findOneByPasswordHash(string $password_hash) Return the first User filtered by the password_hash column
- * @method User findOneByType(int $type) Return the first User filtered by the type column
+ * @method User findOneByRights(int $rights) Return the first User filtered by the rights column
  * @method User findOneByFirstname(string $firstname) Return the first User filtered by the firstname column
  * @method User findOneByLastname(string $lastname) Return the first User filtered by the lastname column
  * @method User findOneByGender(int $gender) Return the first User filtered by the gender column
@@ -148,7 +148,7 @@
  * @method User findOneByLastEntry(string $last_entry) Return the first User filtered by the last_entry column
  * @method User findOneByExpirationDate(string $expiration_date) Return the first User filtered by the expiration_date column
  * @method User findOneByLastVisit(string $last_visit) Return the first User filtered by the last_visit column
- * @method User findOneByVisitsNb(int $visits_nb) Return the first User filtered by the visits_nb column
+ * @method User findOneByVisitsCount(int $visits_count) Return the first User filtered by the visits_count column
  * @method User findOneByConfigShowEmail(boolean $config_show_email) Return the first User filtered by the config_show_email column
  * @method User findOneByConfigShowPhone(boolean $config_show_phone) Return the first User filtered by the config_show_phone column
  * @method User findOneByConfigShowRealName(boolean $config_show_real_name) Return the first User filtered by the config_show_real_name column
@@ -166,7 +166,7 @@
  * @method array findById(int $id) Return User objects filtered by the id column
  * @method array findByUsername(string $username) Return User objects filtered by the username column
  * @method array findByPasswordHash(string $password_hash) Return User objects filtered by the password_hash column
- * @method array findByType(int $type) Return User objects filtered by the type column
+ * @method array findByRights(int $rights) Return User objects filtered by the rights column
  * @method array findByFirstname(string $firstname) Return User objects filtered by the firstname column
  * @method array findByLastname(string $lastname) Return User objects filtered by the lastname column
  * @method array findByGender(int $gender) Return User objects filtered by the gender column
@@ -178,7 +178,7 @@
  * @method array findByLastEntry(string $last_entry) Return User objects filtered by the last_entry column
  * @method array findByExpirationDate(string $expiration_date) Return User objects filtered by the expiration_date column
  * @method array findByLastVisit(string $last_visit) Return User objects filtered by the last_visit column
- * @method array findByVisitsNb(int $visits_nb) Return User objects filtered by the visits_nb column
+ * @method array findByVisitsCount(int $visits_count) Return User objects filtered by the visits_count column
  * @method array findByConfigShowEmail(boolean $config_show_email) Return User objects filtered by the config_show_email column
  * @method array findByConfigShowPhone(boolean $config_show_phone) Return User objects filtered by the config_show_phone column
  * @method array findByConfigShowRealName(boolean $config_show_real_name) Return User objects filtered by the config_show_real_name column
@@ -281,7 +281,7 @@ abstract class BaseUserQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `ID`, `USERNAME`, `PASSWORD_HASH`, `TYPE`, `FIRSTNAME`, `LASTNAME`, `GENDER`, `EMAIL`, `PHONE`, `WEBSITE`, `BIRTH_DATE`, `FIRST_ENTRY`, `LAST_ENTRY`, `EXPIRATION_DATE`, `LAST_VISIT`, `VISITS_NB`, `CONFIG_SHOW_EMAIL`, `CONFIG_SHOW_PHONE`, `CONFIG_SHOW_REAL_NAME`, `CONFIG_SHOW_BIRTHDATE`, `CONFIG_SHOW_AGE`, `CONFIG_INDEX_PROFILE`, `CONFIG_PRIVATE_PROFILE`, `DEACTIVATED`, `IS_A_TEACHER`, `IS_A_STUDENT`, `IS_AN_ALUMNI` FROM `users` WHERE `ID` = :p0';
+        $sql = 'SELECT `ID`, `USERNAME`, `PASSWORD_HASH`, `RIGHTS`, `FIRSTNAME`, `LASTNAME`, `GENDER`, `EMAIL`, `PHONE`, `WEBSITE`, `BIRTH_DATE`, `FIRST_ENTRY`, `LAST_ENTRY`, `EXPIRATION_DATE`, `LAST_VISIT`, `VISITS_COUNT`, `CONFIG_SHOW_EMAIL`, `CONFIG_SHOW_PHONE`, `CONFIG_SHOW_REAL_NAME`, `CONFIG_SHOW_BIRTHDATE`, `CONFIG_SHOW_AGE`, `CONFIG_INDEX_PROFILE`, `CONFIG_PRIVATE_PROFILE`, `DEACTIVATED`, `IS_A_TEACHER`, `IS_A_STUDENT`, `IS_AN_ALUMNI` FROM `users` WHERE `ID` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -456,16 +456,16 @@ abstract class BaseUserQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the type column
+     * Filter the query on the rights column
      *
      * Example usage:
      * <code>
-     * $query->filterByType(1234); // WHERE type = 1234
-     * $query->filterByType(array(12, 34)); // WHERE type IN (12, 34)
-     * $query->filterByType(array('min' => 12)); // WHERE type > 12
+     * $query->filterByRights(1234); // WHERE rights = 1234
+     * $query->filterByRights(array(12, 34)); // WHERE rights IN (12, 34)
+     * $query->filterByRights(array('min' => 12)); // WHERE rights > 12
      * </code>
      *
-     * @param     mixed $type The value to use as filter.
+     * @param     mixed $rights The value to use as filter.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
@@ -473,16 +473,16 @@ abstract class BaseUserQuery extends ModelCriteria
      *
      * @return UserQuery The current query, for fluid interface
      */
-    public function filterByType($type = null, $comparison = null)
+    public function filterByRights($rights = null, $comparison = null)
     {
-        if (is_array($type)) {
+        if (is_array($rights)) {
             $useMinMax = false;
-            if (isset($type['min'])) {
-                $this->addUsingAlias(UserPeer::TYPE, $type['min'], Criteria::GREATER_EQUAL);
+            if (isset($rights['min'])) {
+                $this->addUsingAlias(UserPeer::RIGHTS, $rights['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
-            if (isset($type['max'])) {
-                $this->addUsingAlias(UserPeer::TYPE, $type['max'], Criteria::LESS_EQUAL);
+            if (isset($rights['max'])) {
+                $this->addUsingAlias(UserPeer::RIGHTS, $rights['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -493,7 +493,7 @@ abstract class BaseUserQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(UserPeer::TYPE, $type, $comparison);
+        return $this->addUsingAlias(UserPeer::RIGHTS, $rights, $comparison);
     }
 
     /**
@@ -891,16 +891,16 @@ abstract class BaseUserQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the visits_nb column
+     * Filter the query on the visits_count column
      *
      * Example usage:
      * <code>
-     * $query->filterByVisitsNb(1234); // WHERE visits_nb = 1234
-     * $query->filterByVisitsNb(array(12, 34)); // WHERE visits_nb IN (12, 34)
-     * $query->filterByVisitsNb(array('min' => 12)); // WHERE visits_nb > 12
+     * $query->filterByVisitsCount(1234); // WHERE visits_count = 1234
+     * $query->filterByVisitsCount(array(12, 34)); // WHERE visits_count IN (12, 34)
+     * $query->filterByVisitsCount(array('min' => 12)); // WHERE visits_count > 12
      * </code>
      *
-     * @param     mixed $visitsNb The value to use as filter.
+     * @param     mixed $visitsCount The value to use as filter.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
@@ -908,16 +908,16 @@ abstract class BaseUserQuery extends ModelCriteria
      *
      * @return UserQuery The current query, for fluid interface
      */
-    public function filterByVisitsNb($visitsNb = null, $comparison = null)
+    public function filterByVisitsCount($visitsCount = null, $comparison = null)
     {
-        if (is_array($visitsNb)) {
+        if (is_array($visitsCount)) {
             $useMinMax = false;
-            if (isset($visitsNb['min'])) {
-                $this->addUsingAlias(UserPeer::VISITS_NB, $visitsNb['min'], Criteria::GREATER_EQUAL);
+            if (isset($visitsCount['min'])) {
+                $this->addUsingAlias(UserPeer::VISITS_COUNT, $visitsCount['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
-            if (isset($visitsNb['max'])) {
-                $this->addUsingAlias(UserPeer::VISITS_NB, $visitsNb['max'], Criteria::LESS_EQUAL);
+            if (isset($visitsCount['max'])) {
+                $this->addUsingAlias(UserPeer::VISITS_COUNT, $visitsCount['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -928,7 +928,7 @@ abstract class BaseUserQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(UserPeer::VISITS_NB, $visitsNb, $comparison);
+        return $this->addUsingAlias(UserPeer::VISITS_COUNT, $visitsCount, $comparison);
     }
 
     /**

@@ -10,7 +10,7 @@
  * @method CourseQuery orderByCursusId($order = Criteria::ASC) Order by the cursus_id column
  * @method CourseQuery orderBySemester($order = Criteria::ASC) Order by the semester column
  * @method CourseQuery orderByName($order = Criteria::ASC) Order by the name column
- * @method CourseQuery orderByCode($order = Criteria::ASC) Order by the code column
+ * @method CourseQuery orderByShortName($order = Criteria::ASC) Order by the short_name column
  * @method CourseQuery orderByEcts($order = Criteria::ASC) Order by the ECTS column
  * @method CourseQuery orderByDescription($order = Criteria::ASC) Order by the description column
  *
@@ -18,7 +18,7 @@
  * @method CourseQuery groupByCursusId() Group by the cursus_id column
  * @method CourseQuery groupBySemester() Group by the semester column
  * @method CourseQuery groupByName() Group by the name column
- * @method CourseQuery groupByCode() Group by the code column
+ * @method CourseQuery groupByShortName() Group by the short_name column
  * @method CourseQuery groupByEcts() Group by the ECTS column
  * @method CourseQuery groupByDescription() Group by the description column
  *
@@ -69,7 +69,7 @@
  * @method Course findOneByCursusId(int $cursus_id) Return the first Course filtered by the cursus_id column
  * @method Course findOneBySemester(int $semester) Return the first Course filtered by the semester column
  * @method Course findOneByName(string $name) Return the first Course filtered by the name column
- * @method Course findOneByCode(string $code) Return the first Course filtered by the code column
+ * @method Course findOneByShortName(string $short_name) Return the first Course filtered by the short_name column
  * @method Course findOneByEcts(double $ECTS) Return the first Course filtered by the ECTS column
  * @method Course findOneByDescription(string $description) Return the first Course filtered by the description column
  *
@@ -77,7 +77,7 @@
  * @method array findByCursusId(int $cursus_id) Return Course objects filtered by the cursus_id column
  * @method array findBySemester(int $semester) Return Course objects filtered by the semester column
  * @method array findByName(string $name) Return Course objects filtered by the name column
- * @method array findByCode(string $code) Return Course objects filtered by the code column
+ * @method array findByShortName(string $short_name) Return Course objects filtered by the short_name column
  * @method array findByEcts(double $ECTS) Return Course objects filtered by the ECTS column
  * @method array findByDescription(string $description) Return Course objects filtered by the description column
  *
@@ -169,7 +169,7 @@ abstract class BaseCourseQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `ID`, `CURSUS_ID`, `SEMESTER`, `NAME`, `CODE`, `ECTS`, `DESCRIPTION` FROM `courses` WHERE `ID` = :p0';
+        $sql = 'SELECT `ID`, `CURSUS_ID`, `SEMESTER`, `NAME`, `SHORT_NAME`, `ECTS`, `DESCRIPTION` FROM `courses` WHERE `ID` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -399,32 +399,32 @@ abstract class BaseCourseQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the code column
+     * Filter the query on the short_name column
      *
      * Example usage:
      * <code>
-     * $query->filterByCode('fooValue');   // WHERE code = 'fooValue'
-     * $query->filterByCode('%fooValue%'); // WHERE code LIKE '%fooValue%'
+     * $query->filterByShortName('fooValue');   // WHERE short_name = 'fooValue'
+     * $query->filterByShortName('%fooValue%'); // WHERE short_name LIKE '%fooValue%'
      * </code>
      *
-     * @param     string $code The value to use as filter.
+     * @param     string $shortName The value to use as filter.
      *              Accepts wildcards (* and % trigger a LIKE)
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return CourseQuery The current query, for fluid interface
      */
-    public function filterByCode($code = null, $comparison = null)
+    public function filterByShortName($shortName = null, $comparison = null)
     {
         if (null === $comparison) {
-            if (is_array($code)) {
+            if (is_array($shortName)) {
                 $comparison = Criteria::IN;
-            } elseif (preg_match('/[\%\*]/', $code)) {
-                $code = str_replace('*', '%', $code);
+            } elseif (preg_match('/[\%\*]/', $shortName)) {
+                $shortName = str_replace('*', '%', $shortName);
                 $comparison = Criteria::LIKE;
             }
         }
 
-        return $this->addUsingAlias(CoursePeer::CODE, $code, $comparison);
+        return $this->addUsingAlias(CoursePeer::SHORT_NAME, $shortName, $comparison);
     }
 
     /**

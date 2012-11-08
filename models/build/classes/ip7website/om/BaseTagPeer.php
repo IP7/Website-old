@@ -35,8 +35,8 @@ abstract class BaseTagPeer
     /** the column name for the ID field */
     const ID = 'tags.ID';
 
-    /** the column name for the NAME field */
-    const NAME = 'tags.NAME';
+    /** the column name for the TITLE field */
+    const TITLE = 'tags.TITLE';
 
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -57,11 +57,11 @@ abstract class BaseTagPeer
      * e.g. TagPeer::$fieldNames[TagPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'Name', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'name', ),
-        BasePeer::TYPE_COLNAME => array (TagPeer::ID, TagPeer::NAME, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'NAME', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'name', ),
+        BasePeer::TYPE_PHPNAME => array ('Id', 'Title', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'title', ),
+        BasePeer::TYPE_COLNAME => array (TagPeer::ID, TagPeer::TITLE, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'TITLE', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'title', ),
         BasePeer::TYPE_NUM => array (0, 1, )
     );
 
@@ -72,11 +72,11 @@ abstract class BaseTagPeer
      * e.g. TagPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Name' => 1, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'name' => 1, ),
-        BasePeer::TYPE_COLNAME => array (TagPeer::ID => 0, TagPeer::NAME => 1, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'NAME' => 1, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'name' => 1, ),
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Title' => 1, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'title' => 1, ),
+        BasePeer::TYPE_COLNAME => array (TagPeer::ID => 0, TagPeer::TITLE => 1, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'TITLE' => 1, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'title' => 1, ),
         BasePeer::TYPE_NUM => array (0, 1, )
     );
 
@@ -152,10 +152,10 @@ abstract class BaseTagPeer
     {
         if (null === $alias) {
             $criteria->addSelectColumn(TagPeer::ID);
-            $criteria->addSelectColumn(TagPeer::NAME);
+            $criteria->addSelectColumn(TagPeer::TITLE);
         } else {
             $criteria->addSelectColumn($alias . '.ID');
-            $criteria->addSelectColumn($alias . '.NAME');
+            $criteria->addSelectColumn($alias . '.TITLE');
         }
     }
 
@@ -752,8 +752,8 @@ abstract class BaseTagPeer
             }
         } else {
 
-        if ($obj->isNew() || $obj->isColumnModified(TagPeer::NAME))
-            $columns[TagPeer::NAME] = $obj->getName();
+        if ($obj->isNew() || $obj->isColumnModified(TagPeer::TITLE))
+            $columns[TagPeer::TITLE] = $obj->getTitle();
 
         }
 

@@ -11,14 +11,12 @@
  * @method CursusQuery orderByName($order = Criteria::ASC) Order by the name column
  * @method CursusQuery orderByDescription($order = Criteria::ASC) Order by the description column
  * @method CursusQuery orderByResponsableId($order = Criteria::ASC) Order by the responsable_id column
- * @method CursusQuery orderByNewsletterId($order = Criteria::ASC) Order by the newsletter_id column
  *
  * @method CursusQuery groupById() Group by the id column
  * @method CursusQuery groupByShortName() Group by the short_name column
  * @method CursusQuery groupByName() Group by the name column
  * @method CursusQuery groupByDescription() Group by the description column
  * @method CursusQuery groupByResponsableId() Group by the responsable_id column
- * @method CursusQuery groupByNewsletterId() Group by the newsletter_id column
  *
  * @method CursusQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method CursusQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -60,14 +58,12 @@
  * @method Cursus findOneByName(string $name) Return the first Cursus filtered by the name column
  * @method Cursus findOneByDescription(string $description) Return the first Cursus filtered by the description column
  * @method Cursus findOneByResponsableId(int $responsable_id) Return the first Cursus filtered by the responsable_id column
- * @method Cursus findOneByNewsletterId(int $newsletter_id) Return the first Cursus filtered by the newsletter_id column
  *
  * @method array findById(int $id) Return Cursus objects filtered by the id column
  * @method array findByShortName(string $short_name) Return Cursus objects filtered by the short_name column
  * @method array findByName(string $name) Return Cursus objects filtered by the name column
  * @method array findByDescription(string $description) Return Cursus objects filtered by the description column
  * @method array findByResponsableId(int $responsable_id) Return Cursus objects filtered by the responsable_id column
- * @method array findByNewsletterId(int $newsletter_id) Return Cursus objects filtered by the newsletter_id column
  *
  * @package    propel.generator.ip7website.om
  */
@@ -157,7 +153,7 @@ abstract class BaseCursusQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `ID`, `SHORT_NAME`, `NAME`, `RESPONSABLE_ID`, `NEWSLETTER_ID` FROM `cursus` WHERE `ID` = :p0';
+        $sql = 'SELECT `ID`, `SHORT_NAME`, `NAME`, `RESPONSABLE_ID` FROM `cursus` WHERE `ID` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -401,47 +397,6 @@ abstract class BaseCursusQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(CursusPeer::RESPONSABLE_ID, $responsableId, $comparison);
-    }
-
-    /**
-     * Filter the query on the newsletter_id column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByNewsletterId(1234); // WHERE newsletter_id = 1234
-     * $query->filterByNewsletterId(array(12, 34)); // WHERE newsletter_id IN (12, 34)
-     * $query->filterByNewsletterId(array('min' => 12)); // WHERE newsletter_id > 12
-     * </code>
-     *
-     * @param     mixed $newsletterId The value to use as filter.
-     *              Use scalar values for equality.
-     *              Use array values for in_array() equivalent.
-     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return CursusQuery The current query, for fluid interface
-     */
-    public function filterByNewsletterId($newsletterId = null, $comparison = null)
-    {
-        if (is_array($newsletterId)) {
-            $useMinMax = false;
-            if (isset($newsletterId['min'])) {
-                $this->addUsingAlias(CursusPeer::NEWSLETTER_ID, $newsletterId['min'], Criteria::GREATER_EQUAL);
-                $useMinMax = true;
-            }
-            if (isset($newsletterId['max'])) {
-                $this->addUsingAlias(CursusPeer::NEWSLETTER_ID, $newsletterId['max'], Criteria::LESS_EQUAL);
-                $useMinMax = true;
-            }
-            if ($useMinMax) {
-                return $this;
-            }
-            if (null === $comparison) {
-                $comparison = Criteria::IN;
-            }
-        }
-
-        return $this->addUsingAlias(CursusPeer::NEWSLETTER_ID, $newsletterId, $comparison);
     }
 
     /**

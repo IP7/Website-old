@@ -41,7 +41,7 @@ class UserTableMap extends TableMap
         $this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
         $this->addColumn('USERNAME', 'Username', 'VARCHAR', false, 16, null);
         $this->addColumn('PASSWORD_HASH', 'PasswordHash', 'VARCHAR', false, 255, null);
-        $this->addColumn('TYPE', 'Type', 'TINYINT', true, null, 0);
+        $this->addColumn('RIGHTS', 'Rights', 'TINYINT', true, null, 0);
         $this->addColumn('FIRSTNAME', 'Firstname', 'VARCHAR', true, 64, null);
         $this->addColumn('LASTNAME', 'Lastname', 'VARCHAR', true, 128, null);
         $this->addColumn('GENDER', 'Gender', 'ENUM', false, null, 'N');
@@ -58,7 +58,7 @@ class UserTableMap extends TableMap
         $this->addColumn('LAST_ENTRY', 'LastEntry', 'DATE', false, null, null);
         $this->addColumn('EXPIRATION_DATE', 'ExpirationDate', 'DATE', false, null, null);
         $this->addColumn('LAST_VISIT', 'LastVisit', 'TIMESTAMP', false, null, null);
-        $this->addColumn('VISITS_NB', 'VisitsNb', 'INTEGER', false, null, 0);
+        $this->addColumn('VISITS_COUNT', 'VisitsCount', 'INTEGER', false, null, 0);
         $this->addColumn('CONFIG_SHOW_EMAIL', 'ConfigShowEmail', 'BOOLEAN', false, 1, '0');
         $this->addColumn('CONFIG_SHOW_PHONE', 'ConfigShowPhone', 'BOOLEAN', false, 1, '0');
         $this->addColumn('CONFIG_SHOW_REAL_NAME', 'ConfigShowRealName', 'BOOLEAN', false, 1, '1');
@@ -81,7 +81,7 @@ class UserTableMap extends TableMap
         $this->addValidator('EMAIL', 'minLength', 'propel.validator.MinLengthValidator', '6', 'L\'e-mail doit faire au moins 6 caractères.');
         $this->addValidator('EMAIL', 'match', 'propel.validator.MatchValidator', '/^[-+\w\.]+@[-\.\w]+\.[a-z]{2,4}$/', 'L\'adresse e-mail n\'est pas valide.');
         $this->addValidator('EMAIL', 'unique', 'propel.validator.UniqueValidator', '', 'L\'email est déjà pris.');
-        $this->addValidator('VISITS_NB', 'minValue', 'propel.validator.MinValueValidator', '0', 'Le nombre de visites ne peut pas être négatif.');
+        $this->addValidator('VISITS_COUNT', 'minValue', 'propel.validator.MinValueValidator', '0', 'Le nombre de visites ne peut pas être négatif.');
     } // initialize()
 
     /**

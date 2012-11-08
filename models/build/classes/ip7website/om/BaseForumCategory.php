@@ -36,10 +36,10 @@ abstract class BaseForumCategory extends BaseObject implements Persistent
     protected $id;
 
     /**
-     * The value for the name field.
+     * The value for the title field.
      * @var        string
      */
-    protected $name;
+    protected $title;
 
     /**
      * The value for the parent_id field.
@@ -128,13 +128,13 @@ abstract class BaseForumCategory extends BaseObject implements Persistent
     }
 
     /**
-     * Get the [name] column value.
+     * Get the [title] column value.
      *
      * @return string
      */
-    public function getName()
+    public function getTitle()
     {
-        return $this->name;
+        return $this->title;
     }
 
     /**
@@ -179,25 +179,25 @@ abstract class BaseForumCategory extends BaseObject implements Persistent
     } // setId()
 
     /**
-     * Set the value of [name] column.
+     * Set the value of [title] column.
      *
      * @param string $v new value
      * @return ForumCategory The current object (for fluent API support)
      */
-    public function setName($v)
+    public function setTitle($v)
     {
         if ($v !== null) {
             $v = (string) $v;
         }
 
-        if ($this->name !== $v) {
-            $this->name = $v;
-            $this->modifiedColumns[] = ForumCategoryPeer::NAME;
+        if ($this->title !== $v) {
+            $this->title = $v;
+            $this->modifiedColumns[] = ForumCategoryPeer::TITLE;
         }
 
 
         return $this;
-    } // setName()
+    } // setTitle()
 
     /**
      * Set the value of [parent_id] column.
@@ -278,7 +278,7 @@ abstract class BaseForumCategory extends BaseObject implements Persistent
         try {
 
             $this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
-            $this->name = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
+            $this->title = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
             $this->parent_id = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
             $this->access_rights = ($row[$startcol + 3] !== null) ? (int) $row[$startcol + 3] : null;
             $this->resetModified();
@@ -559,8 +559,8 @@ abstract class BaseForumCategory extends BaseObject implements Persistent
         if ($this->isColumnModified(ForumCategoryPeer::ID)) {
             $modifiedColumns[':p' . $index++]  = '`ID`';
         }
-        if ($this->isColumnModified(ForumCategoryPeer::NAME)) {
-            $modifiedColumns[':p' . $index++]  = '`NAME`';
+        if ($this->isColumnModified(ForumCategoryPeer::TITLE)) {
+            $modifiedColumns[':p' . $index++]  = '`TITLE`';
         }
         if ($this->isColumnModified(ForumCategoryPeer::PARENT_ID)) {
             $modifiedColumns[':p' . $index++]  = '`PARENT_ID`';
@@ -582,8 +582,8 @@ abstract class BaseForumCategory extends BaseObject implements Persistent
                     case '`ID`':
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
-                    case '`NAME`':
-                        $stmt->bindValue($identifier, $this->name, PDO::PARAM_STR);
+                    case '`TITLE`':
+                        $stmt->bindValue($identifier, $this->title, PDO::PARAM_STR);
                         break;
                     case '`PARENT_ID`':
                         $stmt->bindValue($identifier, $this->parent_id, PDO::PARAM_INT);
@@ -757,7 +757,7 @@ abstract class BaseForumCategory extends BaseObject implements Persistent
                 return $this->getId();
                 break;
             case 1:
-                return $this->getName();
+                return $this->getTitle();
                 break;
             case 2:
                 return $this->getParentId();
@@ -795,7 +795,7 @@ abstract class BaseForumCategory extends BaseObject implements Persistent
         $keys = ForumCategoryPeer::getFieldNames($keyType);
         $result = array(
             $keys[0] => $this->getId(),
-            $keys[1] => $this->getName(),
+            $keys[1] => $this->getTitle(),
             $keys[2] => $this->getParentId(),
             $keys[3] => $this->getAccessRights(),
         );
@@ -847,7 +847,7 @@ abstract class BaseForumCategory extends BaseObject implements Persistent
                 $this->setId($value);
                 break;
             case 1:
-                $this->setName($value);
+                $this->setTitle($value);
                 break;
             case 2:
                 $this->setParentId($value);
@@ -880,7 +880,7 @@ abstract class BaseForumCategory extends BaseObject implements Persistent
         $keys = ForumCategoryPeer::getFieldNames($keyType);
 
         if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
-        if (array_key_exists($keys[1], $arr)) $this->setName($arr[$keys[1]]);
+        if (array_key_exists($keys[1], $arr)) $this->setTitle($arr[$keys[1]]);
         if (array_key_exists($keys[2], $arr)) $this->setParentId($arr[$keys[2]]);
         if (array_key_exists($keys[3], $arr)) $this->setAccessRights($arr[$keys[3]]);
     }
@@ -895,7 +895,7 @@ abstract class BaseForumCategory extends BaseObject implements Persistent
         $criteria = new Criteria(ForumCategoryPeer::DATABASE_NAME);
 
         if ($this->isColumnModified(ForumCategoryPeer::ID)) $criteria->add(ForumCategoryPeer::ID, $this->id);
-        if ($this->isColumnModified(ForumCategoryPeer::NAME)) $criteria->add(ForumCategoryPeer::NAME, $this->name);
+        if ($this->isColumnModified(ForumCategoryPeer::TITLE)) $criteria->add(ForumCategoryPeer::TITLE, $this->title);
         if ($this->isColumnModified(ForumCategoryPeer::PARENT_ID)) $criteria->add(ForumCategoryPeer::PARENT_ID, $this->parent_id);
         if ($this->isColumnModified(ForumCategoryPeer::ACCESS_RIGHTS)) $criteria->add(ForumCategoryPeer::ACCESS_RIGHTS, $this->access_rights);
 
@@ -961,7 +961,7 @@ abstract class BaseForumCategory extends BaseObject implements Persistent
      */
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
-        $copyObj->setName($this->getName());
+        $copyObj->setTitle($this->getTitle());
         $copyObj->setParentId($this->getParentId());
         $copyObj->setAccessRights($this->getAccessRights());
 
@@ -1524,7 +1524,7 @@ abstract class BaseForumCategory extends BaseObject implements Persistent
     public function clear()
     {
         $this->id = null;
-        $this->name = null;
+        $this->title = null;
         $this->parent_id = null;
         $this->access_rights = null;
         $this->alreadyInSave = false;

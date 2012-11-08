@@ -36,10 +36,10 @@ abstract class BaseEvent extends BaseObject implements Persistent
     protected $id;
 
     /**
-     * The value for the name field.
+     * The value for the title field.
      * @var        string
      */
-    protected $name;
+    protected $title;
 
     /**
      * The value for the event_type_id field.
@@ -134,13 +134,13 @@ abstract class BaseEvent extends BaseObject implements Persistent
     }
 
     /**
-     * Get the [name] column value.
+     * Get the [title] column value.
      *
      * @return string
      */
-    public function getName()
+    public function getTitle()
     {
-        return $this->name;
+        return $this->title;
     }
 
     /**
@@ -306,25 +306,25 @@ abstract class BaseEvent extends BaseObject implements Persistent
     } // setId()
 
     /**
-     * Set the value of [name] column.
+     * Set the value of [title] column.
      *
      * @param string $v new value
      * @return Event The current object (for fluent API support)
      */
-    public function setName($v)
+    public function setTitle($v)
     {
         if ($v !== null) {
             $v = (string) $v;
         }
 
-        if ($this->name !== $v) {
-            $this->name = $v;
-            $this->modifiedColumns[] = EventPeer::NAME;
+        if ($this->title !== $v) {
+            $this->title = $v;
+            $this->modifiedColumns[] = EventPeer::TITLE;
         }
 
 
         return $this;
-    } // setName()
+    } // setTitle()
 
     /**
      * Set the value of [event_type_id] column.
@@ -516,7 +516,7 @@ abstract class BaseEvent extends BaseObject implements Persistent
         try {
 
             $this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
-            $this->name = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
+            $this->title = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
             $this->event_type_id = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
             $this->description = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
             $this->date = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
@@ -763,8 +763,8 @@ abstract class BaseEvent extends BaseObject implements Persistent
         if ($this->isColumnModified(EventPeer::ID)) {
             $modifiedColumns[':p' . $index++]  = '`ID`';
         }
-        if ($this->isColumnModified(EventPeer::NAME)) {
-            $modifiedColumns[':p' . $index++]  = '`NAME`';
+        if ($this->isColumnModified(EventPeer::TITLE)) {
+            $modifiedColumns[':p' . $index++]  = '`TITLE`';
         }
         if ($this->isColumnModified(EventPeer::EVENT_TYPE_ID)) {
             $modifiedColumns[':p' . $index++]  = '`EVENT_TYPE_ID`';
@@ -801,8 +801,8 @@ abstract class BaseEvent extends BaseObject implements Persistent
                     case '`ID`':
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
-                    case '`NAME`':
-                        $stmt->bindValue($identifier, $this->name, PDO::PARAM_STR);
+                    case '`TITLE`':
+                        $stmt->bindValue($identifier, $this->title, PDO::PARAM_STR);
                         break;
                     case '`EVENT_TYPE_ID`':
                         $stmt->bindValue($identifier, $this->event_type_id, PDO::PARAM_INT);
@@ -975,7 +975,7 @@ abstract class BaseEvent extends BaseObject implements Persistent
                 return $this->getId();
                 break;
             case 1:
-                return $this->getName();
+                return $this->getTitle();
                 break;
             case 2:
                 return $this->getEventTypeId();
@@ -1028,7 +1028,7 @@ abstract class BaseEvent extends BaseObject implements Persistent
         $keys = EventPeer::getFieldNames($keyType);
         $result = array(
             $keys[0] => $this->getId(),
-            $keys[1] => $this->getName(),
+            $keys[1] => $this->getTitle(),
             $keys[2] => $this->getEventTypeId(),
             $keys[3] => $this->getDescription(),
             $keys[4] => $this->getDate(),
@@ -1079,7 +1079,7 @@ abstract class BaseEvent extends BaseObject implements Persistent
                 $this->setId($value);
                 break;
             case 1:
-                $this->setName($value);
+                $this->setTitle($value);
                 break;
             case 2:
                 $this->setEventTypeId($value);
@@ -1127,7 +1127,7 @@ abstract class BaseEvent extends BaseObject implements Persistent
         $keys = EventPeer::getFieldNames($keyType);
 
         if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
-        if (array_key_exists($keys[1], $arr)) $this->setName($arr[$keys[1]]);
+        if (array_key_exists($keys[1], $arr)) $this->setTitle($arr[$keys[1]]);
         if (array_key_exists($keys[2], $arr)) $this->setEventTypeId($arr[$keys[2]]);
         if (array_key_exists($keys[3], $arr)) $this->setDescription($arr[$keys[3]]);
         if (array_key_exists($keys[4], $arr)) $this->setDate($arr[$keys[4]]);
@@ -1147,7 +1147,7 @@ abstract class BaseEvent extends BaseObject implements Persistent
         $criteria = new Criteria(EventPeer::DATABASE_NAME);
 
         if ($this->isColumnModified(EventPeer::ID)) $criteria->add(EventPeer::ID, $this->id);
-        if ($this->isColumnModified(EventPeer::NAME)) $criteria->add(EventPeer::NAME, $this->name);
+        if ($this->isColumnModified(EventPeer::TITLE)) $criteria->add(EventPeer::TITLE, $this->title);
         if ($this->isColumnModified(EventPeer::EVENT_TYPE_ID)) $criteria->add(EventPeer::EVENT_TYPE_ID, $this->event_type_id);
         if ($this->isColumnModified(EventPeer::DESCRIPTION)) $criteria->add(EventPeer::DESCRIPTION, $this->description);
         if ($this->isColumnModified(EventPeer::DATE)) $criteria->add(EventPeer::DATE, $this->date);
@@ -1218,7 +1218,7 @@ abstract class BaseEvent extends BaseObject implements Persistent
      */
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
-        $copyObj->setName($this->getName());
+        $copyObj->setTitle($this->getTitle());
         $copyObj->setEventTypeId($this->getEventTypeId());
         $copyObj->setDescription($this->getDescription());
         $copyObj->setDate($this->getDate());
@@ -1341,7 +1341,7 @@ abstract class BaseEvent extends BaseObject implements Persistent
     public function clear()
     {
         $this->id = null;
-        $this->name = null;
+        $this->title = null;
         $this->event_type_id = null;
         $this->description = null;
         $this->date = null;

@@ -9,14 +9,14 @@
  * @method ScheduleQuery orderById($order = Criteria::ASC) Order by the id column
  * @method ScheduleQuery orderByCursusId($order = Criteria::ASC) Order by the cursus_id column
  * @method ScheduleQuery orderByPathId($order = Criteria::ASC) Order by the path_id column
- * @method ScheduleQuery orderByName($order = Criteria::ASC) Order by the name column
+ * @method ScheduleQuery orderByTitle($order = Criteria::ASC) Order by the title column
  * @method ScheduleQuery orderByBeginning($order = Criteria::ASC) Order by the beginning column
  * @method ScheduleQuery orderByEnd($order = Criteria::ASC) Order by the end column
  *
  * @method ScheduleQuery groupById() Group by the id column
  * @method ScheduleQuery groupByCursusId() Group by the cursus_id column
  * @method ScheduleQuery groupByPathId() Group by the path_id column
- * @method ScheduleQuery groupByName() Group by the name column
+ * @method ScheduleQuery groupByTitle() Group by the title column
  * @method ScheduleQuery groupByBeginning() Group by the beginning column
  * @method ScheduleQuery groupByEnd() Group by the end column
  *
@@ -42,14 +42,14 @@
  * @method Schedule findOneById(int $id) Return the first Schedule filtered by the id column
  * @method Schedule findOneByCursusId(int $cursus_id) Return the first Schedule filtered by the cursus_id column
  * @method Schedule findOneByPathId(int $path_id) Return the first Schedule filtered by the path_id column
- * @method Schedule findOneByName(string $name) Return the first Schedule filtered by the name column
+ * @method Schedule findOneByTitle(string $title) Return the first Schedule filtered by the title column
  * @method Schedule findOneByBeginning(string $beginning) Return the first Schedule filtered by the beginning column
  * @method Schedule findOneByEnd(string $end) Return the first Schedule filtered by the end column
  *
  * @method array findById(int $id) Return Schedule objects filtered by the id column
  * @method array findByCursusId(int $cursus_id) Return Schedule objects filtered by the cursus_id column
  * @method array findByPathId(int $path_id) Return Schedule objects filtered by the path_id column
- * @method array findByName(string $name) Return Schedule objects filtered by the name column
+ * @method array findByTitle(string $title) Return Schedule objects filtered by the title column
  * @method array findByBeginning(string $beginning) Return Schedule objects filtered by the beginning column
  * @method array findByEnd(string $end) Return Schedule objects filtered by the end column
  *
@@ -141,7 +141,7 @@ abstract class BaseScheduleQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `ID`, `CURSUS_ID`, `PATH_ID`, `NAME`, `BEGINNING`, `END` FROM `schedules` WHERE `ID` = :p0';
+        $sql = 'SELECT `ID`, `CURSUS_ID`, `PATH_ID`, `TITLE`, `BEGINNING`, `END` FROM `schedules` WHERE `ID` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -344,32 +344,32 @@ abstract class BaseScheduleQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the name column
+     * Filter the query on the title column
      *
      * Example usage:
      * <code>
-     * $query->filterByName('fooValue');   // WHERE name = 'fooValue'
-     * $query->filterByName('%fooValue%'); // WHERE name LIKE '%fooValue%'
+     * $query->filterByTitle('fooValue');   // WHERE title = 'fooValue'
+     * $query->filterByTitle('%fooValue%'); // WHERE title LIKE '%fooValue%'
      * </code>
      *
-     * @param     string $name The value to use as filter.
+     * @param     string $title The value to use as filter.
      *              Accepts wildcards (* and % trigger a LIKE)
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return ScheduleQuery The current query, for fluid interface
      */
-    public function filterByName($name = null, $comparison = null)
+    public function filterByTitle($title = null, $comparison = null)
     {
         if (null === $comparison) {
-            if (is_array($name)) {
+            if (is_array($title)) {
                 $comparison = Criteria::IN;
-            } elseif (preg_match('/[\%\*]/', $name)) {
-                $name = str_replace('*', '%', $name);
+            } elseif (preg_match('/[\%\*]/', $title)) {
+                $title = str_replace('*', '%', $title);
                 $comparison = Criteria::LIKE;
             }
         }
 
-        return $this->addUsingAlias(SchedulePeer::NAME, $name, $comparison);
+        return $this->addUsingAlias(SchedulePeer::TITLE, $title, $comparison);
     }
 
     /**

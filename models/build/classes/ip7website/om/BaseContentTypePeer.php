@@ -41,8 +41,8 @@ abstract class BaseContentTypePeer
     /** the column name for the SHORT_NAME field */
     const SHORT_NAME = 'content_types.SHORT_NAME';
 
-    /** the column name for the RIGHTS field */
-    const RIGHTS = 'content_types.RIGHTS';
+    /** the column name for the ACCESS_RIGHTS field */
+    const ACCESS_RIGHTS = 'content_types.ACCESS_RIGHTS';
 
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -63,11 +63,11 @@ abstract class BaseContentTypePeer
      * e.g. ContentTypePeer::$fieldNames[ContentTypePeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'Name', 'ShortName', 'Rights', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'name', 'shortName', 'rights', ),
-        BasePeer::TYPE_COLNAME => array (ContentTypePeer::ID, ContentTypePeer::NAME, ContentTypePeer::SHORT_NAME, ContentTypePeer::RIGHTS, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'NAME', 'SHORT_NAME', 'RIGHTS', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'name', 'short_name', 'rights', ),
+        BasePeer::TYPE_PHPNAME => array ('Id', 'Name', 'ShortName', 'AccessRights', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'name', 'shortName', 'accessRights', ),
+        BasePeer::TYPE_COLNAME => array (ContentTypePeer::ID, ContentTypePeer::NAME, ContentTypePeer::SHORT_NAME, ContentTypePeer::ACCESS_RIGHTS, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'NAME', 'SHORT_NAME', 'ACCESS_RIGHTS', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'name', 'short_name', 'access_rights', ),
         BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
     );
 
@@ -78,11 +78,11 @@ abstract class BaseContentTypePeer
      * e.g. ContentTypePeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Name' => 1, 'ShortName' => 2, 'Rights' => 3, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'name' => 1, 'shortName' => 2, 'rights' => 3, ),
-        BasePeer::TYPE_COLNAME => array (ContentTypePeer::ID => 0, ContentTypePeer::NAME => 1, ContentTypePeer::SHORT_NAME => 2, ContentTypePeer::RIGHTS => 3, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'NAME' => 1, 'SHORT_NAME' => 2, 'RIGHTS' => 3, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'name' => 1, 'short_name' => 2, 'rights' => 3, ),
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Name' => 1, 'ShortName' => 2, 'AccessRights' => 3, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'name' => 1, 'shortName' => 2, 'accessRights' => 3, ),
+        BasePeer::TYPE_COLNAME => array (ContentTypePeer::ID => 0, ContentTypePeer::NAME => 1, ContentTypePeer::SHORT_NAME => 2, ContentTypePeer::ACCESS_RIGHTS => 3, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'NAME' => 1, 'SHORT_NAME' => 2, 'ACCESS_RIGHTS' => 3, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'name' => 1, 'short_name' => 2, 'access_rights' => 3, ),
         BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
     );
 
@@ -160,12 +160,12 @@ abstract class BaseContentTypePeer
             $criteria->addSelectColumn(ContentTypePeer::ID);
             $criteria->addSelectColumn(ContentTypePeer::NAME);
             $criteria->addSelectColumn(ContentTypePeer::SHORT_NAME);
-            $criteria->addSelectColumn(ContentTypePeer::RIGHTS);
+            $criteria->addSelectColumn(ContentTypePeer::ACCESS_RIGHTS);
         } else {
             $criteria->addSelectColumn($alias . '.ID');
             $criteria->addSelectColumn($alias . '.NAME');
             $criteria->addSelectColumn($alias . '.SHORT_NAME');
-            $criteria->addSelectColumn($alias . '.RIGHTS');
+            $criteria->addSelectColumn($alias . '.ACCESS_RIGHTS');
         }
     }
 

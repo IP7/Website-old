@@ -40,7 +40,7 @@ class FileTableMap extends TableMap
         // columns
         $this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
         $this->addForeignKey('AUTHOR_ID', 'AuthorId', 'INTEGER', 'users', 'ID', false, null, null);
-        $this->addColumn('NAME', 'Name', 'VARCHAR', true, 128, null);
+        $this->addColumn('TITLE', 'Title', 'VARCHAR', true, 128, null);
         $this->addColumn('DATE', 'Date', 'TIMESTAMP', true, null, null);
         $this->addColumn('DESCRIPTION', 'Description', 'VARCHAR', false, 255, null);
         $this->addColumn('FILE_TYPE', 'FileType', 'ENUM', false, null, null);
@@ -57,7 +57,7 @@ class FileTableMap extends TableMap
         $this->addColumn('ACCESS_RIGHTS', 'AccessRights', 'TINYINT', false, null, 0);
         $this->addColumn('DOWNLOADS_COUNT', 'DownloadsCount', 'INTEGER', false, null, 0);
         // validators
-        $this->addValidator('NAME', 'minLength', 'propel.validator.MinLengthValidator', '3', 'Le nom doit faire au moins 3 caractères.');
+        $this->addValidator('TITLE', 'minLength', 'propel.validator.MinLengthValidator', '3', 'Le nom doit faire au moins 3 caractères.');
         $this->addValidator('PATH', 'minLength', 'propel.validator.MinLengthValidator', '3', 'Le chemin doit faire au moins 3 caractères.');
         $this->addValidator('PATH', 'notMatch', 'propel.validator.NotMatchValidator', '/^[a-z]:\/\//i', 'Le fichier ne peut être distant.');
     } // initialize()
