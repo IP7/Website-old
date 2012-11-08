@@ -13,6 +13,6 @@
  *
  * @package    propel.generator.ip7website
  */
-class ContentType extends BaseContentType
-{
+class ContentType extends BaseContentType {
+
 }

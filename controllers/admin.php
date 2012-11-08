@@ -176,7 +176,7 @@ function display_admin_proposed_content($msg_str=null, $msg_type=null){
                 continue;
             }
 
-			$uri = Config::$root_uri . 'cursus/' . $cursus->getShortName() . '/' . $course->getCode() . '/' . $c->getId();
+			$uri = Config::$root_uri . 'cursus/' . $cursus->getShortName() . '/' . $course->getShortName() . '/' . $c->getId();
 
             $tpl_c = array(
                 'title' => $c->getTitle(),
@@ -196,7 +196,7 @@ function display_admin_proposed_content($msg_str=null, $msg_type=null){
 
                 if ($course) {
                     $tpl_c ['course'] = array(
-                        'name' => $course->getCode()
+                        'name' => $course->getShortName()
                     );
                 }
             }
@@ -354,7 +354,7 @@ function post_admin_add_member() {
 
     $rank = has_post('rank') ? $_POST['rank'] : 'member';
 
-    $type = ($rank == 'member')
+    $rights = ($rank == 'member')
                 ? MEMBER_RANK
                 : (($rank == 'moderator')
                     ? MODERATOR_RANK
@@ -369,7 +369,7 @@ function post_admin_add_member() {
     $lastname = get_string('lastname', 'post');
 
     $user = new User();
-    $user->setType($type);
+    $user->setRights($rights);
     $user->setFirstname(get_string('firstname', 'post'));
     $user->setLastname(get_string('lastname', 'post'));
     $user->setUsername(get_temp_username());

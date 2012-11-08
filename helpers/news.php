@@ -3,7 +3,7 @@
 // Return news (Propel objects)
 function get_news($cursus=null, $course=null) {
 
-    $user_rights = is_connected() ? user()->getRank() : 0;
+    $user_rights = is_connected() ? user()->getRights() : 0;
 
     $q = NewsQuery::create()
                 ->where('Access_Rights <= ?', $user_rights, PDO::PARAM_INT)
@@ -28,7 +28,7 @@ function check_and_save_news($title, $body, &$news, $cursus=null, $course=null) 
 
     if (!is_connected()) { halt(HTTP_FORBIDDEN); }
 
-    if ($news && $news->getAccessRights() > user()->getRank()) {
+    if ($news && $news->getAccessRights() > user()->getRights()) {
         halt(HTTP_FORBIDDEN);
     }
 

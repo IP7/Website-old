@@ -4,10 +4,10 @@
 // in the template.
 function tpl_course_contents($cursus, $course) {
 
-    $user_rights = (is_connected()) ? user()->getRank() : 0;
+    $user_rights = (is_connected()) ? user()->getRights() : 0;
 
     $types = ContentTypeQuery::create()
-                ->where('Rights <= ?', $user_rights, PDO::PARAM_INT)
+                ->where('Access_Rights <= ?', $user_rights, PDO::PARAM_INT)
                 ->find();
 
     if (!$types) {
