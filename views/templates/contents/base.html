@@ -42,7 +42,7 @@
             <h3>Fichiers</h3>
             <ul class="fileslist">
             {% for f in page.content.files %}
-            <li>{{ _m.a(f.url, f.title) }}{% if f.description is defined and f.description %}&nbsp;: {{ f.description }}{% endif %}</li>
+            <li class="file-li">{{ _m.a(f.url, f.title) }}{% if f.description is defined and f.description %}&nbsp;: {{ f.description }}{% endif %}</li>
             {% endfor %}
             </ul>
         </aside>

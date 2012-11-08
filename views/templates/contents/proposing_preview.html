@@ -10,9 +10,9 @@
     {% if page.content.files is defined and page.content.files is not empty %}
     <hr />
     <h2>Fichiers</h2>
-    <ul>
+    <ul class="fileslist">
         {% for f in page.content.files %}
-        <li>{{ f.name }}</li>
+        <li class="file-li">{{ f.name }}</li>
         {% endfor %}
     </ul>
         {% if (page.content.type is defined) or (page.content.year is defined) %}

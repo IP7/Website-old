@@ -169,7 +169,11 @@ function display_course_content() {
             'content'  => $tpl_content,
 
             'message'      => $msg_str,
-            'message_type' => $msg_type
+            'message_type' => $msg_type,
+
+            'scripts' => array(
+                array( 'href' => js_url( 'file-icons' ) )
+            )
         )
     ));
 
@@ -400,6 +404,10 @@ function display_post_member_proposed_content_preview() {
             'form' => array(
                 'token' => $token2,
                 'action' => course_url($fd2->get('cursus'), $fd2->get('course')).'/proposer'
+            ),
+
+            'scripts' => array(
+                array( 'href' => js_url( 'file-icons' ) )
             )
         )
     ));
