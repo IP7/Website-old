@@ -23,16 +23,26 @@ function zip_tmp()
                 {
                         return 3;
                 }
-                $zip->ExtractTo("zip/");
-                $zip->close();         
-                $yaml = Spyc::YAMLLoad('zip/config.txt');
-                return $yaml;
+                $zip->ExtractTo("/tmp/");
+                $zip->close();        
+		if(file_exists('/tmp/config.yml')
+		{ 
+                	return Spyc::YAMLLoad('/tmp/config.yml');
+                }
+		else
+		{
+			return 4;
+		};
 }
  
 function proposition_par_zip()
 {
         $resultat_reception = zip_tmp();
-        foreach($resultat_reception as $k => $v) // pour toutes les propositions
+        if(!is_array($resultat_reception))
+	{
+		return $resultat_reception;
+	}
+	foreach($resultat_reception as $k => $v) // pour toutes les propositions
         {
                 if(is_array($v))
                 {
@@ -40,25 +50,24 @@ function proposition_par_zip()
                         {
                                 return null;
                         }
-                        foreach($v as $a => $b)
+                        foreach($v as $cle => $valeur)
                         {
-                                if(!(is_string($b) && file_exists("zip/$b")))
+                                if(!(is_string($valeur) && file_exists("/tmp/$valeur")))
                                 {
                                         continue;
                                 }
-                                echo("$b<br>");
-                                $aux = substr($b,strpos($b,".")+1);
-                                if(!strcmp($aux,"html") || !strcmp($aux,"php"))
+                                echo("$valeur<br>");
+                                $cleux = substr($valeur,strpos($valeur,".")+1);
+                                if(!strcmp($cleux,"html") || !strcmp($cleux,"php"))
                                 {
-                                        echo("aux = $aux<br>");
-                                        rename("zip/".$b,$b.".txt");
+                                        echo("aux = $cleux<br>");
+                                        move_uploaded_file("/tmp/".$valeur,$valeur.".txt");
                                 }
                                 else
                                 {
-                                        rename("zip/".$b,$b);
+                                       	move_uploaded_file("/tmp/".$valeur,$valeur);
                                 }
                         }
-                        array_map('unlink', glob("zip/*"));
                         rmdir("zip");
                         return $resultat_reception;
                 }
