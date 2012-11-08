@@ -10,16 +10,14 @@ function zip_tmp()
         {
                         return 1;
                 }
-                $extensions_valides = array('zip');
-                $extension_upload = strtolower( substr( strrchr( $_FILES['mon_fichier']['name'], '.') ,1) );
-                if (! in_array($extension_upload,$extensions_valides) )
+               	if(strcmp(strtolower( substr( strrchr( $_FILES['mon_fichier']['name'], '.') ,1) ),"zip")!=0) ;
                 {
-                        return 2;
+                       return 2;
                 }
                
                 $zip = new ZipArchive;
                
-                if ($zip->open($_FILES['mon_fichier']['tmp_name']) === FALSE)
+                if ($zip->open($_FILES['fichier_zip']['tmp_name']) === FALSE)
                 {
                         return 3;
                 }
