@@ -23,7 +23,6 @@
         if (!ext)
             continue;
 
-        _ = ext;
         ext = ext.toLocaleLowerCase();
 
         if (exts[ext]) {
