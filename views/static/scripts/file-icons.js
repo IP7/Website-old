@@ -19,7 +19,12 @@
         i=0, _l = lis.length, ext;
 
     for (;i<_l; i++) {
-        ext = lis[i].textContent.trimRight().split('.').slice(-1);
+        ext = lis[i].textContent.trimRight().split('.').slice(-1)[0];
+        if (!ext)
+            continue;
+
+        _ = ext;
+        ext = ext.toLocaleLowerCase();
 
         if (exts[ext]) {
             lis[i].style.backgroundImage =
