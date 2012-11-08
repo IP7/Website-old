@@ -61,15 +61,9 @@ CREATE TABLE `cursus`
     UNIQUE INDEX `cursus_U_1` (`name`),
     INDEX `cursus_I_1` (`short_name`),
     INDEX `cursus_FI_1` (`responsable_id`),
-    INDEX `cursus_FI_2` (`newsletter_id`),
     CONSTRAINT `cursus_FK_1`
         FOREIGN KEY (`responsable_id`)
         REFERENCES `users` (`id`)
-        ON UPDATE CASCADE
-        ON DELETE SET NULL,
-    CONSTRAINT `cursus_FK_2`
-        FOREIGN KEY (`newsletter_id`)
-        REFERENCES `newsletters` (`id`)
         ON UPDATE CASCADE
         ON DELETE SET NULL
 ) ENGINE=MyISAM;
@@ -217,6 +211,7 @@ CREATE TABLE `files`
     `file_type` TINYINT,
     `path` VARCHAR(255) NOT NULL,
     `access_rights` TINYINT DEFAULT 0,
+    `downloads_count` INTEGER DEFAULT 0,
     PRIMARY KEY (`id`),
     UNIQUE INDEX `files_U_1` (`path`),
     INDEX `files_FI_1` (`author_id`),
@@ -225,66 +220,6 @@ CREATE TABLE `files`
         REFERENCES `users` (`id`)
         ON UPDATE CASCADE
         ON DELETE SET NULL
-) ENGINE=MyISAM;
-
--- ---------------------------------------------------------------------
--- newsletters
--- ---------------------------------------------------------------------
-
-DROP TABLE IF EXISTS `newsletters`;
-
-CREATE TABLE `newsletters`
-(
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `name` VARCHAR(255) NOT NULL,
-    `description` VARCHAR(255),
-    PRIMARY KEY (`id`),
-    UNIQUE INDEX `newsletters_U_1` (`name`)
-) ENGINE=MyISAM;
-
--- ---------------------------------------------------------------------
--- newsletters_posts
--- ---------------------------------------------------------------------
-
-DROP TABLE IF EXISTS `newsletters_posts`;
-
-CREATE TABLE `newsletters_posts`
-(
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `newsletter_id` INTEGER,
-    `date` DATETIME NOT NULL,
-    `text` TEXT NOT NULL,
-    PRIMARY KEY (`id`),
-    INDEX `newsletters_posts_FI_1` (`newsletter_id`),
-    CONSTRAINT `newsletters_posts_FK_1`
-        FOREIGN KEY (`newsletter_id`)
-        REFERENCES `newsletters` (`id`)
-        ON UPDATE CASCADE
-        ON DELETE SET NULL
-) ENGINE=MyISAM;
-
--- ---------------------------------------------------------------------
--- newsletters_subscribers
--- ---------------------------------------------------------------------
-
-DROP TABLE IF EXISTS `newsletters_subscribers`;
-
-CREATE TABLE `newsletters_subscribers`
-(
-    `subscriber_id` INTEGER NOT NULL,
-    `newsletter_id` INTEGER NOT NULL,
-    PRIMARY KEY (`subscriber_id`,`newsletter_id`),
-    INDEX `newsletters_subscribers_FI_2` (`newsletter_id`),
-    CONSTRAINT `newsletters_subscribers_FK_1`
-        FOREIGN KEY (`subscriber_id`)
-        REFERENCES `users` (`id`)
-        ON UPDATE CASCADE
-        ON DELETE CASCADE,
-    CONSTRAINT `newsletters_subscribers_FK_2`
-        FOREIGN KEY (`newsletter_id`)
-        REFERENCES `newsletters` (`id`)
-        ON UPDATE CASCADE
-        ON DELETE CASCADE
 ) ENGINE=MyISAM;
 
 -- ---------------------------------------------------------------------

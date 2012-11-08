@@ -79,6 +79,13 @@ abstract class BaseFile extends BaseObject implements Persistent
     protected $access_rights;
 
     /**
+     * The value for the downloads_count field.
+     * Note: this column has a database default value of: (expression) 0
+     * @var        int
+     */
+    protected $downloads_count;
+
+    /**
      * @var        User
      */
     protected $aAuthor;
@@ -254,6 +261,16 @@ abstract class BaseFile extends BaseObject implements Persistent
     public function getAccessRights()
     {
         return $this->access_rights;
+    }
+
+    /**
+     * Get the [downloads_count] column value.
+     *
+     * @return int
+     */
+    public function getDownloadsCount()
+    {
+        return $this->downloads_count;
     }
 
     /**
@@ -436,6 +453,27 @@ abstract class BaseFile extends BaseObject implements Persistent
     } // setAccessRights()
 
     /**
+     * Set the value of [downloads_count] column.
+     *
+     * @param int $v new value
+     * @return File The current object (for fluent API support)
+     */
+    public function setDownloadsCount($v)
+    {
+        if ($v !== null) {
+            $v = (int) $v;
+        }
+
+        if ($this->downloads_count !== $v) {
+            $this->downloads_count = $v;
+            $this->modifiedColumns[] = FilePeer::DOWNLOADS_COUNT;
+        }
+
+
+        return $this;
+    } // setDownloadsCount()
+
+    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -475,6 +513,7 @@ abstract class BaseFile extends BaseObject implements Persistent
             $this->file_type = ($row[$startcol + 5] !== null) ? (int) $row[$startcol + 5] : null;
             $this->path = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
             $this->access_rights = ($row[$startcol + 7] !== null) ? (int) $row[$startcol + 7] : null;
+            $this->downloads_count = ($row[$startcol + 8] !== null) ? (int) $row[$startcol + 8] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -483,7 +522,7 @@ abstract class BaseFile extends BaseObject implements Persistent
                 $this->ensureConsistency();
             }
 
-            return $startcol + 8; // 8 = FilePeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 9; // 9 = FilePeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating File object", $e);
@@ -775,6 +814,9 @@ abstract class BaseFile extends BaseObject implements Persistent
         if ($this->isColumnModified(FilePeer::ACCESS_RIGHTS)) {
             $modifiedColumns[':p' . $index++]  = '`ACCESS_RIGHTS`';
         }
+        if ($this->isColumnModified(FilePeer::DOWNLOADS_COUNT)) {
+            $modifiedColumns[':p' . $index++]  = '`DOWNLOADS_COUNT`';
+        }
 
         $sql = sprintf(
             'INSERT INTO `files` (%s) VALUES (%s)',
@@ -809,6 +851,9 @@ abstract class BaseFile extends BaseObject implements Persistent
                         break;
                     case '`ACCESS_RIGHTS`':
                         $stmt->bindValue($identifier, $this->access_rights, PDO::PARAM_INT);
+                        break;
+                    case '`DOWNLOADS_COUNT`':
+                        $stmt->bindValue($identifier, $this->downloads_count, PDO::PARAM_INT);
                         break;
                 }
             }
@@ -988,6 +1033,9 @@ abstract class BaseFile extends BaseObject implements Persistent
             case 7:
                 return $this->getAccessRights();
                 break;
+            case 8:
+                return $this->getDownloadsCount();
+                break;
             default:
                 return null;
                 break;
@@ -1025,6 +1073,7 @@ abstract class BaseFile extends BaseObject implements Persistent
             $keys[5] => $this->getFileType(),
             $keys[6] => $this->getPath(),
             $keys[7] => $this->getAccessRights(),
+            $keys[8] => $this->getDownloadsCount(),
         );
         if ($includeForeignObjects) {
             if (null !== $this->aAuthor) {
@@ -1095,6 +1144,9 @@ abstract class BaseFile extends BaseObject implements Persistent
             case 7:
                 $this->setAccessRights($value);
                 break;
+            case 8:
+                $this->setDownloadsCount($value);
+                break;
         } // switch()
     }
 
@@ -1127,6 +1179,7 @@ abstract class BaseFile extends BaseObject implements Persistent
         if (array_key_exists($keys[5], $arr)) $this->setFileType($arr[$keys[5]]);
         if (array_key_exists($keys[6], $arr)) $this->setPath($arr[$keys[6]]);
         if (array_key_exists($keys[7], $arr)) $this->setAccessRights($arr[$keys[7]]);
+        if (array_key_exists($keys[8], $arr)) $this->setDownloadsCount($arr[$keys[8]]);
     }
 
     /**
@@ -1146,6 +1199,7 @@ abstract class BaseFile extends BaseObject implements Persistent
         if ($this->isColumnModified(FilePeer::FILE_TYPE)) $criteria->add(FilePeer::FILE_TYPE, $this->file_type);
         if ($this->isColumnModified(FilePeer::PATH)) $criteria->add(FilePeer::PATH, $this->path);
         if ($this->isColumnModified(FilePeer::ACCESS_RIGHTS)) $criteria->add(FilePeer::ACCESS_RIGHTS, $this->access_rights);
+        if ($this->isColumnModified(FilePeer::DOWNLOADS_COUNT)) $criteria->add(FilePeer::DOWNLOADS_COUNT, $this->downloads_count);
 
         return $criteria;
     }
@@ -1216,6 +1270,7 @@ abstract class BaseFile extends BaseObject implements Persistent
         $copyObj->setFileType($this->getFileType());
         $copyObj->setPath($this->getPath());
         $copyObj->setAccessRights($this->getAccessRights());
+        $copyObj->setDownloadsCount($this->getDownloadsCount());
 
         if ($deepCopy && !$this->startCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -1760,6 +1815,7 @@ abstract class BaseFile extends BaseObject implements Persistent
         $this->file_type = null;
         $this->path = null;
         $this->access_rights = null;
+        $this->downloads_count = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->clearAllReferences();

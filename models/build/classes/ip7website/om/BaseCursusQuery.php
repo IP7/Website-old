@@ -28,10 +28,6 @@
  * @method CursusQuery rightJoinResponsable($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Responsable relation
  * @method CursusQuery innerJoinResponsable($relationAlias = null) Adds a INNER JOIN clause to the query using the Responsable relation
  *
- * @method CursusQuery leftJoinNewsletter($relationAlias = null) Adds a LEFT JOIN clause to the query using the Newsletter relation
- * @method CursusQuery rightJoinNewsletter($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Newsletter relation
- * @method CursusQuery innerJoinNewsletter($relationAlias = null) Adds a INNER JOIN clause to the query using the Newsletter relation
- *
  * @method CursusQuery leftJoinCourse($relationAlias = null) Adds a LEFT JOIN clause to the query using the Course relation
  * @method CursusQuery rightJoinCourse($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Course relation
  * @method CursusQuery innerJoinCourse($relationAlias = null) Adds a INNER JOIN clause to the query using the Course relation
@@ -417,8 +413,6 @@ abstract class BaseCursusQuery extends ModelCriteria
      * $query->filterByNewsletterId(array('min' => 12)); // WHERE newsletter_id > 12
      * </code>
      *
-     * @see       filterByNewsletter()
-     *
      * @param     mixed $newsletterId The value to use as filter.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
@@ -524,82 +518,6 @@ abstract class BaseCursusQuery extends ModelCriteria
         return $this
             ->joinResponsable($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'Responsable', 'UserQuery');
-    }
-
-    /**
-     * Filter the query by a related Newsletter object
-     *
-     * @param   Newsletter|PropelObjectCollection $newsletter The related object(s) to use as filter
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return   CursusQuery The current query, for fluid interface
-     * @throws   PropelException - if the provided filter is invalid.
-     */
-    public function filterByNewsletter($newsletter, $comparison = null)
-    {
-        if ($newsletter instanceof Newsletter) {
-            return $this
-                ->addUsingAlias(CursusPeer::NEWSLETTER_ID, $newsletter->getId(), $comparison);
-        } elseif ($newsletter instanceof PropelObjectCollection) {
-            if (null === $comparison) {
-                $comparison = Criteria::IN;
-            }
-
-            return $this
-                ->addUsingAlias(CursusPeer::NEWSLETTER_ID, $newsletter->toKeyValue('PrimaryKey', 'Id'), $comparison);
-        } else {
-            throw new PropelException('filterByNewsletter() only accepts arguments of type Newsletter or PropelCollection');
-        }
-    }
-
-    /**
-     * Adds a JOIN clause to the query using the Newsletter relation
-     *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return CursusQuery The current query, for fluid interface
-     */
-    public function joinNewsletter($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
-    {
-        $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('Newsletter');
-
-        // create a ModelJoin object for this join
-        $join = new ModelJoin();
-        $join->setJoinType($joinType);
-        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
-        if ($previousJoin = $this->getPreviousJoin()) {
-            $join->setPreviousJoin($previousJoin);
-        }
-
-        // add the ModelJoin to the current object
-        if ($relationAlias) {
-            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
-            $this->addJoinObject($join, $relationAlias);
-        } else {
-            $this->addJoinObject($join, 'Newsletter');
-        }
-
-        return $this;
-    }
-
-    /**
-     * Use the Newsletter relation Newsletter object
-     *
-     * @see       useQuery()
-     *
-     * @param     string $relationAlias optional alias for the relation,
-     *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return   NewsletterQuery A secondary query class using the current class as primary query
-     */
-    public function useNewsletterQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
-    {
-        return $this
-            ->joinNewsletter($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'Newsletter', 'NewsletterQuery');
     }
 
     /**

@@ -46,6 +46,9 @@ function _serve_user_file($f) {
         return halt(HTTP_FORBIDDEN);
     }
 
+    $f->incrementDownloadsCount();
+    $f->save();
+
     return render_file($path, true);
 }
 

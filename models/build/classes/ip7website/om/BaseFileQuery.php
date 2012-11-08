@@ -14,6 +14,7 @@
  * @method FileQuery orderByFileType($order = Criteria::ASC) Order by the file_type column
  * @method FileQuery orderByPath($order = Criteria::ASC) Order by the path column
  * @method FileQuery orderByAccessRights($order = Criteria::ASC) Order by the access_rights column
+ * @method FileQuery orderByDownloadsCount($order = Criteria::ASC) Order by the downloads_count column
  *
  * @method FileQuery groupById() Group by the id column
  * @method FileQuery groupByAuthorId() Group by the author_id column
@@ -23,6 +24,7 @@
  * @method FileQuery groupByFileType() Group by the file_type column
  * @method FileQuery groupByPath() Group by the path column
  * @method FileQuery groupByAccessRights() Group by the access_rights column
+ * @method FileQuery groupByDownloadsCount() Group by the downloads_count column
  *
  * @method FileQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method FileQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -47,6 +49,7 @@
  * @method File findOneByFileType(int $file_type) Return the first File filtered by the file_type column
  * @method File findOneByPath(string $path) Return the first File filtered by the path column
  * @method File findOneByAccessRights(int $access_rights) Return the first File filtered by the access_rights column
+ * @method File findOneByDownloadsCount(int $downloads_count) Return the first File filtered by the downloads_count column
  *
  * @method array findById(int $id) Return File objects filtered by the id column
  * @method array findByAuthorId(int $author_id) Return File objects filtered by the author_id column
@@ -56,6 +59,7 @@
  * @method array findByFileType(int $file_type) Return File objects filtered by the file_type column
  * @method array findByPath(string $path) Return File objects filtered by the path column
  * @method array findByAccessRights(int $access_rights) Return File objects filtered by the access_rights column
+ * @method array findByDownloadsCount(int $downloads_count) Return File objects filtered by the downloads_count column
  *
  * @package    propel.generator.ip7website.om
  */
@@ -145,7 +149,7 @@ abstract class BaseFileQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `ID`, `AUTHOR_ID`, `NAME`, `DATE`, `DESCRIPTION`, `FILE_TYPE`, `PATH`, `ACCESS_RIGHTS` FROM `files` WHERE `ID` = :p0';
+        $sql = 'SELECT `ID`, `AUTHOR_ID`, `NAME`, `DATE`, `DESCRIPTION`, `FILE_TYPE`, `PATH`, `ACCESS_RIGHTS`, `DOWNLOADS_COUNT` FROM `files` WHERE `ID` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -507,6 +511,47 @@ abstract class BaseFileQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(FilePeer::ACCESS_RIGHTS, $accessRights, $comparison);
+    }
+
+    /**
+     * Filter the query on the downloads_count column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByDownloadsCount(1234); // WHERE downloads_count = 1234
+     * $query->filterByDownloadsCount(array(12, 34)); // WHERE downloads_count IN (12, 34)
+     * $query->filterByDownloadsCount(array('min' => 12)); // WHERE downloads_count > 12
+     * </code>
+     *
+     * @param     mixed $downloadsCount The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return FileQuery The current query, for fluid interface
+     */
+    public function filterByDownloadsCount($downloadsCount = null, $comparison = null)
+    {
+        if (is_array($downloadsCount)) {
+            $useMinMax = false;
+            if (isset($downloadsCount['min'])) {
+                $this->addUsingAlias(FilePeer::DOWNLOADS_COUNT, $downloadsCount['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($downloadsCount['max'])) {
+                $this->addUsingAlias(FilePeer::DOWNLOADS_COUNT, $downloadsCount['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(FilePeer::DOWNLOADS_COUNT, $downloadsCount, $comparison);
     }
 
     /**

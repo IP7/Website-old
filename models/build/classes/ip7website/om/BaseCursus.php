@@ -78,11 +78,6 @@ abstract class BaseCursus extends BaseObject implements Persistent
     protected $aResponsable;
 
     /**
-     * @var        Newsletter
-     */
-    protected $aNewsletter;
-
-    /**
      * @var        PropelObjectCollection|Course[] Collection to store aggregation of Course objects.
      */
     protected $collCourses;
@@ -390,10 +385,6 @@ abstract class BaseCursus extends BaseObject implements Persistent
             $this->modifiedColumns[] = CursusPeer::NEWSLETTER_ID;
         }
 
-        if ($this->aNewsletter !== null && $this->aNewsletter->getId() !== $v) {
-            $this->aNewsletter = null;
-        }
-
 
         return $this;
     } // setNewsletterId()
@@ -469,9 +460,6 @@ abstract class BaseCursus extends BaseObject implements Persistent
         if ($this->aResponsable !== null && $this->responsable_id !== $this->aResponsable->getId()) {
             $this->aResponsable = null;
         }
-        if ($this->aNewsletter !== null && $this->newsletter_id !== $this->aNewsletter->getId()) {
-            $this->aNewsletter = null;
-        }
     } // ensureConsistency
 
     /**
@@ -516,7 +504,6 @@ abstract class BaseCursus extends BaseObject implements Persistent
         if ($deep) {  // also de-associate any related objects?
 
             $this->aResponsable = null;
-            $this->aNewsletter = null;
             $this->collCourses = null;
 
             $this->collEducationalPaths = null;
@@ -652,13 +639,6 @@ abstract class BaseCursus extends BaseObject implements Persistent
                     $affectedRows += $this->aResponsable->save($con);
                 }
                 $this->setResponsable($this->aResponsable);
-            }
-
-            if ($this->aNewsletter !== null) {
-                if ($this->aNewsletter->isModified() || $this->aNewsletter->isNew()) {
-                    $affectedRows += $this->aNewsletter->save($con);
-                }
-                $this->setNewsletter($this->aNewsletter);
             }
 
             if ($this->isNew() || $this->isModified()) {
@@ -957,12 +937,6 @@ abstract class BaseCursus extends BaseObject implements Persistent
                 }
             }
 
-            if ($this->aNewsletter !== null) {
-                if (!$this->aNewsletter->validate($columns)) {
-                    $failureMap = array_merge($failureMap, $this->aNewsletter->getValidationFailures());
-                }
-            }
-
 
             if (($retval = CursusPeer::doValidate($this, $columns)) !== true) {
                 $failureMap = array_merge($failureMap, $retval);
@@ -1109,9 +1083,6 @@ abstract class BaseCursus extends BaseObject implements Persistent
         if ($includeForeignObjects) {
             if (null !== $this->aResponsable) {
                 $result['Responsable'] = $this->aResponsable->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
-            }
-            if (null !== $this->aNewsletter) {
-                $result['Newsletter'] = $this->aNewsletter->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
             if (null !== $this->collCourses) {
                 $result['Courses'] = $this->collCourses->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
@@ -1441,57 +1412,6 @@ abstract class BaseCursus extends BaseObject implements Persistent
         }
 
         return $this->aResponsable;
-    }
-
-    /**
-     * Declares an association between this object and a Newsletter object.
-     *
-     * @param             Newsletter $v
-     * @return Cursus The current object (for fluent API support)
-     * @throws PropelException
-     */
-    public function setNewsletter(Newsletter $v = null)
-    {
-        if ($v === null) {
-            $this->setNewsletterId(NULL);
-        } else {
-            $this->setNewsletterId($v->getId());
-        }
-
-        $this->aNewsletter = $v;
-
-        // Add binding for other direction of this n:n relationship.
-        // If this object has already been added to the Newsletter object, it will not be re-added.
-        if ($v !== null) {
-            $v->addCursus($this);
-        }
-
-
-        return $this;
-    }
-
-
-    /**
-     * Get the associated Newsletter object
-     *
-     * @param PropelPDO $con Optional Connection object.
-     * @return Newsletter The associated Newsletter object.
-     * @throws PropelException
-     */
-    public function getNewsletter(PropelPDO $con = null)
-    {
-        if ($this->aNewsletter === null && ($this->newsletter_id !== null)) {
-            $this->aNewsletter = NewsletterQuery::create()->findPk($this->newsletter_id, $con);
-            /* The following can be used additionally to
-                guarantee the related object contains a reference
-                to this object.  This level of coupling may, however, be
-                undesirable since it could result in an only partially populated collection
-                in the referenced object.
-                $this->aNewsletter->addCursuss($this);
-             */
-        }
-
-        return $this->aNewsletter;
     }
 
 
@@ -3131,7 +3051,6 @@ abstract class BaseCursus extends BaseObject implements Persistent
         }
         $this->collSchedules = null;
         $this->aResponsable = null;
-        $this->aNewsletter = null;
     }
 
     /**

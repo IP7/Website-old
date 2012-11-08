@@ -15,4 +15,9 @@
  */
 class File extends BaseFile {
 
+    public function incrementDownloadsCount() {
+        $this->setDownloadsCount($this->getDownloadsCount()+1);
+
+    }
+
 } // File

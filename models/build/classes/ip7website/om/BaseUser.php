@@ -256,12 +256,6 @@ abstract class BaseUser extends BaseObject implements Persistent
     protected $collFilesPartial;
 
     /**
-     * @var        PropelObjectCollection|NewslettersSubscribers[] Collection to store aggregation of NewslettersSubscribers objects.
-     */
-    protected $collNewslettersSubscriberss;
-    protected $collNewslettersSubscriberssPartial;
-
-    /**
      * @var        PropelObjectCollection|Alert[] Collection to store aggregation of Alert objects.
      */
     protected $collAlerts;
@@ -333,11 +327,6 @@ abstract class BaseUser extends BaseObject implements Persistent
     protected $collEducationalPaths;
 
     /**
-     * @var        PropelObjectCollection|Newsletter[] Collection to store aggregation of Newsletter objects.
-     */
-    protected $collNewsletters;
-
-    /**
      * Flag to prevent endless save loop, if this object is referenced
      * by another object which falls in this transaction.
      * @var        boolean
@@ -356,12 +345,6 @@ abstract class BaseUser extends BaseObject implements Persistent
      * @var		PropelObjectCollection
      */
     protected $educationalPathsScheduledForDeletion = null;
-
-    /**
-     * An array of objects scheduled for deletion.
-     * @var		PropelObjectCollection
-     */
-    protected $newslettersScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
@@ -386,12 +369,6 @@ abstract class BaseUser extends BaseObject implements Persistent
      * @var		PropelObjectCollection
      */
     protected $filesScheduledForDeletion = null;
-
-    /**
-     * An array of objects scheduled for deletion.
-     * @var		PropelObjectCollection
-     */
-    protected $newslettersSubscriberssScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
@@ -1847,8 +1824,6 @@ abstract class BaseUser extends BaseObject implements Persistent
 
             $this->collFiles = null;
 
-            $this->collNewslettersSubscriberss = null;
-
             $this->collAlerts = null;
 
             $this->collContents = null;
@@ -1872,7 +1847,6 @@ abstract class BaseUser extends BaseObject implements Persistent
             $this->collTokens = null;
 
             $this->collEducationalPaths = null;
-            $this->collNewsletters = null;
         } // if (deep)
     }
 
@@ -2017,26 +1991,6 @@ abstract class BaseUser extends BaseObject implements Persistent
                 }
             }
 
-            if ($this->newslettersScheduledForDeletion !== null) {
-                if (!$this->newslettersScheduledForDeletion->isEmpty()) {
-                    $pks = array();
-                    $pk = $this->getPrimaryKey();
-                    foreach ($this->newslettersScheduledForDeletion->getPrimaryKeys(false) as $remotePk) {
-                        $pks[] = array($pk, $remotePk);
-                    }
-                    NewslettersSubscribersQuery::create()
-                        ->filterByPrimaryKeys($pks)
-                        ->delete($con);
-                    $this->newslettersScheduledForDeletion = null;
-                }
-
-                foreach ($this->getNewsletters() as $newsletter) {
-                    if ($newsletter->isModified()) {
-                        $newsletter->save($con);
-                    }
-                }
-            }
-
             if ($this->cursusResponsabilitysScheduledForDeletion !== null) {
                 if (!$this->cursusResponsabilitysScheduledForDeletion->isEmpty()) {
                     foreach ($this->cursusResponsabilitysScheduledForDeletion as $cursusResponsability) {
@@ -2102,23 +2056,6 @@ abstract class BaseUser extends BaseObject implements Persistent
 
             if ($this->collFiles !== null) {
                 foreach ($this->collFiles as $referrerFK) {
-                    if (!$referrerFK->isDeleted()) {
-                        $affectedRows += $referrerFK->save($con);
-                    }
-                }
-            }
-
-            if ($this->newslettersSubscriberssScheduledForDeletion !== null) {
-                if (!$this->newslettersSubscriberssScheduledForDeletion->isEmpty()) {
-                    NewslettersSubscribersQuery::create()
-                        ->filterByPrimaryKeys($this->newslettersSubscriberssScheduledForDeletion->getPrimaryKeys(false))
-                        ->delete($con);
-                    $this->newslettersSubscriberssScheduledForDeletion = null;
-                }
-            }
-
-            if ($this->collNewslettersSubscriberss !== null) {
-                foreach ($this->collNewslettersSubscriberss as $referrerFK) {
                     if (!$referrerFK->isDeleted()) {
                         $affectedRows += $referrerFK->save($con);
                     }
@@ -2660,14 +2597,6 @@ abstract class BaseUser extends BaseObject implements Persistent
                     }
                 }
 
-                if ($this->collNewslettersSubscriberss !== null) {
-                    foreach ($this->collNewslettersSubscriberss as $referrerFK) {
-                        if (!$referrerFK->validate($columns)) {
-                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
-                        }
-                    }
-                }
-
                 if ($this->collAlerts !== null) {
                     foreach ($this->collAlerts as $referrerFK) {
                         if (!$referrerFK->validate($columns)) {
@@ -2949,9 +2878,6 @@ abstract class BaseUser extends BaseObject implements Persistent
             }
             if (null !== $this->collFiles) {
                 $result['Files'] = $this->collFiles->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
-            }
-            if (null !== $this->collNewslettersSubscriberss) {
-                $result['NewslettersSubscriberss'] = $this->collNewslettersSubscriberss->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
             if (null !== $this->collAlerts) {
                 $result['Alerts'] = $this->collAlerts->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
@@ -3327,12 +3253,6 @@ abstract class BaseUser extends BaseObject implements Persistent
                 }
             }
 
-            foreach ($this->getNewslettersSubscriberss() as $relObj) {
-                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addNewslettersSubscribers($relObj->copy($deepCopy));
-                }
-            }
-
             foreach ($this->getAlerts() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
                     $copyObj->addAlert($relObj->copy($deepCopy));
@@ -3471,9 +3391,6 @@ abstract class BaseUser extends BaseObject implements Persistent
         }
         if ('File' == $relationName) {
             $this->initFiles();
-        }
-        if ('NewslettersSubscribers' == $relationName) {
-            $this->initNewslettersSubscriberss();
         }
         if ('Alert' == $relationName) {
             $this->initAlerts();
@@ -3715,31 +3632,6 @@ abstract class BaseUser extends BaseObject implements Persistent
             $this->cursusResponsabilitysScheduledForDeletion[]= $cursusResponsability;
             $cursusResponsability->setResponsable(null);
         }
-    }
-
-
-    /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this User is new, it will return
-     * an empty collection; or if this User has previously
-     * been saved, it will retrieve related CursusResponsabilitys from storage.
-     *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in User.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return PropelObjectCollection|Cursus[] List of Cursus objects
-     */
-    public function getCursusResponsabilitysJoinNewsletter($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $query = CursusQuery::create(null, $criteria);
-        $query->joinWith('Newsletter', $join_behavior);
-
-        return $this->getCursusResponsabilitys($query, $con);
     }
 
     /**
@@ -4411,238 +4303,6 @@ abstract class BaseUser extends BaseObject implements Persistent
             $this->filesScheduledForDeletion[]= $file;
             $file->setAuthor(null);
         }
-    }
-
-    /**
-     * Clears out the collNewslettersSubscriberss collection
-     *
-     * This does not modify the database; however, it will remove any associated objects, causing
-     * them to be refetched by subsequent calls to accessor method.
-     *
-     * @return void
-     * @see        addNewslettersSubscriberss()
-     */
-    public function clearNewslettersSubscriberss()
-    {
-        $this->collNewslettersSubscriberss = null; // important to set this to null since that means it is uninitialized
-        $this->collNewslettersSubscriberssPartial = null;
-    }
-
-    /**
-     * reset is the collNewslettersSubscriberss collection loaded partially
-     *
-     * @return void
-     */
-    public function resetPartialNewslettersSubscriberss($v = true)
-    {
-        $this->collNewslettersSubscriberssPartial = $v;
-    }
-
-    /**
-     * Initializes the collNewslettersSubscriberss collection.
-     *
-     * By default this just sets the collNewslettersSubscriberss collection to an empty array (like clearcollNewslettersSubscriberss());
-     * however, you may wish to override this method in your stub class to provide setting appropriate
-     * to your application -- for example, setting the initial array to the values stored in database.
-     *
-     * @param boolean $overrideExisting If set to true, the method call initializes
-     *                                        the collection even if it is not empty
-     *
-     * @return void
-     */
-    public function initNewslettersSubscriberss($overrideExisting = true)
-    {
-        if (null !== $this->collNewslettersSubscriberss && !$overrideExisting) {
-            return;
-        }
-        $this->collNewslettersSubscriberss = new PropelObjectCollection();
-        $this->collNewslettersSubscriberss->setModel('NewslettersSubscribers');
-    }
-
-    /**
-     * Gets an array of NewslettersSubscribers objects which contain a foreign key that references this object.
-     *
-     * If the $criteria is not null, it is used to always fetch the results from the database.
-     * Otherwise the results are fetched from the database the first time, then cached.
-     * Next time the same method is called without $criteria, the cached collection is returned.
-     * If this User is new, it will return
-     * an empty collection or the current collection; the criteria is ignored on a new object.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @return PropelObjectCollection|NewslettersSubscribers[] List of NewslettersSubscribers objects
-     * @throws PropelException
-     */
-    public function getNewslettersSubscriberss($criteria = null, PropelPDO $con = null)
-    {
-        $partial = $this->collNewslettersSubscriberssPartial && !$this->isNew();
-        if (null === $this->collNewslettersSubscriberss || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collNewslettersSubscriberss) {
-                // return empty collection
-                $this->initNewslettersSubscriberss();
-            } else {
-                $collNewslettersSubscriberss = NewslettersSubscribersQuery::create(null, $criteria)
-                    ->filterBySubscriber($this)
-                    ->find($con);
-                if (null !== $criteria) {
-                    if (false !== $this->collNewslettersSubscriberssPartial && count($collNewslettersSubscriberss)) {
-                      $this->initNewslettersSubscriberss(false);
-
-                      foreach($collNewslettersSubscriberss as $obj) {
-                        if (false == $this->collNewslettersSubscriberss->contains($obj)) {
-                          $this->collNewslettersSubscriberss->append($obj);
-                        }
-                      }
-
-                      $this->collNewslettersSubscriberssPartial = true;
-                    }
-
-                    return $collNewslettersSubscriberss;
-                }
-
-                if($partial && $this->collNewslettersSubscriberss) {
-                    foreach($this->collNewslettersSubscriberss as $obj) {
-                        if($obj->isNew()) {
-                            $collNewslettersSubscriberss[] = $obj;
-                        }
-                    }
-                }
-
-                $this->collNewslettersSubscriberss = $collNewslettersSubscriberss;
-                $this->collNewslettersSubscriberssPartial = false;
-            }
-        }
-
-        return $this->collNewslettersSubscriberss;
-    }
-
-    /**
-     * Sets a collection of NewslettersSubscribers objects related by a one-to-many relationship
-     * to the current object.
-     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
-     * and new objects from the given Propel collection.
-     *
-     * @param PropelCollection $newslettersSubscriberss A Propel collection.
-     * @param PropelPDO $con Optional connection object
-     */
-    public function setNewslettersSubscriberss(PropelCollection $newslettersSubscriberss, PropelPDO $con = null)
-    {
-        $this->newslettersSubscriberssScheduledForDeletion = $this->getNewslettersSubscriberss(new Criteria(), $con)->diff($newslettersSubscriberss);
-
-        foreach ($this->newslettersSubscriberssScheduledForDeletion as $newslettersSubscribersRemoved) {
-            $newslettersSubscribersRemoved->setSubscriber(null);
-        }
-
-        $this->collNewslettersSubscriberss = null;
-        foreach ($newslettersSubscriberss as $newslettersSubscribers) {
-            $this->addNewslettersSubscribers($newslettersSubscribers);
-        }
-
-        $this->collNewslettersSubscriberss = $newslettersSubscriberss;
-        $this->collNewslettersSubscriberssPartial = false;
-    }
-
-    /**
-     * Returns the number of related NewslettersSubscribers objects.
-     *
-     * @param Criteria $criteria
-     * @param boolean $distinct
-     * @param PropelPDO $con
-     * @return int             Count of related NewslettersSubscribers objects.
-     * @throws PropelException
-     */
-    public function countNewslettersSubscriberss(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
-    {
-        $partial = $this->collNewslettersSubscriberssPartial && !$this->isNew();
-        if (null === $this->collNewslettersSubscriberss || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collNewslettersSubscriberss) {
-                return 0;
-            } else {
-                if($partial && !$criteria) {
-                    return count($this->getNewslettersSubscriberss());
-                }
-                $query = NewslettersSubscribersQuery::create(null, $criteria);
-                if ($distinct) {
-                    $query->distinct();
-                }
-
-                return $query
-                    ->filterBySubscriber($this)
-                    ->count($con);
-            }
-        } else {
-            return count($this->collNewslettersSubscriberss);
-        }
-    }
-
-    /**
-     * Method called to associate a NewslettersSubscribers object to this object
-     * through the NewslettersSubscribers foreign key attribute.
-     *
-     * @param    NewslettersSubscribers $l NewslettersSubscribers
-     * @return User The current object (for fluent API support)
-     */
-    public function addNewslettersSubscribers(NewslettersSubscribers $l)
-    {
-        if ($this->collNewslettersSubscriberss === null) {
-            $this->initNewslettersSubscriberss();
-            $this->collNewslettersSubscriberssPartial = true;
-        }
-        if (!$this->collNewslettersSubscriberss->contains($l)) { // only add it if the **same** object is not already associated
-            $this->doAddNewslettersSubscribers($l);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param	NewslettersSubscribers $newslettersSubscribers The newslettersSubscribers object to add.
-     */
-    protected function doAddNewslettersSubscribers($newslettersSubscribers)
-    {
-        $this->collNewslettersSubscriberss[]= $newslettersSubscribers;
-        $newslettersSubscribers->setSubscriber($this);
-    }
-
-    /**
-     * @param	NewslettersSubscribers $newslettersSubscribers The newslettersSubscribers object to remove.
-     */
-    public function removeNewslettersSubscribers($newslettersSubscribers)
-    {
-        if ($this->getNewslettersSubscriberss()->contains($newslettersSubscribers)) {
-            $this->collNewslettersSubscriberss->remove($this->collNewslettersSubscriberss->search($newslettersSubscribers));
-            if (null === $this->newslettersSubscriberssScheduledForDeletion) {
-                $this->newslettersSubscriberssScheduledForDeletion = clone $this->collNewslettersSubscriberss;
-                $this->newslettersSubscriberssScheduledForDeletion->clear();
-            }
-            $this->newslettersSubscriberssScheduledForDeletion[]= $newslettersSubscribers;
-            $newslettersSubscribers->setSubscriber(null);
-        }
-    }
-
-
-    /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this User is new, it will return
-     * an empty collection; or if this User has previously
-     * been saved, it will retrieve related NewslettersSubscriberss from storage.
-     *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in User.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return PropelObjectCollection|NewslettersSubscribers[] List of NewslettersSubscribers objects
-     */
-    public function getNewslettersSubscriberssJoinNewsletter($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $query = NewslettersSubscribersQuery::create(null, $criteria);
-        $query->joinWith('Newsletter', $join_behavior);
-
-        return $this->getNewslettersSubscriberss($query, $con);
     }
 
     /**
@@ -7466,174 +7126,6 @@ abstract class BaseUser extends BaseObject implements Persistent
     }
 
     /**
-     * Clears out the collNewsletters collection
-     *
-     * This does not modify the database; however, it will remove any associated objects, causing
-     * them to be refetched by subsequent calls to accessor method.
-     *
-     * @return void
-     * @see        addNewsletters()
-     */
-    public function clearNewsletters()
-    {
-        $this->collNewsletters = null; // important to set this to null since that means it is uninitialized
-        $this->collNewslettersPartial = null;
-    }
-
-    /**
-     * Initializes the collNewsletters collection.
-     *
-     * By default this just sets the collNewsletters collection to an empty collection (like clearNewsletters());
-     * however, you may wish to override this method in your stub class to provide setting appropriate
-     * to your application -- for example, setting the initial array to the values stored in database.
-     *
-     * @return void
-     */
-    public function initNewsletters()
-    {
-        $this->collNewsletters = new PropelObjectCollection();
-        $this->collNewsletters->setModel('Newsletter');
-    }
-
-    /**
-     * Gets a collection of Newsletter objects related by a many-to-many relationship
-     * to the current object by way of the newsletters_subscribers cross-reference table.
-     *
-     * If the $criteria is not null, it is used to always fetch the results from the database.
-     * Otherwise the results are fetched from the database the first time, then cached.
-     * Next time the same method is called without $criteria, the cached collection is returned.
-     * If this User is new, it will return
-     * an empty collection or the current collection; the criteria is ignored on a new object.
-     *
-     * @param Criteria $criteria Optional query object to filter the query
-     * @param PropelPDO $con Optional connection object
-     *
-     * @return PropelObjectCollection|Newsletter[] List of Newsletter objects
-     */
-    public function getNewsletters($criteria = null, PropelPDO $con = null)
-    {
-        if (null === $this->collNewsletters || null !== $criteria) {
-            if ($this->isNew() && null === $this->collNewsletters) {
-                // return empty collection
-                $this->initNewsletters();
-            } else {
-                $collNewsletters = NewsletterQuery::create(null, $criteria)
-                    ->filterBySubscriber($this)
-                    ->find($con);
-                if (null !== $criteria) {
-                    return $collNewsletters;
-                }
-                $this->collNewsletters = $collNewsletters;
-            }
-        }
-
-        return $this->collNewsletters;
-    }
-
-    /**
-     * Sets a collection of Newsletter objects related by a many-to-many relationship
-     * to the current object by way of the newsletters_subscribers cross-reference table.
-     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
-     * and new objects from the given Propel collection.
-     *
-     * @param PropelCollection $newsletters A Propel collection.
-     * @param PropelPDO $con Optional connection object
-     */
-    public function setNewsletters(PropelCollection $newsletters, PropelPDO $con = null)
-    {
-        $this->clearNewsletters();
-        $currentNewsletters = $this->getNewsletters();
-
-        $this->newslettersScheduledForDeletion = $currentNewsletters->diff($newsletters);
-
-        foreach ($newsletters as $newsletter) {
-            if (!$currentNewsletters->contains($newsletter)) {
-                $this->doAddNewsletter($newsletter);
-            }
-        }
-
-        $this->collNewsletters = $newsletters;
-    }
-
-    /**
-     * Gets the number of Newsletter objects related by a many-to-many relationship
-     * to the current object by way of the newsletters_subscribers cross-reference table.
-     *
-     * @param Criteria $criteria Optional query object to filter the query
-     * @param boolean $distinct Set to true to force count distinct
-     * @param PropelPDO $con Optional connection object
-     *
-     * @return int the number of related Newsletter objects
-     */
-    public function countNewsletters($criteria = null, $distinct = false, PropelPDO $con = null)
-    {
-        if (null === $this->collNewsletters || null !== $criteria) {
-            if ($this->isNew() && null === $this->collNewsletters) {
-                return 0;
-            } else {
-                $query = NewsletterQuery::create(null, $criteria);
-                if ($distinct) {
-                    $query->distinct();
-                }
-
-                return $query
-                    ->filterBySubscriber($this)
-                    ->count($con);
-            }
-        } else {
-            return count($this->collNewsletters);
-        }
-    }
-
-    /**
-     * Associate a Newsletter object to this object
-     * through the newsletters_subscribers cross reference table.
-     *
-     * @param  Newsletter $newsletter The NewslettersSubscribers object to relate
-     * @return void
-     */
-    public function addNewsletter(Newsletter $newsletter)
-    {
-        if ($this->collNewsletters === null) {
-            $this->initNewsletters();
-        }
-        if (!$this->collNewsletters->contains($newsletter)) { // only add it if the **same** object is not already associated
-            $this->doAddNewsletter($newsletter);
-
-            $this->collNewsletters[]= $newsletter;
-        }
-    }
-
-    /**
-     * @param	Newsletter $newsletter The newsletter object to add.
-     */
-    protected function doAddNewsletter($newsletter)
-    {
-        $newslettersSubscribers = new NewslettersSubscribers();
-        $newslettersSubscribers->setNewsletter($newsletter);
-        $this->addNewslettersSubscribers($newslettersSubscribers);
-    }
-
-    /**
-     * Remove a Newsletter object to this object
-     * through the newsletters_subscribers cross reference table.
-     *
-     * @param Newsletter $newsletter The NewslettersSubscribers object to relate
-     * @return void
-     */
-    public function removeNewsletter(Newsletter $newsletter)
-    {
-        if ($this->getNewsletters()->contains($newsletter)) {
-            $this->collNewsletters->remove($this->collNewsletters->search($newsletter));
-            if (null === $this->newslettersScheduledForDeletion) {
-                $this->newslettersScheduledForDeletion = clone $this->collNewsletters;
-                $this->newslettersScheduledForDeletion->clear();
-            }
-            $this->newslettersScheduledForDeletion[]= $newsletter;
-        }
-    }
-
-    /**
      * Clears the current object and sets all attributes to their default values
      */
     public function clear()
@@ -7710,11 +7202,6 @@ abstract class BaseUser extends BaseObject implements Persistent
                     $o->clearAllReferences($deep);
                 }
             }
-            if ($this->collNewslettersSubscriberss) {
-                foreach ($this->collNewslettersSubscriberss as $o) {
-                    $o->clearAllReferences($deep);
-                }
-            }
             if ($this->collAlerts) {
                 foreach ($this->collAlerts as $o) {
                     $o->clearAllReferences($deep);
@@ -7775,11 +7262,6 @@ abstract class BaseUser extends BaseObject implements Persistent
                     $o->clearAllReferences($deep);
                 }
             }
-            if ($this->collNewsletters) {
-                foreach ($this->collNewsletters as $o) {
-                    $o->clearAllReferences($deep);
-                }
-            }
         } // if ($deep)
 
         if ($this->collCursusResponsabilitys instanceof PropelCollection) {
@@ -7798,10 +7280,6 @@ abstract class BaseUser extends BaseObject implements Persistent
             $this->collFiles->clearIterator();
         }
         $this->collFiles = null;
-        if ($this->collNewslettersSubscriberss instanceof PropelCollection) {
-            $this->collNewslettersSubscriberss->clearIterator();
-        }
-        $this->collNewslettersSubscriberss = null;
         if ($this->collAlerts instanceof PropelCollection) {
             $this->collAlerts->clearIterator();
         }
@@ -7850,10 +7328,6 @@ abstract class BaseUser extends BaseObject implements Persistent
             $this->collEducationalPaths->clearIterator();
         }
         $this->collEducationalPaths = null;
-        if ($this->collNewsletters instanceof PropelCollection) {
-            $this->collNewsletters->clearIterator();
-        }
-        $this->collNewsletters = null;
     }
 
     /**

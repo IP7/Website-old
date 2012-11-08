@@ -355,6 +355,9 @@
         <!-- droits d'accès -->
         <column name="access_rights" type="TINYINT" defaultExpr="0" />
 
+        <!-- compteur de téléchargements -->
+        <column name="downloads_count" type="INTEGER" defaultExpr="0" />
+
         <!-- == index & clefs étrangères == -->
 
         <unique>

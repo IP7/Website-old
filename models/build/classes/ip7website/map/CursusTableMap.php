@@ -43,7 +43,7 @@ class CursusTableMap extends TableMap
         $this->addColumn('NAME', 'Name', 'VARCHAR', true, 16, null);
         $this->addColumn('DESCRIPTION', 'Description', 'LONGVARCHAR', false, 1024, null);
         $this->addForeignKey('RESPONSABLE_ID', 'ResponsableId', 'INTEGER', 'users', 'ID', false, null, null);
-        $this->addForeignKey('NEWSLETTER_ID', 'NewsletterId', 'INTEGER', 'newsletters', 'ID', false, null, null);
+        $this->addColumn('NEWSLETTER_ID', 'NewsletterId', 'INTEGER', false, null, null);
         // validators
         $this->addValidator('NAME', 'minLength', 'propel.validator.MinLengthValidator', '1', 'Le nom doit faire au moins 1 caractère.');
         $this->addValidator('NAME', 'unique', 'propel.validator.UniqueValidator', '', 'Le nom existe déjà.');
@@ -57,7 +57,6 @@ class CursusTableMap extends TableMap
     public function buildRelations()
     {
         $this->addRelation('Responsable', 'User', RelationMap::MANY_TO_ONE, array('responsable_id' => 'id', ), 'SET NULL', 'CASCADE');
-        $this->addRelation('Newsletter', 'Newsletter', RelationMap::MANY_TO_ONE, array('newsletter_id' => 'id', ), 'SET NULL', 'CASCADE');
         $this->addRelation('Course', 'Course', RelationMap::ONE_TO_MANY, array('id' => 'cursus_id', ), 'CASCADE', 'CASCADE', 'Courses');
         $this->addRelation('EducationalPath', 'EducationalPath', RelationMap::ONE_TO_MANY, array('id' => 'cursus_id', ), 'CASCADE', 'CASCADE', 'EducationalPaths');
         $this->addRelation('Alert', 'Alert', RelationMap::ONE_TO_MANY, array('id' => 'cursus_id', ), 'CASCADE', 'CASCADE', 'Alerts');

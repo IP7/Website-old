@@ -535,9 +535,6 @@ abstract class BaseUserPeer
         // Invalidate objects in FilePeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         FilePeer::clearInstancePool();
-        // Invalidate objects in NewslettersSubscribersPeer instance pool,
-        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-        NewslettersSubscribersPeer::clearInstancePool();
         // Invalidate objects in AlertPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         AlertPeer::clearInstancePool();
@@ -915,12 +912,6 @@ abstract class BaseUserPeer
 
             $criteria->add(UsersPathsPeer::USER_ID, $obj->getId());
             $affectedRows += UsersPathsPeer::doDelete($criteria, $con);
-
-            // delete related NewslettersSubscribers objects
-            $criteria = new Criteria(NewslettersSubscribersPeer::DATABASE_NAME);
-
-            $criteria->add(NewslettersSubscribersPeer::SUBSCRIBER_ID, $obj->getId());
-            $affectedRows += NewslettersSubscribersPeer::doDelete($criteria, $con);
 
             // delete related Alert objects
             $criteria = new Criteria(AlertPeer::DATABASE_NAME);

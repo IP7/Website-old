@@ -86,10 +86,6 @@
  * @method UserQuery rightJoinFile($relationAlias = null) Adds a RIGHT JOIN clause to the query using the File relation
  * @method UserQuery innerJoinFile($relationAlias = null) Adds a INNER JOIN clause to the query using the File relation
  *
- * @method UserQuery leftJoinNewslettersSubscribers($relationAlias = null) Adds a LEFT JOIN clause to the query using the NewslettersSubscribers relation
- * @method UserQuery rightJoinNewslettersSubscribers($relationAlias = null) Adds a RIGHT JOIN clause to the query using the NewslettersSubscribers relation
- * @method UserQuery innerJoinNewslettersSubscribers($relationAlias = null) Adds a INNER JOIN clause to the query using the NewslettersSubscribers relation
- *
  * @method UserQuery leftJoinAlert($relationAlias = null) Adds a LEFT JOIN clause to the query using the Alert relation
  * @method UserQuery rightJoinAlert($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Alert relation
  * @method UserQuery innerJoinAlert($relationAlias = null) Adds a INNER JOIN clause to the query using the Alert relation
@@ -1587,80 +1583,6 @@ abstract class BaseUserQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query by a related NewslettersSubscribers object
-     *
-     * @param   NewslettersSubscribers|PropelObjectCollection $newslettersSubscribers  the related object to use as filter
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return   UserQuery The current query, for fluid interface
-     * @throws   PropelException - if the provided filter is invalid.
-     */
-    public function filterByNewslettersSubscribers($newslettersSubscribers, $comparison = null)
-    {
-        if ($newslettersSubscribers instanceof NewslettersSubscribers) {
-            return $this
-                ->addUsingAlias(UserPeer::ID, $newslettersSubscribers->getSubscriberId(), $comparison);
-        } elseif ($newslettersSubscribers instanceof PropelObjectCollection) {
-            return $this
-                ->useNewslettersSubscribersQuery()
-                ->filterByPrimaryKeys($newslettersSubscribers->getPrimaryKeys())
-                ->endUse();
-        } else {
-            throw new PropelException('filterByNewslettersSubscribers() only accepts arguments of type NewslettersSubscribers or PropelCollection');
-        }
-    }
-
-    /**
-     * Adds a JOIN clause to the query using the NewslettersSubscribers relation
-     *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return UserQuery The current query, for fluid interface
-     */
-    public function joinNewslettersSubscribers($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-    {
-        $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('NewslettersSubscribers');
-
-        // create a ModelJoin object for this join
-        $join = new ModelJoin();
-        $join->setJoinType($joinType);
-        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
-        if ($previousJoin = $this->getPreviousJoin()) {
-            $join->setPreviousJoin($previousJoin);
-        }
-
-        // add the ModelJoin to the current object
-        if ($relationAlias) {
-            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
-            $this->addJoinObject($join, $relationAlias);
-        } else {
-            $this->addJoinObject($join, 'NewslettersSubscribers');
-        }
-
-        return $this;
-    }
-
-    /**
-     * Use the NewslettersSubscribers relation NewslettersSubscribers object
-     *
-     * @see       useQuery()
-     *
-     * @param     string $relationAlias optional alias for the relation,
-     *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return   NewslettersSubscribersQuery A secondary query class using the current class as primary query
-     */
-    public function useNewslettersSubscribersQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-    {
-        return $this
-            ->joinNewslettersSubscribers($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'NewslettersSubscribers', 'NewslettersSubscribersQuery');
-    }
-
-    /**
      * Filter the query by a related Alert object
      *
      * @param   Alert|PropelObjectCollection $alert  the related object to use as filter
@@ -2488,23 +2410,6 @@ abstract class BaseUserQuery extends ModelCriteria
         return $this
             ->useUsersPathsQuery()
             ->filterByEducationalPath($educationalPath, $comparison)
-            ->endUse();
-    }
-
-    /**
-     * Filter the query by a related Newsletter object
-     * using the newsletters_subscribers table as cross reference
-     *
-     * @param   Newsletter $newsletter the related object to use as filter
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return   UserQuery The current query, for fluid interface
-     */
-    public function filterByNewsletter($newsletter, $comparison = Criteria::EQUAL)
-    {
-        return $this
-            ->useNewslettersSubscribersQuery()
-            ->filterByNewsletter($newsletter, $comparison)
             ->endUse();
     }
 
