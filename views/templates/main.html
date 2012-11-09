@@ -1,7 +1,7 @@
 {% import 'utils/macros.html' as _m %}
 {% autoescape 'html_attr' %}
 <!doctype html>
-<html lang="{{ page.lang }}" dir="ltr">
+<html lang="{{ page.lang }}" dir="ltr" manifest="/views/static/manifest.appcache">
         <head>
             <meta charset="{{ page.charset }}" />
             <meta name="language" content="{{ page.lang }}" />

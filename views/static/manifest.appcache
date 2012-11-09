@@ -1,0 +1,18 @@
+CACHE MANIFEST
+# 2012-11-09 v1
+
+CACHE:
+/views/static/images/file-icons-16px/*.png
+/views/static/images/1x1.gif
+/views/static/images/*.png
+/views/static/loader.gif
+/views/static/opensearch.xml
+/views/static/scripts/jquery-1.8.2.min.js
+/views/static/scripts/jquery-ui-1.8.23.custom.min.js
+/views/static/scripts/mousetrap.min.js
+/views/static/scripts/MathJax/*
+/views/static/styles/jquery-ui-1.8.23.custom.min.css
+/view/static/styles/normalize.min.css
+
+NETWORK:
+*

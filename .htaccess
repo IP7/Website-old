@@ -4,6 +4,8 @@ SetEnv REGISTER_GLOBALS 0
 SetEnv ZEND_OPTIMIZER 1
 AddDefaultCharset UTF-8
 
+AddType text/cache-manifest .appcache
+
 <IfModule mod_rewrite.c>
 
 Options +FollowSymlinks
