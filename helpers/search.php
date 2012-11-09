@@ -37,7 +37,7 @@ function course_to_search_result($c) {
     } 
 
     return array(
-        'title' => $c->getName().' ('.$c->getCode().')',
+        'title' => $c->getName().' ('.$c->getShortName().')',
         'href'  => course_url($cursus, $c)
     );
 }
@@ -137,9 +137,9 @@ function search_courses($q, $limit=10) {
                     // name
                     ->condition('name', 'Name like ?', $q, PDO::PARAM_STR)
                     // code
-                    ->condition('code', 'Code like ?', $q, PDO::PARAM_STR)
+                    ->condition('shortname', 'Short_Name like ?', $q, PDO::PARAM_STR)
 
-                    ->where(array('name', 'code'), 'or')
+                    ->where(array('name', 'shortname'), 'or')
                     ->find();
 
     $results = array();

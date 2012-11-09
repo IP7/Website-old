@@ -7,12 +7,12 @@
  *
  *
  * @method ForumCategoryQuery orderById($order = Criteria::ASC) Order by the id column
- * @method ForumCategoryQuery orderByName($order = Criteria::ASC) Order by the name column
+ * @method ForumCategoryQuery orderByTitle($order = Criteria::ASC) Order by the title column
  * @method ForumCategoryQuery orderByParentId($order = Criteria::ASC) Order by the parent_id column
  * @method ForumCategoryQuery orderByAccessRights($order = Criteria::ASC) Order by the access_rights column
  *
  * @method ForumCategoryQuery groupById() Group by the id column
- * @method ForumCategoryQuery groupByName() Group by the name column
+ * @method ForumCategoryQuery groupByTitle() Group by the title column
  * @method ForumCategoryQuery groupByParentId() Group by the parent_id column
  * @method ForumCategoryQuery groupByAccessRights() Group by the access_rights column
  *
@@ -36,12 +36,12 @@
  * @method ForumCategory findOneOrCreate(PropelPDO $con = null) Return the first ForumCategory matching the query, or a new ForumCategory object populated from the query conditions when no match is found
  *
  * @method ForumCategory findOneById(int $id) Return the first ForumCategory filtered by the id column
- * @method ForumCategory findOneByName(string $name) Return the first ForumCategory filtered by the name column
+ * @method ForumCategory findOneByTitle(string $title) Return the first ForumCategory filtered by the title column
  * @method ForumCategory findOneByParentId(int $parent_id) Return the first ForumCategory filtered by the parent_id column
  * @method ForumCategory findOneByAccessRights(int $access_rights) Return the first ForumCategory filtered by the access_rights column
  *
  * @method array findById(int $id) Return ForumCategory objects filtered by the id column
- * @method array findByName(string $name) Return ForumCategory objects filtered by the name column
+ * @method array findByTitle(string $title) Return ForumCategory objects filtered by the title column
  * @method array findByParentId(int $parent_id) Return ForumCategory objects filtered by the parent_id column
  * @method array findByAccessRights(int $access_rights) Return ForumCategory objects filtered by the access_rights column
  *
@@ -133,7 +133,7 @@ abstract class BaseForumCategoryQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `ID`, `NAME`, `PARENT_ID`, `ACCESS_RIGHTS` FROM `forum_categories` WHERE `ID` = :p0';
+        $sql = 'SELECT `ID`, `TITLE`, `PARENT_ID`, `ACCESS_RIGHTS` FROM `forum_categories` WHERE `ID` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -250,32 +250,32 @@ abstract class BaseForumCategoryQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the name column
+     * Filter the query on the title column
      *
      * Example usage:
      * <code>
-     * $query->filterByName('fooValue');   // WHERE name = 'fooValue'
-     * $query->filterByName('%fooValue%'); // WHERE name LIKE '%fooValue%'
+     * $query->filterByTitle('fooValue');   // WHERE title = 'fooValue'
+     * $query->filterByTitle('%fooValue%'); // WHERE title LIKE '%fooValue%'
      * </code>
      *
-     * @param     string $name The value to use as filter.
+     * @param     string $title The value to use as filter.
      *              Accepts wildcards (* and % trigger a LIKE)
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return ForumCategoryQuery The current query, for fluid interface
      */
-    public function filterByName($name = null, $comparison = null)
+    public function filterByTitle($title = null, $comparison = null)
     {
         if (null === $comparison) {
-            if (is_array($name)) {
+            if (is_array($title)) {
                 $comparison = Criteria::IN;
-            } elseif (preg_match('/[\%\*]/', $name)) {
-                $name = str_replace('*', '%', $name);
+            } elseif (preg_match('/[\%\*]/', $title)) {
+                $title = str_replace('*', '%', $title);
                 $comparison = Criteria::LIKE;
             }
         }
 
-        return $this->addUsingAlias(ForumCategoryPeer::NAME, $name, $comparison);
+        return $this->addUsingAlias(ForumCategoryPeer::TITLE, $title, $comparison);
     }
 
     /**

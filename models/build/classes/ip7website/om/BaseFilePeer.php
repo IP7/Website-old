@@ -38,8 +38,8 @@ abstract class BaseFilePeer
     /** the column name for the AUTHOR_ID field */
     const AUTHOR_ID = 'files.AUTHOR_ID';
 
-    /** the column name for the NAME field */
-    const NAME = 'files.NAME';
+    /** the column name for the TITLE field */
+    const TITLE = 'files.TITLE';
 
     /** the column name for the DATE field */
     const DATE = 'files.DATE';
@@ -87,11 +87,11 @@ abstract class BaseFilePeer
      * e.g. FilePeer::$fieldNames[FilePeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'AuthorId', 'Name', 'Date', 'Description', 'FileType', 'Path', 'AccessRights', 'DownloadsCount', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'authorId', 'name', 'date', 'description', 'fileType', 'path', 'accessRights', 'downloadsCount', ),
-        BasePeer::TYPE_COLNAME => array (FilePeer::ID, FilePeer::AUTHOR_ID, FilePeer::NAME, FilePeer::DATE, FilePeer::DESCRIPTION, FilePeer::FILE_TYPE, FilePeer::PATH, FilePeer::ACCESS_RIGHTS, FilePeer::DOWNLOADS_COUNT, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'AUTHOR_ID', 'NAME', 'DATE', 'DESCRIPTION', 'FILE_TYPE', 'PATH', 'ACCESS_RIGHTS', 'DOWNLOADS_COUNT', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'author_id', 'name', 'date', 'description', 'file_type', 'path', 'access_rights', 'downloads_count', ),
+        BasePeer::TYPE_PHPNAME => array ('Id', 'AuthorId', 'Title', 'Date', 'Description', 'FileType', 'Path', 'AccessRights', 'DownloadsCount', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'authorId', 'title', 'date', 'description', 'fileType', 'path', 'accessRights', 'downloadsCount', ),
+        BasePeer::TYPE_COLNAME => array (FilePeer::ID, FilePeer::AUTHOR_ID, FilePeer::TITLE, FilePeer::DATE, FilePeer::DESCRIPTION, FilePeer::FILE_TYPE, FilePeer::PATH, FilePeer::ACCESS_RIGHTS, FilePeer::DOWNLOADS_COUNT, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'AUTHOR_ID', 'TITLE', 'DATE', 'DESCRIPTION', 'FILE_TYPE', 'PATH', 'ACCESS_RIGHTS', 'DOWNLOADS_COUNT', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'author_id', 'title', 'date', 'description', 'file_type', 'path', 'access_rights', 'downloads_count', ),
         BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
     );
 
@@ -102,11 +102,11 @@ abstract class BaseFilePeer
      * e.g. FilePeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'AuthorId' => 1, 'Name' => 2, 'Date' => 3, 'Description' => 4, 'FileType' => 5, 'Path' => 6, 'AccessRights' => 7, 'DownloadsCount' => 8, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'authorId' => 1, 'name' => 2, 'date' => 3, 'description' => 4, 'fileType' => 5, 'path' => 6, 'accessRights' => 7, 'downloadsCount' => 8, ),
-        BasePeer::TYPE_COLNAME => array (FilePeer::ID => 0, FilePeer::AUTHOR_ID => 1, FilePeer::NAME => 2, FilePeer::DATE => 3, FilePeer::DESCRIPTION => 4, FilePeer::FILE_TYPE => 5, FilePeer::PATH => 6, FilePeer::ACCESS_RIGHTS => 7, FilePeer::DOWNLOADS_COUNT => 8, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'AUTHOR_ID' => 1, 'NAME' => 2, 'DATE' => 3, 'DESCRIPTION' => 4, 'FILE_TYPE' => 5, 'PATH' => 6, 'ACCESS_RIGHTS' => 7, 'DOWNLOADS_COUNT' => 8, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'author_id' => 1, 'name' => 2, 'date' => 3, 'description' => 4, 'file_type' => 5, 'path' => 6, 'access_rights' => 7, 'downloads_count' => 8, ),
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'AuthorId' => 1, 'Title' => 2, 'Date' => 3, 'Description' => 4, 'FileType' => 5, 'Path' => 6, 'AccessRights' => 7, 'DownloadsCount' => 8, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'authorId' => 1, 'title' => 2, 'date' => 3, 'description' => 4, 'fileType' => 5, 'path' => 6, 'accessRights' => 7, 'downloadsCount' => 8, ),
+        BasePeer::TYPE_COLNAME => array (FilePeer::ID => 0, FilePeer::AUTHOR_ID => 1, FilePeer::TITLE => 2, FilePeer::DATE => 3, FilePeer::DESCRIPTION => 4, FilePeer::FILE_TYPE => 5, FilePeer::PATH => 6, FilePeer::ACCESS_RIGHTS => 7, FilePeer::DOWNLOADS_COUNT => 8, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'AUTHOR_ID' => 1, 'TITLE' => 2, 'DATE' => 3, 'DESCRIPTION' => 4, 'FILE_TYPE' => 5, 'PATH' => 6, 'ACCESS_RIGHTS' => 7, 'DOWNLOADS_COUNT' => 8, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'author_id' => 1, 'title' => 2, 'date' => 3, 'description' => 4, 'file_type' => 5, 'path' => 6, 'access_rights' => 7, 'downloads_count' => 8, ),
         BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
     );
 
@@ -219,7 +219,7 @@ abstract class BaseFilePeer
         if (null === $alias) {
             $criteria->addSelectColumn(FilePeer::ID);
             $criteria->addSelectColumn(FilePeer::AUTHOR_ID);
-            $criteria->addSelectColumn(FilePeer::NAME);
+            $criteria->addSelectColumn(FilePeer::TITLE);
             $criteria->addSelectColumn(FilePeer::DATE);
             $criteria->addSelectColumn(FilePeer::DESCRIPTION);
             $criteria->addSelectColumn(FilePeer::FILE_TYPE);
@@ -229,7 +229,7 @@ abstract class BaseFilePeer
         } else {
             $criteria->addSelectColumn($alias . '.ID');
             $criteria->addSelectColumn($alias . '.AUTHOR_ID');
-            $criteria->addSelectColumn($alias . '.NAME');
+            $criteria->addSelectColumn($alias . '.TITLE');
             $criteria->addSelectColumn($alias . '.DATE');
             $criteria->addSelectColumn($alias . '.DESCRIPTION');
             $criteria->addSelectColumn($alias . '.FILE_TYPE');
@@ -1052,8 +1052,8 @@ abstract class BaseFilePeer
             }
         } else {
 
-        if ($obj->isNew() || $obj->isColumnModified(FilePeer::NAME))
-            $columns[FilePeer::NAME] = $obj->getName();
+        if ($obj->isNew() || $obj->isColumnModified(FilePeer::TITLE))
+            $columns[FilePeer::TITLE] = $obj->getTitle();
 
         if ($obj->isNew() || $obj->isColumnModified(FilePeer::PATH))
             $columns[FilePeer::PATH] = $obj->getPath();

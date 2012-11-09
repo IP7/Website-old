@@ -12,14 +12,14 @@ function display_course() {
 
     $course = CourseQuery::create()
                 ->filterByCursus($cursus)
-                ->findOneByCode($code);
+                ->findOneByShortName($code);
 
     if ($course == null) {
         halt(NOT_FOUND);
     }
 
     $base_uri  = Config::$root_uri.'cursus/'.$cursus->getShortName().'/';
-    $base_uri .= $course->getCode();
+    $base_uri .= $course->getShortName();
 
     $moderation_bar = null;
 
@@ -41,22 +41,22 @@ function display_course() {
         ),
         array(
             'href'  => $base_uri,
-            'title' => $course->getCode()
+            'title' => $course->getShortName()
         )
     );
 
     $tpl_course = array(
         'page' => array(
-            'title'          => $course->getName().' ('.$course->getCode().')',
+            'title'          => $course->getName().' ('.$course->getShortName().')',
             'breadcrumbs'    => $breadcrumbs,
 
-            'keywords'       => array( $course->getName(), $course->getCode() ),
+            'keywords'       => array( $course->getName(), $course->getShortName() ),
             'description'    => truncate_string($course->getDescription()),
 
             'news'           => tpl_news($news),
 
             'course'         => array(
-                'name'  => $course->getName().' ('.$course->getCode().')',
+                'name'  => $course->getName().' ('.$course->getShortName().')',
                 'intro' => $course->getDescription(),
 
                 'id'    => $course->getId(),

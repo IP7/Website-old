@@ -42,10 +42,10 @@ abstract class BaseFile extends BaseObject implements Persistent
     protected $author_id;
 
     /**
-     * The value for the name field.
+     * The value for the title field.
      * @var        string
      */
-    protected $name;
+    protected $title;
 
     /**
      * The value for the date field.
@@ -168,13 +168,13 @@ abstract class BaseFile extends BaseObject implements Persistent
     }
 
     /**
-     * Get the [name] column value.
+     * Get the [title] column value.
      *
      * @return string
      */
-    public function getName()
+    public function getTitle()
     {
-        return $this->name;
+        return $this->title;
     }
 
     /**
@@ -320,25 +320,25 @@ abstract class BaseFile extends BaseObject implements Persistent
     } // setAuthorId()
 
     /**
-     * Set the value of [name] column.
+     * Set the value of [title] column.
      *
      * @param string $v new value
      * @return File The current object (for fluent API support)
      */
-    public function setName($v)
+    public function setTitle($v)
     {
         if ($v !== null) {
             $v = (string) $v;
         }
 
-        if ($this->name !== $v) {
-            $this->name = $v;
-            $this->modifiedColumns[] = FilePeer::NAME;
+        if ($this->title !== $v) {
+            $this->title = $v;
+            $this->modifiedColumns[] = FilePeer::TITLE;
         }
 
 
         return $this;
-    } // setName()
+    } // setTitle()
 
     /**
      * Sets the value of [date] column to a normalized version of the date/time value specified.
@@ -507,7 +507,7 @@ abstract class BaseFile extends BaseObject implements Persistent
 
             $this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
             $this->author_id = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
-            $this->name = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
+            $this->title = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
             $this->date = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
             $this->description = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
             $this->file_type = ($row[$startcol + 5] !== null) ? (int) $row[$startcol + 5] : null;
@@ -796,8 +796,8 @@ abstract class BaseFile extends BaseObject implements Persistent
         if ($this->isColumnModified(FilePeer::AUTHOR_ID)) {
             $modifiedColumns[':p' . $index++]  = '`AUTHOR_ID`';
         }
-        if ($this->isColumnModified(FilePeer::NAME)) {
-            $modifiedColumns[':p' . $index++]  = '`NAME`';
+        if ($this->isColumnModified(FilePeer::TITLE)) {
+            $modifiedColumns[':p' . $index++]  = '`TITLE`';
         }
         if ($this->isColumnModified(FilePeer::DATE)) {
             $modifiedColumns[':p' . $index++]  = '`DATE`';
@@ -834,8 +834,8 @@ abstract class BaseFile extends BaseObject implements Persistent
                     case '`AUTHOR_ID`':
                         $stmt->bindValue($identifier, $this->author_id, PDO::PARAM_INT);
                         break;
-                    case '`NAME`':
-                        $stmt->bindValue($identifier, $this->name, PDO::PARAM_STR);
+                    case '`TITLE`':
+                        $stmt->bindValue($identifier, $this->title, PDO::PARAM_STR);
                         break;
                     case '`DATE`':
                         $stmt->bindValue($identifier, $this->date, PDO::PARAM_STR);
@@ -1016,7 +1016,7 @@ abstract class BaseFile extends BaseObject implements Persistent
                 return $this->getAuthorId();
                 break;
             case 2:
-                return $this->getName();
+                return $this->getTitle();
                 break;
             case 3:
                 return $this->getDate();
@@ -1067,7 +1067,7 @@ abstract class BaseFile extends BaseObject implements Persistent
         $result = array(
             $keys[0] => $this->getId(),
             $keys[1] => $this->getAuthorId(),
-            $keys[2] => $this->getName(),
+            $keys[2] => $this->getTitle(),
             $keys[3] => $this->getDate(),
             $keys[4] => $this->getDescription(),
             $keys[5] => $this->getFileType(),
@@ -1123,7 +1123,7 @@ abstract class BaseFile extends BaseObject implements Persistent
                 $this->setAuthorId($value);
                 break;
             case 2:
-                $this->setName($value);
+                $this->setTitle($value);
                 break;
             case 3:
                 $this->setDate($value);
@@ -1173,7 +1173,7 @@ abstract class BaseFile extends BaseObject implements Persistent
 
         if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
         if (array_key_exists($keys[1], $arr)) $this->setAuthorId($arr[$keys[1]]);
-        if (array_key_exists($keys[2], $arr)) $this->setName($arr[$keys[2]]);
+        if (array_key_exists($keys[2], $arr)) $this->setTitle($arr[$keys[2]]);
         if (array_key_exists($keys[3], $arr)) $this->setDate($arr[$keys[3]]);
         if (array_key_exists($keys[4], $arr)) $this->setDescription($arr[$keys[4]]);
         if (array_key_exists($keys[5], $arr)) $this->setFileType($arr[$keys[5]]);
@@ -1193,7 +1193,7 @@ abstract class BaseFile extends BaseObject implements Persistent
 
         if ($this->isColumnModified(FilePeer::ID)) $criteria->add(FilePeer::ID, $this->id);
         if ($this->isColumnModified(FilePeer::AUTHOR_ID)) $criteria->add(FilePeer::AUTHOR_ID, $this->author_id);
-        if ($this->isColumnModified(FilePeer::NAME)) $criteria->add(FilePeer::NAME, $this->name);
+        if ($this->isColumnModified(FilePeer::TITLE)) $criteria->add(FilePeer::TITLE, $this->title);
         if ($this->isColumnModified(FilePeer::DATE)) $criteria->add(FilePeer::DATE, $this->date);
         if ($this->isColumnModified(FilePeer::DESCRIPTION)) $criteria->add(FilePeer::DESCRIPTION, $this->description);
         if ($this->isColumnModified(FilePeer::FILE_TYPE)) $criteria->add(FilePeer::FILE_TYPE, $this->file_type);
@@ -1264,7 +1264,7 @@ abstract class BaseFile extends BaseObject implements Persistent
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
         $copyObj->setAuthorId($this->getAuthorId());
-        $copyObj->setName($this->getName());
+        $copyObj->setTitle($this->getTitle());
         $copyObj->setDate($this->getDate());
         $copyObj->setDescription($this->getDescription());
         $copyObj->setFileType($this->getFileType());
@@ -1809,7 +1809,7 @@ abstract class BaseFile extends BaseObject implements Persistent
     {
         $this->id = null;
         $this->author_id = null;
-        $this->name = null;
+        $this->title = null;
         $this->date = null;
         $this->description = null;
         $this->file_type = null;

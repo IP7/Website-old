@@ -35,8 +35,8 @@ abstract class BaseEventPeer
     /** the column name for the ID field */
     const ID = 'events.ID';
 
-    /** the column name for the NAME field */
-    const NAME = 'events.NAME';
+    /** the column name for the TITLE field */
+    const TITLE = 'events.TITLE';
 
     /** the column name for the EVENT_TYPE_ID field */
     const EVENT_TYPE_ID = 'events.EVENT_TYPE_ID';
@@ -78,11 +78,11 @@ abstract class BaseEventPeer
      * e.g. EventPeer::$fieldNames[EventPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'Name', 'EventTypeId', 'Description', 'Date', 'Beginning', 'End', 'Place', 'AccessRights', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'name', 'eventTypeId', 'description', 'date', 'beginning', 'end', 'place', 'accessRights', ),
-        BasePeer::TYPE_COLNAME => array (EventPeer::ID, EventPeer::NAME, EventPeer::EVENT_TYPE_ID, EventPeer::DESCRIPTION, EventPeer::DATE, EventPeer::BEGINNING, EventPeer::END, EventPeer::PLACE, EventPeer::ACCESS_RIGHTS, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'NAME', 'EVENT_TYPE_ID', 'DESCRIPTION', 'DATE', 'BEGINNING', 'END', 'PLACE', 'ACCESS_RIGHTS', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'name', 'event_type_id', 'description', 'date', 'beginning', 'end', 'place', 'access_rights', ),
+        BasePeer::TYPE_PHPNAME => array ('Id', 'Title', 'EventTypeId', 'Description', 'Date', 'Beginning', 'End', 'Place', 'AccessRights', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'title', 'eventTypeId', 'description', 'date', 'beginning', 'end', 'place', 'accessRights', ),
+        BasePeer::TYPE_COLNAME => array (EventPeer::ID, EventPeer::TITLE, EventPeer::EVENT_TYPE_ID, EventPeer::DESCRIPTION, EventPeer::DATE, EventPeer::BEGINNING, EventPeer::END, EventPeer::PLACE, EventPeer::ACCESS_RIGHTS, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'TITLE', 'EVENT_TYPE_ID', 'DESCRIPTION', 'DATE', 'BEGINNING', 'END', 'PLACE', 'ACCESS_RIGHTS', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'title', 'event_type_id', 'description', 'date', 'beginning', 'end', 'place', 'access_rights', ),
         BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
     );
 
@@ -93,11 +93,11 @@ abstract class BaseEventPeer
      * e.g. EventPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Name' => 1, 'EventTypeId' => 2, 'Description' => 3, 'Date' => 4, 'Beginning' => 5, 'End' => 6, 'Place' => 7, 'AccessRights' => 8, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'name' => 1, 'eventTypeId' => 2, 'description' => 3, 'date' => 4, 'beginning' => 5, 'end' => 6, 'place' => 7, 'accessRights' => 8, ),
-        BasePeer::TYPE_COLNAME => array (EventPeer::ID => 0, EventPeer::NAME => 1, EventPeer::EVENT_TYPE_ID => 2, EventPeer::DESCRIPTION => 3, EventPeer::DATE => 4, EventPeer::BEGINNING => 5, EventPeer::END => 6, EventPeer::PLACE => 7, EventPeer::ACCESS_RIGHTS => 8, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'NAME' => 1, 'EVENT_TYPE_ID' => 2, 'DESCRIPTION' => 3, 'DATE' => 4, 'BEGINNING' => 5, 'END' => 6, 'PLACE' => 7, 'ACCESS_RIGHTS' => 8, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'name' => 1, 'event_type_id' => 2, 'description' => 3, 'date' => 4, 'beginning' => 5, 'end' => 6, 'place' => 7, 'access_rights' => 8, ),
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Title' => 1, 'EventTypeId' => 2, 'Description' => 3, 'Date' => 4, 'Beginning' => 5, 'End' => 6, 'Place' => 7, 'AccessRights' => 8, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'title' => 1, 'eventTypeId' => 2, 'description' => 3, 'date' => 4, 'beginning' => 5, 'end' => 6, 'place' => 7, 'accessRights' => 8, ),
+        BasePeer::TYPE_COLNAME => array (EventPeer::ID => 0, EventPeer::TITLE => 1, EventPeer::EVENT_TYPE_ID => 2, EventPeer::DESCRIPTION => 3, EventPeer::DATE => 4, EventPeer::BEGINNING => 5, EventPeer::END => 6, EventPeer::PLACE => 7, EventPeer::ACCESS_RIGHTS => 8, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'TITLE' => 1, 'EVENT_TYPE_ID' => 2, 'DESCRIPTION' => 3, 'DATE' => 4, 'BEGINNING' => 5, 'END' => 6, 'PLACE' => 7, 'ACCESS_RIGHTS' => 8, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'title' => 1, 'event_type_id' => 2, 'description' => 3, 'date' => 4, 'beginning' => 5, 'end' => 6, 'place' => 7, 'access_rights' => 8, ),
         BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
     );
 
@@ -173,7 +173,7 @@ abstract class BaseEventPeer
     {
         if (null === $alias) {
             $criteria->addSelectColumn(EventPeer::ID);
-            $criteria->addSelectColumn(EventPeer::NAME);
+            $criteria->addSelectColumn(EventPeer::TITLE);
             $criteria->addSelectColumn(EventPeer::EVENT_TYPE_ID);
             $criteria->addSelectColumn(EventPeer::DESCRIPTION);
             $criteria->addSelectColumn(EventPeer::DATE);
@@ -183,7 +183,7 @@ abstract class BaseEventPeer
             $criteria->addSelectColumn(EventPeer::ACCESS_RIGHTS);
         } else {
             $criteria->addSelectColumn($alias . '.ID');
-            $criteria->addSelectColumn($alias . '.NAME');
+            $criteria->addSelectColumn($alias . '.TITLE');
             $criteria->addSelectColumn($alias . '.EVENT_TYPE_ID');
             $criteria->addSelectColumn($alias . '.DESCRIPTION');
             $criteria->addSelectColumn($alias . '.DATE');
@@ -963,8 +963,8 @@ abstract class BaseEventPeer
             }
         } else {
 
-        if ($obj->isNew() || $obj->isColumnModified(EventPeer::NAME))
-            $columns[EventPeer::NAME] = $obj->getName();
+        if ($obj->isNew() || $obj->isColumnModified(EventPeer::TITLE))
+            $columns[EventPeer::TITLE] = $obj->getTitle();
 
         }
 

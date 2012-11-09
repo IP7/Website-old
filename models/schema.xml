@@ -11,15 +11,15 @@
         <!-- mot de passe (hash bcrypt) -->
         <column name="password_hash"         type="VARCHAR" />
 
-        <!-- type d'utilisateur, utilisé pour les droits. Plus le nombre est haut, plus
+        <!-- droits de l'utilisateur. Plus le nombre est haut, plus
              l'utilisateur a de droits. Exemples possibles:
-                  0 - visiteur (pas inscrit en BDD)
+                  0 - visiteur
                  50 - membre
                  80 - modérateur
                 100 - admin
              On garde de la place pour d'éventuels futurs ajouts.
              -->
-        <column name="type"                  type="TINYINT"  required="true" defaultExpr="0" />
+        <column name="rights"                type="TINYINT"  required="true" defaultExpr="0" />
 
         <!-- prénom -->
         <column name="firstname"             type="VARCHAR"  size="64" required="true" />
@@ -54,7 +54,7 @@
         <!-- date de dernière visite -->
         <column name="last_visit"            type="TIMESTAMP" />
         <!-- nb de visites -->
-        <column name="visits_nb"             type="INTEGER" defaultExpr="0" />
+        <column name="visits_count"          type="INTEGER" defaultExpr="0" />
 
         <!-- == configuration == -->
 
@@ -122,7 +122,7 @@
             <rule name="unique"              message="L'email est déjà pris." />
         </validator>
 
-        <validator column="visits_nb">
+        <validator column="visits_count">
             <rule name="minValue"  value="0" message="Le nombre de visites ne peut pas être négatif." />
         </validator>
 
@@ -143,9 +143,6 @@
 
         <!-- id du responsable -->
         <column name="responsable_id" type="INTEGER" />
-
-        <!-- id de la newsletter associée (s'il y en a une) -->
-        <column name="newsletter_id"  type="INTEGER" />
 
         <!-- == index & clefs étrangères == -->
 
@@ -188,7 +185,7 @@
         <column name="name"        type="VARCHAR" size="64" required="true" />
 
         <!-- code -->
-        <column name="code"        type="VARCHAR" size="16" required="true" />
+        <column name="short_name"  type="VARCHAR" size="16" required="true" />
 
         <!-- nb de crédits -->
         <column name="ECTS"        type="FLOAT" defaultExpr="3" />
@@ -203,15 +200,10 @@
         </foreign-key>
 
         <unique>
-            <unique-column name="code" />
+            <unique-column name="short_name" />
             <unique-column name="semester" />
             <unique-column name="cursus_id" />
         </unique>
-
-        <validator column="code">
-            <rule name="match" value="/^[a-z0-9]+$/i"
-                                             message="Le code n'est pas valide (caractères alphanumériques uniquement)." />
-        </validator>
 
         <validator column="name">
             <rule name="minLength" value="3" message="Le nom doit faire au moins ${value} caractères." />
@@ -327,8 +319,8 @@
         <!-- auteur (ou celui qui l'a déposé) -->
         <column name="author_id"     type="INTEGER" />
 
-        <!-- nom (= titre, peut être différent du vrai nom du fichier stocké) -->
-        <column name="name"          type="VARCHAR" required="true" size="128" />
+        <!-- titre, peut être différent du vrai nom du fichier stocké -->
+        <column name="title"         type="VARCHAR" required="true" size="128" />
 
         <!-- date à laquelle a été posté le fichier -->
         <column name="date"          type="TIMESTAMP" required="true" />
@@ -368,7 +360,7 @@
             <reference local="author_id" foreign="id" />
         </foreign-key>
 
-        <validator column="name">
+        <validator column="title">
             <rule name="minLength" value="3" message="Le nom doit faire au moins ${value} caractères." />
         </validator>
 
@@ -431,7 +423,7 @@
         <column name="id"            type="INTEGER" required="true" primaryKey="true" autoIncrement="true"/>
 
         <!-- nom -->
-        <column name="name"          type="VARCHAR" required="true" />
+        <column name="title"         type="VARCHAR" required="true" />
 
         <!-- type: réunion, soirée, conférence, vote, etc -->
         <column name="event_type_id" type="INTEGER" />
@@ -460,7 +452,7 @@
             <reference local="event_type_id" foreign="id"/>
         </foreign-key>
 
-        <validator column="name">
+        <validator column="title">
             <rule name="minLength" value="3" message="Le nom doit faire au moins ${value} caractères." />
         </validator>
     </table>
@@ -557,16 +549,16 @@
     <!-- === types de contenu : examen, TP, TD, etc === -->
     <table name="content_types" phpName="ContentType">
         <!-- id -->
-        <column name="id"         type="INTEGER" required="true" primaryKey="true" autoIncrement="true"/>
+        <column name="id"            type="INTEGER" required="true" primaryKey="true" autoIncrement="true"/>
 
         <!-- nom -->
-        <column name="name"       type="VARCHAR" size="32" required="true" />
+        <column name="name"          type="VARCHAR" size="32" required="true" />
 
         <!-- nom court (pour les URL) -->
-        <column name="short_name" type="VARCHAR" size="16" required="true" />
+        <column name="short_name"    type="VARCHAR" size="16" required="true" />
 
         <!-- droits d'accès -->
-        <column name="rights"     type="TINYINT" defaultExpr="0" />
+        <column name="access_rights" type="TINYINT" defaultExpr="0" />
 
         <!-- == index & clefs étrangères == -->
 
@@ -622,19 +614,19 @@
     <!-- === mots-clefs === -->
     <table name="tags" phpName="Tag">
         <!-- id -->
-        <column name="id"   type="INTEGER" required="true" primaryKey="true" autoIncrement="true"/>
+        <column name="id"    type="INTEGER" required="true" primaryKey="true" autoIncrement="true"/>
         <!-- nom -->
-        <column name="name" type="VARCHAR" size="16" required="true" />
+        <column name="title" type="VARCHAR" size="16" required="true" />
 
         <!-- == index & clefs étrangères == -->
 
-        <validator column="name">
+        <validator column="title">
             <rule name="minLength" value="1" message="Le nom doit faire au moins ${value} caractère." />
             <rule name="unique" message="Le nom existe déjà." />
         </validator>
 
         <index>
-            <index-column name="name" />
+            <index-column name="title" />
         </index>
 
     </table>
@@ -854,7 +846,7 @@
         <column name="id"            type="INTEGER" required="true" primaryKey="true" autoIncrement="true"/>
 
         <!-- nom -->
-        <column name="name"          type="VARCHAR" size="32" required="true" />
+        <column name="title"         type="VARCHAR" size="32" required="true" />
 
         <!-- id de la catégorie parente (s'il y en a une) -->
         <column name="parent_id"     type="INTEGER" />
@@ -868,7 +860,7 @@
             <reference local="parent_id" foreign="id" />
         </foreign-key>
 
-        <validator column="name">
+        <validator column="title">
             <rule name="minLength" value="1" message="Le nom doit faire au moins ${value} caractère." />
         </validator>
     </table>
@@ -970,10 +962,10 @@
         <column name="cursus_id" type="INTEGER" />
 
         <!-- id du parcours concerné s'il y en a un -->
-        <column name="path_id" type="INTEGER" />
+        <column name="path_id"   type="INTEGER" />
         
         <!-- nom -->
-        <column name="name"      type="VARCHAR" size="32" required="true" />
+        <column name="title"     type="VARCHAR" size="32" required="true" />
         
         <!-- date de début de validité -->
         <column name="beginning" type="DATE" />

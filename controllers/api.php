@@ -43,15 +43,16 @@ function json_get_last_contents() {
         return json(array('data' => array()));
     }
 
-    $user_rights = is_connected() ? user()->getRank() : 0;
+    $user_rights = is_connected() ? user()->getRights() : 0;
 
     $contents = ContentQuery::create()
                     ->joinWith('Content.Cursus')
                     ->joinWith('Content.Course')
                     ->filterByValidated(1)
-                        ->useContentTypeQuery()
-                        ->where('Rights <= ?', $user_rights, PDO::PARAM_INT)
-                        ->endUse()
+                    ->where(  '(SELECT content_types.access_rights '
+                            . 'FROM content_types '
+                            . 'WHERE content_types.id = contents.id) <= ?',
+                                $user_rights, PDO::PARAM_INT)
                     ->where('Access_Rights <= ?', $user_rights, PDO::PARAM_INT)
                     ->orderByDate('desc')
                     ->limit($limit)
@@ -70,7 +71,7 @@ function json_get_last_contents() {
             'date'  => $c->getDate(),
 
             'cursus' => $cursus ? $cursus->getShortName() : null,
-            'course' => $course ? $course->getCode() : null
+            'course' => $course ? $course->getShortName() : null
         );
     }
 
@@ -81,7 +82,7 @@ function json_get_news_by_id() {
     $id = intval(get_string('id', 'GET'));
     if (!$id) { return json(array('error' => 'Bad id.')); }
 
-    $user_rights = is_connected() ? user()->getRank() : 0;
+    $user_rights = is_connected() ? user()->getRights() : 0;
 
     $news = NewsQuery::create()
                 ->where('Access_Rights <= ?', $user_rights, PDO::PARAM_INT)
@@ -144,7 +145,7 @@ function json_post_delete_news() {
     $news = NewsQuery::create()->findOneById($id);
     if (!$news) { return json(array('error' => 'Bad id.')); }
 
-    if ($news->getAccessRights() > user()->getRank()) {
+    if ($news->getAccessRights() > user()->getRights()) {
         halt(HTTP_FORBIDDEN);
     }
 

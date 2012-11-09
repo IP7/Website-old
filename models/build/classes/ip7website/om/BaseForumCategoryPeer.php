@@ -35,8 +35,8 @@ abstract class BaseForumCategoryPeer
     /** the column name for the ID field */
     const ID = 'forum_categories.ID';
 
-    /** the column name for the NAME field */
-    const NAME = 'forum_categories.NAME';
+    /** the column name for the TITLE field */
+    const TITLE = 'forum_categories.TITLE';
 
     /** the column name for the PARENT_ID field */
     const PARENT_ID = 'forum_categories.PARENT_ID';
@@ -63,11 +63,11 @@ abstract class BaseForumCategoryPeer
      * e.g. ForumCategoryPeer::$fieldNames[ForumCategoryPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'Name', 'ParentId', 'AccessRights', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'name', 'parentId', 'accessRights', ),
-        BasePeer::TYPE_COLNAME => array (ForumCategoryPeer::ID, ForumCategoryPeer::NAME, ForumCategoryPeer::PARENT_ID, ForumCategoryPeer::ACCESS_RIGHTS, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'NAME', 'PARENT_ID', 'ACCESS_RIGHTS', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'name', 'parent_id', 'access_rights', ),
+        BasePeer::TYPE_PHPNAME => array ('Id', 'Title', 'ParentId', 'AccessRights', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'title', 'parentId', 'accessRights', ),
+        BasePeer::TYPE_COLNAME => array (ForumCategoryPeer::ID, ForumCategoryPeer::TITLE, ForumCategoryPeer::PARENT_ID, ForumCategoryPeer::ACCESS_RIGHTS, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'TITLE', 'PARENT_ID', 'ACCESS_RIGHTS', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'title', 'parent_id', 'access_rights', ),
         BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
     );
 
@@ -78,11 +78,11 @@ abstract class BaseForumCategoryPeer
      * e.g. ForumCategoryPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Name' => 1, 'ParentId' => 2, 'AccessRights' => 3, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'name' => 1, 'parentId' => 2, 'accessRights' => 3, ),
-        BasePeer::TYPE_COLNAME => array (ForumCategoryPeer::ID => 0, ForumCategoryPeer::NAME => 1, ForumCategoryPeer::PARENT_ID => 2, ForumCategoryPeer::ACCESS_RIGHTS => 3, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'NAME' => 1, 'PARENT_ID' => 2, 'ACCESS_RIGHTS' => 3, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'name' => 1, 'parent_id' => 2, 'access_rights' => 3, ),
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Title' => 1, 'ParentId' => 2, 'AccessRights' => 3, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'title' => 1, 'parentId' => 2, 'accessRights' => 3, ),
+        BasePeer::TYPE_COLNAME => array (ForumCategoryPeer::ID => 0, ForumCategoryPeer::TITLE => 1, ForumCategoryPeer::PARENT_ID => 2, ForumCategoryPeer::ACCESS_RIGHTS => 3, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'TITLE' => 1, 'PARENT_ID' => 2, 'ACCESS_RIGHTS' => 3, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'title' => 1, 'parent_id' => 2, 'access_rights' => 3, ),
         BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
     );
 
@@ -158,12 +158,12 @@ abstract class BaseForumCategoryPeer
     {
         if (null === $alias) {
             $criteria->addSelectColumn(ForumCategoryPeer::ID);
-            $criteria->addSelectColumn(ForumCategoryPeer::NAME);
+            $criteria->addSelectColumn(ForumCategoryPeer::TITLE);
             $criteria->addSelectColumn(ForumCategoryPeer::PARENT_ID);
             $criteria->addSelectColumn(ForumCategoryPeer::ACCESS_RIGHTS);
         } else {
             $criteria->addSelectColumn($alias . '.ID');
-            $criteria->addSelectColumn($alias . '.NAME');
+            $criteria->addSelectColumn($alias . '.TITLE');
             $criteria->addSelectColumn($alias . '.PARENT_ID');
             $criteria->addSelectColumn($alias . '.ACCESS_RIGHTS');
         }
@@ -878,8 +878,8 @@ abstract class BaseForumCategoryPeer
             }
         } else {
 
-        if ($obj->isNew() || $obj->isColumnModified(ForumCategoryPeer::NAME))
-            $columns[ForumCategoryPeer::NAME] = $obj->getName();
+        if ($obj->isNew() || $obj->isColumnModified(ForumCategoryPeer::TITLE))
+            $columns[ForumCategoryPeer::TITLE] = $obj->getTitle();
 
         }
 

@@ -67,12 +67,6 @@ abstract class BaseCursus extends BaseObject implements Persistent
     protected $responsable_id;
 
     /**
-     * The value for the newsletter_id field.
-     * @var        int
-     */
-    protected $newsletter_id;
-
-    /**
      * @var        User
      */
     protected $aResponsable;
@@ -244,16 +238,6 @@ abstract class BaseCursus extends BaseObject implements Persistent
     }
 
     /**
-     * Get the [newsletter_id] column value.
-     *
-     * @return int
-     */
-    public function getNewsletterId()
-    {
-        return $this->newsletter_id;
-    }
-
-    /**
      * Set the value of [id] column.
      *
      * @param int $v new value
@@ -369,27 +353,6 @@ abstract class BaseCursus extends BaseObject implements Persistent
     } // setResponsableId()
 
     /**
-     * Set the value of [newsletter_id] column.
-     *
-     * @param int $v new value
-     * @return Cursus The current object (for fluent API support)
-     */
-    public function setNewsletterId($v)
-    {
-        if ($v !== null) {
-            $v = (int) $v;
-        }
-
-        if ($this->newsletter_id !== $v) {
-            $this->newsletter_id = $v;
-            $this->modifiedColumns[] = CursusPeer::NEWSLETTER_ID;
-        }
-
-
-        return $this;
-    } // setNewsletterId()
-
-    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -425,7 +388,6 @@ abstract class BaseCursus extends BaseObject implements Persistent
             $this->short_name = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
             $this->name = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
             $this->responsable_id = ($row[$startcol + 3] !== null) ? (int) $row[$startcol + 3] : null;
-            $this->newsletter_id = ($row[$startcol + 4] !== null) ? (int) $row[$startcol + 4] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -434,7 +396,7 @@ abstract class BaseCursus extends BaseObject implements Persistent
                 $this->ensureConsistency();
             }
 
-            return $startcol + 5; // 5 = CursusPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 4; // 4 = CursusPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating Cursus object", $e);
@@ -800,9 +762,6 @@ abstract class BaseCursus extends BaseObject implements Persistent
         if ($this->isColumnModified(CursusPeer::RESPONSABLE_ID)) {
             $modifiedColumns[':p' . $index++]  = '`RESPONSABLE_ID`';
         }
-        if ($this->isColumnModified(CursusPeer::NEWSLETTER_ID)) {
-            $modifiedColumns[':p' . $index++]  = '`NEWSLETTER_ID`';
-        }
 
         $sql = sprintf(
             'INSERT INTO `cursus` (%s) VALUES (%s)',
@@ -828,9 +787,6 @@ abstract class BaseCursus extends BaseObject implements Persistent
                         break;
                     case '`RESPONSABLE_ID`':
                         $stmt->bindValue($identifier, $this->responsable_id, PDO::PARAM_INT);
-                        break;
-                    case '`NEWSLETTER_ID`':
-                        $stmt->bindValue($identifier, $this->newsletter_id, PDO::PARAM_INT);
                         break;
                 }
             }
@@ -1041,9 +997,6 @@ abstract class BaseCursus extends BaseObject implements Persistent
             case 4:
                 return $this->getResponsableId();
                 break;
-            case 5:
-                return $this->getNewsletterId();
-                break;
             default:
                 return null;
                 break;
@@ -1078,7 +1031,6 @@ abstract class BaseCursus extends BaseObject implements Persistent
             $keys[2] => $this->getName(),
             $keys[3] => ($includeLazyLoadColumns) ? $this->getDescription() : null,
             $keys[4] => $this->getResponsableId(),
-            $keys[5] => $this->getNewsletterId(),
         );
         if ($includeForeignObjects) {
             if (null !== $this->aResponsable) {
@@ -1151,9 +1103,6 @@ abstract class BaseCursus extends BaseObject implements Persistent
             case 4:
                 $this->setResponsableId($value);
                 break;
-            case 5:
-                $this->setNewsletterId($value);
-                break;
         } // switch()
     }
 
@@ -1183,7 +1132,6 @@ abstract class BaseCursus extends BaseObject implements Persistent
         if (array_key_exists($keys[2], $arr)) $this->setName($arr[$keys[2]]);
         if (array_key_exists($keys[3], $arr)) $this->setDescription($arr[$keys[3]]);
         if (array_key_exists($keys[4], $arr)) $this->setResponsableId($arr[$keys[4]]);
-        if (array_key_exists($keys[5], $arr)) $this->setNewsletterId($arr[$keys[5]]);
     }
 
     /**
@@ -1200,7 +1148,6 @@ abstract class BaseCursus extends BaseObject implements Persistent
         if ($this->isColumnModified(CursusPeer::NAME)) $criteria->add(CursusPeer::NAME, $this->name);
         if ($this->isColumnModified(CursusPeer::DESCRIPTION)) $criteria->add(CursusPeer::DESCRIPTION, $this->description);
         if ($this->isColumnModified(CursusPeer::RESPONSABLE_ID)) $criteria->add(CursusPeer::RESPONSABLE_ID, $this->responsable_id);
-        if ($this->isColumnModified(CursusPeer::NEWSLETTER_ID)) $criteria->add(CursusPeer::NEWSLETTER_ID, $this->newsletter_id);
 
         return $criteria;
     }
@@ -1268,7 +1215,6 @@ abstract class BaseCursus extends BaseObject implements Persistent
         $copyObj->setName($this->getName());
         $copyObj->setDescription($this->getDescription());
         $copyObj->setResponsableId($this->getResponsableId());
-        $copyObj->setNewsletterId($this->getNewsletterId());
 
         if ($deepCopy && !$this->startCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -2973,7 +2919,6 @@ abstract class BaseCursus extends BaseObject implements Persistent
         $this->description = null;
         $this->description_isLoaded = false;
         $this->responsable_id = null;
-        $this->newsletter_id = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->clearAllReferences();

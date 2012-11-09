@@ -39,7 +39,7 @@ class EventTableMap extends TableMap
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
-        $this->addColumn('NAME', 'Name', 'VARCHAR', true, 255, null);
+        $this->addColumn('TITLE', 'Title', 'VARCHAR', true, 255, null);
         $this->addForeignKey('EVENT_TYPE_ID', 'EventTypeId', 'INTEGER', 'event_types', 'ID', false, null, null);
         $this->addColumn('DESCRIPTION', 'Description', 'LONGVARCHAR', false, null, null);
         $this->addColumn('DATE', 'Date', 'DATE', false, null, null);
@@ -48,7 +48,7 @@ class EventTableMap extends TableMap
         $this->addColumn('PLACE', 'Place', 'VARCHAR', false, 255, null);
         $this->addColumn('ACCESS_RIGHTS', 'AccessRights', 'TINYINT', false, null, 0);
         // validators
-        $this->addValidator('NAME', 'minLength', 'propel.validator.MinLengthValidator', '3', 'Le nom doit faire au moins 3 caractères.');
+        $this->addValidator('TITLE', 'minLength', 'propel.validator.MinLengthValidator', '3', 'Le nom doit faire au moins 3 caractères.');
     } // initialize()
 
     /**

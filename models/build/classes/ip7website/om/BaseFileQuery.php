@@ -8,7 +8,7 @@
  *
  * @method FileQuery orderById($order = Criteria::ASC) Order by the id column
  * @method FileQuery orderByAuthorId($order = Criteria::ASC) Order by the author_id column
- * @method FileQuery orderByName($order = Criteria::ASC) Order by the name column
+ * @method FileQuery orderByTitle($order = Criteria::ASC) Order by the title column
  * @method FileQuery orderByDate($order = Criteria::ASC) Order by the date column
  * @method FileQuery orderByDescription($order = Criteria::ASC) Order by the description column
  * @method FileQuery orderByFileType($order = Criteria::ASC) Order by the file_type column
@@ -18,7 +18,7 @@
  *
  * @method FileQuery groupById() Group by the id column
  * @method FileQuery groupByAuthorId() Group by the author_id column
- * @method FileQuery groupByName() Group by the name column
+ * @method FileQuery groupByTitle() Group by the title column
  * @method FileQuery groupByDate() Group by the date column
  * @method FileQuery groupByDescription() Group by the description column
  * @method FileQuery groupByFileType() Group by the file_type column
@@ -43,7 +43,7 @@
  *
  * @method File findOneById(int $id) Return the first File filtered by the id column
  * @method File findOneByAuthorId(int $author_id) Return the first File filtered by the author_id column
- * @method File findOneByName(string $name) Return the first File filtered by the name column
+ * @method File findOneByTitle(string $title) Return the first File filtered by the title column
  * @method File findOneByDate(string $date) Return the first File filtered by the date column
  * @method File findOneByDescription(string $description) Return the first File filtered by the description column
  * @method File findOneByFileType(int $file_type) Return the first File filtered by the file_type column
@@ -53,7 +53,7 @@
  *
  * @method array findById(int $id) Return File objects filtered by the id column
  * @method array findByAuthorId(int $author_id) Return File objects filtered by the author_id column
- * @method array findByName(string $name) Return File objects filtered by the name column
+ * @method array findByTitle(string $title) Return File objects filtered by the title column
  * @method array findByDate(string $date) Return File objects filtered by the date column
  * @method array findByDescription(string $description) Return File objects filtered by the description column
  * @method array findByFileType(int $file_type) Return File objects filtered by the file_type column
@@ -149,7 +149,7 @@ abstract class BaseFileQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `ID`, `AUTHOR_ID`, `NAME`, `DATE`, `DESCRIPTION`, `FILE_TYPE`, `PATH`, `ACCESS_RIGHTS`, `DOWNLOADS_COUNT` FROM `files` WHERE `ID` = :p0';
+        $sql = 'SELECT `ID`, `AUTHOR_ID`, `TITLE`, `DATE`, `DESCRIPTION`, `FILE_TYPE`, `PATH`, `ACCESS_RIGHTS`, `DOWNLOADS_COUNT` FROM `files` WHERE `ID` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -309,32 +309,32 @@ abstract class BaseFileQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the name column
+     * Filter the query on the title column
      *
      * Example usage:
      * <code>
-     * $query->filterByName('fooValue');   // WHERE name = 'fooValue'
-     * $query->filterByName('%fooValue%'); // WHERE name LIKE '%fooValue%'
+     * $query->filterByTitle('fooValue');   // WHERE title = 'fooValue'
+     * $query->filterByTitle('%fooValue%'); // WHERE title LIKE '%fooValue%'
      * </code>
      *
-     * @param     string $name The value to use as filter.
+     * @param     string $title The value to use as filter.
      *              Accepts wildcards (* and % trigger a LIKE)
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return FileQuery The current query, for fluid interface
      */
-    public function filterByName($name = null, $comparison = null)
+    public function filterByTitle($title = null, $comparison = null)
     {
         if (null === $comparison) {
-            if (is_array($name)) {
+            if (is_array($title)) {
                 $comparison = Criteria::IN;
-            } elseif (preg_match('/[\%\*]/', $name)) {
-                $name = str_replace('*', '%', $name);
+            } elseif (preg_match('/[\%\*]/', $title)) {
+                $title = str_replace('*', '%', $title);
                 $comparison = Criteria::LIKE;
             }
         }
 
-        return $this->addUsingAlias(FilePeer::NAME, $name, $comparison);
+        return $this->addUsingAlias(FilePeer::TITLE, $title, $comparison);
     }
 
     /**

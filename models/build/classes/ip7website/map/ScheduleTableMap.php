@@ -41,7 +41,7 @@ class ScheduleTableMap extends TableMap
         $this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
         $this->addForeignKey('CURSUS_ID', 'CursusId', 'INTEGER', 'cursus', 'ID', false, null, null);
         $this->addForeignKey('PATH_ID', 'PathId', 'INTEGER', 'educational_paths', 'ID', false, null, null);
-        $this->addColumn('NAME', 'Name', 'VARCHAR', true, 32, null);
+        $this->addColumn('TITLE', 'Title', 'VARCHAR', true, 32, null);
         $this->addColumn('BEGINNING', 'Beginning', 'DATE', false, null, null);
         $this->addColumn('END', 'End', 'DATE', false, null, null);
         // validators

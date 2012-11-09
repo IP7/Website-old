@@ -41,8 +41,8 @@ abstract class BaseSchedulePeer
     /** the column name for the PATH_ID field */
     const PATH_ID = 'schedules.PATH_ID';
 
-    /** the column name for the NAME field */
-    const NAME = 'schedules.NAME';
+    /** the column name for the TITLE field */
+    const TITLE = 'schedules.TITLE';
 
     /** the column name for the BEGINNING field */
     const BEGINNING = 'schedules.BEGINNING';
@@ -69,11 +69,11 @@ abstract class BaseSchedulePeer
      * e.g. SchedulePeer::$fieldNames[SchedulePeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'CursusId', 'PathId', 'Name', 'Beginning', 'End', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'cursusId', 'pathId', 'name', 'beginning', 'end', ),
-        BasePeer::TYPE_COLNAME => array (SchedulePeer::ID, SchedulePeer::CURSUS_ID, SchedulePeer::PATH_ID, SchedulePeer::NAME, SchedulePeer::BEGINNING, SchedulePeer::END, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'CURSUS_ID', 'PATH_ID', 'NAME', 'BEGINNING', 'END', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'cursus_id', 'path_id', 'name', 'beginning', 'end', ),
+        BasePeer::TYPE_PHPNAME => array ('Id', 'CursusId', 'PathId', 'Title', 'Beginning', 'End', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'cursusId', 'pathId', 'title', 'beginning', 'end', ),
+        BasePeer::TYPE_COLNAME => array (SchedulePeer::ID, SchedulePeer::CURSUS_ID, SchedulePeer::PATH_ID, SchedulePeer::TITLE, SchedulePeer::BEGINNING, SchedulePeer::END, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'CURSUS_ID', 'PATH_ID', 'TITLE', 'BEGINNING', 'END', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'cursus_id', 'path_id', 'title', 'beginning', 'end', ),
         BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
     );
 
@@ -84,11 +84,11 @@ abstract class BaseSchedulePeer
      * e.g. SchedulePeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'CursusId' => 1, 'PathId' => 2, 'Name' => 3, 'Beginning' => 4, 'End' => 5, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'cursusId' => 1, 'pathId' => 2, 'name' => 3, 'beginning' => 4, 'end' => 5, ),
-        BasePeer::TYPE_COLNAME => array (SchedulePeer::ID => 0, SchedulePeer::CURSUS_ID => 1, SchedulePeer::PATH_ID => 2, SchedulePeer::NAME => 3, SchedulePeer::BEGINNING => 4, SchedulePeer::END => 5, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'CURSUS_ID' => 1, 'PATH_ID' => 2, 'NAME' => 3, 'BEGINNING' => 4, 'END' => 5, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'cursus_id' => 1, 'path_id' => 2, 'name' => 3, 'beginning' => 4, 'end' => 5, ),
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'CursusId' => 1, 'PathId' => 2, 'Title' => 3, 'Beginning' => 4, 'End' => 5, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'cursusId' => 1, 'pathId' => 2, 'title' => 3, 'beginning' => 4, 'end' => 5, ),
+        BasePeer::TYPE_COLNAME => array (SchedulePeer::ID => 0, SchedulePeer::CURSUS_ID => 1, SchedulePeer::PATH_ID => 2, SchedulePeer::TITLE => 3, SchedulePeer::BEGINNING => 4, SchedulePeer::END => 5, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'CURSUS_ID' => 1, 'PATH_ID' => 2, 'TITLE' => 3, 'BEGINNING' => 4, 'END' => 5, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'cursus_id' => 1, 'path_id' => 2, 'title' => 3, 'beginning' => 4, 'end' => 5, ),
         BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
     );
 
@@ -166,14 +166,14 @@ abstract class BaseSchedulePeer
             $criteria->addSelectColumn(SchedulePeer::ID);
             $criteria->addSelectColumn(SchedulePeer::CURSUS_ID);
             $criteria->addSelectColumn(SchedulePeer::PATH_ID);
-            $criteria->addSelectColumn(SchedulePeer::NAME);
+            $criteria->addSelectColumn(SchedulePeer::TITLE);
             $criteria->addSelectColumn(SchedulePeer::BEGINNING);
             $criteria->addSelectColumn(SchedulePeer::END);
         } else {
             $criteria->addSelectColumn($alias . '.ID');
             $criteria->addSelectColumn($alias . '.CURSUS_ID');
             $criteria->addSelectColumn($alias . '.PATH_ID');
-            $criteria->addSelectColumn($alias . '.NAME');
+            $criteria->addSelectColumn($alias . '.TITLE');
             $criteria->addSelectColumn($alias . '.BEGINNING');
             $criteria->addSelectColumn($alias . '.END');
         }
