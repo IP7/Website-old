@@ -30,7 +30,7 @@ function display_course_content() {
     $type      = $content->getContentType();
 
     if ($type && $type->getAccessRights() > $rights) {
-        $rights = $type->getAcessRights();
+        $rights = $type->getAccessRights();
     }
 
     if ($rights > $user_rank) {
@@ -309,7 +309,7 @@ function display_post_member_proposed_content_preview() {
         $c_type = ContentTypeQuery::create()->findOneById(intval($_POST['type']));
 
         if ($c_type) {
-            if ($c_type->getAcessRights() > user()->getRights()) {
+            if ($c_type->getAccessRights() > user()->getRights()) {
                 halt(
                     HTTP_FORBIDDEN,
                       'Vous ne disposez pas des droits suffisant pour proposer '
@@ -440,7 +440,7 @@ function display_post_member_proposed_content() {
 
     if ($type) {
         $c->setContentType($type);
-        $c->setAccessRights($type->getAcessRights());
+        $c->setAccessRights($type->getAccessRights());
     }
 
     foreach ($files as $k => $file) {
