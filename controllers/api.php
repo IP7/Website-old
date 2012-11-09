@@ -49,10 +49,10 @@ function json_get_last_contents() {
                     ->joinWith('Content.Cursus')
                     ->joinWith('Content.Course')
                     ->filterByValidated(1)
-                        ->useContentTypeQuery()
-                        # FIXME ambiguous query, 2x 'Access_Rights'
-                        ->where('Access_Rights <= ?', $user_rights, PDO::PARAM_INT)
-                        ->endUse()
+                    ->where(  '(SELECT content_types.access_rights '
+                            . 'FROM content_types '
+                            . 'WHERE content_types.id = contents.id) <= ?',
+                                $user_rights, PDO::PARAM_INT)
                     ->where('Access_Rights <= ?', $user_rights, PDO::PARAM_INT)
                     ->orderByDate('desc')
                     ->limit($limit)
