@@ -57,7 +57,7 @@ class User extends BaseUser {
    **/
   public function isAdmin() {
     if (defined('ADMIN_RANK')) {
-      return ($this->getType() >= ADMIN_RANK);
+      return ($this->getRights() >= ADMIN_RANK);
     }
     return false;
   }
@@ -68,7 +68,7 @@ class User extends BaseUser {
    **/
   public function isModerator(){
     if (defined('MODERATOR_RANK')) {
-      return ($this->getType() >= MODERATOR_RANK);
+      return ($this->getRights() >= MODERATOR_RANK);
     }
     return false;
   }
@@ -79,7 +79,7 @@ class User extends BaseUser {
    **/
   public function isMember() {
     if (defined('MEMBER_RANK')) {
-      return ($this->getType() >= MEMBER_RANK);
+      return ($this->getRights() >= MEMBER_RANK);
     }
     return false;
   }
@@ -175,20 +175,13 @@ class User extends BaseUser {
       return $this->getConfigShowRealName() ? $this->getName() : $this->getUsername();
   }
 
-  /**
-   * Return user's rank
-   **/
-  public function getRank() {
-      return $this->getType();
-  }
-
   /* == Misc ================================================= */
 
   /**
    * Increment the number of visits
    **/
-  public function incrementVisitsNb() {
-    $this->setVisitsNb($this->getVisitsNb()+1);
+  public function incrementVisitsCount() {
+    $this->setVisitsCount($this->getVisitsCount()+1);
   }
 }
 

@@ -20,17 +20,17 @@ function display_course_content() {
         halt(NOT_FOUND);
     }
 
-    if ($course->getCode() != $course_code || $cursus->getShortName() != $cursus_sn) {
-        redirect_to('/cursus/'.$cursus->getShortName().'/'.$course->getCode().'/'.$content_id);
+    if ($course->getShortName() != $course_code || $cursus->getShortName() != $cursus_sn) {
+        redirect_to('/cursus/'.$cursus->getShortName().'/'.$course->getShortName().'/'.$content_id);
     }
 
     $rights    = $content->getAccessRights();
-    $user_rank = is_connected() ? user()->getRank() : 0;
+    $user_rank = is_connected() ? user()->getRights() : 0;
 
     $type      = $content->getContentType();
 
-    if ($type && $type->getRights() > $rights) {
-        $rights = $type->getRights();
+    if ($type && $type->getAccessRights() > $rights) {
+        $rights = $type->getAccessRights();
     }
 
     if ($rights > $user_rank) {
@@ -146,7 +146,7 @@ function display_course_content() {
 	return tpl_render('contents/base.html', array(
         'page' => Array(
             'title' => $content->getTitle(),
-            'keywords' => array( $cursus->getName(), $course->getName(), $course->getCode() ),
+            'keywords' => array( $cursus->getName(), $course->getName(), $course->getShortName() ),
             'description' => '',
 
             'breadcrumbs' => array(
@@ -156,7 +156,7 @@ function display_course_content() {
                 ),
                 2 => array(
                     'href'  => course_url($cursus,$course),
-                    'title' => $course->getCode()
+                    'title' => $course->getShortName()
                 ),
                 3 => array(
                     'href'  => url(),
@@ -192,7 +192,7 @@ function display_member_proposing_content_form() {
 
     $course = CourseQuery::create()
                             ->filterByCursus($cursus)
-                            ->findOneByCode($course_name);
+                            ->findOneByShortName($course_name);
 
     if (!$course) {
         halt(NOT_FOUND);
@@ -234,7 +234,7 @@ function display_member_proposing_content_form() {
 
     return tpl_render('contents/proposing.html', array(
         'page' => array(
-            'title' => 'Proposer un contenu '.Lang\de($course->getCode()),
+            'title' => 'Proposer un contenu '.Lang\de($course->getShortName()),
 
             'breadcrumbs' => array(
                 1 => array(
@@ -243,7 +243,7 @@ function display_member_proposing_content_form() {
                 ),
                 2 => array(
                     'href'  => course_url($cursus,$course),
-                    'title' => $course->getCode()
+                    'title' => $course->getShortName()
                 ),
                 3 => array(
                     'href'  => $url,
@@ -313,7 +313,7 @@ function display_post_member_proposed_content_preview() {
         $c_type = ContentTypeQuery::create()->findOneById(intval($_POST['type']));
 
         if ($c_type) {
-            if ($c_type->getRights() > user()->getRank()) {
+            if ($c_type->getAccessRights() > user()->getRights()) {
                 halt(
                     HTTP_FORBIDDEN,
                       'Vous ne disposez pas des droits suffisant pour proposer '
@@ -448,7 +448,7 @@ function display_post_member_proposed_content() {
 
     if ($type) {
         $c->setContentType($type);
-        $c->setAccessRights($type->getRights());
+        $c->setAccessRights($type->getAccessRights());
     }
 
     foreach ($files as $k => $file) {
@@ -460,7 +460,7 @@ function display_post_member_proposed_content() {
     }
     else {
         $c->save();
-        redirect_to('/cursus/'.$cursus->getShortName().'/'.$course->getCode().'/'.$c->getId());
+        redirect_to('/cursus/'.$cursus->getShortName().'/'.$course->getShortName().'/'.$c->getId());
     }
 }
 

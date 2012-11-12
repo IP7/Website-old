@@ -28,7 +28,7 @@ function before($route) {
     try_autoconnect();
 
     if (stristr($route['callback'], 'admin')) {
-        if (!is_connected() || !user()->isAdmin()) { // FIXME cf issue #220
+        if (!is_connected() || !user()->isAdmin()) {
             halt(HTTP_FORBIDDEN, "L'accès à cette page est réservé aux administrateurs.");
         }
     }

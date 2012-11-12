@@ -7,10 +7,10 @@
  *
  *
  * @method TagQuery orderById($order = Criteria::ASC) Order by the id column
- * @method TagQuery orderByName($order = Criteria::ASC) Order by the name column
+ * @method TagQuery orderByTitle($order = Criteria::ASC) Order by the title column
  *
  * @method TagQuery groupById() Group by the id column
- * @method TagQuery groupByName() Group by the name column
+ * @method TagQuery groupByTitle() Group by the title column
  *
  * @method TagQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method TagQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -32,10 +32,10 @@
  * @method Tag findOneOrCreate(PropelPDO $con = null) Return the first Tag matching the query, or a new Tag object populated from the query conditions when no match is found
  *
  * @method Tag findOneById(int $id) Return the first Tag filtered by the id column
- * @method Tag findOneByName(string $name) Return the first Tag filtered by the name column
+ * @method Tag findOneByTitle(string $title) Return the first Tag filtered by the title column
  *
  * @method array findById(int $id) Return Tag objects filtered by the id column
- * @method array findByName(string $name) Return Tag objects filtered by the name column
+ * @method array findByTitle(string $title) Return Tag objects filtered by the title column
  *
  * @package    propel.generator.ip7website.om
  */
@@ -125,7 +125,7 @@ abstract class BaseTagQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `ID`, `NAME` FROM `tags` WHERE `ID` = :p0';
+        $sql = 'SELECT `ID`, `TITLE` FROM `tags` WHERE `ID` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -242,32 +242,32 @@ abstract class BaseTagQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the name column
+     * Filter the query on the title column
      *
      * Example usage:
      * <code>
-     * $query->filterByName('fooValue');   // WHERE name = 'fooValue'
-     * $query->filterByName('%fooValue%'); // WHERE name LIKE '%fooValue%'
+     * $query->filterByTitle('fooValue');   // WHERE title = 'fooValue'
+     * $query->filterByTitle('%fooValue%'); // WHERE title LIKE '%fooValue%'
      * </code>
      *
-     * @param     string $name The value to use as filter.
+     * @param     string $title The value to use as filter.
      *              Accepts wildcards (* and % trigger a LIKE)
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return TagQuery The current query, for fluid interface
      */
-    public function filterByName($name = null, $comparison = null)
+    public function filterByTitle($title = null, $comparison = null)
     {
         if (null === $comparison) {
-            if (is_array($name)) {
+            if (is_array($title)) {
                 $comparison = Criteria::IN;
-            } elseif (preg_match('/[\%\*]/', $name)) {
-                $name = str_replace('*', '%', $name);
+            } elseif (preg_match('/[\%\*]/', $title)) {
+                $title = str_replace('*', '%', $title);
                 $comparison = Criteria::LIKE;
             }
         }
 
-        return $this->addUsingAlias(TagPeer::NAME, $name, $comparison);
+        return $this->addUsingAlias(TagPeer::TITLE, $title, $comparison);
     }
 
     /**

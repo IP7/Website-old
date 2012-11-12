@@ -60,16 +60,16 @@ function display_cursus() {
     
     foreach ($path->getOptionalCourses() as $c) {
         $courses['s'.$c->getSemester()]['optional'] []= array(
-            'href'  => $base_uri.$c->getCode(),
-            'title' => $c->getCode(),
+            'href'  => $base_uri.$c->getShortName(),
+            'title' => $c->getShortName(),
             'name'  => $c->getName()
         );
     }
     
     foreach ($path->getMandatoryCourses() as $c) {
         $courses['s'.$c->getSemester()]['mandatory'] []= array(
-            'href'  => $base_uri.$c->getCode(),
-            'title' => $c->getCode(),
+            'href'  => $base_uri.$c->getShortName(),
+            'title' => $c->getShortName(),
             'name'  => $c->getName()
         );
     }

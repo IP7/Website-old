@@ -55,10 +55,10 @@ abstract class BaseCourse extends BaseObject implements Persistent
     protected $name;
 
     /**
-     * The value for the code field.
+     * The value for the short_name field.
      * @var        string
      */
-    protected $code;
+    protected $short_name;
 
     /**
      * The value for the ects field.
@@ -271,13 +271,13 @@ abstract class BaseCourse extends BaseObject implements Persistent
     }
 
     /**
-     * Get the [code] column value.
+     * Get the [short_name] column value.
      *
      * @return string
      */
-    public function getCode()
+    public function getShortName()
     {
-        return $this->code;
+        return $this->short_name;
     }
 
     /**
@@ -389,25 +389,25 @@ abstract class BaseCourse extends BaseObject implements Persistent
     } // setName()
 
     /**
-     * Set the value of [code] column.
+     * Set the value of [short_name] column.
      *
      * @param string $v new value
      * @return Course The current object (for fluent API support)
      */
-    public function setCode($v)
+    public function setShortName($v)
     {
         if ($v !== null) {
             $v = (string) $v;
         }
 
-        if ($this->code !== $v) {
-            $this->code = $v;
-            $this->modifiedColumns[] = CoursePeer::CODE;
+        if ($this->short_name !== $v) {
+            $this->short_name = $v;
+            $this->modifiedColumns[] = CoursePeer::SHORT_NAME;
         }
 
 
         return $this;
-    } // setCode()
+    } // setShortName()
 
     /**
      * Set the value of [ects] column.
@@ -487,7 +487,7 @@ abstract class BaseCourse extends BaseObject implements Persistent
             $this->cursus_id = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
             $this->semester = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
             $this->name = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
-            $this->code = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
+            $this->short_name = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
             $this->ects = ($row[$startcol + 5] !== null) ? (double) $row[$startcol + 5] : null;
             $this->description = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
             $this->resetModified();
@@ -935,8 +935,8 @@ abstract class BaseCourse extends BaseObject implements Persistent
         if ($this->isColumnModified(CoursePeer::NAME)) {
             $modifiedColumns[':p' . $index++]  = '`NAME`';
         }
-        if ($this->isColumnModified(CoursePeer::CODE)) {
-            $modifiedColumns[':p' . $index++]  = '`CODE`';
+        if ($this->isColumnModified(CoursePeer::SHORT_NAME)) {
+            $modifiedColumns[':p' . $index++]  = '`SHORT_NAME`';
         }
         if ($this->isColumnModified(CoursePeer::ECTS)) {
             $modifiedColumns[':p' . $index++]  = '`ECTS`';
@@ -967,8 +967,8 @@ abstract class BaseCourse extends BaseObject implements Persistent
                     case '`NAME`':
                         $stmt->bindValue($identifier, $this->name, PDO::PARAM_STR);
                         break;
-                    case '`CODE`':
-                        $stmt->bindValue($identifier, $this->code, PDO::PARAM_STR);
+                    case '`SHORT_NAME`':
+                        $stmt->bindValue($identifier, $this->short_name, PDO::PARAM_STR);
                         break;
                     case '`ECTS`':
                         $stmt->bindValue($identifier, $this->ects, PDO::PARAM_STR);
@@ -1199,7 +1199,7 @@ abstract class BaseCourse extends BaseObject implements Persistent
                 return $this->getName();
                 break;
             case 4:
-                return $this->getCode();
+                return $this->getShortName();
                 break;
             case 5:
                 return $this->getEcts();
@@ -1240,7 +1240,7 @@ abstract class BaseCourse extends BaseObject implements Persistent
             $keys[1] => $this->getCursusId(),
             $keys[2] => $this->getSemester(),
             $keys[3] => $this->getName(),
-            $keys[4] => $this->getCode(),
+            $keys[4] => $this->getShortName(),
             $keys[5] => $this->getEcts(),
             $keys[6] => $this->getDescription(),
         );
@@ -1319,7 +1319,7 @@ abstract class BaseCourse extends BaseObject implements Persistent
                 $this->setName($value);
                 break;
             case 4:
-                $this->setCode($value);
+                $this->setShortName($value);
                 break;
             case 5:
                 $this->setEcts($value);
@@ -1355,7 +1355,7 @@ abstract class BaseCourse extends BaseObject implements Persistent
         if (array_key_exists($keys[1], $arr)) $this->setCursusId($arr[$keys[1]]);
         if (array_key_exists($keys[2], $arr)) $this->setSemester($arr[$keys[2]]);
         if (array_key_exists($keys[3], $arr)) $this->setName($arr[$keys[3]]);
-        if (array_key_exists($keys[4], $arr)) $this->setCode($arr[$keys[4]]);
+        if (array_key_exists($keys[4], $arr)) $this->setShortName($arr[$keys[4]]);
         if (array_key_exists($keys[5], $arr)) $this->setEcts($arr[$keys[5]]);
         if (array_key_exists($keys[6], $arr)) $this->setDescription($arr[$keys[6]]);
     }
@@ -1373,7 +1373,7 @@ abstract class BaseCourse extends BaseObject implements Persistent
         if ($this->isColumnModified(CoursePeer::CURSUS_ID)) $criteria->add(CoursePeer::CURSUS_ID, $this->cursus_id);
         if ($this->isColumnModified(CoursePeer::SEMESTER)) $criteria->add(CoursePeer::SEMESTER, $this->semester);
         if ($this->isColumnModified(CoursePeer::NAME)) $criteria->add(CoursePeer::NAME, $this->name);
-        if ($this->isColumnModified(CoursePeer::CODE)) $criteria->add(CoursePeer::CODE, $this->code);
+        if ($this->isColumnModified(CoursePeer::SHORT_NAME)) $criteria->add(CoursePeer::SHORT_NAME, $this->short_name);
         if ($this->isColumnModified(CoursePeer::ECTS)) $criteria->add(CoursePeer::ECTS, $this->ects);
         if ($this->isColumnModified(CoursePeer::DESCRIPTION)) $criteria->add(CoursePeer::DESCRIPTION, $this->description);
 
@@ -1442,7 +1442,7 @@ abstract class BaseCourse extends BaseObject implements Persistent
         $copyObj->setCursusId($this->getCursusId());
         $copyObj->setSemester($this->getSemester());
         $copyObj->setName($this->getName());
-        $copyObj->setCode($this->getCode());
+        $copyObj->setShortName($this->getShortName());
         $copyObj->setEcts($this->getEcts());
         $copyObj->setDescription($this->getDescription());
 
@@ -3965,7 +3965,7 @@ abstract class BaseCourse extends BaseObject implements Persistent
         $this->cursus_id = null;
         $this->semester = null;
         $this->name = null;
-        $this->code = null;
+        $this->short_name = null;
         $this->ects = null;
         $this->description = null;
         $this->alreadyInSave = false;

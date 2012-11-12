@@ -39,10 +39,10 @@ class TagTableMap extends TableMap
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
-        $this->addColumn('NAME', 'Name', 'VARCHAR', true, 16, null);
+        $this->addColumn('TITLE', 'Title', 'VARCHAR', true, 16, null);
         // validators
-        $this->addValidator('NAME', 'minLength', 'propel.validator.MinLengthValidator', '1', 'Le nom doit faire au moins 1 caractère.');
-        $this->addValidator('NAME', 'unique', 'propel.validator.UniqueValidator', '', 'Le nom existe déjà.');
+        $this->addValidator('TITLE', 'minLength', 'propel.validator.MinLengthValidator', '1', 'Le nom doit faire au moins 1 caractère.');
+        $this->addValidator('TITLE', 'unique', 'propel.validator.UniqueValidator', '', 'Le nom existe déjà.');
     } // initialize()
 
     /**

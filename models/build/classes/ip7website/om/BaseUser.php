@@ -48,11 +48,11 @@ abstract class BaseUser extends BaseObject implements Persistent
     protected $password_hash;
 
     /**
-     * The value for the type field.
+     * The value for the rights field.
      * Note: this column has a database default value of: (expression) 0
      * @var        int
      */
-    protected $type;
+    protected $rights;
 
     /**
      * The value for the firstname field.
@@ -122,11 +122,11 @@ abstract class BaseUser extends BaseObject implements Persistent
     protected $last_visit;
 
     /**
-     * The value for the visits_nb field.
+     * The value for the visits_count field.
      * Note: this column has a database default value of: (expression) 0
      * @var        int
      */
-    protected $visits_nb;
+    protected $visits_count;
 
     /**
      * The value for the config_show_email field.
@@ -488,13 +488,13 @@ abstract class BaseUser extends BaseObject implements Persistent
     }
 
     /**
-     * Get the [type] column value.
+     * Get the [rights] column value.
      *
      * @return int
      */
-    public function getType()
+    public function getRights()
     {
-        return $this->type;
+        return $this->rights;
     }
 
     /**
@@ -752,13 +752,13 @@ abstract class BaseUser extends BaseObject implements Persistent
     }
 
     /**
-     * Get the [visits_nb] column value.
+     * Get the [visits_count] column value.
      *
      * @return int
      */
-    public function getVisitsNb()
+    public function getVisitsCount()
     {
-        return $this->visits_nb;
+        return $this->visits_count;
     }
 
     /**
@@ -1015,25 +1015,25 @@ abstract class BaseUser extends BaseObject implements Persistent
     } // setPasswordHash()
 
     /**
-     * Set the value of [type] column.
+     * Set the value of [rights] column.
      *
      * @param int $v new value
      * @return User The current object (for fluent API support)
      */
-    public function setType($v)
+    public function setRights($v)
     {
         if ($v !== null) {
             $v = (int) $v;
         }
 
-        if ($this->type !== $v) {
-            $this->type = $v;
-            $this->modifiedColumns[] = UserPeer::TYPE;
+        if ($this->rights !== $v) {
+            $this->rights = $v;
+            $this->modifiedColumns[] = UserPeer::RIGHTS;
         }
 
 
         return $this;
-    } // setType()
+    } // setRights()
 
     /**
      * Set the value of [firstname] column.
@@ -1282,25 +1282,25 @@ abstract class BaseUser extends BaseObject implements Persistent
     } // setLastVisit()
 
     /**
-     * Set the value of [visits_nb] column.
+     * Set the value of [visits_count] column.
      *
      * @param int $v new value
      * @return User The current object (for fluent API support)
      */
-    public function setVisitsNb($v)
+    public function setVisitsCount($v)
     {
         if ($v !== null) {
             $v = (int) $v;
         }
 
-        if ($this->visits_nb !== $v) {
-            $this->visits_nb = $v;
-            $this->modifiedColumns[] = UserPeer::VISITS_NB;
+        if ($this->visits_count !== $v) {
+            $this->visits_count = $v;
+            $this->modifiedColumns[] = UserPeer::VISITS_COUNT;
         }
 
 
         return $this;
-    } // setVisitsNb()
+    } // setVisitsCount()
 
     /**
      * Sets the value of the [config_show_email] column.
@@ -1714,7 +1714,7 @@ abstract class BaseUser extends BaseObject implements Persistent
             $this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
             $this->username = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
             $this->password_hash = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
-            $this->type = ($row[$startcol + 3] !== null) ? (int) $row[$startcol + 3] : null;
+            $this->rights = ($row[$startcol + 3] !== null) ? (int) $row[$startcol + 3] : null;
             $this->firstname = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
             $this->lastname = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
             $this->gender = ($row[$startcol + 6] !== null) ? (int) $row[$startcol + 6] : null;
@@ -1726,7 +1726,7 @@ abstract class BaseUser extends BaseObject implements Persistent
             $this->last_entry = ($row[$startcol + 12] !== null) ? (string) $row[$startcol + 12] : null;
             $this->expiration_date = ($row[$startcol + 13] !== null) ? (string) $row[$startcol + 13] : null;
             $this->last_visit = ($row[$startcol + 14] !== null) ? (string) $row[$startcol + 14] : null;
-            $this->visits_nb = ($row[$startcol + 15] !== null) ? (int) $row[$startcol + 15] : null;
+            $this->visits_count = ($row[$startcol + 15] !== null) ? (int) $row[$startcol + 15] : null;
             $this->config_show_email = ($row[$startcol + 16] !== null) ? (boolean) $row[$startcol + 16] : null;
             $this->config_show_phone = ($row[$startcol + 17] !== null) ? (boolean) $row[$startcol + 17] : null;
             $this->config_show_real_name = ($row[$startcol + 18] !== null) ? (boolean) $row[$startcol + 18] : null;
@@ -2290,8 +2290,8 @@ abstract class BaseUser extends BaseObject implements Persistent
         if ($this->isColumnModified(UserPeer::PASSWORD_HASH)) {
             $modifiedColumns[':p' . $index++]  = '`PASSWORD_HASH`';
         }
-        if ($this->isColumnModified(UserPeer::TYPE)) {
-            $modifiedColumns[':p' . $index++]  = '`TYPE`';
+        if ($this->isColumnModified(UserPeer::RIGHTS)) {
+            $modifiedColumns[':p' . $index++]  = '`RIGHTS`';
         }
         if ($this->isColumnModified(UserPeer::FIRSTNAME)) {
             $modifiedColumns[':p' . $index++]  = '`FIRSTNAME`';
@@ -2326,8 +2326,8 @@ abstract class BaseUser extends BaseObject implements Persistent
         if ($this->isColumnModified(UserPeer::LAST_VISIT)) {
             $modifiedColumns[':p' . $index++]  = '`LAST_VISIT`';
         }
-        if ($this->isColumnModified(UserPeer::VISITS_NB)) {
-            $modifiedColumns[':p' . $index++]  = '`VISITS_NB`';
+        if ($this->isColumnModified(UserPeer::VISITS_COUNT)) {
+            $modifiedColumns[':p' . $index++]  = '`VISITS_COUNT`';
         }
         if ($this->isColumnModified(UserPeer::CONFIG_SHOW_EMAIL)) {
             $modifiedColumns[':p' . $index++]  = '`CONFIG_SHOW_EMAIL`';
@@ -2388,8 +2388,8 @@ abstract class BaseUser extends BaseObject implements Persistent
                     case '`PASSWORD_HASH`':
                         $stmt->bindValue($identifier, $this->password_hash, PDO::PARAM_STR);
                         break;
-                    case '`TYPE`':
-                        $stmt->bindValue($identifier, $this->type, PDO::PARAM_INT);
+                    case '`RIGHTS`':
+                        $stmt->bindValue($identifier, $this->rights, PDO::PARAM_INT);
                         break;
                     case '`FIRSTNAME`':
                         $stmt->bindValue($identifier, $this->firstname, PDO::PARAM_STR);
@@ -2424,8 +2424,8 @@ abstract class BaseUser extends BaseObject implements Persistent
                     case '`LAST_VISIT`':
                         $stmt->bindValue($identifier, $this->last_visit, PDO::PARAM_STR);
                         break;
-                    case '`VISITS_NB`':
-                        $stmt->bindValue($identifier, $this->visits_nb, PDO::PARAM_INT);
+                    case '`VISITS_COUNT`':
+                        $stmt->bindValue($identifier, $this->visits_count, PDO::PARAM_INT);
                         break;
                     case '`CONFIG_SHOW_EMAIL`':
                         $stmt->bindValue($identifier, (int) $this->config_show_email, PDO::PARAM_INT);
@@ -2730,7 +2730,7 @@ abstract class BaseUser extends BaseObject implements Persistent
                 return $this->getPasswordHash();
                 break;
             case 3:
-                return $this->getType();
+                return $this->getRights();
                 break;
             case 4:
                 return $this->getFirstname();
@@ -2766,7 +2766,7 @@ abstract class BaseUser extends BaseObject implements Persistent
                 return $this->getLastVisit();
                 break;
             case 15:
-                return $this->getVisitsNb();
+                return $this->getVisitsCount();
                 break;
             case 16:
                 return $this->getConfigShowEmail();
@@ -2839,7 +2839,7 @@ abstract class BaseUser extends BaseObject implements Persistent
             $keys[0] => $this->getId(),
             $keys[1] => $this->getUsername(),
             $keys[2] => $this->getPasswordHash(),
-            $keys[3] => $this->getType(),
+            $keys[3] => $this->getRights(),
             $keys[4] => $this->getFirstname(),
             $keys[5] => $this->getLastname(),
             $keys[6] => $this->getGender(),
@@ -2851,7 +2851,7 @@ abstract class BaseUser extends BaseObject implements Persistent
             $keys[12] => $this->getLastEntry(),
             $keys[13] => $this->getExpirationDate(),
             $keys[14] => $this->getLastVisit(),
-            $keys[15] => $this->getVisitsNb(),
+            $keys[15] => $this->getVisitsCount(),
             $keys[16] => $this->getConfigShowEmail(),
             $keys[17] => $this->getConfigShowPhone(),
             $keys[18] => $this->getConfigShowRealName(),
@@ -2956,7 +2956,7 @@ abstract class BaseUser extends BaseObject implements Persistent
                 $this->setPasswordHash($value);
                 break;
             case 3:
-                $this->setType($value);
+                $this->setRights($value);
                 break;
             case 4:
                 $this->setFirstname($value);
@@ -2996,7 +2996,7 @@ abstract class BaseUser extends BaseObject implements Persistent
                 $this->setLastVisit($value);
                 break;
             case 15:
-                $this->setVisitsNb($value);
+                $this->setVisitsCount($value);
                 break;
             case 16:
                 $this->setConfigShowEmail($value);
@@ -3064,7 +3064,7 @@ abstract class BaseUser extends BaseObject implements Persistent
         if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
         if (array_key_exists($keys[1], $arr)) $this->setUsername($arr[$keys[1]]);
         if (array_key_exists($keys[2], $arr)) $this->setPasswordHash($arr[$keys[2]]);
-        if (array_key_exists($keys[3], $arr)) $this->setType($arr[$keys[3]]);
+        if (array_key_exists($keys[3], $arr)) $this->setRights($arr[$keys[3]]);
         if (array_key_exists($keys[4], $arr)) $this->setFirstname($arr[$keys[4]]);
         if (array_key_exists($keys[5], $arr)) $this->setLastname($arr[$keys[5]]);
         if (array_key_exists($keys[6], $arr)) $this->setGender($arr[$keys[6]]);
@@ -3076,7 +3076,7 @@ abstract class BaseUser extends BaseObject implements Persistent
         if (array_key_exists($keys[12], $arr)) $this->setLastEntry($arr[$keys[12]]);
         if (array_key_exists($keys[13], $arr)) $this->setExpirationDate($arr[$keys[13]]);
         if (array_key_exists($keys[14], $arr)) $this->setLastVisit($arr[$keys[14]]);
-        if (array_key_exists($keys[15], $arr)) $this->setVisitsNb($arr[$keys[15]]);
+        if (array_key_exists($keys[15], $arr)) $this->setVisitsCount($arr[$keys[15]]);
         if (array_key_exists($keys[16], $arr)) $this->setConfigShowEmail($arr[$keys[16]]);
         if (array_key_exists($keys[17], $arr)) $this->setConfigShowPhone($arr[$keys[17]]);
         if (array_key_exists($keys[18], $arr)) $this->setConfigShowRealName($arr[$keys[18]]);
@@ -3104,7 +3104,7 @@ abstract class BaseUser extends BaseObject implements Persistent
         if ($this->isColumnModified(UserPeer::ID)) $criteria->add(UserPeer::ID, $this->id);
         if ($this->isColumnModified(UserPeer::USERNAME)) $criteria->add(UserPeer::USERNAME, $this->username);
         if ($this->isColumnModified(UserPeer::PASSWORD_HASH)) $criteria->add(UserPeer::PASSWORD_HASH, $this->password_hash);
-        if ($this->isColumnModified(UserPeer::TYPE)) $criteria->add(UserPeer::TYPE, $this->type);
+        if ($this->isColumnModified(UserPeer::RIGHTS)) $criteria->add(UserPeer::RIGHTS, $this->rights);
         if ($this->isColumnModified(UserPeer::FIRSTNAME)) $criteria->add(UserPeer::FIRSTNAME, $this->firstname);
         if ($this->isColumnModified(UserPeer::LASTNAME)) $criteria->add(UserPeer::LASTNAME, $this->lastname);
         if ($this->isColumnModified(UserPeer::GENDER)) $criteria->add(UserPeer::GENDER, $this->gender);
@@ -3116,7 +3116,7 @@ abstract class BaseUser extends BaseObject implements Persistent
         if ($this->isColumnModified(UserPeer::LAST_ENTRY)) $criteria->add(UserPeer::LAST_ENTRY, $this->last_entry);
         if ($this->isColumnModified(UserPeer::EXPIRATION_DATE)) $criteria->add(UserPeer::EXPIRATION_DATE, $this->expiration_date);
         if ($this->isColumnModified(UserPeer::LAST_VISIT)) $criteria->add(UserPeer::LAST_VISIT, $this->last_visit);
-        if ($this->isColumnModified(UserPeer::VISITS_NB)) $criteria->add(UserPeer::VISITS_NB, $this->visits_nb);
+        if ($this->isColumnModified(UserPeer::VISITS_COUNT)) $criteria->add(UserPeer::VISITS_COUNT, $this->visits_count);
         if ($this->isColumnModified(UserPeer::CONFIG_SHOW_EMAIL)) $criteria->add(UserPeer::CONFIG_SHOW_EMAIL, $this->config_show_email);
         if ($this->isColumnModified(UserPeer::CONFIG_SHOW_PHONE)) $criteria->add(UserPeer::CONFIG_SHOW_PHONE, $this->config_show_phone);
         if ($this->isColumnModified(UserPeer::CONFIG_SHOW_REAL_NAME)) $criteria->add(UserPeer::CONFIG_SHOW_REAL_NAME, $this->config_show_real_name);
@@ -3195,7 +3195,7 @@ abstract class BaseUser extends BaseObject implements Persistent
     {
         $copyObj->setUsername($this->getUsername());
         $copyObj->setPasswordHash($this->getPasswordHash());
-        $copyObj->setType($this->getType());
+        $copyObj->setRights($this->getRights());
         $copyObj->setFirstname($this->getFirstname());
         $copyObj->setLastname($this->getLastname());
         $copyObj->setGender($this->getGender());
@@ -3207,7 +3207,7 @@ abstract class BaseUser extends BaseObject implements Persistent
         $copyObj->setLastEntry($this->getLastEntry());
         $copyObj->setExpirationDate($this->getExpirationDate());
         $copyObj->setLastVisit($this->getLastVisit());
-        $copyObj->setVisitsNb($this->getVisitsNb());
+        $copyObj->setVisitsCount($this->getVisitsCount());
         $copyObj->setConfigShowEmail($this->getConfigShowEmail());
         $copyObj->setConfigShowPhone($this->getConfigShowPhone());
         $copyObj->setConfigShowRealName($this->getConfigShowRealName());
@@ -7133,7 +7133,7 @@ abstract class BaseUser extends BaseObject implements Persistent
         $this->id = null;
         $this->username = null;
         $this->password_hash = null;
-        $this->type = null;
+        $this->rights = null;
         $this->firstname = null;
         $this->lastname = null;
         $this->gender = null;
@@ -7145,7 +7145,7 @@ abstract class BaseUser extends BaseObject implements Persistent
         $this->last_entry = null;
         $this->expiration_date = null;
         $this->last_visit = null;
-        $this->visits_nb = null;
+        $this->visits_count = null;
         $this->config_show_email = null;
         $this->config_show_phone = null;
         $this->config_show_real_name = null;

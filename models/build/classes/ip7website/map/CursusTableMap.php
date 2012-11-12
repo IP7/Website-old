@@ -43,7 +43,6 @@ class CursusTableMap extends TableMap
         $this->addColumn('NAME', 'Name', 'VARCHAR', true, 16, null);
         $this->addColumn('DESCRIPTION', 'Description', 'LONGVARCHAR', false, 1024, null);
         $this->addForeignKey('RESPONSABLE_ID', 'ResponsableId', 'INTEGER', 'users', 'ID', false, null, null);
-        $this->addColumn('NEWSLETTER_ID', 'NewsletterId', 'INTEGER', false, null, null);
         // validators
         $this->addValidator('NAME', 'minLength', 'propel.validator.MinLengthValidator', '1', 'Le nom doit faire au moins 1 caractère.');
         $this->addValidator('NAME', 'unique', 'propel.validator.UniqueValidator', '', 'Le nom existe déjà.');

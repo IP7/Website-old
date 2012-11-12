@@ -39,11 +39,11 @@ class ForumCategoryTableMap extends TableMap
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
-        $this->addColumn('NAME', 'Name', 'VARCHAR', true, 32, null);
+        $this->addColumn('TITLE', 'Title', 'VARCHAR', true, 32, null);
         $this->addForeignKey('PARENT_ID', 'ParentId', 'INTEGER', 'forum_categories', 'ID', false, null, null);
         $this->addColumn('ACCESS_RIGHTS', 'AccessRights', 'TINYINT', false, null, 0);
         // validators
-        $this->addValidator('NAME', 'minLength', 'propel.validator.MinLengthValidator', '1', 'Le nom doit faire au moins 1 caractère.');
+        $this->addValidator('TITLE', 'minLength', 'propel.validator.MinLengthValidator', '1', 'Le nom doit faire au moins 1 caractère.');
     } // initialize()
 
     /**

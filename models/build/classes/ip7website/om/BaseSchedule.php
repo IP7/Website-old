@@ -48,10 +48,10 @@ abstract class BaseSchedule extends BaseObject implements Persistent
     protected $path_id;
 
     /**
-     * The value for the name field.
+     * The value for the title field.
      * @var        string
      */
-    protected $name;
+    protected $title;
 
     /**
      * The value for the beginning field.
@@ -143,13 +143,13 @@ abstract class BaseSchedule extends BaseObject implements Persistent
     }
 
     /**
-     * Get the [name] column value.
+     * Get the [title] column value.
      *
      * @return string
      */
-    public function getName()
+    public function getTitle()
     {
-        return $this->name;
+        return $this->title;
     }
 
     /**
@@ -298,25 +298,25 @@ abstract class BaseSchedule extends BaseObject implements Persistent
     } // setPathId()
 
     /**
-     * Set the value of [name] column.
+     * Set the value of [title] column.
      *
      * @param string $v new value
      * @return Schedule The current object (for fluent API support)
      */
-    public function setName($v)
+    public function setTitle($v)
     {
         if ($v !== null) {
             $v = (string) $v;
         }
 
-        if ($this->name !== $v) {
-            $this->name = $v;
-            $this->modifiedColumns[] = SchedulePeer::NAME;
+        if ($this->title !== $v) {
+            $this->title = $v;
+            $this->modifiedColumns[] = SchedulePeer::TITLE;
         }
 
 
         return $this;
-    } // setName()
+    } // setTitle()
 
     /**
      * Sets the value of [beginning] column to a normalized version of the date/time value specified.
@@ -399,7 +399,7 @@ abstract class BaseSchedule extends BaseObject implements Persistent
             $this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
             $this->cursus_id = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
             $this->path_id = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
-            $this->name = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
+            $this->title = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
             $this->beginning = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
             $this->end = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
             $this->resetModified();
@@ -698,8 +698,8 @@ abstract class BaseSchedule extends BaseObject implements Persistent
         if ($this->isColumnModified(SchedulePeer::PATH_ID)) {
             $modifiedColumns[':p' . $index++]  = '`PATH_ID`';
         }
-        if ($this->isColumnModified(SchedulePeer::NAME)) {
-            $modifiedColumns[':p' . $index++]  = '`NAME`';
+        if ($this->isColumnModified(SchedulePeer::TITLE)) {
+            $modifiedColumns[':p' . $index++]  = '`TITLE`';
         }
         if ($this->isColumnModified(SchedulePeer::BEGINNING)) {
             $modifiedColumns[':p' . $index++]  = '`BEGINNING`';
@@ -727,8 +727,8 @@ abstract class BaseSchedule extends BaseObject implements Persistent
                     case '`PATH_ID`':
                         $stmt->bindValue($identifier, $this->path_id, PDO::PARAM_INT);
                         break;
-                    case '`NAME`':
-                        $stmt->bindValue($identifier, $this->name, PDO::PARAM_STR);
+                    case '`TITLE`':
+                        $stmt->bindValue($identifier, $this->title, PDO::PARAM_STR);
                         break;
                     case '`BEGINNING`':
                         $stmt->bindValue($identifier, $this->beginning, PDO::PARAM_STR);
@@ -906,7 +906,7 @@ abstract class BaseSchedule extends BaseObject implements Persistent
                 return $this->getPathId();
                 break;
             case 3:
-                return $this->getName();
+                return $this->getTitle();
                 break;
             case 4:
                 return $this->getBeginning();
@@ -946,7 +946,7 @@ abstract class BaseSchedule extends BaseObject implements Persistent
             $keys[0] => $this->getId(),
             $keys[1] => $this->getCursusId(),
             $keys[2] => $this->getPathId(),
-            $keys[3] => $this->getName(),
+            $keys[3] => $this->getTitle(),
             $keys[4] => $this->getBeginning(),
             $keys[5] => $this->getEnd(),
         );
@@ -1004,7 +1004,7 @@ abstract class BaseSchedule extends BaseObject implements Persistent
                 $this->setPathId($value);
                 break;
             case 3:
-                $this->setName($value);
+                $this->setTitle($value);
                 break;
             case 4:
                 $this->setBeginning($value);
@@ -1039,7 +1039,7 @@ abstract class BaseSchedule extends BaseObject implements Persistent
         if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
         if (array_key_exists($keys[1], $arr)) $this->setCursusId($arr[$keys[1]]);
         if (array_key_exists($keys[2], $arr)) $this->setPathId($arr[$keys[2]]);
-        if (array_key_exists($keys[3], $arr)) $this->setName($arr[$keys[3]]);
+        if (array_key_exists($keys[3], $arr)) $this->setTitle($arr[$keys[3]]);
         if (array_key_exists($keys[4], $arr)) $this->setBeginning($arr[$keys[4]]);
         if (array_key_exists($keys[5], $arr)) $this->setEnd($arr[$keys[5]]);
     }
@@ -1056,7 +1056,7 @@ abstract class BaseSchedule extends BaseObject implements Persistent
         if ($this->isColumnModified(SchedulePeer::ID)) $criteria->add(SchedulePeer::ID, $this->id);
         if ($this->isColumnModified(SchedulePeer::CURSUS_ID)) $criteria->add(SchedulePeer::CURSUS_ID, $this->cursus_id);
         if ($this->isColumnModified(SchedulePeer::PATH_ID)) $criteria->add(SchedulePeer::PATH_ID, $this->path_id);
-        if ($this->isColumnModified(SchedulePeer::NAME)) $criteria->add(SchedulePeer::NAME, $this->name);
+        if ($this->isColumnModified(SchedulePeer::TITLE)) $criteria->add(SchedulePeer::TITLE, $this->title);
         if ($this->isColumnModified(SchedulePeer::BEGINNING)) $criteria->add(SchedulePeer::BEGINNING, $this->beginning);
         if ($this->isColumnModified(SchedulePeer::END)) $criteria->add(SchedulePeer::END, $this->end);
 
@@ -1124,7 +1124,7 @@ abstract class BaseSchedule extends BaseObject implements Persistent
     {
         $copyObj->setCursusId($this->getCursusId());
         $copyObj->setPathId($this->getPathId());
-        $copyObj->setName($this->getName());
+        $copyObj->setTitle($this->getTitle());
         $copyObj->setBeginning($this->getBeginning());
         $copyObj->setEnd($this->getEnd());
 
@@ -1717,7 +1717,7 @@ abstract class BaseSchedule extends BaseObject implements Persistent
         $this->id = null;
         $this->cursus_id = null;
         $this->path_id = null;
-        $this->name = null;
+        $this->title = null;
         $this->beginning = null;
         $this->end = null;
         $this->alreadyInSave = false;

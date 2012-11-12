@@ -14,7 +14,7 @@ CREATE TABLE `users`
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `username` VARCHAR(16),
     `password_hash` VARCHAR(255),
-    `type` TINYINT DEFAULT 0 NOT NULL,
+    `rights` TINYINT DEFAULT 0 NOT NULL,
     `firstname` VARCHAR(64) NOT NULL,
     `lastname` VARCHAR(128) NOT NULL,
     `gender` TINYINT DEFAULT 0,
@@ -26,7 +26,7 @@ CREATE TABLE `users`
     `last_entry` DATE,
     `expiration_date` DATE,
     `last_visit` DATETIME,
-    `visits_nb` INTEGER DEFAULT 0,
+    `visits_count` INTEGER DEFAULT 0,
     `config_show_email` TINYINT(1) DEFAULT 0,
     `config_show_phone` TINYINT(1) DEFAULT 0,
     `config_show_real_name` TINYINT(1) DEFAULT 1,
@@ -56,7 +56,6 @@ CREATE TABLE `cursus`
     `name` VARCHAR(16) NOT NULL,
     `description` TEXT(1024),
     `responsable_id` INTEGER,
-    `newsletter_id` INTEGER,
     PRIMARY KEY (`id`),
     UNIQUE INDEX `cursus_U_1` (`name`),
     INDEX `cursus_I_1` (`short_name`),
@@ -80,11 +79,11 @@ CREATE TABLE `courses`
     `cursus_id` INTEGER,
     `semester` TINYINT DEFAULT 0,
     `name` VARCHAR(64) NOT NULL,
-    `code` VARCHAR(16) NOT NULL,
+    `short_name` VARCHAR(16) NOT NULL,
     `ECTS` FLOAT DEFAULT 3,
     `description` TEXT(1024),
     PRIMARY KEY (`id`),
-    UNIQUE INDEX `courses_U_1` (`code`, `semester`, `cursus_id`),
+    UNIQUE INDEX `courses_U_1` (`short_name`, `semester`, `cursus_id`),
     INDEX `courses_FI_1` (`cursus_id`),
     CONSTRAINT `courses_FK_1`
         FOREIGN KEY (`cursus_id`)
@@ -205,7 +204,7 @@ CREATE TABLE `files`
 (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `author_id` INTEGER,
-    `name` VARCHAR(128) NOT NULL,
+    `title` VARCHAR(128) NOT NULL,
     `date` DATETIME NOT NULL,
     `description` VARCHAR(255),
     `file_type` TINYINT,
@@ -278,7 +277,7 @@ DROP TABLE IF EXISTS `events`;
 CREATE TABLE `events`
 (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `name` VARCHAR(255) NOT NULL,
+    `title` VARCHAR(255) NOT NULL,
     `event_type_id` INTEGER,
     `description` TEXT,
     `date` DATE,
@@ -390,7 +389,7 @@ CREATE TABLE `content_types`
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(32) NOT NULL,
     `short_name` VARCHAR(16) NOT NULL,
-    `rights` TINYINT DEFAULT 0,
+    `access_rights` TINYINT DEFAULT 0,
     PRIMARY KEY (`id`),
     UNIQUE INDEX `content_types_U_1` (`name`),
     UNIQUE INDEX `content_types_U_2` (`short_name`)
@@ -440,9 +439,9 @@ DROP TABLE IF EXISTS `tags`;
 CREATE TABLE `tags`
 (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `name` VARCHAR(16) NOT NULL,
+    `title` VARCHAR(16) NOT NULL,
     PRIMARY KEY (`id`),
-    INDEX `tags_I_1` (`name`)
+    INDEX `tags_I_1` (`title`)
 ) ENGINE=MyISAM;
 
 -- ---------------------------------------------------------------------
@@ -640,7 +639,7 @@ DROP TABLE IF EXISTS `forum_categories`;
 CREATE TABLE `forum_categories`
 (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `name` VARCHAR(32) NOT NULL,
+    `title` VARCHAR(32) NOT NULL,
     `parent_id` INTEGER,
     `access_rights` TINYINT DEFAULT 0,
     PRIMARY KEY (`id`),
@@ -736,7 +735,7 @@ CREATE TABLE `schedules`
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `cursus_id` INTEGER,
     `path_id` INTEGER,
-    `name` VARCHAR(32) NOT NULL,
+    `title` VARCHAR(32) NOT NULL,
     `beginning` DATE,
     `end` DATE,
     PRIMARY KEY (`id`),

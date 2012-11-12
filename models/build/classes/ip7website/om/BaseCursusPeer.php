@@ -24,13 +24,13 @@ abstract class BaseCursusPeer
     const TM_CLASS = 'CursusTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 6;
+    const NUM_COLUMNS = 5;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 1;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 5;
+    const NUM_HYDRATE_COLUMNS = 4;
 
     /** the column name for the ID field */
     const ID = 'cursus.ID';
@@ -46,9 +46,6 @@ abstract class BaseCursusPeer
 
     /** the column name for the RESPONSABLE_ID field */
     const RESPONSABLE_ID = 'cursus.RESPONSABLE_ID';
-
-    /** the column name for the NEWSLETTER_ID field */
-    const NEWSLETTER_ID = 'cursus.NEWSLETTER_ID';
 
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -69,12 +66,12 @@ abstract class BaseCursusPeer
      * e.g. CursusPeer::$fieldNames[CursusPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'ShortName', 'Name', 'Description', 'ResponsableId', 'NewsletterId', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'shortName', 'name', 'description', 'responsableId', 'newsletterId', ),
-        BasePeer::TYPE_COLNAME => array (CursusPeer::ID, CursusPeer::SHORT_NAME, CursusPeer::NAME, CursusPeer::DESCRIPTION, CursusPeer::RESPONSABLE_ID, CursusPeer::NEWSLETTER_ID, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'SHORT_NAME', 'NAME', 'DESCRIPTION', 'RESPONSABLE_ID', 'NEWSLETTER_ID', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'short_name', 'name', 'description', 'responsable_id', 'newsletter_id', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'ShortName', 'Name', 'Description', 'ResponsableId', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'shortName', 'name', 'description', 'responsableId', ),
+        BasePeer::TYPE_COLNAME => array (CursusPeer::ID, CursusPeer::SHORT_NAME, CursusPeer::NAME, CursusPeer::DESCRIPTION, CursusPeer::RESPONSABLE_ID, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'SHORT_NAME', 'NAME', 'DESCRIPTION', 'RESPONSABLE_ID', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'short_name', 'name', 'description', 'responsable_id', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
     );
 
     /**
@@ -84,12 +81,12 @@ abstract class BaseCursusPeer
      * e.g. CursusPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'ShortName' => 1, 'Name' => 2, 'Description' => 3, 'ResponsableId' => 4, 'NewsletterId' => 5, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'shortName' => 1, 'name' => 2, 'description' => 3, 'responsableId' => 4, 'newsletterId' => 5, ),
-        BasePeer::TYPE_COLNAME => array (CursusPeer::ID => 0, CursusPeer::SHORT_NAME => 1, CursusPeer::NAME => 2, CursusPeer::DESCRIPTION => 3, CursusPeer::RESPONSABLE_ID => 4, CursusPeer::NEWSLETTER_ID => 5, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'SHORT_NAME' => 1, 'NAME' => 2, 'DESCRIPTION' => 3, 'RESPONSABLE_ID' => 4, 'NEWSLETTER_ID' => 5, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'short_name' => 1, 'name' => 2, 'description' => 3, 'responsable_id' => 4, 'newsletter_id' => 5, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'ShortName' => 1, 'Name' => 2, 'Description' => 3, 'ResponsableId' => 4, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'shortName' => 1, 'name' => 2, 'description' => 3, 'responsableId' => 4, ),
+        BasePeer::TYPE_COLNAME => array (CursusPeer::ID => 0, CursusPeer::SHORT_NAME => 1, CursusPeer::NAME => 2, CursusPeer::DESCRIPTION => 3, CursusPeer::RESPONSABLE_ID => 4, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'SHORT_NAME' => 1, 'NAME' => 2, 'DESCRIPTION' => 3, 'RESPONSABLE_ID' => 4, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'short_name' => 1, 'name' => 2, 'description' => 3, 'responsable_id' => 4, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
     );
 
     /**
@@ -167,13 +164,11 @@ abstract class BaseCursusPeer
             $criteria->addSelectColumn(CursusPeer::SHORT_NAME);
             $criteria->addSelectColumn(CursusPeer::NAME);
             $criteria->addSelectColumn(CursusPeer::RESPONSABLE_ID);
-            $criteria->addSelectColumn(CursusPeer::NEWSLETTER_ID);
         } else {
             $criteria->addSelectColumn($alias . '.ID');
             $criteria->addSelectColumn($alias . '.SHORT_NAME');
             $criteria->addSelectColumn($alias . '.NAME');
             $criteria->addSelectColumn($alias . '.RESPONSABLE_ID');
-            $criteria->addSelectColumn($alias . '.NEWSLETTER_ID');
         }
     }
 

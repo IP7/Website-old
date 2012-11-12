@@ -9,12 +9,12 @@
  * @method ContentTypeQuery orderById($order = Criteria::ASC) Order by the id column
  * @method ContentTypeQuery orderByName($order = Criteria::ASC) Order by the name column
  * @method ContentTypeQuery orderByShortName($order = Criteria::ASC) Order by the short_name column
- * @method ContentTypeQuery orderByRights($order = Criteria::ASC) Order by the rights column
+ * @method ContentTypeQuery orderByAccessRights($order = Criteria::ASC) Order by the access_rights column
  *
  * @method ContentTypeQuery groupById() Group by the id column
  * @method ContentTypeQuery groupByName() Group by the name column
  * @method ContentTypeQuery groupByShortName() Group by the short_name column
- * @method ContentTypeQuery groupByRights() Group by the rights column
+ * @method ContentTypeQuery groupByAccessRights() Group by the access_rights column
  *
  * @method ContentTypeQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method ContentTypeQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -34,12 +34,12 @@
  * @method ContentType findOneById(int $id) Return the first ContentType filtered by the id column
  * @method ContentType findOneByName(string $name) Return the first ContentType filtered by the name column
  * @method ContentType findOneByShortName(string $short_name) Return the first ContentType filtered by the short_name column
- * @method ContentType findOneByRights(int $rights) Return the first ContentType filtered by the rights column
+ * @method ContentType findOneByAccessRights(int $access_rights) Return the first ContentType filtered by the access_rights column
  *
  * @method array findById(int $id) Return ContentType objects filtered by the id column
  * @method array findByName(string $name) Return ContentType objects filtered by the name column
  * @method array findByShortName(string $short_name) Return ContentType objects filtered by the short_name column
- * @method array findByRights(int $rights) Return ContentType objects filtered by the rights column
+ * @method array findByAccessRights(int $access_rights) Return ContentType objects filtered by the access_rights column
  *
  * @package    propel.generator.ip7website.om
  */
@@ -129,7 +129,7 @@ abstract class BaseContentTypeQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `ID`, `NAME`, `SHORT_NAME`, `RIGHTS` FROM `content_types` WHERE `ID` = :p0';
+        $sql = 'SELECT `ID`, `NAME`, `SHORT_NAME`, `ACCESS_RIGHTS` FROM `content_types` WHERE `ID` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -304,16 +304,16 @@ abstract class BaseContentTypeQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the rights column
+     * Filter the query on the access_rights column
      *
      * Example usage:
      * <code>
-     * $query->filterByRights(1234); // WHERE rights = 1234
-     * $query->filterByRights(array(12, 34)); // WHERE rights IN (12, 34)
-     * $query->filterByRights(array('min' => 12)); // WHERE rights > 12
+     * $query->filterByAccessRights(1234); // WHERE access_rights = 1234
+     * $query->filterByAccessRights(array(12, 34)); // WHERE access_rights IN (12, 34)
+     * $query->filterByAccessRights(array('min' => 12)); // WHERE access_rights > 12
      * </code>
      *
-     * @param     mixed $rights The value to use as filter.
+     * @param     mixed $accessRights The value to use as filter.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
@@ -321,16 +321,16 @@ abstract class BaseContentTypeQuery extends ModelCriteria
      *
      * @return ContentTypeQuery The current query, for fluid interface
      */
-    public function filterByRights($rights = null, $comparison = null)
+    public function filterByAccessRights($accessRights = null, $comparison = null)
     {
-        if (is_array($rights)) {
+        if (is_array($accessRights)) {
             $useMinMax = false;
-            if (isset($rights['min'])) {
-                $this->addUsingAlias(ContentTypePeer::RIGHTS, $rights['min'], Criteria::GREATER_EQUAL);
+            if (isset($accessRights['min'])) {
+                $this->addUsingAlias(ContentTypePeer::ACCESS_RIGHTS, $accessRights['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
-            if (isset($rights['max'])) {
-                $this->addUsingAlias(ContentTypePeer::RIGHTS, $rights['max'], Criteria::LESS_EQUAL);
+            if (isset($accessRights['max'])) {
+                $this->addUsingAlias(ContentTypePeer::ACCESS_RIGHTS, $accessRights['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -341,7 +341,7 @@ abstract class BaseContentTypeQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(ContentTypePeer::RIGHTS, $rights, $comparison);
+        return $this->addUsingAlias(ContentTypePeer::ACCESS_RIGHTS, $accessRights, $comparison);
     }
 
     /**

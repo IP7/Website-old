@@ -42,11 +42,10 @@ class CourseTableMap extends TableMap
         $this->addForeignKey('CURSUS_ID', 'CursusId', 'INTEGER', 'cursus', 'ID', false, null, null);
         $this->addColumn('SEMESTER', 'Semester', 'TINYINT', false, null, 0);
         $this->addColumn('NAME', 'Name', 'VARCHAR', true, 64, null);
-        $this->addColumn('CODE', 'Code', 'VARCHAR', true, 16, null);
+        $this->addColumn('SHORT_NAME', 'ShortName', 'VARCHAR', true, 16, null);
         $this->addColumn('ECTS', 'Ects', 'FLOAT', false, null, 3);
         $this->addColumn('DESCRIPTION', 'Description', 'LONGVARCHAR', false, 1024, null);
         // validators
-        $this->addValidator('CODE', 'match', 'propel.validator.MatchValidator', '/^[a-z0-9]+$/i', 'Le code n\'est pas valide (caractères alphanumériques uniquement).');
         $this->addValidator('NAME', 'minLength', 'propel.validator.MinLengthValidator', '3', 'Le nom doit faire au moins 3 caractères.');
         $this->addValidator('SEMESTER', 'minValue', 'propel.validator.MinValueValidator', '0', 'Le semestre doit être 1 ou 2.');
         $this->addValidator('SEMESTER', 'maxValue', 'propel.validator.MaxValueValidator', '2', 'Le semestre doit être 1 ou 2.');
