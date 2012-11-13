@@ -7,8 +7,8 @@ function get_news($cursus=null, $course=null) {
 
     $q = NewsQuery::create()
                 ->where('Access_Rights <= ?', $user_rights, PDO::PARAM_INT)
-                ->condition('has_no_expiration', 'Expiration_Date IS NULL')
-                ->condition('hasnt_expired', 'Expiration_date > ?', $_SERVER['REQUEST_TIME'], PDO::PARAM_INT)
+                    ->condition('has_no_expiration', 'Expiration_Date IS NULL')
+                    ->condition('hasnt_expired',     'Expiration_date > NOW()')
                 ->where(array('has_no_expiration', 'hasnt_expired'), 'or')
                 ->orderByDate('desc');
 
