@@ -51,7 +51,7 @@ function json_get_last_contents() {
                     ->filterByValidated(1)
                     ->where(  '(SELECT content_types.access_rights '
                             . 'FROM content_types '
-                            . 'WHERE content_types.id = contents.id) <= ?',
+                            . 'WHERE content_types.id = contents.content_type_id) <= ?',
                                 $user_rights, PDO::PARAM_INT)
                     ->where('Access_Rights <= ?', $user_rights, PDO::PARAM_INT)
                     ->orderByDate('desc')
