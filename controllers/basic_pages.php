@@ -50,7 +50,7 @@ function display_stats_page() {
             ->where('ac.contents_count=(SELECT MAX(ac.contents_count))')
             ->findOne();
 
-    $download_count = FileQuery::create()
+    $downloads_count = FileQuery::create()
                         ->withColumn('SUM(downloads_count)', 'downloads')
                         ->select('downloads')
                         ->findOne();
@@ -69,7 +69,7 @@ function display_stats_page() {
             'stats' => array(
                 'contents_count'   => $contents_count,
                 'files_count'      => $files_count,
-                'download_count'   => $download_count,
+                'downloads_count'  => $downloads_count,
                 'best_contributor' => array(
                     'count' => $best_contributor_count,
                     'name'  => $best_contributor->getPublicName(),
