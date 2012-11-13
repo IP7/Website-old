@@ -185,8 +185,8 @@ function tpl_file($file) {
     }
 
     return array(
-        'title'       => $file->getName(),
-        'url'         => Config::$root_uri.'file/'.$file->getId().'/'.filename_encode($file->getName()),
+        'title'       => $file->getTitle(),
+        'url'         => Config::$root_uri.'file/'.$file->getId().'/'.filename_encode($file->getTitle()),
         'description' => $file->getDescription()
     );
 }
