@@ -38,6 +38,48 @@ function display_apropos_page() {
     ));
 }
 
+function display_stats_page() {
+
+    $authors_count = ContentQuery::create()
+            ->filterByValidated(true)
+            ->withColumn('COUNT(*)', 'contents_count')
+            ->groupBy('AuthorId');
+
+    $max_contributions = ContentQuery::create()
+            ->addSelectQuery($authors_count, 'ac')
+            ->where('ac.contents_count=(SELECT MAX(ac.contents_count))')
+            ->findOne();
+
+    $download_count = FileQuery::create()
+                        ->withColumn('SUM(download_count)', 'downloads')
+                        ->select('downloads')
+                        ->findOne();
+
+    $contents_count = ContentQuery::create()->filterByValidated(true)->count();
+    $files_count    = FileQuery::create()->count();
+    $best_contributor = $max_contributions->getAuthor();
+    $best_contributor_count = ContentQuery::create()
+                                    ->filterByValidated(true)
+                                    ->filterByAuthor($best_contributor)
+                                    ->count();
+
+    return tpl_render('stats.html', array(
+        'page' => array(
+            'title' => 'Statistiques',
+            'stats' => array(
+                'contents_count'   => $contents_count,
+                'files_count'      => $files_count,
+                'download_count'   => $download_count,
+                'best_contributor' => array(
+                    'count' => $best_contributor_count,
+                    'name'  => $best_contributor->getPublicName(),
+                    'href'  => user_url($best_contributor)
+                )
+            )
+        )
+    ));
+}
+
 function display_admin_migrate_db_page() {
     return Config::$tpl->render('admin/db_migration.html', tpl_array(
         admin_tpl_default(),
