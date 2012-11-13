@@ -5,6 +5,30 @@ $(function(){
 
         if (!div) { return; }
 
+        /* Quick fix for !=Chrome
+        *
+        *  Chrome recognizes dates like "MM-DD-AAAA HH:MM::SS",
+        *  but Firefox and others don’t.
+        */
+        function str2date(d) {
+            var date = new Date(d), time;
+
+            if (!isNaN(+date)) { // Chrome
+                return date;
+            }
+
+            d = d.split(' ');
+            date = new Date(d[0].replace(/-/g, ' '));
+            
+            time = d[1].split(':');
+
+            date.setHours(time[0]);
+            date.setMinutes(time[1]);
+            date.setSeconds(time[2]);
+
+            return date;
+        }
+
         var display_error = function(e) {
                 e = document.createElement('p');
                 e.textContent = 'Une erreur est survenue lors du téléchargement.';
@@ -53,7 +77,7 @@ $(function(){
 
                         li.innerHTML = '<a href="' + c.href + '">' + c.title + '</a>'
                                     +  ' (' + c.course + ', ' + c.cursus + '), '
-                                    +  '<time datetime="' + new Date(date).toISOString() + '">'
+                                    +  '<time datetime="' + str2date(date).toISOString() + '">'
                                     +  'le ' + c.date.replace(' ', ' à ') + '</time>';
 
                         if ($.timeago) {
