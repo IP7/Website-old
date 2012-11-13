@@ -51,7 +51,7 @@ function display_stats_page() {
             ->findOne();
 
     $download_count = FileQuery::create()
-                        ->withColumn('SUM(download_count)', 'downloads')
+                        ->withColumn('SUM(downloads_count)', 'downloads')
                         ->select('downloads')
                         ->findOne();
 
