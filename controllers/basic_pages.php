@@ -40,24 +40,32 @@ function display_apropos_page() {
 
 function display_stats_page() {
 
-    $authors_count = ContentQuery::create()
-            ->filterByValidated(true)
-            ->withColumn('COUNT(*)', 'contents_count')
-            ->groupBy('AuthorId');
+    // number of accepted contents per author
+    $contents_counts = ContentQuery::create()
+                            ->filterByValidated(true)
+                            ->groupBy('AuthorId')
+                            ->withColumn('COUNT(*)', 'contents_count')
+                            ->select(array('AuthorId', 'contents_count'))
+                            ->find();
 
-    $max_contributions = ContentQuery::create()
-            ->addSelectQuery($authors_count, 'ac')
-            ->where('ac.contents_count=(SELECT MAX(ac.contents_count))')
-            ->findOne();
+    $max = 0;
+    $best_contributor_id = 0;
+
+    foreach ($contents_counts as $_ => $cc) {
+        if ($cc['contents_count'] > $max) {
+            $max = $cc['contents_count'];
+            $best_contributor_id = $cc['AuthorId'];
+        }
+    }
 
     $downloads_count = FileQuery::create()
                         ->withColumn('SUM(downloads_count)', 'downloads')
                         ->select('downloads')
                         ->findOne();
 
-    $contents_count = ContentQuery::create()->filterByValidated(true)->count();
-    $files_count    = FileQuery::create()->count();
-    $best_contributor = $max_contributions->getAuthor();
+    $contents_count         = ContentQuery::create()->filterByValidated(true)->count();
+    $files_count            = FileQuery::create()->count();
+    $best_contributor       = UserQuery::create()->findOneById($best_contributor_id);
     $best_contributor_count = ContentQuery::create()
                                     ->filterByValidated(true)
                                     ->filterByAuthor($best_contributor)
