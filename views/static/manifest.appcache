@@ -67,14 +67,14 @@ CACHE:
 /views/static/images/logo16transp.png
 /views/static/images/logo32.png
 /views/static/images/logo32transp.png
-/views/static/loader.gif
-/views/static/opensearch.xml
 /views/static/scripts/jquery-1.8.2.min.js
 /views/static/scripts/jquery-ui-1.8.23.custom.min.js
 /views/static/scripts/mousetrap.min.js
 /views/static/scripts/MathJax/MathJax.js
 /views/static/styles/jquery-ui-1.8.23.custom.min.css
 /views/static/styles/normalize.min.css
+/views/static/loader.gif
+/views/static/opensearch.xml
 
 NETWORK:
 *
