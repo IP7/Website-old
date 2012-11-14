@@ -28,7 +28,8 @@ function display_home() {
     return tpl_render($tpl_name, array(
 
         'page' => array(
-            'title' => 'Accueil',
+            'title'  => 'Accueil',
+            'cached' => true,
 
             'breadcrumbs' => false,
 
