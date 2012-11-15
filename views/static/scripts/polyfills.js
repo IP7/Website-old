@@ -13,7 +13,7 @@ Function.prototype.bind = Function.prototype.bind || function (){
 };
 
 // For IE <= 8
-if (!HTMLElement.prototype.textContent) {
+if (!Object.prototype.hasOwnProperty.call(HTMLElement.prototype, 'textContent')) {
     HTMLElement.prototype.__defineGetter__('textContent', function() {
         return this.innerText;
     });

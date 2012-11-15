@@ -248,6 +248,17 @@ form label,
     max-width:400px;
 }
 
+input.title {
+    font-weight:bold;
+    font-size:1.2em;
+}
+
+form.proposing-content label.container,
+form.proposing-content fieldset {
+    margin-top:5px;
+    margin-bottom:5px;
+}
+
 /* == Headers ============================================= */
 
 /* -- Main Header ----------------------------------------- */

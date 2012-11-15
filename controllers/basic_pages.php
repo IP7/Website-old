@@ -38,6 +38,56 @@ function display_apropos_page() {
     ));
 }
 
+function display_stats_page() {
+
+    // number of accepted contents per author
+    $contents_counts = ContentQuery::create()
+                            ->filterByValidated(true)
+                            ->groupBy('AuthorId')
+                            ->withColumn('COUNT(*)', 'contents_count')
+                            ->select(array('AuthorId', 'contents_count'))
+                            ->find();
+
+    $max = 0;
+    $best_contributor_id = 0;
+
+    foreach ($contents_counts as $_ => $cc) {
+        if ($cc['contents_count'] > $max) {
+            $max = $cc['contents_count'];
+            $best_contributor_id = $cc['AuthorId'];
+        }
+    }
+
+    $downloads_count = FileQuery::create()
+                        ->withColumn('SUM(downloads_count)', 'downloads')
+                        ->select('downloads')
+                        ->findOne();
+
+    $contents_count         = ContentQuery::create()->filterByValidated(true)->count();
+    $files_count            = FileQuery::create()->count();
+    $best_contributor       = UserQuery::create()->findOneById($best_contributor_id);
+    $best_contributor_count = ContentQuery::create()
+                                    ->filterByValidated(true)
+                                    ->filterByAuthor($best_contributor)
+                                    ->count();
+
+    return tpl_render('stats.html', array(
+        'page' => array(
+            'title' => 'Statistiques',
+            'stats' => array(
+                'contents_count'   => $contents_count,
+                'files_count'      => $files_count,
+                'downloads_count'  => $downloads_count,
+                'best_contributor' => array(
+                    'count' => $best_contributor_count,
+                    'name'  => $best_contributor->getPublicName(),
+                    'href'  => user_url($best_contributor)
+                )
+            )
+        )
+    ));
+}
+
 function display_admin_migrate_db_page() {
     return Config::$tpl->render('admin/db_migration.html', tpl_array(
         admin_tpl_default(),

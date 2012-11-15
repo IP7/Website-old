@@ -744,6 +744,9 @@
         <!-- date -->
         <column name="date"          type="TIMESTAMP" required="true" />
 
+        <!-- date d'expiration -->
+        <column name="expiration_date" type="TIMESTAMP" />
+
         <!-- cursus concerné (s'il y en a un) -->
         <column name="cursus_id"     type="INTEGER" />
 

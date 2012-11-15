@@ -19,15 +19,5 @@ class File extends BaseFile {
         $this->setDownloadsCount($this->getDownloadsCount()+1);
 
     }
-    
-    // @deprecated
-    public function getName() {
-      return $this->getTitle();
-    }
-
-    // @deprecated
-    public function setName($n) {
-      return $this->setTitle($n);
-    }
 
 } // File

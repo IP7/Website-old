@@ -19,7 +19,7 @@ function configure() {
 function before($route) {
 
     // Override X-Powered-By header
-    header('X-Powered-By: Electricity', true);
+    send_header('X-Powered-By: Electricity');
 
     foreach ($route['params'] as $k => $v) {
         params($k, escape_mysql_wildcards($v));
@@ -41,6 +41,12 @@ function before($route) {
         if (!is_connected() || !user()->isMember()) {
             halt(HTTP_FORBIDDEN, "L'accès à cette page est réservé aux membres.");
         }
+    }
+}
+
+function before_sending_header($header) {
+    if (strpos($header, 'text/html') !== false) {
+        send_header("Cache-Control: no-store");
     }
 }
 
@@ -118,6 +124,7 @@ dispatch('/legals',   'display_legals_page');
 dispatch('/bug',      'display_bug_report');
 dispatch_post('/bug', 'post_bug_report');
 dispatch('/a-propos', 'display_apropos_page');
+dispatch('/stats',    'display_stats_page');
 
 ## API
 dispatch('/api/1/users/exists.json',     'json_check_username');

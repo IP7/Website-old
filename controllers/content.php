@@ -371,7 +371,7 @@ function display_post_member_proposed_content_preview() {
     $tpl_files = array();
 
     foreach($fd2->get('files') as $k => $file) {
-        $tpl_files []= array( 'name' => $file->getName() );
+        $tpl_files []= array( 'name' => $file->getTitle() );
     }
 
     // ** Text **
