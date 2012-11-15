@@ -144,6 +144,9 @@ dispatch_post('/api/1/news/update.json', 'json_post_update_news');
 dispatch_post('/api/1/news/delete.json', 'json_post_delete_news');
 dispatch_post('/api/1/news/create.json', 'json_post_create_news');
 
+dispatch_post('/api/1/files/rename.json', 'json_post_rename_file');
+dispatch_post('/api/1/files/delete.json', 'json_post_delete_file');
+
 ## tests
 dispatch('/test/init_db', 'display_test_init_db');
 
