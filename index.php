@@ -96,7 +96,7 @@ dispatch_post('/cursus/:cursus/:course/proposer/prévisualiser',
 dispatch('/cursus/:cursus/:course/:id',           'display_course_content');
 
 ## contents' files
-dispatch('/file/:id',       'serve_user_file');
+# dispatch('/file/:id',       'serve_user_file');
 dispatch('/file/:id/:name', 'serve_user_file_by_id_and_name');
 
 ## admin home
