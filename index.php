@@ -75,8 +75,8 @@ dispatch('/profile/edit',      'display_edit_my_profile_page');
 dispatch_post('/profile/edit', 'post_edit_my_profile_page');
 dispatch('/profile/init',      'display_init_my_profile_page');
 dispatch_post('/profile/init', 'post_init_my_profile_page');
-# 
-# ## search
+
+## search
 dispatch('/recherche', 'display_search_results');
 
 ## cursus
@@ -116,6 +116,9 @@ dispatch_post('/admin/membres/add', 'post_admin_add_member');
 
 ## maintenance
 dispatch('/admin/migrate', 'display_admin_migrate_db_page');
+
+## news archives
+dispatch('/actus/archives', 'display_news_archives');
 
 ## (almost-)static pages
 dispatch('/contact',  'display_contact_page');

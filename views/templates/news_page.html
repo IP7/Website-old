@@ -1,0 +1,10 @@
+{% extends 'main.html' %}
+{% block content %}
+<ul id="news-list">
+    {% for n in page.news %}
+    <li class="inline-news" data-id="{{ n.id }}"><span class="news-date">(<time
+        datetime="{{ n.date.datetime_attr }}">{{ n.date.date }}</time>)</span> <span
+        class="news-title">{{ n.title }}</span> <span class="news-body">{{ n.text|md2html|raw }}</span></li>
+    {% endfor %}
+</ul>
+{% endblock %}
