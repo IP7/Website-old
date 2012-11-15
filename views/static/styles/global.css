@@ -412,6 +412,34 @@ body > #container { height: auto; min-height:100%; }
     margin-bottom:5px;
 }
 
+.inline-news {
+    list-style-type:none;
+    font-size:0.9em;
+    color:#111;
+}
+.inline-news span.news-date {
+    color:#222;
+}
+.inline-news span.news-date time {
+    color:#333;
+}
+.inline-news .news-title {
+    font-weight:bold;
+}
+.inline-news .news-body {
+    padding-left:20px;
+    display:block;
+    margin-bottom:0.4em;
+}
+.inline-news .news-body p,
+.inline-news .news-body blockquote,
+.inline-news .news-body ul,
+.inline-news .news-body ol,
+.inline-news .news-body li,
+.inline-news .news-body div {
+    display:inline;
+}
+
 /* == Profiles ============================================ */
 
 .profile { margin-top:40px }
