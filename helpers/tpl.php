@@ -68,7 +68,7 @@ function global_menu_links() {
     );
 
     if (is_connected()) {
-        $user['displayed_name'] = user()->getPublicName();
+        $user['displayed_name'] = user()->getPublicFirstName();
         $user['avatar25'] = gravatar_url(user(), 25);
         $user['profile_url'] = Config::$root_uri.'p/'.user()->getUsername();
     }

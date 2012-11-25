@@ -175,6 +175,14 @@ class User extends BaseUser {
       return $this->getConfigShowRealName() ? $this->getName() : $this->getUsername();
   }
 
+  /**
+   * Return user's first name if the 'showRealName' setting is set to 'true',
+   * their pseudo if not.
+   **/
+  public function getPublicFirstName() {
+      return $this->getConfigShowRealName() ? $this->getFirstName() : $this->getUsername();
+  }
+
   /* == Misc ================================================= */
 
   /**
