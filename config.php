@@ -36,7 +36,7 @@ define('SESSION_COOKIE', 's');
 #
 # - avatars & users files
 define('AVATAR_MAX_SIZE', 65536); # 65 kio
-define('USER_FILE_MAX_SIZE', 10485760); # 10 Mio
+define('USER_FILE_MAX_SIZE', 16777216); # 15 Mio
 define('MAX_FILES_PER_CONTENT', 8);
 #
 ###
