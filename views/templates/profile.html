@@ -52,7 +52,9 @@
             {% if page.user.visits_number is defined and page.user.visits_number %}{#
                 #}<dt>Nombre de visites&nbsp;:</dt><dd>{{ page.user.visits_number }}</dd>{#
           #}{% endif %}
-
+            {% if page.user.contents_count is defined and page.user.contents_count %}{#
+                #}<dt>Nombre de contenus proposés&nbsp;:</dt><dd>{{ page.user.contents_count }}</dd>{#
+          #}{% endif %}
         </dl>
 
         {% if page.user.description is defined and page.user.description %}{#

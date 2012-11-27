@@ -50,6 +50,11 @@ function tpl_user($user, $extended=false) {
         'last_visit'  => tpl_date($user->getLastVisit()),
         'expiration'  => tpl_date($user->getExpirationDate()),
 
+        'contents_count' => ContentQuery::create()
+                                ->filterByAuthor($user)
+                                ->filterByValidated(true)
+                                ->count(),
+
         'noindex'     => !$user->getConfigIndexProfile(),
 
         'options' => array(
