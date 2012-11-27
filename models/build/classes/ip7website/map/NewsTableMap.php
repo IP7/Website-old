@@ -43,6 +43,7 @@ class NewsTableMap extends TableMap
         $this->addColumn('TITLE', 'Title', 'VARCHAR', true, 255, null);
         $this->addColumn('TEXT', 'Text', 'LONGVARCHAR', true, 1024, null);
         $this->addColumn('DATE', 'Date', 'TIMESTAMP', true, null, null);
+        $this->addColumn('EXPIRATION_DATE', 'ExpirationDate', 'TIMESTAMP', false, null, null);
         $this->addForeignKey('CURSUS_ID', 'CursusId', 'INTEGER', 'cursus', 'ID', false, null, null);
         $this->addForeignKey('COURSE_ID', 'CourseId', 'INTEGER', 'courses', 'ID', false, null, null);
         $this->addColumn('ACCESS_RIGHTS', 'AccessRights', 'TINYINT', false, null, 0);

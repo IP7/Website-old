@@ -13,6 +13,8 @@
  * @method CourseQuery orderByShortName($order = Criteria::ASC) Order by the short_name column
  * @method CourseQuery orderByEcts($order = Criteria::ASC) Order by the ECTS column
  * @method CourseQuery orderByDescription($order = Criteria::ASC) Order by the description column
+ * @method CourseQuery orderByUseLatex($order = Criteria::ASC) Order by the use_latex column
+ * @method CourseQuery orderByUseSourcecode($order = Criteria::ASC) Order by the use_sourcecode column
  *
  * @method CourseQuery groupById() Group by the id column
  * @method CourseQuery groupByCursusId() Group by the cursus_id column
@@ -21,6 +23,8 @@
  * @method CourseQuery groupByShortName() Group by the short_name column
  * @method CourseQuery groupByEcts() Group by the ECTS column
  * @method CourseQuery groupByDescription() Group by the description column
+ * @method CourseQuery groupByUseLatex() Group by the use_latex column
+ * @method CourseQuery groupByUseSourcecode() Group by the use_sourcecode column
  *
  * @method CourseQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method CourseQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -72,6 +76,8 @@
  * @method Course findOneByShortName(string $short_name) Return the first Course filtered by the short_name column
  * @method Course findOneByEcts(double $ECTS) Return the first Course filtered by the ECTS column
  * @method Course findOneByDescription(string $description) Return the first Course filtered by the description column
+ * @method Course findOneByUseLatex(boolean $use_latex) Return the first Course filtered by the use_latex column
+ * @method Course findOneByUseSourcecode(boolean $use_sourcecode) Return the first Course filtered by the use_sourcecode column
  *
  * @method array findById(int $id) Return Course objects filtered by the id column
  * @method array findByCursusId(int $cursus_id) Return Course objects filtered by the cursus_id column
@@ -80,6 +86,8 @@
  * @method array findByShortName(string $short_name) Return Course objects filtered by the short_name column
  * @method array findByEcts(double $ECTS) Return Course objects filtered by the ECTS column
  * @method array findByDescription(string $description) Return Course objects filtered by the description column
+ * @method array findByUseLatex(boolean $use_latex) Return Course objects filtered by the use_latex column
+ * @method array findByUseSourcecode(boolean $use_sourcecode) Return Course objects filtered by the use_sourcecode column
  *
  * @package    propel.generator.ip7website.om
  */
@@ -169,7 +177,7 @@ abstract class BaseCourseQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `ID`, `CURSUS_ID`, `SEMESTER`, `NAME`, `SHORT_NAME`, `ECTS`, `DESCRIPTION` FROM `courses` WHERE `ID` = :p0';
+        $sql = 'SELECT `ID`, `CURSUS_ID`, `SEMESTER`, `NAME`, `SHORT_NAME`, `ECTS`, `DESCRIPTION`, `USE_LATEX`, `USE_SOURCECODE` FROM `courses` WHERE `ID` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -495,6 +503,60 @@ abstract class BaseCourseQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(CoursePeer::DESCRIPTION, $description, $comparison);
+    }
+
+    /**
+     * Filter the query on the use_latex column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByUseLatex(true); // WHERE use_latex = true
+     * $query->filterByUseLatex('yes'); // WHERE use_latex = true
+     * </code>
+     *
+     * @param     boolean|string $useLatex The value to use as filter.
+     *              Non-boolean arguments are converted using the following rules:
+     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return CourseQuery The current query, for fluid interface
+     */
+    public function filterByUseLatex($useLatex = null, $comparison = null)
+    {
+        if (is_string($useLatex)) {
+            $use_latex = in_array(strtolower($useLatex), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+        }
+
+        return $this->addUsingAlias(CoursePeer::USE_LATEX, $useLatex, $comparison);
+    }
+
+    /**
+     * Filter the query on the use_sourcecode column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByUseSourcecode(true); // WHERE use_sourcecode = true
+     * $query->filterByUseSourcecode('yes'); // WHERE use_sourcecode = true
+     * </code>
+     *
+     * @param     boolean|string $useSourcecode The value to use as filter.
+     *              Non-boolean arguments are converted using the following rules:
+     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return CourseQuery The current query, for fluid interface
+     */
+    public function filterByUseSourcecode($useSourcecode = null, $comparison = null)
+    {
+        if (is_string($useSourcecode)) {
+            $use_sourcecode = in_array(strtolower($useSourcecode), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+        }
+
+        return $this->addUsingAlias(CoursePeer::USE_SOURCECODE, $useSourcecode, $comparison);
     }
 
     /**

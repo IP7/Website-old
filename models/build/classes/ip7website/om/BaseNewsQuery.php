@@ -11,6 +11,7 @@
  * @method NewsQuery orderByTitle($order = Criteria::ASC) Order by the title column
  * @method NewsQuery orderByText($order = Criteria::ASC) Order by the text column
  * @method NewsQuery orderByDate($order = Criteria::ASC) Order by the date column
+ * @method NewsQuery orderByExpirationDate($order = Criteria::ASC) Order by the expiration_date column
  * @method NewsQuery orderByCursusId($order = Criteria::ASC) Order by the cursus_id column
  * @method NewsQuery orderByCourseId($order = Criteria::ASC) Order by the course_id column
  * @method NewsQuery orderByAccessRights($order = Criteria::ASC) Order by the access_rights column
@@ -20,6 +21,7 @@
  * @method NewsQuery groupByTitle() Group by the title column
  * @method NewsQuery groupByText() Group by the text column
  * @method NewsQuery groupByDate() Group by the date column
+ * @method NewsQuery groupByExpirationDate() Group by the expiration_date column
  * @method NewsQuery groupByCursusId() Group by the cursus_id column
  * @method NewsQuery groupByCourseId() Group by the course_id column
  * @method NewsQuery groupByAccessRights() Group by the access_rights column
@@ -48,6 +50,7 @@
  * @method News findOneByTitle(string $title) Return the first News filtered by the title column
  * @method News findOneByText(string $text) Return the first News filtered by the text column
  * @method News findOneByDate(string $date) Return the first News filtered by the date column
+ * @method News findOneByExpirationDate(string $expiration_date) Return the first News filtered by the expiration_date column
  * @method News findOneByCursusId(int $cursus_id) Return the first News filtered by the cursus_id column
  * @method News findOneByCourseId(int $course_id) Return the first News filtered by the course_id column
  * @method News findOneByAccessRights(int $access_rights) Return the first News filtered by the access_rights column
@@ -57,6 +60,7 @@
  * @method array findByTitle(string $title) Return News objects filtered by the title column
  * @method array findByText(string $text) Return News objects filtered by the text column
  * @method array findByDate(string $date) Return News objects filtered by the date column
+ * @method array findByExpirationDate(string $expiration_date) Return News objects filtered by the expiration_date column
  * @method array findByCursusId(int $cursus_id) Return News objects filtered by the cursus_id column
  * @method array findByCourseId(int $course_id) Return News objects filtered by the course_id column
  * @method array findByAccessRights(int $access_rights) Return News objects filtered by the access_rights column
@@ -149,7 +153,7 @@ abstract class BaseNewsQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `ID`, `AUTHOR_ID`, `TITLE`, `TEXT`, `DATE`, `CURSUS_ID`, `COURSE_ID`, `ACCESS_RIGHTS` FROM `news` WHERE `ID` = :p0';
+        $sql = 'SELECT `ID`, `AUTHOR_ID`, `TITLE`, `TEXT`, `DATE`, `EXPIRATION_DATE`, `CURSUS_ID`, `COURSE_ID`, `ACCESS_RIGHTS` FROM `news` WHERE `ID` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -407,6 +411,49 @@ abstract class BaseNewsQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(NewsPeer::DATE, $date, $comparison);
+    }
+
+    /**
+     * Filter the query on the expiration_date column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByExpirationDate('2011-03-14'); // WHERE expiration_date = '2011-03-14'
+     * $query->filterByExpirationDate('now'); // WHERE expiration_date = '2011-03-14'
+     * $query->filterByExpirationDate(array('max' => 'yesterday')); // WHERE expiration_date > '2011-03-13'
+     * </code>
+     *
+     * @param     mixed $expirationDate The value to use as filter.
+     *              Values can be integers (unix timestamps), DateTime objects, or strings.
+     *              Empty strings are treated as NULL.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return NewsQuery The current query, for fluid interface
+     */
+    public function filterByExpirationDate($expirationDate = null, $comparison = null)
+    {
+        if (is_array($expirationDate)) {
+            $useMinMax = false;
+            if (isset($expirationDate['min'])) {
+                $this->addUsingAlias(NewsPeer::EXPIRATION_DATE, $expirationDate['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($expirationDate['max'])) {
+                $this->addUsingAlias(NewsPeer::EXPIRATION_DATE, $expirationDate['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(NewsPeer::EXPIRATION_DATE, $expirationDate, $comparison);
     }
 
     /**

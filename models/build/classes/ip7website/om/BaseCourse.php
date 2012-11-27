@@ -74,6 +74,20 @@ abstract class BaseCourse extends BaseObject implements Persistent
     protected $description;
 
     /**
+     * The value for the use_latex field.
+     * Note: this column has a database default value of: (expression) 0
+     * @var        boolean
+     */
+    protected $use_latex;
+
+    /**
+     * The value for the use_sourcecode field.
+     * Note: this column has a database default value of: (expression) 1
+     * @var        boolean
+     */
+    protected $use_sourcecode;
+
+    /**
      * @var        Cursus
      */
     protected $aCursus;
@@ -301,6 +315,26 @@ abstract class BaseCourse extends BaseObject implements Persistent
     }
 
     /**
+     * Get the [use_latex] column value.
+     *
+     * @return boolean
+     */
+    public function getUseLatex()
+    {
+        return $this->use_latex;
+    }
+
+    /**
+     * Get the [use_sourcecode] column value.
+     *
+     * @return boolean
+     */
+    public function getUseSourcecode()
+    {
+        return $this->use_sourcecode;
+    }
+
+    /**
      * Set the value of [id] column.
      *
      * @param int $v new value
@@ -452,6 +486,64 @@ abstract class BaseCourse extends BaseObject implements Persistent
     } // setDescription()
 
     /**
+     * Sets the value of the [use_latex] column.
+     * Non-boolean arguments are converted using the following rules:
+     *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     *
+     * @param boolean|integer|string $v The new value
+     * @return Course The current object (for fluent API support)
+     */
+    public function setUseLatex($v)
+    {
+        if ($v !== null) {
+            if (is_string($v)) {
+                $v = in_array(strtolower($v), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+            } else {
+                $v = (boolean) $v;
+            }
+        }
+
+        if ($this->use_latex !== $v) {
+            $this->use_latex = $v;
+            $this->modifiedColumns[] = CoursePeer::USE_LATEX;
+        }
+
+
+        return $this;
+    } // setUseLatex()
+
+    /**
+     * Sets the value of the [use_sourcecode] column.
+     * Non-boolean arguments are converted using the following rules:
+     *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     *
+     * @param boolean|integer|string $v The new value
+     * @return Course The current object (for fluent API support)
+     */
+    public function setUseSourcecode($v)
+    {
+        if ($v !== null) {
+            if (is_string($v)) {
+                $v = in_array(strtolower($v), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+            } else {
+                $v = (boolean) $v;
+            }
+        }
+
+        if ($this->use_sourcecode !== $v) {
+            $this->use_sourcecode = $v;
+            $this->modifiedColumns[] = CoursePeer::USE_SOURCECODE;
+        }
+
+
+        return $this;
+    } // setUseSourcecode()
+
+    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -490,6 +582,8 @@ abstract class BaseCourse extends BaseObject implements Persistent
             $this->short_name = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
             $this->ects = ($row[$startcol + 5] !== null) ? (double) $row[$startcol + 5] : null;
             $this->description = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
+            $this->use_latex = ($row[$startcol + 7] !== null) ? (boolean) $row[$startcol + 7] : null;
+            $this->use_sourcecode = ($row[$startcol + 8] !== null) ? (boolean) $row[$startcol + 8] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -498,7 +592,7 @@ abstract class BaseCourse extends BaseObject implements Persistent
                 $this->ensureConsistency();
             }
 
-            return $startcol + 7; // 7 = CoursePeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 9; // 9 = CoursePeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating Course object", $e);
@@ -944,6 +1038,12 @@ abstract class BaseCourse extends BaseObject implements Persistent
         if ($this->isColumnModified(CoursePeer::DESCRIPTION)) {
             $modifiedColumns[':p' . $index++]  = '`DESCRIPTION`';
         }
+        if ($this->isColumnModified(CoursePeer::USE_LATEX)) {
+            $modifiedColumns[':p' . $index++]  = '`USE_LATEX`';
+        }
+        if ($this->isColumnModified(CoursePeer::USE_SOURCECODE)) {
+            $modifiedColumns[':p' . $index++]  = '`USE_SOURCECODE`';
+        }
 
         $sql = sprintf(
             'INSERT INTO `courses` (%s) VALUES (%s)',
@@ -975,6 +1075,12 @@ abstract class BaseCourse extends BaseObject implements Persistent
                         break;
                     case '`DESCRIPTION`':
                         $stmt->bindValue($identifier, $this->description, PDO::PARAM_STR);
+                        break;
+                    case '`USE_LATEX`':
+                        $stmt->bindValue($identifier, (int) $this->use_latex, PDO::PARAM_INT);
+                        break;
+                    case '`USE_SOURCECODE`':
+                        $stmt->bindValue($identifier, (int) $this->use_sourcecode, PDO::PARAM_INT);
                         break;
                 }
             }
@@ -1207,6 +1313,12 @@ abstract class BaseCourse extends BaseObject implements Persistent
             case 6:
                 return $this->getDescription();
                 break;
+            case 7:
+                return $this->getUseLatex();
+                break;
+            case 8:
+                return $this->getUseSourcecode();
+                break;
             default:
                 return null;
                 break;
@@ -1243,6 +1355,8 @@ abstract class BaseCourse extends BaseObject implements Persistent
             $keys[4] => $this->getShortName(),
             $keys[5] => $this->getEcts(),
             $keys[6] => $this->getDescription(),
+            $keys[7] => $this->getUseLatex(),
+            $keys[8] => $this->getUseSourcecode(),
         );
         if ($includeForeignObjects) {
             if (null !== $this->aCursus) {
@@ -1327,6 +1441,12 @@ abstract class BaseCourse extends BaseObject implements Persistent
             case 6:
                 $this->setDescription($value);
                 break;
+            case 7:
+                $this->setUseLatex($value);
+                break;
+            case 8:
+                $this->setUseSourcecode($value);
+                break;
         } // switch()
     }
 
@@ -1358,6 +1478,8 @@ abstract class BaseCourse extends BaseObject implements Persistent
         if (array_key_exists($keys[4], $arr)) $this->setShortName($arr[$keys[4]]);
         if (array_key_exists($keys[5], $arr)) $this->setEcts($arr[$keys[5]]);
         if (array_key_exists($keys[6], $arr)) $this->setDescription($arr[$keys[6]]);
+        if (array_key_exists($keys[7], $arr)) $this->setUseLatex($arr[$keys[7]]);
+        if (array_key_exists($keys[8], $arr)) $this->setUseSourcecode($arr[$keys[8]]);
     }
 
     /**
@@ -1376,6 +1498,8 @@ abstract class BaseCourse extends BaseObject implements Persistent
         if ($this->isColumnModified(CoursePeer::SHORT_NAME)) $criteria->add(CoursePeer::SHORT_NAME, $this->short_name);
         if ($this->isColumnModified(CoursePeer::ECTS)) $criteria->add(CoursePeer::ECTS, $this->ects);
         if ($this->isColumnModified(CoursePeer::DESCRIPTION)) $criteria->add(CoursePeer::DESCRIPTION, $this->description);
+        if ($this->isColumnModified(CoursePeer::USE_LATEX)) $criteria->add(CoursePeer::USE_LATEX, $this->use_latex);
+        if ($this->isColumnModified(CoursePeer::USE_SOURCECODE)) $criteria->add(CoursePeer::USE_SOURCECODE, $this->use_sourcecode);
 
         return $criteria;
     }
@@ -1445,6 +1569,8 @@ abstract class BaseCourse extends BaseObject implements Persistent
         $copyObj->setShortName($this->getShortName());
         $copyObj->setEcts($this->getEcts());
         $copyObj->setDescription($this->getDescription());
+        $copyObj->setUseLatex($this->getUseLatex());
+        $copyObj->setUseSourcecode($this->getUseSourcecode());
 
         if ($deepCopy && !$this->startCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -3968,6 +4094,8 @@ abstract class BaseCourse extends BaseObject implements Persistent
         $this->short_name = null;
         $this->ects = null;
         $this->description = null;
+        $this->use_latex = null;
+        $this->use_sourcecode = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->clearAllReferences();

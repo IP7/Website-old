@@ -193,6 +193,13 @@
         <!-- description -->
         <column name="description" type="LONGVARCHAR" size="1024" />
 
+        <!-- si les contenus peuvent contenir du code (programmation) -->
+        <column name="use_latex"   type="BOOLEAN" defaultExpr="0" />
+
+        <!-- si les contenus peuvent contenir du LaTeX (i.e. si c'est des maths) -->
+        <column name="use_sourcecode"
+                                   type="BOOLEAN" defaultExpr="1" />
+
         <!-- == index & clefs étrangères == -->
 
         <foreign-key foreignTable="cursus" onDelete="CASCADE" onUpdate="CASCADE" phpName="Cursus">

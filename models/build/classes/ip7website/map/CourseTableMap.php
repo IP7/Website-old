@@ -45,6 +45,8 @@ class CourseTableMap extends TableMap
         $this->addColumn('SHORT_NAME', 'ShortName', 'VARCHAR', true, 16, null);
         $this->addColumn('ECTS', 'Ects', 'FLOAT', false, null, 3);
         $this->addColumn('DESCRIPTION', 'Description', 'LONGVARCHAR', false, 1024, null);
+        $this->addColumn('USE_LATEX', 'UseLatex', 'BOOLEAN', false, 1, '0');
+        $this->addColumn('USE_SOURCECODE', 'UseSourcecode', 'BOOLEAN', false, 1, '1');
         // validators
         $this->addValidator('NAME', 'minLength', 'propel.validator.MinLengthValidator', '3', 'Le nom doit faire au moins 3 caractères.');
         $this->addValidator('SEMESTER', 'minValue', 'propel.validator.MinValueValidator', '0', 'Le semestre doit être 1 ou 2.');

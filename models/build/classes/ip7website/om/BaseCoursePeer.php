@@ -24,13 +24,13 @@ abstract class BaseCoursePeer
     const TM_CLASS = 'CourseTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 7;
+    const NUM_COLUMNS = 9;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 7;
+    const NUM_HYDRATE_COLUMNS = 9;
 
     /** the column name for the ID field */
     const ID = 'courses.ID';
@@ -53,6 +53,12 @@ abstract class BaseCoursePeer
     /** the column name for the DESCRIPTION field */
     const DESCRIPTION = 'courses.DESCRIPTION';
 
+    /** the column name for the USE_LATEX field */
+    const USE_LATEX = 'courses.USE_LATEX';
+
+    /** the column name for the USE_SOURCECODE field */
+    const USE_SOURCECODE = 'courses.USE_SOURCECODE';
+
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
 
@@ -72,12 +78,12 @@ abstract class BaseCoursePeer
      * e.g. CoursePeer::$fieldNames[CoursePeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'CursusId', 'Semester', 'Name', 'ShortName', 'Ects', 'Description', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'cursusId', 'semester', 'name', 'shortName', 'ects', 'description', ),
-        BasePeer::TYPE_COLNAME => array (CoursePeer::ID, CoursePeer::CURSUS_ID, CoursePeer::SEMESTER, CoursePeer::NAME, CoursePeer::SHORT_NAME, CoursePeer::ECTS, CoursePeer::DESCRIPTION, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'CURSUS_ID', 'SEMESTER', 'NAME', 'SHORT_NAME', 'ECTS', 'DESCRIPTION', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'cursus_id', 'semester', 'name', 'short_name', 'ECTS', 'description', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'CursusId', 'Semester', 'Name', 'ShortName', 'Ects', 'Description', 'UseLatex', 'UseSourcecode', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'cursusId', 'semester', 'name', 'shortName', 'ects', 'description', 'useLatex', 'useSourcecode', ),
+        BasePeer::TYPE_COLNAME => array (CoursePeer::ID, CoursePeer::CURSUS_ID, CoursePeer::SEMESTER, CoursePeer::NAME, CoursePeer::SHORT_NAME, CoursePeer::ECTS, CoursePeer::DESCRIPTION, CoursePeer::USE_LATEX, CoursePeer::USE_SOURCECODE, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'CURSUS_ID', 'SEMESTER', 'NAME', 'SHORT_NAME', 'ECTS', 'DESCRIPTION', 'USE_LATEX', 'USE_SOURCECODE', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'cursus_id', 'semester', 'name', 'short_name', 'ECTS', 'description', 'use_latex', 'use_sourcecode', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
     );
 
     /**
@@ -87,12 +93,12 @@ abstract class BaseCoursePeer
      * e.g. CoursePeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'CursusId' => 1, 'Semester' => 2, 'Name' => 3, 'ShortName' => 4, 'Ects' => 5, 'Description' => 6, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'cursusId' => 1, 'semester' => 2, 'name' => 3, 'shortName' => 4, 'ects' => 5, 'description' => 6, ),
-        BasePeer::TYPE_COLNAME => array (CoursePeer::ID => 0, CoursePeer::CURSUS_ID => 1, CoursePeer::SEMESTER => 2, CoursePeer::NAME => 3, CoursePeer::SHORT_NAME => 4, CoursePeer::ECTS => 5, CoursePeer::DESCRIPTION => 6, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'CURSUS_ID' => 1, 'SEMESTER' => 2, 'NAME' => 3, 'SHORT_NAME' => 4, 'ECTS' => 5, 'DESCRIPTION' => 6, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'cursus_id' => 1, 'semester' => 2, 'name' => 3, 'short_name' => 4, 'ECTS' => 5, 'description' => 6, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'CursusId' => 1, 'Semester' => 2, 'Name' => 3, 'ShortName' => 4, 'Ects' => 5, 'Description' => 6, 'UseLatex' => 7, 'UseSourcecode' => 8, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'cursusId' => 1, 'semester' => 2, 'name' => 3, 'shortName' => 4, 'ects' => 5, 'description' => 6, 'useLatex' => 7, 'useSourcecode' => 8, ),
+        BasePeer::TYPE_COLNAME => array (CoursePeer::ID => 0, CoursePeer::CURSUS_ID => 1, CoursePeer::SEMESTER => 2, CoursePeer::NAME => 3, CoursePeer::SHORT_NAME => 4, CoursePeer::ECTS => 5, CoursePeer::DESCRIPTION => 6, CoursePeer::USE_LATEX => 7, CoursePeer::USE_SOURCECODE => 8, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'CURSUS_ID' => 1, 'SEMESTER' => 2, 'NAME' => 3, 'SHORT_NAME' => 4, 'ECTS' => 5, 'DESCRIPTION' => 6, 'USE_LATEX' => 7, 'USE_SOURCECODE' => 8, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'cursus_id' => 1, 'semester' => 2, 'name' => 3, 'short_name' => 4, 'ECTS' => 5, 'description' => 6, 'use_latex' => 7, 'use_sourcecode' => 8, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
     );
 
     /**
@@ -173,6 +179,8 @@ abstract class BaseCoursePeer
             $criteria->addSelectColumn(CoursePeer::SHORT_NAME);
             $criteria->addSelectColumn(CoursePeer::ECTS);
             $criteria->addSelectColumn(CoursePeer::DESCRIPTION);
+            $criteria->addSelectColumn(CoursePeer::USE_LATEX);
+            $criteria->addSelectColumn(CoursePeer::USE_SOURCECODE);
         } else {
             $criteria->addSelectColumn($alias . '.ID');
             $criteria->addSelectColumn($alias . '.CURSUS_ID');
@@ -181,6 +189,8 @@ abstract class BaseCoursePeer
             $criteria->addSelectColumn($alias . '.SHORT_NAME');
             $criteria->addSelectColumn($alias . '.ECTS');
             $criteria->addSelectColumn($alias . '.DESCRIPTION');
+            $criteria->addSelectColumn($alias . '.USE_LATEX');
+            $criteria->addSelectColumn($alias . '.USE_SOURCECODE');
         }
     }
 
