@@ -98,6 +98,27 @@ function display_course_content() {
         }
     }
 
+    $scripts = array(
+        array( 'href' => js_url( 'file-icons' ) )
+    );
+    $styles  = array();
+
+    if ($course && $course->getUseSourcecode()) {
+
+        $scripts []= array(
+            'href' => js_url( 'prettify' )
+        );
+
+        $styles []= array(
+            'href' => css_url( 'prettify' )
+        );
+
+    }
+
+    $scripts []= array(
+        'href' => js_url( 'usercontents' )
+    );
+
     $files = FileQuery::create()
                 ->filterByAccessRights(array(
                     'min' => 0,
@@ -171,9 +192,9 @@ function display_course_content() {
             'message'      => $msg_str,
             'message_type' => $msg_type,
 
-            'scripts' => array(
-                array( 'href' => js_url( 'file-icons' ) )
-            )
+            'scripts' => $scripts,
+            'styles'  => $styles
+
         )
     ));
 
