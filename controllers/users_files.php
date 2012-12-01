@@ -14,7 +14,7 @@ function serve_user_file_by_id_and_name() {
     $f = FileQuery::create()->findOneById($id);
 
     if ($f) {
-        $encoded_filename = filename_encode($f->getName());
+        $encoded_filename = filename_encode($f->getTitle());
 
         if ($encoded_filename !== $name) {
             redirect_to(
