@@ -103,7 +103,7 @@ function upload_user_file($author, $file_key, $description,
         $db_file = new File();
         $db_file->setPath($new_name);
         $db_file->setAuthor($author);
-        $db_file->setName($file['name']);
+        $db_file->setTitle($file['name']);
         $db_file->setDate(time());
         $db_file->setAccessRights($access_rights);
         if ($i < $desc_count) { $db_file->setDescription($description[$i]); }
