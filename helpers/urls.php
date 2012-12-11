@@ -43,7 +43,7 @@ function user_url($user) {
 /* return an URL part for the name of a file, e.g.:
         user_file_name2url("Foo bar.pdf) --> "Foo-bar.pdf" */
 function filename_encode($fn) {
-    return preg_replace('/[^-.a-zA-Z0-9]+/', '-', $fn);
+    return preg_replace('/[^-._a-zA-Z0-9]+/', '-', $fn);
 }
 
 // return the URL for a CSS file

@@ -10,7 +10,9 @@ function serve_user_file() {
 
 function serve_user_file_by_id_and_name() {
     $id = intval(params('id'));
-    $name = params('name');
+    // underscores are escaped, since they're MySQL wildcards,
+    // so we need to replace '\_' with '_'
+    $name = preg_replace('/\\\\_/', '_', params('name'));
     $f = FileQuery::create()->findOneById($id);
 
     if ($f) {
@@ -34,6 +36,7 @@ function _serve_user_file($f) {
     }
 
     $path = Config::$app_dir.'/../data/usersfiles/'.$f->getPath();
+    // get absolute path
     $path = preg_replace('@/([^/]+)/\.\./@', '/', $path);
 
     if (!file_exists($path)) {
