@@ -120,6 +120,13 @@ function global_footer_links() {
         );
     }
 
+    if (!is_connected()) {
+        $footer_links []= array(
+            'href'  => Config::$root_uri.'contact#anciens',
+            'title' => 'Anciens étudiants'
+        );
+    }
+
     return array(
         'site' => array(
             'footer_links' => $footer_links
