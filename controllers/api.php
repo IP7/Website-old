@@ -112,6 +112,17 @@ function json_post_update_news() {
     $news = NewsQuery::create()->findOneById($id);
     if (!$news) { return json(array('error' => 'Bad id.')); }
 
+    if ($news->getAccessRights() > user()->getRights()) {
+        halt(HTTP_FORBIDDEN);
+    }
+
+    if (!user()->isAdmin()) {
+        $cursus = $news->getCursus();
+        if (!$cursus || !user()->isResponsibleFor($cursus)) {
+            halt(HTTP_FORBIDDEN);
+        }
+    }
+
     $title = get_string('title', 'POST');
     $body  = get_string('body',  'POST');
 
@@ -202,6 +213,44 @@ function json_post_create_news() {
             ))
         )
     ));
+}
+
+// helper
+function _json_post_news_mark_as( $old = true ) { // ?id=<news id>
+
+    $id = intval(get_string('id', 'POST'));
+    if (!$id) { return json(array('error' => 'Bad id.')); }
+
+    if (!is_connected()) {
+        halt(HTTP_FORBIDDEN);
+    }
+
+    $news = NewsQuery::create()->findOneById($id);
+    if (!$news) { return json(array('error' => 'Bad id.')); }
+
+    if ($news->getAccessRights() > user()->getRights()) {
+        halt(HTTP_FORBIDDEN);
+    }
+
+    if (!user()->isAdmin()) {
+        $cursus = $news->getCursus();
+        if (!$cursus || !user()->isResponsibleFor($cursus)) {
+            halt(HTTP_FORBIDDEN);
+        }
+    }
+
+    $news->setExpirationDate( $old ? 'now' : NULL );
+
+    return json(array('status' => 'ok'));
+
+}
+
+function json_post_news_mark_as_old() {
+    return _json_post_news_mark_as(true);
+}
+
+function json_post_news_mark_as_not_old() {
+    return _json_post_news_mark_as(false);
 }
 
 function json_get_course_intro() { // ?id=<course id>
