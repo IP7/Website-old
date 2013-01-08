@@ -143,6 +143,8 @@ dispatch('/api/1/news/get_one.json',     'json_get_news_by_id');
 dispatch_post('/api/1/news/update.json', 'json_post_update_news');
 dispatch_post('/api/1/news/delete.json', 'json_post_delete_news');
 dispatch_post('/api/1/news/create.json', 'json_post_create_news');
+dispatch_post('/api/1/news/is_old.json', 'json_post_news_mark_as_old');
+dispatch_post('/api/1/news/is_not_old.json', 'json_post_news_mark_as_not_old');
 
 dispatch_post('/api/1/files/rename.json', 'json_post_rename_file');
 dispatch_post('/api/1/files/delete.json', 'json_post_delete_file');
