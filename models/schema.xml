@@ -494,6 +494,9 @@
         <!-- date à laquelle le contenu a été posté -->
         <column name="date"          type="TIMESTAMP" required="true" />
 
+        <!-- date de dernière modification -->
+        <column name="last_modification_date" type="TIMESTAMP" />
+
         <!-- droits d'accès -->
         <column name="access_rights" type="TINYINT" defaultExpr="0" />
 
