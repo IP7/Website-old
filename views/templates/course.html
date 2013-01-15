@@ -1,7 +1,14 @@
 {% extends "main.html" %}
 {% block content %}
 <article class="course" data-course-id="{{ page.course.id }}" data-cursus-id="{{ page.cursus.id }}">
-    <h1>{{ page.course.name }}</h1>
+    <header>
+        <h1>{{ page.course.name }}</h1>
+        <p class="details">
+            <span class="ects">{{ page.course.ects }} ECTS</span>{%
+                if page.course.responsable is not null %} • Référent&nbsp;: {{
+                    _m.a_user( page.course.responsable ) }}{% endif %}
+        </p>
+    </header>
     <section class="intro" id="intro">{{ page.course.intro|md2html|raw }}</section>
     {% include "utils/news.html" %}
     {% if page.course.content_types is defined and page.course.content_types is not empty %}

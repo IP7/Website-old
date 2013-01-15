@@ -45,6 +45,18 @@ function display_course() {
         )
     );
 
+    $responsable = $cursus->getResponsable();
+    $tpl_responsable = null;
+
+    if ( $responsable !== null ) {
+        $tpl_responsable = array(
+
+            'name' => $responsable->getPublicName(),
+            'href' => user_url($responsable)
+
+        );
+    }
+
     $tpl_course = array(
         'page' => array(
             'title'          => $course->getName().' ('.$course->getShortName().')',
@@ -57,6 +69,8 @@ function display_course() {
 
             'course'         => array(
                 'name'  => $course->getName().' ('.$course->getShortName().')',
+                'ects'  => $course->getECTS(),
+                'responsable' => $tpl_responsable,
                 'intro' => $course->getDescription(),
 
                 'id'    => $course->getId(),
