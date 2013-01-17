@@ -235,6 +235,8 @@ function post_edit_profile_page($username=NULL) {
         }
     }
 
+    $desc = '';
+
     if (has_post('description')) {
         $desc = trim($_POST['description']);
 
@@ -244,8 +246,9 @@ function post_edit_profile_page($username=NULL) {
             $msgtype = $msgtype || 'notice';
         }
 
-        $user->setDescription($desc);
     }
+
+    $user->setDescription($desc);
 
     if (has_post('gender')) {
         $gender = trim($_POST['gender']);
