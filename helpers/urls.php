@@ -32,7 +32,14 @@ function course_url($cursus, $course) {
 // return the URL of a content
 function content_url($cursus, $course, $content) {
     if (!$cursus) { return ''; }
-    return course_url($cursus, $course) . '/' . $content->getId();
+    
+    $uri = course_url($cursus, $course) . '/' . $content->getId();
+    
+    if ($content->getYear()) {
+        $uri .= '/' . $content->getYear() . '-' . ($content->getYear() + 1);
+    }
+
+    return $uri . '/' . name_encode($content->getTitle());
 }
 
 // return the URL of an user's profile
@@ -42,7 +49,7 @@ function user_url($user) {
 
 /* return an URL part for the name of a file, e.g.:
         user_file_name2url("Foo bar.pdf) --> "Foo-bar.pdf" */
-function filename_encode($fn) {
+function name_encode($fn) {
     return preg_replace('/[^-._a-zA-Z0-9]+/', '-', $fn);
 }
 
