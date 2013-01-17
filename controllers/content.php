@@ -20,8 +20,13 @@ function display_course_content() {
         halt(NOT_FOUND);
     }
 
+    $url_year = (string)params('year');
+    $url_title = (string)params('title');
+
     if ($course->getShortName() != $course_code || $cursus->getShortName() != $cursus_sn) {
-        redirect_to('/cursus/'.$cursus->getShortName().'/'.$course->getShortName().'/'.$content_id);
+
+        redirect_to(content_url($cursus, $course, $content));
+
     }
 
     $rights    = $content->getAccessRights();
@@ -37,7 +42,33 @@ function display_course_content() {
         halt(HTTP_FORBIDDEN, 'Vous n\'avez pas le droit d\'accéder à ce contenu.');
     }
 
-    $year      = $content->getYear();
+    $year = $content->getYear();
+
+    if ($year) {
+
+        $valid_url_year = $year . '-' . ($year + 1);
+
+        // if the content has a year and
+        // the url is /…/:id/<no year or title> or /…/:id/:year/<no title>
+        // or the URL year is not correct
+        if ($url_year != $valid_url_year) {
+            redirect_to(content_url($cursus, $course, $content));
+        }
+
+    }
+    else {
+
+        // if the content has no year and the URL has no title:
+        // /…/:id/<no title>
+        if (!$url_title || $url_year) {
+            redirect_to(content_url($cursus, $course, $content));
+        }
+    }
+
+    // if the URL title is not correct
+    if (name_encode($content->getTitle()) != $url_title) {
+        redirect_to(content_url($cursus, $course, $content));
+    }
 
     $msg_str  = null;
     $msg_type = null;
