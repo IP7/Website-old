@@ -128,13 +128,15 @@ function display_educational_path() {
         );
     }
 
-    $resp_q = $path->getResponsable();
-    $responsable = false;
+    $responsable = $cursus->getResponsable();
+    $tpl_responsable = null;
 
-    if ($resp_q != null) {
-        $responsable = array(
-            'href'  => user_url($resp_q),
-            'title' => $resp_q->getPublicName()
+    if ( $responsable !== null ) {
+        $tpl_responsable = array(
+
+            'name' => $responsable->getPublicName(),
+            'href' => user_url($responsable)
+
         );
     }
 
@@ -156,6 +158,7 @@ function display_educational_path() {
 
                 'path_name'    => $path->getName(),
 
+                'responsable'  => $tpl_responsable,
                 'courses'      => $courses,
                 'news'         => $news,
                 'other_links'  => $other_links

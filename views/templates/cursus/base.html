@@ -52,7 +52,12 @@
 {% endif %}
 <article class="cursus" data-cursus-id="{{ page.cursus.id }}">
 {# Intro #}
-<h1>{{ page.cursus.path_name }} ({{ page.cursus.name }})</h1>
+    <header>
+        <h1>{{ page.cursus.path_name }} ({{ page.cursus.name }})</h1>
+        {% if page.cursus.responsable is not null %}
+        <p class="details"> Référent&nbsp;: {{ _m.a_user( page.cursus.responsable ) }}</p>
+        {% endif %}
+    </header>
 <section class="intro">{{ page.cursus.introduction|md2html|raw }}</section>
 {# News #}
 {% include 'utils/news.html' %}

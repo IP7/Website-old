@@ -95,13 +95,15 @@ function display_cursus() {
         );
     }
 
-    $resp_q = $cursus->getResponsable();
-    $responsable = false;
+    $responsable = $cursus->getResponsable();
+    $tpl_responsable = null;
 
-    if ($resp_q != null) {
-        $responsable = array(
-            'href'  => Config::$root_uri.'/p/'.$resp_q->getUsername(),
-            'title' => ($resp_q->getConfigShowRealName() ? $resp_q->getName() : $resp_q->getUsername())
+    if ( $responsable !== null ) {
+        $tpl_responsable = array(
+
+            'name' => $responsable->getPublicName(),
+            'href' => user_url($responsable)
+
         );
     }
 
@@ -124,6 +126,7 @@ function display_cursus() {
                 'name'         => $cursus->getName(),
                 'introduction' => $cursus->getDescription(),
 
+                'responsable'  => $tpl_responsable,
                 'path_name'    => $path->getName(),
 
                 'courses'      => $courses,
