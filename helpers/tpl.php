@@ -122,7 +122,7 @@ function global_footer_links() {
 
     if (!is_connected()) {
         $footer_links []= array(
-            'href'  => Config::$root_uri.'contact#anciens',
+            'href'  => Config::$root_uri.'anciens',
             'title' => 'Anciens étudiants'
         );
     }

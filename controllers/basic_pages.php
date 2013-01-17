@@ -10,6 +10,16 @@ function display_contact_page() {
     ));
 }
 
+function display_former_students_contact_page() {
+    return tpl_render('contact_anciens.html', array(
+        'page' => array(
+            'title'       => 'Ancien(ne)s étudiant(e)s',
+            'keywords'    => array( 'contact', 'ip7', 'anciens étudiants' ),
+            'description' => 'Ancien(ne) étudiant(e) ? Contactez nous !'
+        )
+    ));
+}
+
 function display_sitemap_page() {
     return tpl_render('sitemap.html', array(
         'page' => array(
