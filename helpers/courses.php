@@ -37,7 +37,7 @@ function tpl_course_contents($cursus, $course) {
 
                 if ($year < 2000) {
                     $no_year []= array(
-                        'href'  => course_url($cursus, $course).'/'.$c->getId(),
+                        'href'  => content_url($cursus, $course, $c),
                         'title' => $c->getTitle()
                     );
                     continue;
@@ -50,7 +50,7 @@ function tpl_course_contents($cursus, $course) {
                 }
 
                 $tpl_cts [$year]['contents'] []= array(
-                    'href'  => course_url($cursus, $course).'/'.$c->getId(),
+                    'href'  => content_url($cursus, $course, $c),
                     'title' => $c->getTitle()
                 );
             }
