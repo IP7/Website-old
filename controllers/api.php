@@ -288,7 +288,7 @@ function json_post_rename_file() { // id=<id>, name=<new name>
         return json(array( 'error' => 'bad id.' ));
     }
 
-    if (!user()->isAdmin() || user()->getId() !== $f->getAuthorId()) {
+    if (!user()->isAdmin() && user()->getId() !== $f->getAuthorId()) {
         halt(HTTP_FORBIDDEN);
     }
 
