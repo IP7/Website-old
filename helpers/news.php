@@ -36,11 +36,11 @@ function check_and_save_news($title, $body, &$news, $cursus=null, $course=null) 
     }
 
     if ($news) {
-        $cursus = $news->getCursus();
-        $course = $news->getCourse();
+        $cursus = $cursus ? $cursus : $news->getCursus();
+        $course = $course ? $course : $news->getCourse();
     }
 
-    if ($news && !user()->isAdmin()) {
+    if (!user()->isAdmin()) {
         if (!$cursus || !user()->isResponsibleFor($cursus)) {
             halt(HTTP_FORBIDDEN);
         }
