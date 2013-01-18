@@ -91,7 +91,7 @@ class User extends BaseUser {
   public function isResponsibleFor($cursus) {
     if (!($cursus instanceof Cursus)) { return false; }
 
-    return $this === $cursus->getResponsable();
+    return $this->getId() === $cursus->getResponsableId();
   }
 
   /* == Settings ============================================= */
