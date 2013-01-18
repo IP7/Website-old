@@ -145,9 +145,13 @@ function tpl_array() {
 }
 
 
-// shortcut
+// shortcuts
 function tpl_render($tp, $values) {
     return Config::$tpl->render($tp, tpl_array($values));
+}
+
+function tpl_admin_render($tp, $values) {
+    return Config::$tpl->render($tp, tpl_array(admin_tpl_default(), $values));
 }
 
 // return an array which represents a date

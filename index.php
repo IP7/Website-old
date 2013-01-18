@@ -119,6 +119,9 @@ dispatch_post('/admin/membres/add', 'post_admin_add_member');
 ## maintenance
 dispatch('/admin/migrate', 'display_admin_migrate_db_page');
 
+## tmp
+dispatch('/admin/files', 'display_admin_rename_files_page');
+
 ## news archives
 dispatch('/actus/archives', 'display_news_archives');
 

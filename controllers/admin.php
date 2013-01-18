@@ -522,4 +522,55 @@ function display_admin_members() {
     )));
 }
 
+/**
+ * This controller is temporary, it's just an easy
+ * way to quickly rename a bunch of files
+ **/
+function display_admin_rename_files_page() {
+
+    $limit = (int)get_string('l', 'get');
+
+    if ( $limit < 10 ) { $limit = 10; }
+    if ( $limit > 1000 ) { $limit = 1000; }
+
+    $contents = ContentQuery::create()
+                    ->limit($limit)
+                    ->find();
+
+    $tpl_files = array();
+
+    foreach( $contents as $_ => $c ) {
+        $files = $c->getFiles();
+
+        foreach ($files as $k => $f) {
+
+            $tpl_files []= array(
+
+                'cursus' => $c->getCursus()->getShortName(),
+                'course' => $c->getCourse()->getShortName(),
+                'content' => $c->getTitle(),
+                'type' => $c->getContentType() ? $c->getContentType()->getName() : '?',
+                'name' => $f->getTitle(),
+                'id' => $f->getId()
+
+            );
+
+        }
+    }
+
+    return tpl_admin_render('admin/rename_files.html', array(
+
+        'page' => array(
+            'title' => 'Fichiers',
+            'breadcrumbs' => array(
+                2 => array( 'href' => url(), 'title' => 'Fichiers' )
+            ),
+            'files' => $tpl_files
+
+        )
+
+    ));
+
+}
+
 ?>

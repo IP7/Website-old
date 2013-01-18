@@ -1,0 +1,23 @@
+{% extends 'admin/main.html' %}
+{% block admin_content %}
+<table>
+    <tr>
+    	<th>Cursus</th>
+    	<th>Cours</th>
+    	<th>Contenu</th>
+    	<th>Type</th>
+        <th>Nom</th>
+    </tr>
+    {% for f in page.files %}
+    <tr>
+        <td>{{ f.cursus }}</td>
+        <td>{{ f.course }}</td>
+    	<td>{{ f.content }}</td>
+    	<td>{{ f.type }}</td>
+        <td class="edit"><input type="text" data-id="{{ f.id }}" value="{{ f.name }}" size="25" /></td>
+    </tr>
+    {% endfor %}
+</table>
+
+<script src="/views/static/scripts/rename.js"></script>
+{% endblock %}

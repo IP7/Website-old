@@ -116,8 +116,9 @@ function json_post_update_news() {
         halt(HTTP_FORBIDDEN);
     }
 
+    $cursus = $news->getCursus();
+
     if (!user()->isAdmin()) {
-        $cursus = $news->getCursus();
         if (!$cursus || !user()->isResponsibleFor($cursus)) {
             halt(HTTP_FORBIDDEN);
         }
@@ -126,7 +127,7 @@ function json_post_update_news() {
     $title = get_string('title', 'POST');
     $body  = get_string('body',  'POST');
 
-    $err = check_and_save_news($title, $body, $news);
+    $err = check_and_save_news($title, $body, $news, $cursus);
 
     if ($err) {
         return $err;
@@ -287,7 +288,7 @@ function json_post_rename_file() { // id=<id>, name=<new name>
         return json(array( 'error' => 'bad id.' ));
     }
 
-    if (!user()->isAdmin() && user()->getId() !== $f->getAuthorId()) {
+    if (!user()->isAdmin() || user()->getId() !== $f->getAuthorId()) {
         halt(HTTP_FORBIDDEN);
     }
 
