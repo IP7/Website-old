@@ -101,8 +101,7 @@ class Config {
 
                 # Styles
                 'styles'          => array(
-                    array( 'href' => $styles.'/normalize.min.css',    'media' => 'screen' ),
-                    array( 'href' => $styles.'/global.min.css',       'media' => 'all' )
+                    array( 'href' => $styles.'/base.min.css', 'media' => 'all' )
                 ),
 
                 # IE Styles
@@ -110,15 +109,10 @@ class Config {
 
                 # Scripts
                 'rendering_scripts' => array(
-                    array( 'href' => $scripts.'/jquery-1.8.2.min.js' ),
-                    array( 'href' => $scripts.'/polyfills.min.js' )
+                    array( 'href' => $scripts.'/base-head.min.js' )
                 ),
                 'scripts'           => array(
-                    array( 'href' => $scripts.'/jquery-ui-1.8.23.custom.js' ),
-                    array( 'href' => $scripts.'/jquery.timeago.min.js' ),
-                    array( 'href' => $scripts.'/mousetrap.min.js'),
-                    array( 'href' => $scripts.'/search.min.js' ),
-                    array( 'href' => $scripts.'/shortcuts.min.js' )
+                    array( 'href' => $scripts.'/base-body.min.js' )
                 ),
 
                 'logo' => array(

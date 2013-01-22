@@ -56,6 +56,9 @@ function display_course() {
 
         );
     }
+    $is_page_admin = (is_connected()
+                        && (user()->isAdmin()
+                             || user()->isResponsibleFor($cursus)));
 
     $tpl_course = array(
         'page' => array(
@@ -83,20 +86,16 @@ function display_course() {
             ),
 
             'styles' => array(
-                array( 'href' => css_url('tabs') )
+                array( 'href' => css_url('simple-course') )
             ),
 
             'scripts' => array(
-                array( 'href'  => js_url('tabs') )
+                array( 'href'  => js_url( ($is_page_admin ? 'admin' : 'simple') . '-course') )
             ),
 
             'moderation_bar' => $moderation_bar
         )
     );
-
-    if (is_connected() && (user()->isAdmin() || user()->isResponsibleOf($cursus))) {
-        $tpl_course['page']['scripts'] []= array( 'href' => js_url('news') );
-    }
 
     return tpl_render('course.html', $tpl_course);
 }

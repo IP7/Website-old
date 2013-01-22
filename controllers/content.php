@@ -130,22 +130,14 @@ function display_course_content() {
     }
 
     $scripts = array(
-        array( 'href' => js_url( 'file-icons' ) )
+        array( 'href' => js_url( 'simple-content' ) )
     );
     $styles  = array();
 
     if ($course && $course->getUseSourcecode()) {
 
-        $scripts []= array(
-            'href' => js_url( 'prettify' )
-        );
-
-        $scripts []= array(
-            'href' => js_url( 'usercontents' )
-        );
-
-        $styles []= array(
-            'href' => css_url( 'prettify' )
+        $scripts = array(
+            array( 'href' => js_url( 'pretty-content' ) )
         );
 
     }
@@ -459,7 +451,7 @@ function display_post_member_proposed_content_preview() {
             ),
 
             'scripts' => array(
-                array( 'href' => js_url( 'file-icons' ) )
+                array( 'href' => js_url( 'simple-content' ) )
             )
         )
     ));

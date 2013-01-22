@@ -20,7 +20,7 @@ function display_home() {
 
     if (is_connected()) {
         $scripts = array(
-            array( 'href' => js_url('connected_home') )
+            array( 'href' => js_url('connected-home') )
         );
     }
 
@@ -87,8 +87,6 @@ function display_connection($message=null, $message_type=null) {
             'message_type'           => $message_type,
 
             'scripts'                => array(
-                array( 'href' => js_url('pretty_inputs') ),
-                array( 'href' => js_url('gravatar') ),
                 array( 'href' => js_url('connection') )
             )
         )

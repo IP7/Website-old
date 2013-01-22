@@ -107,6 +107,10 @@ function display_cursus() {
         );
     }
 
+    $is_page_admin = (is_connected()
+                        && (user()->isAdmin()
+                            || user()->isResponsibleFor($cursus)));
+
     $tpl_cursus = array(
         'page' => array(
             'title'           => $cursus->getName(),
@@ -139,14 +143,11 @@ function display_cursus() {
             'add_news_button' => $add_news,
 
             'scripts' => array(
-                array( 'href' => js_url('menus') )
+                // this script is used for both courses and cursus
+                array( 'href'  => js_url( ($is_page_admin ? 'admin' : 'simple') . '-course') )
             )
         )
     );
-
-    if (is_connected() && (user()->isAdmin() || user()->getId() === $cursus->getResponsableId())) {
-        $tpl_cursus['page']['scripts'] []= array( 'href' => js_url('news') );
-    }
 
     return tpl_render('cursus/base.html', $tpl_cursus);
 }

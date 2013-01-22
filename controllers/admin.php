@@ -516,7 +516,7 @@ function display_admin_members() {
             'add_member_link' => Config::$root_uri.'admin/membres/add',
 
             'scripts' => array(
-                array( 'href' => js_url( 'admin_members' ) )
+                array( 'href' => js_url( 'admin' ) )
             )
         )
     )));
