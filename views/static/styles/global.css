@@ -387,19 +387,23 @@ body > #container { height: auto; min-height:100%; }
     max-height:500px;
 }
 .news {
-    margin-bottom:30px;
+    margin-bottom:10px;
     padding-bottom:1px;
     border-bottom:1px solid #EEE;
     padding-right:15px;
 }
-.news .metadata {
-    font-size:0.8em;
-    color:#333;
-    text-align:right;
-}
 .news h3 {
     margin-top:1px;
     margin-bottom:10px;
+}
+.news h3 .news-date {
+    font-size:0.6em;
+}
+.news article {
+    padding-left:10px;
+}
+.news article :first-child {
+    margin-top:0;
 }
 
 .news .content[contenteditable="true"] {
@@ -417,10 +421,11 @@ body > #container { height: auto; min-height:100%; }
     font-size:0.9em;
     color:#111;
 }
-.inline-news span.news-date {
+span.news-date {
     color:#222;
+    font-weight: normal;
 }
-.inline-news span.news-date time {
+span.news-date time {
     color:#333;
 }
 .inline-news .news-title {

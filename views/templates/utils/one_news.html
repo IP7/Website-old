@@ -1,11 +1,5 @@
 <li class="news" itemscope itemptype="http://schema.org/NewsArticle" data-id="{{ news.id }}">
-    <h3 itemprop="name" class="title">{{ news.title }}</h3>
+<h3><span class="news-title" itemprop="name">{{ news.title }}</span> {#
+    #}<span class="news-date">(<time datetime="{{ news.datetime_attr }}" itemprop="datePublished">{{ news.datetime }}</time>)</span></h3>
     <article class="content">{{ news.content|md2html|raw }}</article>
-    <div class="metadata">
-        <time datetime="{{ news.datetime_attr }}" itemprop="datePublished">{{ news.datetime }}</time>{#
-             #}{% if news.author is defined and news.author %}, par {#
-             #}<a rel="author" class="user" href="{{ news.author.href }}" {#
-                 #}itemprop="accountablePerson">{{ news.author.name }}</a>{#
-             #}{% endif %}
-     </div>
 </li>
