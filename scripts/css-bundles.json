@@ -1,0 +1,38 @@
+[
+    {
+        "name": "base.min.css",
+        "files": [
+            "normalize.min.css",
+            "global.css"
+        ]
+    },
+
+    {
+        "name": "pretty-content.min.css",
+        "files": [
+            "prettify.min.css"
+        ]
+    },
+
+    {
+        "name": "simple-course.min.css",
+        "files": [
+            "tabs.css"
+        ]
+    },
+
+    {
+        "name": "connection.min.css",
+        "files": [
+            "pretty_inputs.min.css",
+            "connection.css"
+        ]
+    },
+
+    {
+        "name": "search.min.css",
+        "files": [
+            "search.css"
+        ]
+    }
+]

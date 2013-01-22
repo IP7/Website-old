@@ -1,0 +1,96 @@
+[
+    {
+        "name": "markdown-editor.min.js",
+        "files": [
+            "Markdown.Converter.js",
+            "Markdown.Sanitizer.js",
+            "Markdown.Editor.js"
+        ]
+    },
+
+    {
+        "name": "admin.min.js",
+        "files": [
+            "admin_members.js"
+        ]
+    },
+
+    {
+        "name": "simple-content.min.js",
+        "files": [
+            "file-icons.js"
+        ]
+    },
+
+    {
+        "name": "pretty-content.min.js",
+        "files": [
+            "file-icons.js",
+            "prettify.js",
+            "usercontents.js"
+        ]
+    },
+
+    {
+        "name": "proposing-content.min.js",
+        "files": [
+            "proposing-content.js"
+        ]
+    },
+
+    {
+        "name": "simple-course.min.js",
+        "files": [
+            "tabs.js", "menus.js"
+        ]
+    },
+
+    {
+        "name": "admin-course.min.js",
+        "files": [
+            "tabs.js", "menus.js", "news.js"
+        ]
+    },
+
+    {
+        "name": "connected-home.min.js",
+        "files": [
+            "connected_home.js"
+        ]
+    },
+
+    {
+        "name": "connection.min.js",
+        "files": [
+            "pretty_inputs.js",
+            "gravatar.js",
+            "connection.js"
+        ]
+    },
+
+    {
+        "name": "subscription.min.js",
+        "files": [
+            "subscription.js"
+        ]
+    },
+
+    {
+        "name": "base-head.min.js",
+        "files": [
+            "jquery-1.8.2.min.js",
+            "polyfills.js"
+        ]
+    },
+
+    {
+        "name": "base-body.min.js",
+        "files": [
+            "jquery-ui-1.8.23.custom.js",
+            "jquery.timeago.min.js",
+            "mousetrap.min.js",
+            "search.js",
+            "shortcuts.js"
+        ]
+    }
+]
