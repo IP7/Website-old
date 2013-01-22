@@ -1,8 +1,17 @@
 <?php
 
+// used to sort contents by years, with uasort()
+function contentsCmp($c1, $c2) {
+
+    if ($c1['title'] === $c2['title']) { return 0; }
+
+    return ($c1['title'] < $c2['title']) ? -1 : 1;
+
+}
+
 // return an array for contents which will be used
 // in the template.
-function tpl_course_contents($cursus, $course) {
+function tpl_course_contents($cursus, $course=null) {
 
     $user_rights = (is_connected()) ? user()->getRights() : 0;
 
@@ -21,8 +30,11 @@ function tpl_course_contents($cursus, $course) {
         $tpl_cts = array();
 
         $cts = ContentQuery::create()
-                ->filterByContentType($t)
-                ->filterByCourse($course)
+                ->filterByContentType($t);
+
+        if ($course) { $cts = $cts->filterByCourse($course); }
+
+        $cts = $cts->filterByCourse($course)
                 ->filterByValidated(1)
                 ->where('Access_Rights <= ?', $user_rights, PDO::PARAM_INT)
                 ->orderByYear('desc')
@@ -53,6 +65,15 @@ function tpl_course_contents($cursus, $course) {
                     'href'  => content_url($cursus, $course, $c),
                     'title' => $c->getTitle()
                 );
+            }
+
+            // sorting
+            uasort($no_year, 'contentsCmp');
+
+            foreach($tpl_cts as &$yArray) {
+
+                uasort($yArray['contents'], 'contentsCmp');
+
             }
 
             $tpl_contents []= array(
