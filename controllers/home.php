@@ -29,7 +29,6 @@ function display_home() {
 
         'page' => array(
             'title'  => 'Accueil',
-            'cached' => true,
 
             'breadcrumbs' => false,
 
