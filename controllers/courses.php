@@ -94,7 +94,7 @@ function display_course() {
         )
     );
 
-    if (is_connected() && (user()->isAdmin() || user()->getId() === $cursus->getResponsableId())) {
+    if (is_connected() && (user()->isAdmin() || user()->isResponsibleOf($cursus))) {
         $tpl_course['page']['scripts'] []= array( 'href' => js_url('news') );
     }
 

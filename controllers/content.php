@@ -140,15 +140,15 @@ function display_course_content() {
             'href' => js_url( 'prettify' )
         );
 
+        $scripts []= array(
+            'href' => js_url( 'usercontents' )
+        );
+
         $styles []= array(
             'href' => css_url( 'prettify' )
         );
 
     }
-
-    $scripts []= array(
-        'href' => js_url( 'usercontents' )
-    );
 
     $files = FileQuery::create()
                 ->filterByAccessRights(array(
