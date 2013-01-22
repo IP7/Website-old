@@ -155,10 +155,6 @@ dispatch_post('/api/1/files/delete.json', 'json_post_delete_file');
 ## tests
 dispatch('/test/init_db', 'display_test_init_db');
 
-## misc
-dispatch('/;*',  'display_sql_injection');
-dispatch('/\'*', 'display_sql_injection');
-
 # Errors handling (functions called by Limonade)
 
 # Called when a route is not found.
