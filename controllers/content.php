@@ -315,6 +315,10 @@ function display_member_proposing_content_form() {
 
             'scripts' => array(
                 array( 'href' => js_url('proposing-content') )
+            ),
+
+            'styles' => array(
+                array( 'href' => css_url('markdown-editor') )
             )
         )
     ));

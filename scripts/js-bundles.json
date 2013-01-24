@@ -1,15 +1,5 @@
 [
     {
-        "name": "markdown-editor.min.js",
-        "files": [
-            "Markdown.Converter.js",
-            "Markdown.Sanitizer.js",
-            "Markdown.Editor.js",
-            "pagedown-i18n-fr.js"
-        ]
-    },
-
-    {
         "name": "admin.min.js",
         "files": [
             "admin_members.js"
@@ -35,6 +25,10 @@
     {
         "name": "proposing-content.min.js",
         "files": [
+            "Markdown.Converter.js",
+            "Markdown.Sanitizer.js",
+            "Markdown.Editor.js",
+            "pagedown-i18n-fr.js",
             "proposing-content.js"
         ]
     },

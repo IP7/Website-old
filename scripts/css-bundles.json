@@ -34,5 +34,12 @@
         "files": [
             "search.css"
         ]
+    },
+
+    {
+        "name": "markdown-editor.min.css",
+        "files": [
+            "markdown-editor.css"
+        ]
     }
 ]
