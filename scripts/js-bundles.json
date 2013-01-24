@@ -4,7 +4,8 @@
         "files": [
             "Markdown.Converter.js",
             "Markdown.Sanitizer.js",
-            "Markdown.Editor.js"
+            "Markdown.Editor.js",
+            "pagedown-i18n-fr.js"
         ]
     },
 
