@@ -438,6 +438,12 @@ span.news-date time {
     display:block;
     margin-bottom:0.4em;
 }
+
+a.news-title {
+    color: inherit;
+    text-decoration: inherit;
+}
+
 .inline-news .news-body p,
 .inline-news .news-body blockquote,
 .inline-news .news-body ul,

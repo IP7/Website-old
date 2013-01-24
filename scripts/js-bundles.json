@@ -48,7 +48,7 @@
     {
         "name": "admin-course.min.js",
         "files": [
-            "tabs.js", "menus.js", "news.js"
+            "tabs.js", "menus.js", "news-admin.js"
         ]
     },
 
@@ -92,6 +92,13 @@
             "mousetrap.min.js",
             "search.js",
             "shortcuts.js"
+        ]
+    },
+
+    {
+        "name": "news-page.min.js",
+        "files": [
+            "news-page.js"
         ]
     }
 ]

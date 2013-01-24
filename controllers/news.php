@@ -19,7 +19,11 @@ function display_news_archives() {
         'page' => array(
             'title' => 'Archives des actualités',
 
-            'news' => $news_tpl
+            'news' => $news_tpl,
+
+            'scripts' => array(
+                array( 'href' => js_url( 'news-page' ) )
+            )
         )
     ));
 }
