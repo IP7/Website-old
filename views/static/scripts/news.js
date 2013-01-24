@@ -70,7 +70,7 @@ $(function() {
             // dom element
             el: li,
 
-            title_el : li.getElementsByClassName('title')[0],
+            title_el : li.getElementsByClassName('news-title')[0],
             body_el  : li.getElementsByClassName('content')[0]
         };
 
