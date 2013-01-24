@@ -24,19 +24,66 @@ var compressor = require( 'node-minify' ),
 
         bundles.forEach(function( b ) {
 
-            count++;
+            var filesIn = b.files.map(function( f ){ return paths[type] + f; }),
+                fileOut = paths[type] + b.name;
 
-            new compressor.minify({
+            fs.exists( fileOut, function( exists ) {
 
-                type: 'yui-' + type,
-                fileIn: b.files.map(function( f ){ return paths[type] + f; }),
-                fileOut: paths[type] + b.name,
-                callback: function( err ) {
-                    if ( err ) { console.log( err ); }
+                var createFile = function() {
 
-                    if ( --count === 0 ) {
-                        console.log( type.toLocaleUpperCase() + ": ok." );
-                    }
+                    new compressor.minify({
+
+                        type: 'yui-' + type,
+                        fileIn: filesIn,
+                        fileOut: fileOut,
+                        callback: function( err ) {
+
+                            if ( err ) { console.log( err ); }
+                        
+                        }
+
+                    });
+
+                }
+
+                if ( !exists ) {
+                    
+                    return createFile();
+
+                } else {
+
+                    // Checking if a file of the bundle has been modified
+                    fs.stat( fileOut, function( err, stats ) {
+
+                        if ( err ) { return createFile(); }
+
+                        var lastBundleTime = stats.mtime,
+                            i  = 0,
+                            l  = filesIn.length,
+                            fo = fileOut.split( path.sep ),
+                            st, fi;
+
+                        fo = fo[ fo.length - 1 ];
+
+                        for (; i<l; i++) {
+
+                            st = fs.statSync( filesIn[ i ] );
+
+                            if ( st && st.mtime >= lastBundleTime ) {
+
+                                fi = filesIn[ i ].split( path.sep );
+
+                                console.log( fi[ fi.length - 1 ]
+                                           + ' modified, updating '
+                                           + fo );
+                                return createFile();
+
+                            }
+
+                        }
+
+                    });
+
                 }
 
             });
