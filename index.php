@@ -50,6 +50,8 @@ function before_sending_header($header) {
     }
 }
 
+define('LIM_REQUEST_URI', request_uri());
+
 ## (get/post) home
 dispatch('/',      'display_home');
 dispatch_post('/', 'display_home');
@@ -67,14 +69,19 @@ dispatch_post('/oubli', 'post_forgotten_password');
 dispatch('/p/*',           'display_profile_page');
 dispatch('/p/*/edit',      'display_edit_profile_page');
 dispatch_post('/p/*/edit', 'post_edit_profile_page');
+
 ## my profile
-dispatch('/profile',      'display_my_profile_page');
-dispatch_post('/profile', 'display_my_profile_page');
-## edit my profile
-dispatch('/profile/edit',      'display_edit_my_profile_page');
-dispatch_post('/profile/edit', 'post_edit_my_profile_page');
-dispatch('/profile/init',      'display_init_my_profile_page');
-dispatch_post('/profile/init', 'post_init_my_profile_page');
+if (strpos(LIM_REQUEST_URI, '/profile') === 0) {
+
+    dispatch('/profile',      'display_my_profile_page');
+    dispatch_post('/profile', 'display_my_profile_page');
+    ## edit my profile
+    dispatch('/profile/edit',      'display_edit_my_profile_page');
+    dispatch_post('/profile/edit', 'post_edit_my_profile_page');
+    dispatch('/profile/init',      'display_init_my_profile_page');
+    dispatch_post('/profile/init', 'post_init_my_profile_page');
+
+}
 
 ## search
 dispatch('/recherche', 'display_search_results');
@@ -133,27 +140,31 @@ dispatch('/a-propos', 'display_apropos_page');
 dispatch('/stats',    'display_stats_page');
 
 ## API
-dispatch('/api/1/users/exists.json',     'json_check_username');
-dispatch('/api/1/search.json',           'json_global_search');
-dispatch('/api/1/contents/last.json',    'json_get_last_contents');
+if (strpos(LIM_REQUEST_URI, '/api') === 0) {
 
-dispatch('/api/1/cursus/intro.json',      'json_get_cursus_intro');
-dispatch('/api/1/course/intro.json',      'json_get_course_intro');
-dispatch_post('/api/1/cursus/intro.json', 'json_post_cursus_intro');
-dispatch_post('/api/1/course/intro.json', 'json_post_course_intro');
+    dispatch('/api/1/users/exists.json',     'json_check_username');
+    dispatch('/api/1/search.json',           'json_global_search');
+    dispatch('/api/1/contents/last.json',    'json_get_last_contents');
 
-dispatch('/api/1/news/get_one.json',     'json_get_news_by_id');
-dispatch_post('/api/1/news/update.json', 'json_post_update_news');
-dispatch_post('/api/1/news/delete.json', 'json_post_delete_news');
-dispatch_post('/api/1/news/create.json', 'json_post_create_news');
-dispatch_post('/api/1/news/is_old.json', 'json_post_news_mark_as_old');
-dispatch_post('/api/1/news/is_not_old.json', 'json_post_news_mark_as_not_old');
+    dispatch('/api/1/cursus/intro.json',      'json_get_cursus_intro');
+    dispatch('/api/1/course/intro.json',      'json_get_course_intro');
+    dispatch_post('/api/1/cursus/intro.json', 'json_post_cursus_intro');
+    dispatch_post('/api/1/course/intro.json', 'json_post_course_intro');
 
-dispatch_post('/api/1/files/rename.json', 'json_post_rename_file');
-dispatch_post('/api/1/files/delete.json', 'json_post_delete_file');
+    dispatch('/api/1/news/get_one.json',     'json_get_news_by_id');
+    dispatch_post('/api/1/news/update.json', 'json_post_update_news');
+    dispatch_post('/api/1/news/delete.json', 'json_post_delete_news');
+    dispatch_post('/api/1/news/create.json', 'json_post_create_news');
+    dispatch_post('/api/1/news/is_old.json', 'json_post_news_mark_as_old');
+    dispatch_post('/api/1/news/is_not_old.json', 'json_post_news_mark_as_not_old');
+
+    dispatch_post('/api/1/files/rename.json', 'json_post_rename_file');
+    dispatch_post('/api/1/files/delete.json', 'json_post_delete_file');
+
+}
 
 ## tests
-dispatch('/test/init_db', 'display_test_init_db');
+# dispatch('/test/init_db', 'display_test_init_db');
 
 # Errors handling (functions called by Limonade)
 
