@@ -3,7 +3,6 @@
 <ul>
     <li>Nombre de contenus&nbsp;: {{ page.stats.contents_count }}</li>
     <li>Nombre de fichiers&nbsp;: {{ page.stats.files_count }}</li>
-    <li>Nombre de téléchargements de fichiers&nbsp;: {{ page.stats.downloads_count }}</li>
     <li>Meilleur contributeur&nbsp;: {{ _m.a_user(page.stats.best_contributor) }} ({{ page.stats.best_contributor.count }})
 </ul>
 {% endblock %}

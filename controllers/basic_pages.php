@@ -68,11 +68,6 @@ function display_stats_page() {
         }
     }
 
-    $downloads_count = FileQuery::create()
-                        ->withColumn('SUM(downloads_count)', 'downloads')
-                        ->select('downloads')
-                        ->findOne();
-
     $contents_count         = ContentQuery::create()->filterByValidated(true)->count();
     $files_count            = FileQuery::create()->count();
     $best_contributor       = UserQuery::create()->findOneById($best_contributor_id);
@@ -87,7 +82,6 @@ function display_stats_page() {
             'stats' => array(
                 'contents_count'   => $contents_count,
                 'files_count'      => $files_count,
-                'downloads_count'  => $downloads_count,
                 'best_contributor' => array(
                     'count' => $best_contributor_count,
                     'name'  => $best_contributor->getPublicName(),
