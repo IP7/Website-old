@@ -141,36 +141,6 @@
                 </nav>
             </footer>
 
-            {# autres scripts #}
-            {# bout de code ultra-basique pour charger les scripts à la suite en asynchrone
-
-                Il utilise la fonction $.getScript("<url>"[, callback]) de jQuery, et l'appelle de façon
-                à ce que les scripts soient inclus à la suite, par ex:
-                    pour ["foo.js", "bar.js", "baz.js"] ça donne:
-                        $.getScript("foo.js",
-                                    function(){
-                                        $.getScript("bar.js",
-                                                    function() {
-                                                        $.getScript("baz.js");
-                                                    }
-                                        );
-                                    }
-                        );
-
-            #}
-            {#            <script>$.ajaxSetup({cache: true});(function(g){[
-            {% if site.scripts is not empty %}
-                {% for script in site.scripts %}
-                    "{{ script.href|raw }}",
-                {% endfor %}
-            {% endif %}
-            {% if page.scripts is defined and page.scripts is not empty %}
-                {% for script in page.scripts %}
-                    "{{ script.href|raw }}",
-                {% endfor %}
-            {% endif %}
-            ].reverse().forEach(function(s){g=$.getScript.bind($,s,g)});if(g)g()})()</script>
-            #}
             {% if site.scripts is not empty %}
                 {% for script in site.scripts %}
                     <script src="{{ script.href|raw }}"></script>
