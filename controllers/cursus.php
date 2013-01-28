@@ -254,21 +254,4 @@ function display_moderation_edit_cursus() {
 
 }
 
-function display_moderation_add_cursus_news() {
-
-    $name = params('name');
-
-    $cursus = CursusQuery::create()->findOneByShortName($name);
-
-    if ($cursus == null) {
-        halt(NOT_FOUND);
-    }
-
-    $base_uri = Config::$root_uri.'cursus/'.strtoupper($cursus->getShortName()).'/';
-    
-    return tpl_render('news_form.html', array(
-
-    ));
-}
-
 ?>
