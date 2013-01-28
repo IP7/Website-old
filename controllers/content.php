@@ -140,6 +140,10 @@ function display_course_content() {
             array( 'href' => js_url( 'pretty-content' ) )
         );
 
+        $styles = array(
+            array( 'href' => css_url( 'pretty-content' ) )
+        );
+
     }
 
     $files = FileQuery::create()
@@ -160,7 +164,7 @@ function display_course_content() {
 
     $tpl_type = !$type ? null : array(
         'title' => $type->getName(),
-        'href'  => ($cursus && $course) ? course_url($cursus, $course).'/#tb_'.$type->getShortName() : '#'
+        'href'  => ($cursus && $course) ? course_url($cursus, $course).'/#'.$type->getShortName() : '#'
     );
 
     $tpl_year = null;
