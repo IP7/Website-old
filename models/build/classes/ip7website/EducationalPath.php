@@ -13,6 +13,11 @@
  *
  * @package    propel.generator.ip7website
  */
-class EducationalPath extends BaseEducationalPath
-{
+class EducationalPath extends BaseEducationalPath {
+
+    public function isDeleted() {
+
+        return $this->getDeleted();
+    
+    }
 }

@@ -15,4 +15,10 @@
  */
 class Course extends BaseCourse {
 
+    public function isDeleted() {
+
+        return $this->getDeleted();
+    
+    }
+
 } // Course

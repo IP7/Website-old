@@ -16,8 +16,15 @@
 class File extends BaseFile {
 
     public function incrementDownloadsCount() {
+
         $this->setDownloadsCount($this->getDownloadsCount()+1);
 
+    }
+
+    public function isDeleted() {
+
+        return $this->getDeleted();
+    
     }
 
 } // File

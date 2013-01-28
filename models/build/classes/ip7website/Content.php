@@ -15,8 +15,21 @@
  */
 class Content extends BaseContent {
 
-  public function isValidate(){
-	return $this->getValidated();
-  }
+    # Deprecated, use isValidated()
+    public function isValidate(){
+        return $this->getValidated();
+    }
+
+    public function isValidated(){
+
+        return $this->getValidated();
+
+    }
+
+    public function isDeleted() {
+
+        return $this->getDeleted();
+    
+    }
 
 } // Content
