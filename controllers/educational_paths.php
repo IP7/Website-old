@@ -14,7 +14,7 @@ function display_educational_path() {
                 ->filterByCursus($cursus)
                 ->findOneByShortName($path_name);
 
-    if (!$path) {
+    if (!$path || $path->isDeleted()) {
         halt(NOT_FOUND);
     }
 
@@ -54,6 +54,11 @@ function display_educational_path() {
     );
     
     foreach ($path->getOptionalCourses() as $c) {
+
+        if ( $c->isDeleted()) {
+            continue;
+        }
+
         $courses['s'.$c->getSemester()]['optional'] []= array(
             'href'  => $cursus_uri.'/'.$c->getShortName(),
             'title' => $c->getShortName(),
@@ -62,6 +67,11 @@ function display_educational_path() {
     }
     
     foreach ($path->getMandatoryCourses() as $c) {
+
+        if ( $c->isDeleted()) {
+            continue;
+        }
+
         $courses['s'.$c->getSemester()]['mandatory'] []= array(
             'href'  => $cursus_uri.'/'.$c->getShortName(),
             'title' => $c->getShortName(),

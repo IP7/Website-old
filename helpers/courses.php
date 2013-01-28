@@ -35,7 +35,8 @@ function tpl_course_contents($cursus, $course=null) {
         if ($course) { $cts = $cts->filterByCourse($course); }
 
         $cts = $cts->filterByCourse($course)
-                ->filterByValidated(1)
+                ->filterByValidated(true)
+                ->filterByDeleted(false)
                 ->where('Access_Rights <= ?', $user_rights, PDO::PARAM_INT)
                 ->orderByYear('desc')
                 ->find();

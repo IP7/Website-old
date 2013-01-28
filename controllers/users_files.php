@@ -3,7 +3,9 @@
 function serve_user_file() {
     $id = intval(params('id'));
 
-    $f = FileQuery::create()->findOneById($id);
+    $f = FileQuery::create()
+            ->filterByDeleted(false)
+            ->findOneById($id);
 
     return _serve_user_file($f);
 }
@@ -13,7 +15,9 @@ function serve_user_file_by_id_and_name() {
     // underscores are escaped, since they're MySQL wildcards,
     // so we need to replace '\_' with '_'
     $name = preg_replace('/\\\\_/', '_', params('name'));
-    $f = FileQuery::create()->findOneById($id);
+    $f = FileQuery::create()
+            ->filterByDeleted(false)
+            ->findOneById($id);
 
     if ($f) {
         $encoded_filename = name_encode($f->getTitle());

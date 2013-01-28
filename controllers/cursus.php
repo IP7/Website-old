@@ -59,6 +59,11 @@ function display_cursus() {
     );
     
     foreach ($path->getOptionalCourses() as $c) {
+
+        if ( $c->isDeleted()) {
+            continue;
+        }
+
         $courses['s'.$c->getSemester()]['optional'] []= array(
             'href'  => $base_uri.$c->getShortName(),
             'title' => $c->getShortName(),
@@ -67,6 +72,11 @@ function display_cursus() {
     }
     
     foreach ($path->getMandatoryCourses() as $c) {
+
+        if ( $c->isDeleted()) {
+            continue;
+        }
+
         $courses['s'.$c->getSemester()]['mandatory'] []= array(
             'href'  => $base_uri.$c->getShortName(),
             'title' => $c->getShortName(),
@@ -158,6 +168,11 @@ function display_cursus_with_multiple_educational_paths($cursus, $msg_str, $msg_
     $tpl_paths = array();
 
     foreach ($paths as $p) {
+
+        if ($p->isDeleted()) {
+            continue;
+        }
+
         $tpl_paths []= array(
             'name'  => $p->getName(),
             'title' => $p->getShortName(),

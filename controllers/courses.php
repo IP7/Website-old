@@ -12,6 +12,7 @@ function display_course() {
 
     $course = CourseQuery::create()
                 ->filterByCursus($cursus)
+                ->filterByDeleted(false)
                 ->findOneByShortName($code);
 
     if ($course == null) {
