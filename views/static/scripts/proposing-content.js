@@ -104,4 +104,27 @@ $(function(){
         editor    = new Markdown.Editor(converter);
 
     editor.run();
+
+    (function() {
+
+        // Display the "Previzualize" title when the user type
+        // something.
+        var previewTitle = document.getElementById( '_preview-title' ),
+            inp          = document.getElementById( 'wmd-input' );
+        
+        previewTitle.style.display = 'none';
+
+        function showPreviewTitle() {
+
+            previewTitle.style.display = 'block';
+            inp.removeEventListener( 'keydown', showPreviewTitle );
+
+        }
+
+        inp.addEventListener( 'keydown', showPreviewTitle, false );
+
+    
+    })();
+
+
 });
