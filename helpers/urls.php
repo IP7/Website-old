@@ -24,7 +24,7 @@ function cursus_url($c) {
 // return the URL of a course
 function course_url($cursus, $course) {
     $u  = Config::$root_uri.'cursus/'.$cursus->getShortName();
-    if ($course) { $u .= '/'.$course->getShortName(); }
+    $u .= '/'. ($course === NULL ? 'global' : $course->getShortName());
 
     return $u;
 }

@@ -16,14 +16,17 @@ function display_course_content() {
 	$course	 = $content->getCourse();
 	$cursus	 = $content->getCursus();
 
-    if (!$course || !$cursus) {
+    if ((!$course && $course_code !== 'global') || !$cursus) {
         halt(NOT_FOUND);
     }
 
     $url_year = (string)params('year');
     $url_title = (string)params('title');
 
-    if ($course->getShortName() != $course_code || $cursus->getShortName() != $cursus_sn) {
+    if ($cursus->getShortName() != $cursus_sn
+         || ($course !== NULL && $course->getShortName() != $course_code)
+         || ($course === NULL && $course_code !== 'global')) {
+
 
         redirect_to(content_url($cursus, $course, $content));
 
@@ -191,26 +194,42 @@ function display_course_content() {
         'type'   => $tpl_type
     );
 
+    $keywords = array(
+        $cursus->getName()
+    );
+
+    if ($course) {
+        $keywords []= $course->getName();
+        $keywords []= $course->getShortName();
+    }
+
+    $breadcrumbs = array(
+        1 => array(
+            'href'  => cursus_url($cursus),
+            'title' => $cursus->getName()
+        )
+    );
+    $breadcrumbs_next_indice = 2;
+
+    if ($course) {
+        $breadcrumbs [$breadcrumbs_next_indice++]= array(
+            'href'  => course_url($cursus,$course),
+            'title' => $course->getShortName()
+        );
+    }
+
+    $breadcrumbs [$breadcrumbs_next_indice]= array(
+        'href'  => url(),
+        'title' => $content->getTitle()
+    );
+
 	return tpl_render('contents/base.html', array(
         'page' => Array(
             'title' => $content->getTitle(),
-            'keywords' => array( $cursus->getName(), $course->getName(), $course->getShortName() ),
+            'keywords' => $keywords,
             'description' => '',
 
-            'breadcrumbs' => array(
-                1 => array(
-                    'href'  => cursus_url($cursus),
-                    'title' => $cursus->getName()
-                ),
-                2 => array(
-                    'href'  => course_url($cursus,$course),
-                    'title' => $course->getShortName()
-                ),
-                3 => array(
-                    'href'  => url(),
-                    'title' => $content->getTitle()
-                )
-            ),
+            'breadcrumbs' => $breadcrumbs,
 
             'proposed' => $tpl_proposed,
             'report'   => $tpl_report,

@@ -10,6 +10,12 @@ function display_course() {
         halt(NOT_FOUND);
     }
 
+    # 'global' is a special keyword used for URLs of cursus' contents
+    # (without course)
+    if ($code === 'global') {
+        redirect_to(cursus_url( $cursus ));
+    }
+
     $course = CourseQuery::create()
                 ->filterByCursus($cursus)
                 ->filterByDeleted(false)
