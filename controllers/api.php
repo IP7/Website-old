@@ -47,7 +47,6 @@ function json_get_last_contents() {
 
     $contents = ContentQuery::create()
                     ->joinWith('Content.Cursus')
-                    ->joinWith('Content.Course')
                     ->filterByValidated(1)
                     ->where(  '(SELECT content_types.access_rights '
                             . 'FROM content_types '

@@ -62,7 +62,7 @@ $(function(){
                     var contents = response.data,
                         len      = contents.length,
                         i        = 0,
-                        li, a, c, date;
+                        li, a, c, date, course;
 
                     while (ul.hasChildNodes()) { ul.removeChild(ul.lastChild); }
 
@@ -75,8 +75,10 @@ $(function(){
                            instead of MM-DD-YYYY */
                         date = date.slice(3,5) + '-' + date.slice(0,2) + date.slice(5);
 
+                        course = c.course ? c.course + ', ' : '';
+
                         li.innerHTML = '<a href="' + c.href + '">' + c.title + '</a>'
-                                    +  ' (' + c.course + ', ' + c.cursus + '), '
+                                    +  ' (' + course + c.cursus + '), '
                                     +  '<time datetime="' + str2date(date).toISOString() + '">'
                                     +  'le ' + c.date.replace(' ', ' à ') + '</time>';
 

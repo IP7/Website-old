@@ -172,15 +172,13 @@ function display_admin_proposed_content($msg_str=null, $msg_type=null){
 			$cursus = $c->getCursus();
 			$course = $c->getCourse();
 
-            if (!$cursus || !$course) {
+            if (!$cursus) {
                 continue;
             }
 
-			$uri = Config::$root_uri . 'cursus/' . $cursus->getShortName() . '/' . $course->getShortName() . '/' . $c->getId();
-
             $tpl_c = array(
                 'title' => $c->getTitle(),
-                'href'  => $uri,
+                'href'  => content_url($cursus, $course, $c),
                 'date'  => tpl_date($c->getDate()),
                 'author' => array(
                     'href' => user_url($user),
