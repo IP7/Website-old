@@ -15,6 +15,7 @@
  * @method FileQuery orderByPath($order = Criteria::ASC) Order by the path column
  * @method FileQuery orderByAccessRights($order = Criteria::ASC) Order by the access_rights column
  * @method FileQuery orderByDownloadsCount($order = Criteria::ASC) Order by the downloads_count column
+ * @method FileQuery orderByDeleted($order = Criteria::ASC) Order by the deleted column
  *
  * @method FileQuery groupById() Group by the id column
  * @method FileQuery groupByAuthorId() Group by the author_id column
@@ -25,6 +26,7 @@
  * @method FileQuery groupByPath() Group by the path column
  * @method FileQuery groupByAccessRights() Group by the access_rights column
  * @method FileQuery groupByDownloadsCount() Group by the downloads_count column
+ * @method FileQuery groupByDeleted() Group by the deleted column
  *
  * @method FileQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method FileQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -50,6 +52,7 @@
  * @method File findOneByPath(string $path) Return the first File filtered by the path column
  * @method File findOneByAccessRights(int $access_rights) Return the first File filtered by the access_rights column
  * @method File findOneByDownloadsCount(int $downloads_count) Return the first File filtered by the downloads_count column
+ * @method File findOneByDeleted(boolean $deleted) Return the first File filtered by the deleted column
  *
  * @method array findById(int $id) Return File objects filtered by the id column
  * @method array findByAuthorId(int $author_id) Return File objects filtered by the author_id column
@@ -60,6 +63,7 @@
  * @method array findByPath(string $path) Return File objects filtered by the path column
  * @method array findByAccessRights(int $access_rights) Return File objects filtered by the access_rights column
  * @method array findByDownloadsCount(int $downloads_count) Return File objects filtered by the downloads_count column
+ * @method array findByDeleted(boolean $deleted) Return File objects filtered by the deleted column
  *
  * @package    propel.generator.ip7website.om
  */
@@ -149,7 +153,7 @@ abstract class BaseFileQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `ID`, `AUTHOR_ID`, `TITLE`, `DATE`, `DESCRIPTION`, `FILE_TYPE`, `PATH`, `ACCESS_RIGHTS`, `DOWNLOADS_COUNT` FROM `files` WHERE `ID` = :p0';
+        $sql = 'SELECT `ID`, `AUTHOR_ID`, `TITLE`, `DATE`, `DESCRIPTION`, `FILE_TYPE`, `PATH`, `ACCESS_RIGHTS`, `DOWNLOADS_COUNT`, `DELETED` FROM `files` WHERE `ID` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -552,6 +556,33 @@ abstract class BaseFileQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(FilePeer::DOWNLOADS_COUNT, $downloadsCount, $comparison);
+    }
+
+    /**
+     * Filter the query on the deleted column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByDeleted(true); // WHERE deleted = true
+     * $query->filterByDeleted('yes'); // WHERE deleted = true
+     * </code>
+     *
+     * @param     boolean|string $deleted The value to use as filter.
+     *              Non-boolean arguments are converted using the following rules:
+     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return FileQuery The current query, for fluid interface
+     */
+    public function filterByDeleted($deleted = null, $comparison = null)
+    {
+        if (is_string($deleted)) {
+            $deleted = in_array(strtolower($deleted), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+        }
+
+        return $this->addUsingAlias(FilePeer::DELETED, $deleted, $comparison);
     }
 
     /**

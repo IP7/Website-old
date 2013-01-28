@@ -93,15 +93,12 @@ class UserTableMap extends TableMap
         $this->addRelation('EducationalPathResponsability', 'EducationalPath', RelationMap::ONE_TO_MANY, array('id' => 'responsable_id', ), 'SET NULL', 'CASCADE', 'EducationalPathResponsabilitys');
         $this->addRelation('UsersPaths', 'UsersPaths', RelationMap::ONE_TO_MANY, array('id' => 'user_id', ), 'CASCADE', 'CASCADE', 'UsersPathss');
         $this->addRelation('File', 'File', RelationMap::ONE_TO_MANY, array('id' => 'author_id', ), 'SET NULL', 'CASCADE', 'Files');
-        $this->addRelation('Alert', 'Alert', RelationMap::ONE_TO_MANY, array('id' => 'subscriber_id', ), 'CASCADE', 'CASCADE', 'Alerts');
         $this->addRelation('Content', 'Content', RelationMap::ONE_TO_MANY, array('id' => 'author_id', ), 'SET NULL', 'CASCADE', 'Contents');
         $this->addRelation('Comment', 'Comment', RelationMap::ONE_TO_MANY, array('id' => 'author_id', ), 'CASCADE', 'CASCADE', 'Comments');
         $this->addRelation('Report', 'Report', RelationMap::ONE_TO_MANY, array('id' => 'author_id', ), 'SET NULL', 'CASCADE', 'Reports');
         $this->addRelation('Note', 'Note', RelationMap::ONE_TO_MANY, array('id' => 'user_id', ), 'CASCADE', 'CASCADE', 'Notes');
         $this->addRelation('News', 'News', RelationMap::ONE_TO_MANY, array('id' => 'author_id', ), 'SET NULL', 'CASCADE', 'Newss');
-        $this->addRelation('Ad', 'Ad', RelationMap::ONE_TO_MANY, array('id' => 'author_id', ), 'CASCADE', 'CASCADE', 'Ads');
         $this->addRelation('Transaction', 'Transaction', RelationMap::ONE_TO_MANY, array('id' => 'user_id', ), 'SET NULL', 'CASCADE', 'Transactions');
-        $this->addRelation('ForumMessage', 'ForumMessage', RelationMap::ONE_TO_MANY, array('id' => 'author_id', ), 'CASCADE', 'CASCADE', 'ForumMessages');
         $this->addRelation('ScheduledCourse', 'ScheduledCourse', RelationMap::ONE_TO_MANY, array('id' => 'teacher_id', ), 'SET NULL', 'CASCADE', 'ScheduledCourses');
         $this->addRelation('Token', 'Token', RelationMap::ONE_TO_MANY, array('id' => 'user_id', ), 'CASCADE', 'CASCADE', 'Tokens');
         $this->addRelation('EducationalPath', 'EducationalPath', RelationMap::MANY_TO_MANY, array(), 'CASCADE', 'CASCADE', 'EducationalPaths');

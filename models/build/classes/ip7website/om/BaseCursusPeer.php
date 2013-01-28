@@ -374,9 +374,6 @@ abstract class BaseCursusPeer
         // Invalidate objects in EducationalPathPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         EducationalPathPeer::clearInstancePool();
-        // Invalidate objects in AlertPeer instance pool,
-        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-        AlertPeer::clearInstancePool();
         // Invalidate objects in ContentPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         ContentPeer::clearInstancePool();
@@ -969,12 +966,6 @@ abstract class BaseCursusPeer
 
             $criteria->add(EducationalPathPeer::CURSUS_ID, $obj->getId());
             $affectedRows += EducationalPathPeer::doDelete($criteria, $con);
-
-            // delete related Alert objects
-            $criteria = new Criteria(AlertPeer::DATABASE_NAME);
-
-            $criteria->add(AlertPeer::CURSUS_ID, $obj->getId());
-            $affectedRows += AlertPeer::doDelete($criteria, $con);
 
             // delete related Content objects
             $criteria = new Criteria(ContentPeer::DATABASE_NAME);

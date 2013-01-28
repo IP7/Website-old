@@ -24,13 +24,13 @@ abstract class BaseContentPeer
     const TM_CLASS = 'ContentTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 11;
+    const NUM_COLUMNS = 13;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 1;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 10;
+    const NUM_HYDRATE_COLUMNS = 12;
 
     /** the column name for the ID field */
     const ID = 'contents.ID';
@@ -43,6 +43,9 @@ abstract class BaseContentPeer
 
     /** the column name for the DATE field */
     const DATE = 'contents.DATE';
+
+    /** the column name for the LAST_MODIFICATION_DATE field */
+    const LAST_MODIFICATION_DATE = 'contents.LAST_MODIFICATION_DATE';
 
     /** the column name for the ACCESS_RIGHTS field */
     const ACCESS_RIGHTS = 'contents.ACCESS_RIGHTS';
@@ -65,6 +68,9 @@ abstract class BaseContentPeer
     /** the column name for the YEAR field */
     const YEAR = 'contents.YEAR';
 
+    /** the column name for the DELETED field */
+    const DELETED = 'contents.DELETED';
+
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
 
@@ -84,12 +90,12 @@ abstract class BaseContentPeer
      * e.g. ContentPeer::$fieldNames[ContentPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'AuthorId', 'ContentTypeId', 'Date', 'AccessRights', 'Validated', 'Title', 'Text', 'CursusId', 'CourseId', 'Year', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'authorId', 'contentTypeId', 'date', 'accessRights', 'validated', 'title', 'text', 'cursusId', 'courseId', 'year', ),
-        BasePeer::TYPE_COLNAME => array (ContentPeer::ID, ContentPeer::AUTHOR_ID, ContentPeer::CONTENT_TYPE_ID, ContentPeer::DATE, ContentPeer::ACCESS_RIGHTS, ContentPeer::VALIDATED, ContentPeer::TITLE, ContentPeer::TEXT, ContentPeer::CURSUS_ID, ContentPeer::COURSE_ID, ContentPeer::YEAR, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'AUTHOR_ID', 'CONTENT_TYPE_ID', 'DATE', 'ACCESS_RIGHTS', 'VALIDATED', 'TITLE', 'TEXT', 'CURSUS_ID', 'COURSE_ID', 'YEAR', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'author_id', 'content_type_id', 'date', 'access_rights', 'validated', 'title', 'text', 'cursus_id', 'course_id', 'year', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'AuthorId', 'ContentTypeId', 'Date', 'LastModificationDate', 'AccessRights', 'Validated', 'Title', 'Text', 'CursusId', 'CourseId', 'Year', 'Deleted', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'authorId', 'contentTypeId', 'date', 'lastModificationDate', 'accessRights', 'validated', 'title', 'text', 'cursusId', 'courseId', 'year', 'deleted', ),
+        BasePeer::TYPE_COLNAME => array (ContentPeer::ID, ContentPeer::AUTHOR_ID, ContentPeer::CONTENT_TYPE_ID, ContentPeer::DATE, ContentPeer::LAST_MODIFICATION_DATE, ContentPeer::ACCESS_RIGHTS, ContentPeer::VALIDATED, ContentPeer::TITLE, ContentPeer::TEXT, ContentPeer::CURSUS_ID, ContentPeer::COURSE_ID, ContentPeer::YEAR, ContentPeer::DELETED, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'AUTHOR_ID', 'CONTENT_TYPE_ID', 'DATE', 'LAST_MODIFICATION_DATE', 'ACCESS_RIGHTS', 'VALIDATED', 'TITLE', 'TEXT', 'CURSUS_ID', 'COURSE_ID', 'YEAR', 'DELETED', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'author_id', 'content_type_id', 'date', 'last_modification_date', 'access_rights', 'validated', 'title', 'text', 'cursus_id', 'course_id', 'year', 'deleted', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, )
     );
 
     /**
@@ -99,12 +105,12 @@ abstract class BaseContentPeer
      * e.g. ContentPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'AuthorId' => 1, 'ContentTypeId' => 2, 'Date' => 3, 'AccessRights' => 4, 'Validated' => 5, 'Title' => 6, 'Text' => 7, 'CursusId' => 8, 'CourseId' => 9, 'Year' => 10, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'authorId' => 1, 'contentTypeId' => 2, 'date' => 3, 'accessRights' => 4, 'validated' => 5, 'title' => 6, 'text' => 7, 'cursusId' => 8, 'courseId' => 9, 'year' => 10, ),
-        BasePeer::TYPE_COLNAME => array (ContentPeer::ID => 0, ContentPeer::AUTHOR_ID => 1, ContentPeer::CONTENT_TYPE_ID => 2, ContentPeer::DATE => 3, ContentPeer::ACCESS_RIGHTS => 4, ContentPeer::VALIDATED => 5, ContentPeer::TITLE => 6, ContentPeer::TEXT => 7, ContentPeer::CURSUS_ID => 8, ContentPeer::COURSE_ID => 9, ContentPeer::YEAR => 10, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'AUTHOR_ID' => 1, 'CONTENT_TYPE_ID' => 2, 'DATE' => 3, 'ACCESS_RIGHTS' => 4, 'VALIDATED' => 5, 'TITLE' => 6, 'TEXT' => 7, 'CURSUS_ID' => 8, 'COURSE_ID' => 9, 'YEAR' => 10, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'author_id' => 1, 'content_type_id' => 2, 'date' => 3, 'access_rights' => 4, 'validated' => 5, 'title' => 6, 'text' => 7, 'cursus_id' => 8, 'course_id' => 9, 'year' => 10, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'AuthorId' => 1, 'ContentTypeId' => 2, 'Date' => 3, 'LastModificationDate' => 4, 'AccessRights' => 5, 'Validated' => 6, 'Title' => 7, 'Text' => 8, 'CursusId' => 9, 'CourseId' => 10, 'Year' => 11, 'Deleted' => 12, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'authorId' => 1, 'contentTypeId' => 2, 'date' => 3, 'lastModificationDate' => 4, 'accessRights' => 5, 'validated' => 6, 'title' => 7, 'text' => 8, 'cursusId' => 9, 'courseId' => 10, 'year' => 11, 'deleted' => 12, ),
+        BasePeer::TYPE_COLNAME => array (ContentPeer::ID => 0, ContentPeer::AUTHOR_ID => 1, ContentPeer::CONTENT_TYPE_ID => 2, ContentPeer::DATE => 3, ContentPeer::LAST_MODIFICATION_DATE => 4, ContentPeer::ACCESS_RIGHTS => 5, ContentPeer::VALIDATED => 6, ContentPeer::TITLE => 7, ContentPeer::TEXT => 8, ContentPeer::CURSUS_ID => 9, ContentPeer::COURSE_ID => 10, ContentPeer::YEAR => 11, ContentPeer::DELETED => 12, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'AUTHOR_ID' => 1, 'CONTENT_TYPE_ID' => 2, 'DATE' => 3, 'LAST_MODIFICATION_DATE' => 4, 'ACCESS_RIGHTS' => 5, 'VALIDATED' => 6, 'TITLE' => 7, 'TEXT' => 8, 'CURSUS_ID' => 9, 'COURSE_ID' => 10, 'YEAR' => 11, 'DELETED' => 12, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'author_id' => 1, 'content_type_id' => 2, 'date' => 3, 'last_modification_date' => 4, 'access_rights' => 5, 'validated' => 6, 'title' => 7, 'text' => 8, 'cursus_id' => 9, 'course_id' => 10, 'year' => 11, 'deleted' => 12, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, )
     );
 
     /**
@@ -182,23 +188,27 @@ abstract class BaseContentPeer
             $criteria->addSelectColumn(ContentPeer::AUTHOR_ID);
             $criteria->addSelectColumn(ContentPeer::CONTENT_TYPE_ID);
             $criteria->addSelectColumn(ContentPeer::DATE);
+            $criteria->addSelectColumn(ContentPeer::LAST_MODIFICATION_DATE);
             $criteria->addSelectColumn(ContentPeer::ACCESS_RIGHTS);
             $criteria->addSelectColumn(ContentPeer::VALIDATED);
             $criteria->addSelectColumn(ContentPeer::TITLE);
             $criteria->addSelectColumn(ContentPeer::CURSUS_ID);
             $criteria->addSelectColumn(ContentPeer::COURSE_ID);
             $criteria->addSelectColumn(ContentPeer::YEAR);
+            $criteria->addSelectColumn(ContentPeer::DELETED);
         } else {
             $criteria->addSelectColumn($alias . '.ID');
             $criteria->addSelectColumn($alias . '.AUTHOR_ID');
             $criteria->addSelectColumn($alias . '.CONTENT_TYPE_ID');
             $criteria->addSelectColumn($alias . '.DATE');
+            $criteria->addSelectColumn($alias . '.LAST_MODIFICATION_DATE');
             $criteria->addSelectColumn($alias . '.ACCESS_RIGHTS');
             $criteria->addSelectColumn($alias . '.VALIDATED');
             $criteria->addSelectColumn($alias . '.TITLE');
             $criteria->addSelectColumn($alias . '.CURSUS_ID');
             $criteria->addSelectColumn($alias . '.COURSE_ID');
             $criteria->addSelectColumn($alias . '.YEAR');
+            $criteria->addSelectColumn($alias . '.DELETED');
         }
     }
 
@@ -404,9 +414,6 @@ abstract class BaseContentPeer
         // Invalidate objects in CommentPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         CommentPeer::clearInstancePool();
-        // Invalidate objects in ContentsTagsPeer instance pool,
-        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-        ContentsTagsPeer::clearInstancePool();
         // Invalidate objects in ReportPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         ReportPeer::clearInstancePool();
@@ -2130,12 +2137,6 @@ abstract class BaseContentPeer
 
             $criteria->add(CommentPeer::CONTENT_ID, $obj->getId());
             $affectedRows += CommentPeer::doDelete($criteria, $con);
-
-            // delete related ContentsTags objects
-            $criteria = new Criteria(ContentsTagsPeer::DATABASE_NAME);
-
-            $criteria->add(ContentsTagsPeer::CONTENT_ID, $obj->getId());
-            $affectedRows += ContentsTagsPeer::doDelete($criteria, $con);
 
             // delete related Report objects
             $criteria = new Criteria(ReportPeer::DATABASE_NAME);

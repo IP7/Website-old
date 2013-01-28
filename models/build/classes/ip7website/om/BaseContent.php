@@ -54,6 +54,12 @@ abstract class BaseContent extends BaseObject implements Persistent
     protected $date;
 
     /**
+     * The value for the last_modification_date field.
+     * @var        string
+     */
+    protected $last_modification_date;
+
+    /**
      * The value for the access_rights field.
      * Note: this column has a database default value of: (expression) 0
      * @var        int
@@ -105,6 +111,13 @@ abstract class BaseContent extends BaseObject implements Persistent
     protected $year;
 
     /**
+     * The value for the deleted field.
+     * Note: this column has a database default value of: (expression) 0
+     * @var        boolean
+     */
+    protected $deleted;
+
+    /**
      * @var        User
      */
     protected $aAuthor;
@@ -137,12 +150,6 @@ abstract class BaseContent extends BaseObject implements Persistent
     protected $collCommentsPartial;
 
     /**
-     * @var        PropelObjectCollection|ContentsTags[] Collection to store aggregation of ContentsTags objects.
-     */
-    protected $collContentsTagss;
-    protected $collContentsTagssPartial;
-
-    /**
      * @var        PropelObjectCollection|Report[] Collection to store aggregation of Report objects.
      */
     protected $collReports;
@@ -152,11 +159,6 @@ abstract class BaseContent extends BaseObject implements Persistent
      * @var        PropelObjectCollection|File[] Collection to store aggregation of File objects.
      */
     protected $collFiles;
-
-    /**
-     * @var        PropelObjectCollection|Tag[] Collection to store aggregation of Tag objects.
-     */
-    protected $collTags;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -182,12 +184,6 @@ abstract class BaseContent extends BaseObject implements Persistent
      * An array of objects scheduled for deletion.
      * @var		PropelObjectCollection
      */
-    protected $tagsScheduledForDeletion = null;
-
-    /**
-     * An array of objects scheduled for deletion.
-     * @var		PropelObjectCollection
-     */
     protected $contentsFilessScheduledForDeletion = null;
 
     /**
@@ -195,12 +191,6 @@ abstract class BaseContent extends BaseObject implements Persistent
      * @var		PropelObjectCollection
      */
     protected $commentsScheduledForDeletion = null;
-
-    /**
-     * An array of objects scheduled for deletion.
-     * @var		PropelObjectCollection
-     */
-    protected $contentsTagssScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
@@ -282,6 +272,43 @@ abstract class BaseContent extends BaseObject implements Persistent
                 $dt = new DateTime($this->date);
             } catch (Exception $x) {
                 throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->date, true), $x);
+            }
+        }
+
+        if ($format === null) {
+            // Because propel.useDateTimeClass is true, we return a DateTime object.
+            return $dt;
+        } elseif (strpos($format, '%') !== false) {
+            return strftime($format, $dt->format('U'));
+        } else {
+            return $dt->format($format);
+        }
+    }
+
+    /**
+     * Get the [optionally formatted] temporal [last_modification_date] column value.
+     *
+     *
+     * @param string $format The date/time format string (either date()-style or strftime()-style).
+     *				 If format is null, then the raw DateTime object will be returned.
+     * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00 00:00:00
+     * @throws PropelException - if unable to parse/validate the date/time value.
+     */
+    public function getLastModificationDate($format = 'd-m-Y H:i:s')
+    {
+        if ($this->last_modification_date === null) {
+            return null;
+        }
+
+        if ($this->last_modification_date === '0000-00-00 00:00:00') {
+            // while technically this is not a default value of null,
+            // this seems to be closest in meaning.
+            return null;
+        } else {
+            try {
+                $dt = new DateTime($this->last_modification_date);
+            } catch (Exception $x) {
+                throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->last_modification_date, true), $x);
             }
         }
 
@@ -396,6 +423,16 @@ abstract class BaseContent extends BaseObject implements Persistent
     }
 
     /**
+     * Get the [deleted] column value.
+     *
+     * @return boolean
+     */
+    public function getDeleted()
+    {
+        return $this->deleted;
+    }
+
+    /**
      * Set the value of [id] column.
      *
      * @param int $v new value
@@ -488,6 +525,29 @@ abstract class BaseContent extends BaseObject implements Persistent
 
         return $this;
     } // setDate()
+
+    /**
+     * Sets the value of [last_modification_date] column to a normalized version of the date/time value specified.
+     *
+     * @param mixed $v string, integer (timestamp), or DateTime value.
+     *               Empty strings are treated as null.
+     * @return Content The current object (for fluent API support)
+     */
+    public function setLastModificationDate($v)
+    {
+        $dt = PropelDateTime::newInstance($v, null, 'DateTime');
+        if ($this->last_modification_date !== null || $dt !== null) {
+            $currentDateAsString = ($this->last_modification_date !== null && $tmpDt = new DateTime($this->last_modification_date)) ? $tmpDt->format('Y-m-d H:i:s') : null;
+            $newDateAsString = $dt ? $dt->format('Y-m-d H:i:s') : null;
+            if ($currentDateAsString !== $newDateAsString) {
+                $this->last_modification_date = $newDateAsString;
+                $this->modifiedColumns[] = ContentPeer::LAST_MODIFICATION_DATE;
+            }
+        } // if either are not null
+
+
+        return $this;
+    } // setLastModificationDate()
 
     /**
      * Set the value of [access_rights] column.
@@ -659,6 +719,35 @@ abstract class BaseContent extends BaseObject implements Persistent
     } // setYear()
 
     /**
+     * Sets the value of the [deleted] column.
+     * Non-boolean arguments are converted using the following rules:
+     *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     *
+     * @param boolean|integer|string $v The new value
+     * @return Content The current object (for fluent API support)
+     */
+    public function setDeleted($v)
+    {
+        if ($v !== null) {
+            if (is_string($v)) {
+                $v = in_array(strtolower($v), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+            } else {
+                $v = (boolean) $v;
+            }
+        }
+
+        if ($this->deleted !== $v) {
+            $this->deleted = $v;
+            $this->modifiedColumns[] = ContentPeer::DELETED;
+        }
+
+
+        return $this;
+    } // setDeleted()
+
+    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -694,12 +783,14 @@ abstract class BaseContent extends BaseObject implements Persistent
             $this->author_id = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
             $this->content_type_id = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
             $this->date = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
-            $this->access_rights = ($row[$startcol + 4] !== null) ? (int) $row[$startcol + 4] : null;
-            $this->validated = ($row[$startcol + 5] !== null) ? (boolean) $row[$startcol + 5] : null;
-            $this->title = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
-            $this->cursus_id = ($row[$startcol + 7] !== null) ? (int) $row[$startcol + 7] : null;
-            $this->course_id = ($row[$startcol + 8] !== null) ? (int) $row[$startcol + 8] : null;
-            $this->year = ($row[$startcol + 9] !== null) ? (int) $row[$startcol + 9] : null;
+            $this->last_modification_date = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
+            $this->access_rights = ($row[$startcol + 5] !== null) ? (int) $row[$startcol + 5] : null;
+            $this->validated = ($row[$startcol + 6] !== null) ? (boolean) $row[$startcol + 6] : null;
+            $this->title = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
+            $this->cursus_id = ($row[$startcol + 8] !== null) ? (int) $row[$startcol + 8] : null;
+            $this->course_id = ($row[$startcol + 9] !== null) ? (int) $row[$startcol + 9] : null;
+            $this->year = ($row[$startcol + 10] !== null) ? (int) $row[$startcol + 10] : null;
+            $this->deleted = ($row[$startcol + 11] !== null) ? (boolean) $row[$startcol + 11] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -708,7 +799,7 @@ abstract class BaseContent extends BaseObject implements Persistent
                 $this->ensureConsistency();
             }
 
-            return $startcol + 10; // 10 = ContentPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 12; // 12 = ContentPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating Content object", $e);
@@ -794,12 +885,9 @@ abstract class BaseContent extends BaseObject implements Persistent
 
             $this->collComments = null;
 
-            $this->collContentsTagss = null;
-
             $this->collReports = null;
 
             $this->collFiles = null;
-            $this->collTags = null;
         } // if (deep)
     }
 
@@ -977,26 +1065,6 @@ abstract class BaseContent extends BaseObject implements Persistent
                 }
             }
 
-            if ($this->tagsScheduledForDeletion !== null) {
-                if (!$this->tagsScheduledForDeletion->isEmpty()) {
-                    $pks = array();
-                    $pk = $this->getPrimaryKey();
-                    foreach ($this->tagsScheduledForDeletion->getPrimaryKeys(false) as $remotePk) {
-                        $pks[] = array($remotePk, $pk);
-                    }
-                    ContentsTagsQuery::create()
-                        ->filterByPrimaryKeys($pks)
-                        ->delete($con);
-                    $this->tagsScheduledForDeletion = null;
-                }
-
-                foreach ($this->getTags() as $tag) {
-                    if ($tag->isModified()) {
-                        $tag->save($con);
-                    }
-                }
-            }
-
             if ($this->contentsFilessScheduledForDeletion !== null) {
                 if (!$this->contentsFilessScheduledForDeletion->isEmpty()) {
                     ContentsFilesQuery::create()
@@ -1026,23 +1094,6 @@ abstract class BaseContent extends BaseObject implements Persistent
 
             if ($this->collComments !== null) {
                 foreach ($this->collComments as $referrerFK) {
-                    if (!$referrerFK->isDeleted()) {
-                        $affectedRows += $referrerFK->save($con);
-                    }
-                }
-            }
-
-            if ($this->contentsTagssScheduledForDeletion !== null) {
-                if (!$this->contentsTagssScheduledForDeletion->isEmpty()) {
-                    ContentsTagsQuery::create()
-                        ->filterByPrimaryKeys($this->contentsTagssScheduledForDeletion->getPrimaryKeys(false))
-                        ->delete($con);
-                    $this->contentsTagssScheduledForDeletion = null;
-                }
-            }
-
-            if ($this->collContentsTagss !== null) {
-                foreach ($this->collContentsTagss as $referrerFK) {
                     if (!$referrerFK->isDeleted()) {
                         $affectedRows += $referrerFK->save($con);
                     }
@@ -1105,6 +1156,9 @@ abstract class BaseContent extends BaseObject implements Persistent
         if ($this->isColumnModified(ContentPeer::DATE)) {
             $modifiedColumns[':p' . $index++]  = '`DATE`';
         }
+        if ($this->isColumnModified(ContentPeer::LAST_MODIFICATION_DATE)) {
+            $modifiedColumns[':p' . $index++]  = '`LAST_MODIFICATION_DATE`';
+        }
         if ($this->isColumnModified(ContentPeer::ACCESS_RIGHTS)) {
             $modifiedColumns[':p' . $index++]  = '`ACCESS_RIGHTS`';
         }
@@ -1125,6 +1179,9 @@ abstract class BaseContent extends BaseObject implements Persistent
         }
         if ($this->isColumnModified(ContentPeer::YEAR)) {
             $modifiedColumns[':p' . $index++]  = '`YEAR`';
+        }
+        if ($this->isColumnModified(ContentPeer::DELETED)) {
+            $modifiedColumns[':p' . $index++]  = '`DELETED`';
         }
 
         $sql = sprintf(
@@ -1149,6 +1206,9 @@ abstract class BaseContent extends BaseObject implements Persistent
                     case '`DATE`':
                         $stmt->bindValue($identifier, $this->date, PDO::PARAM_STR);
                         break;
+                    case '`LAST_MODIFICATION_DATE`':
+                        $stmt->bindValue($identifier, $this->last_modification_date, PDO::PARAM_STR);
+                        break;
                     case '`ACCESS_RIGHTS`':
                         $stmt->bindValue($identifier, $this->access_rights, PDO::PARAM_INT);
                         break;
@@ -1169,6 +1229,9 @@ abstract class BaseContent extends BaseObject implements Persistent
                         break;
                     case '`YEAR`':
                         $stmt->bindValue($identifier, $this->year, PDO::PARAM_INT);
+                        break;
+                    case '`DELETED`':
+                        $stmt->bindValue($identifier, (int) $this->deleted, PDO::PARAM_INT);
                         break;
                 }
             }
@@ -1315,14 +1378,6 @@ abstract class BaseContent extends BaseObject implements Persistent
                     }
                 }
 
-                if ($this->collContentsTagss !== null) {
-                    foreach ($this->collContentsTagss as $referrerFK) {
-                        if (!$referrerFK->validate($columns)) {
-                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
-                        }
-                    }
-                }
-
                 if ($this->collReports !== null) {
                     foreach ($this->collReports as $referrerFK) {
                         if (!$referrerFK->validate($columns)) {
@@ -1379,25 +1434,31 @@ abstract class BaseContent extends BaseObject implements Persistent
                 return $this->getDate();
                 break;
             case 4:
-                return $this->getAccessRights();
+                return $this->getLastModificationDate();
                 break;
             case 5:
-                return $this->getValidated();
+                return $this->getAccessRights();
                 break;
             case 6:
-                return $this->getTitle();
+                return $this->getValidated();
                 break;
             case 7:
-                return $this->getText();
+                return $this->getTitle();
                 break;
             case 8:
-                return $this->getCursusId();
+                return $this->getText();
                 break;
             case 9:
-                return $this->getCourseId();
+                return $this->getCursusId();
                 break;
             case 10:
+                return $this->getCourseId();
+                break;
+            case 11:
                 return $this->getYear();
+                break;
+            case 12:
+                return $this->getDeleted();
                 break;
             default:
                 return null;
@@ -1432,13 +1493,15 @@ abstract class BaseContent extends BaseObject implements Persistent
             $keys[1] => $this->getAuthorId(),
             $keys[2] => $this->getContentTypeId(),
             $keys[3] => $this->getDate(),
-            $keys[4] => $this->getAccessRights(),
-            $keys[5] => $this->getValidated(),
-            $keys[6] => $this->getTitle(),
-            $keys[7] => ($includeLazyLoadColumns) ? $this->getText() : null,
-            $keys[8] => $this->getCursusId(),
-            $keys[9] => $this->getCourseId(),
-            $keys[10] => $this->getYear(),
+            $keys[4] => $this->getLastModificationDate(),
+            $keys[5] => $this->getAccessRights(),
+            $keys[6] => $this->getValidated(),
+            $keys[7] => $this->getTitle(),
+            $keys[8] => ($includeLazyLoadColumns) ? $this->getText() : null,
+            $keys[9] => $this->getCursusId(),
+            $keys[10] => $this->getCourseId(),
+            $keys[11] => $this->getYear(),
+            $keys[12] => $this->getDeleted(),
         );
         if ($includeForeignObjects) {
             if (null !== $this->aAuthor) {
@@ -1458,9 +1521,6 @@ abstract class BaseContent extends BaseObject implements Persistent
             }
             if (null !== $this->collComments) {
                 $result['Comments'] = $this->collComments->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
-            }
-            if (null !== $this->collContentsTagss) {
-                $result['ContentsTagss'] = $this->collContentsTagss->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
             if (null !== $this->collReports) {
                 $result['Reports'] = $this->collReports->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
@@ -1512,25 +1572,31 @@ abstract class BaseContent extends BaseObject implements Persistent
                 $this->setDate($value);
                 break;
             case 4:
-                $this->setAccessRights($value);
+                $this->setLastModificationDate($value);
                 break;
             case 5:
-                $this->setValidated($value);
+                $this->setAccessRights($value);
                 break;
             case 6:
-                $this->setTitle($value);
+                $this->setValidated($value);
                 break;
             case 7:
-                $this->setText($value);
+                $this->setTitle($value);
                 break;
             case 8:
-                $this->setCursusId($value);
+                $this->setText($value);
                 break;
             case 9:
-                $this->setCourseId($value);
+                $this->setCursusId($value);
                 break;
             case 10:
+                $this->setCourseId($value);
+                break;
+            case 11:
                 $this->setYear($value);
+                break;
+            case 12:
+                $this->setDeleted($value);
                 break;
         } // switch()
     }
@@ -1560,13 +1626,15 @@ abstract class BaseContent extends BaseObject implements Persistent
         if (array_key_exists($keys[1], $arr)) $this->setAuthorId($arr[$keys[1]]);
         if (array_key_exists($keys[2], $arr)) $this->setContentTypeId($arr[$keys[2]]);
         if (array_key_exists($keys[3], $arr)) $this->setDate($arr[$keys[3]]);
-        if (array_key_exists($keys[4], $arr)) $this->setAccessRights($arr[$keys[4]]);
-        if (array_key_exists($keys[5], $arr)) $this->setValidated($arr[$keys[5]]);
-        if (array_key_exists($keys[6], $arr)) $this->setTitle($arr[$keys[6]]);
-        if (array_key_exists($keys[7], $arr)) $this->setText($arr[$keys[7]]);
-        if (array_key_exists($keys[8], $arr)) $this->setCursusId($arr[$keys[8]]);
-        if (array_key_exists($keys[9], $arr)) $this->setCourseId($arr[$keys[9]]);
-        if (array_key_exists($keys[10], $arr)) $this->setYear($arr[$keys[10]]);
+        if (array_key_exists($keys[4], $arr)) $this->setLastModificationDate($arr[$keys[4]]);
+        if (array_key_exists($keys[5], $arr)) $this->setAccessRights($arr[$keys[5]]);
+        if (array_key_exists($keys[6], $arr)) $this->setValidated($arr[$keys[6]]);
+        if (array_key_exists($keys[7], $arr)) $this->setTitle($arr[$keys[7]]);
+        if (array_key_exists($keys[8], $arr)) $this->setText($arr[$keys[8]]);
+        if (array_key_exists($keys[9], $arr)) $this->setCursusId($arr[$keys[9]]);
+        if (array_key_exists($keys[10], $arr)) $this->setCourseId($arr[$keys[10]]);
+        if (array_key_exists($keys[11], $arr)) $this->setYear($arr[$keys[11]]);
+        if (array_key_exists($keys[12], $arr)) $this->setDeleted($arr[$keys[12]]);
     }
 
     /**
@@ -1582,6 +1650,7 @@ abstract class BaseContent extends BaseObject implements Persistent
         if ($this->isColumnModified(ContentPeer::AUTHOR_ID)) $criteria->add(ContentPeer::AUTHOR_ID, $this->author_id);
         if ($this->isColumnModified(ContentPeer::CONTENT_TYPE_ID)) $criteria->add(ContentPeer::CONTENT_TYPE_ID, $this->content_type_id);
         if ($this->isColumnModified(ContentPeer::DATE)) $criteria->add(ContentPeer::DATE, $this->date);
+        if ($this->isColumnModified(ContentPeer::LAST_MODIFICATION_DATE)) $criteria->add(ContentPeer::LAST_MODIFICATION_DATE, $this->last_modification_date);
         if ($this->isColumnModified(ContentPeer::ACCESS_RIGHTS)) $criteria->add(ContentPeer::ACCESS_RIGHTS, $this->access_rights);
         if ($this->isColumnModified(ContentPeer::VALIDATED)) $criteria->add(ContentPeer::VALIDATED, $this->validated);
         if ($this->isColumnModified(ContentPeer::TITLE)) $criteria->add(ContentPeer::TITLE, $this->title);
@@ -1589,6 +1658,7 @@ abstract class BaseContent extends BaseObject implements Persistent
         if ($this->isColumnModified(ContentPeer::CURSUS_ID)) $criteria->add(ContentPeer::CURSUS_ID, $this->cursus_id);
         if ($this->isColumnModified(ContentPeer::COURSE_ID)) $criteria->add(ContentPeer::COURSE_ID, $this->course_id);
         if ($this->isColumnModified(ContentPeer::YEAR)) $criteria->add(ContentPeer::YEAR, $this->year);
+        if ($this->isColumnModified(ContentPeer::DELETED)) $criteria->add(ContentPeer::DELETED, $this->deleted);
 
         return $criteria;
     }
@@ -1655,6 +1725,7 @@ abstract class BaseContent extends BaseObject implements Persistent
         $copyObj->setAuthorId($this->getAuthorId());
         $copyObj->setContentTypeId($this->getContentTypeId());
         $copyObj->setDate($this->getDate());
+        $copyObj->setLastModificationDate($this->getLastModificationDate());
         $copyObj->setAccessRights($this->getAccessRights());
         $copyObj->setValidated($this->getValidated());
         $copyObj->setTitle($this->getTitle());
@@ -1662,6 +1733,7 @@ abstract class BaseContent extends BaseObject implements Persistent
         $copyObj->setCursusId($this->getCursusId());
         $copyObj->setCourseId($this->getCourseId());
         $copyObj->setYear($this->getYear());
+        $copyObj->setDeleted($this->getDeleted());
 
         if ($deepCopy && !$this->startCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -1679,12 +1751,6 @@ abstract class BaseContent extends BaseObject implements Persistent
             foreach ($this->getComments() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
                     $copyObj->addComment($relObj->copy($deepCopy));
-                }
-            }
-
-            foreach ($this->getContentsTagss() as $relObj) {
-                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addContentsTags($relObj->copy($deepCopy));
                 }
             }
 
@@ -1964,9 +2030,6 @@ abstract class BaseContent extends BaseObject implements Persistent
         }
         if ('Comment' == $relationName) {
             $this->initComments();
-        }
-        if ('ContentsTags' == $relationName) {
-            $this->initContentsTagss();
         }
         if ('Report' == $relationName) {
             $this->initReports();
@@ -2463,238 +2526,6 @@ abstract class BaseContent extends BaseObject implements Persistent
     }
 
     /**
-     * Clears out the collContentsTagss collection
-     *
-     * This does not modify the database; however, it will remove any associated objects, causing
-     * them to be refetched by subsequent calls to accessor method.
-     *
-     * @return void
-     * @see        addContentsTagss()
-     */
-    public function clearContentsTagss()
-    {
-        $this->collContentsTagss = null; // important to set this to null since that means it is uninitialized
-        $this->collContentsTagssPartial = null;
-    }
-
-    /**
-     * reset is the collContentsTagss collection loaded partially
-     *
-     * @return void
-     */
-    public function resetPartialContentsTagss($v = true)
-    {
-        $this->collContentsTagssPartial = $v;
-    }
-
-    /**
-     * Initializes the collContentsTagss collection.
-     *
-     * By default this just sets the collContentsTagss collection to an empty array (like clearcollContentsTagss());
-     * however, you may wish to override this method in your stub class to provide setting appropriate
-     * to your application -- for example, setting the initial array to the values stored in database.
-     *
-     * @param boolean $overrideExisting If set to true, the method call initializes
-     *                                        the collection even if it is not empty
-     *
-     * @return void
-     */
-    public function initContentsTagss($overrideExisting = true)
-    {
-        if (null !== $this->collContentsTagss && !$overrideExisting) {
-            return;
-        }
-        $this->collContentsTagss = new PropelObjectCollection();
-        $this->collContentsTagss->setModel('ContentsTags');
-    }
-
-    /**
-     * Gets an array of ContentsTags objects which contain a foreign key that references this object.
-     *
-     * If the $criteria is not null, it is used to always fetch the results from the database.
-     * Otherwise the results are fetched from the database the first time, then cached.
-     * Next time the same method is called without $criteria, the cached collection is returned.
-     * If this Content is new, it will return
-     * an empty collection or the current collection; the criteria is ignored on a new object.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @return PropelObjectCollection|ContentsTags[] List of ContentsTags objects
-     * @throws PropelException
-     */
-    public function getContentsTagss($criteria = null, PropelPDO $con = null)
-    {
-        $partial = $this->collContentsTagssPartial && !$this->isNew();
-        if (null === $this->collContentsTagss || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collContentsTagss) {
-                // return empty collection
-                $this->initContentsTagss();
-            } else {
-                $collContentsTagss = ContentsTagsQuery::create(null, $criteria)
-                    ->filterByContent($this)
-                    ->find($con);
-                if (null !== $criteria) {
-                    if (false !== $this->collContentsTagssPartial && count($collContentsTagss)) {
-                      $this->initContentsTagss(false);
-
-                      foreach($collContentsTagss as $obj) {
-                        if (false == $this->collContentsTagss->contains($obj)) {
-                          $this->collContentsTagss->append($obj);
-                        }
-                      }
-
-                      $this->collContentsTagssPartial = true;
-                    }
-
-                    return $collContentsTagss;
-                }
-
-                if($partial && $this->collContentsTagss) {
-                    foreach($this->collContentsTagss as $obj) {
-                        if($obj->isNew()) {
-                            $collContentsTagss[] = $obj;
-                        }
-                    }
-                }
-
-                $this->collContentsTagss = $collContentsTagss;
-                $this->collContentsTagssPartial = false;
-            }
-        }
-
-        return $this->collContentsTagss;
-    }
-
-    /**
-     * Sets a collection of ContentsTags objects related by a one-to-many relationship
-     * to the current object.
-     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
-     * and new objects from the given Propel collection.
-     *
-     * @param PropelCollection $contentsTagss A Propel collection.
-     * @param PropelPDO $con Optional connection object
-     */
-    public function setContentsTagss(PropelCollection $contentsTagss, PropelPDO $con = null)
-    {
-        $this->contentsTagssScheduledForDeletion = $this->getContentsTagss(new Criteria(), $con)->diff($contentsTagss);
-
-        foreach ($this->contentsTagssScheduledForDeletion as $contentsTagsRemoved) {
-            $contentsTagsRemoved->setContent(null);
-        }
-
-        $this->collContentsTagss = null;
-        foreach ($contentsTagss as $contentsTags) {
-            $this->addContentsTags($contentsTags);
-        }
-
-        $this->collContentsTagss = $contentsTagss;
-        $this->collContentsTagssPartial = false;
-    }
-
-    /**
-     * Returns the number of related ContentsTags objects.
-     *
-     * @param Criteria $criteria
-     * @param boolean $distinct
-     * @param PropelPDO $con
-     * @return int             Count of related ContentsTags objects.
-     * @throws PropelException
-     */
-    public function countContentsTagss(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
-    {
-        $partial = $this->collContentsTagssPartial && !$this->isNew();
-        if (null === $this->collContentsTagss || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collContentsTagss) {
-                return 0;
-            } else {
-                if($partial && !$criteria) {
-                    return count($this->getContentsTagss());
-                }
-                $query = ContentsTagsQuery::create(null, $criteria);
-                if ($distinct) {
-                    $query->distinct();
-                }
-
-                return $query
-                    ->filterByContent($this)
-                    ->count($con);
-            }
-        } else {
-            return count($this->collContentsTagss);
-        }
-    }
-
-    /**
-     * Method called to associate a ContentsTags object to this object
-     * through the ContentsTags foreign key attribute.
-     *
-     * @param    ContentsTags $l ContentsTags
-     * @return Content The current object (for fluent API support)
-     */
-    public function addContentsTags(ContentsTags $l)
-    {
-        if ($this->collContentsTagss === null) {
-            $this->initContentsTagss();
-            $this->collContentsTagssPartial = true;
-        }
-        if (!$this->collContentsTagss->contains($l)) { // only add it if the **same** object is not already associated
-            $this->doAddContentsTags($l);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param	ContentsTags $contentsTags The contentsTags object to add.
-     */
-    protected function doAddContentsTags($contentsTags)
-    {
-        $this->collContentsTagss[]= $contentsTags;
-        $contentsTags->setContent($this);
-    }
-
-    /**
-     * @param	ContentsTags $contentsTags The contentsTags object to remove.
-     */
-    public function removeContentsTags($contentsTags)
-    {
-        if ($this->getContentsTagss()->contains($contentsTags)) {
-            $this->collContentsTagss->remove($this->collContentsTagss->search($contentsTags));
-            if (null === $this->contentsTagssScheduledForDeletion) {
-                $this->contentsTagssScheduledForDeletion = clone $this->collContentsTagss;
-                $this->contentsTagssScheduledForDeletion->clear();
-            }
-            $this->contentsTagssScheduledForDeletion[]= $contentsTags;
-            $contentsTags->setContent(null);
-        }
-    }
-
-
-    /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this Content is new, it will return
-     * an empty collection; or if this Content has previously
-     * been saved, it will retrieve related ContentsTagss from storage.
-     *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in Content.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return PropelObjectCollection|ContentsTags[] List of ContentsTags objects
-     */
-    public function getContentsTagssJoinTag($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $query = ContentsTagsQuery::create(null, $criteria);
-        $query->joinWith('Tag', $join_behavior);
-
-        return $this->getContentsTagss($query, $con);
-    }
-
-    /**
      * Clears out the collReports collection
      *
      * This does not modify the database; however, it will remove any associated objects, causing
@@ -3095,174 +2926,6 @@ abstract class BaseContent extends BaseObject implements Persistent
     }
 
     /**
-     * Clears out the collTags collection
-     *
-     * This does not modify the database; however, it will remove any associated objects, causing
-     * them to be refetched by subsequent calls to accessor method.
-     *
-     * @return void
-     * @see        addTags()
-     */
-    public function clearTags()
-    {
-        $this->collTags = null; // important to set this to null since that means it is uninitialized
-        $this->collTagsPartial = null;
-    }
-
-    /**
-     * Initializes the collTags collection.
-     *
-     * By default this just sets the collTags collection to an empty collection (like clearTags());
-     * however, you may wish to override this method in your stub class to provide setting appropriate
-     * to your application -- for example, setting the initial array to the values stored in database.
-     *
-     * @return void
-     */
-    public function initTags()
-    {
-        $this->collTags = new PropelObjectCollection();
-        $this->collTags->setModel('Tag');
-    }
-
-    /**
-     * Gets a collection of Tag objects related by a many-to-many relationship
-     * to the current object by way of the contents_tags cross-reference table.
-     *
-     * If the $criteria is not null, it is used to always fetch the results from the database.
-     * Otherwise the results are fetched from the database the first time, then cached.
-     * Next time the same method is called without $criteria, the cached collection is returned.
-     * If this Content is new, it will return
-     * an empty collection or the current collection; the criteria is ignored on a new object.
-     *
-     * @param Criteria $criteria Optional query object to filter the query
-     * @param PropelPDO $con Optional connection object
-     *
-     * @return PropelObjectCollection|Tag[] List of Tag objects
-     */
-    public function getTags($criteria = null, PropelPDO $con = null)
-    {
-        if (null === $this->collTags || null !== $criteria) {
-            if ($this->isNew() && null === $this->collTags) {
-                // return empty collection
-                $this->initTags();
-            } else {
-                $collTags = TagQuery::create(null, $criteria)
-                    ->filterByContent($this)
-                    ->find($con);
-                if (null !== $criteria) {
-                    return $collTags;
-                }
-                $this->collTags = $collTags;
-            }
-        }
-
-        return $this->collTags;
-    }
-
-    /**
-     * Sets a collection of Tag objects related by a many-to-many relationship
-     * to the current object by way of the contents_tags cross-reference table.
-     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
-     * and new objects from the given Propel collection.
-     *
-     * @param PropelCollection $tags A Propel collection.
-     * @param PropelPDO $con Optional connection object
-     */
-    public function setTags(PropelCollection $tags, PropelPDO $con = null)
-    {
-        $this->clearTags();
-        $currentTags = $this->getTags();
-
-        $this->tagsScheduledForDeletion = $currentTags->diff($tags);
-
-        foreach ($tags as $tag) {
-            if (!$currentTags->contains($tag)) {
-                $this->doAddTag($tag);
-            }
-        }
-
-        $this->collTags = $tags;
-    }
-
-    /**
-     * Gets the number of Tag objects related by a many-to-many relationship
-     * to the current object by way of the contents_tags cross-reference table.
-     *
-     * @param Criteria $criteria Optional query object to filter the query
-     * @param boolean $distinct Set to true to force count distinct
-     * @param PropelPDO $con Optional connection object
-     *
-     * @return int the number of related Tag objects
-     */
-    public function countTags($criteria = null, $distinct = false, PropelPDO $con = null)
-    {
-        if (null === $this->collTags || null !== $criteria) {
-            if ($this->isNew() && null === $this->collTags) {
-                return 0;
-            } else {
-                $query = TagQuery::create(null, $criteria);
-                if ($distinct) {
-                    $query->distinct();
-                }
-
-                return $query
-                    ->filterByContent($this)
-                    ->count($con);
-            }
-        } else {
-            return count($this->collTags);
-        }
-    }
-
-    /**
-     * Associate a Tag object to this object
-     * through the contents_tags cross reference table.
-     *
-     * @param  Tag $tag The ContentsTags object to relate
-     * @return void
-     */
-    public function addTag(Tag $tag)
-    {
-        if ($this->collTags === null) {
-            $this->initTags();
-        }
-        if (!$this->collTags->contains($tag)) { // only add it if the **same** object is not already associated
-            $this->doAddTag($tag);
-
-            $this->collTags[]= $tag;
-        }
-    }
-
-    /**
-     * @param	Tag $tag The tag object to add.
-     */
-    protected function doAddTag($tag)
-    {
-        $contentsTags = new ContentsTags();
-        $contentsTags->setTag($tag);
-        $this->addContentsTags($contentsTags);
-    }
-
-    /**
-     * Remove a Tag object to this object
-     * through the contents_tags cross reference table.
-     *
-     * @param Tag $tag The ContentsTags object to relate
-     * @return void
-     */
-    public function removeTag(Tag $tag)
-    {
-        if ($this->getTags()->contains($tag)) {
-            $this->collTags->remove($this->collTags->search($tag));
-            if (null === $this->tagsScheduledForDeletion) {
-                $this->tagsScheduledForDeletion = clone $this->collTags;
-                $this->tagsScheduledForDeletion->clear();
-            }
-            $this->tagsScheduledForDeletion[]= $tag;
-        }
-    }
-
-    /**
      * Clears the current object and sets all attributes to their default values
      */
     public function clear()
@@ -3271,6 +2934,7 @@ abstract class BaseContent extends BaseObject implements Persistent
         $this->author_id = null;
         $this->content_type_id = null;
         $this->date = null;
+        $this->last_modification_date = null;
         $this->access_rights = null;
         $this->validated = null;
         $this->title = null;
@@ -3279,6 +2943,7 @@ abstract class BaseContent extends BaseObject implements Persistent
         $this->cursus_id = null;
         $this->course_id = null;
         $this->year = null;
+        $this->deleted = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->clearAllReferences();
@@ -3310,11 +2975,6 @@ abstract class BaseContent extends BaseObject implements Persistent
                     $o->clearAllReferences($deep);
                 }
             }
-            if ($this->collContentsTagss) {
-                foreach ($this->collContentsTagss as $o) {
-                    $o->clearAllReferences($deep);
-                }
-            }
             if ($this->collReports) {
                 foreach ($this->collReports as $o) {
                     $o->clearAllReferences($deep);
@@ -3322,11 +2982,6 @@ abstract class BaseContent extends BaseObject implements Persistent
             }
             if ($this->collFiles) {
                 foreach ($this->collFiles as $o) {
-                    $o->clearAllReferences($deep);
-                }
-            }
-            if ($this->collTags) {
-                foreach ($this->collTags as $o) {
                     $o->clearAllReferences($deep);
                 }
             }
@@ -3340,10 +2995,6 @@ abstract class BaseContent extends BaseObject implements Persistent
             $this->collComments->clearIterator();
         }
         $this->collComments = null;
-        if ($this->collContentsTagss instanceof PropelCollection) {
-            $this->collContentsTagss->clearIterator();
-        }
-        $this->collContentsTagss = null;
         if ($this->collReports instanceof PropelCollection) {
             $this->collReports->clearIterator();
         }
@@ -3352,10 +3003,6 @@ abstract class BaseContent extends BaseObject implements Persistent
             $this->collFiles->clearIterator();
         }
         $this->collFiles = null;
-        if ($this->collTags instanceof PropelCollection) {
-            $this->collTags->clearIterator();
-        }
-        $this->collTags = null;
         $this->aAuthor = null;
         $this->aCursus = null;
         $this->aCourse = null;

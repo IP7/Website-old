@@ -200,6 +200,9 @@
         <column name="use_sourcecode"
                                    type="BOOLEAN" defaultExpr="1" />
 
+        <!-- si la matière a été supprimée -->
+        <column name="deleted"     type="BOOLEAN" defaultExpr="0" />
+
         <!-- == index & clefs étrangères == -->
 
         <foreign-key foreignTable="cursus" onDelete="CASCADE" onUpdate="CASCADE" phpName="Cursus">
@@ -245,6 +248,9 @@
 
         <!-- id du responsable -->
         <column name="responsable_id" type="INTEGER" />
+
+        <!-- si le parcours a été supprimé -->
+        <column name="deleted"    type="BOOLEAN" defaultExpr="0" />
 
         <!-- == index & clefs étrangères == -->
 
@@ -357,6 +363,9 @@
         <!-- compteur de téléchargements -->
         <column name="downloads_count" type="INTEGER" defaultExpr="0" />
 
+        <!-- si le fichier a été supprimé -->
+        <column name="deleted"       type="BOOLEAN" defaultExpr="0" />
+
         <!-- == index & clefs étrangères == -->
 
         <unique>
@@ -376,51 +385,6 @@
             <rule name="notMatch"  value="/^[a-z]:\/\//i"
                                              message="Le fichier ne peut être distant." />
         </validator>
-    </table>
-
-    <!-- == alertes == -->
-    <table name="alerts" phpName="Alert">
-        <!-- id -->
-        <column name="id"   type="INTEGER" required="true" primaryKey="true" autoIncrement="true"/>
-
-        <!-- utilisateur à notifier (abonné) -->
-        <column name="subscriber_id" type="INTEGER" required="true" />
-
-        <!-- cursus concerné (s'il y en a un) -->
-        <column name="cursus_id"   type="INTEGER" />
-
-        <!-- matière concernée (s'il y en a une) -->
-        <column name="course_id"    type="INTEGER" />
-
-        <!-- tag concerné (s'il y en a un) -->
-        <column name="tag_id" type="INTEGER" />
-
-        <!-- type de contenu -->
-        <column name="content_type_id" type="INTEGER" />
-
-
-        <!-- == index & clefs étrangères == -->
-
-        <foreign-key foreignTable="users" onDelete="CASCADE" onUpdate="CASCADE" phpName="Subscriber">
-            <reference local="subscriber_id" foreign="id"/>
-        </foreign-key>
-
-        <foreign-key foreignTable="cursus" onDelete="CASCADE" onUpdate="CASCADE" phpName="Cursus">
-            <reference local="cursus_id" foreign="id"/>
-        </foreign-key>
-
-        <foreign-key foreignTable="courses" onDelete="CASCADE" onUpdate="CASCADE" phpName="Course">
-            <reference local="course_id" foreign="id"/>
-        </foreign-key>
-
-        <foreign-key foreignTable="tags" onDelete="CASCADE" onUpdate="CASCADE" phpName="Tag">
-            <reference local="tag_id" foreign="id"/>
-        </foreign-key>
-
-        <foreign-key foreignTable="content_types" onDelete="SETNULL" onUpdate="CASCADE" phpName="ContentType">
-            <reference local="content_type_id" foreign="id"/>
-        </foreign-key>
-
     </table>
 
     <!-- === évènements === -->
@@ -517,6 +481,9 @@
 
         <!-- année scolaire (première année, par ex 2011-2012 -> 2011) -->
         <column name="year"          type="INTEGER" />
+
+        <!-- si le contenu a été supprimé -->
+        <column name="deleted"       type="BOOLEAN" defaultExpr="0" />
 
         <!-- == index & clefs étrangères == -->
 
@@ -619,64 +586,6 @@
         <validator column="text">
             <rule name="minLength" value="2" message="Le texte doit faire au moins ${value} caractères." />
         </validator>
-    </table>
-
-    <!-- === mots-clefs === -->
-    <table name="tags" phpName="Tag">
-        <!-- id -->
-        <column name="id"    type="INTEGER" required="true" primaryKey="true" autoIncrement="true"/>
-        <!-- nom -->
-        <column name="title" type="VARCHAR" size="16" required="true" />
-
-        <!-- == index & clefs étrangères == -->
-
-        <validator column="title">
-            <rule name="minLength" value="1" message="Le nom doit faire au moins ${value} caractère." />
-            <rule name="unique" message="Le nom existe déjà." />
-        </validator>
-
-        <index>
-            <index-column name="title" />
-        </index>
-
-    </table>
-
-    <!-- associations contenus/mots-clefs -->
-    <table name="contents_tags" isCrossRef="true">
-        <!-- id du mot-clef -->
-        <column name="tag_id"     type="INTEGER" primaryKey="true" />
-
-        <!-- id du contenu -->
-        <column name="content_id" type="INTEGER" primaryKey="true" />
-
-        <!-- == index & clefs étrangères == -->
-
-        <foreign-key foreignTable="tags" onDelete="CASCADE" onUpdate="CASCADE" phpName="Tag">
-            <reference local="tag_id" foreign="id" />
-        </foreign-key>
-
-        <foreign-key foreignTable="contents" onDelete="CASCADE" onUpdate="CASCADE" phpName="Content">
-            <reference local="content_id" foreign="id" />
-        </foreign-key>
-    </table>
-
-    <!-- associations annonces/mots-clefs -->
-    <table name="ads_tags" isCrossRef="true">
-        <!-- id du mot-clef -->
-        <column name="tag_id" type="INTEGER" primaryKey="true" />
-
-        <!-- id de l'annonce -->
-        <column name="ad_id"  type="INTEGER" primaryKey="true" />
-
-        <!-- == index & clefs étrangères == -->
-
-        <foreign-key foreignTable="tags" onDelete="CASCADE" onUpdate="CASCADE" phpName="Tag">
-            <reference local="tag_id" foreign="id" />
-        </foreign-key>
-
-        <foreign-key foreignTable="ads" onDelete="CASCADE" onUpdate="CASCADE" phpName="Ad">
-            <reference local="ad_id" foreign="id" />
-        </foreign-key>
     </table>
 
     <!-- === contenu signalé === -->
@@ -786,41 +695,6 @@
 
         <validator column="text">
             <rule name="minLength" value="1" message="Le texte doit faire au moins ${value} caractère." />
-        </validator>
-
-    </table>
-
-    <!-- === (petites) annonces (dont offres de stages) === -->
-    <table name="ads" phpName="Ad">
-        <!-- id -->
-        <column name="id"        type="INTEGER" required="true" primaryKey="true" autoIncrement="true"/>
-
-        <!-- auteur -->
-        <column name="author_id" type="INTEGER" required="true" />
-
-        <!-- titre -->
-        <column name="title"     type="VARCHAR" required="true" />
-
-        <!-- corps -->
-        <column name="text"      type="LONGVARCHAR" size="400" />
-
-        <!-- date -->
-        <column name="date"      type="TIMESTAMP" required="true" />
-
-        <!-- si l'annonce a été validée (ex: par un responsable) -->
-        <column name="validated" type="BOOLEAN" defaultExpr="1" />
-
-        <!-- droits d'accès -->
-        <column name="access_rights" type="TINYINT" defaultExpr="0" />
-
-        <!-- == index & clefs étrangères == -->
-
-        <foreign-key foreignTable="users" onDelete="CASCADE" onUpdate="CASCADE" phpName="Author">
-            <reference local="author_id" foreign="id" />
-        </foreign-key>
-
-        <validator column="title">
-            <rule name="minLength" value="1" message="Le titre doit faire au moins ${value} caractère." />
         </validator>
 
     </table>

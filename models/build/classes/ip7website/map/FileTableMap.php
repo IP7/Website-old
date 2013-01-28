@@ -56,6 +56,7 @@ class FileTableMap extends TableMap
         $this->addColumn('PATH', 'Path', 'VARCHAR', true, 255, null);
         $this->addColumn('ACCESS_RIGHTS', 'AccessRights', 'TINYINT', false, null, 0);
         $this->addColumn('DOWNLOADS_COUNT', 'DownloadsCount', 'INTEGER', false, null, 0);
+        $this->addColumn('DELETED', 'Deleted', 'BOOLEAN', false, 1, '0');
         // validators
         $this->addValidator('TITLE', 'minLength', 'propel.validator.MinLengthValidator', '3', 'Le nom doit faire au moins 3 caractères.');
         $this->addValidator('PATH', 'minLength', 'propel.validator.MinLengthValidator', '3', 'Le chemin doit faire au moins 3 caractères.');

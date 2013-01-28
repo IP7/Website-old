@@ -58,7 +58,6 @@ class CursusTableMap extends TableMap
         $this->addRelation('Responsable', 'User', RelationMap::MANY_TO_ONE, array('responsable_id' => 'id', ), 'SET NULL', 'CASCADE');
         $this->addRelation('Course', 'Course', RelationMap::ONE_TO_MANY, array('id' => 'cursus_id', ), 'CASCADE', 'CASCADE', 'Courses');
         $this->addRelation('EducationalPath', 'EducationalPath', RelationMap::ONE_TO_MANY, array('id' => 'cursus_id', ), 'CASCADE', 'CASCADE', 'EducationalPaths');
-        $this->addRelation('Alert', 'Alert', RelationMap::ONE_TO_MANY, array('id' => 'cursus_id', ), 'CASCADE', 'CASCADE', 'Alerts');
         $this->addRelation('Content', 'Content', RelationMap::ONE_TO_MANY, array('id' => 'cursus_id', ), 'CASCADE', 'CASCADE', 'Contents');
         $this->addRelation('News', 'News', RelationMap::ONE_TO_MANY, array('id' => 'cursus_id', ), 'CASCADE', 'CASCADE', 'Newss');
         $this->addRelation('Schedule', 'Schedule', RelationMap::ONE_TO_MANY, array('id' => 'cursus_id', ), 'CASCADE', 'CASCADE', 'Schedules');

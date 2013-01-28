@@ -47,6 +47,7 @@ class CourseTableMap extends TableMap
         $this->addColumn('DESCRIPTION', 'Description', 'LONGVARCHAR', false, 1024, null);
         $this->addColumn('USE_LATEX', 'UseLatex', 'BOOLEAN', false, 1, '0');
         $this->addColumn('USE_SOURCECODE', 'UseSourcecode', 'BOOLEAN', false, 1, '1');
+        $this->addColumn('DELETED', 'Deleted', 'BOOLEAN', false, 1, '0');
         // validators
         $this->addValidator('NAME', 'minLength', 'propel.validator.MinLengthValidator', '3', 'Le nom doit faire au moins 3 caractères.');
         $this->addValidator('SEMESTER', 'minValue', 'propel.validator.MinValueValidator', '0', 'Le semestre doit être 1 ou 2.');
@@ -63,7 +64,6 @@ class CourseTableMap extends TableMap
         $this->addRelation('Cursus', 'Cursus', RelationMap::MANY_TO_ONE, array('cursus_id' => 'id', ), 'CASCADE', 'CASCADE');
         $this->addRelation('EducationalPathsOptionalCourses', 'EducationalPathsOptionalCourses', RelationMap::ONE_TO_MANY, array('id' => 'course_id', ), 'CASCADE', 'CASCADE', 'EducationalPathsOptionalCoursess');
         $this->addRelation('EducationalPathsMandatoryCourses', 'EducationalPathsMandatoryCourses', RelationMap::ONE_TO_MANY, array('id' => 'course_id', ), 'CASCADE', 'CASCADE', 'EducationalPathsMandatoryCoursess');
-        $this->addRelation('Alert', 'Alert', RelationMap::ONE_TO_MANY, array('id' => 'course_id', ), 'CASCADE', 'CASCADE', 'Alerts');
         $this->addRelation('Content', 'Content', RelationMap::ONE_TO_MANY, array('id' => 'course_id', ), 'CASCADE', 'CASCADE', 'Contents');
         $this->addRelation('Note', 'Note', RelationMap::ONE_TO_MANY, array('id' => 'course_id', ), 'CASCADE', 'CASCADE', 'Notes');
         $this->addRelation('News', 'News', RelationMap::ONE_TO_MANY, array('id' => 'course_id', ), 'CASCADE', 'CASCADE', 'Newss');

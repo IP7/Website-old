@@ -12,6 +12,7 @@
  * @method EducationalPathQuery orderByDescription($order = Criteria::ASC) Order by the description column
  * @method EducationalPathQuery orderByCursusId($order = Criteria::ASC) Order by the cursus_id column
  * @method EducationalPathQuery orderByResponsableId($order = Criteria::ASC) Order by the responsable_id column
+ * @method EducationalPathQuery orderByDeleted($order = Criteria::ASC) Order by the deleted column
  *
  * @method EducationalPathQuery groupById() Group by the id column
  * @method EducationalPathQuery groupByShortName() Group by the short_name column
@@ -19,6 +20,7 @@
  * @method EducationalPathQuery groupByDescription() Group by the description column
  * @method EducationalPathQuery groupByCursusId() Group by the cursus_id column
  * @method EducationalPathQuery groupByResponsableId() Group by the responsable_id column
+ * @method EducationalPathQuery groupByDeleted() Group by the deleted column
  *
  * @method EducationalPathQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method EducationalPathQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -57,6 +59,7 @@
  * @method EducationalPath findOneByDescription(string $description) Return the first EducationalPath filtered by the description column
  * @method EducationalPath findOneByCursusId(int $cursus_id) Return the first EducationalPath filtered by the cursus_id column
  * @method EducationalPath findOneByResponsableId(int $responsable_id) Return the first EducationalPath filtered by the responsable_id column
+ * @method EducationalPath findOneByDeleted(boolean $deleted) Return the first EducationalPath filtered by the deleted column
  *
  * @method array findById(int $id) Return EducationalPath objects filtered by the id column
  * @method array findByShortName(string $short_name) Return EducationalPath objects filtered by the short_name column
@@ -64,6 +67,7 @@
  * @method array findByDescription(string $description) Return EducationalPath objects filtered by the description column
  * @method array findByCursusId(int $cursus_id) Return EducationalPath objects filtered by the cursus_id column
  * @method array findByResponsableId(int $responsable_id) Return EducationalPath objects filtered by the responsable_id column
+ * @method array findByDeleted(boolean $deleted) Return EducationalPath objects filtered by the deleted column
  *
  * @package    propel.generator.ip7website.om
  */
@@ -153,7 +157,7 @@ abstract class BaseEducationalPathQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `ID`, `SHORT_NAME`, `NAME`, `CURSUS_ID`, `RESPONSABLE_ID` FROM `educational_paths` WHERE `ID` = :p0';
+        $sql = 'SELECT `ID`, `SHORT_NAME`, `NAME`, `CURSUS_ID`, `RESPONSABLE_ID`, `DELETED` FROM `educational_paths` WHERE `ID` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -440,6 +444,33 @@ abstract class BaseEducationalPathQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(EducationalPathPeer::RESPONSABLE_ID, $responsableId, $comparison);
+    }
+
+    /**
+     * Filter the query on the deleted column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByDeleted(true); // WHERE deleted = true
+     * $query->filterByDeleted('yes'); // WHERE deleted = true
+     * </code>
+     *
+     * @param     boolean|string $deleted The value to use as filter.
+     *              Non-boolean arguments are converted using the following rules:
+     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return EducationalPathQuery The current query, for fluid interface
+     */
+    public function filterByDeleted($deleted = null, $comparison = null)
+    {
+        if (is_string($deleted)) {
+            $deleted = in_array(strtolower($deleted), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+        }
+
+        return $this->addUsingAlias(EducationalPathPeer::DELETED, $deleted, $comparison);
     }
 
     /**

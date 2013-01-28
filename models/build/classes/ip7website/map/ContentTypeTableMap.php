@@ -50,7 +50,6 @@ class ContentTypeTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('Alert', 'Alert', RelationMap::ONE_TO_MANY, array('id' => 'content_type_id', ), 'SET NULL', 'CASCADE', 'Alerts');
         $this->addRelation('Content', 'Content', RelationMap::ONE_TO_MANY, array('id' => 'content_type_id', ), 'SET NULL', 'CASCADE', 'Contents');
     } // buildRelations()
 

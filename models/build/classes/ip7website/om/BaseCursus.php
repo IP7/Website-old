@@ -84,12 +84,6 @@ abstract class BaseCursus extends BaseObject implements Persistent
     protected $collEducationalPathsPartial;
 
     /**
-     * @var        PropelObjectCollection|Alert[] Collection to store aggregation of Alert objects.
-     */
-    protected $collAlerts;
-    protected $collAlertsPartial;
-
-    /**
      * @var        PropelObjectCollection|Content[] Collection to store aggregation of Content objects.
      */
     protected $collContents;
@@ -132,12 +126,6 @@ abstract class BaseCursus extends BaseObject implements Persistent
      * @var		PropelObjectCollection
      */
     protected $educationalPathsScheduledForDeletion = null;
-
-    /**
-     * An array of objects scheduled for deletion.
-     * @var		PropelObjectCollection
-     */
-    protected $alertsScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
@@ -470,8 +458,6 @@ abstract class BaseCursus extends BaseObject implements Persistent
 
             $this->collEducationalPaths = null;
 
-            $this->collAlerts = null;
-
             $this->collContents = null;
 
             $this->collNewss = null;
@@ -643,24 +629,6 @@ abstract class BaseCursus extends BaseObject implements Persistent
 
             if ($this->collEducationalPaths !== null) {
                 foreach ($this->collEducationalPaths as $referrerFK) {
-                    if (!$referrerFK->isDeleted()) {
-                        $affectedRows += $referrerFK->save($con);
-                    }
-                }
-            }
-
-            if ($this->alertsScheduledForDeletion !== null) {
-                if (!$this->alertsScheduledForDeletion->isEmpty()) {
-                    foreach ($this->alertsScheduledForDeletion as $alert) {
-                        // need to save related object because we set the relation to null
-                        $alert->save($con);
-                    }
-                    $this->alertsScheduledForDeletion = null;
-                }
-            }
-
-            if ($this->collAlerts !== null) {
-                foreach ($this->collAlerts as $referrerFK) {
                     if (!$referrerFK->isDeleted()) {
                         $affectedRows += $referrerFK->save($con);
                     }
@@ -915,14 +883,6 @@ abstract class BaseCursus extends BaseObject implements Persistent
                     }
                 }
 
-                if ($this->collAlerts !== null) {
-                    foreach ($this->collAlerts as $referrerFK) {
-                        if (!$referrerFK->validate($columns)) {
-                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
-                        }
-                    }
-                }
-
                 if ($this->collContents !== null) {
                     foreach ($this->collContents as $referrerFK) {
                         if (!$referrerFK->validate($columns)) {
@@ -1041,9 +1001,6 @@ abstract class BaseCursus extends BaseObject implements Persistent
             }
             if (null !== $this->collEducationalPaths) {
                 $result['EducationalPaths'] = $this->collEducationalPaths->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
-            }
-            if (null !== $this->collAlerts) {
-                $result['Alerts'] = $this->collAlerts->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
             if (null !== $this->collContents) {
                 $result['Contents'] = $this->collContents->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
@@ -1235,12 +1192,6 @@ abstract class BaseCursus extends BaseObject implements Persistent
                 }
             }
 
-            foreach ($this->getAlerts() as $relObj) {
-                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addAlert($relObj->copy($deepCopy));
-                }
-            }
-
             foreach ($this->getContents() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
                     $copyObj->addContent($relObj->copy($deepCopy));
@@ -1376,9 +1327,6 @@ abstract class BaseCursus extends BaseObject implements Persistent
         }
         if ('EducationalPath' == $relationName) {
             $this->initEducationalPaths();
-        }
-        if ('Alert' == $relationName) {
-            $this->initAlerts();
         }
         if ('Content' == $relationName) {
             $this->initContents();
@@ -1828,313 +1776,6 @@ abstract class BaseCursus extends BaseObject implements Persistent
         $query->joinWith('Responsable', $join_behavior);
 
         return $this->getEducationalPaths($query, $con);
-    }
-
-    /**
-     * Clears out the collAlerts collection
-     *
-     * This does not modify the database; however, it will remove any associated objects, causing
-     * them to be refetched by subsequent calls to accessor method.
-     *
-     * @return void
-     * @see        addAlerts()
-     */
-    public function clearAlerts()
-    {
-        $this->collAlerts = null; // important to set this to null since that means it is uninitialized
-        $this->collAlertsPartial = null;
-    }
-
-    /**
-     * reset is the collAlerts collection loaded partially
-     *
-     * @return void
-     */
-    public function resetPartialAlerts($v = true)
-    {
-        $this->collAlertsPartial = $v;
-    }
-
-    /**
-     * Initializes the collAlerts collection.
-     *
-     * By default this just sets the collAlerts collection to an empty array (like clearcollAlerts());
-     * however, you may wish to override this method in your stub class to provide setting appropriate
-     * to your application -- for example, setting the initial array to the values stored in database.
-     *
-     * @param boolean $overrideExisting If set to true, the method call initializes
-     *                                        the collection even if it is not empty
-     *
-     * @return void
-     */
-    public function initAlerts($overrideExisting = true)
-    {
-        if (null !== $this->collAlerts && !$overrideExisting) {
-            return;
-        }
-        $this->collAlerts = new PropelObjectCollection();
-        $this->collAlerts->setModel('Alert');
-    }
-
-    /**
-     * Gets an array of Alert objects which contain a foreign key that references this object.
-     *
-     * If the $criteria is not null, it is used to always fetch the results from the database.
-     * Otherwise the results are fetched from the database the first time, then cached.
-     * Next time the same method is called without $criteria, the cached collection is returned.
-     * If this Cursus is new, it will return
-     * an empty collection or the current collection; the criteria is ignored on a new object.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @return PropelObjectCollection|Alert[] List of Alert objects
-     * @throws PropelException
-     */
-    public function getAlerts($criteria = null, PropelPDO $con = null)
-    {
-        $partial = $this->collAlertsPartial && !$this->isNew();
-        if (null === $this->collAlerts || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collAlerts) {
-                // return empty collection
-                $this->initAlerts();
-            } else {
-                $collAlerts = AlertQuery::create(null, $criteria)
-                    ->filterByCursus($this)
-                    ->find($con);
-                if (null !== $criteria) {
-                    if (false !== $this->collAlertsPartial && count($collAlerts)) {
-                      $this->initAlerts(false);
-
-                      foreach($collAlerts as $obj) {
-                        if (false == $this->collAlerts->contains($obj)) {
-                          $this->collAlerts->append($obj);
-                        }
-                      }
-
-                      $this->collAlertsPartial = true;
-                    }
-
-                    return $collAlerts;
-                }
-
-                if($partial && $this->collAlerts) {
-                    foreach($this->collAlerts as $obj) {
-                        if($obj->isNew()) {
-                            $collAlerts[] = $obj;
-                        }
-                    }
-                }
-
-                $this->collAlerts = $collAlerts;
-                $this->collAlertsPartial = false;
-            }
-        }
-
-        return $this->collAlerts;
-    }
-
-    /**
-     * Sets a collection of Alert objects related by a one-to-many relationship
-     * to the current object.
-     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
-     * and new objects from the given Propel collection.
-     *
-     * @param PropelCollection $alerts A Propel collection.
-     * @param PropelPDO $con Optional connection object
-     */
-    public function setAlerts(PropelCollection $alerts, PropelPDO $con = null)
-    {
-        $this->alertsScheduledForDeletion = $this->getAlerts(new Criteria(), $con)->diff($alerts);
-
-        foreach ($this->alertsScheduledForDeletion as $alertRemoved) {
-            $alertRemoved->setCursus(null);
-        }
-
-        $this->collAlerts = null;
-        foreach ($alerts as $alert) {
-            $this->addAlert($alert);
-        }
-
-        $this->collAlerts = $alerts;
-        $this->collAlertsPartial = false;
-    }
-
-    /**
-     * Returns the number of related Alert objects.
-     *
-     * @param Criteria $criteria
-     * @param boolean $distinct
-     * @param PropelPDO $con
-     * @return int             Count of related Alert objects.
-     * @throws PropelException
-     */
-    public function countAlerts(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
-    {
-        $partial = $this->collAlertsPartial && !$this->isNew();
-        if (null === $this->collAlerts || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collAlerts) {
-                return 0;
-            } else {
-                if($partial && !$criteria) {
-                    return count($this->getAlerts());
-                }
-                $query = AlertQuery::create(null, $criteria);
-                if ($distinct) {
-                    $query->distinct();
-                }
-
-                return $query
-                    ->filterByCursus($this)
-                    ->count($con);
-            }
-        } else {
-            return count($this->collAlerts);
-        }
-    }
-
-    /**
-     * Method called to associate a Alert object to this object
-     * through the Alert foreign key attribute.
-     *
-     * @param    Alert $l Alert
-     * @return Cursus The current object (for fluent API support)
-     */
-    public function addAlert(Alert $l)
-    {
-        if ($this->collAlerts === null) {
-            $this->initAlerts();
-            $this->collAlertsPartial = true;
-        }
-        if (!$this->collAlerts->contains($l)) { // only add it if the **same** object is not already associated
-            $this->doAddAlert($l);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param	Alert $alert The alert object to add.
-     */
-    protected function doAddAlert($alert)
-    {
-        $this->collAlerts[]= $alert;
-        $alert->setCursus($this);
-    }
-
-    /**
-     * @param	Alert $alert The alert object to remove.
-     */
-    public function removeAlert($alert)
-    {
-        if ($this->getAlerts()->contains($alert)) {
-            $this->collAlerts->remove($this->collAlerts->search($alert));
-            if (null === $this->alertsScheduledForDeletion) {
-                $this->alertsScheduledForDeletion = clone $this->collAlerts;
-                $this->alertsScheduledForDeletion->clear();
-            }
-            $this->alertsScheduledForDeletion[]= $alert;
-            $alert->setCursus(null);
-        }
-    }
-
-
-    /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this Cursus is new, it will return
-     * an empty collection; or if this Cursus has previously
-     * been saved, it will retrieve related Alerts from storage.
-     *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in Cursus.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return PropelObjectCollection|Alert[] List of Alert objects
-     */
-    public function getAlertsJoinSubscriber($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $query = AlertQuery::create(null, $criteria);
-        $query->joinWith('Subscriber', $join_behavior);
-
-        return $this->getAlerts($query, $con);
-    }
-
-
-    /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this Cursus is new, it will return
-     * an empty collection; or if this Cursus has previously
-     * been saved, it will retrieve related Alerts from storage.
-     *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in Cursus.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return PropelObjectCollection|Alert[] List of Alert objects
-     */
-    public function getAlertsJoinCourse($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $query = AlertQuery::create(null, $criteria);
-        $query->joinWith('Course', $join_behavior);
-
-        return $this->getAlerts($query, $con);
-    }
-
-
-    /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this Cursus is new, it will return
-     * an empty collection; or if this Cursus has previously
-     * been saved, it will retrieve related Alerts from storage.
-     *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in Cursus.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return PropelObjectCollection|Alert[] List of Alert objects
-     */
-    public function getAlertsJoinTag($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $query = AlertQuery::create(null, $criteria);
-        $query->joinWith('Tag', $join_behavior);
-
-        return $this->getAlerts($query, $con);
-    }
-
-
-    /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this Cursus is new, it will return
-     * an empty collection; or if this Cursus has previously
-     * been saved, it will retrieve related Alerts from storage.
-     *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in Cursus.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return PropelObjectCollection|Alert[] List of Alert objects
-     */
-    public function getAlertsJoinContentType($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $query = AlertQuery::create(null, $criteria);
-        $query->joinWith('ContentType', $join_behavior);
-
-        return $this->getAlerts($query, $con);
     }
 
     /**
@@ -2949,11 +2590,6 @@ abstract class BaseCursus extends BaseObject implements Persistent
                     $o->clearAllReferences($deep);
                 }
             }
-            if ($this->collAlerts) {
-                foreach ($this->collAlerts as $o) {
-                    $o->clearAllReferences($deep);
-                }
-            }
             if ($this->collContents) {
                 foreach ($this->collContents as $o) {
                     $o->clearAllReferences($deep);
@@ -2979,10 +2615,6 @@ abstract class BaseCursus extends BaseObject implements Persistent
             $this->collEducationalPaths->clearIterator();
         }
         $this->collEducationalPaths = null;
-        if ($this->collAlerts instanceof PropelCollection) {
-            $this->collAlerts->clearIterator();
-        }
-        $this->collAlerts = null;
         if ($this->collContents instanceof PropelCollection) {
             $this->collContents->clearIterator();
         }

@@ -24,13 +24,13 @@ abstract class BaseFilePeer
     const TM_CLASS = 'FileTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 9;
+    const NUM_COLUMNS = 10;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 9;
+    const NUM_HYDRATE_COLUMNS = 10;
 
     /** the column name for the ID field */
     const ID = 'files.ID';
@@ -58,6 +58,9 @@ abstract class BaseFilePeer
 
     /** the column name for the DOWNLOADS_COUNT field */
     const DOWNLOADS_COUNT = 'files.DOWNLOADS_COUNT';
+
+    /** the column name for the DELETED field */
+    const DELETED = 'files.DELETED';
 
     /** The enumerated values for the FILE_TYPE field */
     const FILE_TYPE_ARCHIVE = 'archive';
@@ -87,12 +90,12 @@ abstract class BaseFilePeer
      * e.g. FilePeer::$fieldNames[FilePeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'AuthorId', 'Title', 'Date', 'Description', 'FileType', 'Path', 'AccessRights', 'DownloadsCount', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'authorId', 'title', 'date', 'description', 'fileType', 'path', 'accessRights', 'downloadsCount', ),
-        BasePeer::TYPE_COLNAME => array (FilePeer::ID, FilePeer::AUTHOR_ID, FilePeer::TITLE, FilePeer::DATE, FilePeer::DESCRIPTION, FilePeer::FILE_TYPE, FilePeer::PATH, FilePeer::ACCESS_RIGHTS, FilePeer::DOWNLOADS_COUNT, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'AUTHOR_ID', 'TITLE', 'DATE', 'DESCRIPTION', 'FILE_TYPE', 'PATH', 'ACCESS_RIGHTS', 'DOWNLOADS_COUNT', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'author_id', 'title', 'date', 'description', 'file_type', 'path', 'access_rights', 'downloads_count', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'AuthorId', 'Title', 'Date', 'Description', 'FileType', 'Path', 'AccessRights', 'DownloadsCount', 'Deleted', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'authorId', 'title', 'date', 'description', 'fileType', 'path', 'accessRights', 'downloadsCount', 'deleted', ),
+        BasePeer::TYPE_COLNAME => array (FilePeer::ID, FilePeer::AUTHOR_ID, FilePeer::TITLE, FilePeer::DATE, FilePeer::DESCRIPTION, FilePeer::FILE_TYPE, FilePeer::PATH, FilePeer::ACCESS_RIGHTS, FilePeer::DOWNLOADS_COUNT, FilePeer::DELETED, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'AUTHOR_ID', 'TITLE', 'DATE', 'DESCRIPTION', 'FILE_TYPE', 'PATH', 'ACCESS_RIGHTS', 'DOWNLOADS_COUNT', 'DELETED', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'author_id', 'title', 'date', 'description', 'file_type', 'path', 'access_rights', 'downloads_count', 'deleted', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, )
     );
 
     /**
@@ -102,12 +105,12 @@ abstract class BaseFilePeer
      * e.g. FilePeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'AuthorId' => 1, 'Title' => 2, 'Date' => 3, 'Description' => 4, 'FileType' => 5, 'Path' => 6, 'AccessRights' => 7, 'DownloadsCount' => 8, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'authorId' => 1, 'title' => 2, 'date' => 3, 'description' => 4, 'fileType' => 5, 'path' => 6, 'accessRights' => 7, 'downloadsCount' => 8, ),
-        BasePeer::TYPE_COLNAME => array (FilePeer::ID => 0, FilePeer::AUTHOR_ID => 1, FilePeer::TITLE => 2, FilePeer::DATE => 3, FilePeer::DESCRIPTION => 4, FilePeer::FILE_TYPE => 5, FilePeer::PATH => 6, FilePeer::ACCESS_RIGHTS => 7, FilePeer::DOWNLOADS_COUNT => 8, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'AUTHOR_ID' => 1, 'TITLE' => 2, 'DATE' => 3, 'DESCRIPTION' => 4, 'FILE_TYPE' => 5, 'PATH' => 6, 'ACCESS_RIGHTS' => 7, 'DOWNLOADS_COUNT' => 8, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'author_id' => 1, 'title' => 2, 'date' => 3, 'description' => 4, 'file_type' => 5, 'path' => 6, 'access_rights' => 7, 'downloads_count' => 8, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'AuthorId' => 1, 'Title' => 2, 'Date' => 3, 'Description' => 4, 'FileType' => 5, 'Path' => 6, 'AccessRights' => 7, 'DownloadsCount' => 8, 'Deleted' => 9, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'authorId' => 1, 'title' => 2, 'date' => 3, 'description' => 4, 'fileType' => 5, 'path' => 6, 'accessRights' => 7, 'downloadsCount' => 8, 'deleted' => 9, ),
+        BasePeer::TYPE_COLNAME => array (FilePeer::ID => 0, FilePeer::AUTHOR_ID => 1, FilePeer::TITLE => 2, FilePeer::DATE => 3, FilePeer::DESCRIPTION => 4, FilePeer::FILE_TYPE => 5, FilePeer::PATH => 6, FilePeer::ACCESS_RIGHTS => 7, FilePeer::DOWNLOADS_COUNT => 8, FilePeer::DELETED => 9, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'AUTHOR_ID' => 1, 'TITLE' => 2, 'DATE' => 3, 'DESCRIPTION' => 4, 'FILE_TYPE' => 5, 'PATH' => 6, 'ACCESS_RIGHTS' => 7, 'DOWNLOADS_COUNT' => 8, 'DELETED' => 9, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'author_id' => 1, 'title' => 2, 'date' => 3, 'description' => 4, 'file_type' => 5, 'path' => 6, 'access_rights' => 7, 'downloads_count' => 8, 'deleted' => 9, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, )
     );
 
     /** The enumerated values for this table */
@@ -226,6 +229,7 @@ abstract class BaseFilePeer
             $criteria->addSelectColumn(FilePeer::PATH);
             $criteria->addSelectColumn(FilePeer::ACCESS_RIGHTS);
             $criteria->addSelectColumn(FilePeer::DOWNLOADS_COUNT);
+            $criteria->addSelectColumn(FilePeer::DELETED);
         } else {
             $criteria->addSelectColumn($alias . '.ID');
             $criteria->addSelectColumn($alias . '.AUTHOR_ID');
@@ -236,6 +240,7 @@ abstract class BaseFilePeer
             $criteria->addSelectColumn($alias . '.PATH');
             $criteria->addSelectColumn($alias . '.ACCESS_RIGHTS');
             $criteria->addSelectColumn($alias . '.DOWNLOADS_COUNT');
+            $criteria->addSelectColumn($alias . '.DELETED');
         }
     }
 

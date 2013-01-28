@@ -20,10 +20,6 @@
  * @method ContentTypeQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
  * @method ContentTypeQuery innerJoin($relation) Adds a INNER JOIN clause to the query
  *
- * @method ContentTypeQuery leftJoinAlert($relationAlias = null) Adds a LEFT JOIN clause to the query using the Alert relation
- * @method ContentTypeQuery rightJoinAlert($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Alert relation
- * @method ContentTypeQuery innerJoinAlert($relationAlias = null) Adds a INNER JOIN clause to the query using the Alert relation
- *
  * @method ContentTypeQuery leftJoinContent($relationAlias = null) Adds a LEFT JOIN clause to the query using the Content relation
  * @method ContentTypeQuery rightJoinContent($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Content relation
  * @method ContentTypeQuery innerJoinContent($relationAlias = null) Adds a INNER JOIN clause to the query using the Content relation
@@ -342,80 +338,6 @@ abstract class BaseContentTypeQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(ContentTypePeer::ACCESS_RIGHTS, $accessRights, $comparison);
-    }
-
-    /**
-     * Filter the query by a related Alert object
-     *
-     * @param   Alert|PropelObjectCollection $alert  the related object to use as filter
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return   ContentTypeQuery The current query, for fluid interface
-     * @throws   PropelException - if the provided filter is invalid.
-     */
-    public function filterByAlert($alert, $comparison = null)
-    {
-        if ($alert instanceof Alert) {
-            return $this
-                ->addUsingAlias(ContentTypePeer::ID, $alert->getContentTypeId(), $comparison);
-        } elseif ($alert instanceof PropelObjectCollection) {
-            return $this
-                ->useAlertQuery()
-                ->filterByPrimaryKeys($alert->getPrimaryKeys())
-                ->endUse();
-        } else {
-            throw new PropelException('filterByAlert() only accepts arguments of type Alert or PropelCollection');
-        }
-    }
-
-    /**
-     * Adds a JOIN clause to the query using the Alert relation
-     *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return ContentTypeQuery The current query, for fluid interface
-     */
-    public function joinAlert($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
-    {
-        $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('Alert');
-
-        // create a ModelJoin object for this join
-        $join = new ModelJoin();
-        $join->setJoinType($joinType);
-        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
-        if ($previousJoin = $this->getPreviousJoin()) {
-            $join->setPreviousJoin($previousJoin);
-        }
-
-        // add the ModelJoin to the current object
-        if ($relationAlias) {
-            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
-            $this->addJoinObject($join, $relationAlias);
-        } else {
-            $this->addJoinObject($join, 'Alert');
-        }
-
-        return $this;
-    }
-
-    /**
-     * Use the Alert relation Alert object
-     *
-     * @see       useQuery()
-     *
-     * @param     string $relationAlias optional alias for the relation,
-     *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return   AlertQuery A secondary query class using the current class as primary query
-     */
-    public function useAlertQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
-    {
-        return $this
-            ->joinAlert($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'Alert', 'AlertQuery');
     }
 
     /**

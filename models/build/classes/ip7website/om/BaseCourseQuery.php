@@ -15,6 +15,7 @@
  * @method CourseQuery orderByDescription($order = Criteria::ASC) Order by the description column
  * @method CourseQuery orderByUseLatex($order = Criteria::ASC) Order by the use_latex column
  * @method CourseQuery orderByUseSourcecode($order = Criteria::ASC) Order by the use_sourcecode column
+ * @method CourseQuery orderByDeleted($order = Criteria::ASC) Order by the deleted column
  *
  * @method CourseQuery groupById() Group by the id column
  * @method CourseQuery groupByCursusId() Group by the cursus_id column
@@ -25,6 +26,7 @@
  * @method CourseQuery groupByDescription() Group by the description column
  * @method CourseQuery groupByUseLatex() Group by the use_latex column
  * @method CourseQuery groupByUseSourcecode() Group by the use_sourcecode column
+ * @method CourseQuery groupByDeleted() Group by the deleted column
  *
  * @method CourseQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method CourseQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -41,10 +43,6 @@
  * @method CourseQuery leftJoinEducationalPathsMandatoryCourses($relationAlias = null) Adds a LEFT JOIN clause to the query using the EducationalPathsMandatoryCourses relation
  * @method CourseQuery rightJoinEducationalPathsMandatoryCourses($relationAlias = null) Adds a RIGHT JOIN clause to the query using the EducationalPathsMandatoryCourses relation
  * @method CourseQuery innerJoinEducationalPathsMandatoryCourses($relationAlias = null) Adds a INNER JOIN clause to the query using the EducationalPathsMandatoryCourses relation
- *
- * @method CourseQuery leftJoinAlert($relationAlias = null) Adds a LEFT JOIN clause to the query using the Alert relation
- * @method CourseQuery rightJoinAlert($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Alert relation
- * @method CourseQuery innerJoinAlert($relationAlias = null) Adds a INNER JOIN clause to the query using the Alert relation
  *
  * @method CourseQuery leftJoinContent($relationAlias = null) Adds a LEFT JOIN clause to the query using the Content relation
  * @method CourseQuery rightJoinContent($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Content relation
@@ -78,6 +76,7 @@
  * @method Course findOneByDescription(string $description) Return the first Course filtered by the description column
  * @method Course findOneByUseLatex(boolean $use_latex) Return the first Course filtered by the use_latex column
  * @method Course findOneByUseSourcecode(boolean $use_sourcecode) Return the first Course filtered by the use_sourcecode column
+ * @method Course findOneByDeleted(boolean $deleted) Return the first Course filtered by the deleted column
  *
  * @method array findById(int $id) Return Course objects filtered by the id column
  * @method array findByCursusId(int $cursus_id) Return Course objects filtered by the cursus_id column
@@ -88,6 +87,7 @@
  * @method array findByDescription(string $description) Return Course objects filtered by the description column
  * @method array findByUseLatex(boolean $use_latex) Return Course objects filtered by the use_latex column
  * @method array findByUseSourcecode(boolean $use_sourcecode) Return Course objects filtered by the use_sourcecode column
+ * @method array findByDeleted(boolean $deleted) Return Course objects filtered by the deleted column
  *
  * @package    propel.generator.ip7website.om
  */
@@ -177,7 +177,7 @@ abstract class BaseCourseQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `ID`, `CURSUS_ID`, `SEMESTER`, `NAME`, `SHORT_NAME`, `ECTS`, `DESCRIPTION`, `USE_LATEX`, `USE_SOURCECODE` FROM `courses` WHERE `ID` = :p0';
+        $sql = 'SELECT `ID`, `CURSUS_ID`, `SEMESTER`, `NAME`, `SHORT_NAME`, `ECTS`, `DESCRIPTION`, `USE_LATEX`, `USE_SOURCECODE`, `DELETED` FROM `courses` WHERE `ID` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -560,6 +560,33 @@ abstract class BaseCourseQuery extends ModelCriteria
     }
 
     /**
+     * Filter the query on the deleted column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByDeleted(true); // WHERE deleted = true
+     * $query->filterByDeleted('yes'); // WHERE deleted = true
+     * </code>
+     *
+     * @param     boolean|string $deleted The value to use as filter.
+     *              Non-boolean arguments are converted using the following rules:
+     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return CourseQuery The current query, for fluid interface
+     */
+    public function filterByDeleted($deleted = null, $comparison = null)
+    {
+        if (is_string($deleted)) {
+            $deleted = in_array(strtolower($deleted), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+        }
+
+        return $this->addUsingAlias(CoursePeer::DELETED, $deleted, $comparison);
+    }
+
+    /**
      * Filter the query by a related Cursus object
      *
      * @param   Cursus|PropelObjectCollection $cursus The related object(s) to use as filter
@@ -781,80 +808,6 @@ abstract class BaseCourseQuery extends ModelCriteria
         return $this
             ->joinEducationalPathsMandatoryCourses($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'EducationalPathsMandatoryCourses', 'EducationalPathsMandatoryCoursesQuery');
-    }
-
-    /**
-     * Filter the query by a related Alert object
-     *
-     * @param   Alert|PropelObjectCollection $alert  the related object to use as filter
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return   CourseQuery The current query, for fluid interface
-     * @throws   PropelException - if the provided filter is invalid.
-     */
-    public function filterByAlert($alert, $comparison = null)
-    {
-        if ($alert instanceof Alert) {
-            return $this
-                ->addUsingAlias(CoursePeer::ID, $alert->getCourseId(), $comparison);
-        } elseif ($alert instanceof PropelObjectCollection) {
-            return $this
-                ->useAlertQuery()
-                ->filterByPrimaryKeys($alert->getPrimaryKeys())
-                ->endUse();
-        } else {
-            throw new PropelException('filterByAlert() only accepts arguments of type Alert or PropelCollection');
-        }
-    }
-
-    /**
-     * Adds a JOIN clause to the query using the Alert relation
-     *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return CourseQuery The current query, for fluid interface
-     */
-    public function joinAlert($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
-    {
-        $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('Alert');
-
-        // create a ModelJoin object for this join
-        $join = new ModelJoin();
-        $join->setJoinType($joinType);
-        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
-        if ($previousJoin = $this->getPreviousJoin()) {
-            $join->setPreviousJoin($previousJoin);
-        }
-
-        // add the ModelJoin to the current object
-        if ($relationAlias) {
-            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
-            $this->addJoinObject($join, $relationAlias);
-        } else {
-            $this->addJoinObject($join, 'Alert');
-        }
-
-        return $this;
-    }
-
-    /**
-     * Use the Alert relation Alert object
-     *
-     * @see       useQuery()
-     *
-     * @param     string $relationAlias optional alias for the relation,
-     *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return   AlertQuery A secondary query class using the current class as primary query
-     */
-    public function useAlertQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
-    {
-        return $this
-            ->joinAlert($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'Alert', 'AlertQuery');
     }
 
     /**

@@ -535,9 +535,6 @@ abstract class BaseUserPeer
         // Invalidate objects in FilePeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         FilePeer::clearInstancePool();
-        // Invalidate objects in AlertPeer instance pool,
-        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-        AlertPeer::clearInstancePool();
         // Invalidate objects in ContentPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         ContentPeer::clearInstancePool();
@@ -553,15 +550,9 @@ abstract class BaseUserPeer
         // Invalidate objects in NewsPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         NewsPeer::clearInstancePool();
-        // Invalidate objects in AdPeer instance pool,
-        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-        AdPeer::clearInstancePool();
         // Invalidate objects in TransactionPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         TransactionPeer::clearInstancePool();
-        // Invalidate objects in ForumMessagePeer instance pool,
-        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-        ForumMessagePeer::clearInstancePool();
         // Invalidate objects in ScheduledCoursePeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         ScheduledCoursePeer::clearInstancePool();
@@ -913,12 +904,6 @@ abstract class BaseUserPeer
             $criteria->add(UsersPathsPeer::USER_ID, $obj->getId());
             $affectedRows += UsersPathsPeer::doDelete($criteria, $con);
 
-            // delete related Alert objects
-            $criteria = new Criteria(AlertPeer::DATABASE_NAME);
-
-            $criteria->add(AlertPeer::SUBSCRIBER_ID, $obj->getId());
-            $affectedRows += AlertPeer::doDelete($criteria, $con);
-
             // delete related Comment objects
             $criteria = new Criteria(CommentPeer::DATABASE_NAME);
 
@@ -930,18 +915,6 @@ abstract class BaseUserPeer
 
             $criteria->add(NotePeer::USER_ID, $obj->getId());
             $affectedRows += NotePeer::doDelete($criteria, $con);
-
-            // delete related Ad objects
-            $criteria = new Criteria(AdPeer::DATABASE_NAME);
-
-            $criteria->add(AdPeer::AUTHOR_ID, $obj->getId());
-            $affectedRows += AdPeer::doDelete($criteria, $con);
-
-            // delete related ForumMessage objects
-            $criteria = new Criteria(ForumMessagePeer::DATABASE_NAME);
-
-            $criteria->add(ForumMessagePeer::AUTHOR_ID, $obj->getId());
-            $affectedRows += ForumMessagePeer::doDelete($criteria, $con);
 
             // delete related Token objects
             $criteria = new Criteria(TokenPeer::DATABASE_NAME);

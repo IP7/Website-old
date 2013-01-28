@@ -84,6 +84,7 @@ CREATE TABLE `courses`
     `description` TEXT(1024),
     `use_latex` TINYINT(1) DEFAULT 0,
     `use_sourcecode` TINYINT(1) DEFAULT 1,
+    `deleted` TINYINT(1) DEFAULT 0,
     PRIMARY KEY (`id`),
     UNIQUE INDEX `courses_U_1` (`short_name`, `semester`, `cursus_id`),
     INDEX `courses_FI_1` (`cursus_id`),
@@ -108,6 +109,7 @@ CREATE TABLE `educational_paths`
     `description` TEXT(1024),
     `cursus_id` INTEGER NOT NULL,
     `responsable_id` INTEGER,
+    `deleted` TINYINT(1) DEFAULT 0,
     PRIMARY KEY (`id`),
     UNIQUE INDEX `educational_paths_U_1` (`short_name`, `cursus_id`),
     INDEX `educational_paths_FI_1` (`cursus_id`),
@@ -213,59 +215,13 @@ CREATE TABLE `files`
     `path` VARCHAR(255) NOT NULL,
     `access_rights` TINYINT DEFAULT 0,
     `downloads_count` INTEGER DEFAULT 0,
+    `deleted` TINYINT(1) DEFAULT 0,
     PRIMARY KEY (`id`),
     UNIQUE INDEX `files_U_1` (`path`),
     INDEX `files_FI_1` (`author_id`),
     CONSTRAINT `files_FK_1`
         FOREIGN KEY (`author_id`)
         REFERENCES `users` (`id`)
-        ON UPDATE CASCADE
-        ON DELETE SET NULL
-) ENGINE=MyISAM;
-
--- ---------------------------------------------------------------------
--- alerts
--- ---------------------------------------------------------------------
-
-DROP TABLE IF EXISTS `alerts`;
-
-CREATE TABLE `alerts`
-(
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `subscriber_id` INTEGER NOT NULL,
-    `cursus_id` INTEGER,
-    `course_id` INTEGER,
-    `tag_id` INTEGER,
-    `content_type_id` INTEGER,
-    PRIMARY KEY (`id`),
-    INDEX `alerts_FI_1` (`subscriber_id`),
-    INDEX `alerts_FI_2` (`cursus_id`),
-    INDEX `alerts_FI_3` (`course_id`),
-    INDEX `alerts_FI_4` (`tag_id`),
-    INDEX `alerts_FI_5` (`content_type_id`),
-    CONSTRAINT `alerts_FK_1`
-        FOREIGN KEY (`subscriber_id`)
-        REFERENCES `users` (`id`)
-        ON UPDATE CASCADE
-        ON DELETE CASCADE,
-    CONSTRAINT `alerts_FK_2`
-        FOREIGN KEY (`cursus_id`)
-        REFERENCES `cursus` (`id`)
-        ON UPDATE CASCADE
-        ON DELETE CASCADE,
-    CONSTRAINT `alerts_FK_3`
-        FOREIGN KEY (`course_id`)
-        REFERENCES `courses` (`id`)
-        ON UPDATE CASCADE
-        ON DELETE CASCADE,
-    CONSTRAINT `alerts_FK_4`
-        FOREIGN KEY (`tag_id`)
-        REFERENCES `tags` (`id`)
-        ON UPDATE CASCADE
-        ON DELETE CASCADE,
-    CONSTRAINT `alerts_FK_5`
-        FOREIGN KEY (`content_type_id`)
-        REFERENCES `content_types` (`id`)
         ON UPDATE CASCADE
         ON DELETE SET NULL
 ) ENGINE=MyISAM;
@@ -322,6 +278,7 @@ CREATE TABLE `contents`
     `author_id` INTEGER,
     `content_type_id` INTEGER,
     `date` DATETIME NOT NULL,
+    `last_modification_date` DATETIME,
     `access_rights` TINYINT DEFAULT 0,
     `validated` TINYINT(1) DEFAULT 0,
     `title` VARCHAR(255),
@@ -329,6 +286,7 @@ CREATE TABLE `contents`
     `cursus_id` INTEGER,
     `course_id` INTEGER,
     `year` INTEGER,
+    `deleted` TINYINT(1) DEFAULT 0,
     PRIMARY KEY (`id`),
     INDEX `contents_FI_1` (`author_id`),
     INDEX `contents_FI_2` (`cursus_id`),
@@ -433,68 +391,6 @@ CREATE TABLE `content_comments`
 ) ENGINE=MyISAM;
 
 -- ---------------------------------------------------------------------
--- tags
--- ---------------------------------------------------------------------
-
-DROP TABLE IF EXISTS `tags`;
-
-CREATE TABLE `tags`
-(
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `title` VARCHAR(16) NOT NULL,
-    PRIMARY KEY (`id`),
-    INDEX `tags_I_1` (`title`)
-) ENGINE=MyISAM;
-
--- ---------------------------------------------------------------------
--- contents_tags
--- ---------------------------------------------------------------------
-
-DROP TABLE IF EXISTS `contents_tags`;
-
-CREATE TABLE `contents_tags`
-(
-    `tag_id` INTEGER NOT NULL,
-    `content_id` INTEGER NOT NULL,
-    PRIMARY KEY (`tag_id`,`content_id`),
-    INDEX `contents_tags_FI_2` (`content_id`),
-    CONSTRAINT `contents_tags_FK_1`
-        FOREIGN KEY (`tag_id`)
-        REFERENCES `tags` (`id`)
-        ON UPDATE CASCADE
-        ON DELETE CASCADE,
-    CONSTRAINT `contents_tags_FK_2`
-        FOREIGN KEY (`content_id`)
-        REFERENCES `contents` (`id`)
-        ON UPDATE CASCADE
-        ON DELETE CASCADE
-) ENGINE=MyISAM;
-
--- ---------------------------------------------------------------------
--- ads_tags
--- ---------------------------------------------------------------------
-
-DROP TABLE IF EXISTS `ads_tags`;
-
-CREATE TABLE `ads_tags`
-(
-    `tag_id` INTEGER NOT NULL,
-    `ad_id` INTEGER NOT NULL,
-    PRIMARY KEY (`tag_id`,`ad_id`),
-    INDEX `ads_tags_FI_2` (`ad_id`),
-    CONSTRAINT `ads_tags_FK_1`
-        FOREIGN KEY (`tag_id`)
-        REFERENCES `tags` (`id`)
-        ON UPDATE CASCADE
-        ON DELETE CASCADE,
-    CONSTRAINT `ads_tags_FK_2`
-        FOREIGN KEY (`ad_id`)
-        REFERENCES `ads` (`id`)
-        ON UPDATE CASCADE
-        ON DELETE CASCADE
-) ENGINE=MyISAM;
-
--- ---------------------------------------------------------------------
 -- reports
 -- ---------------------------------------------------------------------
 
@@ -588,30 +484,6 @@ CREATE TABLE `news`
 ) ENGINE=MyISAM;
 
 -- ---------------------------------------------------------------------
--- ads
--- ---------------------------------------------------------------------
-
-DROP TABLE IF EXISTS `ads`;
-
-CREATE TABLE `ads`
-(
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `author_id` INTEGER NOT NULL,
-    `title` VARCHAR(255) NOT NULL,
-    `text` TEXT(400),
-    `date` DATETIME NOT NULL,
-    `validated` TINYINT(1) DEFAULT 1,
-    `access_rights` TINYINT DEFAULT 0,
-    PRIMARY KEY (`id`),
-    INDEX `ads_FI_1` (`author_id`),
-    CONSTRAINT `ads_FK_1`
-        FOREIGN KEY (`author_id`)
-        REFERENCES `users` (`id`)
-        ON UPDATE CASCADE
-        ON DELETE CASCADE
-) ENGINE=MyISAM;
-
--- ---------------------------------------------------------------------
 -- transactions
 -- ---------------------------------------------------------------------
 
@@ -631,77 +503,6 @@ CREATE TABLE `transactions`
         REFERENCES `users` (`id`)
         ON UPDATE CASCADE
         ON DELETE SET NULL
-) ENGINE=MyISAM;
-
--- ---------------------------------------------------------------------
--- forum_categories
--- ---------------------------------------------------------------------
-
-DROP TABLE IF EXISTS `forum_categories`;
-
-CREATE TABLE `forum_categories`
-(
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `title` VARCHAR(32) NOT NULL,
-    `parent_id` INTEGER,
-    `access_rights` TINYINT DEFAULT 0,
-    PRIMARY KEY (`id`),
-    INDEX `forum_categories_FI_1` (`parent_id`),
-    CONSTRAINT `forum_categories_FK_1`
-        FOREIGN KEY (`parent_id`)
-        REFERENCES `forum_categories` (`id`)
-        ON UPDATE CASCADE
-        ON DELETE SET NULL
-) ENGINE=MyISAM;
-
--- ---------------------------------------------------------------------
--- forum_topics
--- ---------------------------------------------------------------------
-
-DROP TABLE IF EXISTS `forum_topics`;
-
-CREATE TABLE `forum_topics`
-(
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `category_id` INTEGER NOT NULL,
-    `title` VARCHAR(255) NOT NULL,
-    `is_locked` TINYINT(1) DEFAULT 0,
-    `is_announcement` TINYINT(1) DEFAULT 0,
-    PRIMARY KEY (`id`),
-    INDEX `forum_topics_FI_1` (`category_id`),
-    CONSTRAINT `forum_topics_FK_1`
-        FOREIGN KEY (`category_id`)
-        REFERENCES `forum_categories` (`id`)
-        ON UPDATE CASCADE
-        ON DELETE CASCADE
-) ENGINE=MyISAM;
-
--- ---------------------------------------------------------------------
--- forum_messages
--- ---------------------------------------------------------------------
-
-DROP TABLE IF EXISTS `forum_messages`;
-
-CREATE TABLE `forum_messages`
-(
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `author_id` INTEGER NOT NULL,
-    `topic_id` INTEGER NOT NULL,
-    `last_modification` DATETIME NOT NULL,
-    `text` TEXT NOT NULL,
-    PRIMARY KEY (`id`),
-    INDEX `forum_messages_FI_1` (`author_id`),
-    INDEX `forum_messages_FI_2` (`topic_id`),
-    CONSTRAINT `forum_messages_FK_1`
-        FOREIGN KEY (`author_id`)
-        REFERENCES `users` (`id`)
-        ON UPDATE CASCADE
-        ON DELETE CASCADE,
-    CONSTRAINT `forum_messages_FK_2`
-        FOREIGN KEY (`topic_id`)
-        REFERENCES `forum_topics` (`id`)
-        ON UPDATE CASCADE
-        ON DELETE CASCADE
 ) ENGINE=MyISAM;
 
 -- ---------------------------------------------------------------------

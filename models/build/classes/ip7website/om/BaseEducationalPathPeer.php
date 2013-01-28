@@ -24,13 +24,13 @@ abstract class BaseEducationalPathPeer
     const TM_CLASS = 'EducationalPathTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 6;
+    const NUM_COLUMNS = 7;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 1;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 5;
+    const NUM_HYDRATE_COLUMNS = 6;
 
     /** the column name for the ID field */
     const ID = 'educational_paths.ID';
@@ -49,6 +49,9 @@ abstract class BaseEducationalPathPeer
 
     /** the column name for the RESPONSABLE_ID field */
     const RESPONSABLE_ID = 'educational_paths.RESPONSABLE_ID';
+
+    /** the column name for the DELETED field */
+    const DELETED = 'educational_paths.DELETED';
 
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -69,12 +72,12 @@ abstract class BaseEducationalPathPeer
      * e.g. EducationalPathPeer::$fieldNames[EducationalPathPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'ShortName', 'Name', 'Description', 'CursusId', 'ResponsableId', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'shortName', 'name', 'description', 'cursusId', 'responsableId', ),
-        BasePeer::TYPE_COLNAME => array (EducationalPathPeer::ID, EducationalPathPeer::SHORT_NAME, EducationalPathPeer::NAME, EducationalPathPeer::DESCRIPTION, EducationalPathPeer::CURSUS_ID, EducationalPathPeer::RESPONSABLE_ID, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'SHORT_NAME', 'NAME', 'DESCRIPTION', 'CURSUS_ID', 'RESPONSABLE_ID', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'short_name', 'name', 'description', 'cursus_id', 'responsable_id', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'ShortName', 'Name', 'Description', 'CursusId', 'ResponsableId', 'Deleted', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'shortName', 'name', 'description', 'cursusId', 'responsableId', 'deleted', ),
+        BasePeer::TYPE_COLNAME => array (EducationalPathPeer::ID, EducationalPathPeer::SHORT_NAME, EducationalPathPeer::NAME, EducationalPathPeer::DESCRIPTION, EducationalPathPeer::CURSUS_ID, EducationalPathPeer::RESPONSABLE_ID, EducationalPathPeer::DELETED, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'SHORT_NAME', 'NAME', 'DESCRIPTION', 'CURSUS_ID', 'RESPONSABLE_ID', 'DELETED', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'short_name', 'name', 'description', 'cursus_id', 'responsable_id', 'deleted', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
     );
 
     /**
@@ -84,12 +87,12 @@ abstract class BaseEducationalPathPeer
      * e.g. EducationalPathPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'ShortName' => 1, 'Name' => 2, 'Description' => 3, 'CursusId' => 4, 'ResponsableId' => 5, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'shortName' => 1, 'name' => 2, 'description' => 3, 'cursusId' => 4, 'responsableId' => 5, ),
-        BasePeer::TYPE_COLNAME => array (EducationalPathPeer::ID => 0, EducationalPathPeer::SHORT_NAME => 1, EducationalPathPeer::NAME => 2, EducationalPathPeer::DESCRIPTION => 3, EducationalPathPeer::CURSUS_ID => 4, EducationalPathPeer::RESPONSABLE_ID => 5, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'SHORT_NAME' => 1, 'NAME' => 2, 'DESCRIPTION' => 3, 'CURSUS_ID' => 4, 'RESPONSABLE_ID' => 5, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'short_name' => 1, 'name' => 2, 'description' => 3, 'cursus_id' => 4, 'responsable_id' => 5, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'ShortName' => 1, 'Name' => 2, 'Description' => 3, 'CursusId' => 4, 'ResponsableId' => 5, 'Deleted' => 6, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'shortName' => 1, 'name' => 2, 'description' => 3, 'cursusId' => 4, 'responsableId' => 5, 'deleted' => 6, ),
+        BasePeer::TYPE_COLNAME => array (EducationalPathPeer::ID => 0, EducationalPathPeer::SHORT_NAME => 1, EducationalPathPeer::NAME => 2, EducationalPathPeer::DESCRIPTION => 3, EducationalPathPeer::CURSUS_ID => 4, EducationalPathPeer::RESPONSABLE_ID => 5, EducationalPathPeer::DELETED => 6, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'SHORT_NAME' => 1, 'NAME' => 2, 'DESCRIPTION' => 3, 'CURSUS_ID' => 4, 'RESPONSABLE_ID' => 5, 'DELETED' => 6, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'short_name' => 1, 'name' => 2, 'description' => 3, 'cursus_id' => 4, 'responsable_id' => 5, 'deleted' => 6, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
     );
 
     /**
@@ -168,12 +171,14 @@ abstract class BaseEducationalPathPeer
             $criteria->addSelectColumn(EducationalPathPeer::NAME);
             $criteria->addSelectColumn(EducationalPathPeer::CURSUS_ID);
             $criteria->addSelectColumn(EducationalPathPeer::RESPONSABLE_ID);
+            $criteria->addSelectColumn(EducationalPathPeer::DELETED);
         } else {
             $criteria->addSelectColumn($alias . '.ID');
             $criteria->addSelectColumn($alias . '.SHORT_NAME');
             $criteria->addSelectColumn($alias . '.NAME');
             $criteria->addSelectColumn($alias . '.CURSUS_ID');
             $criteria->addSelectColumn($alias . '.RESPONSABLE_ID');
+            $criteria->addSelectColumn($alias . '.DELETED');
         }
     }
 

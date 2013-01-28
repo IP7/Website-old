@@ -10,6 +10,7 @@
  * @method ContentQuery orderByAuthorId($order = Criteria::ASC) Order by the author_id column
  * @method ContentQuery orderByContentTypeId($order = Criteria::ASC) Order by the content_type_id column
  * @method ContentQuery orderByDate($order = Criteria::ASC) Order by the date column
+ * @method ContentQuery orderByLastModificationDate($order = Criteria::ASC) Order by the last_modification_date column
  * @method ContentQuery orderByAccessRights($order = Criteria::ASC) Order by the access_rights column
  * @method ContentQuery orderByValidated($order = Criteria::ASC) Order by the validated column
  * @method ContentQuery orderByTitle($order = Criteria::ASC) Order by the title column
@@ -17,11 +18,13 @@
  * @method ContentQuery orderByCursusId($order = Criteria::ASC) Order by the cursus_id column
  * @method ContentQuery orderByCourseId($order = Criteria::ASC) Order by the course_id column
  * @method ContentQuery orderByYear($order = Criteria::ASC) Order by the year column
+ * @method ContentQuery orderByDeleted($order = Criteria::ASC) Order by the deleted column
  *
  * @method ContentQuery groupById() Group by the id column
  * @method ContentQuery groupByAuthorId() Group by the author_id column
  * @method ContentQuery groupByContentTypeId() Group by the content_type_id column
  * @method ContentQuery groupByDate() Group by the date column
+ * @method ContentQuery groupByLastModificationDate() Group by the last_modification_date column
  * @method ContentQuery groupByAccessRights() Group by the access_rights column
  * @method ContentQuery groupByValidated() Group by the validated column
  * @method ContentQuery groupByTitle() Group by the title column
@@ -29,6 +32,7 @@
  * @method ContentQuery groupByCursusId() Group by the cursus_id column
  * @method ContentQuery groupByCourseId() Group by the course_id column
  * @method ContentQuery groupByYear() Group by the year column
+ * @method ContentQuery groupByDeleted() Group by the deleted column
  *
  * @method ContentQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method ContentQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -58,10 +62,6 @@
  * @method ContentQuery rightJoinComment($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Comment relation
  * @method ContentQuery innerJoinComment($relationAlias = null) Adds a INNER JOIN clause to the query using the Comment relation
  *
- * @method ContentQuery leftJoinContentsTags($relationAlias = null) Adds a LEFT JOIN clause to the query using the ContentsTags relation
- * @method ContentQuery rightJoinContentsTags($relationAlias = null) Adds a RIGHT JOIN clause to the query using the ContentsTags relation
- * @method ContentQuery innerJoinContentsTags($relationAlias = null) Adds a INNER JOIN clause to the query using the ContentsTags relation
- *
  * @method ContentQuery leftJoinReport($relationAlias = null) Adds a LEFT JOIN clause to the query using the Report relation
  * @method ContentQuery rightJoinReport($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Report relation
  * @method ContentQuery innerJoinReport($relationAlias = null) Adds a INNER JOIN clause to the query using the Report relation
@@ -73,6 +73,7 @@
  * @method Content findOneByAuthorId(int $author_id) Return the first Content filtered by the author_id column
  * @method Content findOneByContentTypeId(int $content_type_id) Return the first Content filtered by the content_type_id column
  * @method Content findOneByDate(string $date) Return the first Content filtered by the date column
+ * @method Content findOneByLastModificationDate(string $last_modification_date) Return the first Content filtered by the last_modification_date column
  * @method Content findOneByAccessRights(int $access_rights) Return the first Content filtered by the access_rights column
  * @method Content findOneByValidated(boolean $validated) Return the first Content filtered by the validated column
  * @method Content findOneByTitle(string $title) Return the first Content filtered by the title column
@@ -80,11 +81,13 @@
  * @method Content findOneByCursusId(int $cursus_id) Return the first Content filtered by the cursus_id column
  * @method Content findOneByCourseId(int $course_id) Return the first Content filtered by the course_id column
  * @method Content findOneByYear(int $year) Return the first Content filtered by the year column
+ * @method Content findOneByDeleted(boolean $deleted) Return the first Content filtered by the deleted column
  *
  * @method array findById(int $id) Return Content objects filtered by the id column
  * @method array findByAuthorId(int $author_id) Return Content objects filtered by the author_id column
  * @method array findByContentTypeId(int $content_type_id) Return Content objects filtered by the content_type_id column
  * @method array findByDate(string $date) Return Content objects filtered by the date column
+ * @method array findByLastModificationDate(string $last_modification_date) Return Content objects filtered by the last_modification_date column
  * @method array findByAccessRights(int $access_rights) Return Content objects filtered by the access_rights column
  * @method array findByValidated(boolean $validated) Return Content objects filtered by the validated column
  * @method array findByTitle(string $title) Return Content objects filtered by the title column
@@ -92,6 +95,7 @@
  * @method array findByCursusId(int $cursus_id) Return Content objects filtered by the cursus_id column
  * @method array findByCourseId(int $course_id) Return Content objects filtered by the course_id column
  * @method array findByYear(int $year) Return Content objects filtered by the year column
+ * @method array findByDeleted(boolean $deleted) Return Content objects filtered by the deleted column
  *
  * @package    propel.generator.ip7website.om
  */
@@ -181,7 +185,7 @@ abstract class BaseContentQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `ID`, `AUTHOR_ID`, `CONTENT_TYPE_ID`, `DATE`, `ACCESS_RIGHTS`, `VALIDATED`, `TITLE`, `CURSUS_ID`, `COURSE_ID`, `YEAR` FROM `contents` WHERE `ID` = :p0';
+        $sql = 'SELECT `ID`, `AUTHOR_ID`, `CONTENT_TYPE_ID`, `DATE`, `LAST_MODIFICATION_DATE`, `ACCESS_RIGHTS`, `VALIDATED`, `TITLE`, `CURSUS_ID`, `COURSE_ID`, `YEAR`, `DELETED` FROM `contents` WHERE `ID` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -424,6 +428,49 @@ abstract class BaseContentQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(ContentPeer::DATE, $date, $comparison);
+    }
+
+    /**
+     * Filter the query on the last_modification_date column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByLastModificationDate('2011-03-14'); // WHERE last_modification_date = '2011-03-14'
+     * $query->filterByLastModificationDate('now'); // WHERE last_modification_date = '2011-03-14'
+     * $query->filterByLastModificationDate(array('max' => 'yesterday')); // WHERE last_modification_date > '2011-03-13'
+     * </code>
+     *
+     * @param     mixed $lastModificationDate The value to use as filter.
+     *              Values can be integers (unix timestamps), DateTime objects, or strings.
+     *              Empty strings are treated as NULL.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ContentQuery The current query, for fluid interface
+     */
+    public function filterByLastModificationDate($lastModificationDate = null, $comparison = null)
+    {
+        if (is_array($lastModificationDate)) {
+            $useMinMax = false;
+            if (isset($lastModificationDate['min'])) {
+                $this->addUsingAlias(ContentPeer::LAST_MODIFICATION_DATE, $lastModificationDate['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($lastModificationDate['max'])) {
+                $this->addUsingAlias(ContentPeer::LAST_MODIFICATION_DATE, $lastModificationDate['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(ContentPeer::LAST_MODIFICATION_DATE, $lastModificationDate, $comparison);
     }
 
     /**
@@ -677,6 +724,33 @@ abstract class BaseContentQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(ContentPeer::YEAR, $year, $comparison);
+    }
+
+    /**
+     * Filter the query on the deleted column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByDeleted(true); // WHERE deleted = true
+     * $query->filterByDeleted('yes'); // WHERE deleted = true
+     * </code>
+     *
+     * @param     boolean|string $deleted The value to use as filter.
+     *              Non-boolean arguments are converted using the following rules:
+     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ContentQuery The current query, for fluid interface
+     */
+    public function filterByDeleted($deleted = null, $comparison = null)
+    {
+        if (is_string($deleted)) {
+            $deleted = in_array(strtolower($deleted), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+        }
+
+        return $this->addUsingAlias(ContentPeer::DELETED, $deleted, $comparison);
     }
 
     /**
@@ -1132,80 +1206,6 @@ abstract class BaseContentQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query by a related ContentsTags object
-     *
-     * @param   ContentsTags|PropelObjectCollection $contentsTags  the related object to use as filter
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return   ContentQuery The current query, for fluid interface
-     * @throws   PropelException - if the provided filter is invalid.
-     */
-    public function filterByContentsTags($contentsTags, $comparison = null)
-    {
-        if ($contentsTags instanceof ContentsTags) {
-            return $this
-                ->addUsingAlias(ContentPeer::ID, $contentsTags->getContentId(), $comparison);
-        } elseif ($contentsTags instanceof PropelObjectCollection) {
-            return $this
-                ->useContentsTagsQuery()
-                ->filterByPrimaryKeys($contentsTags->getPrimaryKeys())
-                ->endUse();
-        } else {
-            throw new PropelException('filterByContentsTags() only accepts arguments of type ContentsTags or PropelCollection');
-        }
-    }
-
-    /**
-     * Adds a JOIN clause to the query using the ContentsTags relation
-     *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return ContentQuery The current query, for fluid interface
-     */
-    public function joinContentsTags($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-    {
-        $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('ContentsTags');
-
-        // create a ModelJoin object for this join
-        $join = new ModelJoin();
-        $join->setJoinType($joinType);
-        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
-        if ($previousJoin = $this->getPreviousJoin()) {
-            $join->setPreviousJoin($previousJoin);
-        }
-
-        // add the ModelJoin to the current object
-        if ($relationAlias) {
-            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
-            $this->addJoinObject($join, $relationAlias);
-        } else {
-            $this->addJoinObject($join, 'ContentsTags');
-        }
-
-        return $this;
-    }
-
-    /**
-     * Use the ContentsTags relation ContentsTags object
-     *
-     * @see       useQuery()
-     *
-     * @param     string $relationAlias optional alias for the relation,
-     *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return   ContentsTagsQuery A secondary query class using the current class as primary query
-     */
-    public function useContentsTagsQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-    {
-        return $this
-            ->joinContentsTags($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'ContentsTags', 'ContentsTagsQuery');
-    }
-
-    /**
      * Filter the query by a related Report object
      *
      * @param   Report|PropelObjectCollection $report  the related object to use as filter
@@ -1293,23 +1293,6 @@ abstract class BaseContentQuery extends ModelCriteria
         return $this
             ->useContentsFilesQuery()
             ->filterByFile($file, $comparison)
-            ->endUse();
-    }
-
-    /**
-     * Filter the query by a related Tag object
-     * using the contents_tags table as cross reference
-     *
-     * @param   Tag $tag the related object to use as filter
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return   ContentQuery The current query, for fluid interface
-     */
-    public function filterByTag($tag, $comparison = Criteria::EQUAL)
-    {
-        return $this
-            ->useContentsTagsQuery()
-            ->filterByTag($tag, $comparison)
             ->endUse();
     }
 

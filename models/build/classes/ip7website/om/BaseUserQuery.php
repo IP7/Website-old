@@ -86,10 +86,6 @@
  * @method UserQuery rightJoinFile($relationAlias = null) Adds a RIGHT JOIN clause to the query using the File relation
  * @method UserQuery innerJoinFile($relationAlias = null) Adds a INNER JOIN clause to the query using the File relation
  *
- * @method UserQuery leftJoinAlert($relationAlias = null) Adds a LEFT JOIN clause to the query using the Alert relation
- * @method UserQuery rightJoinAlert($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Alert relation
- * @method UserQuery innerJoinAlert($relationAlias = null) Adds a INNER JOIN clause to the query using the Alert relation
- *
  * @method UserQuery leftJoinContent($relationAlias = null) Adds a LEFT JOIN clause to the query using the Content relation
  * @method UserQuery rightJoinContent($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Content relation
  * @method UserQuery innerJoinContent($relationAlias = null) Adds a INNER JOIN clause to the query using the Content relation
@@ -110,17 +106,9 @@
  * @method UserQuery rightJoinNews($relationAlias = null) Adds a RIGHT JOIN clause to the query using the News relation
  * @method UserQuery innerJoinNews($relationAlias = null) Adds a INNER JOIN clause to the query using the News relation
  *
- * @method UserQuery leftJoinAd($relationAlias = null) Adds a LEFT JOIN clause to the query using the Ad relation
- * @method UserQuery rightJoinAd($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Ad relation
- * @method UserQuery innerJoinAd($relationAlias = null) Adds a INNER JOIN clause to the query using the Ad relation
- *
  * @method UserQuery leftJoinTransaction($relationAlias = null) Adds a LEFT JOIN clause to the query using the Transaction relation
  * @method UserQuery rightJoinTransaction($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Transaction relation
  * @method UserQuery innerJoinTransaction($relationAlias = null) Adds a INNER JOIN clause to the query using the Transaction relation
- *
- * @method UserQuery leftJoinForumMessage($relationAlias = null) Adds a LEFT JOIN clause to the query using the ForumMessage relation
- * @method UserQuery rightJoinForumMessage($relationAlias = null) Adds a RIGHT JOIN clause to the query using the ForumMessage relation
- * @method UserQuery innerJoinForumMessage($relationAlias = null) Adds a INNER JOIN clause to the query using the ForumMessage relation
  *
  * @method UserQuery leftJoinScheduledCourse($relationAlias = null) Adds a LEFT JOIN clause to the query using the ScheduledCourse relation
  * @method UserQuery rightJoinScheduledCourse($relationAlias = null) Adds a RIGHT JOIN clause to the query using the ScheduledCourse relation
@@ -1583,80 +1571,6 @@ abstract class BaseUserQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query by a related Alert object
-     *
-     * @param   Alert|PropelObjectCollection $alert  the related object to use as filter
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return   UserQuery The current query, for fluid interface
-     * @throws   PropelException - if the provided filter is invalid.
-     */
-    public function filterByAlert($alert, $comparison = null)
-    {
-        if ($alert instanceof Alert) {
-            return $this
-                ->addUsingAlias(UserPeer::ID, $alert->getSubscriberId(), $comparison);
-        } elseif ($alert instanceof PropelObjectCollection) {
-            return $this
-                ->useAlertQuery()
-                ->filterByPrimaryKeys($alert->getPrimaryKeys())
-                ->endUse();
-        } else {
-            throw new PropelException('filterByAlert() only accepts arguments of type Alert or PropelCollection');
-        }
-    }
-
-    /**
-     * Adds a JOIN clause to the query using the Alert relation
-     *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return UserQuery The current query, for fluid interface
-     */
-    public function joinAlert($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-    {
-        $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('Alert');
-
-        // create a ModelJoin object for this join
-        $join = new ModelJoin();
-        $join->setJoinType($joinType);
-        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
-        if ($previousJoin = $this->getPreviousJoin()) {
-            $join->setPreviousJoin($previousJoin);
-        }
-
-        // add the ModelJoin to the current object
-        if ($relationAlias) {
-            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
-            $this->addJoinObject($join, $relationAlias);
-        } else {
-            $this->addJoinObject($join, 'Alert');
-        }
-
-        return $this;
-    }
-
-    /**
-     * Use the Alert relation Alert object
-     *
-     * @see       useQuery()
-     *
-     * @param     string $relationAlias optional alias for the relation,
-     *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return   AlertQuery A secondary query class using the current class as primary query
-     */
-    public function useAlertQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-    {
-        return $this
-            ->joinAlert($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'Alert', 'AlertQuery');
-    }
-
-    /**
      * Filter the query by a related Content object
      *
      * @param   Content|PropelObjectCollection $content  the related object to use as filter
@@ -2027,80 +1941,6 @@ abstract class BaseUserQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query by a related Ad object
-     *
-     * @param   Ad|PropelObjectCollection $ad  the related object to use as filter
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return   UserQuery The current query, for fluid interface
-     * @throws   PropelException - if the provided filter is invalid.
-     */
-    public function filterByAd($ad, $comparison = null)
-    {
-        if ($ad instanceof Ad) {
-            return $this
-                ->addUsingAlias(UserPeer::ID, $ad->getAuthorId(), $comparison);
-        } elseif ($ad instanceof PropelObjectCollection) {
-            return $this
-                ->useAdQuery()
-                ->filterByPrimaryKeys($ad->getPrimaryKeys())
-                ->endUse();
-        } else {
-            throw new PropelException('filterByAd() only accepts arguments of type Ad or PropelCollection');
-        }
-    }
-
-    /**
-     * Adds a JOIN clause to the query using the Ad relation
-     *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return UserQuery The current query, for fluid interface
-     */
-    public function joinAd($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-    {
-        $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('Ad');
-
-        // create a ModelJoin object for this join
-        $join = new ModelJoin();
-        $join->setJoinType($joinType);
-        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
-        if ($previousJoin = $this->getPreviousJoin()) {
-            $join->setPreviousJoin($previousJoin);
-        }
-
-        // add the ModelJoin to the current object
-        if ($relationAlias) {
-            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
-            $this->addJoinObject($join, $relationAlias);
-        } else {
-            $this->addJoinObject($join, 'Ad');
-        }
-
-        return $this;
-    }
-
-    /**
-     * Use the Ad relation Ad object
-     *
-     * @see       useQuery()
-     *
-     * @param     string $relationAlias optional alias for the relation,
-     *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return   AdQuery A secondary query class using the current class as primary query
-     */
-    public function useAdQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-    {
-        return $this
-            ->joinAd($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'Ad', 'AdQuery');
-    }
-
-    /**
      * Filter the query by a related Transaction object
      *
      * @param   Transaction|PropelObjectCollection $transaction  the related object to use as filter
@@ -2172,80 +2012,6 @@ abstract class BaseUserQuery extends ModelCriteria
         return $this
             ->joinTransaction($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'Transaction', 'TransactionQuery');
-    }
-
-    /**
-     * Filter the query by a related ForumMessage object
-     *
-     * @param   ForumMessage|PropelObjectCollection $forumMessage  the related object to use as filter
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return   UserQuery The current query, for fluid interface
-     * @throws   PropelException - if the provided filter is invalid.
-     */
-    public function filterByForumMessage($forumMessage, $comparison = null)
-    {
-        if ($forumMessage instanceof ForumMessage) {
-            return $this
-                ->addUsingAlias(UserPeer::ID, $forumMessage->getAuthorId(), $comparison);
-        } elseif ($forumMessage instanceof PropelObjectCollection) {
-            return $this
-                ->useForumMessageQuery()
-                ->filterByPrimaryKeys($forumMessage->getPrimaryKeys())
-                ->endUse();
-        } else {
-            throw new PropelException('filterByForumMessage() only accepts arguments of type ForumMessage or PropelCollection');
-        }
-    }
-
-    /**
-     * Adds a JOIN clause to the query using the ForumMessage relation
-     *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return UserQuery The current query, for fluid interface
-     */
-    public function joinForumMessage($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-    {
-        $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('ForumMessage');
-
-        // create a ModelJoin object for this join
-        $join = new ModelJoin();
-        $join->setJoinType($joinType);
-        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
-        if ($previousJoin = $this->getPreviousJoin()) {
-            $join->setPreviousJoin($previousJoin);
-        }
-
-        // add the ModelJoin to the current object
-        if ($relationAlias) {
-            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
-            $this->addJoinObject($join, $relationAlias);
-        } else {
-            $this->addJoinObject($join, 'ForumMessage');
-        }
-
-        return $this;
-    }
-
-    /**
-     * Use the ForumMessage relation ForumMessage object
-     *
-     * @see       useQuery()
-     *
-     * @param     string $relationAlias optional alias for the relation,
-     *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return   ForumMessageQuery A secondary query class using the current class as primary query
-     */
-    public function useForumMessageQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-    {
-        return $this
-            ->joinForumMessage($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'ForumMessage', 'ForumMessageQuery');
     }
 
     /**

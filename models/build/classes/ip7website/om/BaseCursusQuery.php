@@ -34,10 +34,6 @@
  * @method CursusQuery rightJoinEducationalPath($relationAlias = null) Adds a RIGHT JOIN clause to the query using the EducationalPath relation
  * @method CursusQuery innerJoinEducationalPath($relationAlias = null) Adds a INNER JOIN clause to the query using the EducationalPath relation
  *
- * @method CursusQuery leftJoinAlert($relationAlias = null) Adds a LEFT JOIN clause to the query using the Alert relation
- * @method CursusQuery rightJoinAlert($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Alert relation
- * @method CursusQuery innerJoinAlert($relationAlias = null) Adds a INNER JOIN clause to the query using the Alert relation
- *
  * @method CursusQuery leftJoinContent($relationAlias = null) Adds a LEFT JOIN clause to the query using the Content relation
  * @method CursusQuery rightJoinContent($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Content relation
  * @method CursusQuery innerJoinContent($relationAlias = null) Adds a INNER JOIN clause to the query using the Content relation
@@ -621,80 +617,6 @@ abstract class BaseCursusQuery extends ModelCriteria
         return $this
             ->joinEducationalPath($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'EducationalPath', 'EducationalPathQuery');
-    }
-
-    /**
-     * Filter the query by a related Alert object
-     *
-     * @param   Alert|PropelObjectCollection $alert  the related object to use as filter
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return   CursusQuery The current query, for fluid interface
-     * @throws   PropelException - if the provided filter is invalid.
-     */
-    public function filterByAlert($alert, $comparison = null)
-    {
-        if ($alert instanceof Alert) {
-            return $this
-                ->addUsingAlias(CursusPeer::ID, $alert->getCursusId(), $comparison);
-        } elseif ($alert instanceof PropelObjectCollection) {
-            return $this
-                ->useAlertQuery()
-                ->filterByPrimaryKeys($alert->getPrimaryKeys())
-                ->endUse();
-        } else {
-            throw new PropelException('filterByAlert() only accepts arguments of type Alert or PropelCollection');
-        }
-    }
-
-    /**
-     * Adds a JOIN clause to the query using the Alert relation
-     *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return CursusQuery The current query, for fluid interface
-     */
-    public function joinAlert($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
-    {
-        $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('Alert');
-
-        // create a ModelJoin object for this join
-        $join = new ModelJoin();
-        $join->setJoinType($joinType);
-        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
-        if ($previousJoin = $this->getPreviousJoin()) {
-            $join->setPreviousJoin($previousJoin);
-        }
-
-        // add the ModelJoin to the current object
-        if ($relationAlias) {
-            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
-            $this->addJoinObject($join, $relationAlias);
-        } else {
-            $this->addJoinObject($join, 'Alert');
-        }
-
-        return $this;
-    }
-
-    /**
-     * Use the Alert relation Alert object
-     *
-     * @see       useQuery()
-     *
-     * @param     string $relationAlias optional alias for the relation,
-     *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return   AlertQuery A secondary query class using the current class as primary query
-     */
-    public function useAlertQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
-    {
-        return $this
-            ->joinAlert($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'Alert', 'AlertQuery');
     }
 
     /**

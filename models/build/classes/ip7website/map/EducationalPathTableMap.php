@@ -44,6 +44,7 @@ class EducationalPathTableMap extends TableMap
         $this->addColumn('DESCRIPTION', 'Description', 'LONGVARCHAR', false, 1024, null);
         $this->addForeignKey('CURSUS_ID', 'CursusId', 'INTEGER', 'cursus', 'ID', true, null, null);
         $this->addForeignKey('RESPONSABLE_ID', 'ResponsableId', 'INTEGER', 'users', 'ID', false, null, null);
+        $this->addColumn('DELETED', 'Deleted', 'BOOLEAN', false, 1, '0');
         // validators
     } // initialize()
 

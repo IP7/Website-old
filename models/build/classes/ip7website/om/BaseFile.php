@@ -86,6 +86,13 @@ abstract class BaseFile extends BaseObject implements Persistent
     protected $downloads_count;
 
     /**
+     * The value for the deleted field.
+     * Note: this column has a database default value of: (expression) 0
+     * @var        boolean
+     */
+    protected $deleted;
+
+    /**
      * @var        User
      */
     protected $aAuthor;
@@ -271,6 +278,16 @@ abstract class BaseFile extends BaseObject implements Persistent
     public function getDownloadsCount()
     {
         return $this->downloads_count;
+    }
+
+    /**
+     * Get the [deleted] column value.
+     *
+     * @return boolean
+     */
+    public function getDeleted()
+    {
+        return $this->deleted;
     }
 
     /**
@@ -474,6 +491,35 @@ abstract class BaseFile extends BaseObject implements Persistent
     } // setDownloadsCount()
 
     /**
+     * Sets the value of the [deleted] column.
+     * Non-boolean arguments are converted using the following rules:
+     *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     *
+     * @param boolean|integer|string $v The new value
+     * @return File The current object (for fluent API support)
+     */
+    public function setDeleted($v)
+    {
+        if ($v !== null) {
+            if (is_string($v)) {
+                $v = in_array(strtolower($v), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+            } else {
+                $v = (boolean) $v;
+            }
+        }
+
+        if ($this->deleted !== $v) {
+            $this->deleted = $v;
+            $this->modifiedColumns[] = FilePeer::DELETED;
+        }
+
+
+        return $this;
+    } // setDeleted()
+
+    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -514,6 +560,7 @@ abstract class BaseFile extends BaseObject implements Persistent
             $this->path = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
             $this->access_rights = ($row[$startcol + 7] !== null) ? (int) $row[$startcol + 7] : null;
             $this->downloads_count = ($row[$startcol + 8] !== null) ? (int) $row[$startcol + 8] : null;
+            $this->deleted = ($row[$startcol + 9] !== null) ? (boolean) $row[$startcol + 9] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -522,7 +569,7 @@ abstract class BaseFile extends BaseObject implements Persistent
                 $this->ensureConsistency();
             }
 
-            return $startcol + 9; // 9 = FilePeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 10; // 10 = FilePeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating File object", $e);
@@ -817,6 +864,9 @@ abstract class BaseFile extends BaseObject implements Persistent
         if ($this->isColumnModified(FilePeer::DOWNLOADS_COUNT)) {
             $modifiedColumns[':p' . $index++]  = '`DOWNLOADS_COUNT`';
         }
+        if ($this->isColumnModified(FilePeer::DELETED)) {
+            $modifiedColumns[':p' . $index++]  = '`DELETED`';
+        }
 
         $sql = sprintf(
             'INSERT INTO `files` (%s) VALUES (%s)',
@@ -854,6 +904,9 @@ abstract class BaseFile extends BaseObject implements Persistent
                         break;
                     case '`DOWNLOADS_COUNT`':
                         $stmt->bindValue($identifier, $this->downloads_count, PDO::PARAM_INT);
+                        break;
+                    case '`DELETED`':
+                        $stmt->bindValue($identifier, (int) $this->deleted, PDO::PARAM_INT);
                         break;
                 }
             }
@@ -1036,6 +1089,9 @@ abstract class BaseFile extends BaseObject implements Persistent
             case 8:
                 return $this->getDownloadsCount();
                 break;
+            case 9:
+                return $this->getDeleted();
+                break;
             default:
                 return null;
                 break;
@@ -1074,6 +1130,7 @@ abstract class BaseFile extends BaseObject implements Persistent
             $keys[6] => $this->getPath(),
             $keys[7] => $this->getAccessRights(),
             $keys[8] => $this->getDownloadsCount(),
+            $keys[9] => $this->getDeleted(),
         );
         if ($includeForeignObjects) {
             if (null !== $this->aAuthor) {
@@ -1147,6 +1204,9 @@ abstract class BaseFile extends BaseObject implements Persistent
             case 8:
                 $this->setDownloadsCount($value);
                 break;
+            case 9:
+                $this->setDeleted($value);
+                break;
         } // switch()
     }
 
@@ -1180,6 +1240,7 @@ abstract class BaseFile extends BaseObject implements Persistent
         if (array_key_exists($keys[6], $arr)) $this->setPath($arr[$keys[6]]);
         if (array_key_exists($keys[7], $arr)) $this->setAccessRights($arr[$keys[7]]);
         if (array_key_exists($keys[8], $arr)) $this->setDownloadsCount($arr[$keys[8]]);
+        if (array_key_exists($keys[9], $arr)) $this->setDeleted($arr[$keys[9]]);
     }
 
     /**
@@ -1200,6 +1261,7 @@ abstract class BaseFile extends BaseObject implements Persistent
         if ($this->isColumnModified(FilePeer::PATH)) $criteria->add(FilePeer::PATH, $this->path);
         if ($this->isColumnModified(FilePeer::ACCESS_RIGHTS)) $criteria->add(FilePeer::ACCESS_RIGHTS, $this->access_rights);
         if ($this->isColumnModified(FilePeer::DOWNLOADS_COUNT)) $criteria->add(FilePeer::DOWNLOADS_COUNT, $this->downloads_count);
+        if ($this->isColumnModified(FilePeer::DELETED)) $criteria->add(FilePeer::DELETED, $this->deleted);
 
         return $criteria;
     }
@@ -1271,6 +1333,7 @@ abstract class BaseFile extends BaseObject implements Persistent
         $copyObj->setPath($this->getPath());
         $copyObj->setAccessRights($this->getAccessRights());
         $copyObj->setDownloadsCount($this->getDownloadsCount());
+        $copyObj->setDeleted($this->getDeleted());
 
         if ($deepCopy && !$this->startCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -1816,6 +1879,7 @@ abstract class BaseFile extends BaseObject implements Persistent
         $this->path = null;
         $this->access_rights = null;
         $this->downloads_count = null;
+        $this->deleted = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->clearAllReferences();

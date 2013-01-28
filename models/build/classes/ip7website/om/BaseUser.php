@@ -256,12 +256,6 @@ abstract class BaseUser extends BaseObject implements Persistent
     protected $collFilesPartial;
 
     /**
-     * @var        PropelObjectCollection|Alert[] Collection to store aggregation of Alert objects.
-     */
-    protected $collAlerts;
-    protected $collAlertsPartial;
-
-    /**
      * @var        PropelObjectCollection|Content[] Collection to store aggregation of Content objects.
      */
     protected $collContents;
@@ -292,22 +286,10 @@ abstract class BaseUser extends BaseObject implements Persistent
     protected $collNewssPartial;
 
     /**
-     * @var        PropelObjectCollection|Ad[] Collection to store aggregation of Ad objects.
-     */
-    protected $collAds;
-    protected $collAdsPartial;
-
-    /**
      * @var        PropelObjectCollection|Transaction[] Collection to store aggregation of Transaction objects.
      */
     protected $collTransactions;
     protected $collTransactionsPartial;
-
-    /**
-     * @var        PropelObjectCollection|ForumMessage[] Collection to store aggregation of ForumMessage objects.
-     */
-    protected $collForumMessages;
-    protected $collForumMessagesPartial;
 
     /**
      * @var        PropelObjectCollection|ScheduledCourse[] Collection to store aggregation of ScheduledCourse objects.
@@ -374,12 +356,6 @@ abstract class BaseUser extends BaseObject implements Persistent
      * An array of objects scheduled for deletion.
      * @var		PropelObjectCollection
      */
-    protected $alertsScheduledForDeletion = null;
-
-    /**
-     * An array of objects scheduled for deletion.
-     * @var		PropelObjectCollection
-     */
     protected $contentsScheduledForDeletion = null;
 
     /**
@@ -410,19 +386,7 @@ abstract class BaseUser extends BaseObject implements Persistent
      * An array of objects scheduled for deletion.
      * @var		PropelObjectCollection
      */
-    protected $adsScheduledForDeletion = null;
-
-    /**
-     * An array of objects scheduled for deletion.
-     * @var		PropelObjectCollection
-     */
     protected $transactionsScheduledForDeletion = null;
-
-    /**
-     * An array of objects scheduled for deletion.
-     * @var		PropelObjectCollection
-     */
-    protected $forumMessagesScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
@@ -1824,8 +1788,6 @@ abstract class BaseUser extends BaseObject implements Persistent
 
             $this->collFiles = null;
 
-            $this->collAlerts = null;
-
             $this->collContents = null;
 
             $this->collComments = null;
@@ -1836,11 +1798,7 @@ abstract class BaseUser extends BaseObject implements Persistent
 
             $this->collNewss = null;
 
-            $this->collAds = null;
-
             $this->collTransactions = null;
-
-            $this->collForumMessages = null;
 
             $this->collScheduledCourses = null;
 
@@ -2062,23 +2020,6 @@ abstract class BaseUser extends BaseObject implements Persistent
                 }
             }
 
-            if ($this->alertsScheduledForDeletion !== null) {
-                if (!$this->alertsScheduledForDeletion->isEmpty()) {
-                    AlertQuery::create()
-                        ->filterByPrimaryKeys($this->alertsScheduledForDeletion->getPrimaryKeys(false))
-                        ->delete($con);
-                    $this->alertsScheduledForDeletion = null;
-                }
-            }
-
-            if ($this->collAlerts !== null) {
-                foreach ($this->collAlerts as $referrerFK) {
-                    if (!$referrerFK->isDeleted()) {
-                        $affectedRows += $referrerFK->save($con);
-                    }
-                }
-            }
-
             if ($this->contentsScheduledForDeletion !== null) {
                 if (!$this->contentsScheduledForDeletion->isEmpty()) {
                     foreach ($this->contentsScheduledForDeletion as $content) {
@@ -2167,23 +2108,6 @@ abstract class BaseUser extends BaseObject implements Persistent
                 }
             }
 
-            if ($this->adsScheduledForDeletion !== null) {
-                if (!$this->adsScheduledForDeletion->isEmpty()) {
-                    AdQuery::create()
-                        ->filterByPrimaryKeys($this->adsScheduledForDeletion->getPrimaryKeys(false))
-                        ->delete($con);
-                    $this->adsScheduledForDeletion = null;
-                }
-            }
-
-            if ($this->collAds !== null) {
-                foreach ($this->collAds as $referrerFK) {
-                    if (!$referrerFK->isDeleted()) {
-                        $affectedRows += $referrerFK->save($con);
-                    }
-                }
-            }
-
             if ($this->transactionsScheduledForDeletion !== null) {
                 if (!$this->transactionsScheduledForDeletion->isEmpty()) {
                     foreach ($this->transactionsScheduledForDeletion as $transaction) {
@@ -2196,23 +2120,6 @@ abstract class BaseUser extends BaseObject implements Persistent
 
             if ($this->collTransactions !== null) {
                 foreach ($this->collTransactions as $referrerFK) {
-                    if (!$referrerFK->isDeleted()) {
-                        $affectedRows += $referrerFK->save($con);
-                    }
-                }
-            }
-
-            if ($this->forumMessagesScheduledForDeletion !== null) {
-                if (!$this->forumMessagesScheduledForDeletion->isEmpty()) {
-                    ForumMessageQuery::create()
-                        ->filterByPrimaryKeys($this->forumMessagesScheduledForDeletion->getPrimaryKeys(false))
-                        ->delete($con);
-                    $this->forumMessagesScheduledForDeletion = null;
-                }
-            }
-
-            if ($this->collForumMessages !== null) {
-                foreach ($this->collForumMessages as $referrerFK) {
                     if (!$referrerFK->isDeleted()) {
                         $affectedRows += $referrerFK->save($con);
                     }
@@ -2597,14 +2504,6 @@ abstract class BaseUser extends BaseObject implements Persistent
                     }
                 }
 
-                if ($this->collAlerts !== null) {
-                    foreach ($this->collAlerts as $referrerFK) {
-                        if (!$referrerFK->validate($columns)) {
-                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
-                        }
-                    }
-                }
-
                 if ($this->collContents !== null) {
                     foreach ($this->collContents as $referrerFK) {
                         if (!$referrerFK->validate($columns)) {
@@ -2645,24 +2544,8 @@ abstract class BaseUser extends BaseObject implements Persistent
                     }
                 }
 
-                if ($this->collAds !== null) {
-                    foreach ($this->collAds as $referrerFK) {
-                        if (!$referrerFK->validate($columns)) {
-                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
-                        }
-                    }
-                }
-
                 if ($this->collTransactions !== null) {
                     foreach ($this->collTransactions as $referrerFK) {
-                        if (!$referrerFK->validate($columns)) {
-                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
-                        }
-                    }
-                }
-
-                if ($this->collForumMessages !== null) {
-                    foreach ($this->collForumMessages as $referrerFK) {
                         if (!$referrerFK->validate($columns)) {
                             $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
                         }
@@ -2879,9 +2762,6 @@ abstract class BaseUser extends BaseObject implements Persistent
             if (null !== $this->collFiles) {
                 $result['Files'] = $this->collFiles->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
-            if (null !== $this->collAlerts) {
-                $result['Alerts'] = $this->collAlerts->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
-            }
             if (null !== $this->collContents) {
                 $result['Contents'] = $this->collContents->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
@@ -2897,14 +2777,8 @@ abstract class BaseUser extends BaseObject implements Persistent
             if (null !== $this->collNewss) {
                 $result['Newss'] = $this->collNewss->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
-            if (null !== $this->collAds) {
-                $result['Ads'] = $this->collAds->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
-            }
             if (null !== $this->collTransactions) {
                 $result['Transactions'] = $this->collTransactions->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
-            }
-            if (null !== $this->collForumMessages) {
-                $result['ForumMessages'] = $this->collForumMessages->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
             if (null !== $this->collScheduledCourses) {
                 $result['ScheduledCourses'] = $this->collScheduledCourses->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
@@ -3253,12 +3127,6 @@ abstract class BaseUser extends BaseObject implements Persistent
                 }
             }
 
-            foreach ($this->getAlerts() as $relObj) {
-                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addAlert($relObj->copy($deepCopy));
-                }
-            }
-
             foreach ($this->getContents() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
                     $copyObj->addContent($relObj->copy($deepCopy));
@@ -3289,21 +3157,9 @@ abstract class BaseUser extends BaseObject implements Persistent
                 }
             }
 
-            foreach ($this->getAds() as $relObj) {
-                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addAd($relObj->copy($deepCopy));
-                }
-            }
-
             foreach ($this->getTransactions() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
                     $copyObj->addTransaction($relObj->copy($deepCopy));
-                }
-            }
-
-            foreach ($this->getForumMessages() as $relObj) {
-                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addForumMessage($relObj->copy($deepCopy));
                 }
             }
 
@@ -3392,9 +3248,6 @@ abstract class BaseUser extends BaseObject implements Persistent
         if ('File' == $relationName) {
             $this->initFiles();
         }
-        if ('Alert' == $relationName) {
-            $this->initAlerts();
-        }
         if ('Content' == $relationName) {
             $this->initContents();
         }
@@ -3410,14 +3263,8 @@ abstract class BaseUser extends BaseObject implements Persistent
         if ('News' == $relationName) {
             $this->initNewss();
         }
-        if ('Ad' == $relationName) {
-            $this->initAds();
-        }
         if ('Transaction' == $relationName) {
             $this->initTransactions();
-        }
-        if ('ForumMessage' == $relationName) {
-            $this->initForumMessages();
         }
         if ('ScheduledCourse' == $relationName) {
             $this->initScheduledCourses();
@@ -4303,313 +4150,6 @@ abstract class BaseUser extends BaseObject implements Persistent
             $this->filesScheduledForDeletion[]= $file;
             $file->setAuthor(null);
         }
-    }
-
-    /**
-     * Clears out the collAlerts collection
-     *
-     * This does not modify the database; however, it will remove any associated objects, causing
-     * them to be refetched by subsequent calls to accessor method.
-     *
-     * @return void
-     * @see        addAlerts()
-     */
-    public function clearAlerts()
-    {
-        $this->collAlerts = null; // important to set this to null since that means it is uninitialized
-        $this->collAlertsPartial = null;
-    }
-
-    /**
-     * reset is the collAlerts collection loaded partially
-     *
-     * @return void
-     */
-    public function resetPartialAlerts($v = true)
-    {
-        $this->collAlertsPartial = $v;
-    }
-
-    /**
-     * Initializes the collAlerts collection.
-     *
-     * By default this just sets the collAlerts collection to an empty array (like clearcollAlerts());
-     * however, you may wish to override this method in your stub class to provide setting appropriate
-     * to your application -- for example, setting the initial array to the values stored in database.
-     *
-     * @param boolean $overrideExisting If set to true, the method call initializes
-     *                                        the collection even if it is not empty
-     *
-     * @return void
-     */
-    public function initAlerts($overrideExisting = true)
-    {
-        if (null !== $this->collAlerts && !$overrideExisting) {
-            return;
-        }
-        $this->collAlerts = new PropelObjectCollection();
-        $this->collAlerts->setModel('Alert');
-    }
-
-    /**
-     * Gets an array of Alert objects which contain a foreign key that references this object.
-     *
-     * If the $criteria is not null, it is used to always fetch the results from the database.
-     * Otherwise the results are fetched from the database the first time, then cached.
-     * Next time the same method is called without $criteria, the cached collection is returned.
-     * If this User is new, it will return
-     * an empty collection or the current collection; the criteria is ignored on a new object.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @return PropelObjectCollection|Alert[] List of Alert objects
-     * @throws PropelException
-     */
-    public function getAlerts($criteria = null, PropelPDO $con = null)
-    {
-        $partial = $this->collAlertsPartial && !$this->isNew();
-        if (null === $this->collAlerts || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collAlerts) {
-                // return empty collection
-                $this->initAlerts();
-            } else {
-                $collAlerts = AlertQuery::create(null, $criteria)
-                    ->filterBySubscriber($this)
-                    ->find($con);
-                if (null !== $criteria) {
-                    if (false !== $this->collAlertsPartial && count($collAlerts)) {
-                      $this->initAlerts(false);
-
-                      foreach($collAlerts as $obj) {
-                        if (false == $this->collAlerts->contains($obj)) {
-                          $this->collAlerts->append($obj);
-                        }
-                      }
-
-                      $this->collAlertsPartial = true;
-                    }
-
-                    return $collAlerts;
-                }
-
-                if($partial && $this->collAlerts) {
-                    foreach($this->collAlerts as $obj) {
-                        if($obj->isNew()) {
-                            $collAlerts[] = $obj;
-                        }
-                    }
-                }
-
-                $this->collAlerts = $collAlerts;
-                $this->collAlertsPartial = false;
-            }
-        }
-
-        return $this->collAlerts;
-    }
-
-    /**
-     * Sets a collection of Alert objects related by a one-to-many relationship
-     * to the current object.
-     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
-     * and new objects from the given Propel collection.
-     *
-     * @param PropelCollection $alerts A Propel collection.
-     * @param PropelPDO $con Optional connection object
-     */
-    public function setAlerts(PropelCollection $alerts, PropelPDO $con = null)
-    {
-        $this->alertsScheduledForDeletion = $this->getAlerts(new Criteria(), $con)->diff($alerts);
-
-        foreach ($this->alertsScheduledForDeletion as $alertRemoved) {
-            $alertRemoved->setSubscriber(null);
-        }
-
-        $this->collAlerts = null;
-        foreach ($alerts as $alert) {
-            $this->addAlert($alert);
-        }
-
-        $this->collAlerts = $alerts;
-        $this->collAlertsPartial = false;
-    }
-
-    /**
-     * Returns the number of related Alert objects.
-     *
-     * @param Criteria $criteria
-     * @param boolean $distinct
-     * @param PropelPDO $con
-     * @return int             Count of related Alert objects.
-     * @throws PropelException
-     */
-    public function countAlerts(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
-    {
-        $partial = $this->collAlertsPartial && !$this->isNew();
-        if (null === $this->collAlerts || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collAlerts) {
-                return 0;
-            } else {
-                if($partial && !$criteria) {
-                    return count($this->getAlerts());
-                }
-                $query = AlertQuery::create(null, $criteria);
-                if ($distinct) {
-                    $query->distinct();
-                }
-
-                return $query
-                    ->filterBySubscriber($this)
-                    ->count($con);
-            }
-        } else {
-            return count($this->collAlerts);
-        }
-    }
-
-    /**
-     * Method called to associate a Alert object to this object
-     * through the Alert foreign key attribute.
-     *
-     * @param    Alert $l Alert
-     * @return User The current object (for fluent API support)
-     */
-    public function addAlert(Alert $l)
-    {
-        if ($this->collAlerts === null) {
-            $this->initAlerts();
-            $this->collAlertsPartial = true;
-        }
-        if (!$this->collAlerts->contains($l)) { // only add it if the **same** object is not already associated
-            $this->doAddAlert($l);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param	Alert $alert The alert object to add.
-     */
-    protected function doAddAlert($alert)
-    {
-        $this->collAlerts[]= $alert;
-        $alert->setSubscriber($this);
-    }
-
-    /**
-     * @param	Alert $alert The alert object to remove.
-     */
-    public function removeAlert($alert)
-    {
-        if ($this->getAlerts()->contains($alert)) {
-            $this->collAlerts->remove($this->collAlerts->search($alert));
-            if (null === $this->alertsScheduledForDeletion) {
-                $this->alertsScheduledForDeletion = clone $this->collAlerts;
-                $this->alertsScheduledForDeletion->clear();
-            }
-            $this->alertsScheduledForDeletion[]= $alert;
-            $alert->setSubscriber(null);
-        }
-    }
-
-
-    /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this User is new, it will return
-     * an empty collection; or if this User has previously
-     * been saved, it will retrieve related Alerts from storage.
-     *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in User.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return PropelObjectCollection|Alert[] List of Alert objects
-     */
-    public function getAlertsJoinCursus($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $query = AlertQuery::create(null, $criteria);
-        $query->joinWith('Cursus', $join_behavior);
-
-        return $this->getAlerts($query, $con);
-    }
-
-
-    /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this User is new, it will return
-     * an empty collection; or if this User has previously
-     * been saved, it will retrieve related Alerts from storage.
-     *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in User.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return PropelObjectCollection|Alert[] List of Alert objects
-     */
-    public function getAlertsJoinCourse($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $query = AlertQuery::create(null, $criteria);
-        $query->joinWith('Course', $join_behavior);
-
-        return $this->getAlerts($query, $con);
-    }
-
-
-    /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this User is new, it will return
-     * an empty collection; or if this User has previously
-     * been saved, it will retrieve related Alerts from storage.
-     *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in User.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return PropelObjectCollection|Alert[] List of Alert objects
-     */
-    public function getAlertsJoinTag($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $query = AlertQuery::create(null, $criteria);
-        $query->joinWith('Tag', $join_behavior);
-
-        return $this->getAlerts($query, $con);
-    }
-
-
-    /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this User is new, it will return
-     * an empty collection; or if this User has previously
-     * been saved, it will retrieve related Alerts from storage.
-     *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in User.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return PropelObjectCollection|Alert[] List of Alert objects
-     */
-    public function getAlertsJoinContentType($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $query = AlertQuery::create(null, $criteria);
-        $query->joinWith('ContentType', $join_behavior);
-
-        return $this->getAlerts($query, $con);
     }
 
     /**
@@ -5873,213 +5413,6 @@ abstract class BaseUser extends BaseObject implements Persistent
     }
 
     /**
-     * Clears out the collAds collection
-     *
-     * This does not modify the database; however, it will remove any associated objects, causing
-     * them to be refetched by subsequent calls to accessor method.
-     *
-     * @return void
-     * @see        addAds()
-     */
-    public function clearAds()
-    {
-        $this->collAds = null; // important to set this to null since that means it is uninitialized
-        $this->collAdsPartial = null;
-    }
-
-    /**
-     * reset is the collAds collection loaded partially
-     *
-     * @return void
-     */
-    public function resetPartialAds($v = true)
-    {
-        $this->collAdsPartial = $v;
-    }
-
-    /**
-     * Initializes the collAds collection.
-     *
-     * By default this just sets the collAds collection to an empty array (like clearcollAds());
-     * however, you may wish to override this method in your stub class to provide setting appropriate
-     * to your application -- for example, setting the initial array to the values stored in database.
-     *
-     * @param boolean $overrideExisting If set to true, the method call initializes
-     *                                        the collection even if it is not empty
-     *
-     * @return void
-     */
-    public function initAds($overrideExisting = true)
-    {
-        if (null !== $this->collAds && !$overrideExisting) {
-            return;
-        }
-        $this->collAds = new PropelObjectCollection();
-        $this->collAds->setModel('Ad');
-    }
-
-    /**
-     * Gets an array of Ad objects which contain a foreign key that references this object.
-     *
-     * If the $criteria is not null, it is used to always fetch the results from the database.
-     * Otherwise the results are fetched from the database the first time, then cached.
-     * Next time the same method is called without $criteria, the cached collection is returned.
-     * If this User is new, it will return
-     * an empty collection or the current collection; the criteria is ignored on a new object.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @return PropelObjectCollection|Ad[] List of Ad objects
-     * @throws PropelException
-     */
-    public function getAds($criteria = null, PropelPDO $con = null)
-    {
-        $partial = $this->collAdsPartial && !$this->isNew();
-        if (null === $this->collAds || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collAds) {
-                // return empty collection
-                $this->initAds();
-            } else {
-                $collAds = AdQuery::create(null, $criteria)
-                    ->filterByAuthor($this)
-                    ->find($con);
-                if (null !== $criteria) {
-                    if (false !== $this->collAdsPartial && count($collAds)) {
-                      $this->initAds(false);
-
-                      foreach($collAds as $obj) {
-                        if (false == $this->collAds->contains($obj)) {
-                          $this->collAds->append($obj);
-                        }
-                      }
-
-                      $this->collAdsPartial = true;
-                    }
-
-                    return $collAds;
-                }
-
-                if($partial && $this->collAds) {
-                    foreach($this->collAds as $obj) {
-                        if($obj->isNew()) {
-                            $collAds[] = $obj;
-                        }
-                    }
-                }
-
-                $this->collAds = $collAds;
-                $this->collAdsPartial = false;
-            }
-        }
-
-        return $this->collAds;
-    }
-
-    /**
-     * Sets a collection of Ad objects related by a one-to-many relationship
-     * to the current object.
-     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
-     * and new objects from the given Propel collection.
-     *
-     * @param PropelCollection $ads A Propel collection.
-     * @param PropelPDO $con Optional connection object
-     */
-    public function setAds(PropelCollection $ads, PropelPDO $con = null)
-    {
-        $this->adsScheduledForDeletion = $this->getAds(new Criteria(), $con)->diff($ads);
-
-        foreach ($this->adsScheduledForDeletion as $adRemoved) {
-            $adRemoved->setAuthor(null);
-        }
-
-        $this->collAds = null;
-        foreach ($ads as $ad) {
-            $this->addAd($ad);
-        }
-
-        $this->collAds = $ads;
-        $this->collAdsPartial = false;
-    }
-
-    /**
-     * Returns the number of related Ad objects.
-     *
-     * @param Criteria $criteria
-     * @param boolean $distinct
-     * @param PropelPDO $con
-     * @return int             Count of related Ad objects.
-     * @throws PropelException
-     */
-    public function countAds(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
-    {
-        $partial = $this->collAdsPartial && !$this->isNew();
-        if (null === $this->collAds || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collAds) {
-                return 0;
-            } else {
-                if($partial && !$criteria) {
-                    return count($this->getAds());
-                }
-                $query = AdQuery::create(null, $criteria);
-                if ($distinct) {
-                    $query->distinct();
-                }
-
-                return $query
-                    ->filterByAuthor($this)
-                    ->count($con);
-            }
-        } else {
-            return count($this->collAds);
-        }
-    }
-
-    /**
-     * Method called to associate a Ad object to this object
-     * through the Ad foreign key attribute.
-     *
-     * @param    Ad $l Ad
-     * @return User The current object (for fluent API support)
-     */
-    public function addAd(Ad $l)
-    {
-        if ($this->collAds === null) {
-            $this->initAds();
-            $this->collAdsPartial = true;
-        }
-        if (!$this->collAds->contains($l)) { // only add it if the **same** object is not already associated
-            $this->doAddAd($l);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param	Ad $ad The ad object to add.
-     */
-    protected function doAddAd($ad)
-    {
-        $this->collAds[]= $ad;
-        $ad->setAuthor($this);
-    }
-
-    /**
-     * @param	Ad $ad The ad object to remove.
-     */
-    public function removeAd($ad)
-    {
-        if ($this->getAds()->contains($ad)) {
-            $this->collAds->remove($this->collAds->search($ad));
-            if (null === $this->adsScheduledForDeletion) {
-                $this->adsScheduledForDeletion = clone $this->collAds;
-                $this->adsScheduledForDeletion->clear();
-            }
-            $this->adsScheduledForDeletion[]= $ad;
-            $ad->setAuthor(null);
-        }
-    }
-
-    /**
      * Clears out the collTransactions collection
      *
      * This does not modify the database; however, it will remove any associated objects, causing
@@ -6284,238 +5617,6 @@ abstract class BaseUser extends BaseObject implements Persistent
             $this->transactionsScheduledForDeletion[]= $transaction;
             $transaction->setUser(null);
         }
-    }
-
-    /**
-     * Clears out the collForumMessages collection
-     *
-     * This does not modify the database; however, it will remove any associated objects, causing
-     * them to be refetched by subsequent calls to accessor method.
-     *
-     * @return void
-     * @see        addForumMessages()
-     */
-    public function clearForumMessages()
-    {
-        $this->collForumMessages = null; // important to set this to null since that means it is uninitialized
-        $this->collForumMessagesPartial = null;
-    }
-
-    /**
-     * reset is the collForumMessages collection loaded partially
-     *
-     * @return void
-     */
-    public function resetPartialForumMessages($v = true)
-    {
-        $this->collForumMessagesPartial = $v;
-    }
-
-    /**
-     * Initializes the collForumMessages collection.
-     *
-     * By default this just sets the collForumMessages collection to an empty array (like clearcollForumMessages());
-     * however, you may wish to override this method in your stub class to provide setting appropriate
-     * to your application -- for example, setting the initial array to the values stored in database.
-     *
-     * @param boolean $overrideExisting If set to true, the method call initializes
-     *                                        the collection even if it is not empty
-     *
-     * @return void
-     */
-    public function initForumMessages($overrideExisting = true)
-    {
-        if (null !== $this->collForumMessages && !$overrideExisting) {
-            return;
-        }
-        $this->collForumMessages = new PropelObjectCollection();
-        $this->collForumMessages->setModel('ForumMessage');
-    }
-
-    /**
-     * Gets an array of ForumMessage objects which contain a foreign key that references this object.
-     *
-     * If the $criteria is not null, it is used to always fetch the results from the database.
-     * Otherwise the results are fetched from the database the first time, then cached.
-     * Next time the same method is called without $criteria, the cached collection is returned.
-     * If this User is new, it will return
-     * an empty collection or the current collection; the criteria is ignored on a new object.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @return PropelObjectCollection|ForumMessage[] List of ForumMessage objects
-     * @throws PropelException
-     */
-    public function getForumMessages($criteria = null, PropelPDO $con = null)
-    {
-        $partial = $this->collForumMessagesPartial && !$this->isNew();
-        if (null === $this->collForumMessages || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collForumMessages) {
-                // return empty collection
-                $this->initForumMessages();
-            } else {
-                $collForumMessages = ForumMessageQuery::create(null, $criteria)
-                    ->filterByAuthor($this)
-                    ->find($con);
-                if (null !== $criteria) {
-                    if (false !== $this->collForumMessagesPartial && count($collForumMessages)) {
-                      $this->initForumMessages(false);
-
-                      foreach($collForumMessages as $obj) {
-                        if (false == $this->collForumMessages->contains($obj)) {
-                          $this->collForumMessages->append($obj);
-                        }
-                      }
-
-                      $this->collForumMessagesPartial = true;
-                    }
-
-                    return $collForumMessages;
-                }
-
-                if($partial && $this->collForumMessages) {
-                    foreach($this->collForumMessages as $obj) {
-                        if($obj->isNew()) {
-                            $collForumMessages[] = $obj;
-                        }
-                    }
-                }
-
-                $this->collForumMessages = $collForumMessages;
-                $this->collForumMessagesPartial = false;
-            }
-        }
-
-        return $this->collForumMessages;
-    }
-
-    /**
-     * Sets a collection of ForumMessage objects related by a one-to-many relationship
-     * to the current object.
-     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
-     * and new objects from the given Propel collection.
-     *
-     * @param PropelCollection $forumMessages A Propel collection.
-     * @param PropelPDO $con Optional connection object
-     */
-    public function setForumMessages(PropelCollection $forumMessages, PropelPDO $con = null)
-    {
-        $this->forumMessagesScheduledForDeletion = $this->getForumMessages(new Criteria(), $con)->diff($forumMessages);
-
-        foreach ($this->forumMessagesScheduledForDeletion as $forumMessageRemoved) {
-            $forumMessageRemoved->setAuthor(null);
-        }
-
-        $this->collForumMessages = null;
-        foreach ($forumMessages as $forumMessage) {
-            $this->addForumMessage($forumMessage);
-        }
-
-        $this->collForumMessages = $forumMessages;
-        $this->collForumMessagesPartial = false;
-    }
-
-    /**
-     * Returns the number of related ForumMessage objects.
-     *
-     * @param Criteria $criteria
-     * @param boolean $distinct
-     * @param PropelPDO $con
-     * @return int             Count of related ForumMessage objects.
-     * @throws PropelException
-     */
-    public function countForumMessages(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
-    {
-        $partial = $this->collForumMessagesPartial && !$this->isNew();
-        if (null === $this->collForumMessages || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collForumMessages) {
-                return 0;
-            } else {
-                if($partial && !$criteria) {
-                    return count($this->getForumMessages());
-                }
-                $query = ForumMessageQuery::create(null, $criteria);
-                if ($distinct) {
-                    $query->distinct();
-                }
-
-                return $query
-                    ->filterByAuthor($this)
-                    ->count($con);
-            }
-        } else {
-            return count($this->collForumMessages);
-        }
-    }
-
-    /**
-     * Method called to associate a ForumMessage object to this object
-     * through the ForumMessage foreign key attribute.
-     *
-     * @param    ForumMessage $l ForumMessage
-     * @return User The current object (for fluent API support)
-     */
-    public function addForumMessage(ForumMessage $l)
-    {
-        if ($this->collForumMessages === null) {
-            $this->initForumMessages();
-            $this->collForumMessagesPartial = true;
-        }
-        if (!$this->collForumMessages->contains($l)) { // only add it if the **same** object is not already associated
-            $this->doAddForumMessage($l);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param	ForumMessage $forumMessage The forumMessage object to add.
-     */
-    protected function doAddForumMessage($forumMessage)
-    {
-        $this->collForumMessages[]= $forumMessage;
-        $forumMessage->setAuthor($this);
-    }
-
-    /**
-     * @param	ForumMessage $forumMessage The forumMessage object to remove.
-     */
-    public function removeForumMessage($forumMessage)
-    {
-        if ($this->getForumMessages()->contains($forumMessage)) {
-            $this->collForumMessages->remove($this->collForumMessages->search($forumMessage));
-            if (null === $this->forumMessagesScheduledForDeletion) {
-                $this->forumMessagesScheduledForDeletion = clone $this->collForumMessages;
-                $this->forumMessagesScheduledForDeletion->clear();
-            }
-            $this->forumMessagesScheduledForDeletion[]= $forumMessage;
-            $forumMessage->setAuthor(null);
-        }
-    }
-
-
-    /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this User is new, it will return
-     * an empty collection; or if this User has previously
-     * been saved, it will retrieve related ForumMessages from storage.
-     *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in User.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return PropelObjectCollection|ForumMessage[] List of ForumMessage objects
-     */
-    public function getForumMessagesJoinTopic($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $query = ForumMessageQuery::create(null, $criteria);
-        $query->joinWith('Topic', $join_behavior);
-
-        return $this->getForumMessages($query, $con);
     }
 
     /**
@@ -7202,11 +6303,6 @@ abstract class BaseUser extends BaseObject implements Persistent
                     $o->clearAllReferences($deep);
                 }
             }
-            if ($this->collAlerts) {
-                foreach ($this->collAlerts as $o) {
-                    $o->clearAllReferences($deep);
-                }
-            }
             if ($this->collContents) {
                 foreach ($this->collContents as $o) {
                     $o->clearAllReferences($deep);
@@ -7232,18 +6328,8 @@ abstract class BaseUser extends BaseObject implements Persistent
                     $o->clearAllReferences($deep);
                 }
             }
-            if ($this->collAds) {
-                foreach ($this->collAds as $o) {
-                    $o->clearAllReferences($deep);
-                }
-            }
             if ($this->collTransactions) {
                 foreach ($this->collTransactions as $o) {
-                    $o->clearAllReferences($deep);
-                }
-            }
-            if ($this->collForumMessages) {
-                foreach ($this->collForumMessages as $o) {
                     $o->clearAllReferences($deep);
                 }
             }
@@ -7280,10 +6366,6 @@ abstract class BaseUser extends BaseObject implements Persistent
             $this->collFiles->clearIterator();
         }
         $this->collFiles = null;
-        if ($this->collAlerts instanceof PropelCollection) {
-            $this->collAlerts->clearIterator();
-        }
-        $this->collAlerts = null;
         if ($this->collContents instanceof PropelCollection) {
             $this->collContents->clearIterator();
         }
@@ -7304,18 +6386,10 @@ abstract class BaseUser extends BaseObject implements Persistent
             $this->collNewss->clearIterator();
         }
         $this->collNewss = null;
-        if ($this->collAds instanceof PropelCollection) {
-            $this->collAds->clearIterator();
-        }
-        $this->collAds = null;
         if ($this->collTransactions instanceof PropelCollection) {
             $this->collTransactions->clearIterator();
         }
         $this->collTransactions = null;
-        if ($this->collForumMessages instanceof PropelCollection) {
-            $this->collForumMessages->clearIterator();
-        }
-        $this->collForumMessages = null;
         if ($this->collScheduledCourses instanceof PropelCollection) {
             $this->collScheduledCourses->clearIterator();
         }

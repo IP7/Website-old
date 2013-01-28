@@ -365,9 +365,6 @@ abstract class BaseContentTypePeer
      */
     public static function clearRelatedInstancePool()
     {
-        // Invalidate objects in AlertPeer instance pool,
-        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-        AlertPeer::clearInstancePool();
         // Invalidate objects in ContentPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         ContentPeer::clearInstancePool();
@@ -701,14 +698,6 @@ abstract class BaseContentTypePeer
         // first find the objects that are implicated by the $criteria
         $objects = ContentTypePeer::doSelect($criteria, $con);
         foreach ($objects as $obj) {
-
-            // set fkey col in related Alert rows to null
-            $selectCriteria = new Criteria(ContentTypePeer::DATABASE_NAME);
-            $updateValues = new Criteria(ContentTypePeer::DATABASE_NAME);
-            $selectCriteria->add(AlertPeer::CONTENT_TYPE_ID, $obj->getId());
-            $updateValues->add(AlertPeer::CONTENT_TYPE_ID, null);
-
-            BasePeer::doUpdate($selectCriteria, $updateValues, $con); // use BasePeer because generated Peer doUpdate() methods only update using pkey
 
             // set fkey col in related Content rows to null
             $selectCriteria = new Criteria(ContentTypePeer::DATABASE_NAME);

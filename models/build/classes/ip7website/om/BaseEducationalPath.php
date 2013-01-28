@@ -73,6 +73,13 @@ abstract class BaseEducationalPath extends BaseObject implements Persistent
     protected $responsable_id;
 
     /**
+     * The value for the deleted field.
+     * Note: this column has a database default value of: (expression) 0
+     * @var        boolean
+     */
+    protected $deleted;
+
+    /**
      * @var        Cursus
      */
     protected $aCursus;
@@ -178,6 +185,26 @@ abstract class BaseEducationalPath extends BaseObject implements Persistent
     protected $schedulesScheduledForDeletion = null;
 
     /**
+     * Applies default values to this object.
+     * This method should be called from the object's constructor (or
+     * equivalent initialization method).
+     * @see        __construct()
+     */
+    public function applyDefaultValues()
+    {
+    }
+
+    /**
+     * Initializes internal state of BaseEducationalPath object.
+     * @see        applyDefaults()
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        $this->applyDefaultValues();
+    }
+
+    /**
      * Get the [id] column value.
      *
      * @return int
@@ -265,6 +292,16 @@ abstract class BaseEducationalPath extends BaseObject implements Persistent
     public function getResponsableId()
     {
         return $this->responsable_id;
+    }
+
+    /**
+     * Get the [deleted] column value.
+     *
+     * @return boolean
+     */
+    public function getDeleted()
+    {
+        return $this->deleted;
     }
 
     /**
@@ -408,6 +445,35 @@ abstract class BaseEducationalPath extends BaseObject implements Persistent
     } // setResponsableId()
 
     /**
+     * Sets the value of the [deleted] column.
+     * Non-boolean arguments are converted using the following rules:
+     *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     *
+     * @param boolean|integer|string $v The new value
+     * @return EducationalPath The current object (for fluent API support)
+     */
+    public function setDeleted($v)
+    {
+        if ($v !== null) {
+            if (is_string($v)) {
+                $v = in_array(strtolower($v), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+            } else {
+                $v = (boolean) $v;
+            }
+        }
+
+        if ($this->deleted !== $v) {
+            $this->deleted = $v;
+            $this->modifiedColumns[] = EducationalPathPeer::DELETED;
+        }
+
+
+        return $this;
+    } // setDeleted()
+
+    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -444,6 +510,7 @@ abstract class BaseEducationalPath extends BaseObject implements Persistent
             $this->name = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
             $this->cursus_id = ($row[$startcol + 3] !== null) ? (int) $row[$startcol + 3] : null;
             $this->responsable_id = ($row[$startcol + 4] !== null) ? (int) $row[$startcol + 4] : null;
+            $this->deleted = ($row[$startcol + 5] !== null) ? (boolean) $row[$startcol + 5] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -452,7 +519,7 @@ abstract class BaseEducationalPath extends BaseObject implements Persistent
                 $this->ensureConsistency();
             }
 
-            return $startcol + 5; // 5 = EducationalPathPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 6; // 6 = EducationalPathPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating EducationalPath object", $e);
@@ -853,6 +920,9 @@ abstract class BaseEducationalPath extends BaseObject implements Persistent
         if ($this->isColumnModified(EducationalPathPeer::RESPONSABLE_ID)) {
             $modifiedColumns[':p' . $index++]  = '`RESPONSABLE_ID`';
         }
+        if ($this->isColumnModified(EducationalPathPeer::DELETED)) {
+            $modifiedColumns[':p' . $index++]  = '`DELETED`';
+        }
 
         $sql = sprintf(
             'INSERT INTO `educational_paths` (%s) VALUES (%s)',
@@ -881,6 +951,9 @@ abstract class BaseEducationalPath extends BaseObject implements Persistent
                         break;
                     case '`RESPONSABLE_ID`':
                         $stmt->bindValue($identifier, $this->responsable_id, PDO::PARAM_INT);
+                        break;
+                    case '`DELETED`':
+                        $stmt->bindValue($identifier, (int) $this->deleted, PDO::PARAM_INT);
                         break;
                 }
             }
@@ -1084,6 +1157,9 @@ abstract class BaseEducationalPath extends BaseObject implements Persistent
             case 5:
                 return $this->getResponsableId();
                 break;
+            case 6:
+                return $this->getDeleted();
+                break;
             default:
                 return null;
                 break;
@@ -1119,6 +1195,7 @@ abstract class BaseEducationalPath extends BaseObject implements Persistent
             $keys[3] => ($includeLazyLoadColumns) ? $this->getDescription() : null,
             $keys[4] => $this->getCursusId(),
             $keys[5] => $this->getResponsableId(),
+            $keys[6] => $this->getDeleted(),
         );
         if ($includeForeignObjects) {
             if (null !== $this->aCursus) {
@@ -1191,6 +1268,9 @@ abstract class BaseEducationalPath extends BaseObject implements Persistent
             case 5:
                 $this->setResponsableId($value);
                 break;
+            case 6:
+                $this->setDeleted($value);
+                break;
         } // switch()
     }
 
@@ -1221,6 +1301,7 @@ abstract class BaseEducationalPath extends BaseObject implements Persistent
         if (array_key_exists($keys[3], $arr)) $this->setDescription($arr[$keys[3]]);
         if (array_key_exists($keys[4], $arr)) $this->setCursusId($arr[$keys[4]]);
         if (array_key_exists($keys[5], $arr)) $this->setResponsableId($arr[$keys[5]]);
+        if (array_key_exists($keys[6], $arr)) $this->setDeleted($arr[$keys[6]]);
     }
 
     /**
@@ -1238,6 +1319,7 @@ abstract class BaseEducationalPath extends BaseObject implements Persistent
         if ($this->isColumnModified(EducationalPathPeer::DESCRIPTION)) $criteria->add(EducationalPathPeer::DESCRIPTION, $this->description);
         if ($this->isColumnModified(EducationalPathPeer::CURSUS_ID)) $criteria->add(EducationalPathPeer::CURSUS_ID, $this->cursus_id);
         if ($this->isColumnModified(EducationalPathPeer::RESPONSABLE_ID)) $criteria->add(EducationalPathPeer::RESPONSABLE_ID, $this->responsable_id);
+        if ($this->isColumnModified(EducationalPathPeer::DELETED)) $criteria->add(EducationalPathPeer::DELETED, $this->deleted);
 
         return $criteria;
     }
@@ -1306,6 +1388,7 @@ abstract class BaseEducationalPath extends BaseObject implements Persistent
         $copyObj->setDescription($this->getDescription());
         $copyObj->setCursusId($this->getCursusId());
         $copyObj->setResponsableId($this->getResponsableId());
+        $copyObj->setDeleted($this->getDeleted());
 
         if ($deepCopy && !$this->startCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -2959,9 +3042,11 @@ abstract class BaseEducationalPath extends BaseObject implements Persistent
         $this->description_isLoaded = false;
         $this->cursus_id = null;
         $this->responsable_id = null;
+        $this->deleted = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->clearAllReferences();
+        $this->applyDefaultValues();
         $this->resetModified();
         $this->setNew(true);
         $this->setDeleted(false);

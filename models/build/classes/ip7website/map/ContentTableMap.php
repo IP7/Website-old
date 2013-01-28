@@ -42,6 +42,7 @@ class ContentTableMap extends TableMap
         $this->addForeignKey('AUTHOR_ID', 'AuthorId', 'INTEGER', 'users', 'ID', false, null, null);
         $this->addForeignKey('CONTENT_TYPE_ID', 'ContentTypeId', 'INTEGER', 'content_types', 'ID', false, null, null);
         $this->addColumn('DATE', 'Date', 'TIMESTAMP', true, null, null);
+        $this->addColumn('LAST_MODIFICATION_DATE', 'LastModificationDate', 'TIMESTAMP', false, null, null);
         $this->addColumn('ACCESS_RIGHTS', 'AccessRights', 'TINYINT', false, null, 0);
         $this->addColumn('VALIDATED', 'Validated', 'BOOLEAN', false, 1, '0');
         $this->addColumn('TITLE', 'Title', 'VARCHAR', false, 255, null);
@@ -49,6 +50,7 @@ class ContentTableMap extends TableMap
         $this->addForeignKey('CURSUS_ID', 'CursusId', 'INTEGER', 'cursus', 'ID', false, null, null);
         $this->addForeignKey('COURSE_ID', 'CourseId', 'INTEGER', 'courses', 'ID', false, null, null);
         $this->addColumn('YEAR', 'Year', 'INTEGER', false, null, null);
+        $this->addColumn('DELETED', 'Deleted', 'BOOLEAN', false, 1, '0');
         // validators
     } // initialize()
 
@@ -63,10 +65,8 @@ class ContentTableMap extends TableMap
         $this->addRelation('ContentType', 'ContentType', RelationMap::MANY_TO_ONE, array('content_type_id' => 'id', ), 'SET NULL', 'CASCADE');
         $this->addRelation('ContentsFiles', 'ContentsFiles', RelationMap::ONE_TO_MANY, array('id' => 'content_id', ), 'CASCADE', 'CASCADE', 'ContentsFiless');
         $this->addRelation('Comment', 'Comment', RelationMap::ONE_TO_MANY, array('id' => 'content_id', ), 'CASCADE', 'CASCADE', 'Comments');
-        $this->addRelation('ContentsTags', 'ContentsTags', RelationMap::ONE_TO_MANY, array('id' => 'content_id', ), 'CASCADE', 'CASCADE', 'ContentsTagss');
         $this->addRelation('Report', 'Report', RelationMap::ONE_TO_MANY, array('id' => 'content_id', ), 'CASCADE', 'CASCADE', 'Reports');
         $this->addRelation('File', 'File', RelationMap::MANY_TO_MANY, array(), 'CASCADE', 'CASCADE', 'Files');
-        $this->addRelation('Tag', 'Tag', RelationMap::MANY_TO_MANY, array(), 'CASCADE', 'CASCADE', 'Tags');
     } // buildRelations()
 
 } // ContentTableMap
