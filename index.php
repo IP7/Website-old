@@ -86,23 +86,31 @@ if (strpos(LIM_REQUEST_URI, '/profile') === 0) {
 ## search
 dispatch('/recherche', 'display_search_results');
 
-## cursus
-dispatch('/cursus/:name',      'display_cursus');
-dispatch_post('/cursus/:name', 'display_cursus');
-dispatch('/cursus/:name/edit', 'display_moderation_edit_cursus');
-## educational paths
-dispatch('/cursus/:cursus/parcours/:path', 'display_educational_path');
+if (strpos(LIM_REQUEST_URI, '/cursus') === 0) {
 
-## course
-dispatch('/cursus/:cursus/:course', 'display_course');
-## contents
-dispatch('/cursus/:cursus/:course/proposer',      'display_member_proposing_content_form');
-dispatch_post('/cursus/:cursus/:course/proposer', 'display_post_member_proposed_content');
-dispatch_post('/cursus/:cursus/:course/proposer/prévisualiser',
-                                                  'display_post_member_proposed_content_preview');
-dispatch('/cursus/:cursus/:course/:id',           'display_course_content');
-dispatch('/cursus/:cursus/:course/:id/:title',     'display_course_content');
-dispatch('/cursus/:cursus/:course/:id/:year/:title', 'display_course_content');
+    ## cursus
+    dispatch('/cursus/:name',      'display_cursus');
+    dispatch_post('/cursus/:name', 'display_cursus');
+    dispatch('/cursus/:name/edit', 'display_moderation_edit_cursus');
+
+    ## educational paths
+    dispatch('/cursus/:cursus/parcours/:path', 'display_educational_path');
+
+    ## course
+    dispatch('/cursus/:cursus/:course', 'display_course');
+    ## contents (course)
+    dispatch('/cursus/:cursus/:course/proposer',      'display_member_proposing_content_form');
+    dispatch_post('/cursus/:cursus/:course/proposer', 'display_post_member_proposed_content');
+    dispatch_post('/cursus/:cursus/:course/proposer/prévisualiser',
+                        'display_post_member_proposed_content_preview');
+
+    # old URLs
+    dispatch('/cursus/:cursus/:course/:id',           'display_course_content');
+    # new URLs (2013, January)
+    dispatch('/cursus/:cursus/:course/:id/:title',     'display_course_content');
+    dispatch('/cursus/:cursus/:course/:id/:year/:title', 'display_course_content');
+
+}
 
 ## contents' files
 # dispatch('/file/:id',       'serve_user_file');
