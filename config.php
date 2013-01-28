@@ -224,8 +224,4 @@ class Config {
 };
 Config::$app_dir = dirname(__FILE__);
 
-if (file_exists(dirname(__FILE__).'/tests/local_config.php')) {
-    require_once dirname(__FILE__).'/tests/local_config.php';
-}
-
 ?>
