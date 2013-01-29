@@ -15,8 +15,12 @@
             navigation_time = p.loadEventEnd - p.navigationStart;
             page_load       = p.loadEventEnd - p.responseEnd;
 
-            piwikTracker.setCustomVariable( 1, 'nt', navigation_time, 'page' );
-            piwikTracker.setCustomVariable( 2, 'pl', page_load,       'page' );
+            if ( navigation_time > 0 || page_load > 0 ) {
+
+                piwikTracker.setCustomVariable( 1, 'nt', '' + navigation_time, 'page' );
+                piwikTracker.setCustomVariable( 2, 'pl', '' + page_load,       'page' );
+
+            }
 
         }
 
