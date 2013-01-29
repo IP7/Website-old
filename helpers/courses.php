@@ -3,9 +3,7 @@
 // used to sort contents by years, with uasort()
 function contentsCmp($c1, $c2) {
 
-    if ($c1['title'] === $c2['title']) { return 0; }
-
-    return ($c1['title'] < $c2['title']) ? -1 : 1;
+    return strnatcasecmp($c1['title'], $c2['title']);
 
 }
 
