@@ -17,14 +17,7 @@ RewriteCond %{HTTP_HOST} ^admin.infop7.org$ [NC]
 RewriteRule ^(.*)$ http://www.infop7.org/admin/$1 [L,R=301]
 
 # Redirect to www.
-RewriteCond %{HTTP_HOST} !^dev.infop7.org$ [NC]
-RewriteCond %{HTTP_HOST} !^analytics.infop7.org$ [NC]
-RewriteCond %{HTTP_HOST} !^www.infop7.org$ [NC]
-RewriteCond %{HTTP_HOST} !^wiki.infop7.org$ [NC]
-# except for local tests
-RewriteCond %{HTTP_HOST} !localhost$ [NC]
-RewriteCond %{HTTP_HOST} !127\..*$ [NC]
-
+RewriteCond %{HTTP_HOST} ^infop7.org$ [NC]
 RewriteRule ^(.*)$ http://www.infop7.org/$1 [L,R=301]
 
 # Limonade
