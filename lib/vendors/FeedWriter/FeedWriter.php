@@ -123,7 +123,8 @@ abstract class FeedWriter
 			}
 		}
 
-		header("Content-Type: " . $contentType);
+        # Limonade-specific
+		send_header("Content-Type: " . $contentType);
 		
 		$this->printHeader();
 		$this->printChannels();
@@ -293,7 +294,7 @@ abstract class FeedWriter
 
 		$out .= PHP_EOL;
 
-		echo $out;
+		return $out;
 	}
 	
 	/**
@@ -306,15 +307,15 @@ abstract class FeedWriter
 	{
 		if($this->version == RSS2)
 		{
-			echo '</channel>' . PHP_EOL . '</rss>';
+			return '</channel>' . PHP_EOL . '</rss>';
 		}
 		elseif($this->version == RSS1)
 		{
-			echo '</rdf:RDF>';
+			return '</rdf:RDF>';
 		}
 		else if($this->version == ATOM)
 		{
-			echo '</feed>';
+			return '</feed>';
 		}
 	}
 
@@ -378,14 +379,17 @@ abstract class FeedWriter
 	*/
 	private function printChannels()
 	{
+
+        $s = '';
+
 		//Start channel tag
 		switch ($this->version)
 		{
 			case RSS2:
-				echo '<channel>' . PHP_EOL;
+				$s .= '<channel>' . PHP_EOL;
 				break;
 			case RSS1:
-				echo (isset($this->data['ChannelAbout']))? "<channel rdf:about=\"{$this->data['ChannelAbout']}\">" : "<channel rdf:about=\"{$this->channels['link']}\">";
+				$s .= (isset($this->data['ChannelAbout']))? "<channel rdf:about=\"{$this->data['ChannelAbout']}\">" : "<channel rdf:about=\"{$this->channels['link']}\">";
 				break;
 		}
 		
@@ -395,13 +399,13 @@ abstract class FeedWriter
 			if($this->version == ATOM && $key == 'link')
 			{
 				// ATOM prints link element as href attribute
-				echo $this->makeNode($key,'', array('href' => $value));
+				$s .= $this->makeNode($key,'', array('href' => $value));
 				//Add the id for ATOM
-				echo $this->makeNode('id', FeedWriter::uuid($value, 'urn:uuid:'));
+				$s .= $this->makeNode('id', FeedWriter::uuid($value, 'urn:uuid:'));
 			}
 			else
 			{
-				echo $this->makeNode($key, $value);
+				$s .= $this->makeNode($key, $value);
 			}
 			
 		}
@@ -409,14 +413,16 @@ abstract class FeedWriter
 		//RSS 1.0 have special tag <rdf:Seq> with channel
 		if($this->version == RSS1)
 		{
-			echo "<items>" . PHP_EOL . "<rdf:Seq>" . PHP_EOL;
+			$s .= "<items>" . PHP_EOL . "<rdf:Seq>" . PHP_EOL;
 			foreach ($this->items as $item)
 			{
 				$thisItems = $item->getElements();
-				echo "<rdf:li resource=\"{$thisItems['link']['content']}\"/>" . PHP_EOL;
+				$s .= "<rdf:li resource=\"{$thisItems['link']['content']}\"/>" . PHP_EOL;
 			}
-			echo "</rdf:Seq>" . PHP_EOL . "</items>" . PHP_EOL . "</channel>" . PHP_EOL;
-		}
+			$s .= "</rdf:Seq>" . PHP_EOL . "</items>" . PHP_EOL . "</channel>" . PHP_EOL;
+        }
+
+        return $s;
 	}
 	
 	/**
@@ -427,19 +433,24 @@ abstract class FeedWriter
 	*/
 	private function printItems()
 	{
+
+        $s = '';
+
 		foreach ($this->items as $item)
 		{
 			$thisItems = $item->getElements();
 			
 			//the argument is printed as rdf:about attribute of item in rss 1.0
-			echo $this->startItem($thisItems['link']['content']);
+			$s .= $this->startItem($thisItems['link']['content']);
 			
 			foreach ($thisItems as $feedItem)
 			{
-				echo $this->makeNode($feedItem['name'], $feedItem['content'], $feedItem['attributes']);
+				$s .= $this->makeNode($feedItem['name'], $feedItem['content'], $feedItem['attributes']);
 			}
-			echo $this->endItem();
-		}
+			$s .= $this->endItem();
+        }
+
+        return $s;
 	}
 	
 	/**
@@ -453,13 +464,13 @@ abstract class FeedWriter
 	{
 		if($this->version == RSS2)
 		{
-			echo '<item>' . PHP_EOL;
+			return '<item>' . PHP_EOL;
 		}
 		else if($this->version == RSS1)
 		{
 			if($about)
 			{
-				echo "<item rdf:about=\"$about\">" . PHP_EOL;
+				return "<item rdf:about=\"$about\">" . PHP_EOL;
 			}
 			else
 			{
@@ -468,7 +479,7 @@ abstract class FeedWriter
 		}
 		else if($this->version == ATOM)
 		{
-			echo "<entry>" . PHP_EOL;
+			return "<entry>" . PHP_EOL;
 		}
 	}
 	
@@ -482,11 +493,11 @@ abstract class FeedWriter
 	{
 		if($this->version == RSS2 || $this->version == RSS1)
 		{
-			echo '</item>' . PHP_EOL;
+			return '</item>' . PHP_EOL;
 		}
 		else if($this->version == ATOM)
 		{
-			echo "</entry>" . PHP_EOL;
+			return "</entry>" . PHP_EOL;
 		}
 	}
 	
