@@ -58,6 +58,7 @@ function check_and_save_news($title, $body, &$news, $cursus=null, $course=null) 
         $news = new News();
         $news->setAuthor(user());
         $news->setDate($_SERVER['REQUEST_TIME']);
+        $news->setExpirationDate($_SERVER['REQUEST_TIME'] + 1296000); // 15 days
         $news->setCursus($cursus);
         $news->setCourse($course);
     }
