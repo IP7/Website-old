@@ -155,6 +155,11 @@ function display_cursus() {
             'scripts' => array(
                 // this script is used for both courses and cursus
                 array( 'href'  => js_url( ($is_page_admin ? 'admin' : 'simple') . '-course') )
+            ),
+
+            'feeds' => array(
+                'atom' => $base_uri . 'flux.atom',
+                'rss2' => $base_uri . 'flux.rss'
             )
         )
     );
@@ -198,6 +203,11 @@ function display_cursus_with_multiple_educational_paths($cursus, $msg_str, $msg_
                 'introduction'      => $cursus->getDescription(),
 
                 'educational_paths' => $tpl_paths
+            ),
+
+            'feeds' => array(
+                'atom' => $base_uri . 'flux.atom',
+                'rss2' => $base_uri . 'flux.rss'
             )
         )
     ));
@@ -219,7 +229,12 @@ function display_empty_cursus($cursus, $base_uri, $breadcrumb) {
             ),
 
             'message' => 'Ce cursus n\'est lié à aucun parcours pédagogique.',
-            'message_type' => 'error'
+            'message_type' => 'error',
+
+            'feeds' => array(
+                'atom' => $base_uri . 'flux.atom',
+                'rss2' => $base_uri . 'flux.rss'
+            )
 
         )
     ));

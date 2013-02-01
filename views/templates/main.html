@@ -52,6 +52,18 @@
 
                 <link rel="search" type="application/opensearchdescription+xml" title="IP7" href="//www.infop7.org/views/static/opensearch.xml" />
 
+                {# flux Atom/RSS #}
+                {% if page.feeds is defined and page.feeds is not empty %}
+                    {% if page.feeds.rss2 is defined and page.feeds.rss2 is not empty %}
+                <link rel="alternate" type="application/rss+xml" {#
+                                #}title="RSS 2.0" href="{{ page.feeds.rss2 }}" />
+                    {% endif %}
+                    {% if page.feeds.atom is defined and page.feeds.atom is not empty %}
+                <link rel="alternate" type="application/atom+xml" {#
+                                #}title="Atom" href="{{ page.feeds.atom }}" />
+                    {% endif %}
+                {% endif %}
+
                 {# Scripts pour le rendu #}
                 {% if site.rendering_scripts is not empty %}
                     {% for script in site.rendering_scripts %}
