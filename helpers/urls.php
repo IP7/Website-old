@@ -30,7 +30,7 @@ function course_url($cursus, $course) {
 }
 
 // return the URL of a content
-function content_url($cursus, $course, $content) {
+function content_url($cursus, $course, $content, $force_uri=false) {
     if (!$cursus) { return ''; }
     
     $uri = course_url($cursus, $course) . '/' . $content->getId();
@@ -39,7 +39,7 @@ function content_url($cursus, $course, $content) {
         $uri .= '/' . $content->getYear() . '-' . ($content->getYear() + 1);
     }
 
-    return $uri . '/' . name_encode($content->getTitle());
+    return $uri . '/' . name_encode($content->getTitle(), $force_uri);
 }
 
 // return the URL of an user's profile
@@ -73,10 +73,18 @@ function css_or_js_url($dir, $name, $ext) {
     return Config::$root_uri.'views/static/'.$dir.'/'.$name.'.'.$ext;
 }
 
-/* return an URL part for the name of a file, e.g.:
-        user_file_name2url("Foo bar.pdf) --> "Foo-bar.pdf" */
-function name_encode($fn) {
-    return preg_replace('/[^-._a-zA-Z0-9éèàùÉÀ]+/', '-', $fn);
+/* return an URL part for the name of a file/content, e.g.:
+    name_encode("Foo bar.pdf) --> "Foo-bar.pdf"
+
+    $force_uri : if true, the encoded name can be used in an URL,
+                 if not, it can't, but it can be used in an IRI. */
+function name_encode($n, $force_uri=false) {
+
+    $n = preg_replace('/[^-._a-zA-Z0-9éèàùÉÀ]+/', '-', $n);
+
+    if (!$force_uri) { return $n; }
+
+    return urlencode($n);
 }
 
 ?>

@@ -107,7 +107,7 @@ function feed_helper($cursus_sn, $course_sn, $type='atom',
 
     foreach ($contents as $_ => $c) {
 
-        $link = $root . content_url($cursus, $c->getCourse(), $c);
+        $link = $root . content_url($cursus, $c->getCourse(), $c, true);
         $text = $c->getText();
 
         $els []= array(
