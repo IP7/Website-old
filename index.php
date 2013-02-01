@@ -96,6 +96,14 @@ if (strpos(LIM_REQUEST_URI, '/cursus') === 0) {
     ## educational paths
     dispatch('/cursus/:cursus/parcours/:path', 'display_educational_path');
 
+    ## cursus feeds
+    dispatch('/cursus/:name/flux.rss', 'display_cursus_rss_feed');
+    dispatch('/cursus/:name/flux.atom', 'display_cursus_atom_feed');
+
+    ## courses feeds
+    dispatch('/cursus/:cursus/:course/flux.rss', 'display_course_rss_feed');
+    dispatch('/cursus/:cursus/:course/flux.atom', 'display_course_atom_feed');
+
     ## course
     dispatch('/cursus/:cursus/:course', 'display_course');
     ## contents (course)

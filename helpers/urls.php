@@ -47,10 +47,9 @@ function user_url($user) {
     return Config::$root_uri.'p/'.$user->getUsername();
 }
 
-/* return an URL part for the name of a file, e.g.:
-        user_file_name2url("Foo bar.pdf) --> "Foo-bar.pdf" */
-function name_encode($fn) {
-    return preg_replace('/[^-._a-zA-Z0-9éèàùÉÀ]+/', '-', $fn);
+// return the URL of a news
+function news_url($n) {
+    return Config::$root_uri.'actus/archives#news-' . ($n ? $n->getId() : '');
 }
 
 // return the URL for a CSS file
@@ -72,6 +71,12 @@ function css_or_js_url($dir, $name, $ext) {
     }
 
     return Config::$root_uri.'views/static/'.$dir.'/'.$name.'.'.$ext;
+}
+
+/* return an URL part for the name of a file, e.g.:
+        user_file_name2url("Foo bar.pdf) --> "Foo-bar.pdf" */
+function name_encode($fn) {
+    return preg_replace('/[^-._a-zA-Z0-9éèàùÉÀ]+/', '-', $fn);
 }
 
 ?>
