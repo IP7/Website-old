@@ -124,12 +124,9 @@ abstract class FeedWriter
 		}
 
         # Limonade-specific
-		send_header("Content-Type: " . $contentType);
+        send_header('Content-Type: ' . $contentType . '; charset='.strtolower(option('encoding')));
 		
-		$this->printHeader();
-		$this->printChannels();
-		$this->printItems();
-		$this->printFooter();
+		return $this->printHeader() . $this->printChannels() . $this->printItems() . $this->printFooter();
 	}
 	
 	/**
