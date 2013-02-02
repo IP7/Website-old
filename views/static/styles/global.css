@@ -427,6 +427,10 @@ body > #container { height: auto; min-height:100%; }
     font-size:0.9em;
     color:#111;
 }
+.inline-news:target ~ .inline-news {
+    opacity:0.5;
+}
+
 span.news-date {
     color:#222;
     font-weight: normal;
