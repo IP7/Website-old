@@ -1,8 +1,5 @@
 <?php
 
-require_once dirname(__FILE__).'/../config.php';
-Config::init();
-
 function display_home() {
 
     if (has_post('disconnect')) {

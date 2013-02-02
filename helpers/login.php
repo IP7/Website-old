@@ -1,8 +1,5 @@
 <?php
 
-require_once 'config.php';
-Config::init();
-
 /**
  * returns $_SESSION['user']
  **/

@@ -1,8 +1,5 @@
 <?php
 
-require_once dirname(__FILE__) . '/../config.php';
-Config::init();
-
 function display_bug_report($msg_str=null, $msg_type=null){
 
     return Config::$tpl->render('bug_report.html', tpl_array(array(

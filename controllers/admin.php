@@ -1,8 +1,5 @@
 <?php
 
-require_once dirname(__FILE__).'/../config.php';
-Config::init();
-
 # === HOME =====================================================================
 
 function display_admin_home($message, $message_type) {

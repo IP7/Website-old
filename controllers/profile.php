@@ -1,8 +1,5 @@
 <?php
 
-require_once dirname(__FILE__).'/../config.php'; 
-Config::init();
-
 // -- (GET) Display profile pages --
 
 // $is_my_profile : true if the page is acceded through /profile

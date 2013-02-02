@@ -1,8 +1,5 @@
 <?php
 
-require_once dirname(__FILE__).'/../config.php';
-Config::init();
-
 # Templates helpers
 
 # version of array_merge_recursive without overwriting numeric keys

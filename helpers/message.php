@@ -1,30 +1,26 @@
 <?php
 
-	require_once 'config.php';
-	Config::init();
+function set_message($string){
 
-	function set_message($string){
+    $string = (string)$string;
+    $random = rand();
 
-		$string = (string)$string;
-		$random = rand();
+    $_SESSION['message'][$random] = $string;
 
-		$_SESSION['message'][$random] = $string;
+    return $random;
 
-		return $random;
+}
 
-	}
+function get_message($idMessage){
 
-	function get_message($idMessage){
+    if ( isset($_SESSION['message'][$idMessage]) && !empty($_SESSION['message'][$idMessage]) ){
+        
+        $msg = $_SESSION['message'][$idMessage];
+        unset($_SESSION['message'][$idMessage]);
 
-		if ( isset($_SESSION['message'][$idMessage]) && !empty($_SESSION['message'][$idMessage]) ){
-			
-			$msg = $_SESSION['message'][$idMessage];
-			unset($_SESSION['message'][$idMessage]);
+        return $msg;
 
-			return $msg;
-	
-		}
+    }
 
-	}
+}
 
-?>
