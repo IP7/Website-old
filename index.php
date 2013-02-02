@@ -54,7 +54,7 @@ define('LIM_REQUEST_URI', request_uri());
 
 if ( strpos($_SERVER['HTTP_HOST'], 's.') === 0 ) {
     
-    dispatch('/:code', 'short_link_route');
+    dispatch('/**', 'short_link_route');
 
 } else {
 

@@ -27,7 +27,11 @@ RewriteCond %{SCRIPT_FILENAME} !-f
 # test string is a valid directory
 RewriteCond %{SCRIPT_FILENAME} !-d
 
-RewriteRule ^(.*)$   index.php?uri=/$1    [NC,L,QSA]
+# For shortened links, using s.infop7.org/<something>
+RewriteRule ^_shortlinks/(.*)$  _shortlinks/index.php?uri=/$1    [NC,L,QSA]
+
+RewriteCond %{HTTP_HOST} !^s. [NC]
+RewriteRule ^(.*)$  index.php?uri=/$1    [NC,L,QSA]
 # with QSA flag (query string append),
 # forces the rewrite engine to append a query string part of the
 # substitution string to the existing string, instead of replacing it.
