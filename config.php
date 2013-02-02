@@ -1,10 +1,12 @@
 <?php
 
-require_once dirname(__FILE__).'/lib/vendors/Twig/Autoloader.php';
-require_once dirname(__FILE__).'/lib/vendors/limonade/limonade.php';
-require_once dirname(__FILE__).'/lib/vendors/phpass/PasswordHash.php';
-require_once dirname(__FILE__).'/lib/vendors/propel/runtime/lib/Propel.php';
-require_once dirname(__FILE__).'/lib/vendors/php_markdown_extra/markdown.php';
+$dirname = __DIR__;
+
+require_once $dirname.'/lib/vendors/Twig/Autoloader.php';
+require_once $dirname.'/lib/vendors/limonade/limonade.php';
+require_once $dirname.'/lib/vendors/phpass/PasswordHash.php';
+require_once $dirname.'/lib/vendors/propel/runtime/lib/Propel.php';
+require_once $dirname.'/lib/vendors/php_markdown_extra/markdown.php';
 
 ### Constants ###
 #
@@ -62,7 +64,7 @@ class Config {
     #static $timezone = 'Europe/Paris';
 
     static $root_uri = '/';
-    static $app_dir;
+    static $app_dir = __DIR__;
 
     private static $initialized = false;
 
@@ -86,7 +88,7 @@ class Config {
         self::$tpl = new Twig_Environment($loader, self::$default_twig_env);
 
         # Twig extensions
-        require_once dirname(__FILE__).'/lib/vendors/Twig/Extension/Markdown2HTMLfilter.php';
+        require_once __DIR__.'/lib/vendors/Twig/Extension/Markdown2HTMLfilter.php';
         self::$tpl->addExtension(new \IP7Website\Twig\Extension\Markdown2HTMLfilter());
 
         # default template values
@@ -198,10 +200,10 @@ class Config {
     private static function orm_init() {
 
         // Initialize Propel with the runtime configuration
-        Propel::init(self::$app_dir."/models/build/conf/ip7website-conf.php");
+        Propel::init(self::$app_dir.'/models/build/conf/ip7website-conf.php');
 
         // Add the generated 'classes' directory to the include path
-        set_include_path(self::$app_dir."/models/build/classes" . PATH_SEPARATOR . get_include_path());
+        set_include_path(self::$app_dir.'/models/build/classes' . PATH_SEPARATOR . get_include_path());
     }
 
     private static function phpass_init() {
@@ -222,6 +224,4 @@ class Config {
     }
 
 };
-Config::$app_dir = dirname(__FILE__);
 
-?>
