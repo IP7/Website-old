@@ -65,7 +65,7 @@ function json_get_last_contents() {
         $course = $c->getCourse();
 
         $tpl_contents []= array(
-            'href'  => content_url($cursus, $course, $c),
+            'href'  => content_url($cursus, $course, $c, true),
             'title' => $c->getTitle(),
             'date'  => $c->getDate(),
 
