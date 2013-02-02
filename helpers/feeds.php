@@ -20,11 +20,14 @@ function feedElCmp($a, $b) {
 function feed_helper($cursus_sn, $course_sn, $type='atom',
                      $news_count=25, $contents_count=25) {
 
-    $cursus = CursusQuery::create()
-                ->findOneByShortName($cursus_sn);
+    $cursus = null;
+    if ($cursus_sn !== null) {
+        $cursus = CursusQuery::create()
+                    ->findOneByShortName($cursus_sn);
 
-    if ($cursus === null) {
-        halt(NOT_FOUND);
+        if ($cursus === null) {
+            halt(NOT_FOUND);
+        }
     }
 
     $course = null;
@@ -41,7 +44,20 @@ function feed_helper($cursus_sn, $course_sn, $type='atom',
 
     $user_rights = is_connected() ? user()->getRights() : 0;
 
-    $title = $course ? $course->getName() : $cursus->getName();
+    $title = 'IP7';
+
+    if ($course) {
+        $title = $course->getName();
+    } else if ($cursus) {
+        $title = $cursus->getName();
+    }
+
+    $desc = 'Dernières actualités ';
+
+    if ($contents_count > 0) {
+        $desc .= 'et nouveaux contenus ';
+    }
+
     $isRSS = ($type === 'rss'); // RSS2 or Atom
     $time  = time();
     $root  = 'http://www.infop7.org';
@@ -51,7 +67,7 @@ function feed_helper($cursus_sn, $course_sn, $type='atom',
 
     $feed->setTitle($title);
     $feed->setLink($url);
-    $feed->setDescription('Dernières actualités et nouveaux contenus de ' . $title);
+    $feed->setDescription($desc . \Lang\de($title));
 
     if ($isRSS) {
         
@@ -66,25 +82,34 @@ function feed_helper($cursus_sn, $course_sn, $type='atom',
    
     }
 
-    $news = get_news($cursus, $course, $news_count);
-    $contents = ContentQuery::create()
-                    ->joinWith('Content.Course')
-                    ->filterByCursus($cursus)
-                    ->filterByValidated(true)
-                    ->filterByDeleted(false)
-                    ->where(  '(SELECT content_types.access_rights '
-                            . 'FROM content_types '
-                            . 'WHERE content_types.id = contents.content_type_id) <= ?',
-                                $user_rights, PDO::PARAM_INT)
-                    ->where('Access_Rights <= ?', $user_rights, PDO::PARAM_INT)
-                    ->orderByDate('desc')
-                    ->limit($contents_count);
+    $news = get_news($cursus, $course, $news_count, true);
 
-    if ($course) {
-        $contents = $contents->filterByCourse($course);
+    if ($contents_count > 0) {
+    $title = $course ? $course->getName() : $cursus->getName();
+        $contents = ContentQuery::create()
+                            ->filterByValidated(true)
+                            ->filterByDeleted(false)
+                            ->where(  '(SELECT content_types.access_rights '
+                                    . 'FROM content_types '
+                                    . 'WHERE content_types.id = contents.content_type_id) <= ?',
+                            $user_rights, PDO::PARAM_INT)
+                            ->where('Access_Rights <= ?', $user_rights, PDO::PARAM_INT)
+                            ->orderByDate('desc')
+                            ->limit($contents_count);
+
+        if ($cursus) {
+            $contents = $contents->joinWith('Content.Course')->filterByCursus($cursus);
+        }
+
+        if ($course) {
+            $contents = $contents->filterByCourse($course);
+        }
+
+        $contents = $contents->find();
+
+    } else {
+        $contents = array();
     }
-
-    $contents = $contents->find();
 
     $els = array();
 
@@ -123,7 +148,9 @@ function feed_helper($cursus_sn, $course_sn, $type='atom',
 
     }
 
-    usort($els, 'feedElCmp');
+    if ($contents_count > 0 && $news_count > 0) {
+        usort($els, 'feedElCmp');
+    }
 
     foreach ($els as $_ => $e) {
 

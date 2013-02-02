@@ -92,6 +92,8 @@ dispatch('/admin/migrate', 'display_admin_migrate_db_page');
 
 ## news archives
 dispatch('/actus/archives', 'display_news_archives');
+dispatch('/actus/flux.rss', 'display_global_rss_feed');
+dispatch('/actus/flux.atom', 'display_global_atom_feed');
 
 ## (almost-)static pages
 dispatch('/contact',  'display_contact_page');

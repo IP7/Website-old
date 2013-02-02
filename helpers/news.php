@@ -1,17 +1,19 @@
 <?php
 
 // Return news (Propel objects)
-function get_news($cursus=null, $course=null, $limit=10) {
+function get_news($cursus=null, $course=null, $limit=10, $with_expired=false) {
 
     $user_rights = is_connected() ? user()->getRights() : 0;
 
     $q = NewsQuery::create()
                 ->where('Access_Rights <= ?', $user_rights, PDO::PARAM_INT)
-                ->limit($limit)
-                    ->condition('has_no_expiration', 'Expiration_Date IS NULL')
-                    ->condition('hasnt_expired',     'Expiration_date > NOW()')
-                ->where(array('has_no_expiration', 'hasnt_expired'), 'or')
-                ->orderByDate('desc');
+                ->limit($limit);
+
+    if (!$with_expired) {
+        $q = $q->condition('has_no_expiration', 'Expiration_Date IS NULL')
+               ->condition('hasnt_expired',     'Expiration_date > NOW()')
+               ->where(array('has_no_expiration', 'hasnt_expired'), 'or');
+    }
 
     if ($cursus) {
         $q = $q->filterByCursus($cursus);
@@ -21,7 +23,7 @@ function get_news($cursus=null, $course=null, $limit=10) {
         $q = $q->filterByCourse($course);
     }
 
-    return $q->find();
+    return $q->orderByDate('desc')->find();
 }
 
 // check if a news is correct (for update/creation)
