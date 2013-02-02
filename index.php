@@ -179,9 +179,6 @@ if (strpos(LIM_REQUEST_URI, '/api') === 0) {
 
 }
 
-## tests
-# dispatch('/test/init_db', 'display_test_init_db');
-
 # Errors handling (functions called by Limonade)
 
 # Called when a route is not found.
