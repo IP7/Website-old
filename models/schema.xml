@@ -872,4 +872,28 @@
         </unique>
     </table>
 
+    <!-- == liens courts == -->
+    <table name="shortlinks" phpName="ShortLink">
+        <!-- id -->
+        <column name="id" type="INTEGER" required="true" primaryKey="true" autoIncrement="true"/>
+        
+        <!-- adresse courte (partie après "/") -->
+        <column name="short_url" type="VARCHAR" required="true" />
+        
+        <!-- adresse longue (partie après "/") -->
+        <column name="url" type="VARCHAR" required="true" />
+
+        <!-- nombre de clics -->
+        <column name="clicks_count" type="INTEGER" defaultExpr="0" />
+
+        <unique>
+            <unique-column name="short_url" />
+        </unique>
+
+        <unique>
+            <unique-column name="url" />
+        </unique>
+
+    </table>
+
 </database>

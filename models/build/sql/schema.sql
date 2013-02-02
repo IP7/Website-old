@@ -636,5 +636,22 @@ CREATE TABLE `tokens`
         ON DELETE CASCADE
 ) ENGINE=MyISAM;
 
+-- ---------------------------------------------------------------------
+-- shortlinks
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `shortlinks`;
+
+CREATE TABLE `shortlinks`
+(
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `short_url` VARCHAR(255) NOT NULL,
+    `url` VARCHAR(255) NOT NULL,
+    `clicks_count` INTEGER DEFAULT 0,
+    PRIMARY KEY (`id`),
+    UNIQUE INDEX `shortlinks_U_1` (`short_url`),
+    UNIQUE INDEX `shortlinks_U_2` (`url`)
+) ENGINE=MyISAM;
+
 # This restores the fkey checks, after having unset them earlier
 SET FOREIGN_KEY_CHECKS = 1;
