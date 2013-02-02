@@ -102,6 +102,7 @@ function create_short_url($url) {
     $long_url = substr($parts['path'], 1);
    
     if ($parts['query']) { $long_url .= '?' . $parts['query']; }
+    if ($parts['fragment']) { $long_url .= '#' . $parts['fragment']; }
 
     if (!preg_match('/\.?infop7\.org$/', $parts['host'])) {
         return $url;
