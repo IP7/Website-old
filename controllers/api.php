@@ -342,3 +342,17 @@ function json_post_delete_file() { // id=<id>
     return json(array( 'data' => array( 'id' => $id ) ));
 }
 
+function api_create_short_url() { // url=<url>
+
+    send_header('Content-Type: text/plain; charset='.strtolower(option('encoding')));
+
+    if (!has_get('url')) {
+        return 'ERROR';
+    }
+
+    $url   = get_string('url', 'GET');
+    $short = create_short_url($url);
+
+    return $short ? $short : $url;
+
+}

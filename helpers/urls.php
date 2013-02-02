@@ -87,4 +87,40 @@ function name_encode($n, $force_uri=false) {
     return urlencode($n);
 }
 
-?>
+## Short URLs
+
+/**
+ * Return a short URL for the given URL. If the URL is not from *.infop7.org,
+ * the function returns its argument.
+ **/
+function create_short_url($url) {
+
+    $root = 'http://s.infop7.org/';
+
+    $parts = parse_url($url);
+
+    $long_url = substr($parts['path'], 1);
+   
+    if ($parts['query']) { $long_url .= '?' . $parts['query']; }
+
+    if (!preg_match('/\.?infop7\.org$/', $parts['host'])) {
+        return $url;
+    }
+
+    $q = ShortLinkQuery::create()
+                ->findOneByUrl( $long_url );
+
+    if ($q) {
+        return $root . $q->getShortUrl();
+    }
+
+    $short_url = get_random_string(2) . dechex(strlen($url));
+
+    $sl = new ShortLink();
+    $sl->setShortUrl($short_url);
+    $sl->setUrl($long_url);
+    $sl->save();
+
+    return $root . $short_url;
+
+}

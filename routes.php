@@ -125,5 +125,7 @@ if (strpos(LIM_REQUEST_URI, '/api') === 0) {
     dispatch_post('/api/1/files/rename.json', 'json_post_rename_file');
     dispatch_post('/api/1/files/delete.json', 'json_post_delete_file');
 
+    dispatch('/api/1/short_url', 'api_create_short_url');
+
 }
 
