@@ -31,7 +31,12 @@ function display_home() {
 
             'news' => array(),
 
-            'scripts' => $scripts
+            'scripts' => $scripts,
+
+            'feeds' => array(
+                'atom' => '/actus/flux.atom',
+                'rss2' => '/actus/flux.rss2'
+            )
         )
     ));
 
