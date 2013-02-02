@@ -15,4 +15,9 @@
  */
 class ShortLink extends BaseShortLink
 {
+
+    public function click() {
+        $this->setClicksCount($this->getClicksCount()+1);
+    }
+
 }

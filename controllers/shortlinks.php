@@ -2,7 +2,6 @@
 
 function short_link_route() {
 
-
     $code = params(0);
 
     if (!$code) {
@@ -13,9 +12,12 @@ function short_link_route() {
                     ->findOneByShortUrl($code);
 
     if (!$shortlink) {
-        redirect_to( 'http://www.infop7.org/404' );
+        redirect_to( 'http://www.infop7.org' );
     }
     else {
+
+        $shortlink->click();
+        $shortlink->save();
 
         redirect_to(
             'http://www.infop7.org/' . $shortlink->getUrl(),
