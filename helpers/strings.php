@@ -29,7 +29,7 @@ function get_random_string($length=10) {
     for($i=0; $i < $length; $i++) {
         $s .= $c[rand(0, $c_len)];
     }
-    return str_shuffle($s);
+    return $length === 1 ? $s : str_shuffle($s);
 }
 
 ?>
