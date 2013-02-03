@@ -9,7 +9,9 @@ var compressor = require( 'node-minify' ),
     base_path  = path.resolve( __dirname, '..', 'views', 'static' ),
     paths      = {
         css: [ base_path, 'styles', '' ].join( path.sep ),
-        js:  [ base_path, 'scripts', '' ].join( path.sep )
+        js:  [ base_path, 'scripts', '' ].join( path.sep ),
+
+        tmp: __dirname + path.sep + 'tmp~'
     };
 
 [ 'js', 'css' ].forEach(function( type ) {
@@ -31,18 +33,32 @@ var compressor = require( 'node-minify' ),
 
                 var createFile = function() {
 
-                    new compressor.minify({
+                    var headers = '/*! '
+                                + b.files.join('+')
+                                + ', ' + +new Date() + ' */\n';
 
-                        type: 'yui-' + type,
-                        fileIn: filesIn,
-                        fileOut: fileOut,
-                        callback: function( err ) {
+                    fs.writeFile( paths.tmp, headers, function( err ) {
 
-                            if ( err ) { console.log( err ); }
-                        
+                        if (!err) {
+
+                            filesIn.unshift( paths.tmp );
+
                         }
 
-                    });
+                        new compressor.minify({
+
+                            type: 'yui-' + type,
+                            fileIn: filesIn,
+                            fileOut: fileOut,
+                            callback: function( err ) {
+
+                                if ( err ) { console.log( err ); }
+                            
+                            }
+
+                        });
+
+                    })
 
                 }
 
