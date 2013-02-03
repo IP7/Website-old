@@ -15,8 +15,10 @@ $(function(){
 
     $tabs.each(function(i, e) {
 
-        $(e).data( 'ct', $tb_contents.eq(i) )
-            .data( 'title', e.innerText.toLocaleUpperCase() );
+        $(e).data({
+            ct:    $tb_contents.eq(i),
+            title: e.textContent.toLocaleUpperCase()
+        });
 
     }).click(function() {
         var $this = $(this),
