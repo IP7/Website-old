@@ -11,7 +11,7 @@ var compressor = require( 'node-minify' ),
         css: [ base_path, 'styles', '' ].join( path.sep ),
         js:  [ base_path, 'scripts', '' ].join( path.sep ),
 
-        tmp: __dirname + path.sep + 'tmp~'
+        tmp: __dirname + path.sep
     };
 
 [ 'js', 'css' ].forEach(function( type ) {
@@ -35,13 +35,15 @@ var compressor = require( 'node-minify' ),
 
                     var headers = '/*! '
                                 + b.files.join('+')
-                                + ', ' + +new Date() + ' */\n';
+                                + ', ' + +new Date() + ' */\n',
 
-                    fs.writeFile( paths.tmp, headers, function( err ) {
+                        tmpfile = paths.tmp + 'f' + +new Date();
+
+                    fs.writeFile( tmpfile, headers, function( err ) {
 
                         if (!err) {
 
-                            filesIn.unshift( paths.tmp );
+                            filesIn.unshift( tmpfile );
 
                         }
 
@@ -53,6 +55,8 @@ var compressor = require( 'node-minify' ),
                             callback: function( err ) {
 
                                 if ( err ) { console.log( err ); }
+
+                                fs.unlink( tmpfile );
                             
                             }
 
