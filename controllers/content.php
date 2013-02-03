@@ -21,7 +21,10 @@ function display_course_content() {
     }
 
     $url_year = (string)params('year');
-    $url_title = (string)params('title');
+
+    // underscores are escaped, since they're MySQL wildcards,
+    // so we need to replace '\_' with '_'
+    $url_title = preg_replace('/\\\\_/', '_', (string)params('title'));
 
     if ($cursus->getShortName() != $cursus_sn
          || ($course !== NULL && $course->getShortName() != $course_code)
