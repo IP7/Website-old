@@ -1,7 +1,8 @@
 <?php
 
 // Return news (Propel objects)
-function get_news($cursus=null, $course=null, $limit=10, $with_expired=false) {
+function get_news($cursus=null, $course=null, $limit=10,
+                    $with_expired=false, $join_with=null) {
 
     $user_rights = is_connected() ? user()->getRights() : 0;
 
@@ -13,6 +14,12 @@ function get_news($cursus=null, $course=null, $limit=10, $with_expired=false) {
         $q = $q->condition('has_no_expiration', 'Expiration_Date IS NULL')
                ->condition('hasnt_expired',     'Expiration_date > NOW()')
                ->where(array('has_no_expiration', 'hasnt_expired'), 'or');
+    }
+
+    if ($join_with) {
+        foreach ($join_with as $_ => $field) {
+            $q = $q->joinWith($field);
+        }
     }
 
     if ($cursus) {

@@ -82,10 +82,10 @@ function feed_helper($cursus_sn, $course_sn, $type='atom',
    
     }
 
-    $news = get_news($cursus, $course, $news_count, true);
+    $news = get_news($cursus, $course, $news_count, true, array( 'News.Cursus' ));
 
     if ($contents_count > 0) {
-    $title = $course ? $course->getName() : $cursus->getName();
+
         $contents = ContentQuery::create()
                             ->filterByValidated(true)
                             ->filterByDeleted(false)
@@ -119,7 +119,7 @@ function feed_helper($cursus_sn, $course_sn, $type='atom',
 
         $els []= array(
 
-            'title' => $n->getTitle(),
+            'title' => ($n->getCursus() ? '[' . $n->getCursus()->getShortName() . '] ' : '') . $n->getTitle(),
             'link'  => $root . news_url($n),
             'date'  => $n->getDate(),
             'desc'  => $text ? $text : ' ',
