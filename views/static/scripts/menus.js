@@ -1,27 +1,30 @@
-(function() {
+;$(function() {
     
     var menus = document.getElementsByClassName('optional'),
-        bs = ['▲', '▼'];
-    
-    function toggle_menu(b, $list) {
-        $list.slideToggle(50);
-        b.innerHTML = bs[b.dataset['v']=(+b.dataset['v']+1)%2];
-    }
-    
-    [].slice.call(menus).forEach(function(m){
-       
-        var t = m.childNodes[1],
-            $u = $(m.childNodes[3]),
-            b = document.createElement('span');
+        buttons = ['▲', '▼'];
 
-        $u.hide();
-        b.innerHTML = '▼';
-        b.dataset['v'] = 1;
-        b.className = 'show-hide-button';
-        b.style.cursor = 'pointer';
-        b.onclick = toggle_menu.bind(null, b, $u);
-        t.appendChild(b);
-        
+    [].forEach.call( menus, function( m ) {
+
+        var t  = m.childNodes[ 1 ], // 'Options' title
+            ul = m.childNodes[ 3 ], // <ul>
+            st = 1, // state 1: hidden, 0: shown
+            bt = document.createElement( 'span' ); // button
+
+        ul.style.display = 'none';
+
+        bt.className = 'show-hide-button';
+        bt.textContent = buttons[ st ];
+        t.appendChild( bt );
+
+        bt.addEventListener( 'click', function() {
+
+            st = +!st;
+            ul.style.display = st ? 'none' : 'block';
+            bt.textContent = buttons[ st ];
+
+
+        }, false );
+
     });
     
-})();
+});
