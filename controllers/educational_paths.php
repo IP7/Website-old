@@ -20,7 +20,7 @@ function display_educational_path() {
 
     // if there is only one educational path for this cursus
     if ($cursus->countEducationalPaths() == 1) {
-        redirect_to('/cursus/'.$cursus->getShortName(), array('status' => HTTP_MOVED_PERMANENTLY));
+        redirect_to(cursus_url($cursus), array('status' => HTTP_MOVED_PERMANENTLY));
     }
 
     $cursus_uri = cursus_url($cursus);
@@ -81,15 +81,7 @@ function display_educational_path() {
 
     $news = array();
 
-    $path_news = NewsQuery::create()
-                    ->filterByCursus($cursus)
-                    ->filterByDate(array(
-                        'max' => time(),
-                        'min' => time() - 3600 * 24 * 20
-                    ))
-                    ->orderByDate('desc')
-                    ->limit(10)
-                    ->find();
+    $path_news = get_news($cursus);
     
     if ($path_news != NULL) {
         foreach ($path_news as $n) {
@@ -109,7 +101,8 @@ function display_educational_path() {
                 'datetime'      => Lang\date_fr($n->getDate()),
                 'title'         => $n->getTitle(),
                 'content'       => $n->getText(),
-                'author'        => $author
+                'author'        => $author,
+                'id'            => $n->getId()
             );
         }
     }
@@ -123,20 +116,7 @@ function display_educational_path() {
         );
     }
 
-    $moderation_bar = array();
-    $add_news = false;
-
-    if (is_connected() && user()->isModerator()) {
-        $moderation_bar []= array(
-            'href' => $base_uri.'edit',
-            'title' => 'Éditer'
-        );
-
-        $add_news = array(
-            'href' => $base_uri.'add_news',
-            'title' => 'Ajouter une news'
-        );
-    }
+    $is_page_admin = is_connected() && (user()->isAdmin() || user()->isResponsibleFor($cursus));
 
     $responsable = $cursus->getResponsable();
     $tpl_responsable = null;
@@ -174,12 +154,8 @@ function display_educational_path() {
                 'other_links'  => $other_links
             ),
 
-            // moderation
-            'moderation_bar'  => $moderation_bar,
-            'add_news_button' => $add_news,
-
             'scripts' => array(
-                array( 'href' => js_url('simple-course') )
+                array( 'href'  => js_url( ($is_page_admin ? 'admin' : 'simple') . '-course') )
             )
         )
     )));
