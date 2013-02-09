@@ -227,7 +227,9 @@ $(function() {
 
     function _delete(id) {
         var n = news[id];
-        if (!n) {return}
+        if ( !n ||
+             !confirm('Êtes-vous sûr(e) de vouloir '
+                     +'supprimer cette actualité ?')) {return}
         $.ajax(base_api+'delete.json', {
             type: 'POST',
             data: { id : id },
