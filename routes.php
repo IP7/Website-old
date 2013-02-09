@@ -131,3 +131,5 @@ if (strpos(LIM_REQUEST_URI, '/api') === 0) {
 
 }
 
+# trying to avoid 404 errors
+dispatch('/:name/**', 'bad_url');
