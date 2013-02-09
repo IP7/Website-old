@@ -13,6 +13,10 @@ $(function(){
 
         $old_tab = $tabs.first(), tmp;
 
+    if ($tabs.length > 9) {
+        $tabs.css( 'padding', '1px 2px' );
+    }
+
     $tabs.each(function(i, e) {
 
         $(e).data({
