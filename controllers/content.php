@@ -138,7 +138,9 @@ function display_course_content() {
     $scripts = array(
         array( 'href' => js_url( 'simple-content' ) )
     );
-    $styles  = array();
+    $styles  = array(
+        array( 'href' => css_url( 'simple-content' ) )
+    );
 
     if ($course && $course->getUseSourcecode()) {
 
@@ -480,6 +482,9 @@ function display_post_member_proposed_content_preview() {
                 'action' => course_url($fd2->get('cursus'), $fd2->get('course')).'/proposer'
             ),
 
+            'styles' => array(
+                array( 'href' => css_url( 'simple-content' ) )
+            ),
             'scripts' => array(
                 array( 'href' => js_url( 'simple-content' ) )
             )

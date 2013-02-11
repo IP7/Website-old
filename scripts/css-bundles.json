@@ -10,7 +10,15 @@
     {
         "name": "pretty-content.min.css",
         "files": [
-            "prettify.min.css"
+            "prettify.min.css",
+            "file-icons-16px.css"
+        ]
+    },
+
+    {
+        "name": "simple-content.min.css",
+        "files": [
+            "file-icons-16px.css"
         ]
     },
 

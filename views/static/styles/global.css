@@ -574,11 +574,11 @@ ul.fileslist {
     padding:0;
 }
 
-li.file-li {
-    background-image: url('/views/static/images/file-icons-16px/_blank.png');
-    background-repeat: no-repeat;
-    background-position: 0 2px;
-    padding-left: 18px;
+li.file-li > span:first-child {
+    position:relative;
+    top:2px;
+    margin-right:1px;
+    display:inline-block;
 }
 
 /* -- FB/Twitter/… ----------------------------------------- */

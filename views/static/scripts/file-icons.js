@@ -16,7 +16,7 @@
 
         lis  = document.getElementsByClassName('file-li'),
 
-        i=0, _l = lis.length, ext;
+        i=0, _l = lis.length, ext, ext_n;
 
     for (;i<_l; i++) {
         ext = lis[i].textContent.trimRight().split('.').slice(-1)[0];
@@ -25,10 +25,9 @@
 
         ext = ext.toLocaleLowerCase();
 
-        if (exts[ext]) {
-            lis[i].style.backgroundImage =
-                "url('/views/static/images/file-icons-16px/"+ext+".png')";
-        }
+        ext_n = exts[ext] ? ext : '_blank';
+        lis[i].innerHTML = '<span class="sprite-icon-' + ext_n + '"></span>' + lis[i].innerHTML;
+
     }
 
 })();
