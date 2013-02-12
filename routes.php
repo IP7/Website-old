@@ -87,10 +87,14 @@ dispatch('/admin/membres',          'display_admin_members');
 dispatch('/admin/membres/add',      'display_admin_add_member');
 dispatch_post('/admin/membres/add', 'post_admin_add_member');
 
+## signin
+dispatch('/inscription', 'display_signin_form');
+dispatch_post('/inscription', 'post_signin_form');
+
 ## maintenance
 dispatch('/admin/migrate', 'display_admin_migrate_db_page');
 
-## news archives
+## global news
 dispatch('/actus/archives', 'display_news_archives');
 dispatch('/actus/flux.rss', 'display_global_rss_feed');
 dispatch('/actus/flux.atom', 'display_global_atom_feed');

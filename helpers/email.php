@@ -75,13 +75,16 @@ function send_connection_token_email($user) {
 // can't be determined.
 function get_mail_provider_url($user) {
     $providers = array(
-        'gmail.com'          => 'mail.google.com/mail',
-        'hotmail.fr'         => 'www.hotmail.fr',
-        'hotmail.com'        => 'www.hotmail.com',
-        'orange.fr'          => 'webmail.orange.fr/webmail',
-        'voila.fr'           => 'mail.voila.fr',
-        'yahoo.com'          => 'mail.yahoo.com',
-        'yahoo.fr'           => 'fr.mail.yahoo.com'
+        'etu.univ-paris-diderot' => 'webmail.etu.univ-paris-diderot.fr/ent-p7',
+        'free.fr'                => 'imp.free.fr',
+        'laposte.net'            => 'www.laposte.net',
+        'gmail.com'              => 'mail.google.com/mail',
+        'hotmail.fr'             => 'www.hotmail.fr',
+        'hotmail.com'            => 'www.hotmail.com',
+        'orange.fr'              => 'webmail.orange.fr/webmail',
+        'voila.fr'               => 'mail.voila.fr',
+        'yahoo.com'              => 'mail.yahoo.com',
+        'yahoo.fr'               => 'fr.mail.yahoo.com'
     );
 
     $provider = explode('@', ''.$user->getEmail());
