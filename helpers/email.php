@@ -81,6 +81,7 @@ function get_mail_provider_url($user) {
         'gmail.com'              => 'mail.google.com/mail',
         'hotmail.fr'             => 'www.hotmail.fr',
         'hotmail.com'            => 'www.hotmail.com',
+        'myopera.com'            => 'mail.opera.com',
         'orange.fr'              => 'webmail.orange.fr/webmail',
         'voila.fr'               => 'mail.voila.fr',
         'yahoo.com'              => 'mail.yahoo.com',
