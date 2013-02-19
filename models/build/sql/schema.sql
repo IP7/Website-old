@@ -227,46 +227,6 @@ CREATE TABLE `files`
 ) ENGINE=MyISAM;
 
 -- ---------------------------------------------------------------------
--- events
--- ---------------------------------------------------------------------
-
-DROP TABLE IF EXISTS `events`;
-
-CREATE TABLE `events`
-(
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `title` VARCHAR(255) NOT NULL,
-    `event_type_id` INTEGER,
-    `description` TEXT,
-    `date` DATE,
-    `beginning` TIME,
-    `end` TIME,
-    `place` VARCHAR(255),
-    `access_rights` TINYINT DEFAULT 0,
-    PRIMARY KEY (`id`),
-    INDEX `events_FI_1` (`event_type_id`),
-    CONSTRAINT `events_FK_1`
-        FOREIGN KEY (`event_type_id`)
-        REFERENCES `event_types` (`id`)
-        ON UPDATE CASCADE
-        ON DELETE SET NULL
-) ENGINE=MyISAM;
-
--- ---------------------------------------------------------------------
--- event_types
--- ---------------------------------------------------------------------
-
-DROP TABLE IF EXISTS `event_types`;
-
-CREATE TABLE `event_types`
-(
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `name` VARCHAR(255) NOT NULL,
-    PRIMARY KEY (`id`),
-    UNIQUE INDEX `event_types_U_1` (`name`)
-) ENGINE=MyISAM;
-
--- ---------------------------------------------------------------------
 -- contents
 -- ---------------------------------------------------------------------
 
@@ -416,33 +376,6 @@ CREATE TABLE `reports`
         REFERENCES `users` (`id`)
         ON UPDATE CASCADE
         ON DELETE SET NULL
-) ENGINE=MyISAM;
-
--- ---------------------------------------------------------------------
--- notes
--- ---------------------------------------------------------------------
-
-DROP TABLE IF EXISTS `notes`;
-
-CREATE TABLE `notes`
-(
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `user_id` INTEGER NOT NULL,
-    `course_id` INTEGER NOT NULL,
-    `score` FLOAT NOT NULL,
-    PRIMARY KEY (`id`),
-    INDEX `notes_FI_1` (`user_id`),
-    INDEX `notes_FI_2` (`course_id`),
-    CONSTRAINT `notes_FK_1`
-        FOREIGN KEY (`user_id`)
-        REFERENCES `users` (`id`)
-        ON UPDATE CASCADE
-        ON DELETE CASCADE,
-    CONSTRAINT `notes_FK_2`
-        FOREIGN KEY (`course_id`)
-        REFERENCES `courses` (`id`)
-        ON UPDATE CASCADE
-        ON DELETE CASCADE
 ) ENGINE=MyISAM;
 
 -- ---------------------------------------------------------------------
@@ -632,6 +565,27 @@ CREATE TABLE `tokens`
     CONSTRAINT `tokens_FK_1`
         FOREIGN KEY (`user_id`)
         REFERENCES `users` (`id`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+) ENGINE=MyISAM;
+
+-- ---------------------------------------------------------------------
+-- courses_urls
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `courses_urls`;
+
+CREATE TABLE `courses_urls`
+(
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `course_id` INTEGER NOT NULL,
+    `text` VARCHAR(255) NOT NULL,
+    `url` VARCHAR(255) NOT NULL,
+    PRIMARY KEY (`id`),
+    INDEX `courses_urls_FI_1` (`course_id`),
+    CONSTRAINT `courses_urls_FK_1`
+        FOREIGN KEY (`course_id`)
+        REFERENCES `courses` (`id`)
         ON UPDATE CASCADE
         ON DELETE CASCADE
 ) ENGINE=MyISAM;

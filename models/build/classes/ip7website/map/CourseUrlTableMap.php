@@ -3,7 +3,7 @@
 
 
 /**
- * This class defines the structure of the 'newsletters_posts' table.
+ * This class defines the structure of the 'courses_urls' table.
  *
  *
  *
@@ -14,13 +14,13 @@
  *
  * @package    propel.generator.ip7website.map
  */
-class NewsletterPostTableMap extends TableMap
+class CourseUrlTableMap extends TableMap
 {
 
     /**
      * The (dot-path) name of this class
      */
-    const CLASS_NAME = 'ip7website.map.NewsletterPostTableMap';
+    const CLASS_NAME = 'ip7website.map.CourseUrlTableMap';
 
     /**
      * Initialize the table attributes, columns and validators
@@ -32,16 +32,16 @@ class NewsletterPostTableMap extends TableMap
     public function initialize()
     {
         // attributes
-        $this->setName('newsletters_posts');
-        $this->setPhpName('NewsletterPost');
-        $this->setClassname('NewsletterPost');
+        $this->setName('courses_urls');
+        $this->setPhpName('CourseUrl');
+        $this->setClassname('CourseUrl');
         $this->setPackage('ip7website');
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
-        $this->addForeignKey('NEWSLETTER_ID', 'NewsletterId', 'INTEGER', 'newsletters', 'ID', false, null, null);
-        $this->addColumn('DATE', 'Date', 'TIMESTAMP', true, null, null);
-        $this->addColumn('TEXT', 'Text', 'LONGVARCHAR', true, null, null);
+        $this->addForeignKey('COURSE_ID', 'CourseId', 'INTEGER', 'courses', 'ID', true, null, null);
+        $this->addColumn('TEXT', 'Text', 'VARCHAR', true, 255, null);
+        $this->addColumn('URL', 'Url', 'VARCHAR', true, 255, null);
         // validators
     } // initialize()
 
@@ -50,7 +50,7 @@ class NewsletterPostTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('Newsletter', 'Newsletter', RelationMap::MANY_TO_ONE, array('newsletter_id' => 'id', ), 'SET NULL', 'CASCADE');
+        $this->addRelation('Course', 'Course', RelationMap::MANY_TO_ONE, array('course_id' => 'id', ), 'CASCADE', 'CASCADE');
     } // buildRelations()
 
-} // NewsletterPostTableMap
+} // CourseUrlTableMap

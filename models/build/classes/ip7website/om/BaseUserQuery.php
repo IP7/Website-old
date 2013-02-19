@@ -98,10 +98,6 @@
  * @method UserQuery rightJoinReport($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Report relation
  * @method UserQuery innerJoinReport($relationAlias = null) Adds a INNER JOIN clause to the query using the Report relation
  *
- * @method UserQuery leftJoinNote($relationAlias = null) Adds a LEFT JOIN clause to the query using the Note relation
- * @method UserQuery rightJoinNote($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Note relation
- * @method UserQuery innerJoinNote($relationAlias = null) Adds a INNER JOIN clause to the query using the Note relation
- *
  * @method UserQuery leftJoinNews($relationAlias = null) Adds a LEFT JOIN clause to the query using the News relation
  * @method UserQuery rightJoinNews($relationAlias = null) Adds a RIGHT JOIN clause to the query using the News relation
  * @method UserQuery innerJoinNews($relationAlias = null) Adds a INNER JOIN clause to the query using the News relation
@@ -1790,80 +1786,6 @@ abstract class BaseUserQuery extends ModelCriteria
         return $this
             ->joinReport($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'Report', 'ReportQuery');
-    }
-
-    /**
-     * Filter the query by a related Note object
-     *
-     * @param   Note|PropelObjectCollection $note  the related object to use as filter
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return   UserQuery The current query, for fluid interface
-     * @throws   PropelException - if the provided filter is invalid.
-     */
-    public function filterByNote($note, $comparison = null)
-    {
-        if ($note instanceof Note) {
-            return $this
-                ->addUsingAlias(UserPeer::ID, $note->getUserId(), $comparison);
-        } elseif ($note instanceof PropelObjectCollection) {
-            return $this
-                ->useNoteQuery()
-                ->filterByPrimaryKeys($note->getPrimaryKeys())
-                ->endUse();
-        } else {
-            throw new PropelException('filterByNote() only accepts arguments of type Note or PropelCollection');
-        }
-    }
-
-    /**
-     * Adds a JOIN clause to the query using the Note relation
-     *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return UserQuery The current query, for fluid interface
-     */
-    public function joinNote($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-    {
-        $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('Note');
-
-        // create a ModelJoin object for this join
-        $join = new ModelJoin();
-        $join->setJoinType($joinType);
-        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
-        if ($previousJoin = $this->getPreviousJoin()) {
-            $join->setPreviousJoin($previousJoin);
-        }
-
-        // add the ModelJoin to the current object
-        if ($relationAlias) {
-            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
-            $this->addJoinObject($join, $relationAlias);
-        } else {
-            $this->addJoinObject($join, 'Note');
-        }
-
-        return $this;
-    }
-
-    /**
-     * Use the Note relation Note object
-     *
-     * @see       useQuery()
-     *
-     * @param     string $relationAlias optional alias for the relation,
-     *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return   NoteQuery A secondary query class using the current class as primary query
-     */
-    public function useNoteQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-    {
-        return $this
-            ->joinNote($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'Note', 'NoteQuery');
     }
 
     /**

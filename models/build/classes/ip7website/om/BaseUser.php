@@ -274,12 +274,6 @@ abstract class BaseUser extends BaseObject implements Persistent
     protected $collReportsPartial;
 
     /**
-     * @var        PropelObjectCollection|Note[] Collection to store aggregation of Note objects.
-     */
-    protected $collNotes;
-    protected $collNotesPartial;
-
-    /**
      * @var        PropelObjectCollection|News[] Collection to store aggregation of News objects.
      */
     protected $collNewss;
@@ -369,12 +363,6 @@ abstract class BaseUser extends BaseObject implements Persistent
      * @var		PropelObjectCollection
      */
     protected $reportsScheduledForDeletion = null;
-
-    /**
-     * An array of objects scheduled for deletion.
-     * @var		PropelObjectCollection
-     */
-    protected $notesScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
@@ -1794,8 +1782,6 @@ abstract class BaseUser extends BaseObject implements Persistent
 
             $this->collReports = null;
 
-            $this->collNotes = null;
-
             $this->collNewss = null;
 
             $this->collTransactions = null;
@@ -2068,23 +2054,6 @@ abstract class BaseUser extends BaseObject implements Persistent
 
             if ($this->collReports !== null) {
                 foreach ($this->collReports as $referrerFK) {
-                    if (!$referrerFK->isDeleted()) {
-                        $affectedRows += $referrerFK->save($con);
-                    }
-                }
-            }
-
-            if ($this->notesScheduledForDeletion !== null) {
-                if (!$this->notesScheduledForDeletion->isEmpty()) {
-                    NoteQuery::create()
-                        ->filterByPrimaryKeys($this->notesScheduledForDeletion->getPrimaryKeys(false))
-                        ->delete($con);
-                    $this->notesScheduledForDeletion = null;
-                }
-            }
-
-            if ($this->collNotes !== null) {
-                foreach ($this->collNotes as $referrerFK) {
                     if (!$referrerFK->isDeleted()) {
                         $affectedRows += $referrerFK->save($con);
                     }
@@ -2528,14 +2497,6 @@ abstract class BaseUser extends BaseObject implements Persistent
                     }
                 }
 
-                if ($this->collNotes !== null) {
-                    foreach ($this->collNotes as $referrerFK) {
-                        if (!$referrerFK->validate($columns)) {
-                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
-                        }
-                    }
-                }
-
                 if ($this->collNewss !== null) {
                     foreach ($this->collNewss as $referrerFK) {
                         if (!$referrerFK->validate($columns)) {
@@ -2770,9 +2731,6 @@ abstract class BaseUser extends BaseObject implements Persistent
             }
             if (null !== $this->collReports) {
                 $result['Reports'] = $this->collReports->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
-            }
-            if (null !== $this->collNotes) {
-                $result['Notes'] = $this->collNotes->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
             if (null !== $this->collNewss) {
                 $result['Newss'] = $this->collNewss->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
@@ -3145,12 +3103,6 @@ abstract class BaseUser extends BaseObject implements Persistent
                 }
             }
 
-            foreach ($this->getNotes() as $relObj) {
-                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addNote($relObj->copy($deepCopy));
-                }
-            }
-
             foreach ($this->getNewss() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
                     $copyObj->addNews($relObj->copy($deepCopy));
@@ -3256,9 +3208,6 @@ abstract class BaseUser extends BaseObject implements Persistent
         }
         if ('Report' == $relationName) {
             $this->initReports();
-        }
-        if ('Note' == $relationName) {
-            $this->initNotes();
         }
         if ('News' == $relationName) {
             $this->initNewss();
@@ -4924,238 +4873,6 @@ abstract class BaseUser extends BaseObject implements Persistent
     }
 
     /**
-     * Clears out the collNotes collection
-     *
-     * This does not modify the database; however, it will remove any associated objects, causing
-     * them to be refetched by subsequent calls to accessor method.
-     *
-     * @return void
-     * @see        addNotes()
-     */
-    public function clearNotes()
-    {
-        $this->collNotes = null; // important to set this to null since that means it is uninitialized
-        $this->collNotesPartial = null;
-    }
-
-    /**
-     * reset is the collNotes collection loaded partially
-     *
-     * @return void
-     */
-    public function resetPartialNotes($v = true)
-    {
-        $this->collNotesPartial = $v;
-    }
-
-    /**
-     * Initializes the collNotes collection.
-     *
-     * By default this just sets the collNotes collection to an empty array (like clearcollNotes());
-     * however, you may wish to override this method in your stub class to provide setting appropriate
-     * to your application -- for example, setting the initial array to the values stored in database.
-     *
-     * @param boolean $overrideExisting If set to true, the method call initializes
-     *                                        the collection even if it is not empty
-     *
-     * @return void
-     */
-    public function initNotes($overrideExisting = true)
-    {
-        if (null !== $this->collNotes && !$overrideExisting) {
-            return;
-        }
-        $this->collNotes = new PropelObjectCollection();
-        $this->collNotes->setModel('Note');
-    }
-
-    /**
-     * Gets an array of Note objects which contain a foreign key that references this object.
-     *
-     * If the $criteria is not null, it is used to always fetch the results from the database.
-     * Otherwise the results are fetched from the database the first time, then cached.
-     * Next time the same method is called without $criteria, the cached collection is returned.
-     * If this User is new, it will return
-     * an empty collection or the current collection; the criteria is ignored on a new object.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @return PropelObjectCollection|Note[] List of Note objects
-     * @throws PropelException
-     */
-    public function getNotes($criteria = null, PropelPDO $con = null)
-    {
-        $partial = $this->collNotesPartial && !$this->isNew();
-        if (null === $this->collNotes || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collNotes) {
-                // return empty collection
-                $this->initNotes();
-            } else {
-                $collNotes = NoteQuery::create(null, $criteria)
-                    ->filterByUser($this)
-                    ->find($con);
-                if (null !== $criteria) {
-                    if (false !== $this->collNotesPartial && count($collNotes)) {
-                      $this->initNotes(false);
-
-                      foreach($collNotes as $obj) {
-                        if (false == $this->collNotes->contains($obj)) {
-                          $this->collNotes->append($obj);
-                        }
-                      }
-
-                      $this->collNotesPartial = true;
-                    }
-
-                    return $collNotes;
-                }
-
-                if($partial && $this->collNotes) {
-                    foreach($this->collNotes as $obj) {
-                        if($obj->isNew()) {
-                            $collNotes[] = $obj;
-                        }
-                    }
-                }
-
-                $this->collNotes = $collNotes;
-                $this->collNotesPartial = false;
-            }
-        }
-
-        return $this->collNotes;
-    }
-
-    /**
-     * Sets a collection of Note objects related by a one-to-many relationship
-     * to the current object.
-     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
-     * and new objects from the given Propel collection.
-     *
-     * @param PropelCollection $notes A Propel collection.
-     * @param PropelPDO $con Optional connection object
-     */
-    public function setNotes(PropelCollection $notes, PropelPDO $con = null)
-    {
-        $this->notesScheduledForDeletion = $this->getNotes(new Criteria(), $con)->diff($notes);
-
-        foreach ($this->notesScheduledForDeletion as $noteRemoved) {
-            $noteRemoved->setUser(null);
-        }
-
-        $this->collNotes = null;
-        foreach ($notes as $note) {
-            $this->addNote($note);
-        }
-
-        $this->collNotes = $notes;
-        $this->collNotesPartial = false;
-    }
-
-    /**
-     * Returns the number of related Note objects.
-     *
-     * @param Criteria $criteria
-     * @param boolean $distinct
-     * @param PropelPDO $con
-     * @return int             Count of related Note objects.
-     * @throws PropelException
-     */
-    public function countNotes(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
-    {
-        $partial = $this->collNotesPartial && !$this->isNew();
-        if (null === $this->collNotes || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collNotes) {
-                return 0;
-            } else {
-                if($partial && !$criteria) {
-                    return count($this->getNotes());
-                }
-                $query = NoteQuery::create(null, $criteria);
-                if ($distinct) {
-                    $query->distinct();
-                }
-
-                return $query
-                    ->filterByUser($this)
-                    ->count($con);
-            }
-        } else {
-            return count($this->collNotes);
-        }
-    }
-
-    /**
-     * Method called to associate a Note object to this object
-     * through the Note foreign key attribute.
-     *
-     * @param    Note $l Note
-     * @return User The current object (for fluent API support)
-     */
-    public function addNote(Note $l)
-    {
-        if ($this->collNotes === null) {
-            $this->initNotes();
-            $this->collNotesPartial = true;
-        }
-        if (!$this->collNotes->contains($l)) { // only add it if the **same** object is not already associated
-            $this->doAddNote($l);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param	Note $note The note object to add.
-     */
-    protected function doAddNote($note)
-    {
-        $this->collNotes[]= $note;
-        $note->setUser($this);
-    }
-
-    /**
-     * @param	Note $note The note object to remove.
-     */
-    public function removeNote($note)
-    {
-        if ($this->getNotes()->contains($note)) {
-            $this->collNotes->remove($this->collNotes->search($note));
-            if (null === $this->notesScheduledForDeletion) {
-                $this->notesScheduledForDeletion = clone $this->collNotes;
-                $this->notesScheduledForDeletion->clear();
-            }
-            $this->notesScheduledForDeletion[]= $note;
-            $note->setUser(null);
-        }
-    }
-
-
-    /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this User is new, it will return
-     * an empty collection; or if this User has previously
-     * been saved, it will retrieve related Notes from storage.
-     *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in User.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return PropelObjectCollection|Note[] List of Note objects
-     */
-    public function getNotesJoinCourse($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $query = NoteQuery::create(null, $criteria);
-        $query->joinWith('Course', $join_behavior);
-
-        return $this->getNotes($query, $con);
-    }
-
-    /**
      * Clears out the collNewss collection
      *
      * This does not modify the database; however, it will remove any associated objects, causing
@@ -6318,11 +6035,6 @@ abstract class BaseUser extends BaseObject implements Persistent
                     $o->clearAllReferences($deep);
                 }
             }
-            if ($this->collNotes) {
-                foreach ($this->collNotes as $o) {
-                    $o->clearAllReferences($deep);
-                }
-            }
             if ($this->collNewss) {
                 foreach ($this->collNewss as $o) {
                     $o->clearAllReferences($deep);
@@ -6378,10 +6090,6 @@ abstract class BaseUser extends BaseObject implements Persistent
             $this->collReports->clearIterator();
         }
         $this->collReports = null;
-        if ($this->collNotes instanceof PropelCollection) {
-            $this->collNotes->clearIterator();
-        }
-        $this->collNotes = null;
         if ($this->collNewss instanceof PropelCollection) {
             $this->collNewss->clearIterator();
         }

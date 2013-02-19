@@ -544,9 +544,6 @@ abstract class BaseUserPeer
         // Invalidate objects in ReportPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         ReportPeer::clearInstancePool();
-        // Invalidate objects in NotePeer instance pool,
-        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-        NotePeer::clearInstancePool();
         // Invalidate objects in NewsPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         NewsPeer::clearInstancePool();
@@ -909,12 +906,6 @@ abstract class BaseUserPeer
 
             $criteria->add(CommentPeer::AUTHOR_ID, $obj->getId());
             $affectedRows += CommentPeer::doDelete($criteria, $con);
-
-            // delete related Note objects
-            $criteria = new Criteria(NotePeer::DATABASE_NAME);
-
-            $criteria->add(NotePeer::USER_ID, $obj->getId());
-            $affectedRows += NotePeer::doDelete($criteria, $con);
 
             // delete related Token objects
             $criteria = new Criteria(TokenPeer::DATABASE_NAME);

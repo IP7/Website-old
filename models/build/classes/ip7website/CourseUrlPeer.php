@@ -3,9 +3,9 @@
 
 
 /**
- * Skeleton subclass for performing query and update operations on the 'newsletters_posts' table.
+ * Skeleton subclass for performing query and update operations on the 'courses_urls' table.
  *
- * 
+ *
  *
  * You should add additional methods to this class to meet the
  * application requirements.  This class will only be generated as
@@ -13,6 +13,6 @@
  *
  * @package    propel.generator.ip7website
  */
-class NewsletterPostPeer extends BaseNewsletterPostPeer {
-
-} // NewsletterPostPeer
+class CourseUrlPeer extends BaseCourseUrlPeer
+{
+}
