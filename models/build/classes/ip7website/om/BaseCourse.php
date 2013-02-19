@@ -100,6 +100,12 @@ abstract class BaseCourse extends BaseObject implements Persistent
     protected $aCursus;
 
     /**
+     * @var        PropelObjectCollection|CourseAlias[] Collection to store aggregation of CourseAlias objects.
+     */
+    protected $collCourseAliass;
+    protected $collCourseAliassPartial;
+
+    /**
      * @var        PropelObjectCollection|EducationalPathsOptionalCourses[] Collection to store aggregation of EducationalPathsOptionalCourses objects.
      */
     protected $collEducationalPathsOptionalCoursess;
@@ -176,6 +182,12 @@ abstract class BaseCourse extends BaseObject implements Persistent
      * @var		PropelObjectCollection
      */
     protected $mandatoryEducationalPathsScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $courseAliassScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
@@ -693,6 +705,8 @@ abstract class BaseCourse extends BaseObject implements Persistent
         if ($deep) {  // also de-associate any related objects?
 
             $this->aCursus = null;
+            $this->collCourseAliass = null;
+
             $this->collEducationalPathsOptionalCoursess = null;
 
             $this->collEducationalPathsMandatoryCoursess = null;
@@ -881,6 +895,23 @@ abstract class BaseCourse extends BaseObject implements Persistent
                 foreach ($this->getMandatoryEducationalPaths() as $mandatoryEducationalPath) {
                     if ($mandatoryEducationalPath->isModified()) {
                         $mandatoryEducationalPath->save($con);
+                    }
+                }
+            }
+
+            if ($this->courseAliassScheduledForDeletion !== null) {
+                if (!$this->courseAliassScheduledForDeletion->isEmpty()) {
+                    CourseAliasQuery::create()
+                        ->filterByPrimaryKeys($this->courseAliassScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->courseAliassScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collCourseAliass !== null) {
+                foreach ($this->collCourseAliass as $referrerFK) {
+                    if (!$referrerFK->isDeleted()) {
+                        $affectedRows += $referrerFK->save($con);
                     }
                 }
             }
@@ -1214,6 +1245,14 @@ abstract class BaseCourse extends BaseObject implements Persistent
             }
 
 
+                if ($this->collCourseAliass !== null) {
+                    foreach ($this->collCourseAliass as $referrerFK) {
+                        if (!$referrerFK->validate($columns)) {
+                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+                        }
+                    }
+                }
+
                 if ($this->collEducationalPathsOptionalCoursess !== null) {
                     foreach ($this->collEducationalPathsOptionalCoursess as $referrerFK) {
                         if (!$referrerFK->validate($columns)) {
@@ -1378,6 +1417,9 @@ abstract class BaseCourse extends BaseObject implements Persistent
         if ($includeForeignObjects) {
             if (null !== $this->aCursus) {
                 $result['Cursus'] = $this->aCursus->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            }
+            if (null !== $this->collCourseAliass) {
+                $result['CourseAliass'] = $this->collCourseAliass->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
             if (null !== $this->collEducationalPathsOptionalCoursess) {
                 $result['EducationalPathsOptionalCoursess'] = $this->collEducationalPathsOptionalCoursess->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
@@ -1599,6 +1641,12 @@ abstract class BaseCourse extends BaseObject implements Persistent
             // store object hash to prevent cycle
             $this->startCopy = true;
 
+            foreach ($this->getCourseAliass() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addCourseAlias($relObj->copy($deepCopy));
+                }
+            }
+
             foreach ($this->getEducationalPathsOptionalCoursess() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
                     $copyObj->addEducationalPathsOptionalCourses($relObj->copy($deepCopy));
@@ -1753,6 +1801,9 @@ abstract class BaseCourse extends BaseObject implements Persistent
      */
     public function initRelation($relationName)
     {
+        if ('CourseAlias' == $relationName) {
+            $this->initCourseAliass();
+        }
         if ('EducationalPathsOptionalCourses' == $relationName) {
             $this->initEducationalPathsOptionalCoursess();
         }
@@ -1773,6 +1824,213 @@ abstract class BaseCourse extends BaseObject implements Persistent
         }
         if ('CourseUrl' == $relationName) {
             $this->initCourseUrls();
+        }
+    }
+
+    /**
+     * Clears out the collCourseAliass collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return void
+     * @see        addCourseAliass()
+     */
+    public function clearCourseAliass()
+    {
+        $this->collCourseAliass = null; // important to set this to null since that means it is uninitialized
+        $this->collCourseAliassPartial = null;
+    }
+
+    /**
+     * reset is the collCourseAliass collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialCourseAliass($v = true)
+    {
+        $this->collCourseAliassPartial = $v;
+    }
+
+    /**
+     * Initializes the collCourseAliass collection.
+     *
+     * By default this just sets the collCourseAliass collection to an empty array (like clearcollCourseAliass());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initCourseAliass($overrideExisting = true)
+    {
+        if (null !== $this->collCourseAliass && !$overrideExisting) {
+            return;
+        }
+        $this->collCourseAliass = new PropelObjectCollection();
+        $this->collCourseAliass->setModel('CourseAlias');
+    }
+
+    /**
+     * Gets an array of CourseAlias objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this Course is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @return PropelObjectCollection|CourseAlias[] List of CourseAlias objects
+     * @throws PropelException
+     */
+    public function getCourseAliass($criteria = null, PropelPDO $con = null)
+    {
+        $partial = $this->collCourseAliassPartial && !$this->isNew();
+        if (null === $this->collCourseAliass || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collCourseAliass) {
+                // return empty collection
+                $this->initCourseAliass();
+            } else {
+                $collCourseAliass = CourseAliasQuery::create(null, $criteria)
+                    ->filterByCourse($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collCourseAliassPartial && count($collCourseAliass)) {
+                      $this->initCourseAliass(false);
+
+                      foreach($collCourseAliass as $obj) {
+                        if (false == $this->collCourseAliass->contains($obj)) {
+                          $this->collCourseAliass->append($obj);
+                        }
+                      }
+
+                      $this->collCourseAliassPartial = true;
+                    }
+
+                    return $collCourseAliass;
+                }
+
+                if($partial && $this->collCourseAliass) {
+                    foreach($this->collCourseAliass as $obj) {
+                        if($obj->isNew()) {
+                            $collCourseAliass[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collCourseAliass = $collCourseAliass;
+                $this->collCourseAliassPartial = false;
+            }
+        }
+
+        return $this->collCourseAliass;
+    }
+
+    /**
+     * Sets a collection of CourseAlias objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $courseAliass A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     */
+    public function setCourseAliass(PropelCollection $courseAliass, PropelPDO $con = null)
+    {
+        $this->courseAliassScheduledForDeletion = $this->getCourseAliass(new Criteria(), $con)->diff($courseAliass);
+
+        foreach ($this->courseAliassScheduledForDeletion as $courseAliasRemoved) {
+            $courseAliasRemoved->setCourse(null);
+        }
+
+        $this->collCourseAliass = null;
+        foreach ($courseAliass as $courseAlias) {
+            $this->addCourseAlias($courseAlias);
+        }
+
+        $this->collCourseAliass = $courseAliass;
+        $this->collCourseAliassPartial = false;
+    }
+
+    /**
+     * Returns the number of related CourseAlias objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related CourseAlias objects.
+     * @throws PropelException
+     */
+    public function countCourseAliass(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collCourseAliassPartial && !$this->isNew();
+        if (null === $this->collCourseAliass || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collCourseAliass) {
+                return 0;
+            } else {
+                if($partial && !$criteria) {
+                    return count($this->getCourseAliass());
+                }
+                $query = CourseAliasQuery::create(null, $criteria);
+                if ($distinct) {
+                    $query->distinct();
+                }
+
+                return $query
+                    ->filterByCourse($this)
+                    ->count($con);
+            }
+        } else {
+            return count($this->collCourseAliass);
+        }
+    }
+
+    /**
+     * Method called to associate a CourseAlias object to this object
+     * through the CourseAlias foreign key attribute.
+     *
+     * @param    CourseAlias $l CourseAlias
+     * @return Course The current object (for fluent API support)
+     */
+    public function addCourseAlias(CourseAlias $l)
+    {
+        if ($this->collCourseAliass === null) {
+            $this->initCourseAliass();
+            $this->collCourseAliassPartial = true;
+        }
+        if (!$this->collCourseAliass->contains($l)) { // only add it if the **same** object is not already associated
+            $this->doAddCourseAlias($l);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	CourseAlias $courseAlias The courseAlias object to add.
+     */
+    protected function doAddCourseAlias($courseAlias)
+    {
+        $this->collCourseAliass[]= $courseAlias;
+        $courseAlias->setCourse($this);
+    }
+
+    /**
+     * @param	CourseAlias $courseAlias The courseAlias object to remove.
+     */
+    public function removeCourseAlias($courseAlias)
+    {
+        if ($this->getCourseAliass()->contains($courseAlias)) {
+            $this->collCourseAliass->remove($this->collCourseAliass->search($courseAlias));
+            if (null === $this->courseAliassScheduledForDeletion) {
+                $this->courseAliassScheduledForDeletion = clone $this->collCourseAliass;
+                $this->courseAliassScheduledForDeletion->clear();
+            }
+            $this->courseAliassScheduledForDeletion[]= $courseAlias;
+            $courseAlias->setCourse(null);
         }
     }
 
@@ -3797,6 +4055,11 @@ abstract class BaseCourse extends BaseObject implements Persistent
     public function clearAllReferences($deep = false)
     {
         if ($deep) {
+            if ($this->collCourseAliass) {
+                foreach ($this->collCourseAliass as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
             if ($this->collEducationalPathsOptionalCoursess) {
                 foreach ($this->collEducationalPathsOptionalCoursess as $o) {
                     $o->clearAllReferences($deep);
@@ -3844,6 +4107,10 @@ abstract class BaseCourse extends BaseObject implements Persistent
             }
         } // if ($deep)
 
+        if ($this->collCourseAliass instanceof PropelCollection) {
+            $this->collCourseAliass->clearIterator();
+        }
+        $this->collCourseAliass = null;
         if ($this->collEducationalPathsOptionalCoursess instanceof PropelCollection) {
             $this->collEducationalPathsOptionalCoursess->clearIterator();
         }

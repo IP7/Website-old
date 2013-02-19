@@ -62,6 +62,7 @@ class CourseTableMap extends TableMap
     public function buildRelations()
     {
         $this->addRelation('Cursus', 'Cursus', RelationMap::MANY_TO_ONE, array('cursus_id' => 'id', ), 'CASCADE', 'CASCADE');
+        $this->addRelation('CourseAlias', 'CourseAlias', RelationMap::ONE_TO_MANY, array('id' => 'course_id', ), 'CASCADE', 'CASCADE', 'CourseAliass');
         $this->addRelation('EducationalPathsOptionalCourses', 'EducationalPathsOptionalCourses', RelationMap::ONE_TO_MANY, array('id' => 'course_id', ), 'CASCADE', 'CASCADE', 'EducationalPathsOptionalCoursess');
         $this->addRelation('EducationalPathsMandatoryCourses', 'EducationalPathsMandatoryCourses', RelationMap::ONE_TO_MANY, array('id' => 'course_id', ), 'CASCADE', 'CASCADE', 'EducationalPathsMandatoryCoursess');
         $this->addRelation('Content', 'Content', RelationMap::ONE_TO_MANY, array('id' => 'course_id', ), 'CASCADE', 'CASCADE', 'Contents');

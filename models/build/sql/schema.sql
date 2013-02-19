@@ -96,6 +96,27 @@ CREATE TABLE `courses`
 ) ENGINE=MyISAM;
 
 -- ---------------------------------------------------------------------
+-- courses_aliases
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `courses_aliases`;
+
+CREATE TABLE `courses_aliases`
+(
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `course_id` INTEGER NOT NULL,
+    `name` VARCHAR(64) NOT NULL,
+    `short_name` VARCHAR(16) NOT NULL,
+    PRIMARY KEY (`id`),
+    INDEX `courses_aliases_FI_1` (`course_id`),
+    CONSTRAINT `courses_aliases_FK_1`
+        FOREIGN KEY (`course_id`)
+        REFERENCES `courses` (`id`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+) ENGINE=MyISAM;
+
+-- ---------------------------------------------------------------------
 -- educational_paths
 -- ---------------------------------------------------------------------
 

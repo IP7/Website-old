@@ -36,6 +36,10 @@
  * @method CourseQuery rightJoinCursus($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Cursus relation
  * @method CourseQuery innerJoinCursus($relationAlias = null) Adds a INNER JOIN clause to the query using the Cursus relation
  *
+ * @method CourseQuery leftJoinCourseAlias($relationAlias = null) Adds a LEFT JOIN clause to the query using the CourseAlias relation
+ * @method CourseQuery rightJoinCourseAlias($relationAlias = null) Adds a RIGHT JOIN clause to the query using the CourseAlias relation
+ * @method CourseQuery innerJoinCourseAlias($relationAlias = null) Adds a INNER JOIN clause to the query using the CourseAlias relation
+ *
  * @method CourseQuery leftJoinEducationalPathsOptionalCourses($relationAlias = null) Adds a LEFT JOIN clause to the query using the EducationalPathsOptionalCourses relation
  * @method CourseQuery rightJoinEducationalPathsOptionalCourses($relationAlias = null) Adds a RIGHT JOIN clause to the query using the EducationalPathsOptionalCourses relation
  * @method CourseQuery innerJoinEducationalPathsOptionalCourses($relationAlias = null) Adds a INNER JOIN clause to the query using the EducationalPathsOptionalCourses relation
@@ -660,6 +664,80 @@ abstract class BaseCourseQuery extends ModelCriteria
         return $this
             ->joinCursus($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'Cursus', 'CursusQuery');
+    }
+
+    /**
+     * Filter the query by a related CourseAlias object
+     *
+     * @param   CourseAlias|PropelObjectCollection $courseAlias  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return   CourseQuery The current query, for fluid interface
+     * @throws   PropelException - if the provided filter is invalid.
+     */
+    public function filterByCourseAlias($courseAlias, $comparison = null)
+    {
+        if ($courseAlias instanceof CourseAlias) {
+            return $this
+                ->addUsingAlias(CoursePeer::ID, $courseAlias->getCourseId(), $comparison);
+        } elseif ($courseAlias instanceof PropelObjectCollection) {
+            return $this
+                ->useCourseAliasQuery()
+                ->filterByPrimaryKeys($courseAlias->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByCourseAlias() only accepts arguments of type CourseAlias or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the CourseAlias relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return CourseQuery The current query, for fluid interface
+     */
+    public function joinCourseAlias($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('CourseAlias');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'CourseAlias');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the CourseAlias relation CourseAlias object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   CourseAliasQuery A secondary query class using the current class as primary query
+     */
+    public function useCourseAliasQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinCourseAlias($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'CourseAlias', 'CourseAliasQuery');
     }
 
     /**
