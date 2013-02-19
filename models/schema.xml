@@ -387,62 +387,6 @@
         </validator>
     </table>
 
-    <!-- === évènements === -->
-    <table name="events" phpName="Event">
-
-        <!-- id -->
-        <column name="id"            type="INTEGER" required="true" primaryKey="true" autoIncrement="true"/>
-
-        <!-- nom -->
-        <column name="title"         type="VARCHAR" required="true" />
-
-        <!-- type: réunion, soirée, conférence, vote, etc -->
-        <column name="event_type_id" type="INTEGER" />
-        
-        <!-- description -->         
-        <column name="description"   type="LONGVARCHAR" />
-        
-        <!-- date -->
-        <column name="date"          type="DATE" />
-        
-        <!-- heure de début -->
-        <column name="beginning"     type="TIME" />
-        
-        <!-- heure de fin -->
-        <column name="end"           type="TIME" />
-        
-        <!-- lieu -->
-        <column name="place"         type="VARCHAR" />
-
-        <!-- rang des personnes concernées -->
-        <column name="access_rights" type="TINYINT" defaultExpr="0" />
-
-        <!-- == index & clefs étrangères == -->
-
-        <foreign-key foreignTable="event_types" onDelete="SETNULL" onUpdate="CASCADE" phpName="EventType">
-            <reference local="event_type_id" foreign="id"/>
-        </foreign-key>
-
-        <validator column="title">
-            <rule name="minLength" value="3" message="Le nom doit faire au moins ${value} caractères." />
-        </validator>
-    </table>
-
-    <!-- === types d'évènements === -->
-    <table name="event_types" phpName="EventType">
-        <!-- id -->
-        <column name="id"   type="INTEGER" required="true" primaryKey="true" autoIncrement="true"/>
-        <!-- nom -->
-        <column name="name" type="VARCHAR" required="true" />
-
-        <!-- == index & clefs étrangères == -->
-
-        <unique>
-            <unique-column name="name" />
-        </unique>
-
-    </table>
-
     <!-- === contenus === -->
     <table name="contents" phpName="Content">
 
@@ -614,36 +558,6 @@
         <foreign-key foreignTable="users" onDelete="SETNULL" onUpdate="CASCADE" phpName="Author">
             <reference local="author_id" foreign="id" />
         </foreign-key>
-    </table>
-
-
-    <!-- === notes === -->
-    <table name="notes" phpName="Note">
-        <!-- id -->
-        <column name="id"         type="INTEGER" required="true" primaryKey="true" autoIncrement="true"/>
-
-        <!-- personne qui a eu la note -->
-        <column name="user_id"    type="INTEGER" required="true" />
-
-        <!-- matière concernée -->
-        <column name="course_id"  type="INTEGER" required="true" />
-
-        <!-- note -->
-        <column name="score"      type="FLOAT"   required="true" />
-
-        <!-- == index & clefs étrangères == -->
-
-        <foreign-key foreignTable="users" onDelete="CASCADE" onUpdate="CASCADE" phpName="User">
-            <reference local="user_id" foreign="id" />
-        </foreign-key>
-
-        <foreign-key foreignTable="courses" onDelete="CASCADE" onUpdate="CASCADE" phpName="Course">
-            <reference local="course_id" foreign="id" />
-        </foreign-key>
-
-        <validator column="score">
-            <rule name="minValue" value="0" message="La note ne peut être négative." />
-        </validator>
     </table>
 
     <!-- === actualités === -->
