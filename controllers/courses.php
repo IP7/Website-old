@@ -65,11 +65,14 @@ function display_course() {
 
         );
     }
+
     $is_page_admin = (is_connected()
                         && (user()->isAdmin()
                              || user()->isResponsibleFor($cursus)));
 
     $course_title = $course->getName() . ' (' . $course->getShortName() . ')';
+
+    $course_links = tpl_course_links($course);
 
     $tpl_course = array(
         'page' => array(
@@ -86,6 +89,8 @@ function display_course() {
                 'ects'  => $course->getECTS(),
                 'responsable' => $tpl_responsable,
                 'intro' => $course->getDescription(),
+
+                'links' => $course_links,
 
                 'id'    => $course->getId(),
 

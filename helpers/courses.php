@@ -88,4 +88,24 @@ function tpl_course_contents($cursus, $course=null) {
     return $tpl_contents;
 }
 
-?>
+function tpl_course_links($course) {
+
+    $links = CourseUrlQuery::create()
+                ->filterByCourse($course)
+                ->find();
+
+    $tpl_links = array();
+
+    foreach ($links as $_ => $l) {
+
+        $tpl_links []= array(
+
+            'href' => $l->getUrl(),
+            'text' => $l->getText()
+
+        );
+    
+    }
+
+    return $tpl_links;
+}
