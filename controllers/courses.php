@@ -22,7 +22,9 @@ function display_course() {
                 ->findOneByShortName($code);
 
     if ($course == null) {
-        halt(NOT_FOUND);
+
+        bad_url_try_with_course_alias($code);
+
     }
 
     $base_uri  = Config::$root_uri.'cursus/'.$cursus->getShortName().'/';

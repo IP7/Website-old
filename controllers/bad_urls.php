@@ -43,3 +43,24 @@ function bad_url_try_with_course() {
 function bad_url_404() {
     halt(NOT_FOUND);
 }
+
+# -- Called from other controllers -- #
+
+function bad_url_try_with_course_alias( $code ) {
+
+    $alias = CourseAliasQuery::create()
+                ->findOneByShortName($code);
+
+    if ($alias) {
+
+        $course = $alias->getCourse();
+
+        if ($course) {
+            redirect_to( course_url($course->getCursus(), $course) );
+        }
+
+    }
+
+    return bad_url_404();
+
+}
