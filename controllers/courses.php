@@ -67,7 +67,7 @@ function display_course() {
                         && (user()->isAdmin()
                              || user()->isResponsibleFor($cursus)));
 
-    $course_title = $course->getName() . '(' . $course->getShortName() . ')';
+    $course_title = $course->getName() . ' (' . $course->getShortName() . ')';
 
     $tpl_course = array(
         'page' => array(
