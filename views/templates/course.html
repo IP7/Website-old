@@ -43,5 +43,15 @@
         </div>
     </div>
     {% endif %}
+    {% if page.course.links is defined and page.course.links is not empty %}
+    <aside class="course-links">
+        <h4>Liens utiles</h4>
+        <ul class="links">
+            {% for l in page.course.links %}
+            <li><a href="{{ l.href|raw }}">{{ l.text }}</a></li>
+            {% endfor %}
+        </ul>
+    </aside>
+    {% endif %}
 </article>
 {% endblock %}
