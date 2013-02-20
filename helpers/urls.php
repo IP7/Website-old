@@ -11,7 +11,7 @@ function config_url() {
     $root_uri_len = strlen(Config::$root_uri);
 
     if (substr($u, 0, $root_uri_len) == Config::$root_uri) {
-        $u = substr($u, $root_uri_len);
+        return substr($u, $root_uri_len);
     }
     return $u;
 }
@@ -23,7 +23,7 @@ function cursus_url($c) {
 
 // return the URL of a course
 function course_url($cursus, $course) {
-    $u  = Config::$root_uri.'cursus/'.$cursus->getShortName();
+    $u  = cursus_url($cursus);
     $u .= '/'. ($course === NULL ? 'global' : $course->getShortName());
 
     return $u;
@@ -49,7 +49,9 @@ function user_url($user) {
 
 // return the URL of a news
 function news_url($n) {
-    return Config::$root_uri.'actus/archives#news-' . ($n ? $n->getId() : '');
+    $anchor = $n ? '#news-' . $n->getId() : '';
+
+    return Config::$root_uri.'actus/archives' . $anchor;
 }
 
 // return the URL for a CSS file

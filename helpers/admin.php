@@ -2,29 +2,23 @@
 
 
 function admin_tpl_default() {
-    static $init = false;
-    static $d;
 
-    if (!$init) {
-        $d = array(
-            'page' => array(
+    return array(
+        'page' => array(
 
-                'breadcrumbs' => array(
-                    array( 'title' => 'Administration', 'href' => Config::$root_uri.'admin' )
-                ),
+            'breadcrumbs' => array(
+                array( 'title' => 'Administration', 'href' => Config::$root_uri.'admin' )
+            ),
 
-                'navlinks' => array(
-                    array('title' => 'Modération',  'href' => Config::$root_uri.'admin/#mod'),
-                    array('title' => 'Trésorerie',  'href' => Config::$root_uri.'admin/#tres'),
-                    array('title' => 'Maintenance', 'href' => Config::$root_uri.'admin/#mnt'),
+            'navlinks' => array(
+                array('title' => 'Modération',  'href' => Config::$root_uri.'admin/#mod'),
+                array('title' => 'Trésorerie',  'href' => Config::$root_uri.'admin/#tres'),
+                array('title' => 'Maintenance', 'href' => Config::$root_uri.'admin/#mnt'),
 
-                    array('title' => 'Retour au site', 'href' => Config::$root_uri)
-                )
+                array('title' => 'Retour au site', 'href' => Config::$root_uri)
             )
-        );
-        $init = true;
-    }
-    return $d;
+        )
+    );
 }
 
 # === Maintenance ===
