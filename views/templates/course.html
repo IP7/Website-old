@@ -9,7 +9,19 @@
                     _m.a_user( page.course.responsable ) }}{% endif %}
         </p>
     </header>
-    <section class="intro" id="intro">{{ page.course.intro|md2html|raw }}</section>
+    <div class="course-infos">
+        <section class="intro">{{ page.course.intro|md2html|raw }}</section>
+        {% if page.course.links is defined and page.course.links is not empty %}
+        <aside class="course-links">
+            <h4>Liens utiles</h4>
+            <ul class="links">
+                {% for l in page.course.links %}
+                <li><a href="{{ l.href|raw }}">{{ l.text }}</a></li>
+                {% endfor %}
+            </ul>
+        </aside>
+        {% endif %}
+    </div>
     {% include "utils/news.html" %}
     {% if page.course.content_types is defined and page.course.content_types is not empty %}
     <h2>Contenus</h2>
@@ -42,16 +54,6 @@
             {% endfor %}
         </div>
     </div>
-    {% endif %}
-    {% if page.course.links is defined and page.course.links is not empty %}
-    <aside class="course-links">
-        <h4>Liens utiles</h4>
-        <ul class="links">
-            {% for l in page.course.links %}
-            <li><a href="{{ l.href|raw }}">{{ l.text }}</a></li>
-            {% endfor %}
-        </ul>
-    </aside>
     {% endif %}
 </article>
 {% endblock %}
