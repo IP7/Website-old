@@ -121,6 +121,9 @@ if (strpos(LIM_REQUEST_URI, '/api') === 0) {
     dispatch_post('/api/1/cursus/intro.json', 'json_post_cursus_intro');
     dispatch_post('/api/1/course/intro.json', 'json_post_course_intro');
 
+    dispatch('/api/1/cursus.json',            'json_get_cursus');
+    dispatch('/api/1/course.json',            'json_get_course');
+
     dispatch('/api/1/news/get_one.json',     'json_get_news_by_id');
     dispatch_post('/api/1/news/update.json', 'json_post_update_news');
     dispatch_post('/api/1/news/delete.json', 'json_post_delete_news');

@@ -356,3 +356,80 @@ function api_create_short_url() { // url=<url>
     return $short ? $short : $url;
 
 }
+
+function json_get_cursus() { // short_name=<short_name> or id=<id>
+
+    $sn = get_string('short_name', 'GET');
+    $id   = (int)get_string('id', 'GET');
+
+    if (!$sn && !$id) {
+        return json(array( 'error' => 'no id nor short name provided' ));
+    }
+
+    $cursus = CursusQuery::create();
+
+    if ($id) {
+        $cursus = $cursus->findOneById($id);
+    }
+    else {
+        $cursus = $cursus->findOneByShortName($sn);
+    }
+
+    if (!$cursus) {
+        halt(NOT_FOUND);
+    }
+
+    $resp_id = $cursus->getResponsableId();
+
+    return json(array(
+
+        'id'          => $cursus->getId(),
+        'short_name'  => $cursus->getShortName(),
+        'name'        => $cursus->getName(),
+        'description' => $cursus->getDescription(),
+        'responsable' => !$resp_id ? null : array(
+            'id' => $resp_id
+        ) 
+
+    ));
+
+}
+
+function json_get_course() { // short_name=<short_name> or id=<id>
+
+    $sn = get_string('short_name', 'GET');
+    $id   = (int)get_string('id', 'GET');
+
+    if (!$sn && !$id) {
+        return json(array( 'error' => 'no id nor short name provided' ));
+    }
+
+    $course = CourseQuery::create();
+
+    if ($id) {
+        $course = $course->findOneById($id);
+    }
+    else {
+        $course = $course->findOneByShortName($sn);
+    }
+
+    if (!$course) {
+        halt(NOT_FOUND);
+    }
+
+    return json(array(
+
+        'id' => $course->getId(),
+        'cursus' => array(
+            'id' => $course->getCursusId()
+        ),
+        'semester'      => $course->getSemester() + 1,
+        'name'          => $course->getName(),
+        'short_name'    => $course->getShortName(),
+        'ects'          => $course->getECTS(),
+        'description'   => $course->getDescription(),
+        'deleted'       => $course->getDeleted()
+
+    ));
+
+}
