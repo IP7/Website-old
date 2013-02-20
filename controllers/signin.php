@@ -76,7 +76,7 @@ function post_signin_form() {
         return display_signin_form($_POST, $message, $message_type);
     }
 
-    $phone =  $good_phone ? format_phone($phone) : '06';
+    $phone =  $good_phone ? format_phone($phone) : NULL;
     $password = get_random_password();
 
     $user = new User();
