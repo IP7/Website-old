@@ -540,6 +540,13 @@ a.news-title {
     padding-left:5px;
 }
 
+.course-infos {
+    display: table;
+}
+.course .intro, .course-links {
+    display: table-cell;
+}
+
 /* == Footers ============================================= */
 
 /* -- Main Footer ----------------------------------------- */
