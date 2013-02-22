@@ -13,14 +13,6 @@ function display_home() {
 
     $tpl_name = is_connected() ? 'connected_home.html' : 'home.html';
 
-    $scripts = null;
-
-    if (is_connected()) {
-        $scripts = array(
-            array( 'href' => js_url('connected-home') )
-        );
-    }
-
     # Rendering
     return tpl_render($tpl_name, array(
 
@@ -31,7 +23,9 @@ function display_home() {
 
             'news' => array(),
 
-            'scripts' => $scripts,
+            'scripts' => !is_connected() ? null : array(
+                array( 'href' => js_url('connected-home') )
+            ),
 
             'feeds' => array(
                 'atom' => '/actus/flux.atom',
@@ -50,7 +44,7 @@ function display_connection($message=null, $message_type=null) {
         }
 
         # Tokens
-        if (has_get('t') && use_token(''.$_GET['t'])) {
+        if (has_get('t') && use_token((string)$_GET['t'])) {
 
             // if it's a 'canChangeXXX' token
             if ($_SESSION['token']['rights'] > 1) {

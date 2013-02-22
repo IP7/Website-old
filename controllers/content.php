@@ -22,7 +22,7 @@ function display_course_content() {
 
     $url_year = (string)params('year');
 
-    // underscores are escaped, since they're MySQL wildcards,
+    // underscores are escaped since they're MySQL wildcards,
     // so we need to replace '\_' with '_'
     $url_title = preg_replace('/\\\\_/', '_', (string)params('title'));
 
@@ -194,7 +194,7 @@ function display_course_content() {
         'files'  => $tpl_files,
         'author' => array(
             'name' => $user->getPublicName(),
-            'href' => Config::$root_uri.'p/'.$user->getUsername()
+            'href' => user_url($user)
         ),
         'type'   => $tpl_type
     );
@@ -218,7 +218,7 @@ function display_course_content() {
 
     if ($course) {
         $breadcrumbs [$breadcrumbs_next_indice++]= array(
-            'href'  => course_url($cursus,$course),
+            'href'  => course_url($cursus, $course),
             'title' => $course->getShortName()
         );
     }
@@ -232,7 +232,7 @@ function display_course_content() {
         'page' => Array(
             'title' => $content->getTitle(),
             'keywords' => $keywords,
-            'description' => '',
+            'description' => truncate_string($content->getText()),
 
             'breadcrumbs' => $breadcrumbs,
 
@@ -263,6 +263,7 @@ function display_member_proposing_content_form() {
     }
 
     $course = CourseQuery::create()
+                            ->filterByDeleted(false)
                             ->filterByCursus($cursus)
                             ->findOneByShortName($course_name);
 
@@ -539,7 +540,7 @@ function display_post_member_proposed_content() {
     }
     else {
         $c->save();
-        redirect_to('/cursus/'.$cursus->getShortName().'/'.$course->getShortName().'/'.$c->getId());
+        redirect_to(content_url($cursus, $course, $c));
     }
 }
 
