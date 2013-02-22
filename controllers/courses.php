@@ -27,8 +27,7 @@ function display_course() {
 
     }
 
-    $base_uri  = Config::$root_uri.'cursus/'.$cursus->getShortName().'/';
-    $base_uri .= $course->getShortName();
+    $base_uri  = cursus_url($cursus) . '/' . $course->getShortName();
 
     $moderation_bar = null;
 
@@ -45,7 +44,7 @@ function display_course() {
 
     $breadcrumbs = array(
         array(
-            'href'  => Config::$root_uri.'cursus/'.$cursus->getShortName(),
+            'href'  => cursus_url($cursus),
             'title' => $cursus->getName()
         ),
         array(
