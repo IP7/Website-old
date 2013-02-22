@@ -12,22 +12,6 @@ function display_cursus() {
     $msg_str = false;
     $msg_type = false;
 
-    if (isset($_POST['content']) && is_connected() && user()->isModerator()) {
-
-        $msg_str = 'Présentation modifiée avec succès.';
-        $msg_type = 'success';
-
-        // SQL sanitization made by Propel & HTML escaped by Twig
-        $cursus->setDescription($_POST['content']);
-        try {
-            $cursus->save();
-        } catch (PropelException $pe) {
-            error_log($pe);
-            $msg_type = 'error';
-            $msg_str = 'Une erreur est survenue lors de l\'enregistrement. Consultez les logs.';
-        }
-    }
-
     $base_uri = Config::$root_uri.'cursus/'.strtoupper($cursus->getShortName()).'/';
 
     $breadcrumb = array(
