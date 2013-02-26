@@ -12,6 +12,7 @@
     <div class="course-infos">
         <section class="intro">{{ page.course.intro|md2html|raw }}</section>
         {% if page.course.links is defined and page.course.links is not empty %}
+        <div class="course-links-wrapper">
         <aside class="course-links">
             <h4>Liens utiles</h4>
             <ul class="links">
@@ -19,7 +20,8 @@
                 <li><a href="{{ l.href|raw }}">{{ l.text }}</a></li>
                 {% endfor %}
             </ul>
-        </aside>
+    </aside>
+        </div>
         {% endif %}
     </div>
     {% include "utils/news.html" %}

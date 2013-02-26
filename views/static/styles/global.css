@@ -539,12 +539,44 @@ a.news-title {
     color:#333;
     padding-left:5px;
 }
-
-.course-infos {
-    display: table;
+.cursus header a,
+.course header a {
+    color:inherit;
+    text-decoration:inherit;
 }
-.course .intro, .course-links {
-    display: table-cell;
+.course .intro, .course-links-wrapper {
+    display: inline-block;
+}
+.course-links-wrapper {
+  display:inline-block;
+  vertical-align:top;
+  text-align:right;
+  position:relative;
+  padding:0;
+  float:right;
+}
+.course-links {
+    border: 1px solid #F0F0F0;
+    -webkit-border-radius: 4px;
+       -moz-border-radius: 4px;
+        -ms-border-radius: 4px;
+         -o-border-radius: 4px;
+            border-radius: 4px;
+    
+    padding:4px 10px;
+    border-color:#DDD;
+    vertical-align:top;
+    text-align:left;
+    min-width:200px;
+    max-width:400px;
+}
+.course-links h4 {
+    margin-top:4px;
+    margin-bottom:2px;
+}
+.course-links ul {
+    padding-left:5px;
+    list-style-type:none;
 }
 
 /* == Footers ============================================= */
