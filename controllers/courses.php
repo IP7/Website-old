@@ -97,7 +97,9 @@ function display_course() {
 
                 'id'    => $course->getId(),
 
-                'content_types' => tpl_course_contents($cursus, $course)
+                'content_types' => tpl_course_contents($cursus, $course),
+
+                'wiki_url' => '//wiki.infop7.org/index.php?title=' . wiki_url($course->getName())
             ),
 
             'cursus'         => array(

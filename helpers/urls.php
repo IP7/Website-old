@@ -127,3 +127,9 @@ function create_short_url($url) {
     return $root . $short_url;
 
 }
+
+// encode a string for a link on the wiki, e.g.:
+// "Foo Bar" -> "Foo_Bar"
+function wiki_url($str) {
+    return preg_replace('/\s/', '_', $str);
+}
