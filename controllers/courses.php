@@ -69,7 +69,11 @@ function display_course() {
                         && (user()->isAdmin()
                              || user()->isResponsibleFor($cursus)));
 
-    $course_title = $course->getName() . ' (' . $course->getShortName() . ')';
+    if ($course->getName() === $course->getShortName()) {
+        $course_title = $course->getName();
+    } else {
+        $course_title = $course->getName() . ' (' . $course->getShortName() . ')';
+    }
 
     $course_links = tpl_course_links($course);
 
