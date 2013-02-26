@@ -121,6 +121,7 @@ function post_signin_form() {
         }
 
         send_welcome_message($user);
+        notify_infop7_for_new_user($user);
 
     }
 

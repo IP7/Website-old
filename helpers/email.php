@@ -99,4 +99,16 @@ function get_mail_provider_url($user) {
     return NULL;
 }
 
-?>
+// send an email to contact@infop7.org when an user creates
+// an account on the website
+function notify_infop7_for_new_user($user) {
+
+    $subject = 'Nouvel utilisateur sur le site';
+    $message = 'Un nouvel utilisateur s\'est inscrit sur le site : '
+             . $user->getPublicName() . '.';
+    $from    = 'noreply@infop7.org';
+    $to      = 'contact@infop7.org';
+
+    return send_email_to($to, $from, $subject, $message);
+
+}
