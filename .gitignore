@@ -7,7 +7,7 @@
 *.min.css
 *.min.js
 /cache
-docs
+/**/docs
 doc
 .bundle
 .sass-cache
