@@ -530,6 +530,7 @@ a.news-title {
 .cursus header h1,
 .course header h1 {
     margin-bottom:2px;
+    margin-top:5px;
 }
 
 .cursus header .details,
