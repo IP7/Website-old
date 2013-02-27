@@ -579,6 +579,22 @@ a.news-title {
     list-style-type:none;
 }
 
+/* -- Contents -------------------------------------------- */
+
+.content_header h1 {
+    margin-bottom:2px;
+    margin-top:5px;
+}
+.content_header p {
+    margin-top:0;
+    color:#333;
+    font-size:0.8em;
+    padding-left:2px;
+}
+.content_header a.user {
+    color: #222;
+}
+
 /* == Footers ============================================= */
 
 /* -- Main Footer ----------------------------------------- */
