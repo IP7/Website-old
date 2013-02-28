@@ -54,6 +54,11 @@ function news_url($n) {
     return Config::$root_uri.'actus/archives' . $anchor;
 }
 
+// return the URL of an educational path
+function educpath_url($cursus, $ep) {
+    return cursus_url($cursus).'/parcours/'.$ep.'/';
+}
+
 // return the URL for a CSS file
 function css_url($name) {
     return css_or_js_url('styles', $name, 'css');
