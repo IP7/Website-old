@@ -1,6 +1,7 @@
 $(function(d,u,l,r){
     var search = (d=document).getElementById('q'),
         b      = d.body,
+        reversed_body = false,
         transform_body = function(v) {
             /* Set:
              *  body {
@@ -40,13 +41,13 @@ $(function(d,u,l,r){
     // up up down down left right left right (obfuscated)
     Mousetrap.bind((u='up ')+u+(d='down ')+d+(l='left ')+(r='right ')+l+r+' b a', function(){
         transform_body('rot'+'ate(18'+'0deg)');
-        b.dataset['k'] = true;
+        reversed_body = true;
     });
 
     // reset the page after the Konami code
     Mousetrap.bind('esc', function(){
-        if (!b.dataset['k']) {return;}
-        b.dataset['k'] = false;
+        if (!reversed_body) {return;}
+        reversed_body = false;
         transform_body('');
     });
 });
