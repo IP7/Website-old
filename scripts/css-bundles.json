@@ -3,7 +3,8 @@
         "name": "base.min.css",
         "files": [
             "normalize.min.css",
-            "global.css"
+            "global.css",
+            "jquery-ui-1.8.23.custom.css"
         ]
     },
 
