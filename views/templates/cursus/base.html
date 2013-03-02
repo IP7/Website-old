@@ -62,22 +62,4 @@
 {# News #}
 {% include 'utils/news.html' %}
 </article>
-{% if page.cursus.other_links is defined and page.cursus.other_links is not empty %}
-{# Menu 'Autres ressources' #}
-<aside class="right submenu">
-    <h4>Autres ressources</h4>
-    <nav>
-        <ul>
-        {% for link in page.cursus.other_links %}
-            {{ _m.navlink(link.href, link.title) }}
-        {% endfor %}
-        </ul>
-    </nav>
-    {% if page.cursus.reponsable is defined and page.cursus.responsable %}
-    <h4>Responsable</h4>
-    <span class="person">{{ _m.a(page.cursus.responsable.href, page.cursus.responsable.title )}}</span>
-    {% endif %}
-</aside>
-{% endif %}
-
 {% endblock %}
