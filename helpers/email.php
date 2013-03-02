@@ -105,7 +105,7 @@ function notify_infop7_for_new_user($user) {
 
     $subject = 'Nouvel utilisateur sur le site';
     $message = 'Un nouvel utilisateur s\'est inscrit sur le site : '
-             . $user->getPublicName() . '.';
+             . $user->getFirstName() . ' ' . $user->getLastName() . '.';
     $from    = 'noreply@infop7.org';
     $to      = 'contact@infop7.org';
 
