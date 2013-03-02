@@ -1,9 +1,15 @@
-$(function() {
+(function(body) {
 
-    $( '.news-title' ).click(function( ev ) {
+    body.addEventListener( 'click', function( ev ) {
 
-        document.location.hash = ev.target.parentElement.id;
+        var el = ev.target, cl;
 
-    });
+        if (el && (cl=el.className) && cl.indexOf('news-title') >= 0) {
 
-});
+            document.location.hash = el.parentElement.id;
+
+        }
+
+    }, true );
+
+})(document.getElementsByTagName( 'body' )[0]);
