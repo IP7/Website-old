@@ -11,20 +11,22 @@ $(function(){
         *  but Firefox and others don’t.
         */
         function str2date(d) {
-            var date = new Date(d), time;
+            var date = new Date(d), time, day;
 
             if (!isNaN(+date)) { // Chrome
                 return date;
             }
 
             d = d.split(' ');
-            date = new Date(d[0].replace(/-/g, ' '));
-            
+            day = d[0].split('-');
             time = d[1].split(':');
 
-            date.setHours(time[0]);
-            date.setMinutes(time[1]);
-            date.setSeconds(time[2]);
+            // YYYY-MM-DD
+            date = new Date([ day[2], day[0], day[1] ].join( '-' ));
+
+            date.setHours(+time[0]);
+            date.setMinutes(+time[1]);
+            date.setSeconds(+time[2]);
 
             return date;
         }
