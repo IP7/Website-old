@@ -248,7 +248,7 @@ function display_course_content() {
             'styles'  => $styles,
 
             'disqus' => array(
-                'identifier' => 'content-' . $content->getId()
+                //'identifier' => 'content-' . $content->getId()
             )
 
         )
