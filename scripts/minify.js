@@ -37,7 +37,7 @@ var compressor = require( 'node-minify' ),
                                 + b.files.join('+')
                                 + ', ' + +new Date() + ' */\n',
 
-                        tmpfile = paths.tmp + 'f' + +new Date();
+                        tmpfile = paths.tmp + 'f' + +new Date() + 0|Math.random()*10;
 
                     fs.writeFile( tmpfile, headers, function( err ) {
 
