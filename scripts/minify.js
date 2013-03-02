@@ -62,9 +62,9 @@ var compressor = require( 'node-minify' ),
 
                         });
 
-                    })
+                    });
 
-                }
+                };
 
                 if ( !exists ) {
                     
@@ -110,6 +110,6 @@ var compressor = require( 'node-minify' ),
 
         });
 
-    })
+    });
 
 });
