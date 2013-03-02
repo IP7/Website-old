@@ -230,6 +230,7 @@ function display_course_content() {
 
 	return tpl_render('contents/base.html', array(
         'page' => Array(
+            'url' => url(),
             'title' => $content->getTitle(),
             'keywords' => $keywords,
             'description' => truncate_string($content->getText()),
@@ -244,7 +245,11 @@ function display_course_content() {
             'message_type' => $msg_type,
 
             'scripts' => $scripts,
-            'styles'  => $styles
+            'styles'  => $styles,
+
+            'disqus' => array(
+                'identifier' => 'content-' . $content->getId()
+            )
 
         )
     ));

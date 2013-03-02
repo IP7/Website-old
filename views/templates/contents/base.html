@@ -49,5 +49,13 @@
         </aside>
         {% endif %}
     </article>
+    {# Disqus #}
+    {% if page.disqus is defined and page.disqus %}
+    <div id="disqus_thread"></div>
+    <script>var disqus_identifier='{{ page.disqus.identifier|raw }}',{#
+              #}disqus_title='{{ page.title }}',{#
+              #}disqus_url='{{ page.url }}',{#
+              #}disqus_category_id='2251039';</script>
+    {% endif %}
 
 {% endblock %}
