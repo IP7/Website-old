@@ -191,5 +191,11 @@ class User extends BaseUser {
   public function incrementVisitsCount() {
     $this->setVisitsCount($this->getVisitsCount()+1);
   }
+
+  // test if an username is temporary
+  public function hasTempUsername() {
+    $u = $this->getUsername();
+    return ((strlen($u) == 14) && (substr($u, 0, 5) == '_tmp_'));
+  }
 }
 

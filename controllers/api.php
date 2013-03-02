@@ -466,6 +466,8 @@ function json_get_entities_links_list() { // ?types=<type1,type2,...>
 
             foreach ($q as $_ => $u) {
 
+                if ($u->hasTempUsername()) { continue; }
+
                 $n = $u->getPublicName();
                 if ($n != $u->getUsername()) {
                     $n .= ' (' . $u->getUsername() . ')';
