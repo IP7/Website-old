@@ -234,9 +234,9 @@ function display_moderation_edit_cursus() {
         halt(NOT_FOUND);
     }
 
-    $base_uri = Config::$root_uri.'cursus/'.strtoupper($cursus->getShortName()).'/';
+    $base_uri = cursus_url($cursus);
 
-    return tpl_render("cursus/edit.html", array(
+    return tpl_render('cursus/edit.html', array(
         'page' => array(
             'title' => 'Édition de « '.$cursus->getName().' »',
 
@@ -253,4 +253,77 @@ function display_moderation_edit_cursus() {
 
 }
 
-?>
+function display_cursus_courses() {
+    $name = params('name');
+
+    $cursus = CursusQuery::create()->findOneByShortName($name);
+
+    if ($cursus == null) {
+        halt(NOT_FOUND);
+    }
+
+    $cursus_uri = cursus_url($cursus);
+
+    $breadcrumbs = array(
+        1 => array(
+            'href' => $cursus_uri,
+            'title' => $cursus->getName()
+        ),
+        2 => array(
+            'href'  => url(),
+            'title' => 'Matières'
+        )
+    );
+
+    $tpl_courses = array(
+        's1' => array(),
+        's2' => array()
+    );
+
+    $courses = CourseQuery::create()
+                    ->filterByDeleted(0)
+                    ->filterByCursus($cursus)
+                    ->find();
+
+    foreach ($courses as $c) {
+
+        $s = $c->getSemester();
+
+        if ($s !== 1 && $s !== 2) {
+            continue;
+        }
+
+        $tpl_courses['s'.$s] []= array(
+            'href'       => course_url($cursus, $c),
+            'title'      => $c->getName() . ' (' . $c->getShortName() . ')'
+        );
+
+    }
+
+    // natural sorting
+    uasort($tpl_courses['s1'], 'contentsCmp');
+    uasort($tpl_courses['s2'], 'contentsCmp');
+
+    $tpl_cursus = array(
+        'page' => array(
+            'title'           => 'Matières ' . Lang\de($cursus->getName()),
+
+            'breadcrumbs'     => $breadcrumbs,
+
+            'keywords'        => array(
+                $cursus->getName(), $cursus->getShortName(), 'matières'
+            ),
+            'description'     => '',
+
+            'cursus'          => array(
+                'id'           => $cursus->getId(),
+                'href'         => $cursus_uri,
+                'name'         => $cursus->getName(),
+
+                'courses'      => $tpl_courses
+            )
+        )
+    );
+
+    return tpl_render('cursus/courses.html', $tpl_cursus);
+}

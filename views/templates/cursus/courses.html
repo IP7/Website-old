@@ -1,0 +1,18 @@
+{% extends 'main.html' %}
+{% block content %}
+<article data-cursus-id="{{ page.cursus.id }}">
+<header><h1>{{ page.title }}</h1></header>
+<h2>Semestre 1</h2>
+<ul>
+{% for c in page.cursus.courses.s1 %}
+    <li><a href="{{ c.href }}">{{ c.title }}</a></li>
+{% endfor %}
+</ul>
+<h2>Semestre 2</h2>
+<ul>
+{% for c in page.cursus.courses.s2 %}
+    <li><a href="{{ c.href }}">{{ c.title }}</a></li>
+{% endfor %}
+</ul>
+</article>
+{% endblock %}

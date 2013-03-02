@@ -48,6 +48,9 @@ if (strpos(LIM_REQUEST_URI, '/cursus') === 0) {
     dispatch('/cursus/:name/flux.rss', 'display_cursus_rss_feed');
     dispatch('/cursus/:name/flux.atom', 'display_cursus_atom_feed');
 
+    ## courses
+    dispatch('/cursus/:name/matières', 'display_cursus_courses');
+
     ## courses feeds
     dispatch('/cursus/:cursus/:course/flux.rss', 'display_course_rss_feed');
     dispatch('/cursus/:cursus/:course/flux.atom', 'display_course_atom_feed');
