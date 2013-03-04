@@ -40,6 +40,10 @@
  * @method FileQuery rightJoinContentsFiles($relationAlias = null) Adds a RIGHT JOIN clause to the query using the ContentsFiles relation
  * @method FileQuery innerJoinContentsFiles($relationAlias = null) Adds a INNER JOIN clause to the query using the ContentsFiles relation
  *
+ * @method FileQuery leftJoinCoursesContentsArchives($relationAlias = null) Adds a LEFT JOIN clause to the query using the CoursesContentsArchives relation
+ * @method FileQuery rightJoinCoursesContentsArchives($relationAlias = null) Adds a RIGHT JOIN clause to the query using the CoursesContentsArchives relation
+ * @method FileQuery innerJoinCoursesContentsArchives($relationAlias = null) Adds a INNER JOIN clause to the query using the CoursesContentsArchives relation
+ *
  * @method File findOne(PropelPDO $con = null) Return the first File matching the query
  * @method File findOneOrCreate(PropelPDO $con = null) Return the first File matching the query, or a new File object populated from the query conditions when no match is found
  *
@@ -736,6 +740,80 @@ abstract class BaseFileQuery extends ModelCriteria
     }
 
     /**
+     * Filter the query by a related CoursesContentsArchives object
+     *
+     * @param   CoursesContentsArchives|PropelObjectCollection $coursesContentsArchives  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return   FileQuery The current query, for fluid interface
+     * @throws   PropelException - if the provided filter is invalid.
+     */
+    public function filterByCoursesContentsArchives($coursesContentsArchives, $comparison = null)
+    {
+        if ($coursesContentsArchives instanceof CoursesContentsArchives) {
+            return $this
+                ->addUsingAlias(FilePeer::ID, $coursesContentsArchives->getFileId(), $comparison);
+        } elseif ($coursesContentsArchives instanceof PropelObjectCollection) {
+            return $this
+                ->useCoursesContentsArchivesQuery()
+                ->filterByPrimaryKeys($coursesContentsArchives->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByCoursesContentsArchives() only accepts arguments of type CoursesContentsArchives or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the CoursesContentsArchives relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return FileQuery The current query, for fluid interface
+     */
+    public function joinCoursesContentsArchives($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('CoursesContentsArchives');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'CoursesContentsArchives');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the CoursesContentsArchives relation CoursesContentsArchives object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   CoursesContentsArchivesQuery A secondary query class using the current class as primary query
+     */
+    public function useCoursesContentsArchivesQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinCoursesContentsArchives($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'CoursesContentsArchives', 'CoursesContentsArchivesQuery');
+    }
+
+    /**
      * Filter the query by a related Content object
      * using the contents_files table as cross reference
      *
@@ -749,6 +827,23 @@ abstract class BaseFileQuery extends ModelCriteria
         return $this
             ->useContentsFilesQuery()
             ->filterByContent($content, $comparison)
+            ->endUse();
+    }
+
+    /**
+     * Filter the query by a related Course object
+     * using the courses_contents_archives table as cross reference
+     *
+     * @param   Course $course the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return   FileQuery The current query, for fluid interface
+     */
+    public function filterByCourse($course, $comparison = Criteria::EQUAL)
+    {
+        return $this
+            ->useCoursesContentsArchivesQuery()
+            ->filterByCourse($course, $comparison)
             ->endUse();
     }
 

@@ -629,5 +629,29 @@ CREATE TABLE `shortlinks`
     UNIQUE INDEX `shortlinks_U_2` (`url`)
 ) ENGINE=MyISAM;
 
+-- ---------------------------------------------------------------------
+-- courses_contents_archives
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `courses_contents_archives`;
+
+CREATE TABLE `courses_contents_archives`
+(
+    `course_id` INTEGER NOT NULL,
+    `file_id` INTEGER NOT NULL,
+    PRIMARY KEY (`course_id`,`file_id`),
+    INDEX `courses_contents_archives_FI_2` (`file_id`),
+    CONSTRAINT `courses_contents_archives_FK_1`
+        FOREIGN KEY (`course_id`)
+        REFERENCES `courses` (`id`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    CONSTRAINT `courses_contents_archives_FK_2`
+        FOREIGN KEY (`file_id`)
+        REFERENCES `files` (`id`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+) ENGINE=MyISAM;
+
 # This restores the fkey checks, after having unset them earlier
 SET FOREIGN_KEY_CHECKS = 1;

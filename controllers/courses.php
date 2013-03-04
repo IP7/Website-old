@@ -126,4 +126,57 @@ function display_course() {
     return tpl_render('course.html', $tpl_course);
 }
 
-?>
+function display_course_archive_page() {
+    $cursus_n = params('cursus');
+    $code     = params('course');
+
+    $cursus = CursusQuery::create()->findOneByShortName($cursus_n);
+
+    if ($cursus == null) {
+        halt(NOT_FOUND);
+    }
+
+    $course = CourseQuery::create()
+                ->filterByCursus($cursus)
+                ->filterByDeleted(false)
+                ->findOneByShortName($code);
+
+    if ($course == null) {
+        halt(NOT_FOUND);
+    }
+
+    $archives = $course->getContentsArchives();
+    $archive =  (count($archives)>0) ? $archives[0] : NULL;
+
+    $breadcrumbs = array(
+        1 => array(
+            'href'  => cursus_url($cursus),
+            'title' => $cursus->getName()
+        ),
+        2 => array(
+            'href'  => course_url($cursus, $course),
+            'title' => $course->getShortName()
+        ),
+        3 => array(
+            'href'  => url(),
+            'title' => 'Télécharger tous les contenus'
+        )
+    );
+
+    $tpl_page = array(
+        'page' => array(
+            'title' => 'Télécharger tous les contenus ' . Lang\de($course->getShortName()),
+            'description' => 'Télécharger une archive de tous les contenus '
+                            . 'pour le cours ' . Lang\de($course->getName()),
+            'keywords'    => array(
+                $cursus->getName(), $cursus->getShortName(), $course->getName(),
+                $course->getShortName(), 'zip', 'archive'
+            ),
+            'breadcrumbs' => $breadcrumbs,
+            'archive' => tpl_file($archive)
+        )
+
+    );
+
+    return tpl_render('courses/archive.html', $tpl_page);
+}
