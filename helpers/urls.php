@@ -138,3 +138,8 @@ function create_short_url($url) {
 function wiki_url($str) {
     return preg_replace('/\s/', '_', $str);
 }
+
+// return the URL of a file
+function file_url($f) {
+    return Config::$root_uri.'file/'.$file->getId().'/'.name_encode($file->getTitle());
+}
