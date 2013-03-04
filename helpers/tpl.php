@@ -170,8 +170,8 @@ function tpl_news($n) {
         );
 
         $tpl_n []= array(
-            'datetime_attr' => datetime_attr($news->getDate()),
-            'datetime'      => Lang\date_fr($news->getDate()),
+            'datetime_attr' => datetime_attr($news->getCreatedAt()),
+            'datetime'      => Lang\date_fr($news->getCreatedAt()),
             'title'         => $news->getTitle(),
             'content'       => $news->getText(),
             'author'        => $tpl_author,
