@@ -11,7 +11,7 @@ function display_news_archives() {
             'id'    => $n->getId(),
             'title' => $n->getTitle(),
             'text'  => $n->getText(), // Markdown
-            'date'  => tpl_date($n->getDate())
+            'date'  => tpl_date($n->getCreatedAt())
         );
     }
 

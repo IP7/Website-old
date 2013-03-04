@@ -188,8 +188,8 @@ function display_course_content() {
         'title'  => $content->getTitle(),
         'text'   => $content->getText(),
         'date'   => array(
-            'text'     => Lang\date_fr($content->getDate()),
-            'datetime' => datetime_attr($content->getDate())
+            'text'     => Lang\date_fr($content->getCreatedAt()),
+            'datetime' => datetime_attr($content->getCreatedAt())
         ),
         'files'  => $tpl_files,
         'author' => array(
@@ -526,7 +526,6 @@ function display_post_member_proposed_content() {
     $c->setTitle($title);
     $c->setText($text);
     $c->setAuthor(user());
-    $c->setDate(time());
     $c->setCursus($cursus);
     $c->setCourse($course);
     $c->setYear($year);

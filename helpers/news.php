@@ -30,7 +30,7 @@ function get_news($cursus=null, $course=null, $limit=10,
         $q = $q->filterByCourse($course);
     }
 
-    return $q->orderByDate('desc')->find();
+    return $q->orderByCreatedAt('desc')->find();
 }
 
 // check if a news is correct (for update/creation)
@@ -66,7 +66,6 @@ function check_and_save_news($title, $body, &$news, $cursus=null, $course=null) 
     if (!$news) {
         $news = new News();
         $news->setAuthor(user());
-        $news->setDate($_SERVER['REQUEST_TIME']);
         $news->setExpirationDate($_SERVER['REQUEST_TIME'] + 1296000); // 15 days
         $news->setCursus($cursus);
         $news->setCourse($course);
