@@ -19,6 +19,8 @@
  * @method ContentQuery orderByCourseId($order = Criteria::ASC) Order by the course_id column
  * @method ContentQuery orderByYear($order = Criteria::ASC) Order by the year column
  * @method ContentQuery orderByDeleted($order = Criteria::ASC) Order by the deleted column
+ * @method ContentQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
+ * @method ContentQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
  *
  * @method ContentQuery groupById() Group by the id column
  * @method ContentQuery groupByAuthorId() Group by the author_id column
@@ -33,6 +35,8 @@
  * @method ContentQuery groupByCourseId() Group by the course_id column
  * @method ContentQuery groupByYear() Group by the year column
  * @method ContentQuery groupByDeleted() Group by the deleted column
+ * @method ContentQuery groupByCreatedAt() Group by the created_at column
+ * @method ContentQuery groupByUpdatedAt() Group by the updated_at column
  *
  * @method ContentQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method ContentQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -82,6 +86,8 @@
  * @method Content findOneByCourseId(int $course_id) Return the first Content filtered by the course_id column
  * @method Content findOneByYear(int $year) Return the first Content filtered by the year column
  * @method Content findOneByDeleted(boolean $deleted) Return the first Content filtered by the deleted column
+ * @method Content findOneByCreatedAt(string $created_at) Return the first Content filtered by the created_at column
+ * @method Content findOneByUpdatedAt(string $updated_at) Return the first Content filtered by the updated_at column
  *
  * @method array findById(int $id) Return Content objects filtered by the id column
  * @method array findByAuthorId(int $author_id) Return Content objects filtered by the author_id column
@@ -96,6 +102,8 @@
  * @method array findByCourseId(int $course_id) Return Content objects filtered by the course_id column
  * @method array findByYear(int $year) Return Content objects filtered by the year column
  * @method array findByDeleted(boolean $deleted) Return Content objects filtered by the deleted column
+ * @method array findByCreatedAt(string $created_at) Return Content objects filtered by the created_at column
+ * @method array findByUpdatedAt(string $updated_at) Return Content objects filtered by the updated_at column
  *
  * @package    propel.generator.ip7website.om
  */
@@ -185,7 +193,7 @@ abstract class BaseContentQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `ID`, `AUTHOR_ID`, `CONTENT_TYPE_ID`, `DATE`, `LAST_MODIFICATION_DATE`, `ACCESS_RIGHTS`, `VALIDATED`, `TITLE`, `CURSUS_ID`, `COURSE_ID`, `YEAR`, `DELETED` FROM `contents` WHERE `ID` = :p0';
+        $sql = 'SELECT `ID`, `AUTHOR_ID`, `CONTENT_TYPE_ID`, `DATE`, `LAST_MODIFICATION_DATE`, `ACCESS_RIGHTS`, `VALIDATED`, `TITLE`, `CURSUS_ID`, `COURSE_ID`, `YEAR`, `DELETED`, `CREATED_AT`, `UPDATED_AT` FROM `contents` WHERE `ID` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -754,6 +762,92 @@ abstract class BaseContentQuery extends ModelCriteria
     }
 
     /**
+     * Filter the query on the created_at column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByCreatedAt('2011-03-14'); // WHERE created_at = '2011-03-14'
+     * $query->filterByCreatedAt('now'); // WHERE created_at = '2011-03-14'
+     * $query->filterByCreatedAt(array('max' => 'yesterday')); // WHERE created_at > '2011-03-13'
+     * </code>
+     *
+     * @param     mixed $createdAt The value to use as filter.
+     *              Values can be integers (unix timestamps), DateTime objects, or strings.
+     *              Empty strings are treated as NULL.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ContentQuery The current query, for fluid interface
+     */
+    public function filterByCreatedAt($createdAt = null, $comparison = null)
+    {
+        if (is_array($createdAt)) {
+            $useMinMax = false;
+            if (isset($createdAt['min'])) {
+                $this->addUsingAlias(ContentPeer::CREATED_AT, $createdAt['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($createdAt['max'])) {
+                $this->addUsingAlias(ContentPeer::CREATED_AT, $createdAt['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(ContentPeer::CREATED_AT, $createdAt, $comparison);
+    }
+
+    /**
+     * Filter the query on the updated_at column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByUpdatedAt('2011-03-14'); // WHERE updated_at = '2011-03-14'
+     * $query->filterByUpdatedAt('now'); // WHERE updated_at = '2011-03-14'
+     * $query->filterByUpdatedAt(array('max' => 'yesterday')); // WHERE updated_at > '2011-03-13'
+     * </code>
+     *
+     * @param     mixed $updatedAt The value to use as filter.
+     *              Values can be integers (unix timestamps), DateTime objects, or strings.
+     *              Empty strings are treated as NULL.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ContentQuery The current query, for fluid interface
+     */
+    public function filterByUpdatedAt($updatedAt = null, $comparison = null)
+    {
+        if (is_array($updatedAt)) {
+            $useMinMax = false;
+            if (isset($updatedAt['min'])) {
+                $this->addUsingAlias(ContentPeer::UPDATED_AT, $updatedAt['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($updatedAt['max'])) {
+                $this->addUsingAlias(ContentPeer::UPDATED_AT, $updatedAt['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(ContentPeer::UPDATED_AT, $updatedAt, $comparison);
+    }
+
+    /**
      * Filter the query by a related User object
      *
      * @param   User|PropelObjectCollection $user The related object(s) to use as filter
@@ -1312,4 +1406,69 @@ abstract class BaseContentQuery extends ModelCriteria
         return $this;
     }
 
+    // timestampable behavior
+
+    /**
+     * Filter by the latest updated
+     *
+     * @param      int $nbDays Maximum age of the latest update in days
+     *
+     * @return     ContentQuery The current query, for fluid interface
+     */
+    public function recentlyUpdated($nbDays = 7)
+    {
+        return $this->addUsingAlias(ContentPeer::UPDATED_AT, time() - $nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
+    }
+
+    /**
+     * Order by update date desc
+     *
+     * @return     ContentQuery The current query, for fluid interface
+     */
+    public function lastUpdatedFirst()
+    {
+        return $this->addDescendingOrderByColumn(ContentPeer::UPDATED_AT);
+    }
+
+    /**
+     * Order by update date asc
+     *
+     * @return     ContentQuery The current query, for fluid interface
+     */
+    public function firstUpdatedFirst()
+    {
+        return $this->addAscendingOrderByColumn(ContentPeer::UPDATED_AT);
+    }
+
+    /**
+     * Filter by the latest created
+     *
+     * @param      int $nbDays Maximum age of in days
+     *
+     * @return     ContentQuery The current query, for fluid interface
+     */
+    public function recentlyCreated($nbDays = 7)
+    {
+        return $this->addUsingAlias(ContentPeer::CREATED_AT, time() - $nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
+    }
+
+    /**
+     * Order by create date desc
+     *
+     * @return     ContentQuery The current query, for fluid interface
+     */
+    public function lastCreatedFirst()
+    {
+        return $this->addDescendingOrderByColumn(ContentPeer::CREATED_AT);
+    }
+
+    /**
+     * Order by create date asc
+     *
+     * @return     ContentQuery The current query, for fluid interface
+     */
+    public function firstCreatedFirst()
+    {
+        return $this->addAscendingOrderByColumn(ContentPeer::CREATED_AT);
+    }
 }

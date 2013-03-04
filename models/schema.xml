@@ -451,6 +451,8 @@
         <!-- si le contenu a été supprimé -->
         <column name="deleted"       type="BOOLEAN" defaultExpr="0" />
 
+        <behavior name="timestampable" />
+
         <!-- == index & clefs étrangères == -->
 
         <foreign-key foreignTable="users" onDelete="SETNULL" onUpdate="CASCADE" phpName="Author">
@@ -610,6 +612,8 @@
 
         <!-- membres concernés -->
         <column name="access_rights" type="TINYINT" defaultExpr="0" />
+
+        <behavior name="timestampable" />
 
         <!-- == index & clefs étrangères == -->
 

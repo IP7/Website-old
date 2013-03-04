@@ -51,6 +51,8 @@ class ContentTableMap extends TableMap
         $this->addForeignKey('COURSE_ID', 'CourseId', 'INTEGER', 'courses', 'ID', false, null, null);
         $this->addColumn('YEAR', 'Year', 'INTEGER', false, null, null);
         $this->addColumn('DELETED', 'Deleted', 'BOOLEAN', false, 1, '0');
+        $this->addColumn('CREATED_AT', 'CreatedAt', 'TIMESTAMP', false, null, null);
+        $this->addColumn('UPDATED_AT', 'UpdatedAt', 'TIMESTAMP', false, null, null);
         // validators
     } // initialize()
 
@@ -68,5 +70,18 @@ class ContentTableMap extends TableMap
         $this->addRelation('Report', 'Report', RelationMap::ONE_TO_MANY, array('id' => 'content_id', ), 'CASCADE', 'CASCADE', 'Reports');
         $this->addRelation('File', 'File', RelationMap::MANY_TO_MANY, array(), 'CASCADE', 'CASCADE', 'Files');
     } // buildRelations()
+
+    /**
+     *
+     * Gets the list of behaviors registered for this table
+     *
+     * @return array Associative array (name => parameters) of behaviors
+     */
+    public function getBehaviors()
+    {
+        return array(
+            'timestampable' => array('create_column' => 'created_at', 'update_column' => 'updated_at', 'disable_updated_at' => 'false', ),
+        );
+    } // getBehaviors()
 
 } // ContentTableMap

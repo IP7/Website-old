@@ -85,6 +85,18 @@ abstract class BaseNews extends BaseObject implements Persistent
     protected $access_rights;
 
     /**
+     * The value for the created_at field.
+     * @var        string
+     */
+    protected $created_at;
+
+    /**
+     * The value for the updated_at field.
+     * @var        string
+     */
+    protected $updated_at;
+
+    /**
      * @var        User
      */
     protected $aAuthor;
@@ -275,6 +287,80 @@ abstract class BaseNews extends BaseObject implements Persistent
     public function getAccessRights()
     {
         return $this->access_rights;
+    }
+
+    /**
+     * Get the [optionally formatted] temporal [created_at] column value.
+     *
+     *
+     * @param string $format The date/time format string (either date()-style or strftime()-style).
+     *				 If format is null, then the raw DateTime object will be returned.
+     * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00 00:00:00
+     * @throws PropelException - if unable to parse/validate the date/time value.
+     */
+    public function getCreatedAt($format = 'd-m-Y H:i:s')
+    {
+        if ($this->created_at === null) {
+            return null;
+        }
+
+        if ($this->created_at === '0000-00-00 00:00:00') {
+            // while technically this is not a default value of null,
+            // this seems to be closest in meaning.
+            return null;
+        } else {
+            try {
+                $dt = new DateTime($this->created_at);
+            } catch (Exception $x) {
+                throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->created_at, true), $x);
+            }
+        }
+
+        if ($format === null) {
+            // Because propel.useDateTimeClass is true, we return a DateTime object.
+            return $dt;
+        } elseif (strpos($format, '%') !== false) {
+            return strftime($format, $dt->format('U'));
+        } else {
+            return $dt->format($format);
+        }
+    }
+
+    /**
+     * Get the [optionally formatted] temporal [updated_at] column value.
+     *
+     *
+     * @param string $format The date/time format string (either date()-style or strftime()-style).
+     *				 If format is null, then the raw DateTime object will be returned.
+     * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00 00:00:00
+     * @throws PropelException - if unable to parse/validate the date/time value.
+     */
+    public function getUpdatedAt($format = 'd-m-Y H:i:s')
+    {
+        if ($this->updated_at === null) {
+            return null;
+        }
+
+        if ($this->updated_at === '0000-00-00 00:00:00') {
+            // while technically this is not a default value of null,
+            // this seems to be closest in meaning.
+            return null;
+        } else {
+            try {
+                $dt = new DateTime($this->updated_at);
+            } catch (Exception $x) {
+                throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->updated_at, true), $x);
+            }
+        }
+
+        if ($format === null) {
+            // Because propel.useDateTimeClass is true, we return a DateTime object.
+            return $dt;
+        } elseif (strpos($format, '%') !== false) {
+            return strftime($format, $dt->format('U'));
+        } else {
+            return $dt->format($format);
+        }
     }
 
     /**
@@ -483,6 +569,52 @@ abstract class BaseNews extends BaseObject implements Persistent
     } // setAccessRights()
 
     /**
+     * Sets the value of [created_at] column to a normalized version of the date/time value specified.
+     *
+     * @param mixed $v string, integer (timestamp), or DateTime value.
+     *               Empty strings are treated as null.
+     * @return News The current object (for fluent API support)
+     */
+    public function setCreatedAt($v)
+    {
+        $dt = PropelDateTime::newInstance($v, null, 'DateTime');
+        if ($this->created_at !== null || $dt !== null) {
+            $currentDateAsString = ($this->created_at !== null && $tmpDt = new DateTime($this->created_at)) ? $tmpDt->format('Y-m-d H:i:s') : null;
+            $newDateAsString = $dt ? $dt->format('Y-m-d H:i:s') : null;
+            if ($currentDateAsString !== $newDateAsString) {
+                $this->created_at = $newDateAsString;
+                $this->modifiedColumns[] = NewsPeer::CREATED_AT;
+            }
+        } // if either are not null
+
+
+        return $this;
+    } // setCreatedAt()
+
+    /**
+     * Sets the value of [updated_at] column to a normalized version of the date/time value specified.
+     *
+     * @param mixed $v string, integer (timestamp), or DateTime value.
+     *               Empty strings are treated as null.
+     * @return News The current object (for fluent API support)
+     */
+    public function setUpdatedAt($v)
+    {
+        $dt = PropelDateTime::newInstance($v, null, 'DateTime');
+        if ($this->updated_at !== null || $dt !== null) {
+            $currentDateAsString = ($this->updated_at !== null && $tmpDt = new DateTime($this->updated_at)) ? $tmpDt->format('Y-m-d H:i:s') : null;
+            $newDateAsString = $dt ? $dt->format('Y-m-d H:i:s') : null;
+            if ($currentDateAsString !== $newDateAsString) {
+                $this->updated_at = $newDateAsString;
+                $this->modifiedColumns[] = NewsPeer::UPDATED_AT;
+            }
+        } // if either are not null
+
+
+        return $this;
+    } // setUpdatedAt()
+
+    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -523,6 +655,8 @@ abstract class BaseNews extends BaseObject implements Persistent
             $this->cursus_id = ($row[$startcol + 6] !== null) ? (int) $row[$startcol + 6] : null;
             $this->course_id = ($row[$startcol + 7] !== null) ? (int) $row[$startcol + 7] : null;
             $this->access_rights = ($row[$startcol + 8] !== null) ? (int) $row[$startcol + 8] : null;
+            $this->created_at = ($row[$startcol + 9] !== null) ? (string) $row[$startcol + 9] : null;
+            $this->updated_at = ($row[$startcol + 10] !== null) ? (string) $row[$startcol + 10] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -531,7 +665,7 @@ abstract class BaseNews extends BaseObject implements Persistent
                 $this->ensureConsistency();
             }
 
-            return $startcol + 9; // 9 = NewsPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 11; // 11 = NewsPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating News object", $e);
@@ -677,8 +811,19 @@ abstract class BaseNews extends BaseObject implements Persistent
             $ret = $this->preSave($con);
             if ($isInsert) {
                 $ret = $ret && $this->preInsert($con);
+                // timestampable behavior
+                if (!$this->isColumnModified(NewsPeer::CREATED_AT)) {
+                    $this->setCreatedAt(time());
+                }
+                if (!$this->isColumnModified(NewsPeer::UPDATED_AT)) {
+                    $this->setUpdatedAt(time());
+                }
             } else {
                 $ret = $ret && $this->preUpdate($con);
+                // timestampable behavior
+                if ($this->isModified() && !$this->isColumnModified(NewsPeer::UPDATED_AT)) {
+                    $this->setUpdatedAt(time());
+                }
             }
             if ($ret) {
                 $affectedRows = $this->doSave($con);
@@ -808,6 +953,12 @@ abstract class BaseNews extends BaseObject implements Persistent
         if ($this->isColumnModified(NewsPeer::ACCESS_RIGHTS)) {
             $modifiedColumns[':p' . $index++]  = '`ACCESS_RIGHTS`';
         }
+        if ($this->isColumnModified(NewsPeer::CREATED_AT)) {
+            $modifiedColumns[':p' . $index++]  = '`CREATED_AT`';
+        }
+        if ($this->isColumnModified(NewsPeer::UPDATED_AT)) {
+            $modifiedColumns[':p' . $index++]  = '`UPDATED_AT`';
+        }
 
         $sql = sprintf(
             'INSERT INTO `news` (%s) VALUES (%s)',
@@ -845,6 +996,12 @@ abstract class BaseNews extends BaseObject implements Persistent
                         break;
                     case '`ACCESS_RIGHTS`':
                         $stmt->bindValue($identifier, $this->access_rights, PDO::PARAM_INT);
+                        break;
+                    case '`CREATED_AT`':
+                        $stmt->bindValue($identifier, $this->created_at, PDO::PARAM_STR);
+                        break;
+                    case '`UPDATED_AT`':
+                        $stmt->bindValue($identifier, $this->updated_at, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -1031,6 +1188,12 @@ abstract class BaseNews extends BaseObject implements Persistent
             case 8:
                 return $this->getAccessRights();
                 break;
+            case 9:
+                return $this->getCreatedAt();
+                break;
+            case 10:
+                return $this->getUpdatedAt();
+                break;
             default:
                 return null;
                 break;
@@ -1069,6 +1232,8 @@ abstract class BaseNews extends BaseObject implements Persistent
             $keys[6] => $this->getCursusId(),
             $keys[7] => $this->getCourseId(),
             $keys[8] => $this->getAccessRights(),
+            $keys[9] => $this->getCreatedAt(),
+            $keys[10] => $this->getUpdatedAt(),
         );
         if ($includeForeignObjects) {
             if (null !== $this->aAuthor) {
@@ -1141,6 +1306,12 @@ abstract class BaseNews extends BaseObject implements Persistent
             case 8:
                 $this->setAccessRights($value);
                 break;
+            case 9:
+                $this->setCreatedAt($value);
+                break;
+            case 10:
+                $this->setUpdatedAt($value);
+                break;
         } // switch()
     }
 
@@ -1174,6 +1345,8 @@ abstract class BaseNews extends BaseObject implements Persistent
         if (array_key_exists($keys[6], $arr)) $this->setCursusId($arr[$keys[6]]);
         if (array_key_exists($keys[7], $arr)) $this->setCourseId($arr[$keys[7]]);
         if (array_key_exists($keys[8], $arr)) $this->setAccessRights($arr[$keys[8]]);
+        if (array_key_exists($keys[9], $arr)) $this->setCreatedAt($arr[$keys[9]]);
+        if (array_key_exists($keys[10], $arr)) $this->setUpdatedAt($arr[$keys[10]]);
     }
 
     /**
@@ -1194,6 +1367,8 @@ abstract class BaseNews extends BaseObject implements Persistent
         if ($this->isColumnModified(NewsPeer::CURSUS_ID)) $criteria->add(NewsPeer::CURSUS_ID, $this->cursus_id);
         if ($this->isColumnModified(NewsPeer::COURSE_ID)) $criteria->add(NewsPeer::COURSE_ID, $this->course_id);
         if ($this->isColumnModified(NewsPeer::ACCESS_RIGHTS)) $criteria->add(NewsPeer::ACCESS_RIGHTS, $this->access_rights);
+        if ($this->isColumnModified(NewsPeer::CREATED_AT)) $criteria->add(NewsPeer::CREATED_AT, $this->created_at);
+        if ($this->isColumnModified(NewsPeer::UPDATED_AT)) $criteria->add(NewsPeer::UPDATED_AT, $this->updated_at);
 
         return $criteria;
     }
@@ -1265,6 +1440,8 @@ abstract class BaseNews extends BaseObject implements Persistent
         $copyObj->setCursusId($this->getCursusId());
         $copyObj->setCourseId($this->getCourseId());
         $copyObj->setAccessRights($this->getAccessRights());
+        $copyObj->setCreatedAt($this->getCreatedAt());
+        $copyObj->setUpdatedAt($this->getUpdatedAt());
 
         if ($deepCopy && !$this->startCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -1490,6 +1667,8 @@ abstract class BaseNews extends BaseObject implements Persistent
         $this->cursus_id = null;
         $this->course_id = null;
         $this->access_rights = null;
+        $this->created_at = null;
+        $this->updated_at = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->clearAllReferences();
@@ -1536,6 +1715,20 @@ abstract class BaseNews extends BaseObject implements Persistent
     public function isAlreadyInSave()
     {
         return $this->alreadyInSave;
+    }
+
+    // timestampable behavior
+
+    /**
+     * Mark the current object so that the update date doesn't get updated during next save
+     *
+     * @return     News The current object (for fluent API support)
+     */
+    public function keepUpdateDateUnchanged()
+    {
+        $this->modifiedColumns[] = NewsPeer::UPDATED_AT;
+
+        return $this;
     }
 
 }

@@ -15,6 +15,8 @@
  * @method NewsQuery orderByCursusId($order = Criteria::ASC) Order by the cursus_id column
  * @method NewsQuery orderByCourseId($order = Criteria::ASC) Order by the course_id column
  * @method NewsQuery orderByAccessRights($order = Criteria::ASC) Order by the access_rights column
+ * @method NewsQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
+ * @method NewsQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
  *
  * @method NewsQuery groupById() Group by the id column
  * @method NewsQuery groupByAuthorId() Group by the author_id column
@@ -25,6 +27,8 @@
  * @method NewsQuery groupByCursusId() Group by the cursus_id column
  * @method NewsQuery groupByCourseId() Group by the course_id column
  * @method NewsQuery groupByAccessRights() Group by the access_rights column
+ * @method NewsQuery groupByCreatedAt() Group by the created_at column
+ * @method NewsQuery groupByUpdatedAt() Group by the updated_at column
  *
  * @method NewsQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method NewsQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -54,6 +58,8 @@
  * @method News findOneByCursusId(int $cursus_id) Return the first News filtered by the cursus_id column
  * @method News findOneByCourseId(int $course_id) Return the first News filtered by the course_id column
  * @method News findOneByAccessRights(int $access_rights) Return the first News filtered by the access_rights column
+ * @method News findOneByCreatedAt(string $created_at) Return the first News filtered by the created_at column
+ * @method News findOneByUpdatedAt(string $updated_at) Return the first News filtered by the updated_at column
  *
  * @method array findById(int $id) Return News objects filtered by the id column
  * @method array findByAuthorId(int $author_id) Return News objects filtered by the author_id column
@@ -64,6 +70,8 @@
  * @method array findByCursusId(int $cursus_id) Return News objects filtered by the cursus_id column
  * @method array findByCourseId(int $course_id) Return News objects filtered by the course_id column
  * @method array findByAccessRights(int $access_rights) Return News objects filtered by the access_rights column
+ * @method array findByCreatedAt(string $created_at) Return News objects filtered by the created_at column
+ * @method array findByUpdatedAt(string $updated_at) Return News objects filtered by the updated_at column
  *
  * @package    propel.generator.ip7website.om
  */
@@ -153,7 +161,7 @@ abstract class BaseNewsQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `ID`, `AUTHOR_ID`, `TITLE`, `TEXT`, `DATE`, `EXPIRATION_DATE`, `CURSUS_ID`, `COURSE_ID`, `ACCESS_RIGHTS` FROM `news` WHERE `ID` = :p0';
+        $sql = 'SELECT `ID`, `AUTHOR_ID`, `TITLE`, `TEXT`, `DATE`, `EXPIRATION_DATE`, `CURSUS_ID`, `COURSE_ID`, `ACCESS_RIGHTS`, `CREATED_AT`, `UPDATED_AT` FROM `news` WHERE `ID` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -584,6 +592,92 @@ abstract class BaseNewsQuery extends ModelCriteria
     }
 
     /**
+     * Filter the query on the created_at column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByCreatedAt('2011-03-14'); // WHERE created_at = '2011-03-14'
+     * $query->filterByCreatedAt('now'); // WHERE created_at = '2011-03-14'
+     * $query->filterByCreatedAt(array('max' => 'yesterday')); // WHERE created_at > '2011-03-13'
+     * </code>
+     *
+     * @param     mixed $createdAt The value to use as filter.
+     *              Values can be integers (unix timestamps), DateTime objects, or strings.
+     *              Empty strings are treated as NULL.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return NewsQuery The current query, for fluid interface
+     */
+    public function filterByCreatedAt($createdAt = null, $comparison = null)
+    {
+        if (is_array($createdAt)) {
+            $useMinMax = false;
+            if (isset($createdAt['min'])) {
+                $this->addUsingAlias(NewsPeer::CREATED_AT, $createdAt['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($createdAt['max'])) {
+                $this->addUsingAlias(NewsPeer::CREATED_AT, $createdAt['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(NewsPeer::CREATED_AT, $createdAt, $comparison);
+    }
+
+    /**
+     * Filter the query on the updated_at column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByUpdatedAt('2011-03-14'); // WHERE updated_at = '2011-03-14'
+     * $query->filterByUpdatedAt('now'); // WHERE updated_at = '2011-03-14'
+     * $query->filterByUpdatedAt(array('max' => 'yesterday')); // WHERE updated_at > '2011-03-13'
+     * </code>
+     *
+     * @param     mixed $updatedAt The value to use as filter.
+     *              Values can be integers (unix timestamps), DateTime objects, or strings.
+     *              Empty strings are treated as NULL.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return NewsQuery The current query, for fluid interface
+     */
+    public function filterByUpdatedAt($updatedAt = null, $comparison = null)
+    {
+        if (is_array($updatedAt)) {
+            $useMinMax = false;
+            if (isset($updatedAt['min'])) {
+                $this->addUsingAlias(NewsPeer::UPDATED_AT, $updatedAt['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($updatedAt['max'])) {
+                $this->addUsingAlias(NewsPeer::UPDATED_AT, $updatedAt['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(NewsPeer::UPDATED_AT, $updatedAt, $comparison);
+    }
+
+    /**
      * Filter the query by a related User object
      *
      * @param   User|PropelObjectCollection $user The related object(s) to use as filter
@@ -827,4 +921,69 @@ abstract class BaseNewsQuery extends ModelCriteria
         return $this;
     }
 
+    // timestampable behavior
+
+    /**
+     * Filter by the latest updated
+     *
+     * @param      int $nbDays Maximum age of the latest update in days
+     *
+     * @return     NewsQuery The current query, for fluid interface
+     */
+    public function recentlyUpdated($nbDays = 7)
+    {
+        return $this->addUsingAlias(NewsPeer::UPDATED_AT, time() - $nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
+    }
+
+    /**
+     * Order by update date desc
+     *
+     * @return     NewsQuery The current query, for fluid interface
+     */
+    public function lastUpdatedFirst()
+    {
+        return $this->addDescendingOrderByColumn(NewsPeer::UPDATED_AT);
+    }
+
+    /**
+     * Order by update date asc
+     *
+     * @return     NewsQuery The current query, for fluid interface
+     */
+    public function firstUpdatedFirst()
+    {
+        return $this->addAscendingOrderByColumn(NewsPeer::UPDATED_AT);
+    }
+
+    /**
+     * Filter by the latest created
+     *
+     * @param      int $nbDays Maximum age of in days
+     *
+     * @return     NewsQuery The current query, for fluid interface
+     */
+    public function recentlyCreated($nbDays = 7)
+    {
+        return $this->addUsingAlias(NewsPeer::CREATED_AT, time() - $nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
+    }
+
+    /**
+     * Order by create date desc
+     *
+     * @return     NewsQuery The current query, for fluid interface
+     */
+    public function lastCreatedFirst()
+    {
+        return $this->addDescendingOrderByColumn(NewsPeer::CREATED_AT);
+    }
+
+    /**
+     * Order by create date asc
+     *
+     * @return     NewsQuery The current query, for fluid interface
+     */
+    public function firstCreatedFirst()
+    {
+        return $this->addAscendingOrderByColumn(NewsPeer::CREATED_AT);
+    }
 }

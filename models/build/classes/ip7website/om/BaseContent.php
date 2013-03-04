@@ -118,6 +118,18 @@ abstract class BaseContent extends BaseObject implements Persistent
     protected $deleted;
 
     /**
+     * The value for the created_at field.
+     * @var        string
+     */
+    protected $created_at;
+
+    /**
+     * The value for the updated_at field.
+     * @var        string
+     */
+    protected $updated_at;
+
+    /**
      * @var        User
      */
     protected $aAuthor;
@@ -430,6 +442,80 @@ abstract class BaseContent extends BaseObject implements Persistent
     public function getDeleted()
     {
         return $this->deleted;
+    }
+
+    /**
+     * Get the [optionally formatted] temporal [created_at] column value.
+     *
+     *
+     * @param string $format The date/time format string (either date()-style or strftime()-style).
+     *				 If format is null, then the raw DateTime object will be returned.
+     * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00 00:00:00
+     * @throws PropelException - if unable to parse/validate the date/time value.
+     */
+    public function getCreatedAt($format = 'd-m-Y H:i:s')
+    {
+        if ($this->created_at === null) {
+            return null;
+        }
+
+        if ($this->created_at === '0000-00-00 00:00:00') {
+            // while technically this is not a default value of null,
+            // this seems to be closest in meaning.
+            return null;
+        } else {
+            try {
+                $dt = new DateTime($this->created_at);
+            } catch (Exception $x) {
+                throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->created_at, true), $x);
+            }
+        }
+
+        if ($format === null) {
+            // Because propel.useDateTimeClass is true, we return a DateTime object.
+            return $dt;
+        } elseif (strpos($format, '%') !== false) {
+            return strftime($format, $dt->format('U'));
+        } else {
+            return $dt->format($format);
+        }
+    }
+
+    /**
+     * Get the [optionally formatted] temporal [updated_at] column value.
+     *
+     *
+     * @param string $format The date/time format string (either date()-style or strftime()-style).
+     *				 If format is null, then the raw DateTime object will be returned.
+     * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00 00:00:00
+     * @throws PropelException - if unable to parse/validate the date/time value.
+     */
+    public function getUpdatedAt($format = 'd-m-Y H:i:s')
+    {
+        if ($this->updated_at === null) {
+            return null;
+        }
+
+        if ($this->updated_at === '0000-00-00 00:00:00') {
+            // while technically this is not a default value of null,
+            // this seems to be closest in meaning.
+            return null;
+        } else {
+            try {
+                $dt = new DateTime($this->updated_at);
+            } catch (Exception $x) {
+                throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->updated_at, true), $x);
+            }
+        }
+
+        if ($format === null) {
+            // Because propel.useDateTimeClass is true, we return a DateTime object.
+            return $dt;
+        } elseif (strpos($format, '%') !== false) {
+            return strftime($format, $dt->format('U'));
+        } else {
+            return $dt->format($format);
+        }
     }
 
     /**
@@ -748,6 +834,52 @@ abstract class BaseContent extends BaseObject implements Persistent
     } // setDeleted()
 
     /**
+     * Sets the value of [created_at] column to a normalized version of the date/time value specified.
+     *
+     * @param mixed $v string, integer (timestamp), or DateTime value.
+     *               Empty strings are treated as null.
+     * @return Content The current object (for fluent API support)
+     */
+    public function setCreatedAt($v)
+    {
+        $dt = PropelDateTime::newInstance($v, null, 'DateTime');
+        if ($this->created_at !== null || $dt !== null) {
+            $currentDateAsString = ($this->created_at !== null && $tmpDt = new DateTime($this->created_at)) ? $tmpDt->format('Y-m-d H:i:s') : null;
+            $newDateAsString = $dt ? $dt->format('Y-m-d H:i:s') : null;
+            if ($currentDateAsString !== $newDateAsString) {
+                $this->created_at = $newDateAsString;
+                $this->modifiedColumns[] = ContentPeer::CREATED_AT;
+            }
+        } // if either are not null
+
+
+        return $this;
+    } // setCreatedAt()
+
+    /**
+     * Sets the value of [updated_at] column to a normalized version of the date/time value specified.
+     *
+     * @param mixed $v string, integer (timestamp), or DateTime value.
+     *               Empty strings are treated as null.
+     * @return Content The current object (for fluent API support)
+     */
+    public function setUpdatedAt($v)
+    {
+        $dt = PropelDateTime::newInstance($v, null, 'DateTime');
+        if ($this->updated_at !== null || $dt !== null) {
+            $currentDateAsString = ($this->updated_at !== null && $tmpDt = new DateTime($this->updated_at)) ? $tmpDt->format('Y-m-d H:i:s') : null;
+            $newDateAsString = $dt ? $dt->format('Y-m-d H:i:s') : null;
+            if ($currentDateAsString !== $newDateAsString) {
+                $this->updated_at = $newDateAsString;
+                $this->modifiedColumns[] = ContentPeer::UPDATED_AT;
+            }
+        } // if either are not null
+
+
+        return $this;
+    } // setUpdatedAt()
+
+    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -791,6 +923,8 @@ abstract class BaseContent extends BaseObject implements Persistent
             $this->course_id = ($row[$startcol + 9] !== null) ? (int) $row[$startcol + 9] : null;
             $this->year = ($row[$startcol + 10] !== null) ? (int) $row[$startcol + 10] : null;
             $this->deleted = ($row[$startcol + 11] !== null) ? (boolean) $row[$startcol + 11] : null;
+            $this->created_at = ($row[$startcol + 12] !== null) ? (string) $row[$startcol + 12] : null;
+            $this->updated_at = ($row[$startcol + 13] !== null) ? (string) $row[$startcol + 13] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -799,7 +933,7 @@ abstract class BaseContent extends BaseObject implements Persistent
                 $this->ensureConsistency();
             }
 
-            return $startcol + 12; // 12 = ContentPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 14; // 14 = ContentPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating Content object", $e);
@@ -960,8 +1094,19 @@ abstract class BaseContent extends BaseObject implements Persistent
             $ret = $this->preSave($con);
             if ($isInsert) {
                 $ret = $ret && $this->preInsert($con);
+                // timestampable behavior
+                if (!$this->isColumnModified(ContentPeer::CREATED_AT)) {
+                    $this->setCreatedAt(time());
+                }
+                if (!$this->isColumnModified(ContentPeer::UPDATED_AT)) {
+                    $this->setUpdatedAt(time());
+                }
             } else {
                 $ret = $ret && $this->preUpdate($con);
+                // timestampable behavior
+                if ($this->isModified() && !$this->isColumnModified(ContentPeer::UPDATED_AT)) {
+                    $this->setUpdatedAt(time());
+                }
             }
             if ($ret) {
                 $affectedRows = $this->doSave($con);
@@ -1183,6 +1328,12 @@ abstract class BaseContent extends BaseObject implements Persistent
         if ($this->isColumnModified(ContentPeer::DELETED)) {
             $modifiedColumns[':p' . $index++]  = '`DELETED`';
         }
+        if ($this->isColumnModified(ContentPeer::CREATED_AT)) {
+            $modifiedColumns[':p' . $index++]  = '`CREATED_AT`';
+        }
+        if ($this->isColumnModified(ContentPeer::UPDATED_AT)) {
+            $modifiedColumns[':p' . $index++]  = '`UPDATED_AT`';
+        }
 
         $sql = sprintf(
             'INSERT INTO `contents` (%s) VALUES (%s)',
@@ -1232,6 +1383,12 @@ abstract class BaseContent extends BaseObject implements Persistent
                         break;
                     case '`DELETED`':
                         $stmt->bindValue($identifier, (int) $this->deleted, PDO::PARAM_INT);
+                        break;
+                    case '`CREATED_AT`':
+                        $stmt->bindValue($identifier, $this->created_at, PDO::PARAM_STR);
+                        break;
+                    case '`UPDATED_AT`':
+                        $stmt->bindValue($identifier, $this->updated_at, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -1460,6 +1617,12 @@ abstract class BaseContent extends BaseObject implements Persistent
             case 12:
                 return $this->getDeleted();
                 break;
+            case 13:
+                return $this->getCreatedAt();
+                break;
+            case 14:
+                return $this->getUpdatedAt();
+                break;
             default:
                 return null;
                 break;
@@ -1502,6 +1665,8 @@ abstract class BaseContent extends BaseObject implements Persistent
             $keys[10] => $this->getCourseId(),
             $keys[11] => $this->getYear(),
             $keys[12] => $this->getDeleted(),
+            $keys[13] => $this->getCreatedAt(),
+            $keys[14] => $this->getUpdatedAt(),
         );
         if ($includeForeignObjects) {
             if (null !== $this->aAuthor) {
@@ -1598,6 +1763,12 @@ abstract class BaseContent extends BaseObject implements Persistent
             case 12:
                 $this->setDeleted($value);
                 break;
+            case 13:
+                $this->setCreatedAt($value);
+                break;
+            case 14:
+                $this->setUpdatedAt($value);
+                break;
         } // switch()
     }
 
@@ -1635,6 +1806,8 @@ abstract class BaseContent extends BaseObject implements Persistent
         if (array_key_exists($keys[10], $arr)) $this->setCourseId($arr[$keys[10]]);
         if (array_key_exists($keys[11], $arr)) $this->setYear($arr[$keys[11]]);
         if (array_key_exists($keys[12], $arr)) $this->setDeleted($arr[$keys[12]]);
+        if (array_key_exists($keys[13], $arr)) $this->setCreatedAt($arr[$keys[13]]);
+        if (array_key_exists($keys[14], $arr)) $this->setUpdatedAt($arr[$keys[14]]);
     }
 
     /**
@@ -1659,6 +1832,8 @@ abstract class BaseContent extends BaseObject implements Persistent
         if ($this->isColumnModified(ContentPeer::COURSE_ID)) $criteria->add(ContentPeer::COURSE_ID, $this->course_id);
         if ($this->isColumnModified(ContentPeer::YEAR)) $criteria->add(ContentPeer::YEAR, $this->year);
         if ($this->isColumnModified(ContentPeer::DELETED)) $criteria->add(ContentPeer::DELETED, $this->deleted);
+        if ($this->isColumnModified(ContentPeer::CREATED_AT)) $criteria->add(ContentPeer::CREATED_AT, $this->created_at);
+        if ($this->isColumnModified(ContentPeer::UPDATED_AT)) $criteria->add(ContentPeer::UPDATED_AT, $this->updated_at);
 
         return $criteria;
     }
@@ -1734,6 +1909,8 @@ abstract class BaseContent extends BaseObject implements Persistent
         $copyObj->setCourseId($this->getCourseId());
         $copyObj->setYear($this->getYear());
         $copyObj->setDeleted($this->getDeleted());
+        $copyObj->setCreatedAt($this->getCreatedAt());
+        $copyObj->setUpdatedAt($this->getUpdatedAt());
 
         if ($deepCopy && !$this->startCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -2944,6 +3121,8 @@ abstract class BaseContent extends BaseObject implements Persistent
         $this->course_id = null;
         $this->year = null;
         $this->deleted = null;
+        $this->created_at = null;
+        $this->updated_at = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->clearAllReferences();
@@ -3027,6 +3206,20 @@ abstract class BaseContent extends BaseObject implements Persistent
     public function isAlreadyInSave()
     {
         return $this->alreadyInSave;
+    }
+
+    // timestampable behavior
+
+    /**
+     * Mark the current object so that the update date doesn't get updated during next save
+     *
+     * @return     Content The current object (for fluent API support)
+     */
+    public function keepUpdateDateUnchanged()
+    {
+        $this->modifiedColumns[] = ContentPeer::UPDATED_AT;
+
+        return $this;
     }
 
 }
