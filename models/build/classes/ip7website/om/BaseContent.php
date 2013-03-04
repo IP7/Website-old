@@ -48,18 +48,6 @@ abstract class BaseContent extends BaseObject implements Persistent
     protected $content_type_id;
 
     /**
-     * The value for the date field.
-     * @var        string
-     */
-    protected $date;
-
-    /**
-     * The value for the last_modification_date field.
-     * @var        string
-     */
-    protected $last_modification_date;
-
-    /**
      * The value for the access_rights field.
      * Note: this column has a database default value of: (expression) 0
      * @var        int
@@ -258,80 +246,6 @@ abstract class BaseContent extends BaseObject implements Persistent
     public function getContentTypeId()
     {
         return $this->content_type_id;
-    }
-
-    /**
-     * Get the [optionally formatted] temporal [date] column value.
-     *
-     *
-     * @param string $format The date/time format string (either date()-style or strftime()-style).
-     *				 If format is null, then the raw DateTime object will be returned.
-     * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00 00:00:00
-     * @throws PropelException - if unable to parse/validate the date/time value.
-     */
-    public function getDate($format = 'd-m-Y H:i:s')
-    {
-        if ($this->date === null) {
-            return null;
-        }
-
-        if ($this->date === '0000-00-00 00:00:00') {
-            // while technically this is not a default value of null,
-            // this seems to be closest in meaning.
-            return null;
-        } else {
-            try {
-                $dt = new DateTime($this->date);
-            } catch (Exception $x) {
-                throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->date, true), $x);
-            }
-        }
-
-        if ($format === null) {
-            // Because propel.useDateTimeClass is true, we return a DateTime object.
-            return $dt;
-        } elseif (strpos($format, '%') !== false) {
-            return strftime($format, $dt->format('U'));
-        } else {
-            return $dt->format($format);
-        }
-    }
-
-    /**
-     * Get the [optionally formatted] temporal [last_modification_date] column value.
-     *
-     *
-     * @param string $format The date/time format string (either date()-style or strftime()-style).
-     *				 If format is null, then the raw DateTime object will be returned.
-     * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00 00:00:00
-     * @throws PropelException - if unable to parse/validate the date/time value.
-     */
-    public function getLastModificationDate($format = 'd-m-Y H:i:s')
-    {
-        if ($this->last_modification_date === null) {
-            return null;
-        }
-
-        if ($this->last_modification_date === '0000-00-00 00:00:00') {
-            // while technically this is not a default value of null,
-            // this seems to be closest in meaning.
-            return null;
-        } else {
-            try {
-                $dt = new DateTime($this->last_modification_date);
-            } catch (Exception $x) {
-                throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->last_modification_date, true), $x);
-            }
-        }
-
-        if ($format === null) {
-            // Because propel.useDateTimeClass is true, we return a DateTime object.
-            return $dt;
-        } elseif (strpos($format, '%') !== false) {
-            return strftime($format, $dt->format('U'));
-        } else {
-            return $dt->format($format);
-        }
     }
 
     /**
@@ -588,52 +502,6 @@ abstract class BaseContent extends BaseObject implements Persistent
 
         return $this;
     } // setContentTypeId()
-
-    /**
-     * Sets the value of [date] column to a normalized version of the date/time value specified.
-     *
-     * @param mixed $v string, integer (timestamp), or DateTime value.
-     *               Empty strings are treated as null.
-     * @return Content The current object (for fluent API support)
-     */
-    public function setDate($v)
-    {
-        $dt = PropelDateTime::newInstance($v, null, 'DateTime');
-        if ($this->date !== null || $dt !== null) {
-            $currentDateAsString = ($this->date !== null && $tmpDt = new DateTime($this->date)) ? $tmpDt->format('Y-m-d H:i:s') : null;
-            $newDateAsString = $dt ? $dt->format('Y-m-d H:i:s') : null;
-            if ($currentDateAsString !== $newDateAsString) {
-                $this->date = $newDateAsString;
-                $this->modifiedColumns[] = ContentPeer::DATE;
-            }
-        } // if either are not null
-
-
-        return $this;
-    } // setDate()
-
-    /**
-     * Sets the value of [last_modification_date] column to a normalized version of the date/time value specified.
-     *
-     * @param mixed $v string, integer (timestamp), or DateTime value.
-     *               Empty strings are treated as null.
-     * @return Content The current object (for fluent API support)
-     */
-    public function setLastModificationDate($v)
-    {
-        $dt = PropelDateTime::newInstance($v, null, 'DateTime');
-        if ($this->last_modification_date !== null || $dt !== null) {
-            $currentDateAsString = ($this->last_modification_date !== null && $tmpDt = new DateTime($this->last_modification_date)) ? $tmpDt->format('Y-m-d H:i:s') : null;
-            $newDateAsString = $dt ? $dt->format('Y-m-d H:i:s') : null;
-            if ($currentDateAsString !== $newDateAsString) {
-                $this->last_modification_date = $newDateAsString;
-                $this->modifiedColumns[] = ContentPeer::LAST_MODIFICATION_DATE;
-            }
-        } // if either are not null
-
-
-        return $this;
-    } // setLastModificationDate()
 
     /**
      * Set the value of [access_rights] column.
@@ -914,17 +782,15 @@ abstract class BaseContent extends BaseObject implements Persistent
             $this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
             $this->author_id = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
             $this->content_type_id = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
-            $this->date = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
-            $this->last_modification_date = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
-            $this->access_rights = ($row[$startcol + 5] !== null) ? (int) $row[$startcol + 5] : null;
-            $this->validated = ($row[$startcol + 6] !== null) ? (boolean) $row[$startcol + 6] : null;
-            $this->title = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
-            $this->cursus_id = ($row[$startcol + 8] !== null) ? (int) $row[$startcol + 8] : null;
-            $this->course_id = ($row[$startcol + 9] !== null) ? (int) $row[$startcol + 9] : null;
-            $this->year = ($row[$startcol + 10] !== null) ? (int) $row[$startcol + 10] : null;
-            $this->deleted = ($row[$startcol + 11] !== null) ? (boolean) $row[$startcol + 11] : null;
-            $this->created_at = ($row[$startcol + 12] !== null) ? (string) $row[$startcol + 12] : null;
-            $this->updated_at = ($row[$startcol + 13] !== null) ? (string) $row[$startcol + 13] : null;
+            $this->access_rights = ($row[$startcol + 3] !== null) ? (int) $row[$startcol + 3] : null;
+            $this->validated = ($row[$startcol + 4] !== null) ? (boolean) $row[$startcol + 4] : null;
+            $this->title = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
+            $this->cursus_id = ($row[$startcol + 6] !== null) ? (int) $row[$startcol + 6] : null;
+            $this->course_id = ($row[$startcol + 7] !== null) ? (int) $row[$startcol + 7] : null;
+            $this->year = ($row[$startcol + 8] !== null) ? (int) $row[$startcol + 8] : null;
+            $this->deleted = ($row[$startcol + 9] !== null) ? (boolean) $row[$startcol + 9] : null;
+            $this->created_at = ($row[$startcol + 10] !== null) ? (string) $row[$startcol + 10] : null;
+            $this->updated_at = ($row[$startcol + 11] !== null) ? (string) $row[$startcol + 11] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -933,7 +799,7 @@ abstract class BaseContent extends BaseObject implements Persistent
                 $this->ensureConsistency();
             }
 
-            return $startcol + 14; // 14 = ContentPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 12; // 12 = ContentPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating Content object", $e);
@@ -1298,12 +1164,6 @@ abstract class BaseContent extends BaseObject implements Persistent
         if ($this->isColumnModified(ContentPeer::CONTENT_TYPE_ID)) {
             $modifiedColumns[':p' . $index++]  = '`CONTENT_TYPE_ID`';
         }
-        if ($this->isColumnModified(ContentPeer::DATE)) {
-            $modifiedColumns[':p' . $index++]  = '`DATE`';
-        }
-        if ($this->isColumnModified(ContentPeer::LAST_MODIFICATION_DATE)) {
-            $modifiedColumns[':p' . $index++]  = '`LAST_MODIFICATION_DATE`';
-        }
         if ($this->isColumnModified(ContentPeer::ACCESS_RIGHTS)) {
             $modifiedColumns[':p' . $index++]  = '`ACCESS_RIGHTS`';
         }
@@ -1353,12 +1213,6 @@ abstract class BaseContent extends BaseObject implements Persistent
                         break;
                     case '`CONTENT_TYPE_ID`':
                         $stmt->bindValue($identifier, $this->content_type_id, PDO::PARAM_INT);
-                        break;
-                    case '`DATE`':
-                        $stmt->bindValue($identifier, $this->date, PDO::PARAM_STR);
-                        break;
-                    case '`LAST_MODIFICATION_DATE`':
-                        $stmt->bindValue($identifier, $this->last_modification_date, PDO::PARAM_STR);
                         break;
                     case '`ACCESS_RIGHTS`':
                         $stmt->bindValue($identifier, $this->access_rights, PDO::PARAM_INT);
@@ -1588,39 +1442,33 @@ abstract class BaseContent extends BaseObject implements Persistent
                 return $this->getContentTypeId();
                 break;
             case 3:
-                return $this->getDate();
-                break;
-            case 4:
-                return $this->getLastModificationDate();
-                break;
-            case 5:
                 return $this->getAccessRights();
                 break;
-            case 6:
+            case 4:
                 return $this->getValidated();
                 break;
-            case 7:
+            case 5:
                 return $this->getTitle();
                 break;
-            case 8:
+            case 6:
                 return $this->getText();
                 break;
-            case 9:
+            case 7:
                 return $this->getCursusId();
                 break;
-            case 10:
+            case 8:
                 return $this->getCourseId();
                 break;
-            case 11:
+            case 9:
                 return $this->getYear();
                 break;
-            case 12:
+            case 10:
                 return $this->getDeleted();
                 break;
-            case 13:
+            case 11:
                 return $this->getCreatedAt();
                 break;
-            case 14:
+            case 12:
                 return $this->getUpdatedAt();
                 break;
             default:
@@ -1655,18 +1503,16 @@ abstract class BaseContent extends BaseObject implements Persistent
             $keys[0] => $this->getId(),
             $keys[1] => $this->getAuthorId(),
             $keys[2] => $this->getContentTypeId(),
-            $keys[3] => $this->getDate(),
-            $keys[4] => $this->getLastModificationDate(),
-            $keys[5] => $this->getAccessRights(),
-            $keys[6] => $this->getValidated(),
-            $keys[7] => $this->getTitle(),
-            $keys[8] => ($includeLazyLoadColumns) ? $this->getText() : null,
-            $keys[9] => $this->getCursusId(),
-            $keys[10] => $this->getCourseId(),
-            $keys[11] => $this->getYear(),
-            $keys[12] => $this->getDeleted(),
-            $keys[13] => $this->getCreatedAt(),
-            $keys[14] => $this->getUpdatedAt(),
+            $keys[3] => $this->getAccessRights(),
+            $keys[4] => $this->getValidated(),
+            $keys[5] => $this->getTitle(),
+            $keys[6] => ($includeLazyLoadColumns) ? $this->getText() : null,
+            $keys[7] => $this->getCursusId(),
+            $keys[8] => $this->getCourseId(),
+            $keys[9] => $this->getYear(),
+            $keys[10] => $this->getDeleted(),
+            $keys[11] => $this->getCreatedAt(),
+            $keys[12] => $this->getUpdatedAt(),
         );
         if ($includeForeignObjects) {
             if (null !== $this->aAuthor) {
@@ -1734,39 +1580,33 @@ abstract class BaseContent extends BaseObject implements Persistent
                 $this->setContentTypeId($value);
                 break;
             case 3:
-                $this->setDate($value);
-                break;
-            case 4:
-                $this->setLastModificationDate($value);
-                break;
-            case 5:
                 $this->setAccessRights($value);
                 break;
-            case 6:
+            case 4:
                 $this->setValidated($value);
                 break;
-            case 7:
+            case 5:
                 $this->setTitle($value);
                 break;
-            case 8:
+            case 6:
                 $this->setText($value);
                 break;
-            case 9:
+            case 7:
                 $this->setCursusId($value);
                 break;
-            case 10:
+            case 8:
                 $this->setCourseId($value);
                 break;
-            case 11:
+            case 9:
                 $this->setYear($value);
                 break;
-            case 12:
+            case 10:
                 $this->setDeleted($value);
                 break;
-            case 13:
+            case 11:
                 $this->setCreatedAt($value);
                 break;
-            case 14:
+            case 12:
                 $this->setUpdatedAt($value);
                 break;
         } // switch()
@@ -1796,18 +1636,16 @@ abstract class BaseContent extends BaseObject implements Persistent
         if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
         if (array_key_exists($keys[1], $arr)) $this->setAuthorId($arr[$keys[1]]);
         if (array_key_exists($keys[2], $arr)) $this->setContentTypeId($arr[$keys[2]]);
-        if (array_key_exists($keys[3], $arr)) $this->setDate($arr[$keys[3]]);
-        if (array_key_exists($keys[4], $arr)) $this->setLastModificationDate($arr[$keys[4]]);
-        if (array_key_exists($keys[5], $arr)) $this->setAccessRights($arr[$keys[5]]);
-        if (array_key_exists($keys[6], $arr)) $this->setValidated($arr[$keys[6]]);
-        if (array_key_exists($keys[7], $arr)) $this->setTitle($arr[$keys[7]]);
-        if (array_key_exists($keys[8], $arr)) $this->setText($arr[$keys[8]]);
-        if (array_key_exists($keys[9], $arr)) $this->setCursusId($arr[$keys[9]]);
-        if (array_key_exists($keys[10], $arr)) $this->setCourseId($arr[$keys[10]]);
-        if (array_key_exists($keys[11], $arr)) $this->setYear($arr[$keys[11]]);
-        if (array_key_exists($keys[12], $arr)) $this->setDeleted($arr[$keys[12]]);
-        if (array_key_exists($keys[13], $arr)) $this->setCreatedAt($arr[$keys[13]]);
-        if (array_key_exists($keys[14], $arr)) $this->setUpdatedAt($arr[$keys[14]]);
+        if (array_key_exists($keys[3], $arr)) $this->setAccessRights($arr[$keys[3]]);
+        if (array_key_exists($keys[4], $arr)) $this->setValidated($arr[$keys[4]]);
+        if (array_key_exists($keys[5], $arr)) $this->setTitle($arr[$keys[5]]);
+        if (array_key_exists($keys[6], $arr)) $this->setText($arr[$keys[6]]);
+        if (array_key_exists($keys[7], $arr)) $this->setCursusId($arr[$keys[7]]);
+        if (array_key_exists($keys[8], $arr)) $this->setCourseId($arr[$keys[8]]);
+        if (array_key_exists($keys[9], $arr)) $this->setYear($arr[$keys[9]]);
+        if (array_key_exists($keys[10], $arr)) $this->setDeleted($arr[$keys[10]]);
+        if (array_key_exists($keys[11], $arr)) $this->setCreatedAt($arr[$keys[11]]);
+        if (array_key_exists($keys[12], $arr)) $this->setUpdatedAt($arr[$keys[12]]);
     }
 
     /**
@@ -1822,8 +1660,6 @@ abstract class BaseContent extends BaseObject implements Persistent
         if ($this->isColumnModified(ContentPeer::ID)) $criteria->add(ContentPeer::ID, $this->id);
         if ($this->isColumnModified(ContentPeer::AUTHOR_ID)) $criteria->add(ContentPeer::AUTHOR_ID, $this->author_id);
         if ($this->isColumnModified(ContentPeer::CONTENT_TYPE_ID)) $criteria->add(ContentPeer::CONTENT_TYPE_ID, $this->content_type_id);
-        if ($this->isColumnModified(ContentPeer::DATE)) $criteria->add(ContentPeer::DATE, $this->date);
-        if ($this->isColumnModified(ContentPeer::LAST_MODIFICATION_DATE)) $criteria->add(ContentPeer::LAST_MODIFICATION_DATE, $this->last_modification_date);
         if ($this->isColumnModified(ContentPeer::ACCESS_RIGHTS)) $criteria->add(ContentPeer::ACCESS_RIGHTS, $this->access_rights);
         if ($this->isColumnModified(ContentPeer::VALIDATED)) $criteria->add(ContentPeer::VALIDATED, $this->validated);
         if ($this->isColumnModified(ContentPeer::TITLE)) $criteria->add(ContentPeer::TITLE, $this->title);
@@ -1899,8 +1735,6 @@ abstract class BaseContent extends BaseObject implements Persistent
     {
         $copyObj->setAuthorId($this->getAuthorId());
         $copyObj->setContentTypeId($this->getContentTypeId());
-        $copyObj->setDate($this->getDate());
-        $copyObj->setLastModificationDate($this->getLastModificationDate());
         $copyObj->setAccessRights($this->getAccessRights());
         $copyObj->setValidated($this->getValidated());
         $copyObj->setTitle($this->getTitle());
@@ -3110,8 +2944,6 @@ abstract class BaseContent extends BaseObject implements Persistent
         $this->id = null;
         $this->author_id = null;
         $this->content_type_id = null;
-        $this->date = null;
-        $this->last_modification_date = null;
         $this->access_rights = null;
         $this->validated = null;
         $this->title = null;

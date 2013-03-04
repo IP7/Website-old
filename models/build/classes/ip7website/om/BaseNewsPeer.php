@@ -24,13 +24,13 @@ abstract class BaseNewsPeer
     const TM_CLASS = 'NewsTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 11;
+    const NUM_COLUMNS = 10;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 11;
+    const NUM_HYDRATE_COLUMNS = 10;
 
     /** the column name for the ID field */
     const ID = 'news.ID';
@@ -43,9 +43,6 @@ abstract class BaseNewsPeer
 
     /** the column name for the TEXT field */
     const TEXT = 'news.TEXT';
-
-    /** the column name for the DATE field */
-    const DATE = 'news.DATE';
 
     /** the column name for the EXPIRATION_DATE field */
     const EXPIRATION_DATE = 'news.EXPIRATION_DATE';
@@ -84,12 +81,12 @@ abstract class BaseNewsPeer
      * e.g. NewsPeer::$fieldNames[NewsPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'AuthorId', 'Title', 'Text', 'Date', 'ExpirationDate', 'CursusId', 'CourseId', 'AccessRights', 'CreatedAt', 'UpdatedAt', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'authorId', 'title', 'text', 'date', 'expirationDate', 'cursusId', 'courseId', 'accessRights', 'createdAt', 'updatedAt', ),
-        BasePeer::TYPE_COLNAME => array (NewsPeer::ID, NewsPeer::AUTHOR_ID, NewsPeer::TITLE, NewsPeer::TEXT, NewsPeer::DATE, NewsPeer::EXPIRATION_DATE, NewsPeer::CURSUS_ID, NewsPeer::COURSE_ID, NewsPeer::ACCESS_RIGHTS, NewsPeer::CREATED_AT, NewsPeer::UPDATED_AT, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'AUTHOR_ID', 'TITLE', 'TEXT', 'DATE', 'EXPIRATION_DATE', 'CURSUS_ID', 'COURSE_ID', 'ACCESS_RIGHTS', 'CREATED_AT', 'UPDATED_AT', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'author_id', 'title', 'text', 'date', 'expiration_date', 'cursus_id', 'course_id', 'access_rights', 'created_at', 'updated_at', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'AuthorId', 'Title', 'Text', 'ExpirationDate', 'CursusId', 'CourseId', 'AccessRights', 'CreatedAt', 'UpdatedAt', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'authorId', 'title', 'text', 'expirationDate', 'cursusId', 'courseId', 'accessRights', 'createdAt', 'updatedAt', ),
+        BasePeer::TYPE_COLNAME => array (NewsPeer::ID, NewsPeer::AUTHOR_ID, NewsPeer::TITLE, NewsPeer::TEXT, NewsPeer::EXPIRATION_DATE, NewsPeer::CURSUS_ID, NewsPeer::COURSE_ID, NewsPeer::ACCESS_RIGHTS, NewsPeer::CREATED_AT, NewsPeer::UPDATED_AT, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'AUTHOR_ID', 'TITLE', 'TEXT', 'EXPIRATION_DATE', 'CURSUS_ID', 'COURSE_ID', 'ACCESS_RIGHTS', 'CREATED_AT', 'UPDATED_AT', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'author_id', 'title', 'text', 'expiration_date', 'cursus_id', 'course_id', 'access_rights', 'created_at', 'updated_at', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, )
     );
 
     /**
@@ -99,12 +96,12 @@ abstract class BaseNewsPeer
      * e.g. NewsPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'AuthorId' => 1, 'Title' => 2, 'Text' => 3, 'Date' => 4, 'ExpirationDate' => 5, 'CursusId' => 6, 'CourseId' => 7, 'AccessRights' => 8, 'CreatedAt' => 9, 'UpdatedAt' => 10, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'authorId' => 1, 'title' => 2, 'text' => 3, 'date' => 4, 'expirationDate' => 5, 'cursusId' => 6, 'courseId' => 7, 'accessRights' => 8, 'createdAt' => 9, 'updatedAt' => 10, ),
-        BasePeer::TYPE_COLNAME => array (NewsPeer::ID => 0, NewsPeer::AUTHOR_ID => 1, NewsPeer::TITLE => 2, NewsPeer::TEXT => 3, NewsPeer::DATE => 4, NewsPeer::EXPIRATION_DATE => 5, NewsPeer::CURSUS_ID => 6, NewsPeer::COURSE_ID => 7, NewsPeer::ACCESS_RIGHTS => 8, NewsPeer::CREATED_AT => 9, NewsPeer::UPDATED_AT => 10, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'AUTHOR_ID' => 1, 'TITLE' => 2, 'TEXT' => 3, 'DATE' => 4, 'EXPIRATION_DATE' => 5, 'CURSUS_ID' => 6, 'COURSE_ID' => 7, 'ACCESS_RIGHTS' => 8, 'CREATED_AT' => 9, 'UPDATED_AT' => 10, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'author_id' => 1, 'title' => 2, 'text' => 3, 'date' => 4, 'expiration_date' => 5, 'cursus_id' => 6, 'course_id' => 7, 'access_rights' => 8, 'created_at' => 9, 'updated_at' => 10, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'AuthorId' => 1, 'Title' => 2, 'Text' => 3, 'ExpirationDate' => 4, 'CursusId' => 5, 'CourseId' => 6, 'AccessRights' => 7, 'CreatedAt' => 8, 'UpdatedAt' => 9, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'authorId' => 1, 'title' => 2, 'text' => 3, 'expirationDate' => 4, 'cursusId' => 5, 'courseId' => 6, 'accessRights' => 7, 'createdAt' => 8, 'updatedAt' => 9, ),
+        BasePeer::TYPE_COLNAME => array (NewsPeer::ID => 0, NewsPeer::AUTHOR_ID => 1, NewsPeer::TITLE => 2, NewsPeer::TEXT => 3, NewsPeer::EXPIRATION_DATE => 4, NewsPeer::CURSUS_ID => 5, NewsPeer::COURSE_ID => 6, NewsPeer::ACCESS_RIGHTS => 7, NewsPeer::CREATED_AT => 8, NewsPeer::UPDATED_AT => 9, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'AUTHOR_ID' => 1, 'TITLE' => 2, 'TEXT' => 3, 'EXPIRATION_DATE' => 4, 'CURSUS_ID' => 5, 'COURSE_ID' => 6, 'ACCESS_RIGHTS' => 7, 'CREATED_AT' => 8, 'UPDATED_AT' => 9, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'author_id' => 1, 'title' => 2, 'text' => 3, 'expiration_date' => 4, 'cursus_id' => 5, 'course_id' => 6, 'access_rights' => 7, 'created_at' => 8, 'updated_at' => 9, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, )
     );
 
     /**
@@ -182,7 +179,6 @@ abstract class BaseNewsPeer
             $criteria->addSelectColumn(NewsPeer::AUTHOR_ID);
             $criteria->addSelectColumn(NewsPeer::TITLE);
             $criteria->addSelectColumn(NewsPeer::TEXT);
-            $criteria->addSelectColumn(NewsPeer::DATE);
             $criteria->addSelectColumn(NewsPeer::EXPIRATION_DATE);
             $criteria->addSelectColumn(NewsPeer::CURSUS_ID);
             $criteria->addSelectColumn(NewsPeer::COURSE_ID);
@@ -194,7 +190,6 @@ abstract class BaseNewsPeer
             $criteria->addSelectColumn($alias . '.AUTHOR_ID');
             $criteria->addSelectColumn($alias . '.TITLE');
             $criteria->addSelectColumn($alias . '.TEXT');
-            $criteria->addSelectColumn($alias . '.DATE');
             $criteria->addSelectColumn($alias . '.EXPIRATION_DATE');
             $criteria->addSelectColumn($alias . '.CURSUS_ID');
             $criteria->addSelectColumn($alias . '.COURSE_ID');

@@ -54,12 +54,6 @@ abstract class BaseNews extends BaseObject implements Persistent
     protected $text;
 
     /**
-     * The value for the date field.
-     * @var        string
-     */
-    protected $date;
-
-    /**
      * The value for the expiration_date field.
      * @var        string
      */
@@ -183,43 +177,6 @@ abstract class BaseNews extends BaseObject implements Persistent
     public function getText()
     {
         return $this->text;
-    }
-
-    /**
-     * Get the [optionally formatted] temporal [date] column value.
-     *
-     *
-     * @param string $format The date/time format string (either date()-style or strftime()-style).
-     *				 If format is null, then the raw DateTime object will be returned.
-     * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00 00:00:00
-     * @throws PropelException - if unable to parse/validate the date/time value.
-     */
-    public function getDate($format = 'd-m-Y H:i:s')
-    {
-        if ($this->date === null) {
-            return null;
-        }
-
-        if ($this->date === '0000-00-00 00:00:00') {
-            // while technically this is not a default value of null,
-            // this seems to be closest in meaning.
-            return null;
-        } else {
-            try {
-                $dt = new DateTime($this->date);
-            } catch (Exception $x) {
-                throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->date, true), $x);
-            }
-        }
-
-        if ($format === null) {
-            // Because propel.useDateTimeClass is true, we return a DateTime object.
-            return $dt;
-        } elseif (strpos($format, '%') !== false) {
-            return strftime($format, $dt->format('U'));
-        } else {
-            return $dt->format($format);
-        }
     }
 
     /**
@@ -452,29 +409,6 @@ abstract class BaseNews extends BaseObject implements Persistent
     } // setText()
 
     /**
-     * Sets the value of [date] column to a normalized version of the date/time value specified.
-     *
-     * @param mixed $v string, integer (timestamp), or DateTime value.
-     *               Empty strings are treated as null.
-     * @return News The current object (for fluent API support)
-     */
-    public function setDate($v)
-    {
-        $dt = PropelDateTime::newInstance($v, null, 'DateTime');
-        if ($this->date !== null || $dt !== null) {
-            $currentDateAsString = ($this->date !== null && $tmpDt = new DateTime($this->date)) ? $tmpDt->format('Y-m-d H:i:s') : null;
-            $newDateAsString = $dt ? $dt->format('Y-m-d H:i:s') : null;
-            if ($currentDateAsString !== $newDateAsString) {
-                $this->date = $newDateAsString;
-                $this->modifiedColumns[] = NewsPeer::DATE;
-            }
-        } // if either are not null
-
-
-        return $this;
-    } // setDate()
-
-    /**
      * Sets the value of [expiration_date] column to a normalized version of the date/time value specified.
      *
      * @param mixed $v string, integer (timestamp), or DateTime value.
@@ -650,13 +584,12 @@ abstract class BaseNews extends BaseObject implements Persistent
             $this->author_id = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
             $this->title = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
             $this->text = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
-            $this->date = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
-            $this->expiration_date = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
-            $this->cursus_id = ($row[$startcol + 6] !== null) ? (int) $row[$startcol + 6] : null;
-            $this->course_id = ($row[$startcol + 7] !== null) ? (int) $row[$startcol + 7] : null;
-            $this->access_rights = ($row[$startcol + 8] !== null) ? (int) $row[$startcol + 8] : null;
-            $this->created_at = ($row[$startcol + 9] !== null) ? (string) $row[$startcol + 9] : null;
-            $this->updated_at = ($row[$startcol + 10] !== null) ? (string) $row[$startcol + 10] : null;
+            $this->expiration_date = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
+            $this->cursus_id = ($row[$startcol + 5] !== null) ? (int) $row[$startcol + 5] : null;
+            $this->course_id = ($row[$startcol + 6] !== null) ? (int) $row[$startcol + 6] : null;
+            $this->access_rights = ($row[$startcol + 7] !== null) ? (int) $row[$startcol + 7] : null;
+            $this->created_at = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
+            $this->updated_at = ($row[$startcol + 9] !== null) ? (string) $row[$startcol + 9] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -665,7 +598,7 @@ abstract class BaseNews extends BaseObject implements Persistent
                 $this->ensureConsistency();
             }
 
-            return $startcol + 11; // 11 = NewsPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 10; // 10 = NewsPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating News object", $e);
@@ -938,9 +871,6 @@ abstract class BaseNews extends BaseObject implements Persistent
         if ($this->isColumnModified(NewsPeer::TEXT)) {
             $modifiedColumns[':p' . $index++]  = '`TEXT`';
         }
-        if ($this->isColumnModified(NewsPeer::DATE)) {
-            $modifiedColumns[':p' . $index++]  = '`DATE`';
-        }
         if ($this->isColumnModified(NewsPeer::EXPIRATION_DATE)) {
             $modifiedColumns[':p' . $index++]  = '`EXPIRATION_DATE`';
         }
@@ -981,9 +911,6 @@ abstract class BaseNews extends BaseObject implements Persistent
                         break;
                     case '`TEXT`':
                         $stmt->bindValue($identifier, $this->text, PDO::PARAM_STR);
-                        break;
-                    case '`DATE`':
-                        $stmt->bindValue($identifier, $this->date, PDO::PARAM_STR);
                         break;
                     case '`EXPIRATION_DATE`':
                         $stmt->bindValue($identifier, $this->expiration_date, PDO::PARAM_STR);
@@ -1174,24 +1101,21 @@ abstract class BaseNews extends BaseObject implements Persistent
                 return $this->getText();
                 break;
             case 4:
-                return $this->getDate();
-                break;
-            case 5:
                 return $this->getExpirationDate();
                 break;
-            case 6:
+            case 5:
                 return $this->getCursusId();
                 break;
-            case 7:
+            case 6:
                 return $this->getCourseId();
                 break;
-            case 8:
+            case 7:
                 return $this->getAccessRights();
                 break;
-            case 9:
+            case 8:
                 return $this->getCreatedAt();
                 break;
-            case 10:
+            case 9:
                 return $this->getUpdatedAt();
                 break;
             default:
@@ -1227,13 +1151,12 @@ abstract class BaseNews extends BaseObject implements Persistent
             $keys[1] => $this->getAuthorId(),
             $keys[2] => $this->getTitle(),
             $keys[3] => $this->getText(),
-            $keys[4] => $this->getDate(),
-            $keys[5] => $this->getExpirationDate(),
-            $keys[6] => $this->getCursusId(),
-            $keys[7] => $this->getCourseId(),
-            $keys[8] => $this->getAccessRights(),
-            $keys[9] => $this->getCreatedAt(),
-            $keys[10] => $this->getUpdatedAt(),
+            $keys[4] => $this->getExpirationDate(),
+            $keys[5] => $this->getCursusId(),
+            $keys[6] => $this->getCourseId(),
+            $keys[7] => $this->getAccessRights(),
+            $keys[8] => $this->getCreatedAt(),
+            $keys[9] => $this->getUpdatedAt(),
         );
         if ($includeForeignObjects) {
             if (null !== $this->aAuthor) {
@@ -1292,24 +1215,21 @@ abstract class BaseNews extends BaseObject implements Persistent
                 $this->setText($value);
                 break;
             case 4:
-                $this->setDate($value);
-                break;
-            case 5:
                 $this->setExpirationDate($value);
                 break;
-            case 6:
+            case 5:
                 $this->setCursusId($value);
                 break;
-            case 7:
+            case 6:
                 $this->setCourseId($value);
                 break;
-            case 8:
+            case 7:
                 $this->setAccessRights($value);
                 break;
-            case 9:
+            case 8:
                 $this->setCreatedAt($value);
                 break;
-            case 10:
+            case 9:
                 $this->setUpdatedAt($value);
                 break;
         } // switch()
@@ -1340,13 +1260,12 @@ abstract class BaseNews extends BaseObject implements Persistent
         if (array_key_exists($keys[1], $arr)) $this->setAuthorId($arr[$keys[1]]);
         if (array_key_exists($keys[2], $arr)) $this->setTitle($arr[$keys[2]]);
         if (array_key_exists($keys[3], $arr)) $this->setText($arr[$keys[3]]);
-        if (array_key_exists($keys[4], $arr)) $this->setDate($arr[$keys[4]]);
-        if (array_key_exists($keys[5], $arr)) $this->setExpirationDate($arr[$keys[5]]);
-        if (array_key_exists($keys[6], $arr)) $this->setCursusId($arr[$keys[6]]);
-        if (array_key_exists($keys[7], $arr)) $this->setCourseId($arr[$keys[7]]);
-        if (array_key_exists($keys[8], $arr)) $this->setAccessRights($arr[$keys[8]]);
-        if (array_key_exists($keys[9], $arr)) $this->setCreatedAt($arr[$keys[9]]);
-        if (array_key_exists($keys[10], $arr)) $this->setUpdatedAt($arr[$keys[10]]);
+        if (array_key_exists($keys[4], $arr)) $this->setExpirationDate($arr[$keys[4]]);
+        if (array_key_exists($keys[5], $arr)) $this->setCursusId($arr[$keys[5]]);
+        if (array_key_exists($keys[6], $arr)) $this->setCourseId($arr[$keys[6]]);
+        if (array_key_exists($keys[7], $arr)) $this->setAccessRights($arr[$keys[7]]);
+        if (array_key_exists($keys[8], $arr)) $this->setCreatedAt($arr[$keys[8]]);
+        if (array_key_exists($keys[9], $arr)) $this->setUpdatedAt($arr[$keys[9]]);
     }
 
     /**
@@ -1362,7 +1281,6 @@ abstract class BaseNews extends BaseObject implements Persistent
         if ($this->isColumnModified(NewsPeer::AUTHOR_ID)) $criteria->add(NewsPeer::AUTHOR_ID, $this->author_id);
         if ($this->isColumnModified(NewsPeer::TITLE)) $criteria->add(NewsPeer::TITLE, $this->title);
         if ($this->isColumnModified(NewsPeer::TEXT)) $criteria->add(NewsPeer::TEXT, $this->text);
-        if ($this->isColumnModified(NewsPeer::DATE)) $criteria->add(NewsPeer::DATE, $this->date);
         if ($this->isColumnModified(NewsPeer::EXPIRATION_DATE)) $criteria->add(NewsPeer::EXPIRATION_DATE, $this->expiration_date);
         if ($this->isColumnModified(NewsPeer::CURSUS_ID)) $criteria->add(NewsPeer::CURSUS_ID, $this->cursus_id);
         if ($this->isColumnModified(NewsPeer::COURSE_ID)) $criteria->add(NewsPeer::COURSE_ID, $this->course_id);
@@ -1435,7 +1353,6 @@ abstract class BaseNews extends BaseObject implements Persistent
         $copyObj->setAuthorId($this->getAuthorId());
         $copyObj->setTitle($this->getTitle());
         $copyObj->setText($this->getText());
-        $copyObj->setDate($this->getDate());
         $copyObj->setExpirationDate($this->getExpirationDate());
         $copyObj->setCursusId($this->getCursusId());
         $copyObj->setCourseId($this->getCourseId());
@@ -1662,7 +1579,6 @@ abstract class BaseNews extends BaseObject implements Persistent
         $this->author_id = null;
         $this->title = null;
         $this->text = null;
-        $this->date = null;
         $this->expiration_date = null;
         $this->cursus_id = null;
         $this->course_id = null;

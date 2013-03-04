@@ -53,7 +53,7 @@ function json_get_last_contents() {
                             . 'WHERE content_types.id = contents.content_type_id) <= ?',
                                 $user_rights, PDO::PARAM_INT)
                     ->where('Access_Rights <= ?', $user_rights, PDO::PARAM_INT)
-                    ->orderByDate('desc')
+                    ->orderByCreatedAt('desc')
                     ->limit($limit)
                     ->find();
 
@@ -67,7 +67,7 @@ function json_get_last_contents() {
         $tpl_contents []= array(
             'href'  => content_url($cursus, $course, $c, true),
             'title' => $c->getTitle(),
-            'date'  => $c->getDate(),
+            'date'  => $c->getCreatedAt(),
 
             'cursus' => $cursus ? $cursus->getShortName() : null,
             'course' => $course ? $course->getShortName() : null
@@ -203,8 +203,8 @@ function json_post_create_news() {
                     'id'            => $news->getId(),
                     'title'         => $news->getTitle(),
                     'content'       => $news->getText(),
-                    'datetime_attr' => datetime_attr($news->getDate()),
-                    'datetime'      => Lang\date_fr($news->getDate()),
+                    'datetime_attr' => datetime_attr($news->getCreatedAt()),
+                    'datetime'      => Lang\date_fr($news->getCreatedAt()),
                     'author'        => array(
                         'href' => Config::$root_uri.'p/'.user()->getUsername(),
                         'name' => user()->getPublicName()

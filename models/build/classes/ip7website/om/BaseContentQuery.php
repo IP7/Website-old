@@ -9,8 +9,6 @@
  * @method ContentQuery orderById($order = Criteria::ASC) Order by the id column
  * @method ContentQuery orderByAuthorId($order = Criteria::ASC) Order by the author_id column
  * @method ContentQuery orderByContentTypeId($order = Criteria::ASC) Order by the content_type_id column
- * @method ContentQuery orderByDate($order = Criteria::ASC) Order by the date column
- * @method ContentQuery orderByLastModificationDate($order = Criteria::ASC) Order by the last_modification_date column
  * @method ContentQuery orderByAccessRights($order = Criteria::ASC) Order by the access_rights column
  * @method ContentQuery orderByValidated($order = Criteria::ASC) Order by the validated column
  * @method ContentQuery orderByTitle($order = Criteria::ASC) Order by the title column
@@ -25,8 +23,6 @@
  * @method ContentQuery groupById() Group by the id column
  * @method ContentQuery groupByAuthorId() Group by the author_id column
  * @method ContentQuery groupByContentTypeId() Group by the content_type_id column
- * @method ContentQuery groupByDate() Group by the date column
- * @method ContentQuery groupByLastModificationDate() Group by the last_modification_date column
  * @method ContentQuery groupByAccessRights() Group by the access_rights column
  * @method ContentQuery groupByValidated() Group by the validated column
  * @method ContentQuery groupByTitle() Group by the title column
@@ -76,8 +72,6 @@
  * @method Content findOneById(int $id) Return the first Content filtered by the id column
  * @method Content findOneByAuthorId(int $author_id) Return the first Content filtered by the author_id column
  * @method Content findOneByContentTypeId(int $content_type_id) Return the first Content filtered by the content_type_id column
- * @method Content findOneByDate(string $date) Return the first Content filtered by the date column
- * @method Content findOneByLastModificationDate(string $last_modification_date) Return the first Content filtered by the last_modification_date column
  * @method Content findOneByAccessRights(int $access_rights) Return the first Content filtered by the access_rights column
  * @method Content findOneByValidated(boolean $validated) Return the first Content filtered by the validated column
  * @method Content findOneByTitle(string $title) Return the first Content filtered by the title column
@@ -92,8 +86,6 @@
  * @method array findById(int $id) Return Content objects filtered by the id column
  * @method array findByAuthorId(int $author_id) Return Content objects filtered by the author_id column
  * @method array findByContentTypeId(int $content_type_id) Return Content objects filtered by the content_type_id column
- * @method array findByDate(string $date) Return Content objects filtered by the date column
- * @method array findByLastModificationDate(string $last_modification_date) Return Content objects filtered by the last_modification_date column
  * @method array findByAccessRights(int $access_rights) Return Content objects filtered by the access_rights column
  * @method array findByValidated(boolean $validated) Return Content objects filtered by the validated column
  * @method array findByTitle(string $title) Return Content objects filtered by the title column
@@ -193,7 +185,7 @@ abstract class BaseContentQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `ID`, `AUTHOR_ID`, `CONTENT_TYPE_ID`, `DATE`, `LAST_MODIFICATION_DATE`, `ACCESS_RIGHTS`, `VALIDATED`, `TITLE`, `CURSUS_ID`, `COURSE_ID`, `YEAR`, `DELETED`, `CREATED_AT`, `UPDATED_AT` FROM `contents` WHERE `ID` = :p0';
+        $sql = 'SELECT `ID`, `AUTHOR_ID`, `CONTENT_TYPE_ID`, `ACCESS_RIGHTS`, `VALIDATED`, `TITLE`, `CURSUS_ID`, `COURSE_ID`, `YEAR`, `DELETED`, `CREATED_AT`, `UPDATED_AT` FROM `contents` WHERE `ID` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -393,92 +385,6 @@ abstract class BaseContentQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(ContentPeer::CONTENT_TYPE_ID, $contentTypeId, $comparison);
-    }
-
-    /**
-     * Filter the query on the date column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByDate('2011-03-14'); // WHERE date = '2011-03-14'
-     * $query->filterByDate('now'); // WHERE date = '2011-03-14'
-     * $query->filterByDate(array('max' => 'yesterday')); // WHERE date > '2011-03-13'
-     * </code>
-     *
-     * @param     mixed $date The value to use as filter.
-     *              Values can be integers (unix timestamps), DateTime objects, or strings.
-     *              Empty strings are treated as NULL.
-     *              Use scalar values for equality.
-     *              Use array values for in_array() equivalent.
-     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return ContentQuery The current query, for fluid interface
-     */
-    public function filterByDate($date = null, $comparison = null)
-    {
-        if (is_array($date)) {
-            $useMinMax = false;
-            if (isset($date['min'])) {
-                $this->addUsingAlias(ContentPeer::DATE, $date['min'], Criteria::GREATER_EQUAL);
-                $useMinMax = true;
-            }
-            if (isset($date['max'])) {
-                $this->addUsingAlias(ContentPeer::DATE, $date['max'], Criteria::LESS_EQUAL);
-                $useMinMax = true;
-            }
-            if ($useMinMax) {
-                return $this;
-            }
-            if (null === $comparison) {
-                $comparison = Criteria::IN;
-            }
-        }
-
-        return $this->addUsingAlias(ContentPeer::DATE, $date, $comparison);
-    }
-
-    /**
-     * Filter the query on the last_modification_date column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByLastModificationDate('2011-03-14'); // WHERE last_modification_date = '2011-03-14'
-     * $query->filterByLastModificationDate('now'); // WHERE last_modification_date = '2011-03-14'
-     * $query->filterByLastModificationDate(array('max' => 'yesterday')); // WHERE last_modification_date > '2011-03-13'
-     * </code>
-     *
-     * @param     mixed $lastModificationDate The value to use as filter.
-     *              Values can be integers (unix timestamps), DateTime objects, or strings.
-     *              Empty strings are treated as NULL.
-     *              Use scalar values for equality.
-     *              Use array values for in_array() equivalent.
-     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return ContentQuery The current query, for fluid interface
-     */
-    public function filterByLastModificationDate($lastModificationDate = null, $comparison = null)
-    {
-        if (is_array($lastModificationDate)) {
-            $useMinMax = false;
-            if (isset($lastModificationDate['min'])) {
-                $this->addUsingAlias(ContentPeer::LAST_MODIFICATION_DATE, $lastModificationDate['min'], Criteria::GREATER_EQUAL);
-                $useMinMax = true;
-            }
-            if (isset($lastModificationDate['max'])) {
-                $this->addUsingAlias(ContentPeer::LAST_MODIFICATION_DATE, $lastModificationDate['max'], Criteria::LESS_EQUAL);
-                $useMinMax = true;
-            }
-            if ($useMinMax) {
-                return $this;
-            }
-            if (null === $comparison) {
-                $comparison = Criteria::IN;
-            }
-        }
-
-        return $this->addUsingAlias(ContentPeer::LAST_MODIFICATION_DATE, $lastModificationDate, $comparison);
     }
 
     /**

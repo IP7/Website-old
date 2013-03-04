@@ -41,8 +41,6 @@ class ContentTableMap extends TableMap
         $this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
         $this->addForeignKey('AUTHOR_ID', 'AuthorId', 'INTEGER', 'users', 'ID', false, null, null);
         $this->addForeignKey('CONTENT_TYPE_ID', 'ContentTypeId', 'INTEGER', 'content_types', 'ID', false, null, null);
-        $this->addColumn('DATE', 'Date', 'TIMESTAMP', true, null, null);
-        $this->addColumn('LAST_MODIFICATION_DATE', 'LastModificationDate', 'TIMESTAMP', false, null, null);
         $this->addColumn('ACCESS_RIGHTS', 'AccessRights', 'TINYINT', false, null, 0);
         $this->addColumn('VALIDATED', 'Validated', 'BOOLEAN', false, 1, '0');
         $this->addColumn('TITLE', 'Title', 'VARCHAR', false, 255, null);
