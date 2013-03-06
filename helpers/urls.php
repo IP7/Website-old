@@ -140,6 +140,6 @@ function wiki_url($str) {
 }
 
 // return the URL of a file
-function file_url($f) {
+function file_url($file) {
     return Config::$root_uri.'file/'.$file->getId().'/'.name_encode($file->getTitle());
 }
