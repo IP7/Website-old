@@ -2,7 +2,7 @@
 
 function display_news_archives() {
 
-    $news = get_news(null, null, 50);
+    $news = get_news(null, null, 50, true);
 
     $news_tpl = array();
 
