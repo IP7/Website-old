@@ -176,7 +176,7 @@ function display_admin_proposed_content($msg_str=null, $msg_type=null){
             $tpl_c = array(
                 'title' => $c->getTitle(),
                 'href'  => content_url($cursus, $course, $c),
-                'date'  => tpl_date($c->getDate()),
+                'date'  => tpl_date($c->getCreatedAt()),
                 'author' => array(
                     'href' => user_url($user),
                     'name' => $user->getPublicName()

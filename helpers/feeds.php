@@ -121,7 +121,7 @@ function feed_helper($cursus_sn, $course_sn, $type='atom',
 
             'title' => ($n->getCursus() ? '[' . $n->getCursus()->getShortName() . '] ' : '') . $n->getTitle(),
             'link'  => $root . news_url($n),
-            'date'  => $n->getDate(),
+            'date'  => $n->getCreatedAt(),
             'desc'  => $text ? $text : ' ',
             'guid'  => 'news-' . $n->getId(),
             'perma' => 'false'
@@ -139,7 +139,7 @@ function feed_helper($cursus_sn, $course_sn, $type='atom',
 
             'title' => 'Ajout d\'un contenu : ' . $c->getTitle(),
             'link'  => $link,
-            'date'  => $c->getDate(),
+            'date'  => $c->getCreatedAt(),
             'desc'  => $text ? $text : ' ',
             'guid'  => $link,
             'perma' => 'true'
