@@ -76,8 +76,8 @@
         "name": "base-head.min.js",
         "files": [
             "jquery-1.9.1.min.js",
-            "es5-shim.min.js",
-            "polyfills.js"
+            "polyfills.js",
+            "es5-shim.min.js"
         ]
     },
 
