@@ -2,7 +2,7 @@ $(function(){
     var d  = document,
         dc = d.createElement.bind(d),
         f  = d.getElementsByClassName('files_inputs')[0],
-        maxf = f.dataset['max'],
+        maxf = f.getAttribute( 'data-max' ),
 
         title_inp = d.querySelector('input[name=title]'),
         type_inp  = d.querySelector('select[name=type]'),
