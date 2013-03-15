@@ -12,35 +12,33 @@ Options +FollowSymlinks
 Options -Indexes
 RewriteEngine on
 
-# Redirect admin.infop7.org to www.infop7.org/admin
-RewriteCond %{HTTP_HOST} ^admin.infop7.org$ [NC]
-RewriteRule ^(.*)$ http://www.infop7.org/admin/$1 [L,R=301]
-
 # Redirect to www.
 RewriteCond %{HTTP_HOST} ^infop7.org$ [NC]
 RewriteRule ^(.*)$ http://www.infop7.org/$1 [L,R=301]
 
-# Limonade
+# Short links
 
-# test string is a valid files
+# if the string is not a valid file
 RewriteCond %{SCRIPT_FILENAME} !-f
-# test string is a valid directory
+# and if it's not a valid directory
 RewriteCond %{SCRIPT_FILENAME} !-d
 
-# For shortened links, using s.infop7.org/<something>
+# For shortened links, use s.infop7.org/<something>
 RewriteCond %{HTTP_HOST} ^s.infop7.org$ [NC]
 RewriteRule ^_shortlinks/(.*)$  _shortlinks/index.php?uri=/$1    [NC,L,QSA]
 
-# test string is a valid files
+# Limonade routes
+
+# if the string is not a valid file
 RewriteCond %{SCRIPT_FILENAME} !-f
-# test string is a valid directory
+# and if it's not a valid directory
 RewriteCond %{SCRIPT_FILENAME} !-d
 
 RewriteCond %{HTTP_HOST} !^s.infop7.org$ [NC]
-RewriteRule ^(.*)$  index.php?uri=/$1    [NC,L,QSA]
 # with QSA flag (query string append),
 # forces the rewrite engine to append a query string part of the
 # substitution string to the existing string, instead of replacing it.
+RewriteRule ^(.*)$  index.php?uri=/$1    [NC,L,QSA]
 </IfModule>
 
 # pages Expiration 
