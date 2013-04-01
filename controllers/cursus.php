@@ -68,6 +68,12 @@ function display_cursus() {
         );
     }
 
+    // sort courses (#302)
+    uasort($courses['s1']['optional'], 'contentsCmp');
+    uasort($courses['s1']['mandatory'], 'contentsCmp');
+    uasort($courses['s2']['optional'], 'contentsCmp');
+    uasort($courses['s2']['mandatory'], 'contentsCmp');
+
     $news = get_news($cursus);
 
     $other_links = array();
