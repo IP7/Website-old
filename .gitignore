@@ -19,3 +19,4 @@ migration.sql
 /models/buildtime-conf.xml
 /models/build/conf/ip7website-conf.php
 /vendor
+composer.lock
