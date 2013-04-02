@@ -1,5 +1,6 @@
 {
     "require": {
+        "sofadesign/limonade": "dev-master",
         "propel/propel1": "1.6.7",
         "twig/twig": "1.9.0"
     },

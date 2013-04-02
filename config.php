@@ -3,7 +3,6 @@
 $dirname = __DIR__;
 
 require_once $dirname.'/vendor/autoload.php';
-require_once $dirname.'/lib/vendors/limonade/limonade.php';
 require_once $dirname.'/lib/vendors/phpass/PasswordHash.php';
 require_once $dirname.'/lib/vendors/php_markdown_extra/markdown.php';
 
