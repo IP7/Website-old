@@ -25,7 +25,7 @@ cp tests/buildtime-conf.xml models/runtime-conf.xml
 
 echo -- Generating the model classes
 rm -rf build
-propel-gen
+../vendor/propel/bin/propel-gen
 
 echo -- Generating the tables
 mysql -u infop7user -e '\. build/sql/schema.sql;'
