@@ -4,10 +4,8 @@
 # some other things.
 #
 
-echo -- Installing Propel
-pear channel-discover pear.propelorm.org
-pear install -a propel/propel_generator
-pear install -a propel/propel_runtime
+echo -- Installing the dependencies
+composer install --dev
 
 echo -- Creating the DB
 mysql -u root -e 'create database infop7db_test;'
@@ -23,7 +21,7 @@ mv tmp schema.xml
 
 echo -- Setting-up Propel files
 cp {tests,models}/buildtime-conf.xml
-cp {tests,models}/runtime-conf.xml
+cp tests/buildtime-conf.xml models/runtime-conf.xml
 
 echo -- Generating the model classes
 rm -rf build

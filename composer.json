@@ -1,0 +1,8 @@
+{
+    "require": {
+        "propel/propel1": "~1.6"
+    },
+    "require-dev": {
+		"phpunit/phpunit": "3.7.*"
+	}
+}
