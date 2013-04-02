@@ -28,6 +28,6 @@ rm -rf build
 ../vendor/propel/propel1/generator/bin/propel-gen
 
 echo -- Generating the tables
-mysql -u infop7user -e '\. build/sql/schema.sql'
+mysql -u infop7user -e 'use infop7db_test;\. build/sql/schema.sql'
 
 echo -- Done.
