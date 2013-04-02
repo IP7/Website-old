@@ -2,10 +2,9 @@
 
 $dirname = __DIR__;
 
-require_once $dirname.'/lib/vendors/Twig/Autoloader.php';
+require_once $dirname.'/vendor/autoload.php';
 require_once $dirname.'/lib/vendors/limonade/limonade.php';
 require_once $dirname.'/lib/vendors/phpass/PasswordHash.php';
-require_once $dirname.'/vendor/propel/propel1/runtime/lib/Propel.php';
 require_once $dirname.'/lib/vendors/php_markdown_extra/markdown.php';
 
 ### Constants ###
@@ -88,7 +87,7 @@ class Config {
         self::$tpl = new Twig_Environment($loader, self::$default_twig_env);
 
         # Twig extensions
-        require_once __DIR__.'/lib/vendors/Twig/Extension/Markdown2HTMLfilter.php';
+        require_once __DIR__.'/helpers/Markdown2HTMLfilter.php';
         self::$tpl->addExtension(new \IP7Website\Twig\Extension\Markdown2HTMLfilter());
 
         # default template values
