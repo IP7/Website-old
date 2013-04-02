@@ -5,7 +5,7 @@ $dirname = __DIR__;
 require_once $dirname.'/lib/vendors/Twig/Autoloader.php';
 require_once $dirname.'/lib/vendors/limonade/limonade.php';
 require_once $dirname.'/lib/vendors/phpass/PasswordHash.php';
-require_once $dirname.'/lib/vendors/propel/runtime/lib/Propel.php';
+require_once $dirname.'/vendor/propel/propel1/runtime/lib/Propel.php';
 require_once $dirname.'/lib/vendors/php_markdown_extra/markdown.php';
 
 ### Constants ###
