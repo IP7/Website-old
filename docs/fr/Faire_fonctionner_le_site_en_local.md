@@ -24,6 +24,15 @@ demandé, choisissez ce que vous voulez, ça n’a pas d’importance pour le
 fonctionnement du site. Pour la suite, on considèrera que l’utilisateur root de
 MySQL s’appelle `root` et a pour mot de passe `secretrootpassword`.
 
+Les dépendances PHP (code tier) sont gérées avec Composer. Il faut donc
+l’installer :
+```sh
+cd /usr/local/bin
+curl -sS https://getcomposer.org/installer | sudo php
+sudo chmod a+x composer.phar
+sudo mv composer.phar composer
+```
+
 ## 2. Récupérer le code-source
 
 Si vous avez `git` installé (`sudo apt-get install git`), vous pouvez cloner le
@@ -46,6 +55,9 @@ wget https://github.com/IP7/Website/archive/master.zip && unzip master.zip && rm
 
 Cela va créer un répertoire `Website-master`, que vous pouvez renommer en
 quelque chose de plus compréhensible.
+
+Il manque le code des dépendances. Pour l’ajouter, placez-vous dans le
+répertoire du projet, et utilisez `composer install --dev`.
 
 ## 3. Configurer la base de données
 
