@@ -14,7 +14,7 @@ class Markdown2HTMLfilter extends \Twig_Extension {
  
     public function md2html($value) {
         if (!isset(self::$md_parser)) {
-            self::$md_parser = new \MarkdownExtra_Parser();
+            self::$md_parser = new \Michelf\MarkdownExtra();
         }
 
         return self::$md_parser->transform($value);
