@@ -199,6 +199,17 @@ function display_course_content() {
         'type'   => $tpl_type
     );
 
+    if ($content->hasBeenUpdated()) {
+
+        $tpl_content['last_update'] = array(
+
+            'text' => Lang\date_fr($content->getUpdatedAt()),
+            'datetime' => datetime_attr($content->getUpdatedAt())
+
+        );
+
+    }
+
     $keywords = array(
         $cursus->getName()
     );
@@ -245,11 +256,11 @@ function display_course_content() {
             'message_type' => $msg_type,
 
             'scripts' => $scripts,
-            'styles'  => $styles,
+            'styles'  => $styles/*,
 
             'disqus' => array(
-                //'identifier' => 'content-' . $content->getId()
-            )
+                'identifier' => 'content-' . $content->getId()
+            )*/
 
         )
     ));

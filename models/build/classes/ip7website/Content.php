@@ -32,4 +32,13 @@ class Content extends BaseContent {
     
     }
 
+    public function hasBeenUpdated() {
+
+        if ($this->getUpdatedAt() === null) { return false; }
+
+        return $this->getCreatedAt() !== $this->getUpdatedAt();
+
+
+    }
+
 } // Content
