@@ -9,8 +9,7 @@
     {
         "name": "simple-content.min.js",
         "files": [
-            "file-icons.js",
-            "disqus.js"
+            "file-icons.js"
         ]
     },
 
@@ -19,8 +18,7 @@
         "files": [
             "file-icons.js",
             "prettify.js",
-            "usercontents.js",
-            "disqus.js"
+            "usercontents.js"
         ]
     },
 
