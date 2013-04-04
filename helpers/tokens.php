@@ -1,5 +1,8 @@
 <?php
 
+// Quick & dirty fix for #306
+require_once __DIR__.'/../models/build/classes/ip7website/Token.php';
+
 /* generate, store in DB, and return an unique token,
    valid for the given user, and which will give him/her
    $rights rights. $rights must be an array:
