@@ -196,7 +196,9 @@ function display_course_content() {
             'name' => $user->getPublicName(),
             'href' => user_url($user)
         ),
-        'type'   => $tpl_type
+        'type'   => $tpl_type,
+
+        'nav'    => get_prev_next_contents($content, $cursus, $course)
     );
 
     if ($content->hasBeenUpdated()) {

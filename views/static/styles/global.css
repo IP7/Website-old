@@ -596,6 +596,19 @@ a.news-title {
     color: #222;
 }
 
+.content-footer {
+
+    font-size: 0.8em;
+    display: table-row;
+    text-align: center;
+    padding-top:2em;
+
+}
+
+.content-footer .nav-prev-next {
+    margin-top:2em;
+}
+
 /* == Footers ============================================= */
 
 /* -- Main Footer ----------------------------------------- */

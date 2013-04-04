@@ -1,7 +1,7 @@
 <?php
 
-// used to sort contents by years, with uasort()
-function contentsCmp($c1, $c2) {
+// used to sort contents by title, with uasort()
+function cmpTitles($c1, $c2) {
 
     return strnatcasecmp($c1['title'], $c2['title']);
 
@@ -67,11 +67,11 @@ function tpl_course_contents($cursus, $course=null) {
             }
 
             // sorting
-            uasort($no_year, 'contentsCmp');
+            uasort($no_year, 'cmpTitles');
 
             foreach($tpl_cts as &$yArray) {
 
-                uasort($yArray['contents'], 'contentsCmp');
+                uasort($yArray['contents'], 'cmpTitles');
 
             }
 

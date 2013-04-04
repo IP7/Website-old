@@ -69,10 +69,10 @@ function display_cursus() {
     }
 
     // sort courses (#302)
-    uasort($courses['s1']['optional'], 'contentsCmp');
-    uasort($courses['s1']['mandatory'], 'contentsCmp');
-    uasort($courses['s2']['optional'], 'contentsCmp');
-    uasort($courses['s2']['mandatory'], 'contentsCmp');
+    uasort($courses['s1']['optional'], 'cmpTitles');
+    uasort($courses['s1']['mandatory'], 'cmpTitles');
+    uasort($courses['s2']['optional'], 'cmpTitles');
+    uasort($courses['s2']['mandatory'], 'cmpTitles');
 
     $news = get_news($cursus);
 
@@ -307,8 +307,8 @@ function display_cursus_courses() {
     }
 
     // natural sorting
-    uasort($tpl_courses['s1'], 'contentsCmp');
-    uasort($tpl_courses['s2'], 'contentsCmp');
+    uasort($tpl_courses['s1'], 'cmpTitles');
+    uasort($tpl_courses['s2'], 'cmpTitles');
 
     $tpl_cursus = array(
         'page' => array(

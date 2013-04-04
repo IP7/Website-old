@@ -52,13 +52,15 @@
         </aside>
         {% endif %}
     </article>
-    {# Disqus #}{#
-    {% if page.disqus is defined and page.disqus %}
-    <div id="disqus_thread"></div>
-    <script>var disqus_identifier='{{ page.disqus.identifier|raw }}',{#
-              #}disqus_title='{{ page.title }}',{#
-              #}disqus_url='{{ page.url }}',{#
-              #}disqus_category_id='2251039';</script>
-    {% endif %}#}
 
+    {% if page.content.nav is defined and page.content.nav %}
+    <footer class="content-footer">
+        <nav class="nav-prev-next">{% if page.content.nav.prev is defined and page.content.nav.prev %}{#
+            #}<span class="prev">← <a href="{{ page.content.nav.prev.href }}">{{ page.content.nav.prev.title }}</a></span>{% endif %}{#
+            #}{% if page.content.nav.both is defined and page.content.nav.both %}&nbsp;—&nbsp;{% endif %}{#
+            #}{% if page.content.nav.next is defined and page.content.nav.next %}{#
+            #}<span class="next"><a href="{{ page.content.nav.next.href }}">{{ page.content.nav.next.title }}</a> →</span>{% endif %}{#
+        #}</nav>
+    </footer>
+    {% endif %}
 {% endblock %}
