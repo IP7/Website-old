@@ -22,15 +22,24 @@ function get_prev_next_contents($content, $cursus=null, $course=null) {
     if (!$cursus) { $cursus = $content->getCursus(); }
     if (!$course) { $course = $content->getCourse(); }
 
+    $ctype = $content->getContentType();
+
     $contents = ContentQuery::create()
-                    ->filterByCursus($cursus)
-                    ->filterByCourse($course)
                     ->filterByYear($content->getYear())
-                    ->filterByContentType($content->getContentType())
                     ->filterByDeleted(0)
                     ->filterByValidated(1)
-                    ->limit(100)
-                    ->find();
+                    ->limit(100);
+
+    if ($cursus) { $contents = $contents->filterByCursus($cursus); }
+            else { $contents = $contents->filterByCursusId(NULL);  }
+
+    if ($course) { $contents = $contents->filterByCourse($course); }
+            else { $contents = $contents->filterByCourseId(NULL);  }
+
+    if ($ctype)  { $contents = $contents->filterByContentType($ctype); }
+            else { $contents = $contents->filterByContentTypeId(NULL); }
+
+    $contents = $contents->find();
 
     $tpl_contents = array();
     foreach ($contents as $_ => $c) {
