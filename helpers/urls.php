@@ -87,7 +87,9 @@ function css_or_js_url($dir, $name, $ext) {
                  if not, it can't, but it can be used in an IRI. */
 function name_encode($n, $force_uri=false) {
 
-    $n = preg_replace('/[^-._a-zA-Z0-9éèàùÉÀ]+/', '-', $n);
+    $n = preg_replace('/[^._a-zA-Z0-9éèàùÉÀ]+/', '-', $n);
+    // remove unwanted hyphens at the beginning/end
+    $n = preg_replace('/^-+|-+$/', '', $n);
 
     if (!$force_uri) { return $n; }
 
