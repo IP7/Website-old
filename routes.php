@@ -19,16 +19,36 @@ dispatch('/p/*/edit',      'display_edit_profile_page');
 dispatch_post('/p/*/edit', 'post_edit_profile_page');
 
 ## my profile
-if (strpos(LIM_REQUEST_URI, '/profile') === 0) {
+if (strpos(LIM_REQUEST_URI, '/profil') === 0) {
 
-    dispatch('/profile',      'display_my_profile_page');
-    dispatch_post('/profile', 'display_my_profile_page');
-    ## edit my profile
-    dispatch('/profile/edit',      'display_edit_my_profile_page');
-    dispatch_post('/profile/edit', 'post_edit_my_profile_page');
-    dispatch('/profile/init',      'display_init_my_profile_page');
-    dispatch_post('/profile/init', 'post_init_my_profile_page');
+    # old URLs (#308)
+    if (strpos(LIM_REQUEST_URI, '/profile') === 0) {
 
+        function redirect_profile()      { redirect_to('/profil'); }
+        function redirect_profile_edit() { redirect_to('/profil/éditer'); }
+        function redirect_profile_init() { redirect_to('/profil/créer'); }
+
+        dispatch('/profile',      'redirect_profile');
+        dispatch_post('/profile', 'redirect_profile');
+        ## edit my profile
+        dispatch('/profile/edit',      'redirect_profile_edit');
+        dispatch_post('/profile/edit', 'redirect_profile_edit');
+        dispatch('/profile/init',      'redirect_profile_init');
+        dispatch_post('/profile/init', 'redirect_profile_init');
+
+    }
+    # new URLs (#308)
+    else {
+
+        dispatch('/profil',      'display_my_profile_page');
+        dispatch_post('/profil', 'display_my_profile_page');
+        ## edit my profile
+        dispatch('/profil/éditer',      'display_edit_my_profile_page');
+        dispatch_post('/profil/éditer', 'post_edit_my_profile_page');
+        dispatch('/profil/créer',       'display_init_my_profile_page');
+        dispatch_post('/profil/créer',  'post_init_my_profile_page');
+
+    }
 }
 
 ## search

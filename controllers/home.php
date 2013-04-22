@@ -48,7 +48,7 @@ function display_connection($message=null, $message_type=null) {
 
             // if it's a 'canChangeXXX' token
             if ($_SESSION['token']['rights'] > 1) {
-                redirect_to('/profile/init', array('status' => HTTP_SEE_OTHER));
+                redirect_to('/profil/créer', array('status' => HTTP_SEE_OTHER));
             }
 
             // if it's a 'canConnect' token

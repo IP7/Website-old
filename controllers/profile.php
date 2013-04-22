@@ -2,7 +2,7 @@
 
 // -- (GET) Display profile pages --
 
-// $is_my_profile : true if the page is acceded through /profile
+// $is_my_profile : true if the page is acceded through /profil
 function display_profile_page($username=NULL, $is_my_profile=false) {
 
     // if there is no username
@@ -10,14 +10,14 @@ function display_profile_page($username=NULL, $is_my_profile=false) {
         halt(NOT_FOUND);
     }
 
-    // if the URL is /p/<my_username> or /profile, this is me
+    // if the URL is /p/<my_username> or /profil, this is me
     $me = (is_connected() && user()->getUsername() === $username);
     $user = $me ? user() : UserQuery::create()->findOneByUsername($username);
 
     // if I try to access to my profile using /p/<my_username>, redirect
-    // me to /profile
+    // me to /profil
     if (!$is_my_profile && $me) {
-        redirect_to('/profile', array( 'status' => HTTP_MOVED_PERMANENTLY));
+        redirect_to('/profil', array( 'status' => HTTP_MOVED_PERMANENTLY));
     }
 
     // if the username is not correct
@@ -67,9 +67,9 @@ function display_profile_page($username=NULL, $is_my_profile=false) {
 
     if ($can_edit) {
         $edit_button = array( 'title' => 'Éditer' );
-        // if this is me, go to /profile/edit to edit the profile, else
-        // go to /p/the_username/edit
-        $edit_button['href'] = Config::$root_uri.( $me ? 'profile/edit' : 'p/'.$user->getUsername().'/edit');
+        // if this is me, go to /profil/éditer to edit the profile, else
+        // go to /p/the_username/éditer
+        $edit_button['href'] = Config::$root_uri.( $me ? 'profil' : 'p/'.$user->getUsername() ).'/éditer';
 
         $moderation_bar []= $edit_button;
     }
@@ -274,7 +274,7 @@ function post_edit_profile_page($username=NULL) {
     $user->save();
 
     if (!$msgstr) {
-        $redirect = $me ? '/profile' : '/p/'.$user->getUsername();
+        $redirect = $me ? '/profil' : '/p/'.$user->getUsername();
         redirect_to($redirect, array('status' => HTTP_SEE_OTHER));
     }
 
@@ -282,7 +282,7 @@ function post_edit_profile_page($username=NULL) {
     return tpl_render('profile/edit.html', array(
         'page' => array(
             'title' => 'Edition du profil',
-            'edit_form' => array( 'action' => Config::$root_uri.'profile/edit' ),
+            'edit_form' => array( 'action' => Config::$root_uri.'profil/editer' ),
 
             'user' => tpl_user($user, true),
 
@@ -400,7 +400,7 @@ function display_init_my_profile_page($token=null, $message=null, $message_type=
             'message_type' => $message_type,
             'user' => tpl_user($user),
             'form' => array(
-                'action' => Config::$root_uri.'profile/init',
+                'action' => Config::$root_uri.'profil/créer',
 
                 'post_token' => $post_token,
 
