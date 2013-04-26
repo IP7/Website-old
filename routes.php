@@ -139,8 +139,10 @@ if (strpos(LIM_REQUEST_URI, '/api') === 0) {
 
     dispatch('/api/1/users/exists.json',     'json_check_username');
     dispatch('/api/1/search.json',           'json_global_search');
-    dispatch('/api/1/contents/last.json',    'json_get_last_contents');
     dispatch('/api/1/links_list.json',       'json_get_entities_links_list');
+
+    dispatch('/api/1/contents/last.json',    'json_get_last_contents');
+    dispatch_post('/api/1/content/title',    'api_post_change_content_title');
 
     dispatch('/api/1/cursus/intro.json',      'json_get_cursus_intro');
     dispatch('/api/1/course/intro.json',      'json_get_course_intro');
