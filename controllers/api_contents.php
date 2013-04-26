@@ -60,10 +60,15 @@ function api_post_change_content_title() {
         return $content->getTitle();
     }
 
+    $cursus = $content->getCursus();
+
     // user can only edit the title if he/she is an admin and/or the
     // content has not been validated yet and he/she is its author.
-    if (!is_connected() || !user()->isAdmin() &&
-        ($content->isValidated() || user()->getId() !== $content->getAuthorId() )) {
+    if (   !is_connected()
+        || (   !user()->isAdmin()
+            && !user()->isResponsibleFor($cursus)
+            && ($content->isValidated()
+                || user()->getId() !== $content->getAuthorId() ))) {
 
         halt(HTTP_FORBIDDEN);
 
@@ -74,13 +79,20 @@ function api_post_change_content_title() {
     }
 
     $title_is_taken = ContentQuery::create()
-                        ->filterByCursusId($content->getCursusId())
+                        ->filterByCursus($cursus)
                         ->filterByCourseId($content->getCourseId())
                         ->filterByYear($content->getYear())
                         ->filterByDeleted(0)
                         ->findOneByTitle($newvalue);
 
     if ($title_is_taken) {
+
+        if ($title_is_taken->getId() === $content->getId()) {
+            
+            return $content->getTitle();
+        
+        }
+
         halt(HTTP_BAD_REQUEST);
     }
 
