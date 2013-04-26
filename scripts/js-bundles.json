@@ -23,6 +23,16 @@
     },
 
     {
+        "name": "editable-content.min.js",
+        "files": [
+            "file-icons.js",
+            "prettify.js",
+            "jquery.jeditable.min.js",
+            "usercontents.js"
+        ]
+    },
+
+    {
         "name": "proposing-content.min.js",
         "files": [
             "Markdown.Converter.js",
@@ -43,7 +53,8 @@
     {
         "name": "admin-course.min.js",
         "files": [
-            "tabs.js", "menus.js", "news-admin.js"
+            "tabs.js", "menus.js", "news-admin.js",
+            "jquery.jeditable.min.js"
         ]
     },
 

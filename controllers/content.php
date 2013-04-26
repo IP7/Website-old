@@ -84,6 +84,14 @@ function display_course_content() {
 
     $tpl_files = null;
 
+    $js = $css = 'simple-content';
+
+    if ($course && $course->getUseSourcecode()) {
+
+        $js = $css = 'pretty-content';
+
+    }
+
     if (!$content->getValidated()) {
         if (!is_connected() || (user()->getId() != $user->getId() && !user()->isAdmin())) {
             halt(NOT_FOUND);
@@ -91,9 +99,11 @@ function display_course_content() {
         $msg_str  = 'Ce contenu est en attente de validation.';
         $msg_type = 'notice';
 
+        $js = 'editable-content';
+
         $tpl_proposed = null;
 
-        if (is_connected() && user()->isAdmin()) {
+        if (user()->isAdmin()) {
             $post_token = generate_post_token(user());
             FormData::create($post_token)->store('proposed', $content);
 
@@ -133,25 +143,6 @@ function display_course_content() {
                 'explication' => $report->getText()
             );
         }
-    }
-
-    $scripts = array(
-        array( 'href' => js_url( 'simple-content' ) )
-    );
-    $styles  = array(
-        array( 'href' => css_url( 'simple-content' ) )
-    );
-
-    if ($course && $course->getUseSourcecode()) {
-
-        $scripts = array(
-            array( 'href' => js_url( 'pretty-content' ) )
-        );
-
-        $styles = array(
-            array( 'href' => css_url( 'pretty-content' ) )
-        );
-
     }
 
     $files = FileQuery::create()
@@ -257,12 +248,12 @@ function display_course_content() {
             'message'      => $msg_str,
             'message_type' => $msg_type,
 
-            'scripts' => $scripts,
-            'styles'  => $styles/*,
-
-            'disqus' => array(
-                'identifier' => 'content-' . $content->getId()
-            )*/
+            'scripts' => array(
+                array( 'href' => js_url( $js ) )
+            ),
+            'styles'  => array(
+                array( 'href' => css_url( $css ) )
+            )
 
         )
     ));
