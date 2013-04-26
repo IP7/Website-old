@@ -118,6 +118,7 @@ function display_course_content() {
     }
     else if (is_connected() && user()->isAdmin()) {
         $report = ReportQuery::create()->findOneByContent($content);
+        $js = 'editable-content';
 
         if ($report && is_connected() && user()->isAdmin()) {
 
@@ -176,6 +177,7 @@ function display_course_content() {
     }
 
     $tpl_content = array(
+        'id'     => $content->getId(),
         'title'  => $content->getTitle(),
         'text'   => $content->getText(),
         'date'   => array(

@@ -23,7 +23,7 @@
     </section>
     {% endif %}
 
-    <article class="user_content">
+    <article class="user_content" data-content-id="{{ page.content.id }}">
         <header class="content_header">
             {% if page.content.year is defined and page.content.year %}
             <time datetime="{{ page.content.year.begin }}-09-01T00:00:00Z/P1Y" class="content-year">{#
