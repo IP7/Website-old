@@ -145,6 +145,9 @@ function display_course_content() {
             );
         }
     }
+    else if (is_connected() && user()->isModerator()) {
+        $js = 'editable-content';
+    }
 
     $files = FileQuery::create()
                 ->filterByAccessRights(array(

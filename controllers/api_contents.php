@@ -62,10 +62,10 @@ function api_post_change_content_title() {
 
     $cursus = $content->getCursus();
 
-    // user can only edit the title if he/she is an admin and/or the
+    // user can only edit the title if he/she is a moderator/admin and/or the
     // content has not been validated yet and he/she is its author.
     if (   !is_connected()
-        || (   !user()->isAdmin()
+        || (   !user()->isModerator()
             && !user()->isResponsibleFor($cursus)
             && ($content->isValidated()
                 || user()->getId() !== $content->getAuthorId() ))) {
