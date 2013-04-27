@@ -11,11 +11,11 @@ $(function() {
         course = d.querySelector('article.course'),
         course_id = 0,
 
-        cursus_id = cursus ? cursus.dataset['cursusId'] : 0;
+        cursus_id = cursus ? cursus.getAttribute('data-cursus-id') : 0;
 
     if (course) {
-        cursus_id = course.dataset['cursusId'];
-        course_id = course.dataset['courseId'];
+        cursus_id = course.getAttribute('data-cursus-id');
+        course_id = course.getAttribute('data-course-id');
     }
 
     // News DOM elements (<li>)
@@ -36,7 +36,7 @@ $(function() {
             bd = dc('span'), // 'delete' button
             b_set = dc('div'), // buttons container
 
-            id = li.dataset['id'];
+            id = li.getAttribute('data-id');
 
         be.className = bs.className = bc.className = bd.className = 'button';
         b_set.className = 'buttons-set';
@@ -113,7 +113,7 @@ $(function() {
 
     if (dom_news_root) {
 
-        if (dom_news_root.dataset['empty']) {
+        if (dom_news_root.getAttribute('data-empty')) {
             var t = dc('h2'),
                 u = dc('ul');
 
@@ -122,7 +122,7 @@ $(function() {
 
             dom_news_root.appendChild(t);
             dom_news_root.appendChild(u);
-            delete dom_news_root.dataset['empty'];
+            dom_news_root.removeAttribute('empty');
         }
 
         b_create = dc('span');
