@@ -53,8 +53,11 @@
     {
         "name": "admin-course.min.js",
         "files": [
-            "tabs.js", "menus.js", "news-admin.js",
-            "jquery.jeditable.min.js"
+            "tabs.js",
+            "menus.js",
+            "news-admin.js",
+            "jquery.jeditable.min.js",
+            "course-admin.js"
         ]
     },
 

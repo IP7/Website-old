@@ -13,22 +13,6 @@ function json_check_username() {
     return json(array('data' => ($user ? true : false)));
 }
 
-function json_get_course_intro() { // ?id=<course id>
-    return json_get_description_of_course_or_cursus('course');
-}
-
-function json_get_cursus_intro() { // ?id=<cursus id>
-    return json_get_description_of_course_or_cursus('cursus');
-}
-
-function json_post_course_intro() { // id=<course id>, text=<text>
-    return json_post_description_of_course_or_cursus('course');
-}
-
-function json_post_cursus_intro() { // id=<cursus id>, text=<text>
-    return json_post_description_of_course_or_cursus('cursus');
-}
-
 function api_create_short_url() { // url=<url>
 
     send_header('Content-Type: text/plain; charset='.strtolower(option('encoding')));
@@ -118,5 +102,44 @@ function json_get_course() { // short_name=<short_name> or id=<id>
         'deleted'       => $course->getDeleted()
 
     ));
+
+}
+
+function api_get_course_intro_markdown() {
+
+    $id = (int)get_string('id', 'GET');
+
+    $course = CourseQuery::create()
+                ->withColumn('Course.description')
+                ->findOneById($id);
+
+    if (!$course || $course->getDeleted()) {
+        halt(NOT_FOUND);
+    }
+
+    return $course->getDescription();
+
+}
+
+function api_post_course_intro() {
+
+    $id = (int)get_string('id', 'POST');
+    $newvalue = get_string('value', 'POST');
+
+    $course = CourseQuery::create()
+                ->findOneById($id);
+
+    if (!$course || $course->getDeleted()) {
+        halt(NOT_FOUND);
+    }
+
+    if (!is_connected() || (!is_admin() && !user()->isResponsibleFor($course->getCursus()))) {
+        halt(HTTP_FORBIDDEN);
+    }
+
+    $course->setDescription(truncate_string($newvalue, 1024));
+    $course->save();
+
+    return tpl_render('utils/md.html', array('content'=>$course->getDescription()));
 
 }
