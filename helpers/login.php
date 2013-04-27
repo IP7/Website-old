@@ -1,10 +1,17 @@
 <?php
 
 /**
- * returns $_SESSION['user']
+ * shortcut for $_SESSION['user']
  **/
 function user() {
     return $_SESSION['user'];
+}
+
+/**
+ * check if the current user is an admin
+ **/
+function is_admin() {
+    return is_connected() && user()->isAdmin();
 }
 
 /**

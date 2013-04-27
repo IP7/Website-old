@@ -39,7 +39,7 @@ function display_profile_page($username=NULL, $is_my_profile=false) {
     // if the accound is deactivated
     if (!$user->isActivated()) {
 
-        if (!is_connected() || !user()->isAdmin()) {
+        if (!is_admin()) {
             $title = $tpl_user['displayed_name'];
 
             return tpl_render('deactivated_profile.html', array(
@@ -60,9 +60,9 @@ function display_profile_page($username=NULL, $is_my_profile=false) {
     }
 
     // I can edit if it's me or an admin
-    $can_edit = ($me || (is_connected() && user()->isAdmin()));
+    $can_edit = ($me || is_admin());
 
-    // I can see the options if it's me or an admin
+    // I can see the options only if it's me or I'm an admin
     $can_see_options = $can_edit;
 
     if ($can_edit) {
