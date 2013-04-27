@@ -45,6 +45,7 @@ function json_get_last_contents() {
     return json(array('data' => $tpl_contents));
 }
 
+// used by Jeditable
 function api_post_change_content_title() {
 
     $content_id = (int)get_string('id', 'POST');
@@ -85,13 +86,7 @@ function api_post_change_content_title() {
                         ->filterByDeleted(0)
                         ->findOneByTitle($newvalue);
 
-    if ($title_is_taken) {
-
-        if ($title_is_taken->getId() === $content->getId()) {
-            
-            return $content->getTitle();
-        
-        }
+    if ($title_is_taken && $title_is_taken->getId() !== $content->getId()) {
 
         halt(HTTP_BAD_REQUEST);
     }
