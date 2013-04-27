@@ -10,9 +10,27 @@ function display_profile_page($username=NULL, $is_my_profile=false) {
         halt(NOT_FOUND);
     }
 
+    $user = UserQuery::create()->findOneByUsername($username);
+
+    // if the username is not correct
+    if ($user == NULL) {
+        halt(NOT_FOUND);
+    }
+
+    // ?public allows one to see their profile as a non-connected user (#309)
+    $as_public    = has_get('public', true);
+    $is_connected = !$as_public && is_connected();
+    $is_admin     = $is_connected && user()->isAdmin();
+
+    // if the user isn't on his/her profile, and ?public is present,
+    // remove it
+    if ((!is_connected() || user()->getUsername() !== $username) && $as_public) {
+        redirect_to(user_url($user));
+    }
+
     // if the URL is /p/<my_username> or /profil, this is me
-    $me = (is_connected() && user()->getUsername() === $username);
-    $user = $me ? user() : UserQuery::create()->findOneByUsername($username);
+    $me = ($is_connected && user()->getUsername() === $username);
+    if ($me) { $user = user(); }
 
     // if I try to access to my profile using /p/<my_username>, redirect
     // me to /profil
@@ -20,13 +38,8 @@ function display_profile_page($username=NULL, $is_my_profile=false) {
         redirect_to('/profil', array( 'status' => HTTP_MOVED_PERMANENTLY));
     }
 
-    // if the username is not correct
-    if ($user == NULL) {
-        halt(NOT_FOUND);
-    }
-
     // if the visitor is not connected and this is a private profile
-    if (!is_connected() && $user->getConfigPrivateProfile()) {
+    if (!$is_connected && $user->getConfigPrivateProfile()) {
         halt(NOT_FOUND);
     }
 
@@ -36,10 +49,17 @@ function display_profile_page($username=NULL, $is_my_profile=false) {
     $msg_type = '';
     $moderation_bar = array();
 
+    if ($me) {
+        $moderation_bar []= array(
+            'href' => user_url($user) . '?public',
+            'title' => 'Voir mon profil public'
+        );
+    }
+
     // if the accound is deactivated
     if (!$user->isActivated()) {
 
-        if (!is_admin()) {
+        if (!$is_admin) {
             $title = $tpl_user['displayed_name'];
 
             return tpl_render('deactivated_profile.html', array(
@@ -60,7 +80,7 @@ function display_profile_page($username=NULL, $is_my_profile=false) {
     }
 
     // I can edit if it's me or an admin
-    $can_edit = ($me || is_admin());
+    $can_edit = ($me || $is_admin);
 
     // I can see the options only if it's me or I'm an admin
     $can_see_options = $can_edit;

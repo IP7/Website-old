@@ -365,6 +365,11 @@ form.proposing-content h6 {
     color:inherit;
 }
 
+.moderation.bar li + li::before {
+    content: "• ";
+    color: #666;
+}
+
 /* == Main content ======================================== */
 
 /* IE */
