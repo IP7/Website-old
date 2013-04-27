@@ -3,6 +3,7 @@
         "michelf/php-markdown": "dev-lib",
         "propel/propel1": "1.6.7",
         "sofadesign/limonade": "dev-master",
+        "mustangostang/spyc": "0.5.1",
         "twig/twig": "1.9.0"
     },
     "require-dev": {
