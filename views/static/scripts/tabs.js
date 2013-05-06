@@ -21,7 +21,7 @@ $(function(){
 
         $(e).data({
             ct:    $tb_contents.eq(i),
-            title: e.textContent.toLocaleUpperCase()
+            title: $(e).text().toLocaleUpperCase()
         });
 
     }).click(function() {
