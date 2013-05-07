@@ -7,7 +7,9 @@ $(function(){
         displayed = 'displayed',
         w = window,
 
-        hist = w.history && w.history.replaceState.bind(w.history, '') || $.noop,
+        hist = w.history && typeof w.history.replaceState === 'function'
+                    ? w.history.replaceState.bind(w.history, '')
+                    : $.noop,
 
         hash = w.location.hash.slice(1),
 
