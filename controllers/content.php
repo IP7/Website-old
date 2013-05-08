@@ -13,10 +13,14 @@ function display_course_content() {
     }
 
 	$user    = $content->getAuthor();
-	$course	 = $content->getCourse();
 	$cursus	 = $content->getCursus();
 
-    if ((!$course && $course_code !== 'global') || !$cursus) {
+    if (!$cursus) { halt(NOT_FOUND); }
+
+	$course	 = $content->getCourse();
+
+    if (!$course && $course_code !== 'global') {
+
         halt(NOT_FOUND);
     }
 
@@ -155,6 +159,7 @@ function display_course_content() {
                     'max' => $user_rank
                 ))
                 ->limit(10)
+                ->filterByDeleted(0)
                 ->findByContent($content);
 
     if ($files) {
