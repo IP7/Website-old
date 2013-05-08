@@ -118,7 +118,6 @@ function display_course_content() {
     }
     else if (is_connected() && user()->isAdmin()) {
         $report = ReportQuery::create()->findOneByContent($content);
-        $js = 'editable-content';
 
         if ($report && is_connected() && user()->isAdmin()) {
 
@@ -145,7 +144,8 @@ function display_course_content() {
             );
         }
     }
-    else if (is_connected() && user()->isModerator()) {
+    
+    if (is_connected() && (user()->isModerator() || user()->isResponsibleFor($cursus))) {
         $js = 'editable-content';
     }
 
