@@ -14,9 +14,19 @@ dispatch('/oubli',      'display_forgotten_password');
 dispatch_post('/oubli', 'post_forgotten_password');
 
 ## users' profiles
-dispatch('/p/*',           'display_profile_page');
-dispatch('/p/*/edit',      'display_edit_profile_page');
-dispatch_post('/p/*/edit', 'post_edit_profile_page');
+if (strpos(LIM_REQUEST_URI, '/p/') === 0) {
+
+    dispatch('/p/*',           'display_profile_page');
+
+    # old URLs (#308)
+    dispatch('/p/*/edit',      'display_edit_profile_page');
+    dispatch_post('/p/*/edit', 'post_edit_profile_page');
+
+    # new URLs (#308)
+    dispatch('/p/*/éditer',      'display_edit_profile_page');
+    dispatch_post('/p/*/éditer', 'post_edit_profile_page');
+
+}
 
 ## my profile
 if (strpos(LIM_REQUEST_URI, '/profil') === 0) {
