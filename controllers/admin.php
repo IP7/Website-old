@@ -405,7 +405,7 @@ function post_admin_add_member() {
     }
 
     if (get_string('activated', 'post')) {
-        $user->setDeactivated(0);
+        $user->setActivated(1);
     }
 
     if ($user->validate()) {

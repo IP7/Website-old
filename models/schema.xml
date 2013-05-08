@@ -73,8 +73,8 @@
         <!-- cacher le profil aux non-connectés -->
         <column name="config_private_profile" type="BOOLEAN" defaultExpr="0" />
 
-        <!-- désactiver le compte -->
-        <column name="deactivated"           type="BOOLEAN" defaultExpr="1" />
+        <!-- compte activé ? -->
+        <column name="activated"             type="BOOLEAN" defaultExpr="0" />
 
         <!-- == autres informations == -->
 

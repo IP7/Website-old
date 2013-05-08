@@ -75,7 +75,7 @@ function search_users($q, $limit=10) {
 
                 ->where(array('no_tmp', 'q'), 'and');
 
-    $users = (is_connected() && user()->isAdmin()) ? $users->find() : $users->findByDeactivated(0);
+    $users = (is_connected() && user()->isAdmin()) ? $users->find() : $users->findByActivated(1);
 
     $results = array();
 

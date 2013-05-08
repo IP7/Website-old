@@ -29,7 +29,7 @@
  * @method UserQuery orderByConfigShowAge($order = Criteria::ASC) Order by the config_show_age column
  * @method UserQuery orderByConfigIndexProfile($order = Criteria::ASC) Order by the config_index_profile column
  * @method UserQuery orderByConfigPrivateProfile($order = Criteria::ASC) Order by the config_private_profile column
- * @method UserQuery orderByDeactivated($order = Criteria::ASC) Order by the deactivated column
+ * @method UserQuery orderByActivated($order = Criteria::ASC) Order by the activated column
  * @method UserQuery orderByIsATeacher($order = Criteria::ASC) Order by the is_a_teacher column
  * @method UserQuery orderByIsAStudent($order = Criteria::ASC) Order by the is_a_student column
  * @method UserQuery orderByIsAnAlumni($order = Criteria::ASC) Order by the is_an_alumni column
@@ -59,7 +59,7 @@
  * @method UserQuery groupByConfigShowAge() Group by the config_show_age column
  * @method UserQuery groupByConfigIndexProfile() Group by the config_index_profile column
  * @method UserQuery groupByConfigPrivateProfile() Group by the config_private_profile column
- * @method UserQuery groupByDeactivated() Group by the deactivated column
+ * @method UserQuery groupByActivated() Group by the activated column
  * @method UserQuery groupByIsATeacher() Group by the is_a_teacher column
  * @method UserQuery groupByIsAStudent() Group by the is_a_student column
  * @method UserQuery groupByIsAnAlumni() Group by the is_an_alumni column
@@ -140,7 +140,7 @@
  * @method User findOneByConfigShowAge(boolean $config_show_age) Return the first User filtered by the config_show_age column
  * @method User findOneByConfigIndexProfile(boolean $config_index_profile) Return the first User filtered by the config_index_profile column
  * @method User findOneByConfigPrivateProfile(boolean $config_private_profile) Return the first User filtered by the config_private_profile column
- * @method User findOneByDeactivated(boolean $deactivated) Return the first User filtered by the deactivated column
+ * @method User findOneByActivated(boolean $activated) Return the first User filtered by the activated column
  * @method User findOneByIsATeacher(boolean $is_a_teacher) Return the first User filtered by the is_a_teacher column
  * @method User findOneByIsAStudent(boolean $is_a_student) Return the first User filtered by the is_a_student column
  * @method User findOneByIsAnAlumni(boolean $is_an_alumni) Return the first User filtered by the is_an_alumni column
@@ -170,7 +170,7 @@
  * @method array findByConfigShowAge(boolean $config_show_age) Return User objects filtered by the config_show_age column
  * @method array findByConfigIndexProfile(boolean $config_index_profile) Return User objects filtered by the config_index_profile column
  * @method array findByConfigPrivateProfile(boolean $config_private_profile) Return User objects filtered by the config_private_profile column
- * @method array findByDeactivated(boolean $deactivated) Return User objects filtered by the deactivated column
+ * @method array findByActivated(boolean $activated) Return User objects filtered by the activated column
  * @method array findByIsATeacher(boolean $is_a_teacher) Return User objects filtered by the is_a_teacher column
  * @method array findByIsAStudent(boolean $is_a_student) Return User objects filtered by the is_a_student column
  * @method array findByIsAnAlumni(boolean $is_an_alumni) Return User objects filtered by the is_an_alumni column
@@ -265,7 +265,7 @@ abstract class BaseUserQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `ID`, `USERNAME`, `PASSWORD_HASH`, `RIGHTS`, `FIRSTNAME`, `LASTNAME`, `GENDER`, `EMAIL`, `PHONE`, `WEBSITE`, `BIRTH_DATE`, `FIRST_ENTRY`, `LAST_ENTRY`, `EXPIRATION_DATE`, `LAST_VISIT`, `VISITS_COUNT`, `CONFIG_SHOW_EMAIL`, `CONFIG_SHOW_PHONE`, `CONFIG_SHOW_REAL_NAME`, `CONFIG_SHOW_BIRTHDATE`, `CONFIG_SHOW_AGE`, `CONFIG_INDEX_PROFILE`, `CONFIG_PRIVATE_PROFILE`, `DEACTIVATED`, `IS_A_TEACHER`, `IS_A_STUDENT`, `IS_AN_ALUMNI` FROM `users` WHERE `ID` = :p0';
+        $sql = 'SELECT `ID`, `USERNAME`, `PASSWORD_HASH`, `RIGHTS`, `FIRSTNAME`, `LASTNAME`, `GENDER`, `EMAIL`, `PHONE`, `WEBSITE`, `BIRTH_DATE`, `FIRST_ENTRY`, `LAST_ENTRY`, `EXPIRATION_DATE`, `LAST_VISIT`, `VISITS_COUNT`, `CONFIG_SHOW_EMAIL`, `CONFIG_SHOW_PHONE`, `CONFIG_SHOW_REAL_NAME`, `CONFIG_SHOW_BIRTHDATE`, `CONFIG_SHOW_AGE`, `CONFIG_INDEX_PROFILE`, `CONFIG_PRIVATE_PROFILE`, `ACTIVATED`, `IS_A_TEACHER`, `IS_A_STUDENT`, `IS_AN_ALUMNI` FROM `users` WHERE `ID` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -1105,15 +1105,15 @@ abstract class BaseUserQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the deactivated column
+     * Filter the query on the activated column
      *
      * Example usage:
      * <code>
-     * $query->filterByDeactivated(true); // WHERE deactivated = true
-     * $query->filterByDeactivated('yes'); // WHERE deactivated = true
+     * $query->filterByActivated(true); // WHERE activated = true
+     * $query->filterByActivated('yes'); // WHERE activated = true
      * </code>
      *
-     * @param     boolean|string $deactivated The value to use as filter.
+     * @param     boolean|string $activated The value to use as filter.
      *              Non-boolean arguments are converted using the following rules:
      *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
      *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
@@ -1122,13 +1122,13 @@ abstract class BaseUserQuery extends ModelCriteria
      *
      * @return UserQuery The current query, for fluid interface
      */
-    public function filterByDeactivated($deactivated = null, $comparison = null)
+    public function filterByActivated($activated = null, $comparison = null)
     {
-        if (is_string($deactivated)) {
-            $deactivated = in_array(strtolower($deactivated), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+        if (is_string($activated)) {
+            $activated = in_array(strtolower($activated), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
         }
 
-        return $this->addUsingAlias(UserPeer::DEACTIVATED, $deactivated, $comparison);
+        return $this->addUsingAlias(UserPeer::ACTIVATED, $activated, $comparison);
     }
 
     /**

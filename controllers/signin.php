@@ -105,7 +105,7 @@ function post_signin_form() {
         }
     }
 
-    $user->setDeactivated(0);
+    $user->setActivated(1);
 
     if ($user->validate()) {
         if(!$user->save()) {

@@ -46,7 +46,7 @@ function json_get_entities_links_list() { // ?types=<type1,type2,...>
         if ($t === 'user') {
             $q = UserQuery::create()
                     ->limit(150)
-                    ->findByDeactivated(0);
+                    ->findByActivated(1);
 
             foreach ($q as $_ => $u) {
 

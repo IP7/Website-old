@@ -66,7 +66,7 @@ class UserTableMap extends TableMap
         $this->addColumn('CONFIG_SHOW_AGE', 'ConfigShowAge', 'BOOLEAN', false, 1, '1');
         $this->addColumn('CONFIG_INDEX_PROFILE', 'ConfigIndexProfile', 'BOOLEAN', false, 1, '0');
         $this->addColumn('CONFIG_PRIVATE_PROFILE', 'ConfigPrivateProfile', 'BOOLEAN', false, 1, '0');
-        $this->addColumn('DEACTIVATED', 'Deactivated', 'BOOLEAN', false, 1, '1');
+        $this->addColumn('ACTIVATED', 'Activated', 'BOOLEAN', false, 1, '0');
         $this->addColumn('IS_A_TEACHER', 'IsATeacher', 'BOOLEAN', false, 1, '0');
         $this->addColumn('IS_A_STUDENT', 'IsAStudent', 'BOOLEAN', false, 1, '0');
         $this->addColumn('IS_AN_ALUMNI', 'IsAnAlumni', 'BOOLEAN', false, 1, '0');

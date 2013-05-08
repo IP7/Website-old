@@ -100,7 +100,7 @@ class User extends BaseUser {
    * Return true if the user's account is activated.
    **/
   public function isActivated() {
-    return !$this->getDeactivated();
+    return $this->getActivated();
   }
 
   /* -- Config ----------------------------------------------- */
