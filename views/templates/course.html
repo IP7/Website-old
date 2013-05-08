@@ -3,10 +3,10 @@
 <article class="course" data-course-id="{{ page.course.id }}" data-cursus-id="{{ page.cursus.id }}">
     <header>
         <h1>{{ page.course.name }}</h1>
-        <p class="details">
-            <span class="ects">{{ page.course.ects }} ECTS</span>{%
-                if page.course.responsable is not null %} • Référent&nbsp;: {{
-                    _m.a_user( page.course.responsable ) }}{% endif %} • <a href="{{ page.course.wiki_url }}">Wiki</a>
+        <p class="details">{%
+            if page.course.ects > 0 %}<span class="ects">{{ page.course.ects }} ECTS</span> • {% endif %}{%
+                if page.course.responsable is not null %}Référent&nbsp;: {{
+                    _m.a_user( page.course.responsable ) }} • {% endif %}<a href="{{ page.course.wiki_url }}">Wiki</a>
         </p>
     </header>
     <div class="course-infos">
