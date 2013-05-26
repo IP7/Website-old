@@ -94,7 +94,7 @@ function feed_helper($cursus_sn, $course_sn, $type='atom',
                                     . 'WHERE content_types.id = contents.content_type_id) <= ?',
                             $user_rights, PDO::PARAM_INT)
                             ->where('Access_Rights <= ?', $user_rights, PDO::PARAM_INT)
-                            ->orderByDate('desc')
+                            ->orderByCreatedAt('desc')
                             ->limit($contents_count);
 
         if ($cursus) {
