@@ -390,18 +390,10 @@ function post_admin_add_member() {
         }
     }
 
-    $fee = null;
-
     if (has_post('fee')) {
         $user->setFirstEntry($_SERVER['REQUEST_TIME']);
         $user->setLastEntry($_SERVER['REQUEST_TIME']);
         $user->setExpirationDate(next_expiration_date());
-
-        $fee = new Transaction(); 
-        $fee->setDescription("Cotisation de ".$user->getName().".");
-        $fee->setAmount(5.0);
-        $fee->setUser($user);
-        $fee->setValidated(true);
     }
 
     if (get_string('activated', 'post')) {
@@ -415,10 +407,6 @@ function post_admin_add_member() {
                 'Une erreur est survenue lors de l\'enregistrement dans la base de données.',
                 'error'
             );
-        }
-
-        if ($fee) {
-            $fee->save();
         }
 
         foreach ($paths as $p) {
