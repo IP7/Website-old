@@ -510,46 +510,6 @@
         </unique>
     </table>
 
-    <!-- === commentaires === -->
-    <table name="content_comments" phpName="Comment">
-
-        <!-- id -->
-        <column name="id"            type="INTEGER" required="true" primaryKey="true" autoIncrement="true"/>
-
-        <!-- id du commentaire auquel celui-ci répond -->
-        <column name="reply_to_id"   type="INTEGER" />
-
-        <!-- id du contenu commenté -->
-        <column name="content_id"    type="INTEGER" />
-
-        <!-- id de l'auteur -->
-        <column name="author_id"     type="INTEGER" />
-
-        <!-- date -->
-        <column name="date"          type="TIMESTAMP" required="true" />
-
-        <!-- texte -->
-        <column name="text"          type="LONGVARCHAR" size="2048" required="true" lazyLoad="true" />
-
-        <!-- == index & clefs étrangères == -->
-
-        <foreign-key foreignTable="content_comments" onDelete="SETNULL" onUpdate="CASCADE" phpName="ReplyToComment">
-            <reference local="reply_to_id" foreign="id" />
-        </foreign-key>
-
-        <foreign-key foreignTable="contents" onDelete="CASCADE" onUpdate="CASCADE" phpName="Content">
-            <reference local="content_id" foreign="id" />
-        </foreign-key>
-
-        <foreign-key foreignTable="users" onDelete="CASCADE" onUpdate="CASCADE" phpName="Author">
-            <reference local="author_id" foreign="id" />
-        </foreign-key>
-
-        <validator column="text">
-            <rule name="minLength" value="2" message="Le texte doit faire au moins ${value} caractères." />
-        </validator>
-    </table>
-
     <!-- === contenu signalé === -->
     <table name="reports" phpName="Report">
         <!-- id -->
@@ -630,34 +590,6 @@
 
     </table>
 
-    <!-- === Transactions (trésorerie) === -->
-    <table name="transactions" phpName="Transaction">
-        <!-- id -->
-        <column name="id"          type="INTEGER" required="true" primaryKey="true" autoIncrement="true"/>
-
-        <!-- description -->
-        <column name="description" type="VARCHAR" required="true" />
-
-        <!-- montant -->
-        <column name="amount"      type="DOUBLE" required="true" defaultExpr="0" />
-
-        <!-- personne concernée (s'il y en a une) -->
-        <column name="user_id"     type="INTEGER" />
-
-        <!-- transaction validée ou non -->
-        <column name="validated"   type="BOOLEAN" defaultExpr="0" />
-
-        <!-- == index & clefs étrangères == -->
-
-        <foreign-key foreignTable="users" onDelete="SETNULL" onUpdate="CASCADE" phpName="User">
-            <reference local="user_id" foreign="id" />
-        </foreign-key>
-
-        <validator column="description">
-            <rule name="minLength" value="1" message="La description doit faire au moins ${value} caractère." />
-        </validator>
-    </table>
-
     <!-- === Examens/partiels === -->
     <table name="exams" phpName="Exam">
         <!-- id -->
@@ -684,92 +616,6 @@
             <reference local="course_id" foreign="id"/>
         </foreign-key>
 
-    </table>
-
-    <!-- === Emplois du temps === --> 
-    <table name="schedules" phpName="Schedule">
-        <!-- id -->
-        <column name="id"        type="INTEGER" required="true" primaryKey="true" autoIncrement="true"/>
-
-        <!-- id du cursus concerné -->
-        <column name="cursus_id" type="INTEGER" />
-
-        <!-- id du parcours concerné s'il y en a un -->
-        <column name="path_id"   type="INTEGER" />
-        
-        <!-- nom -->
-        <column name="title"     type="VARCHAR" size="32" required="true" />
-        
-        <!-- date de début de validité -->
-        <column name="beginning" type="DATE" />
-        
-        <!-- date d'expiration -->
-        <column name="end" type="DATE" />
-
-        <!-- == index & clefs étrangères == -->
-
-        <foreign-key foreignTable="cursus" onDelete="CASCADE" onUpdate="CASCADE" phpName="Cursus">
-            <reference local="cursus_id" foreign="id"/>
-        </foreign-key>
-
-        <foreign-key foreignTable="educational_paths" onDelete="CASCADE" onUpdate="CASCADE" phpName="EducationalPath">
-            <reference local="path_id" foreign="id" />
-        </foreign-key>
-    
-    </table>
-
-    <!-- === matières des EDT === -->
-    <table name="scheduled_courses" phpName="ScheduledCourse">
-        <!-- id -->
-        <column name="id"           type="INTEGER" required="true" primaryKey="true" autoIncrement="true"/>
-        
-        <!-- id de la matière concernée -->
-        <column name="course_id"    type="INTEGER" required="true" />
-        
-        <!-- id de l'enseignant (s'il est inscrit) -->
-        <column name="teacher_id"   type="INTEGER" />
-        
-        <!-- nom de l'enseignant (utiliser l'id s'il est inscrit) -->
-        <column name="teacher_name" type="VARCHAR" size="32" />
-        
-        <!-- jour de la semaine -->
-        <column name="weekday"      type="ENUM" valueSet="monday,tuesday,wednesday,thursday,friday,saturday" />
-        
-        <!-- heure de début -->
-        <column name="beginning"    type="TIME" />
-        
-        <!-- heure de fin -->
-        <column name="end"          type="TIME" />
-        
-        <!-- nom de la salle/amphi -->
-        <column name="place"        type="VARCHAR" size="32" />
-
-        <!-- == index & clefs étrangères == -->
-
-        <foreign-key foreignTable="courses" onDelete="CASCADE" onUpdate="CASCADE" phpName="Course">
-            <reference local="course_id" foreign="id"/>
-        </foreign-key>
-
-        <foreign-key foreignTable="users" onDelete="SETNULL" onUpdate="CASCADE" phpName="Teacher">
-            <reference local="teacher_id" foreign="id"/>
-        </foreign-key>
-    </table>
-
-    <!-- lien matières+horaires / EDT -->
-    <table name="schedules_courses" isCrossRef="true">
-        <!-- id de l'EDT -->
-        <column name="schedule_id"         type="INTEGER" primaryKey="true" />
-        <!-- id de la matière -->
-        <column name="scheduled_course_id" type="INTEGER" primaryKey="true" />
-
-        <!-- == index & clefs étrangères == -->
-
-        <foreign-key foreignTable="schedules" onDelete="CASCADE" onUpdate="CASCADE">
-            <reference local="schedule_id" foreign="id"/>
-        </foreign-key>
-        <foreign-key foreignTable="scheduled_courses" onDelete="CASCADE" onUpdate="CASCADE">
-            <reference local="scheduled_course_id" foreign="id"/>
-        </foreign-key>
     </table>
 
     <!-- === jetons uniques pour authentifications === -->
