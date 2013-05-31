@@ -98,6 +98,10 @@
  * @method UserQuery rightJoinNews($relationAlias = null) Adds a RIGHT JOIN clause to the query using the News relation
  * @method UserQuery innerJoinNews($relationAlias = null) Adds a INNER JOIN clause to the query using the News relation
  *
+ * @method UserQuery leftJoinEvent($relationAlias = null) Adds a LEFT JOIN clause to the query using the Event relation
+ * @method UserQuery rightJoinEvent($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Event relation
+ * @method UserQuery innerJoinEvent($relationAlias = null) Adds a INNER JOIN clause to the query using the Event relation
+ *
  * @method UserQuery leftJoinToken($relationAlias = null) Adds a LEFT JOIN clause to the query using the Token relation
  * @method UserQuery rightJoinToken($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Token relation
  * @method UserQuery innerJoinToken($relationAlias = null) Adds a INNER JOIN clause to the query using the Token relation
@@ -1797,6 +1801,80 @@ abstract class BaseUserQuery extends ModelCriteria
         return $this
             ->joinNews($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'News', 'NewsQuery');
+    }
+
+    /**
+     * Filter the query by a related Event object
+     *
+     * @param   Event|PropelObjectCollection $event  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 UserQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByEvent($event, $comparison = null)
+    {
+        if ($event instanceof Event) {
+            return $this
+                ->addUsingAlias(UserPeer::ID, $event->getAuthorId(), $comparison);
+        } elseif ($event instanceof PropelObjectCollection) {
+            return $this
+                ->useEventQuery()
+                ->filterByPrimaryKeys($event->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByEvent() only accepts arguments of type Event or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the Event relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return UserQuery The current query, for fluid interface
+     */
+    public function joinEvent($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('Event');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'Event');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the Event relation Event object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   EventQuery A secondary query class using the current class as primary query
+     */
+    public function useEventQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        return $this
+            ->joinEvent($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Event', 'EventQuery');
     }
 
     /**
