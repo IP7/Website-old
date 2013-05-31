@@ -1,7 +1,8 @@
 <?php
 
 $_SESSION = array();
-$_SERVER = array( 'REQUEST_URI' => '/', 'REQUEST_TIME' => 42 );
+$_SERVER['REQUEST_URI']  = '/';
+$_SERVER['REQUEST_TIME'] = 42;
 
 require_once __DIR__ . '/../config.php';
 Config::init();
