@@ -33,7 +33,6 @@
  * @method Report findOne(PropelPDO $con = null) Return the first Report matching the query
  * @method Report findOneOrCreate(PropelPDO $con = null) Return the first Report matching the query, or a new Report object populated from the query conditions when no match is found
  *
- * @method Report findOneById(int $id) Return the first Report filtered by the id column
  * @method Report findOneByContentId(int $content_id) Return the first Report filtered by the content_id column
  * @method Report findOneByAuthorId(int $author_id) Return the first Report filtered by the author_id column
  * @method Report findOneByDate(string $date) Return the first Report filtered by the date column
@@ -65,7 +64,7 @@ abstract class BaseReportQuery extends ModelCriteria
      * Returns a new ReportQuery object.
      *
      * @param     string $modelAlias The alias of a model in the query
-     * @param     ReportQuery|Criteria $criteria Optional Criteria to build the query from
+     * @param   ReportQuery|Criteria $criteria Optional Criteria to build the query from
      *
      * @return ReportQuery
      */
@@ -122,18 +121,32 @@ abstract class BaseReportQuery extends ModelCriteria
     }
 
     /**
+     * Alias of findPk to use instance pooling
+     *
+     * @param     mixed $key Primary key to use for the query
+     * @param     PropelPDO $con A connection object
+     *
+     * @return                 Report A model object, or null if the key is not found
+     * @throws PropelException
+     */
+     public function findOneById($key, $con = null)
+     {
+        return $this->findPk($key, $con);
+     }
+
+    /**
      * Find object by primary key using raw SQL to go fast.
      * Bypass doSelect() and the object formatter by using generated code.
      *
      * @param     mixed $key Primary key to use for the query
      * @param     PropelPDO $con A connection object
      *
-     * @return   Report A model object, or null if the key is not found
-     * @throws   PropelException
+     * @return                 Report A model object, or null if the key is not found
+     * @throws PropelException
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `ID`, `CONTENT_ID`, `AUTHOR_ID`, `DATE`, `TEXT` FROM `reports` WHERE `ID` = :p0';
+        $sql = 'SELECT `id`, `content_id`, `author_id`, `date`, `text` FROM `reports` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -229,7 +242,8 @@ abstract class BaseReportQuery extends ModelCriteria
      * <code>
      * $query->filterById(1234); // WHERE id = 1234
      * $query->filterById(array(12, 34)); // WHERE id IN (12, 34)
-     * $query->filterById(array('min' => 12)); // WHERE id > 12
+     * $query->filterById(array('min' => 12)); // WHERE id >= 12
+     * $query->filterById(array('max' => 12)); // WHERE id <= 12
      * </code>
      *
      * @param     mixed $id The value to use as filter.
@@ -242,8 +256,22 @@ abstract class BaseReportQuery extends ModelCriteria
      */
     public function filterById($id = null, $comparison = null)
     {
-        if (is_array($id) && null === $comparison) {
-            $comparison = Criteria::IN;
+        if (is_array($id)) {
+            $useMinMax = false;
+            if (isset($id['min'])) {
+                $this->addUsingAlias(ReportPeer::ID, $id['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($id['max'])) {
+                $this->addUsingAlias(ReportPeer::ID, $id['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
         }
 
         return $this->addUsingAlias(ReportPeer::ID, $id, $comparison);
@@ -256,7 +284,8 @@ abstract class BaseReportQuery extends ModelCriteria
      * <code>
      * $query->filterByContentId(1234); // WHERE content_id = 1234
      * $query->filterByContentId(array(12, 34)); // WHERE content_id IN (12, 34)
-     * $query->filterByContentId(array('min' => 12)); // WHERE content_id > 12
+     * $query->filterByContentId(array('min' => 12)); // WHERE content_id >= 12
+     * $query->filterByContentId(array('max' => 12)); // WHERE content_id <= 12
      * </code>
      *
      * @see       filterByContent()
@@ -299,7 +328,8 @@ abstract class BaseReportQuery extends ModelCriteria
      * <code>
      * $query->filterByAuthorId(1234); // WHERE author_id = 1234
      * $query->filterByAuthorId(array(12, 34)); // WHERE author_id IN (12, 34)
-     * $query->filterByAuthorId(array('min' => 12)); // WHERE author_id > 12
+     * $query->filterByAuthorId(array('min' => 12)); // WHERE author_id >= 12
+     * $query->filterByAuthorId(array('max' => 12)); // WHERE author_id <= 12
      * </code>
      *
      * @see       filterByAuthor()
@@ -413,8 +443,8 @@ abstract class BaseReportQuery extends ModelCriteria
      * @param   Content|PropelObjectCollection $content The related object(s) to use as filter
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return   ReportQuery The current query, for fluid interface
-     * @throws   PropelException - if the provided filter is invalid.
+     * @return                 ReportQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
      */
     public function filterByContent($content, $comparison = null)
     {
@@ -489,8 +519,8 @@ abstract class BaseReportQuery extends ModelCriteria
      * @param   User|PropelObjectCollection $user The related object(s) to use as filter
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return   ReportQuery The current query, for fluid interface
-     * @throws   PropelException - if the provided filter is invalid.
+     * @return                 ReportQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
      */
     public function filterByAuthor($user, $comparison = null)
     {

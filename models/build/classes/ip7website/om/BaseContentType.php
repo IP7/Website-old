@@ -75,6 +75,12 @@ abstract class BaseContentType extends BaseObject implements Persistent
     protected $alreadyInValidation = false;
 
     /**
+     * Flag to prevent endless clearAllReferences($deep=true) loop, if this object is referenced
+     * @var        boolean
+     */
+    protected $alreadyInClearAllReferencesDeep = false;
+
+    /**
      * An array of objects scheduled for deletion.
      * @var		PropelObjectCollection
      */
@@ -148,7 +154,7 @@ abstract class BaseContentType extends BaseObject implements Persistent
      */
     public function setId($v)
     {
-        if ($v !== null) {
+        if ($v !== null && is_numeric($v)) {
             $v = (int) $v;
         }
 
@@ -169,7 +175,7 @@ abstract class BaseContentType extends BaseObject implements Persistent
      */
     public function setName($v)
     {
-        if ($v !== null) {
+        if ($v !== null && is_numeric($v)) {
             $v = (string) $v;
         }
 
@@ -190,7 +196,7 @@ abstract class BaseContentType extends BaseObject implements Persistent
      */
     public function setShortName($v)
     {
-        if ($v !== null) {
+        if ($v !== null && is_numeric($v)) {
             $v = (string) $v;
         }
 
@@ -211,7 +217,7 @@ abstract class BaseContentType extends BaseObject implements Persistent
      */
     public function setAccessRights($v)
     {
-        if ($v !== null) {
+        if ($v !== null && is_numeric($v)) {
             $v = (int) $v;
         }
 
@@ -267,7 +273,7 @@ abstract class BaseContentType extends BaseObject implements Persistent
             if ($rehydrate) {
                 $this->ensureConsistency();
             }
-
+            $this->postHydrate($row, $startcol, $rehydrate);
             return $startcol + 4; // 4 = ContentTypePeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
@@ -468,7 +474,7 @@ abstract class BaseContentType extends BaseObject implements Persistent
 
             if ($this->collContents !== null) {
                 foreach ($this->collContents as $referrerFK) {
-                    if (!$referrerFK->isDeleted()) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
                         $affectedRows += $referrerFK->save($con);
                     }
                 }
@@ -501,16 +507,16 @@ abstract class BaseContentType extends BaseObject implements Persistent
 
          // check the columns in natural order for more readable SQL queries
         if ($this->isColumnModified(ContentTypePeer::ID)) {
-            $modifiedColumns[':p' . $index++]  = '`ID`';
+            $modifiedColumns[':p' . $index++]  = '`id`';
         }
         if ($this->isColumnModified(ContentTypePeer::NAME)) {
-            $modifiedColumns[':p' . $index++]  = '`NAME`';
+            $modifiedColumns[':p' . $index++]  = '`name`';
         }
         if ($this->isColumnModified(ContentTypePeer::SHORT_NAME)) {
-            $modifiedColumns[':p' . $index++]  = '`SHORT_NAME`';
+            $modifiedColumns[':p' . $index++]  = '`short_name`';
         }
         if ($this->isColumnModified(ContentTypePeer::ACCESS_RIGHTS)) {
-            $modifiedColumns[':p' . $index++]  = '`ACCESS_RIGHTS`';
+            $modifiedColumns[':p' . $index++]  = '`access_rights`';
         }
 
         $sql = sprintf(
@@ -523,16 +529,16 @@ abstract class BaseContentType extends BaseObject implements Persistent
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
-                    case '`ID`':
+                    case '`id`':
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
-                    case '`NAME`':
+                    case '`name`':
                         $stmt->bindValue($identifier, $this->name, PDO::PARAM_STR);
                         break;
-                    case '`SHORT_NAME`':
+                    case '`short_name`':
                         $stmt->bindValue($identifier, $this->short_name, PDO::PARAM_STR);
                         break;
-                    case '`ACCESS_RIGHTS`':
+                    case '`access_rights`':
                         $stmt->bindValue($identifier, $this->access_rights, PDO::PARAM_INT);
                         break;
                 }
@@ -603,11 +609,11 @@ abstract class BaseContentType extends BaseObject implements Persistent
             $this->validationFailures = array();
 
             return true;
-        } else {
-            $this->validationFailures = $res;
-
-            return false;
         }
+
+        $this->validationFailures = $res;
+
+        return false;
     }
 
     /**
@@ -968,13 +974,15 @@ abstract class BaseContentType extends BaseObject implements Persistent
      * This does not modify the database; however, it will remove any associated objects, causing
      * them to be refetched by subsequent calls to accessor method.
      *
-     * @return void
+     * @return ContentType The current object (for fluent API support)
      * @see        addContents()
      */
     public function clearContents()
     {
         $this->collContents = null; // important to set this to null since that means it is uninitialized
         $this->collContentsPartial = null;
+
+        return $this;
     }
 
     /**
@@ -1046,6 +1054,7 @@ abstract class BaseContentType extends BaseObject implements Persistent
                       $this->collContentsPartial = true;
                     }
 
+                    $collContents->getInternalIterator()->rewind();
                     return $collContents;
                 }
 
@@ -1073,12 +1082,15 @@ abstract class BaseContentType extends BaseObject implements Persistent
      *
      * @param PropelCollection $contents A Propel collection.
      * @param PropelPDO $con Optional connection object
+     * @return ContentType The current object (for fluent API support)
      */
     public function setContents(PropelCollection $contents, PropelPDO $con = null)
     {
-        $this->contentsScheduledForDeletion = $this->getContents(new Criteria(), $con)->diff($contents);
+        $contentsToDelete = $this->getContents(new Criteria(), $con)->diff($contents);
 
-        foreach ($this->contentsScheduledForDeletion as $contentRemoved) {
+        $this->contentsScheduledForDeletion = unserialize(serialize($contentsToDelete));
+
+        foreach ($contentsToDelete as $contentRemoved) {
             $contentRemoved->setContentType(null);
         }
 
@@ -1089,6 +1101,8 @@ abstract class BaseContentType extends BaseObject implements Persistent
 
         $this->collContents = $contents;
         $this->collContentsPartial = false;
+
+        return $this;
     }
 
     /**
@@ -1106,22 +1120,22 @@ abstract class BaseContentType extends BaseObject implements Persistent
         if (null === $this->collContents || null !== $criteria || $partial) {
             if ($this->isNew() && null === $this->collContents) {
                 return 0;
-            } else {
-                if($partial && !$criteria) {
-                    return count($this->getContents());
-                }
-                $query = ContentQuery::create(null, $criteria);
-                if ($distinct) {
-                    $query->distinct();
-                }
-
-                return $query
-                    ->filterByContentType($this)
-                    ->count($con);
             }
-        } else {
-            return count($this->collContents);
+
+            if($partial && !$criteria) {
+                return count($this->getContents());
+            }
+            $query = ContentQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByContentType($this)
+                ->count($con);
         }
+
+        return count($this->collContents);
     }
 
     /**
@@ -1137,7 +1151,7 @@ abstract class BaseContentType extends BaseObject implements Persistent
             $this->initContents();
             $this->collContentsPartial = true;
         }
-        if (!$this->collContents->contains($l)) { // only add it if the **same** object is not already associated
+        if (!in_array($l, $this->collContents->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
             $this->doAddContent($l);
         }
 
@@ -1155,6 +1169,7 @@ abstract class BaseContentType extends BaseObject implements Persistent
 
     /**
      * @param	Content $content The content object to remove.
+     * @return ContentType The current object (for fluent API support)
      */
     public function removeContent($content)
     {
@@ -1167,6 +1182,8 @@ abstract class BaseContentType extends BaseObject implements Persistent
             $this->contentsScheduledForDeletion[]= $content;
             $content->setContentType(null);
         }
+
+        return $this;
     }
 
 
@@ -1255,6 +1272,7 @@ abstract class BaseContentType extends BaseObject implements Persistent
         $this->access_rights = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
+        $this->alreadyInClearAllReferencesDeep = false;
         $this->clearAllReferences();
         $this->applyDefaultValues();
         $this->resetModified();
@@ -1273,12 +1291,15 @@ abstract class BaseContentType extends BaseObject implements Persistent
      */
     public function clearAllReferences($deep = false)
     {
-        if ($deep) {
+        if ($deep && !$this->alreadyInClearAllReferencesDeep) {
+            $this->alreadyInClearAllReferencesDeep = true;
             if ($this->collContents) {
                 foreach ($this->collContents as $o) {
                     $o->clearAllReferences($deep);
                 }
             }
+
+            $this->alreadyInClearAllReferencesDeep = false;
         } // if ($deep)
 
         if ($this->collContents instanceof PropelCollection) {

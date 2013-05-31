@@ -32,94 +32,94 @@ abstract class BaseUserPeer
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
     const NUM_HYDRATE_COLUMNS = 27;
 
-    /** the column name for the ID field */
-    const ID = 'users.ID';
+    /** the column name for the id field */
+    const ID = 'users.id';
 
-    /** the column name for the USERNAME field */
-    const USERNAME = 'users.USERNAME';
+    /** the column name for the username field */
+    const USERNAME = 'users.username';
 
-    /** the column name for the PASSWORD_HASH field */
-    const PASSWORD_HASH = 'users.PASSWORD_HASH';
+    /** the column name for the password_hash field */
+    const PASSWORD_HASH = 'users.password_hash';
 
-    /** the column name for the RIGHTS field */
-    const RIGHTS = 'users.RIGHTS';
+    /** the column name for the rights field */
+    const RIGHTS = 'users.rights';
 
-    /** the column name for the FIRSTNAME field */
-    const FIRSTNAME = 'users.FIRSTNAME';
+    /** the column name for the firstname field */
+    const FIRSTNAME = 'users.firstname';
 
-    /** the column name for the LASTNAME field */
-    const LASTNAME = 'users.LASTNAME';
+    /** the column name for the lastname field */
+    const LASTNAME = 'users.lastname';
 
-    /** the column name for the GENDER field */
-    const GENDER = 'users.GENDER';
+    /** the column name for the gender field */
+    const GENDER = 'users.gender';
 
-    /** the column name for the EMAIL field */
-    const EMAIL = 'users.EMAIL';
+    /** the column name for the email field */
+    const EMAIL = 'users.email';
 
-    /** the column name for the PHONE field */
-    const PHONE = 'users.PHONE';
+    /** the column name for the phone field */
+    const PHONE = 'users.phone';
 
-    /** the column name for the WEBSITE field */
-    const WEBSITE = 'users.WEBSITE';
+    /** the column name for the website field */
+    const WEBSITE = 'users.website';
 
-    /** the column name for the BIRTH_DATE field */
-    const BIRTH_DATE = 'users.BIRTH_DATE';
+    /** the column name for the birth_date field */
+    const BIRTH_DATE = 'users.birth_date';
 
-    /** the column name for the FIRST_ENTRY field */
-    const FIRST_ENTRY = 'users.FIRST_ENTRY';
+    /** the column name for the first_entry field */
+    const FIRST_ENTRY = 'users.first_entry';
 
-    /** the column name for the LAST_ENTRY field */
-    const LAST_ENTRY = 'users.LAST_ENTRY';
+    /** the column name for the last_entry field */
+    const LAST_ENTRY = 'users.last_entry';
 
-    /** the column name for the EXPIRATION_DATE field */
-    const EXPIRATION_DATE = 'users.EXPIRATION_DATE';
+    /** the column name for the expiration_date field */
+    const EXPIRATION_DATE = 'users.expiration_date';
 
-    /** the column name for the LAST_VISIT field */
-    const LAST_VISIT = 'users.LAST_VISIT';
+    /** the column name for the last_visit field */
+    const LAST_VISIT = 'users.last_visit';
 
-    /** the column name for the VISITS_COUNT field */
-    const VISITS_COUNT = 'users.VISITS_COUNT';
+    /** the column name for the visits_count field */
+    const VISITS_COUNT = 'users.visits_count';
 
-    /** the column name for the CONFIG_SHOW_EMAIL field */
-    const CONFIG_SHOW_EMAIL = 'users.CONFIG_SHOW_EMAIL';
+    /** the column name for the config_show_email field */
+    const CONFIG_SHOW_EMAIL = 'users.config_show_email';
 
-    /** the column name for the CONFIG_SHOW_PHONE field */
-    const CONFIG_SHOW_PHONE = 'users.CONFIG_SHOW_PHONE';
+    /** the column name for the config_show_phone field */
+    const CONFIG_SHOW_PHONE = 'users.config_show_phone';
 
-    /** the column name for the CONFIG_SHOW_REAL_NAME field */
-    const CONFIG_SHOW_REAL_NAME = 'users.CONFIG_SHOW_REAL_NAME';
+    /** the column name for the config_show_real_name field */
+    const CONFIG_SHOW_REAL_NAME = 'users.config_show_real_name';
 
-    /** the column name for the CONFIG_SHOW_BIRTHDATE field */
-    const CONFIG_SHOW_BIRTHDATE = 'users.CONFIG_SHOW_BIRTHDATE';
+    /** the column name for the config_show_birthdate field */
+    const CONFIG_SHOW_BIRTHDATE = 'users.config_show_birthdate';
 
-    /** the column name for the CONFIG_SHOW_AGE field */
-    const CONFIG_SHOW_AGE = 'users.CONFIG_SHOW_AGE';
+    /** the column name for the config_show_age field */
+    const CONFIG_SHOW_AGE = 'users.config_show_age';
 
-    /** the column name for the CONFIG_INDEX_PROFILE field */
-    const CONFIG_INDEX_PROFILE = 'users.CONFIG_INDEX_PROFILE';
+    /** the column name for the config_index_profile field */
+    const CONFIG_INDEX_PROFILE = 'users.config_index_profile';
 
-    /** the column name for the CONFIG_PRIVATE_PROFILE field */
-    const CONFIG_PRIVATE_PROFILE = 'users.CONFIG_PRIVATE_PROFILE';
+    /** the column name for the config_private_profile field */
+    const CONFIG_PRIVATE_PROFILE = 'users.config_private_profile';
 
-    /** the column name for the ACTIVATED field */
-    const ACTIVATED = 'users.ACTIVATED';
+    /** the column name for the activated field */
+    const ACTIVATED = 'users.activated';
 
-    /** the column name for the IS_A_TEACHER field */
-    const IS_A_TEACHER = 'users.IS_A_TEACHER';
+    /** the column name for the is_a_teacher field */
+    const IS_A_TEACHER = 'users.is_a_teacher';
 
-    /** the column name for the IS_A_STUDENT field */
-    const IS_A_STUDENT = 'users.IS_A_STUDENT';
+    /** the column name for the is_a_student field */
+    const IS_A_STUDENT = 'users.is_a_student';
 
-    /** the column name for the IS_AN_ALUMNI field */
-    const IS_AN_ALUMNI = 'users.IS_AN_ALUMNI';
+    /** the column name for the is_an_alumni field */
+    const IS_AN_ALUMNI = 'users.is_an_alumni';
 
-    /** the column name for the DESCRIPTION field */
-    const DESCRIPTION = 'users.DESCRIPTION';
+    /** the column name for the description field */
+    const DESCRIPTION = 'users.description';
 
-    /** the column name for the REMARKS field */
-    const REMARKS = 'users.REMARKS';
+    /** the column name for the remarks field */
+    const REMARKS = 'users.remarks';
 
-    /** The enumerated values for the GENDER field */
+    /** The enumerated values for the gender field */
     const GENDER_N = 'N';
     const GENDER_M = 'M';
     const GENDER_F = 'F';
@@ -234,7 +234,28 @@ abstract class BaseUserPeer
     {
         $valueSets = UserPeer::getValueSets();
 
+        if (!isset($valueSets[$colname])) {
+            throw new PropelException(sprintf('Column "%s" has no ValueSet.', $colname));
+        }
+
         return $valueSets[$colname];
+    }
+
+    /**
+     * Gets the SQL value for the ENUM column value
+     *
+     * @param string $colname ENUM column name.
+     * @param string $enumVal ENUM value.
+     *
+     * @return int            SQL value
+     */
+    public static function getSqlValueForEnum($colname, $enumVal)
+    {
+        $values = UserPeer::getValueSet($colname);
+        if (!in_array($enumVal, $values)) {
+            throw new PropelException(sprintf('Value "%s" is not accepted in this enumerated column', $colname));
+        }
+        return array_search($enumVal, $values);
     }
 
     /**
@@ -297,33 +318,33 @@ abstract class BaseUserPeer
             $criteria->addSelectColumn(UserPeer::IS_A_STUDENT);
             $criteria->addSelectColumn(UserPeer::IS_AN_ALUMNI);
         } else {
-            $criteria->addSelectColumn($alias . '.ID');
-            $criteria->addSelectColumn($alias . '.USERNAME');
-            $criteria->addSelectColumn($alias . '.PASSWORD_HASH');
-            $criteria->addSelectColumn($alias . '.RIGHTS');
-            $criteria->addSelectColumn($alias . '.FIRSTNAME');
-            $criteria->addSelectColumn($alias . '.LASTNAME');
-            $criteria->addSelectColumn($alias . '.GENDER');
-            $criteria->addSelectColumn($alias . '.EMAIL');
-            $criteria->addSelectColumn($alias . '.PHONE');
-            $criteria->addSelectColumn($alias . '.WEBSITE');
-            $criteria->addSelectColumn($alias . '.BIRTH_DATE');
-            $criteria->addSelectColumn($alias . '.FIRST_ENTRY');
-            $criteria->addSelectColumn($alias . '.LAST_ENTRY');
-            $criteria->addSelectColumn($alias . '.EXPIRATION_DATE');
-            $criteria->addSelectColumn($alias . '.LAST_VISIT');
-            $criteria->addSelectColumn($alias . '.VISITS_COUNT');
-            $criteria->addSelectColumn($alias . '.CONFIG_SHOW_EMAIL');
-            $criteria->addSelectColumn($alias . '.CONFIG_SHOW_PHONE');
-            $criteria->addSelectColumn($alias . '.CONFIG_SHOW_REAL_NAME');
-            $criteria->addSelectColumn($alias . '.CONFIG_SHOW_BIRTHDATE');
-            $criteria->addSelectColumn($alias . '.CONFIG_SHOW_AGE');
-            $criteria->addSelectColumn($alias . '.CONFIG_INDEX_PROFILE');
-            $criteria->addSelectColumn($alias . '.CONFIG_PRIVATE_PROFILE');
-            $criteria->addSelectColumn($alias . '.ACTIVATED');
-            $criteria->addSelectColumn($alias . '.IS_A_TEACHER');
-            $criteria->addSelectColumn($alias . '.IS_A_STUDENT');
-            $criteria->addSelectColumn($alias . '.IS_AN_ALUMNI');
+            $criteria->addSelectColumn($alias . '.id');
+            $criteria->addSelectColumn($alias . '.username');
+            $criteria->addSelectColumn($alias . '.password_hash');
+            $criteria->addSelectColumn($alias . '.rights');
+            $criteria->addSelectColumn($alias . '.firstname');
+            $criteria->addSelectColumn($alias . '.lastname');
+            $criteria->addSelectColumn($alias . '.gender');
+            $criteria->addSelectColumn($alias . '.email');
+            $criteria->addSelectColumn($alias . '.phone');
+            $criteria->addSelectColumn($alias . '.website');
+            $criteria->addSelectColumn($alias . '.birth_date');
+            $criteria->addSelectColumn($alias . '.first_entry');
+            $criteria->addSelectColumn($alias . '.last_entry');
+            $criteria->addSelectColumn($alias . '.expiration_date');
+            $criteria->addSelectColumn($alias . '.last_visit');
+            $criteria->addSelectColumn($alias . '.visits_count');
+            $criteria->addSelectColumn($alias . '.config_show_email');
+            $criteria->addSelectColumn($alias . '.config_show_phone');
+            $criteria->addSelectColumn($alias . '.config_show_real_name');
+            $criteria->addSelectColumn($alias . '.config_show_birthdate');
+            $criteria->addSelectColumn($alias . '.config_show_age');
+            $criteria->addSelectColumn($alias . '.config_index_profile');
+            $criteria->addSelectColumn($alias . '.config_private_profile');
+            $criteria->addSelectColumn($alias . '.activated');
+            $criteria->addSelectColumn($alias . '.is_a_teacher');
+            $criteria->addSelectColumn($alias . '.is_a_student');
+            $criteria->addSelectColumn($alias . '.is_an_alumni');
         }
     }
 
@@ -407,7 +428,7 @@ abstract class BaseUserPeer
     /**
      * Prepares the Criteria object and uses the parent doSelect() method to execute a PDOStatement.
      *
-     * Use this method directly if you want to work with an executed statement durirectly (for example
+     * Use this method directly if you want to work with an executed statement directly (for example
      * to perform your own object hydration).
      *
      * @param      Criteria $criteria The Criteria object used to build the SELECT statement.
@@ -512,8 +533,15 @@ abstract class BaseUserPeer
      *
      * @return void
      */
-    public static function clearInstancePool()
+    public static function clearInstancePool($and_clear_all_references = false)
     {
+      if ($and_clear_all_references)
+      {
+        foreach (UserPeer::$instances as $instance)
+        {
+          $instance->clearAllReferences(true);
+        }
+      }
         UserPeer::$instances = array();
     }
 
@@ -538,21 +566,12 @@ abstract class BaseUserPeer
         // Invalidate objects in ContentPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         ContentPeer::clearInstancePool();
-        // Invalidate objects in CommentPeer instance pool,
-        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-        CommentPeer::clearInstancePool();
         // Invalidate objects in ReportPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         ReportPeer::clearInstancePool();
         // Invalidate objects in NewsPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         NewsPeer::clearInstancePool();
-        // Invalidate objects in TransactionPeer instance pool,
-        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-        TransactionPeer::clearInstancePool();
-        // Invalidate objects in ScheduledCoursePeer instance pool,
-        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-        ScheduledCoursePeer::clearInstancePool();
         // Invalidate objects in TokenPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         TokenPeer::clearInstancePool();
@@ -653,6 +672,17 @@ abstract class BaseUserPeer
     }
 
     /**
+     * Gets the SQL value for Gender ENUM value
+     *
+     * @param  string $enumVal ENUM value to get SQL value for
+     * @return int             SQL value
+     */
+    public static function getGenderSqlValue($enumVal)
+    {
+        return UserPeer::getSqlValueForEnum(UserPeer::GENDER, $enumVal);
+    }
+
+    /**
      * Returns the TableMap related to this peer.
      * This method is not needed for general use but a specific application could have a need.
      * @return TableMap
@@ -681,7 +711,7 @@ abstract class BaseUserPeer
      *
      * @return string ClassName
      */
-    public static function getOMClass()
+    public static function getOMClass($row = 0, $colnum = 0)
     {
         return UserPeer::OM_CLASS;
     }
@@ -901,12 +931,6 @@ abstract class BaseUserPeer
             $criteria->add(UsersPathsPeer::USER_ID, $obj->getId());
             $affectedRows += UsersPathsPeer::doDelete($criteria, $con);
 
-            // delete related Comment objects
-            $criteria = new Criteria(CommentPeer::DATABASE_NAME);
-
-            $criteria->add(CommentPeer::AUTHOR_ID, $obj->getId());
-            $affectedRows += CommentPeer::doDelete($criteria, $con);
-
             // delete related Token objects
             $criteria = new Criteria(TokenPeer::DATABASE_NAME);
 
@@ -982,22 +1006,6 @@ abstract class BaseUserPeer
             $updateValues = new Criteria(UserPeer::DATABASE_NAME);
             $selectCriteria->add(NewsPeer::AUTHOR_ID, $obj->getId());
             $updateValues->add(NewsPeer::AUTHOR_ID, null);
-
-            BasePeer::doUpdate($selectCriteria, $updateValues, $con); // use BasePeer because generated Peer doUpdate() methods only update using pkey
-
-            // set fkey col in related Transaction rows to null
-            $selectCriteria = new Criteria(UserPeer::DATABASE_NAME);
-            $updateValues = new Criteria(UserPeer::DATABASE_NAME);
-            $selectCriteria->add(TransactionPeer::USER_ID, $obj->getId());
-            $updateValues->add(TransactionPeer::USER_ID, null);
-
-            BasePeer::doUpdate($selectCriteria, $updateValues, $con); // use BasePeer because generated Peer doUpdate() methods only update using pkey
-
-            // set fkey col in related ScheduledCourse rows to null
-            $selectCriteria = new Criteria(UserPeer::DATABASE_NAME);
-            $updateValues = new Criteria(UserPeer::DATABASE_NAME);
-            $selectCriteria->add(ScheduledCoursePeer::TEACHER_ID, $obj->getId());
-            $updateValues->add(ScheduledCoursePeer::TEACHER_ID, null);
 
             BasePeer::doUpdate($selectCriteria, $updateValues, $con); // use BasePeer because generated Peer doUpdate() methods only update using pkey
 

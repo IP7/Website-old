@@ -69,6 +69,12 @@ abstract class BaseShortLink extends BaseObject implements Persistent
     protected $alreadyInValidation = false;
 
     /**
+     * Flag to prevent endless clearAllReferences($deep=true) loop, if this object is referenced
+     * @var        boolean
+     */
+    protected $alreadyInClearAllReferencesDeep = false;
+
+    /**
      * Applies default values to this object.
      * This method should be called from the object's constructor (or
      * equivalent initialization method).
@@ -136,7 +142,7 @@ abstract class BaseShortLink extends BaseObject implements Persistent
      */
     public function setId($v)
     {
-        if ($v !== null) {
+        if ($v !== null && is_numeric($v)) {
             $v = (int) $v;
         }
 
@@ -157,7 +163,7 @@ abstract class BaseShortLink extends BaseObject implements Persistent
      */
     public function setShortUrl($v)
     {
-        if ($v !== null) {
+        if ($v !== null && is_numeric($v)) {
             $v = (string) $v;
         }
 
@@ -178,7 +184,7 @@ abstract class BaseShortLink extends BaseObject implements Persistent
      */
     public function setUrl($v)
     {
-        if ($v !== null) {
+        if ($v !== null && is_numeric($v)) {
             $v = (string) $v;
         }
 
@@ -199,7 +205,7 @@ abstract class BaseShortLink extends BaseObject implements Persistent
      */
     public function setClicksCount($v)
     {
-        if ($v !== null) {
+        if ($v !== null && is_numeric($v)) {
             $v = (int) $v;
         }
 
@@ -255,7 +261,7 @@ abstract class BaseShortLink extends BaseObject implements Persistent
             if ($rehydrate) {
                 $this->ensureConsistency();
             }
-
+            $this->postHydrate($row, $startcol, $rehydrate);
             return $startcol + 4; // 4 = ShortLinkPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
@@ -469,16 +475,16 @@ abstract class BaseShortLink extends BaseObject implements Persistent
 
          // check the columns in natural order for more readable SQL queries
         if ($this->isColumnModified(ShortLinkPeer::ID)) {
-            $modifiedColumns[':p' . $index++]  = '`ID`';
+            $modifiedColumns[':p' . $index++]  = '`id`';
         }
         if ($this->isColumnModified(ShortLinkPeer::SHORT_URL)) {
-            $modifiedColumns[':p' . $index++]  = '`SHORT_URL`';
+            $modifiedColumns[':p' . $index++]  = '`short_url`';
         }
         if ($this->isColumnModified(ShortLinkPeer::URL)) {
-            $modifiedColumns[':p' . $index++]  = '`URL`';
+            $modifiedColumns[':p' . $index++]  = '`url`';
         }
         if ($this->isColumnModified(ShortLinkPeer::CLICKS_COUNT)) {
-            $modifiedColumns[':p' . $index++]  = '`CLICKS_COUNT`';
+            $modifiedColumns[':p' . $index++]  = '`clicks_count`';
         }
 
         $sql = sprintf(
@@ -491,16 +497,16 @@ abstract class BaseShortLink extends BaseObject implements Persistent
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
-                    case '`ID`':
+                    case '`id`':
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
-                    case '`SHORT_URL`':
+                    case '`short_url`':
                         $stmt->bindValue($identifier, $this->short_url, PDO::PARAM_STR);
                         break;
-                    case '`URL`':
+                    case '`url`':
                         $stmt->bindValue($identifier, $this->url, PDO::PARAM_STR);
                         break;
-                    case '`CLICKS_COUNT`':
+                    case '`clicks_count`':
                         $stmt->bindValue($identifier, $this->clicks_count, PDO::PARAM_INT);
                         break;
                 }
@@ -571,11 +577,11 @@ abstract class BaseShortLink extends BaseObject implements Persistent
             $this->validationFailures = array();
 
             return true;
-        } else {
-            $this->validationFailures = $res;
-
-            return false;
         }
+
+        $this->validationFailures = $res;
+
+        return false;
     }
 
     /**
@@ -893,6 +899,7 @@ abstract class BaseShortLink extends BaseObject implements Persistent
         $this->clicks_count = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
+        $this->alreadyInClearAllReferencesDeep = false;
         $this->clearAllReferences();
         $this->applyDefaultValues();
         $this->resetModified();
@@ -911,7 +918,10 @@ abstract class BaseShortLink extends BaseObject implements Persistent
      */
     public function clearAllReferences($deep = false)
     {
-        if ($deep) {
+        if ($deep && !$this->alreadyInClearAllReferencesDeep) {
+            $this->alreadyInClearAllReferencesDeep = true;
+
+            $this->alreadyInClearAllReferencesDeep = false;
         } // if ($deep)
 
     }

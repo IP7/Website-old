@@ -32,35 +32,35 @@ abstract class BaseNewsPeer
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
     const NUM_HYDRATE_COLUMNS = 10;
 
-    /** the column name for the ID field */
-    const ID = 'news.ID';
+    /** the column name for the id field */
+    const ID = 'news.id';
 
-    /** the column name for the AUTHOR_ID field */
-    const AUTHOR_ID = 'news.AUTHOR_ID';
+    /** the column name for the author_id field */
+    const AUTHOR_ID = 'news.author_id';
 
-    /** the column name for the TITLE field */
-    const TITLE = 'news.TITLE';
+    /** the column name for the title field */
+    const TITLE = 'news.title';
 
-    /** the column name for the TEXT field */
-    const TEXT = 'news.TEXT';
+    /** the column name for the text field */
+    const TEXT = 'news.text';
 
-    /** the column name for the EXPIRATION_DATE field */
-    const EXPIRATION_DATE = 'news.EXPIRATION_DATE';
+    /** the column name for the expiration_date field */
+    const EXPIRATION_DATE = 'news.expiration_date';
 
-    /** the column name for the CURSUS_ID field */
-    const CURSUS_ID = 'news.CURSUS_ID';
+    /** the column name for the cursus_id field */
+    const CURSUS_ID = 'news.cursus_id';
 
-    /** the column name for the COURSE_ID field */
-    const COURSE_ID = 'news.COURSE_ID';
+    /** the column name for the course_id field */
+    const COURSE_ID = 'news.course_id';
 
-    /** the column name for the ACCESS_RIGHTS field */
-    const ACCESS_RIGHTS = 'news.ACCESS_RIGHTS';
+    /** the column name for the access_rights field */
+    const ACCESS_RIGHTS = 'news.access_rights';
 
-    /** the column name for the CREATED_AT field */
-    const CREATED_AT = 'news.CREATED_AT';
+    /** the column name for the created_at field */
+    const CREATED_AT = 'news.created_at';
 
-    /** the column name for the UPDATED_AT field */
-    const UPDATED_AT = 'news.UPDATED_AT';
+    /** the column name for the updated_at field */
+    const UPDATED_AT = 'news.updated_at';
 
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -186,16 +186,16 @@ abstract class BaseNewsPeer
             $criteria->addSelectColumn(NewsPeer::CREATED_AT);
             $criteria->addSelectColumn(NewsPeer::UPDATED_AT);
         } else {
-            $criteria->addSelectColumn($alias . '.ID');
-            $criteria->addSelectColumn($alias . '.AUTHOR_ID');
-            $criteria->addSelectColumn($alias . '.TITLE');
-            $criteria->addSelectColumn($alias . '.TEXT');
-            $criteria->addSelectColumn($alias . '.EXPIRATION_DATE');
-            $criteria->addSelectColumn($alias . '.CURSUS_ID');
-            $criteria->addSelectColumn($alias . '.COURSE_ID');
-            $criteria->addSelectColumn($alias . '.ACCESS_RIGHTS');
-            $criteria->addSelectColumn($alias . '.CREATED_AT');
-            $criteria->addSelectColumn($alias . '.UPDATED_AT');
+            $criteria->addSelectColumn($alias . '.id');
+            $criteria->addSelectColumn($alias . '.author_id');
+            $criteria->addSelectColumn($alias . '.title');
+            $criteria->addSelectColumn($alias . '.text');
+            $criteria->addSelectColumn($alias . '.expiration_date');
+            $criteria->addSelectColumn($alias . '.cursus_id');
+            $criteria->addSelectColumn($alias . '.course_id');
+            $criteria->addSelectColumn($alias . '.access_rights');
+            $criteria->addSelectColumn($alias . '.created_at');
+            $criteria->addSelectColumn($alias . '.updated_at');
         }
     }
 
@@ -279,7 +279,7 @@ abstract class BaseNewsPeer
     /**
      * Prepares the Criteria object and uses the parent doSelect() method to execute a PDOStatement.
      *
-     * Use this method directly if you want to work with an executed statement durirectly (for example
+     * Use this method directly if you want to work with an executed statement directly (for example
      * to perform your own object hydration).
      *
      * @param      Criteria $criteria The Criteria object used to build the SELECT statement.
@@ -384,8 +384,15 @@ abstract class BaseNewsPeer
      *
      * @return void
      */
-    public static function clearInstancePool()
+    public static function clearInstancePool($and_clear_all_references = false)
     {
+      if ($and_clear_all_references)
+      {
+        foreach (NewsPeer::$instances as $instance)
+        {
+          $instance->clearAllReferences(true);
+        }
+      }
         NewsPeer::$instances = array();
     }
 
@@ -1497,7 +1504,7 @@ abstract class BaseNewsPeer
      *
      * @return string ClassName
      */
-    public static function getOMClass()
+    public static function getOMClass($row = 0, $colnum = 0)
     {
         return NewsPeer::OM_CLASS;
     }

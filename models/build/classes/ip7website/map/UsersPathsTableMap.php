@@ -39,8 +39,8 @@ class UsersPathsTableMap extends TableMap
         $this->setUseIdGenerator(false);
         $this->setIsCrossRef(true);
         // columns
-        $this->addForeignPrimaryKey('USER_ID', 'UserId', 'INTEGER' , 'users', 'ID', true, null, null);
-        $this->addForeignPrimaryKey('PATH_ID', 'PathId', 'INTEGER' , 'educational_paths', 'ID', true, null, null);
+        $this->addForeignPrimaryKey('user_id', 'UserId', 'INTEGER' , 'users', 'id', true, null, null);
+        $this->addForeignPrimaryKey('path_id', 'PathId', 'INTEGER' , 'educational_paths', 'id', true, null, null);
         // validators
     } // initialize()
 

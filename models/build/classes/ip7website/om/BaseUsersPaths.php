@@ -66,6 +66,12 @@ abstract class BaseUsersPaths extends BaseObject implements Persistent
     protected $alreadyInValidation = false;
 
     /**
+     * Flag to prevent endless clearAllReferences($deep=true) loop, if this object is referenced
+     * @var        boolean
+     */
+    protected $alreadyInClearAllReferencesDeep = false;
+
+    /**
      * Get the [user_id] column value.
      *
      * @return int
@@ -93,7 +99,7 @@ abstract class BaseUsersPaths extends BaseObject implements Persistent
      */
     public function setUserId($v)
     {
-        if ($v !== null) {
+        if ($v !== null && is_numeric($v)) {
             $v = (int) $v;
         }
 
@@ -118,7 +124,7 @@ abstract class BaseUsersPaths extends BaseObject implements Persistent
      */
     public function setPathId($v)
     {
-        if ($v !== null) {
+        if ($v !== null && is_numeric($v)) {
             $v = (int) $v;
         }
 
@@ -176,7 +182,7 @@ abstract class BaseUsersPaths extends BaseObject implements Persistent
             if ($rehydrate) {
                 $this->ensureConsistency();
             }
-
+            $this->postHydrate($row, $startcol, $rehydrate);
             return $startcol + 2; // 2 = UsersPathsPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
@@ -413,10 +419,10 @@ abstract class BaseUsersPaths extends BaseObject implements Persistent
 
          // check the columns in natural order for more readable SQL queries
         if ($this->isColumnModified(UsersPathsPeer::USER_ID)) {
-            $modifiedColumns[':p' . $index++]  = '`USER_ID`';
+            $modifiedColumns[':p' . $index++]  = '`user_id`';
         }
         if ($this->isColumnModified(UsersPathsPeer::PATH_ID)) {
-            $modifiedColumns[':p' . $index++]  = '`PATH_ID`';
+            $modifiedColumns[':p' . $index++]  = '`path_id`';
         }
 
         $sql = sprintf(
@@ -429,10 +435,10 @@ abstract class BaseUsersPaths extends BaseObject implements Persistent
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
-                    case '`USER_ID`':
+                    case '`user_id`':
                         $stmt->bindValue($identifier, $this->user_id, PDO::PARAM_INT);
                         break;
-                    case '`PATH_ID`':
+                    case '`path_id`':
                         $stmt->bindValue($identifier, $this->path_id, PDO::PARAM_INT);
                         break;
                 }
@@ -496,11 +502,11 @@ abstract class BaseUsersPaths extends BaseObject implements Persistent
             $this->validationFailures = array();
 
             return true;
-        } else {
-            $this->validationFailures = $res;
-
-            return false;
         }
+
+        $this->validationFailures = $res;
+
+        return false;
     }
 
     /**
@@ -865,12 +871,13 @@ abstract class BaseUsersPaths extends BaseObject implements Persistent
      * Get the associated User object
      *
      * @param PropelPDO $con Optional Connection object.
+     * @param $doQuery Executes a query to get the object if required
      * @return User The associated User object.
      * @throws PropelException
      */
-    public function getUser(PropelPDO $con = null)
+    public function getUser(PropelPDO $con = null, $doQuery = true)
     {
-        if ($this->aUser === null && ($this->user_id !== null)) {
+        if ($this->aUser === null && ($this->user_id !== null) && $doQuery) {
             $this->aUser = UserQuery::create()->findPk($this->user_id, $con);
             /* The following can be used additionally to
                 guarantee the related object contains a reference
@@ -916,12 +923,13 @@ abstract class BaseUsersPaths extends BaseObject implements Persistent
      * Get the associated EducationalPath object
      *
      * @param PropelPDO $con Optional Connection object.
+     * @param $doQuery Executes a query to get the object if required
      * @return EducationalPath The associated EducationalPath object.
      * @throws PropelException
      */
-    public function getEducationalPath(PropelPDO $con = null)
+    public function getEducationalPath(PropelPDO $con = null, $doQuery = true)
     {
-        if ($this->aEducationalPath === null && ($this->path_id !== null)) {
+        if ($this->aEducationalPath === null && ($this->path_id !== null) && $doQuery) {
             $this->aEducationalPath = EducationalPathQuery::create()->findPk($this->path_id, $con);
             /* The following can be used additionally to
                 guarantee the related object contains a reference
@@ -944,6 +952,7 @@ abstract class BaseUsersPaths extends BaseObject implements Persistent
         $this->path_id = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
+        $this->alreadyInClearAllReferencesDeep = false;
         $this->clearAllReferences();
         $this->resetModified();
         $this->setNew(true);
@@ -961,7 +970,16 @@ abstract class BaseUsersPaths extends BaseObject implements Persistent
      */
     public function clearAllReferences($deep = false)
     {
-        if ($deep) {
+        if ($deep && !$this->alreadyInClearAllReferencesDeep) {
+            $this->alreadyInClearAllReferencesDeep = true;
+            if ($this->aUser instanceof Persistent) {
+              $this->aUser->clearAllReferences($deep);
+            }
+            if ($this->aEducationalPath instanceof Persistent) {
+              $this->aEducationalPath->clearAllReferences($deep);
+            }
+
+            $this->alreadyInClearAllReferencesDeep = false;
         } // if ($deep)
 
         $this->aUser = null;

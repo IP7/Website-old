@@ -38,13 +38,13 @@ class TokenTableMap extends TableMap
         $this->setPackage('ip7website');
         $this->setUseIdGenerator(true);
         // columns
-        $this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
-        $this->addForeignKey('USER_ID', 'UserId', 'INTEGER', 'users', 'ID', false, null, null);
-        $this->addColumn('EXPIRATION_DATE', 'ExpirationDate', 'TIMESTAMP', false, null, null);
-        $this->addColumn('RIGHTS', 'Rights', 'TINYINT', false, null, 0);
-        $this->addColumn('VALUE', 'Value', 'VARCHAR', true, 255, null);
-        $this->addColumn('METHOD', 'Method', 'ENUM', false, null, 'GET');
-        $this->getColumn('METHOD', false)->setValueSet(array (
+        $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
+        $this->addForeignKey('user_id', 'UserId', 'INTEGER', 'users', 'id', false, null, null);
+        $this->addColumn('expiration_date', 'ExpirationDate', 'TIMESTAMP', false, null, null);
+        $this->addColumn('rights', 'Rights', 'TINYINT', false, null, 0);
+        $this->addColumn('value', 'Value', 'VARCHAR', true, 255, null);
+        $this->addColumn('method', 'Method', 'ENUM', false, null, 'GET');
+        $this->getColumn('method', false)->setValueSet(array (
   0 => 'GET',
   1 => 'POST',
 ));

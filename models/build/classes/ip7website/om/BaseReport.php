@@ -84,6 +84,12 @@ abstract class BaseReport extends BaseObject implements Persistent
     protected $alreadyInValidation = false;
 
     /**
+     * Flag to prevent endless clearAllReferences($deep=true) loop, if this object is referenced
+     * @var        boolean
+     */
+    protected $alreadyInClearAllReferencesDeep = false;
+
+    /**
      * Get the [id] column value.
      *
      * @return int
@@ -132,22 +138,25 @@ abstract class BaseReport extends BaseObject implements Persistent
             // while technically this is not a default value of null,
             // this seems to be closest in meaning.
             return null;
-        } else {
-            try {
-                $dt = new DateTime($this->date);
-            } catch (Exception $x) {
-                throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->date, true), $x);
-            }
+        }
+
+        try {
+            $dt = new DateTime($this->date);
+        } catch (Exception $x) {
+            throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->date, true), $x);
         }
 
         if ($format === null) {
             // Because propel.useDateTimeClass is true, we return a DateTime object.
             return $dt;
-        } elseif (strpos($format, '%') !== false) {
-            return strftime($format, $dt->format('U'));
-        } else {
-            return $dt->format($format);
         }
+
+        if (strpos($format, '%') !== false) {
+            return strftime($format, $dt->format('U'));
+        }
+
+        return $dt->format($format);
+
     }
 
     /**
@@ -168,7 +177,7 @@ abstract class BaseReport extends BaseObject implements Persistent
      */
     public function setId($v)
     {
-        if ($v !== null) {
+        if ($v !== null && is_numeric($v)) {
             $v = (int) $v;
         }
 
@@ -189,7 +198,7 @@ abstract class BaseReport extends BaseObject implements Persistent
      */
     public function setContentId($v)
     {
-        if ($v !== null) {
+        if ($v !== null && is_numeric($v)) {
             $v = (int) $v;
         }
 
@@ -214,7 +223,7 @@ abstract class BaseReport extends BaseObject implements Persistent
      */
     public function setAuthorId($v)
     {
-        if ($v !== null) {
+        if ($v !== null && is_numeric($v)) {
             $v = (int) $v;
         }
 
@@ -262,7 +271,7 @@ abstract class BaseReport extends BaseObject implements Persistent
      */
     public function setText($v)
     {
-        if ($v !== null) {
+        if ($v !== null && is_numeric($v)) {
             $v = (string) $v;
         }
 
@@ -319,7 +328,7 @@ abstract class BaseReport extends BaseObject implements Persistent
             if ($rehydrate) {
                 $this->ensureConsistency();
             }
-
+            $this->postHydrate($row, $startcol, $rehydrate);
             return $startcol + 5; // 5 = ReportPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
@@ -560,19 +569,19 @@ abstract class BaseReport extends BaseObject implements Persistent
 
          // check the columns in natural order for more readable SQL queries
         if ($this->isColumnModified(ReportPeer::ID)) {
-            $modifiedColumns[':p' . $index++]  = '`ID`';
+            $modifiedColumns[':p' . $index++]  = '`id`';
         }
         if ($this->isColumnModified(ReportPeer::CONTENT_ID)) {
-            $modifiedColumns[':p' . $index++]  = '`CONTENT_ID`';
+            $modifiedColumns[':p' . $index++]  = '`content_id`';
         }
         if ($this->isColumnModified(ReportPeer::AUTHOR_ID)) {
-            $modifiedColumns[':p' . $index++]  = '`AUTHOR_ID`';
+            $modifiedColumns[':p' . $index++]  = '`author_id`';
         }
         if ($this->isColumnModified(ReportPeer::DATE)) {
-            $modifiedColumns[':p' . $index++]  = '`DATE`';
+            $modifiedColumns[':p' . $index++]  = '`date`';
         }
         if ($this->isColumnModified(ReportPeer::TEXT)) {
-            $modifiedColumns[':p' . $index++]  = '`TEXT`';
+            $modifiedColumns[':p' . $index++]  = '`text`';
         }
 
         $sql = sprintf(
@@ -585,19 +594,19 @@ abstract class BaseReport extends BaseObject implements Persistent
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
-                    case '`ID`':
+                    case '`id`':
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
-                    case '`CONTENT_ID`':
+                    case '`content_id`':
                         $stmt->bindValue($identifier, $this->content_id, PDO::PARAM_INT);
                         break;
-                    case '`AUTHOR_ID`':
+                    case '`author_id`':
                         $stmt->bindValue($identifier, $this->author_id, PDO::PARAM_INT);
                         break;
-                    case '`DATE`':
+                    case '`date`':
                         $stmt->bindValue($identifier, $this->date, PDO::PARAM_STR);
                         break;
-                    case '`TEXT`':
+                    case '`text`':
                         $stmt->bindValue($identifier, $this->text, PDO::PARAM_STR);
                         break;
                 }
@@ -668,11 +677,11 @@ abstract class BaseReport extends BaseObject implements Persistent
             $this->validationFailures = array();
 
             return true;
-        } else {
-            $this->validationFailures = $res;
-
-            return false;
         }
+
+        $this->validationFailures = $res;
+
+        return false;
     }
 
     /**
@@ -1060,12 +1069,13 @@ abstract class BaseReport extends BaseObject implements Persistent
      * Get the associated Content object
      *
      * @param PropelPDO $con Optional Connection object.
+     * @param $doQuery Executes a query to get the object if required
      * @return Content The associated Content object.
      * @throws PropelException
      */
-    public function getContent(PropelPDO $con = null)
+    public function getContent(PropelPDO $con = null, $doQuery = true)
     {
-        if ($this->aContent === null && ($this->content_id !== null)) {
+        if ($this->aContent === null && ($this->content_id !== null) && $doQuery) {
             $this->aContent = ContentQuery::create()->findPk($this->content_id, $con);
             /* The following can be used additionally to
                 guarantee the related object contains a reference
@@ -1111,12 +1121,13 @@ abstract class BaseReport extends BaseObject implements Persistent
      * Get the associated User object
      *
      * @param PropelPDO $con Optional Connection object.
+     * @param $doQuery Executes a query to get the object if required
      * @return User The associated User object.
      * @throws PropelException
      */
-    public function getAuthor(PropelPDO $con = null)
+    public function getAuthor(PropelPDO $con = null, $doQuery = true)
     {
-        if ($this->aAuthor === null && ($this->author_id !== null)) {
+        if ($this->aAuthor === null && ($this->author_id !== null) && $doQuery) {
             $this->aAuthor = UserQuery::create()->findPk($this->author_id, $con);
             /* The following can be used additionally to
                 guarantee the related object contains a reference
@@ -1142,6 +1153,7 @@ abstract class BaseReport extends BaseObject implements Persistent
         $this->text = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
+        $this->alreadyInClearAllReferencesDeep = false;
         $this->clearAllReferences();
         $this->resetModified();
         $this->setNew(true);
@@ -1159,7 +1171,16 @@ abstract class BaseReport extends BaseObject implements Persistent
      */
     public function clearAllReferences($deep = false)
     {
-        if ($deep) {
+        if ($deep && !$this->alreadyInClearAllReferencesDeep) {
+            $this->alreadyInClearAllReferencesDeep = true;
+            if ($this->aContent instanceof Persistent) {
+              $this->aContent->clearAllReferences($deep);
+            }
+            if ($this->aAuthor instanceof Persistent) {
+              $this->aAuthor->clearAllReferences($deep);
+            }
+
+            $this->alreadyInClearAllReferencesDeep = false;
         } // if ($deep)
 
         $this->aContent = null;

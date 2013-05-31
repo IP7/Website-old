@@ -66,6 +66,12 @@ abstract class BaseContentsFiles extends BaseObject implements Persistent
     protected $alreadyInValidation = false;
 
     /**
+     * Flag to prevent endless clearAllReferences($deep=true) loop, if this object is referenced
+     * @var        boolean
+     */
+    protected $alreadyInClearAllReferencesDeep = false;
+
+    /**
      * Get the [content_id] column value.
      *
      * @return int
@@ -93,7 +99,7 @@ abstract class BaseContentsFiles extends BaseObject implements Persistent
      */
     public function setContentId($v)
     {
-        if ($v !== null) {
+        if ($v !== null && is_numeric($v)) {
             $v = (int) $v;
         }
 
@@ -118,7 +124,7 @@ abstract class BaseContentsFiles extends BaseObject implements Persistent
      */
     public function setFileId($v)
     {
-        if ($v !== null) {
+        if ($v !== null && is_numeric($v)) {
             $v = (int) $v;
         }
 
@@ -176,7 +182,7 @@ abstract class BaseContentsFiles extends BaseObject implements Persistent
             if ($rehydrate) {
                 $this->ensureConsistency();
             }
-
+            $this->postHydrate($row, $startcol, $rehydrate);
             return $startcol + 2; // 2 = ContentsFilesPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
@@ -413,10 +419,10 @@ abstract class BaseContentsFiles extends BaseObject implements Persistent
 
          // check the columns in natural order for more readable SQL queries
         if ($this->isColumnModified(ContentsFilesPeer::CONTENT_ID)) {
-            $modifiedColumns[':p' . $index++]  = '`CONTENT_ID`';
+            $modifiedColumns[':p' . $index++]  = '`content_id`';
         }
         if ($this->isColumnModified(ContentsFilesPeer::FILE_ID)) {
-            $modifiedColumns[':p' . $index++]  = '`FILE_ID`';
+            $modifiedColumns[':p' . $index++]  = '`file_id`';
         }
 
         $sql = sprintf(
@@ -429,10 +435,10 @@ abstract class BaseContentsFiles extends BaseObject implements Persistent
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
-                    case '`CONTENT_ID`':
+                    case '`content_id`':
                         $stmt->bindValue($identifier, $this->content_id, PDO::PARAM_INT);
                         break;
-                    case '`FILE_ID`':
+                    case '`file_id`':
                         $stmt->bindValue($identifier, $this->file_id, PDO::PARAM_INT);
                         break;
                 }
@@ -496,11 +502,11 @@ abstract class BaseContentsFiles extends BaseObject implements Persistent
             $this->validationFailures = array();
 
             return true;
-        } else {
-            $this->validationFailures = $res;
-
-            return false;
         }
+
+        $this->validationFailures = $res;
+
+        return false;
     }
 
     /**
@@ -865,12 +871,13 @@ abstract class BaseContentsFiles extends BaseObject implements Persistent
      * Get the associated Content object
      *
      * @param PropelPDO $con Optional Connection object.
+     * @param $doQuery Executes a query to get the object if required
      * @return Content The associated Content object.
      * @throws PropelException
      */
-    public function getContent(PropelPDO $con = null)
+    public function getContent(PropelPDO $con = null, $doQuery = true)
     {
-        if ($this->aContent === null && ($this->content_id !== null)) {
+        if ($this->aContent === null && ($this->content_id !== null) && $doQuery) {
             $this->aContent = ContentQuery::create()->findPk($this->content_id, $con);
             /* The following can be used additionally to
                 guarantee the related object contains a reference
@@ -916,12 +923,13 @@ abstract class BaseContentsFiles extends BaseObject implements Persistent
      * Get the associated File object
      *
      * @param PropelPDO $con Optional Connection object.
+     * @param $doQuery Executes a query to get the object if required
      * @return File The associated File object.
      * @throws PropelException
      */
-    public function getFile(PropelPDO $con = null)
+    public function getFile(PropelPDO $con = null, $doQuery = true)
     {
-        if ($this->aFile === null && ($this->file_id !== null)) {
+        if ($this->aFile === null && ($this->file_id !== null) && $doQuery) {
             $this->aFile = FileQuery::create()->findPk($this->file_id, $con);
             /* The following can be used additionally to
                 guarantee the related object contains a reference
@@ -944,6 +952,7 @@ abstract class BaseContentsFiles extends BaseObject implements Persistent
         $this->file_id = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
+        $this->alreadyInClearAllReferencesDeep = false;
         $this->clearAllReferences();
         $this->resetModified();
         $this->setNew(true);
@@ -961,7 +970,16 @@ abstract class BaseContentsFiles extends BaseObject implements Persistent
      */
     public function clearAllReferences($deep = false)
     {
-        if ($deep) {
+        if ($deep && !$this->alreadyInClearAllReferencesDeep) {
+            $this->alreadyInClearAllReferencesDeep = true;
+            if ($this->aContent instanceof Persistent) {
+              $this->aContent->clearAllReferences($deep);
+            }
+            if ($this->aFile instanceof Persistent) {
+              $this->aFile->clearAllReferences($deep);
+            }
+
+            $this->alreadyInClearAllReferencesDeep = false;
         } // if ($deep)
 
         $this->aContent = null;

@@ -47,7 +47,6 @@
  * @method File findOne(PropelPDO $con = null) Return the first File matching the query
  * @method File findOneOrCreate(PropelPDO $con = null) Return the first File matching the query, or a new File object populated from the query conditions when no match is found
  *
- * @method File findOneById(int $id) Return the first File filtered by the id column
  * @method File findOneByAuthorId(int $author_id) Return the first File filtered by the author_id column
  * @method File findOneByTitle(string $title) Return the first File filtered by the title column
  * @method File findOneByDate(string $date) Return the first File filtered by the date column
@@ -89,7 +88,7 @@ abstract class BaseFileQuery extends ModelCriteria
      * Returns a new FileQuery object.
      *
      * @param     string $modelAlias The alias of a model in the query
-     * @param     FileQuery|Criteria $criteria Optional Criteria to build the query from
+     * @param   FileQuery|Criteria $criteria Optional Criteria to build the query from
      *
      * @return FileQuery
      */
@@ -146,18 +145,32 @@ abstract class BaseFileQuery extends ModelCriteria
     }
 
     /**
+     * Alias of findPk to use instance pooling
+     *
+     * @param     mixed $key Primary key to use for the query
+     * @param     PropelPDO $con A connection object
+     *
+     * @return                 File A model object, or null if the key is not found
+     * @throws PropelException
+     */
+     public function findOneById($key, $con = null)
+     {
+        return $this->findPk($key, $con);
+     }
+
+    /**
      * Find object by primary key using raw SQL to go fast.
      * Bypass doSelect() and the object formatter by using generated code.
      *
      * @param     mixed $key Primary key to use for the query
      * @param     PropelPDO $con A connection object
      *
-     * @return   File A model object, or null if the key is not found
-     * @throws   PropelException
+     * @return                 File A model object, or null if the key is not found
+     * @throws PropelException
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `ID`, `AUTHOR_ID`, `TITLE`, `DATE`, `DESCRIPTION`, `FILE_TYPE`, `PATH`, `ACCESS_RIGHTS`, `DOWNLOADS_COUNT`, `DELETED` FROM `files` WHERE `ID` = :p0';
+        $sql = 'SELECT `id`, `author_id`, `title`, `date`, `description`, `file_type`, `path`, `access_rights`, `downloads_count`, `deleted` FROM `files` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -253,7 +266,8 @@ abstract class BaseFileQuery extends ModelCriteria
      * <code>
      * $query->filterById(1234); // WHERE id = 1234
      * $query->filterById(array(12, 34)); // WHERE id IN (12, 34)
-     * $query->filterById(array('min' => 12)); // WHERE id > 12
+     * $query->filterById(array('min' => 12)); // WHERE id >= 12
+     * $query->filterById(array('max' => 12)); // WHERE id <= 12
      * </code>
      *
      * @param     mixed $id The value to use as filter.
@@ -266,8 +280,22 @@ abstract class BaseFileQuery extends ModelCriteria
      */
     public function filterById($id = null, $comparison = null)
     {
-        if (is_array($id) && null === $comparison) {
-            $comparison = Criteria::IN;
+        if (is_array($id)) {
+            $useMinMax = false;
+            if (isset($id['min'])) {
+                $this->addUsingAlias(FilePeer::ID, $id['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($id['max'])) {
+                $this->addUsingAlias(FilePeer::ID, $id['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
         }
 
         return $this->addUsingAlias(FilePeer::ID, $id, $comparison);
@@ -280,7 +308,8 @@ abstract class BaseFileQuery extends ModelCriteria
      * <code>
      * $query->filterByAuthorId(1234); // WHERE author_id = 1234
      * $query->filterByAuthorId(array(12, 34)); // WHERE author_id IN (12, 34)
-     * $query->filterByAuthorId(array('min' => 12)); // WHERE author_id > 12
+     * $query->filterByAuthorId(array('min' => 12)); // WHERE author_id >= 12
+     * $query->filterByAuthorId(array('max' => 12)); // WHERE author_id <= 12
      * </code>
      *
      * @see       filterByAuthor()
@@ -428,19 +457,12 @@ abstract class BaseFileQuery extends ModelCriteria
      */
     public function filterByFileType($fileType = null, $comparison = null)
     {
-        $valueSet = FilePeer::getValueSet(FilePeer::FILE_TYPE);
         if (is_scalar($fileType)) {
-            if (!in_array($fileType, $valueSet)) {
-                throw new PropelException(sprintf('Value "%s" is not accepted in this enumerated column', $fileType));
-            }
-            $fileType = array_search($fileType, $valueSet);
+            $fileType = FilePeer::getSqlValueForEnum(FilePeer::FILE_TYPE, $fileType);
         } elseif (is_array($fileType)) {
             $convertedValues = array();
             foreach ($fileType as $value) {
-                if (!in_array($value, $valueSet)) {
-                    throw new PropelException(sprintf('Value "%s" is not accepted in this enumerated column', $value));
-                }
-                $convertedValues []= array_search($value, $valueSet);
+                $convertedValues[] = FilePeer::getSqlValueForEnum(FilePeer::FILE_TYPE, $value);
             }
             $fileType = $convertedValues;
             if (null === $comparison) {
@@ -487,7 +509,8 @@ abstract class BaseFileQuery extends ModelCriteria
      * <code>
      * $query->filterByAccessRights(1234); // WHERE access_rights = 1234
      * $query->filterByAccessRights(array(12, 34)); // WHERE access_rights IN (12, 34)
-     * $query->filterByAccessRights(array('min' => 12)); // WHERE access_rights > 12
+     * $query->filterByAccessRights(array('min' => 12)); // WHERE access_rights >= 12
+     * $query->filterByAccessRights(array('max' => 12)); // WHERE access_rights <= 12
      * </code>
      *
      * @param     mixed $accessRights The value to use as filter.
@@ -528,7 +551,8 @@ abstract class BaseFileQuery extends ModelCriteria
      * <code>
      * $query->filterByDownloadsCount(1234); // WHERE downloads_count = 1234
      * $query->filterByDownloadsCount(array(12, 34)); // WHERE downloads_count IN (12, 34)
-     * $query->filterByDownloadsCount(array('min' => 12)); // WHERE downloads_count > 12
+     * $query->filterByDownloadsCount(array('min' => 12)); // WHERE downloads_count >= 12
+     * $query->filterByDownloadsCount(array('max' => 12)); // WHERE downloads_count <= 12
      * </code>
      *
      * @param     mixed $downloadsCount The value to use as filter.
@@ -595,8 +619,8 @@ abstract class BaseFileQuery extends ModelCriteria
      * @param   User|PropelObjectCollection $user The related object(s) to use as filter
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return   FileQuery The current query, for fluid interface
-     * @throws   PropelException - if the provided filter is invalid.
+     * @return                 FileQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
      */
     public function filterByAuthor($user, $comparison = null)
     {
@@ -671,8 +695,8 @@ abstract class BaseFileQuery extends ModelCriteria
      * @param   ContentsFiles|PropelObjectCollection $contentsFiles  the related object to use as filter
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return   FileQuery The current query, for fluid interface
-     * @throws   PropelException - if the provided filter is invalid.
+     * @return                 FileQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
      */
     public function filterByContentsFiles($contentsFiles, $comparison = null)
     {
@@ -745,8 +769,8 @@ abstract class BaseFileQuery extends ModelCriteria
      * @param   CoursesContentsArchives|PropelObjectCollection $coursesContentsArchives  the related object to use as filter
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return   FileQuery The current query, for fluid interface
-     * @throws   PropelException - if the provided filter is invalid.
+     * @return                 FileQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
      */
     public function filterByCoursesContentsArchives($coursesContentsArchives, $comparison = null)
     {

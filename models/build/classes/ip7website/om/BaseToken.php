@@ -87,6 +87,12 @@ abstract class BaseToken extends BaseObject implements Persistent
     protected $alreadyInValidation = false;
 
     /**
+     * Flag to prevent endless clearAllReferences($deep=true) loop, if this object is referenced
+     * @var        boolean
+     */
+    protected $alreadyInClearAllReferencesDeep = false;
+
+    /**
      * Applies default values to this object.
      * This method should be called from the object's constructor (or
      * equivalent initialization method).
@@ -146,22 +152,25 @@ abstract class BaseToken extends BaseObject implements Persistent
             // while technically this is not a default value of null,
             // this seems to be closest in meaning.
             return null;
-        } else {
-            try {
-                $dt = new DateTime($this->expiration_date);
-            } catch (Exception $x) {
-                throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->expiration_date, true), $x);
-            }
+        }
+
+        try {
+            $dt = new DateTime($this->expiration_date);
+        } catch (Exception $x) {
+            throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->expiration_date, true), $x);
         }
 
         if ($format === null) {
             // Because propel.useDateTimeClass is true, we return a DateTime object.
             return $dt;
-        } elseif (strpos($format, '%') !== false) {
-            return strftime($format, $dt->format('U'));
-        } else {
-            return $dt->format($format);
         }
+
+        if (strpos($format, '%') !== false) {
+            return strftime($format, $dt->format('U'));
+        }
+
+        return $dt->format($format);
+
     }
 
     /**
@@ -211,7 +220,7 @@ abstract class BaseToken extends BaseObject implements Persistent
      */
     public function setId($v)
     {
-        if ($v !== null) {
+        if ($v !== null && is_numeric($v)) {
             $v = (int) $v;
         }
 
@@ -232,7 +241,7 @@ abstract class BaseToken extends BaseObject implements Persistent
      */
     public function setUserId($v)
     {
-        if ($v !== null) {
+        if ($v !== null && is_numeric($v)) {
             $v = (int) $v;
         }
 
@@ -280,7 +289,7 @@ abstract class BaseToken extends BaseObject implements Persistent
      */
     public function setRights($v)
     {
-        if ($v !== null) {
+        if ($v !== null && is_numeric($v)) {
             $v = (int) $v;
         }
 
@@ -301,7 +310,7 @@ abstract class BaseToken extends BaseObject implements Persistent
      */
     public function setValue($v)
     {
-        if ($v !== null) {
+        if ($v !== null && is_numeric($v)) {
             $v = (string) $v;
         }
 
@@ -389,7 +398,7 @@ abstract class BaseToken extends BaseObject implements Persistent
             if ($rehydrate) {
                 $this->ensureConsistency();
             }
-
+            $this->postHydrate($row, $startcol, $rehydrate);
             return $startcol + 6; // 6 = TokenPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
@@ -619,22 +628,22 @@ abstract class BaseToken extends BaseObject implements Persistent
 
          // check the columns in natural order for more readable SQL queries
         if ($this->isColumnModified(TokenPeer::ID)) {
-            $modifiedColumns[':p' . $index++]  = '`ID`';
+            $modifiedColumns[':p' . $index++]  = '`id`';
         }
         if ($this->isColumnModified(TokenPeer::USER_ID)) {
-            $modifiedColumns[':p' . $index++]  = '`USER_ID`';
+            $modifiedColumns[':p' . $index++]  = '`user_id`';
         }
         if ($this->isColumnModified(TokenPeer::EXPIRATION_DATE)) {
-            $modifiedColumns[':p' . $index++]  = '`EXPIRATION_DATE`';
+            $modifiedColumns[':p' . $index++]  = '`expiration_date`';
         }
         if ($this->isColumnModified(TokenPeer::RIGHTS)) {
-            $modifiedColumns[':p' . $index++]  = '`RIGHTS`';
+            $modifiedColumns[':p' . $index++]  = '`rights`';
         }
         if ($this->isColumnModified(TokenPeer::VALUE)) {
-            $modifiedColumns[':p' . $index++]  = '`VALUE`';
+            $modifiedColumns[':p' . $index++]  = '`value`';
         }
         if ($this->isColumnModified(TokenPeer::METHOD)) {
-            $modifiedColumns[':p' . $index++]  = '`METHOD`';
+            $modifiedColumns[':p' . $index++]  = '`method`';
         }
 
         $sql = sprintf(
@@ -647,22 +656,22 @@ abstract class BaseToken extends BaseObject implements Persistent
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
-                    case '`ID`':
+                    case '`id`':
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
-                    case '`USER_ID`':
+                    case '`user_id`':
                         $stmt->bindValue($identifier, $this->user_id, PDO::PARAM_INT);
                         break;
-                    case '`EXPIRATION_DATE`':
+                    case '`expiration_date`':
                         $stmt->bindValue($identifier, $this->expiration_date, PDO::PARAM_STR);
                         break;
-                    case '`RIGHTS`':
+                    case '`rights`':
                         $stmt->bindValue($identifier, $this->rights, PDO::PARAM_INT);
                         break;
-                    case '`VALUE`':
+                    case '`value`':
                         $stmt->bindValue($identifier, $this->value, PDO::PARAM_STR);
                         break;
-                    case '`METHOD`':
+                    case '`method`':
                         $stmt->bindValue($identifier, $this->method, PDO::PARAM_INT);
                         break;
                 }
@@ -733,11 +742,11 @@ abstract class BaseToken extends BaseObject implements Persistent
             $this->validationFailures = array();
 
             return true;
-        } else {
-            $this->validationFailures = $res;
-
-            return false;
         }
+
+        $this->validationFailures = $res;
+
+        return false;
     }
 
     /**
@@ -1130,12 +1139,13 @@ abstract class BaseToken extends BaseObject implements Persistent
      * Get the associated User object
      *
      * @param PropelPDO $con Optional Connection object.
+     * @param $doQuery Executes a query to get the object if required
      * @return User The associated User object.
      * @throws PropelException
      */
-    public function getUser(PropelPDO $con = null)
+    public function getUser(PropelPDO $con = null, $doQuery = true)
     {
-        if ($this->aUser === null && ($this->user_id !== null)) {
+        if ($this->aUser === null && ($this->user_id !== null) && $doQuery) {
             $this->aUser = UserQuery::create()->findPk($this->user_id, $con);
             /* The following can be used additionally to
                 guarantee the related object contains a reference
@@ -1162,6 +1172,7 @@ abstract class BaseToken extends BaseObject implements Persistent
         $this->method = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
+        $this->alreadyInClearAllReferencesDeep = false;
         $this->clearAllReferences();
         $this->applyDefaultValues();
         $this->resetModified();
@@ -1180,7 +1191,13 @@ abstract class BaseToken extends BaseObject implements Persistent
      */
     public function clearAllReferences($deep = false)
     {
-        if ($deep) {
+        if ($deep && !$this->alreadyInClearAllReferencesDeep) {
+            $this->alreadyInClearAllReferencesDeep = true;
+            if ($this->aUser instanceof Persistent) {
+              $this->aUser->clearAllReferences($deep);
+            }
+
+            $this->alreadyInClearAllReferencesDeep = false;
         } // if ($deep)
 
         $this->aUser = null;

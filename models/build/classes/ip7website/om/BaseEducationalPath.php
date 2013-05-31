@@ -108,12 +108,6 @@ abstract class BaseEducationalPath extends BaseObject implements Persistent
     protected $collEducationalPathsMandatoryCoursessPartial;
 
     /**
-     * @var        PropelObjectCollection|Schedule[] Collection to store aggregation of Schedule objects.
-     */
-    protected $collSchedules;
-    protected $collSchedulesPartial;
-
-    /**
      * @var        PropelObjectCollection|User[] Collection to store aggregation of User objects.
      */
     protected $collUsers;
@@ -141,6 +135,12 @@ abstract class BaseEducationalPath extends BaseObject implements Persistent
      * @var        boolean
      */
     protected $alreadyInValidation = false;
+
+    /**
+     * Flag to prevent endless clearAllReferences($deep=true) loop, if this object is referenced
+     * @var        boolean
+     */
+    protected $alreadyInClearAllReferencesDeep = false;
 
     /**
      * An array of objects scheduled for deletion.
@@ -177,12 +177,6 @@ abstract class BaseEducationalPath extends BaseObject implements Persistent
      * @var		PropelObjectCollection
      */
     protected $educationalPathsMandatoryCoursessScheduledForDeletion = null;
-
-    /**
-     * An array of objects scheduled for deletion.
-     * @var		PropelObjectCollection
-     */
-    protected $schedulesScheduledForDeletion = null;
 
     /**
      * Applies default values to this object.
@@ -312,7 +306,7 @@ abstract class BaseEducationalPath extends BaseObject implements Persistent
      */
     public function setId($v)
     {
-        if ($v !== null) {
+        if ($v !== null && is_numeric($v)) {
             $v = (int) $v;
         }
 
@@ -333,7 +327,7 @@ abstract class BaseEducationalPath extends BaseObject implements Persistent
      */
     public function setShortName($v)
     {
-        if ($v !== null) {
+        if ($v !== null && is_numeric($v)) {
             $v = (string) $v;
         }
 
@@ -354,7 +348,7 @@ abstract class BaseEducationalPath extends BaseObject implements Persistent
      */
     public function setName($v)
     {
-        if ($v !== null) {
+        if ($v !== null && is_numeric($v)) {
             $v = (string) $v;
         }
 
@@ -375,13 +369,18 @@ abstract class BaseEducationalPath extends BaseObject implements Persistent
      */
     public function setDescription($v)
     {
+        // Allow unsetting the lazy loaded column even when its not loaded.
+        if (!$this->description_isLoaded && $v === null) {
+            $this->modifiedColumns[] = EducationalPathPeer::DESCRIPTION;
+        }
+
         // explicitly set the is-loaded flag to true for this lazy load col;
         // it doesn't matter if the value is actually set or not (logic below) as
         // any attempt to set the value means that no db lookup should be performed
         // when the getDescription() method is called.
         $this->description_isLoaded = true;
 
-        if ($v !== null) {
+        if ($v !== null && is_numeric($v)) {
             $v = (string) $v;
         }
 
@@ -402,7 +401,7 @@ abstract class BaseEducationalPath extends BaseObject implements Persistent
      */
     public function setCursusId($v)
     {
-        if ($v !== null) {
+        if ($v !== null && is_numeric($v)) {
             $v = (int) $v;
         }
 
@@ -427,7 +426,7 @@ abstract class BaseEducationalPath extends BaseObject implements Persistent
      */
     public function setResponsableId($v)
     {
-        if ($v !== null) {
+        if ($v !== null && is_numeric($v)) {
             $v = (int) $v;
         }
 
@@ -518,7 +517,7 @@ abstract class BaseEducationalPath extends BaseObject implements Persistent
             if ($rehydrate) {
                 $this->ensureConsistency();
             }
-
+            $this->postHydrate($row, $startcol, $rehydrate);
             return $startcol + 6; // 6 = EducationalPathPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
@@ -598,8 +597,6 @@ abstract class BaseEducationalPath extends BaseObject implements Persistent
             $this->collEducationalPathsOptionalCoursess = null;
 
             $this->collEducationalPathsMandatoryCoursess = null;
-
-            $this->collSchedules = null;
 
             $this->collUsers = null;
             $this->collOptionalCourses = null;
@@ -765,6 +762,12 @@ abstract class BaseEducationalPath extends BaseObject implements Persistent
                         $user->save($con);
                     }
                 }
+            } elseif ($this->collUsers) {
+                foreach ($this->collUsers as $user) {
+                    if ($user->isModified()) {
+                        $user->save($con);
+                    }
+                }
             }
 
             if ($this->optionalCoursesScheduledForDeletion !== null) {
@@ -781,6 +784,12 @@ abstract class BaseEducationalPath extends BaseObject implements Persistent
                 }
 
                 foreach ($this->getOptionalCourses() as $optionalCourse) {
+                    if ($optionalCourse->isModified()) {
+                        $optionalCourse->save($con);
+                    }
+                }
+            } elseif ($this->collOptionalCourses) {
+                foreach ($this->collOptionalCourses as $optionalCourse) {
                     if ($optionalCourse->isModified()) {
                         $optionalCourse->save($con);
                     }
@@ -805,6 +814,12 @@ abstract class BaseEducationalPath extends BaseObject implements Persistent
                         $mandatoryCourse->save($con);
                     }
                 }
+            } elseif ($this->collMandatoryCourses) {
+                foreach ($this->collMandatoryCourses as $mandatoryCourse) {
+                    if ($mandatoryCourse->isModified()) {
+                        $mandatoryCourse->save($con);
+                    }
+                }
             }
 
             if ($this->usersPathssScheduledForDeletion !== null) {
@@ -818,7 +833,7 @@ abstract class BaseEducationalPath extends BaseObject implements Persistent
 
             if ($this->collUsersPathss !== null) {
                 foreach ($this->collUsersPathss as $referrerFK) {
-                    if (!$referrerFK->isDeleted()) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
                         $affectedRows += $referrerFK->save($con);
                     }
                 }
@@ -835,7 +850,7 @@ abstract class BaseEducationalPath extends BaseObject implements Persistent
 
             if ($this->collEducationalPathsOptionalCoursess !== null) {
                 foreach ($this->collEducationalPathsOptionalCoursess as $referrerFK) {
-                    if (!$referrerFK->isDeleted()) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
                         $affectedRows += $referrerFK->save($con);
                     }
                 }
@@ -852,25 +867,7 @@ abstract class BaseEducationalPath extends BaseObject implements Persistent
 
             if ($this->collEducationalPathsMandatoryCoursess !== null) {
                 foreach ($this->collEducationalPathsMandatoryCoursess as $referrerFK) {
-                    if (!$referrerFK->isDeleted()) {
-                        $affectedRows += $referrerFK->save($con);
-                    }
-                }
-            }
-
-            if ($this->schedulesScheduledForDeletion !== null) {
-                if (!$this->schedulesScheduledForDeletion->isEmpty()) {
-                    foreach ($this->schedulesScheduledForDeletion as $schedule) {
-                        // need to save related object because we set the relation to null
-                        $schedule->save($con);
-                    }
-                    $this->schedulesScheduledForDeletion = null;
-                }
-            }
-
-            if ($this->collSchedules !== null) {
-                foreach ($this->collSchedules as $referrerFK) {
-                    if (!$referrerFK->isDeleted()) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
                         $affectedRows += $referrerFK->save($con);
                     }
                 }
@@ -903,25 +900,25 @@ abstract class BaseEducationalPath extends BaseObject implements Persistent
 
          // check the columns in natural order for more readable SQL queries
         if ($this->isColumnModified(EducationalPathPeer::ID)) {
-            $modifiedColumns[':p' . $index++]  = '`ID`';
+            $modifiedColumns[':p' . $index++]  = '`id`';
         }
         if ($this->isColumnModified(EducationalPathPeer::SHORT_NAME)) {
-            $modifiedColumns[':p' . $index++]  = '`SHORT_NAME`';
+            $modifiedColumns[':p' . $index++]  = '`short_name`';
         }
         if ($this->isColumnModified(EducationalPathPeer::NAME)) {
-            $modifiedColumns[':p' . $index++]  = '`NAME`';
+            $modifiedColumns[':p' . $index++]  = '`name`';
         }
         if ($this->isColumnModified(EducationalPathPeer::DESCRIPTION)) {
-            $modifiedColumns[':p' . $index++]  = '`DESCRIPTION`';
+            $modifiedColumns[':p' . $index++]  = '`description`';
         }
         if ($this->isColumnModified(EducationalPathPeer::CURSUS_ID)) {
-            $modifiedColumns[':p' . $index++]  = '`CURSUS_ID`';
+            $modifiedColumns[':p' . $index++]  = '`cursus_id`';
         }
         if ($this->isColumnModified(EducationalPathPeer::RESPONSABLE_ID)) {
-            $modifiedColumns[':p' . $index++]  = '`RESPONSABLE_ID`';
+            $modifiedColumns[':p' . $index++]  = '`responsable_id`';
         }
         if ($this->isColumnModified(EducationalPathPeer::DELETED)) {
-            $modifiedColumns[':p' . $index++]  = '`DELETED`';
+            $modifiedColumns[':p' . $index++]  = '`deleted`';
         }
 
         $sql = sprintf(
@@ -934,25 +931,25 @@ abstract class BaseEducationalPath extends BaseObject implements Persistent
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
-                    case '`ID`':
+                    case '`id`':
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
-                    case '`SHORT_NAME`':
+                    case '`short_name`':
                         $stmt->bindValue($identifier, $this->short_name, PDO::PARAM_STR);
                         break;
-                    case '`NAME`':
+                    case '`name`':
                         $stmt->bindValue($identifier, $this->name, PDO::PARAM_STR);
                         break;
-                    case '`DESCRIPTION`':
+                    case '`description`':
                         $stmt->bindValue($identifier, $this->description, PDO::PARAM_STR);
                         break;
-                    case '`CURSUS_ID`':
+                    case '`cursus_id`':
                         $stmt->bindValue($identifier, $this->cursus_id, PDO::PARAM_INT);
                         break;
-                    case '`RESPONSABLE_ID`':
+                    case '`responsable_id`':
                         $stmt->bindValue($identifier, $this->responsable_id, PDO::PARAM_INT);
                         break;
-                    case '`DELETED`':
+                    case '`deleted`':
                         $stmt->bindValue($identifier, (int) $this->deleted, PDO::PARAM_INT);
                         break;
                 }
@@ -1023,11 +1020,11 @@ abstract class BaseEducationalPath extends BaseObject implements Persistent
             $this->validationFailures = array();
 
             return true;
-        } else {
-            $this->validationFailures = $res;
-
-            return false;
         }
+
+        $this->validationFailures = $res;
+
+        return false;
     }
 
     /**
@@ -1090,14 +1087,6 @@ abstract class BaseEducationalPath extends BaseObject implements Persistent
 
                 if ($this->collEducationalPathsMandatoryCoursess !== null) {
                     foreach ($this->collEducationalPathsMandatoryCoursess as $referrerFK) {
-                        if (!$referrerFK->validate($columns)) {
-                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
-                        }
-                    }
-                }
-
-                if ($this->collSchedules !== null) {
-                    foreach ($this->collSchedules as $referrerFK) {
                         if (!$referrerFK->validate($columns)) {
                             $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
                         }
@@ -1212,9 +1201,6 @@ abstract class BaseEducationalPath extends BaseObject implements Persistent
             }
             if (null !== $this->collEducationalPathsMandatoryCoursess) {
                 $result['EducationalPathsMandatoryCoursess'] = $this->collEducationalPathsMandatoryCoursess->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
-            }
-            if (null !== $this->collSchedules) {
-                $result['Schedules'] = $this->collSchedules->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
         }
 
@@ -1415,12 +1401,6 @@ abstract class BaseEducationalPath extends BaseObject implements Persistent
                 }
             }
 
-            foreach ($this->getSchedules() as $relObj) {
-                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addSchedule($relObj->copy($deepCopy));
-                }
-            }
-
             //unflag object copy
             $this->startCopy = false;
         } // if ($deepCopy)
@@ -1503,12 +1483,13 @@ abstract class BaseEducationalPath extends BaseObject implements Persistent
      * Get the associated Cursus object
      *
      * @param PropelPDO $con Optional Connection object.
+     * @param $doQuery Executes a query to get the object if required
      * @return Cursus The associated Cursus object.
      * @throws PropelException
      */
-    public function getCursus(PropelPDO $con = null)
+    public function getCursus(PropelPDO $con = null, $doQuery = true)
     {
-        if ($this->aCursus === null && ($this->cursus_id !== null)) {
+        if ($this->aCursus === null && ($this->cursus_id !== null) && $doQuery) {
             $this->aCursus = CursusQuery::create()->findPk($this->cursus_id, $con);
             /* The following can be used additionally to
                 guarantee the related object contains a reference
@@ -1554,12 +1535,13 @@ abstract class BaseEducationalPath extends BaseObject implements Persistent
      * Get the associated User object
      *
      * @param PropelPDO $con Optional Connection object.
+     * @param $doQuery Executes a query to get the object if required
      * @return User The associated User object.
      * @throws PropelException
      */
-    public function getResponsable(PropelPDO $con = null)
+    public function getResponsable(PropelPDO $con = null, $doQuery = true)
     {
-        if ($this->aResponsable === null && ($this->responsable_id !== null)) {
+        if ($this->aResponsable === null && ($this->responsable_id !== null) && $doQuery) {
             $this->aResponsable = UserQuery::create()->findPk($this->responsable_id, $con);
             /* The following can be used additionally to
                 guarantee the related object contains a reference
@@ -1593,9 +1575,6 @@ abstract class BaseEducationalPath extends BaseObject implements Persistent
         if ('EducationalPathsMandatoryCourses' == $relationName) {
             $this->initEducationalPathsMandatoryCoursess();
         }
-        if ('Schedule' == $relationName) {
-            $this->initSchedules();
-        }
     }
 
     /**
@@ -1604,13 +1583,15 @@ abstract class BaseEducationalPath extends BaseObject implements Persistent
      * This does not modify the database; however, it will remove any associated objects, causing
      * them to be refetched by subsequent calls to accessor method.
      *
-     * @return void
+     * @return EducationalPath The current object (for fluent API support)
      * @see        addUsersPathss()
      */
     public function clearUsersPathss()
     {
         $this->collUsersPathss = null; // important to set this to null since that means it is uninitialized
         $this->collUsersPathssPartial = null;
+
+        return $this;
     }
 
     /**
@@ -1682,6 +1663,7 @@ abstract class BaseEducationalPath extends BaseObject implements Persistent
                       $this->collUsersPathssPartial = true;
                     }
 
+                    $collUsersPathss->getInternalIterator()->rewind();
                     return $collUsersPathss;
                 }
 
@@ -1709,12 +1691,15 @@ abstract class BaseEducationalPath extends BaseObject implements Persistent
      *
      * @param PropelCollection $usersPathss A Propel collection.
      * @param PropelPDO $con Optional connection object
+     * @return EducationalPath The current object (for fluent API support)
      */
     public function setUsersPathss(PropelCollection $usersPathss, PropelPDO $con = null)
     {
-        $this->usersPathssScheduledForDeletion = $this->getUsersPathss(new Criteria(), $con)->diff($usersPathss);
+        $usersPathssToDelete = $this->getUsersPathss(new Criteria(), $con)->diff($usersPathss);
 
-        foreach ($this->usersPathssScheduledForDeletion as $usersPathsRemoved) {
+        $this->usersPathssScheduledForDeletion = unserialize(serialize($usersPathssToDelete));
+
+        foreach ($usersPathssToDelete as $usersPathsRemoved) {
             $usersPathsRemoved->setEducationalPath(null);
         }
 
@@ -1725,6 +1710,8 @@ abstract class BaseEducationalPath extends BaseObject implements Persistent
 
         $this->collUsersPathss = $usersPathss;
         $this->collUsersPathssPartial = false;
+
+        return $this;
     }
 
     /**
@@ -1742,22 +1729,22 @@ abstract class BaseEducationalPath extends BaseObject implements Persistent
         if (null === $this->collUsersPathss || null !== $criteria || $partial) {
             if ($this->isNew() && null === $this->collUsersPathss) {
                 return 0;
-            } else {
-                if($partial && !$criteria) {
-                    return count($this->getUsersPathss());
-                }
-                $query = UsersPathsQuery::create(null, $criteria);
-                if ($distinct) {
-                    $query->distinct();
-                }
-
-                return $query
-                    ->filterByEducationalPath($this)
-                    ->count($con);
             }
-        } else {
-            return count($this->collUsersPathss);
+
+            if($partial && !$criteria) {
+                return count($this->getUsersPathss());
+            }
+            $query = UsersPathsQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByEducationalPath($this)
+                ->count($con);
         }
+
+        return count($this->collUsersPathss);
     }
 
     /**
@@ -1773,7 +1760,7 @@ abstract class BaseEducationalPath extends BaseObject implements Persistent
             $this->initUsersPathss();
             $this->collUsersPathssPartial = true;
         }
-        if (!$this->collUsersPathss->contains($l)) { // only add it if the **same** object is not already associated
+        if (!in_array($l, $this->collUsersPathss->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
             $this->doAddUsersPaths($l);
         }
 
@@ -1791,6 +1778,7 @@ abstract class BaseEducationalPath extends BaseObject implements Persistent
 
     /**
      * @param	UsersPaths $usersPaths The usersPaths object to remove.
+     * @return EducationalPath The current object (for fluent API support)
      */
     public function removeUsersPaths($usersPaths)
     {
@@ -1800,9 +1788,11 @@ abstract class BaseEducationalPath extends BaseObject implements Persistent
                 $this->usersPathssScheduledForDeletion = clone $this->collUsersPathss;
                 $this->usersPathssScheduledForDeletion->clear();
             }
-            $this->usersPathssScheduledForDeletion[]= $usersPaths;
+            $this->usersPathssScheduledForDeletion[]= clone $usersPaths;
             $usersPaths->setEducationalPath(null);
         }
+
+        return $this;
     }
 
 
@@ -1836,13 +1826,15 @@ abstract class BaseEducationalPath extends BaseObject implements Persistent
      * This does not modify the database; however, it will remove any associated objects, causing
      * them to be refetched by subsequent calls to accessor method.
      *
-     * @return void
+     * @return EducationalPath The current object (for fluent API support)
      * @see        addEducationalPathsOptionalCoursess()
      */
     public function clearEducationalPathsOptionalCoursess()
     {
         $this->collEducationalPathsOptionalCoursess = null; // important to set this to null since that means it is uninitialized
         $this->collEducationalPathsOptionalCoursessPartial = null;
+
+        return $this;
     }
 
     /**
@@ -1914,6 +1906,7 @@ abstract class BaseEducationalPath extends BaseObject implements Persistent
                       $this->collEducationalPathsOptionalCoursessPartial = true;
                     }
 
+                    $collEducationalPathsOptionalCoursess->getInternalIterator()->rewind();
                     return $collEducationalPathsOptionalCoursess;
                 }
 
@@ -1941,12 +1934,15 @@ abstract class BaseEducationalPath extends BaseObject implements Persistent
      *
      * @param PropelCollection $educationalPathsOptionalCoursess A Propel collection.
      * @param PropelPDO $con Optional connection object
+     * @return EducationalPath The current object (for fluent API support)
      */
     public function setEducationalPathsOptionalCoursess(PropelCollection $educationalPathsOptionalCoursess, PropelPDO $con = null)
     {
-        $this->educationalPathsOptionalCoursessScheduledForDeletion = $this->getEducationalPathsOptionalCoursess(new Criteria(), $con)->diff($educationalPathsOptionalCoursess);
+        $educationalPathsOptionalCoursessToDelete = $this->getEducationalPathsOptionalCoursess(new Criteria(), $con)->diff($educationalPathsOptionalCoursess);
 
-        foreach ($this->educationalPathsOptionalCoursessScheduledForDeletion as $educationalPathsOptionalCoursesRemoved) {
+        $this->educationalPathsOptionalCoursessScheduledForDeletion = unserialize(serialize($educationalPathsOptionalCoursessToDelete));
+
+        foreach ($educationalPathsOptionalCoursessToDelete as $educationalPathsOptionalCoursesRemoved) {
             $educationalPathsOptionalCoursesRemoved->setOptionalEducationalPath(null);
         }
 
@@ -1957,6 +1953,8 @@ abstract class BaseEducationalPath extends BaseObject implements Persistent
 
         $this->collEducationalPathsOptionalCoursess = $educationalPathsOptionalCoursess;
         $this->collEducationalPathsOptionalCoursessPartial = false;
+
+        return $this;
     }
 
     /**
@@ -1974,22 +1972,22 @@ abstract class BaseEducationalPath extends BaseObject implements Persistent
         if (null === $this->collEducationalPathsOptionalCoursess || null !== $criteria || $partial) {
             if ($this->isNew() && null === $this->collEducationalPathsOptionalCoursess) {
                 return 0;
-            } else {
-                if($partial && !$criteria) {
-                    return count($this->getEducationalPathsOptionalCoursess());
-                }
-                $query = EducationalPathsOptionalCoursesQuery::create(null, $criteria);
-                if ($distinct) {
-                    $query->distinct();
-                }
-
-                return $query
-                    ->filterByOptionalEducationalPath($this)
-                    ->count($con);
             }
-        } else {
-            return count($this->collEducationalPathsOptionalCoursess);
+
+            if($partial && !$criteria) {
+                return count($this->getEducationalPathsOptionalCoursess());
+            }
+            $query = EducationalPathsOptionalCoursesQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByOptionalEducationalPath($this)
+                ->count($con);
         }
+
+        return count($this->collEducationalPathsOptionalCoursess);
     }
 
     /**
@@ -2005,7 +2003,7 @@ abstract class BaseEducationalPath extends BaseObject implements Persistent
             $this->initEducationalPathsOptionalCoursess();
             $this->collEducationalPathsOptionalCoursessPartial = true;
         }
-        if (!$this->collEducationalPathsOptionalCoursess->contains($l)) { // only add it if the **same** object is not already associated
+        if (!in_array($l, $this->collEducationalPathsOptionalCoursess->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
             $this->doAddEducationalPathsOptionalCourses($l);
         }
 
@@ -2023,6 +2021,7 @@ abstract class BaseEducationalPath extends BaseObject implements Persistent
 
     /**
      * @param	EducationalPathsOptionalCourses $educationalPathsOptionalCourses The educationalPathsOptionalCourses object to remove.
+     * @return EducationalPath The current object (for fluent API support)
      */
     public function removeEducationalPathsOptionalCourses($educationalPathsOptionalCourses)
     {
@@ -2032,9 +2031,11 @@ abstract class BaseEducationalPath extends BaseObject implements Persistent
                 $this->educationalPathsOptionalCoursessScheduledForDeletion = clone $this->collEducationalPathsOptionalCoursess;
                 $this->educationalPathsOptionalCoursessScheduledForDeletion->clear();
             }
-            $this->educationalPathsOptionalCoursessScheduledForDeletion[]= $educationalPathsOptionalCourses;
+            $this->educationalPathsOptionalCoursessScheduledForDeletion[]= clone $educationalPathsOptionalCourses;
             $educationalPathsOptionalCourses->setOptionalEducationalPath(null);
         }
+
+        return $this;
     }
 
 
@@ -2068,13 +2069,15 @@ abstract class BaseEducationalPath extends BaseObject implements Persistent
      * This does not modify the database; however, it will remove any associated objects, causing
      * them to be refetched by subsequent calls to accessor method.
      *
-     * @return void
+     * @return EducationalPath The current object (for fluent API support)
      * @see        addEducationalPathsMandatoryCoursess()
      */
     public function clearEducationalPathsMandatoryCoursess()
     {
         $this->collEducationalPathsMandatoryCoursess = null; // important to set this to null since that means it is uninitialized
         $this->collEducationalPathsMandatoryCoursessPartial = null;
+
+        return $this;
     }
 
     /**
@@ -2146,6 +2149,7 @@ abstract class BaseEducationalPath extends BaseObject implements Persistent
                       $this->collEducationalPathsMandatoryCoursessPartial = true;
                     }
 
+                    $collEducationalPathsMandatoryCoursess->getInternalIterator()->rewind();
                     return $collEducationalPathsMandatoryCoursess;
                 }
 
@@ -2173,12 +2177,15 @@ abstract class BaseEducationalPath extends BaseObject implements Persistent
      *
      * @param PropelCollection $educationalPathsMandatoryCoursess A Propel collection.
      * @param PropelPDO $con Optional connection object
+     * @return EducationalPath The current object (for fluent API support)
      */
     public function setEducationalPathsMandatoryCoursess(PropelCollection $educationalPathsMandatoryCoursess, PropelPDO $con = null)
     {
-        $this->educationalPathsMandatoryCoursessScheduledForDeletion = $this->getEducationalPathsMandatoryCoursess(new Criteria(), $con)->diff($educationalPathsMandatoryCoursess);
+        $educationalPathsMandatoryCoursessToDelete = $this->getEducationalPathsMandatoryCoursess(new Criteria(), $con)->diff($educationalPathsMandatoryCoursess);
 
-        foreach ($this->educationalPathsMandatoryCoursessScheduledForDeletion as $educationalPathsMandatoryCoursesRemoved) {
+        $this->educationalPathsMandatoryCoursessScheduledForDeletion = unserialize(serialize($educationalPathsMandatoryCoursessToDelete));
+
+        foreach ($educationalPathsMandatoryCoursessToDelete as $educationalPathsMandatoryCoursesRemoved) {
             $educationalPathsMandatoryCoursesRemoved->setMandatoryEducationalPath(null);
         }
 
@@ -2189,6 +2196,8 @@ abstract class BaseEducationalPath extends BaseObject implements Persistent
 
         $this->collEducationalPathsMandatoryCoursess = $educationalPathsMandatoryCoursess;
         $this->collEducationalPathsMandatoryCoursessPartial = false;
+
+        return $this;
     }
 
     /**
@@ -2206,22 +2215,22 @@ abstract class BaseEducationalPath extends BaseObject implements Persistent
         if (null === $this->collEducationalPathsMandatoryCoursess || null !== $criteria || $partial) {
             if ($this->isNew() && null === $this->collEducationalPathsMandatoryCoursess) {
                 return 0;
-            } else {
-                if($partial && !$criteria) {
-                    return count($this->getEducationalPathsMandatoryCoursess());
-                }
-                $query = EducationalPathsMandatoryCoursesQuery::create(null, $criteria);
-                if ($distinct) {
-                    $query->distinct();
-                }
-
-                return $query
-                    ->filterByMandatoryEducationalPath($this)
-                    ->count($con);
             }
-        } else {
-            return count($this->collEducationalPathsMandatoryCoursess);
+
+            if($partial && !$criteria) {
+                return count($this->getEducationalPathsMandatoryCoursess());
+            }
+            $query = EducationalPathsMandatoryCoursesQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByMandatoryEducationalPath($this)
+                ->count($con);
         }
+
+        return count($this->collEducationalPathsMandatoryCoursess);
     }
 
     /**
@@ -2237,7 +2246,7 @@ abstract class BaseEducationalPath extends BaseObject implements Persistent
             $this->initEducationalPathsMandatoryCoursess();
             $this->collEducationalPathsMandatoryCoursessPartial = true;
         }
-        if (!$this->collEducationalPathsMandatoryCoursess->contains($l)) { // only add it if the **same** object is not already associated
+        if (!in_array($l, $this->collEducationalPathsMandatoryCoursess->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
             $this->doAddEducationalPathsMandatoryCourses($l);
         }
 
@@ -2255,6 +2264,7 @@ abstract class BaseEducationalPath extends BaseObject implements Persistent
 
     /**
      * @param	EducationalPathsMandatoryCourses $educationalPathsMandatoryCourses The educationalPathsMandatoryCourses object to remove.
+     * @return EducationalPath The current object (for fluent API support)
      */
     public function removeEducationalPathsMandatoryCourses($educationalPathsMandatoryCourses)
     {
@@ -2264,9 +2274,11 @@ abstract class BaseEducationalPath extends BaseObject implements Persistent
                 $this->educationalPathsMandatoryCoursessScheduledForDeletion = clone $this->collEducationalPathsMandatoryCoursess;
                 $this->educationalPathsMandatoryCoursessScheduledForDeletion->clear();
             }
-            $this->educationalPathsMandatoryCoursessScheduledForDeletion[]= $educationalPathsMandatoryCourses;
+            $this->educationalPathsMandatoryCoursessScheduledForDeletion[]= clone $educationalPathsMandatoryCourses;
             $educationalPathsMandatoryCourses->setMandatoryEducationalPath(null);
         }
+
+        return $this;
     }
 
 
@@ -2295,250 +2307,20 @@ abstract class BaseEducationalPath extends BaseObject implements Persistent
     }
 
     /**
-     * Clears out the collSchedules collection
-     *
-     * This does not modify the database; however, it will remove any associated objects, causing
-     * them to be refetched by subsequent calls to accessor method.
-     *
-     * @return void
-     * @see        addSchedules()
-     */
-    public function clearSchedules()
-    {
-        $this->collSchedules = null; // important to set this to null since that means it is uninitialized
-        $this->collSchedulesPartial = null;
-    }
-
-    /**
-     * reset is the collSchedules collection loaded partially
-     *
-     * @return void
-     */
-    public function resetPartialSchedules($v = true)
-    {
-        $this->collSchedulesPartial = $v;
-    }
-
-    /**
-     * Initializes the collSchedules collection.
-     *
-     * By default this just sets the collSchedules collection to an empty array (like clearcollSchedules());
-     * however, you may wish to override this method in your stub class to provide setting appropriate
-     * to your application -- for example, setting the initial array to the values stored in database.
-     *
-     * @param boolean $overrideExisting If set to true, the method call initializes
-     *                                        the collection even if it is not empty
-     *
-     * @return void
-     */
-    public function initSchedules($overrideExisting = true)
-    {
-        if (null !== $this->collSchedules && !$overrideExisting) {
-            return;
-        }
-        $this->collSchedules = new PropelObjectCollection();
-        $this->collSchedules->setModel('Schedule');
-    }
-
-    /**
-     * Gets an array of Schedule objects which contain a foreign key that references this object.
-     *
-     * If the $criteria is not null, it is used to always fetch the results from the database.
-     * Otherwise the results are fetched from the database the first time, then cached.
-     * Next time the same method is called without $criteria, the cached collection is returned.
-     * If this EducationalPath is new, it will return
-     * an empty collection or the current collection; the criteria is ignored on a new object.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @return PropelObjectCollection|Schedule[] List of Schedule objects
-     * @throws PropelException
-     */
-    public function getSchedules($criteria = null, PropelPDO $con = null)
-    {
-        $partial = $this->collSchedulesPartial && !$this->isNew();
-        if (null === $this->collSchedules || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collSchedules) {
-                // return empty collection
-                $this->initSchedules();
-            } else {
-                $collSchedules = ScheduleQuery::create(null, $criteria)
-                    ->filterByEducationalPath($this)
-                    ->find($con);
-                if (null !== $criteria) {
-                    if (false !== $this->collSchedulesPartial && count($collSchedules)) {
-                      $this->initSchedules(false);
-
-                      foreach($collSchedules as $obj) {
-                        if (false == $this->collSchedules->contains($obj)) {
-                          $this->collSchedules->append($obj);
-                        }
-                      }
-
-                      $this->collSchedulesPartial = true;
-                    }
-
-                    return $collSchedules;
-                }
-
-                if($partial && $this->collSchedules) {
-                    foreach($this->collSchedules as $obj) {
-                        if($obj->isNew()) {
-                            $collSchedules[] = $obj;
-                        }
-                    }
-                }
-
-                $this->collSchedules = $collSchedules;
-                $this->collSchedulesPartial = false;
-            }
-        }
-
-        return $this->collSchedules;
-    }
-
-    /**
-     * Sets a collection of Schedule objects related by a one-to-many relationship
-     * to the current object.
-     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
-     * and new objects from the given Propel collection.
-     *
-     * @param PropelCollection $schedules A Propel collection.
-     * @param PropelPDO $con Optional connection object
-     */
-    public function setSchedules(PropelCollection $schedules, PropelPDO $con = null)
-    {
-        $this->schedulesScheduledForDeletion = $this->getSchedules(new Criteria(), $con)->diff($schedules);
-
-        foreach ($this->schedulesScheduledForDeletion as $scheduleRemoved) {
-            $scheduleRemoved->setEducationalPath(null);
-        }
-
-        $this->collSchedules = null;
-        foreach ($schedules as $schedule) {
-            $this->addSchedule($schedule);
-        }
-
-        $this->collSchedules = $schedules;
-        $this->collSchedulesPartial = false;
-    }
-
-    /**
-     * Returns the number of related Schedule objects.
-     *
-     * @param Criteria $criteria
-     * @param boolean $distinct
-     * @param PropelPDO $con
-     * @return int             Count of related Schedule objects.
-     * @throws PropelException
-     */
-    public function countSchedules(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
-    {
-        $partial = $this->collSchedulesPartial && !$this->isNew();
-        if (null === $this->collSchedules || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collSchedules) {
-                return 0;
-            } else {
-                if($partial && !$criteria) {
-                    return count($this->getSchedules());
-                }
-                $query = ScheduleQuery::create(null, $criteria);
-                if ($distinct) {
-                    $query->distinct();
-                }
-
-                return $query
-                    ->filterByEducationalPath($this)
-                    ->count($con);
-            }
-        } else {
-            return count($this->collSchedules);
-        }
-    }
-
-    /**
-     * Method called to associate a Schedule object to this object
-     * through the Schedule foreign key attribute.
-     *
-     * @param    Schedule $l Schedule
-     * @return EducationalPath The current object (for fluent API support)
-     */
-    public function addSchedule(Schedule $l)
-    {
-        if ($this->collSchedules === null) {
-            $this->initSchedules();
-            $this->collSchedulesPartial = true;
-        }
-        if (!$this->collSchedules->contains($l)) { // only add it if the **same** object is not already associated
-            $this->doAddSchedule($l);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param	Schedule $schedule The schedule object to add.
-     */
-    protected function doAddSchedule($schedule)
-    {
-        $this->collSchedules[]= $schedule;
-        $schedule->setEducationalPath($this);
-    }
-
-    /**
-     * @param	Schedule $schedule The schedule object to remove.
-     */
-    public function removeSchedule($schedule)
-    {
-        if ($this->getSchedules()->contains($schedule)) {
-            $this->collSchedules->remove($this->collSchedules->search($schedule));
-            if (null === $this->schedulesScheduledForDeletion) {
-                $this->schedulesScheduledForDeletion = clone $this->collSchedules;
-                $this->schedulesScheduledForDeletion->clear();
-            }
-            $this->schedulesScheduledForDeletion[]= $schedule;
-            $schedule->setEducationalPath(null);
-        }
-    }
-
-
-    /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this EducationalPath is new, it will return
-     * an empty collection; or if this EducationalPath has previously
-     * been saved, it will retrieve related Schedules from storage.
-     *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in EducationalPath.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return PropelObjectCollection|Schedule[] List of Schedule objects
-     */
-    public function getSchedulesJoinCursus($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $query = ScheduleQuery::create(null, $criteria);
-        $query->joinWith('Cursus', $join_behavior);
-
-        return $this->getSchedules($query, $con);
-    }
-
-    /**
      * Clears out the collUsers collection
      *
      * This does not modify the database; however, it will remove any associated objects, causing
      * them to be refetched by subsequent calls to accessor method.
      *
-     * @return void
+     * @return EducationalPath The current object (for fluent API support)
      * @see        addUsers()
      */
     public function clearUsers()
     {
         $this->collUsers = null; // important to set this to null since that means it is uninitialized
         $this->collUsersPartial = null;
+
+        return $this;
     }
 
     /**
@@ -2599,6 +2381,7 @@ abstract class BaseEducationalPath extends BaseObject implements Persistent
      *
      * @param PropelCollection $users A Propel collection.
      * @param PropelPDO $con Optional connection object
+     * @return EducationalPath The current object (for fluent API support)
      */
     public function setUsers(PropelCollection $users, PropelPDO $con = null)
     {
@@ -2614,6 +2397,8 @@ abstract class BaseEducationalPath extends BaseObject implements Persistent
         }
 
         $this->collUsers = $users;
+
+        return $this;
     }
 
     /**
@@ -2651,7 +2436,7 @@ abstract class BaseEducationalPath extends BaseObject implements Persistent
      * through the users_paths cross reference table.
      *
      * @param  User $user The UsersPaths object to relate
-     * @return void
+     * @return EducationalPath The current object (for fluent API support)
      */
     public function addUser(User $user)
     {
@@ -2663,6 +2448,8 @@ abstract class BaseEducationalPath extends BaseObject implements Persistent
 
             $this->collUsers[]= $user;
         }
+
+        return $this;
     }
 
     /**
@@ -2680,7 +2467,7 @@ abstract class BaseEducationalPath extends BaseObject implements Persistent
      * through the users_paths cross reference table.
      *
      * @param User $user The UsersPaths object to relate
-     * @return void
+     * @return EducationalPath The current object (for fluent API support)
      */
     public function removeUser(User $user)
     {
@@ -2692,6 +2479,8 @@ abstract class BaseEducationalPath extends BaseObject implements Persistent
             }
             $this->usersScheduledForDeletion[]= $user;
         }
+
+        return $this;
     }
 
     /**
@@ -2700,13 +2489,15 @@ abstract class BaseEducationalPath extends BaseObject implements Persistent
      * This does not modify the database; however, it will remove any associated objects, causing
      * them to be refetched by subsequent calls to accessor method.
      *
-     * @return void
+     * @return EducationalPath The current object (for fluent API support)
      * @see        addOptionalCourses()
      */
     public function clearOptionalCourses()
     {
         $this->collOptionalCourses = null; // important to set this to null since that means it is uninitialized
         $this->collOptionalCoursesPartial = null;
+
+        return $this;
     }
 
     /**
@@ -2767,6 +2558,7 @@ abstract class BaseEducationalPath extends BaseObject implements Persistent
      *
      * @param PropelCollection $optionalCourses A Propel collection.
      * @param PropelPDO $con Optional connection object
+     * @return EducationalPath The current object (for fluent API support)
      */
     public function setOptionalCourses(PropelCollection $optionalCourses, PropelPDO $con = null)
     {
@@ -2782,6 +2574,8 @@ abstract class BaseEducationalPath extends BaseObject implements Persistent
         }
 
         $this->collOptionalCourses = $optionalCourses;
+
+        return $this;
     }
 
     /**
@@ -2819,7 +2613,7 @@ abstract class BaseEducationalPath extends BaseObject implements Persistent
      * through the educational_paths_optional_courses cross reference table.
      *
      * @param  Course $course The EducationalPathsOptionalCourses object to relate
-     * @return void
+     * @return EducationalPath The current object (for fluent API support)
      */
     public function addOptionalCourse(Course $course)
     {
@@ -2831,6 +2625,8 @@ abstract class BaseEducationalPath extends BaseObject implements Persistent
 
             $this->collOptionalCourses[]= $course;
         }
+
+        return $this;
     }
 
     /**
@@ -2848,7 +2644,7 @@ abstract class BaseEducationalPath extends BaseObject implements Persistent
      * through the educational_paths_optional_courses cross reference table.
      *
      * @param Course $course The EducationalPathsOptionalCourses object to relate
-     * @return void
+     * @return EducationalPath The current object (for fluent API support)
      */
     public function removeOptionalCourse(Course $course)
     {
@@ -2860,6 +2656,8 @@ abstract class BaseEducationalPath extends BaseObject implements Persistent
             }
             $this->optionalCoursesScheduledForDeletion[]= $course;
         }
+
+        return $this;
     }
 
     /**
@@ -2868,13 +2666,15 @@ abstract class BaseEducationalPath extends BaseObject implements Persistent
      * This does not modify the database; however, it will remove any associated objects, causing
      * them to be refetched by subsequent calls to accessor method.
      *
-     * @return void
+     * @return EducationalPath The current object (for fluent API support)
      * @see        addMandatoryCourses()
      */
     public function clearMandatoryCourses()
     {
         $this->collMandatoryCourses = null; // important to set this to null since that means it is uninitialized
         $this->collMandatoryCoursesPartial = null;
+
+        return $this;
     }
 
     /**
@@ -2935,6 +2735,7 @@ abstract class BaseEducationalPath extends BaseObject implements Persistent
      *
      * @param PropelCollection $mandatoryCourses A Propel collection.
      * @param PropelPDO $con Optional connection object
+     * @return EducationalPath The current object (for fluent API support)
      */
     public function setMandatoryCourses(PropelCollection $mandatoryCourses, PropelPDO $con = null)
     {
@@ -2950,6 +2751,8 @@ abstract class BaseEducationalPath extends BaseObject implements Persistent
         }
 
         $this->collMandatoryCourses = $mandatoryCourses;
+
+        return $this;
     }
 
     /**
@@ -2987,7 +2790,7 @@ abstract class BaseEducationalPath extends BaseObject implements Persistent
      * through the educational_paths_mandatory_courses cross reference table.
      *
      * @param  Course $course The EducationalPathsMandatoryCourses object to relate
-     * @return void
+     * @return EducationalPath The current object (for fluent API support)
      */
     public function addMandatoryCourse(Course $course)
     {
@@ -2999,6 +2802,8 @@ abstract class BaseEducationalPath extends BaseObject implements Persistent
 
             $this->collMandatoryCourses[]= $course;
         }
+
+        return $this;
     }
 
     /**
@@ -3016,7 +2821,7 @@ abstract class BaseEducationalPath extends BaseObject implements Persistent
      * through the educational_paths_mandatory_courses cross reference table.
      *
      * @param Course $course The EducationalPathsMandatoryCourses object to relate
-     * @return void
+     * @return EducationalPath The current object (for fluent API support)
      */
     public function removeMandatoryCourse(Course $course)
     {
@@ -3028,6 +2833,8 @@ abstract class BaseEducationalPath extends BaseObject implements Persistent
             }
             $this->mandatoryCoursesScheduledForDeletion[]= $course;
         }
+
+        return $this;
     }
 
     /**
@@ -3045,6 +2852,7 @@ abstract class BaseEducationalPath extends BaseObject implements Persistent
         $this->deleted = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
+        $this->alreadyInClearAllReferencesDeep = false;
         $this->clearAllReferences();
         $this->applyDefaultValues();
         $this->resetModified();
@@ -3063,7 +2871,8 @@ abstract class BaseEducationalPath extends BaseObject implements Persistent
      */
     public function clearAllReferences($deep = false)
     {
-        if ($deep) {
+        if ($deep && !$this->alreadyInClearAllReferencesDeep) {
+            $this->alreadyInClearAllReferencesDeep = true;
             if ($this->collUsersPathss) {
                 foreach ($this->collUsersPathss as $o) {
                     $o->clearAllReferences($deep);
@@ -3076,11 +2885,6 @@ abstract class BaseEducationalPath extends BaseObject implements Persistent
             }
             if ($this->collEducationalPathsMandatoryCoursess) {
                 foreach ($this->collEducationalPathsMandatoryCoursess as $o) {
-                    $o->clearAllReferences($deep);
-                }
-            }
-            if ($this->collSchedules) {
-                foreach ($this->collSchedules as $o) {
                     $o->clearAllReferences($deep);
                 }
             }
@@ -3099,6 +2903,14 @@ abstract class BaseEducationalPath extends BaseObject implements Persistent
                     $o->clearAllReferences($deep);
                 }
             }
+            if ($this->aCursus instanceof Persistent) {
+              $this->aCursus->clearAllReferences($deep);
+            }
+            if ($this->aResponsable instanceof Persistent) {
+              $this->aResponsable->clearAllReferences($deep);
+            }
+
+            $this->alreadyInClearAllReferencesDeep = false;
         } // if ($deep)
 
         if ($this->collUsersPathss instanceof PropelCollection) {
@@ -3113,10 +2925,6 @@ abstract class BaseEducationalPath extends BaseObject implements Persistent
             $this->collEducationalPathsMandatoryCoursess->clearIterator();
         }
         $this->collEducationalPathsMandatoryCoursess = null;
-        if ($this->collSchedules instanceof PropelCollection) {
-            $this->collSchedules->clearIterator();
-        }
-        $this->collSchedules = null;
         if ($this->collUsers instanceof PropelCollection) {
             $this->collUsers->clearIterator();
         }

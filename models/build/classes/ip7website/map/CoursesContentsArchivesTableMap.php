@@ -39,8 +39,8 @@ class CoursesContentsArchivesTableMap extends TableMap
         $this->setUseIdGenerator(false);
         $this->setIsCrossRef(true);
         // columns
-        $this->addForeignPrimaryKey('COURSE_ID', 'CourseId', 'INTEGER' , 'courses', 'ID', true, null, null);
-        $this->addForeignPrimaryKey('FILE_ID', 'FileId', 'INTEGER' , 'files', 'ID', true, null, null);
+        $this->addForeignPrimaryKey('course_id', 'CourseId', 'INTEGER' , 'courses', 'id', true, null, null);
+        $this->addForeignPrimaryKey('file_id', 'FileId', 'INTEGER' , 'files', 'id', true, null, null);
         // validators
     } // initialize()
 

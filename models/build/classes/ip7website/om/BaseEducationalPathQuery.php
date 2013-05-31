@@ -46,14 +46,9 @@
  * @method EducationalPathQuery rightJoinEducationalPathsMandatoryCourses($relationAlias = null) Adds a RIGHT JOIN clause to the query using the EducationalPathsMandatoryCourses relation
  * @method EducationalPathQuery innerJoinEducationalPathsMandatoryCourses($relationAlias = null) Adds a INNER JOIN clause to the query using the EducationalPathsMandatoryCourses relation
  *
- * @method EducationalPathQuery leftJoinSchedule($relationAlias = null) Adds a LEFT JOIN clause to the query using the Schedule relation
- * @method EducationalPathQuery rightJoinSchedule($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Schedule relation
- * @method EducationalPathQuery innerJoinSchedule($relationAlias = null) Adds a INNER JOIN clause to the query using the Schedule relation
- *
  * @method EducationalPath findOne(PropelPDO $con = null) Return the first EducationalPath matching the query
  * @method EducationalPath findOneOrCreate(PropelPDO $con = null) Return the first EducationalPath matching the query, or a new EducationalPath object populated from the query conditions when no match is found
  *
- * @method EducationalPath findOneById(int $id) Return the first EducationalPath filtered by the id column
  * @method EducationalPath findOneByShortName(string $short_name) Return the first EducationalPath filtered by the short_name column
  * @method EducationalPath findOneByName(string $name) Return the first EducationalPath filtered by the name column
  * @method EducationalPath findOneByDescription(string $description) Return the first EducationalPath filtered by the description column
@@ -89,7 +84,7 @@ abstract class BaseEducationalPathQuery extends ModelCriteria
      * Returns a new EducationalPathQuery object.
      *
      * @param     string $modelAlias The alias of a model in the query
-     * @param     EducationalPathQuery|Criteria $criteria Optional Criteria to build the query from
+     * @param   EducationalPathQuery|Criteria $criteria Optional Criteria to build the query from
      *
      * @return EducationalPathQuery
      */
@@ -146,18 +141,32 @@ abstract class BaseEducationalPathQuery extends ModelCriteria
     }
 
     /**
+     * Alias of findPk to use instance pooling
+     *
+     * @param     mixed $key Primary key to use for the query
+     * @param     PropelPDO $con A connection object
+     *
+     * @return                 EducationalPath A model object, or null if the key is not found
+     * @throws PropelException
+     */
+     public function findOneById($key, $con = null)
+     {
+        return $this->findPk($key, $con);
+     }
+
+    /**
      * Find object by primary key using raw SQL to go fast.
      * Bypass doSelect() and the object formatter by using generated code.
      *
      * @param     mixed $key Primary key to use for the query
      * @param     PropelPDO $con A connection object
      *
-     * @return   EducationalPath A model object, or null if the key is not found
-     * @throws   PropelException
+     * @return                 EducationalPath A model object, or null if the key is not found
+     * @throws PropelException
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `ID`, `SHORT_NAME`, `NAME`, `CURSUS_ID`, `RESPONSABLE_ID`, `DELETED` FROM `educational_paths` WHERE `ID` = :p0';
+        $sql = 'SELECT `id`, `short_name`, `name`, `cursus_id`, `responsable_id`, `deleted` FROM `educational_paths` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -253,7 +262,8 @@ abstract class BaseEducationalPathQuery extends ModelCriteria
      * <code>
      * $query->filterById(1234); // WHERE id = 1234
      * $query->filterById(array(12, 34)); // WHERE id IN (12, 34)
-     * $query->filterById(array('min' => 12)); // WHERE id > 12
+     * $query->filterById(array('min' => 12)); // WHERE id >= 12
+     * $query->filterById(array('max' => 12)); // WHERE id <= 12
      * </code>
      *
      * @param     mixed $id The value to use as filter.
@@ -266,8 +276,22 @@ abstract class BaseEducationalPathQuery extends ModelCriteria
      */
     public function filterById($id = null, $comparison = null)
     {
-        if (is_array($id) && null === $comparison) {
-            $comparison = Criteria::IN;
+        if (is_array($id)) {
+            $useMinMax = false;
+            if (isset($id['min'])) {
+                $this->addUsingAlias(EducationalPathPeer::ID, $id['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($id['max'])) {
+                $this->addUsingAlias(EducationalPathPeer::ID, $id['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
         }
 
         return $this->addUsingAlias(EducationalPathPeer::ID, $id, $comparison);
@@ -367,7 +391,8 @@ abstract class BaseEducationalPathQuery extends ModelCriteria
      * <code>
      * $query->filterByCursusId(1234); // WHERE cursus_id = 1234
      * $query->filterByCursusId(array(12, 34)); // WHERE cursus_id IN (12, 34)
-     * $query->filterByCursusId(array('min' => 12)); // WHERE cursus_id > 12
+     * $query->filterByCursusId(array('min' => 12)); // WHERE cursus_id >= 12
+     * $query->filterByCursusId(array('max' => 12)); // WHERE cursus_id <= 12
      * </code>
      *
      * @see       filterByCursus()
@@ -410,7 +435,8 @@ abstract class BaseEducationalPathQuery extends ModelCriteria
      * <code>
      * $query->filterByResponsableId(1234); // WHERE responsable_id = 1234
      * $query->filterByResponsableId(array(12, 34)); // WHERE responsable_id IN (12, 34)
-     * $query->filterByResponsableId(array('min' => 12)); // WHERE responsable_id > 12
+     * $query->filterByResponsableId(array('min' => 12)); // WHERE responsable_id >= 12
+     * $query->filterByResponsableId(array('max' => 12)); // WHERE responsable_id <= 12
      * </code>
      *
      * @see       filterByResponsable()
@@ -479,8 +505,8 @@ abstract class BaseEducationalPathQuery extends ModelCriteria
      * @param   Cursus|PropelObjectCollection $cursus The related object(s) to use as filter
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return   EducationalPathQuery The current query, for fluid interface
-     * @throws   PropelException - if the provided filter is invalid.
+     * @return                 EducationalPathQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
      */
     public function filterByCursus($cursus, $comparison = null)
     {
@@ -555,8 +581,8 @@ abstract class BaseEducationalPathQuery extends ModelCriteria
      * @param   User|PropelObjectCollection $user The related object(s) to use as filter
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return   EducationalPathQuery The current query, for fluid interface
-     * @throws   PropelException - if the provided filter is invalid.
+     * @return                 EducationalPathQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
      */
     public function filterByResponsable($user, $comparison = null)
     {
@@ -631,8 +657,8 @@ abstract class BaseEducationalPathQuery extends ModelCriteria
      * @param   UsersPaths|PropelObjectCollection $usersPaths  the related object to use as filter
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return   EducationalPathQuery The current query, for fluid interface
-     * @throws   PropelException - if the provided filter is invalid.
+     * @return                 EducationalPathQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
      */
     public function filterByUsersPaths($usersPaths, $comparison = null)
     {
@@ -705,8 +731,8 @@ abstract class BaseEducationalPathQuery extends ModelCriteria
      * @param   EducationalPathsOptionalCourses|PropelObjectCollection $educationalPathsOptionalCourses  the related object to use as filter
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return   EducationalPathQuery The current query, for fluid interface
-     * @throws   PropelException - if the provided filter is invalid.
+     * @return                 EducationalPathQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
      */
     public function filterByEducationalPathsOptionalCourses($educationalPathsOptionalCourses, $comparison = null)
     {
@@ -779,8 +805,8 @@ abstract class BaseEducationalPathQuery extends ModelCriteria
      * @param   EducationalPathsMandatoryCourses|PropelObjectCollection $educationalPathsMandatoryCourses  the related object to use as filter
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return   EducationalPathQuery The current query, for fluid interface
-     * @throws   PropelException - if the provided filter is invalid.
+     * @return                 EducationalPathQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
      */
     public function filterByEducationalPathsMandatoryCourses($educationalPathsMandatoryCourses, $comparison = null)
     {
@@ -845,80 +871,6 @@ abstract class BaseEducationalPathQuery extends ModelCriteria
         return $this
             ->joinEducationalPathsMandatoryCourses($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'EducationalPathsMandatoryCourses', 'EducationalPathsMandatoryCoursesQuery');
-    }
-
-    /**
-     * Filter the query by a related Schedule object
-     *
-     * @param   Schedule|PropelObjectCollection $schedule  the related object to use as filter
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return   EducationalPathQuery The current query, for fluid interface
-     * @throws   PropelException - if the provided filter is invalid.
-     */
-    public function filterBySchedule($schedule, $comparison = null)
-    {
-        if ($schedule instanceof Schedule) {
-            return $this
-                ->addUsingAlias(EducationalPathPeer::ID, $schedule->getPathId(), $comparison);
-        } elseif ($schedule instanceof PropelObjectCollection) {
-            return $this
-                ->useScheduleQuery()
-                ->filterByPrimaryKeys($schedule->getPrimaryKeys())
-                ->endUse();
-        } else {
-            throw new PropelException('filterBySchedule() only accepts arguments of type Schedule or PropelCollection');
-        }
-    }
-
-    /**
-     * Adds a JOIN clause to the query using the Schedule relation
-     *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return EducationalPathQuery The current query, for fluid interface
-     */
-    public function joinSchedule($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
-    {
-        $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('Schedule');
-
-        // create a ModelJoin object for this join
-        $join = new ModelJoin();
-        $join->setJoinType($joinType);
-        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
-        if ($previousJoin = $this->getPreviousJoin()) {
-            $join->setPreviousJoin($previousJoin);
-        }
-
-        // add the ModelJoin to the current object
-        if ($relationAlias) {
-            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
-            $this->addJoinObject($join, $relationAlias);
-        } else {
-            $this->addJoinObject($join, 'Schedule');
-        }
-
-        return $this;
-    }
-
-    /**
-     * Use the Schedule relation Schedule object
-     *
-     * @see       useQuery()
-     *
-     * @param     string $relationAlias optional alias for the relation,
-     *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return   ScheduleQuery A secondary query class using the current class as primary query
-     */
-    public function useScheduleQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
-    {
-        return $this
-            ->joinSchedule($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'Schedule', 'ScheduleQuery');
     }
 
     /**

@@ -39,8 +39,8 @@ class ContentsFilesTableMap extends TableMap
         $this->setUseIdGenerator(false);
         $this->setIsCrossRef(true);
         // columns
-        $this->addForeignPrimaryKey('CONTENT_ID', 'ContentId', 'INTEGER' , 'contents', 'ID', true, null, null);
-        $this->addForeignPrimaryKey('FILE_ID', 'FileId', 'INTEGER' , 'files', 'ID', true, null, null);
+        $this->addForeignPrimaryKey('content_id', 'ContentId', 'INTEGER' , 'contents', 'id', true, null, null);
+        $this->addForeignPrimaryKey('file_id', 'FileId', 'INTEGER' , 'files', 'id', true, null, null);
         // validators
     } // initialize()
 

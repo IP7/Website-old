@@ -32,44 +32,44 @@ abstract class BaseContentPeer
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
     const NUM_HYDRATE_COLUMNS = 12;
 
-    /** the column name for the ID field */
-    const ID = 'contents.ID';
+    /** the column name for the id field */
+    const ID = 'contents.id';
 
-    /** the column name for the AUTHOR_ID field */
-    const AUTHOR_ID = 'contents.AUTHOR_ID';
+    /** the column name for the author_id field */
+    const AUTHOR_ID = 'contents.author_id';
 
-    /** the column name for the CONTENT_TYPE_ID field */
-    const CONTENT_TYPE_ID = 'contents.CONTENT_TYPE_ID';
+    /** the column name for the content_type_id field */
+    const CONTENT_TYPE_ID = 'contents.content_type_id';
 
-    /** the column name for the ACCESS_RIGHTS field */
-    const ACCESS_RIGHTS = 'contents.ACCESS_RIGHTS';
+    /** the column name for the access_rights field */
+    const ACCESS_RIGHTS = 'contents.access_rights';
 
-    /** the column name for the VALIDATED field */
-    const VALIDATED = 'contents.VALIDATED';
+    /** the column name for the validated field */
+    const VALIDATED = 'contents.validated';
 
-    /** the column name for the TITLE field */
-    const TITLE = 'contents.TITLE';
+    /** the column name for the title field */
+    const TITLE = 'contents.title';
 
-    /** the column name for the TEXT field */
-    const TEXT = 'contents.TEXT';
+    /** the column name for the text field */
+    const TEXT = 'contents.text';
 
-    /** the column name for the CURSUS_ID field */
-    const CURSUS_ID = 'contents.CURSUS_ID';
+    /** the column name for the cursus_id field */
+    const CURSUS_ID = 'contents.cursus_id';
 
-    /** the column name for the COURSE_ID field */
-    const COURSE_ID = 'contents.COURSE_ID';
+    /** the column name for the course_id field */
+    const COURSE_ID = 'contents.course_id';
 
-    /** the column name for the YEAR field */
-    const YEAR = 'contents.YEAR';
+    /** the column name for the year field */
+    const YEAR = 'contents.year';
 
-    /** the column name for the DELETED field */
-    const DELETED = 'contents.DELETED';
+    /** the column name for the deleted field */
+    const DELETED = 'contents.deleted';
 
-    /** the column name for the CREATED_AT field */
-    const CREATED_AT = 'contents.CREATED_AT';
+    /** the column name for the created_at field */
+    const CREATED_AT = 'contents.created_at';
 
-    /** the column name for the UPDATED_AT field */
-    const UPDATED_AT = 'contents.UPDATED_AT';
+    /** the column name for the updated_at field */
+    const UPDATED_AT = 'contents.updated_at';
 
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -197,18 +197,18 @@ abstract class BaseContentPeer
             $criteria->addSelectColumn(ContentPeer::CREATED_AT);
             $criteria->addSelectColumn(ContentPeer::UPDATED_AT);
         } else {
-            $criteria->addSelectColumn($alias . '.ID');
-            $criteria->addSelectColumn($alias . '.AUTHOR_ID');
-            $criteria->addSelectColumn($alias . '.CONTENT_TYPE_ID');
-            $criteria->addSelectColumn($alias . '.ACCESS_RIGHTS');
-            $criteria->addSelectColumn($alias . '.VALIDATED');
-            $criteria->addSelectColumn($alias . '.TITLE');
-            $criteria->addSelectColumn($alias . '.CURSUS_ID');
-            $criteria->addSelectColumn($alias . '.COURSE_ID');
-            $criteria->addSelectColumn($alias . '.YEAR');
-            $criteria->addSelectColumn($alias . '.DELETED');
-            $criteria->addSelectColumn($alias . '.CREATED_AT');
-            $criteria->addSelectColumn($alias . '.UPDATED_AT');
+            $criteria->addSelectColumn($alias . '.id');
+            $criteria->addSelectColumn($alias . '.author_id');
+            $criteria->addSelectColumn($alias . '.content_type_id');
+            $criteria->addSelectColumn($alias . '.access_rights');
+            $criteria->addSelectColumn($alias . '.validated');
+            $criteria->addSelectColumn($alias . '.title');
+            $criteria->addSelectColumn($alias . '.cursus_id');
+            $criteria->addSelectColumn($alias . '.course_id');
+            $criteria->addSelectColumn($alias . '.year');
+            $criteria->addSelectColumn($alias . '.deleted');
+            $criteria->addSelectColumn($alias . '.created_at');
+            $criteria->addSelectColumn($alias . '.updated_at');
         }
     }
 
@@ -292,7 +292,7 @@ abstract class BaseContentPeer
     /**
      * Prepares the Criteria object and uses the parent doSelect() method to execute a PDOStatement.
      *
-     * Use this method directly if you want to work with an executed statement durirectly (for example
+     * Use this method directly if you want to work with an executed statement directly (for example
      * to perform your own object hydration).
      *
      * @param      Criteria $criteria The Criteria object used to build the SELECT statement.
@@ -397,8 +397,15 @@ abstract class BaseContentPeer
      *
      * @return void
      */
-    public static function clearInstancePool()
+    public static function clearInstancePool($and_clear_all_references = false)
     {
+      if ($and_clear_all_references)
+      {
+        foreach (ContentPeer::$instances as $instance)
+        {
+          $instance->clearAllReferences(true);
+        }
+      }
         ContentPeer::$instances = array();
     }
 
@@ -411,9 +418,6 @@ abstract class BaseContentPeer
         // Invalidate objects in ContentsFilesPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         ContentsFilesPeer::clearInstancePool();
-        // Invalidate objects in CommentPeer instance pool,
-        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-        CommentPeer::clearInstancePool();
         // Invalidate objects in ReportPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         ReportPeer::clearInstancePool();
@@ -1917,7 +1921,7 @@ abstract class BaseContentPeer
      *
      * @return string ClassName
      */
-    public static function getOMClass()
+    public static function getOMClass($row = 0, $colnum = 0)
     {
         return ContentPeer::OM_CLASS;
     }
@@ -2131,12 +2135,6 @@ abstract class BaseContentPeer
 
             $criteria->add(ContentsFilesPeer::CONTENT_ID, $obj->getId());
             $affectedRows += ContentsFilesPeer::doDelete($criteria, $con);
-
-            // delete related Comment objects
-            $criteria = new Criteria(CommentPeer::DATABASE_NAME);
-
-            $criteria->add(CommentPeer::CONTENT_ID, $obj->getId());
-            $affectedRows += CommentPeer::doDelete($criteria, $con);
 
             // delete related Report objects
             $criteria = new Criteria(ReportPeer::DATABASE_NAME);

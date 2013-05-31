@@ -32,37 +32,37 @@ abstract class BaseFilePeer
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
     const NUM_HYDRATE_COLUMNS = 10;
 
-    /** the column name for the ID field */
-    const ID = 'files.ID';
+    /** the column name for the id field */
+    const ID = 'files.id';
 
-    /** the column name for the AUTHOR_ID field */
-    const AUTHOR_ID = 'files.AUTHOR_ID';
+    /** the column name for the author_id field */
+    const AUTHOR_ID = 'files.author_id';
 
-    /** the column name for the TITLE field */
-    const TITLE = 'files.TITLE';
+    /** the column name for the title field */
+    const TITLE = 'files.title';
 
-    /** the column name for the DATE field */
-    const DATE = 'files.DATE';
+    /** the column name for the date field */
+    const DATE = 'files.date';
 
-    /** the column name for the DESCRIPTION field */
-    const DESCRIPTION = 'files.DESCRIPTION';
+    /** the column name for the description field */
+    const DESCRIPTION = 'files.description';
 
-    /** the column name for the FILE_TYPE field */
-    const FILE_TYPE = 'files.FILE_TYPE';
+    /** the column name for the file_type field */
+    const FILE_TYPE = 'files.file_type';
 
-    /** the column name for the PATH field */
-    const PATH = 'files.PATH';
+    /** the column name for the path field */
+    const PATH = 'files.path';
 
-    /** the column name for the ACCESS_RIGHTS field */
-    const ACCESS_RIGHTS = 'files.ACCESS_RIGHTS';
+    /** the column name for the access_rights field */
+    const ACCESS_RIGHTS = 'files.access_rights';
 
-    /** the column name for the DOWNLOADS_COUNT field */
-    const DOWNLOADS_COUNT = 'files.DOWNLOADS_COUNT';
+    /** the column name for the downloads_count field */
+    const DOWNLOADS_COUNT = 'files.downloads_count';
 
-    /** the column name for the DELETED field */
-    const DELETED = 'files.DELETED';
+    /** the column name for the deleted field */
+    const DELETED = 'files.deleted';
 
-    /** The enumerated values for the FILE_TYPE field */
+    /** The enumerated values for the file_type field */
     const FILE_TYPE_ARCHIVE = 'archive';
     const FILE_TYPE_TEXT = 'text';
     const FILE_TYPE_IMAGE = 'image';
@@ -185,7 +185,28 @@ abstract class BaseFilePeer
     {
         $valueSets = FilePeer::getValueSets();
 
+        if (!isset($valueSets[$colname])) {
+            throw new PropelException(sprintf('Column "%s" has no ValueSet.', $colname));
+        }
+
         return $valueSets[$colname];
+    }
+
+    /**
+     * Gets the SQL value for the ENUM column value
+     *
+     * @param string $colname ENUM column name.
+     * @param string $enumVal ENUM value.
+     *
+     * @return int            SQL value
+     */
+    public static function getSqlValueForEnum($colname, $enumVal)
+    {
+        $values = FilePeer::getValueSet($colname);
+        if (!in_array($enumVal, $values)) {
+            throw new PropelException(sprintf('Value "%s" is not accepted in this enumerated column', $colname));
+        }
+        return array_search($enumVal, $values);
     }
 
     /**
@@ -231,16 +252,16 @@ abstract class BaseFilePeer
             $criteria->addSelectColumn(FilePeer::DOWNLOADS_COUNT);
             $criteria->addSelectColumn(FilePeer::DELETED);
         } else {
-            $criteria->addSelectColumn($alias . '.ID');
-            $criteria->addSelectColumn($alias . '.AUTHOR_ID');
-            $criteria->addSelectColumn($alias . '.TITLE');
-            $criteria->addSelectColumn($alias . '.DATE');
-            $criteria->addSelectColumn($alias . '.DESCRIPTION');
-            $criteria->addSelectColumn($alias . '.FILE_TYPE');
-            $criteria->addSelectColumn($alias . '.PATH');
-            $criteria->addSelectColumn($alias . '.ACCESS_RIGHTS');
-            $criteria->addSelectColumn($alias . '.DOWNLOADS_COUNT');
-            $criteria->addSelectColumn($alias . '.DELETED');
+            $criteria->addSelectColumn($alias . '.id');
+            $criteria->addSelectColumn($alias . '.author_id');
+            $criteria->addSelectColumn($alias . '.title');
+            $criteria->addSelectColumn($alias . '.date');
+            $criteria->addSelectColumn($alias . '.description');
+            $criteria->addSelectColumn($alias . '.file_type');
+            $criteria->addSelectColumn($alias . '.path');
+            $criteria->addSelectColumn($alias . '.access_rights');
+            $criteria->addSelectColumn($alias . '.downloads_count');
+            $criteria->addSelectColumn($alias . '.deleted');
         }
     }
 
@@ -324,7 +345,7 @@ abstract class BaseFilePeer
     /**
      * Prepares the Criteria object and uses the parent doSelect() method to execute a PDOStatement.
      *
-     * Use this method directly if you want to work with an executed statement durirectly (for example
+     * Use this method directly if you want to work with an executed statement directly (for example
      * to perform your own object hydration).
      *
      * @param      Criteria $criteria The Criteria object used to build the SELECT statement.
@@ -429,8 +450,15 @@ abstract class BaseFilePeer
      *
      * @return void
      */
-    public static function clearInstancePool()
+    public static function clearInstancePool($and_clear_all_references = false)
     {
+      if ($and_clear_all_references)
+      {
+        foreach (FilePeer::$instances as $instance)
+        {
+          $instance->clearAllReferences(true);
+        }
+      }
         FilePeer::$instances = array();
     }
 
@@ -540,6 +568,17 @@ abstract class BaseFilePeer
         }
 
         return array($obj, $col);
+    }
+
+    /**
+     * Gets the SQL value for FileType ENUM value
+     *
+     * @param  string $enumVal ENUM value to get SQL value for
+     * @return int             SQL value
+     */
+    public static function getFileTypeSqlValue($enumVal)
+    {
+        return FilePeer::getSqlValueForEnum(FilePeer::FILE_TYPE, $enumVal);
     }
 
 
@@ -809,7 +848,7 @@ abstract class BaseFilePeer
      *
      * @return string ClassName
      */
-    public static function getOMClass()
+    public static function getOMClass($row = 0, $colnum = 0)
     {
         return FilePeer::OM_CLASS;
     }

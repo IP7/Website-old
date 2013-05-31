@@ -38,10 +38,10 @@ class CourseAliasTableMap extends TableMap
         $this->setPackage('ip7website');
         $this->setUseIdGenerator(true);
         // columns
-        $this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
-        $this->addForeignKey('COURSE_ID', 'CourseId', 'INTEGER', 'courses', 'ID', true, null, null);
-        $this->addColumn('NAME', 'Name', 'VARCHAR', true, 64, null);
-        $this->addColumn('SHORT_NAME', 'ShortName', 'VARCHAR', true, 16, null);
+        $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
+        $this->addForeignKey('course_id', 'CourseId', 'INTEGER', 'courses', 'id', true, null, null);
+        $this->addColumn('name', 'Name', 'VARCHAR', true, 64, null);
+        $this->addColumn('short_name', 'ShortName', 'VARCHAR', true, 16, null);
         // validators
     } // initialize()
 

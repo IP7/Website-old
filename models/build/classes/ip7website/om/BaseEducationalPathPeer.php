@@ -32,26 +32,26 @@ abstract class BaseEducationalPathPeer
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
     const NUM_HYDRATE_COLUMNS = 6;
 
-    /** the column name for the ID field */
-    const ID = 'educational_paths.ID';
+    /** the column name for the id field */
+    const ID = 'educational_paths.id';
 
-    /** the column name for the SHORT_NAME field */
-    const SHORT_NAME = 'educational_paths.SHORT_NAME';
+    /** the column name for the short_name field */
+    const SHORT_NAME = 'educational_paths.short_name';
 
-    /** the column name for the NAME field */
-    const NAME = 'educational_paths.NAME';
+    /** the column name for the name field */
+    const NAME = 'educational_paths.name';
 
-    /** the column name for the DESCRIPTION field */
-    const DESCRIPTION = 'educational_paths.DESCRIPTION';
+    /** the column name for the description field */
+    const DESCRIPTION = 'educational_paths.description';
 
-    /** the column name for the CURSUS_ID field */
-    const CURSUS_ID = 'educational_paths.CURSUS_ID';
+    /** the column name for the cursus_id field */
+    const CURSUS_ID = 'educational_paths.cursus_id';
 
-    /** the column name for the RESPONSABLE_ID field */
-    const RESPONSABLE_ID = 'educational_paths.RESPONSABLE_ID';
+    /** the column name for the responsable_id field */
+    const RESPONSABLE_ID = 'educational_paths.responsable_id';
 
-    /** the column name for the DELETED field */
-    const DELETED = 'educational_paths.DELETED';
+    /** the column name for the deleted field */
+    const DELETED = 'educational_paths.deleted';
 
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -173,12 +173,12 @@ abstract class BaseEducationalPathPeer
             $criteria->addSelectColumn(EducationalPathPeer::RESPONSABLE_ID);
             $criteria->addSelectColumn(EducationalPathPeer::DELETED);
         } else {
-            $criteria->addSelectColumn($alias . '.ID');
-            $criteria->addSelectColumn($alias . '.SHORT_NAME');
-            $criteria->addSelectColumn($alias . '.NAME');
-            $criteria->addSelectColumn($alias . '.CURSUS_ID');
-            $criteria->addSelectColumn($alias . '.RESPONSABLE_ID');
-            $criteria->addSelectColumn($alias . '.DELETED');
+            $criteria->addSelectColumn($alias . '.id');
+            $criteria->addSelectColumn($alias . '.short_name');
+            $criteria->addSelectColumn($alias . '.name');
+            $criteria->addSelectColumn($alias . '.cursus_id');
+            $criteria->addSelectColumn($alias . '.responsable_id');
+            $criteria->addSelectColumn($alias . '.deleted');
         }
     }
 
@@ -262,7 +262,7 @@ abstract class BaseEducationalPathPeer
     /**
      * Prepares the Criteria object and uses the parent doSelect() method to execute a PDOStatement.
      *
-     * Use this method directly if you want to work with an executed statement durirectly (for example
+     * Use this method directly if you want to work with an executed statement directly (for example
      * to perform your own object hydration).
      *
      * @param      Criteria $criteria The Criteria object used to build the SELECT statement.
@@ -367,8 +367,15 @@ abstract class BaseEducationalPathPeer
      *
      * @return void
      */
-    public static function clearInstancePool()
+    public static function clearInstancePool($and_clear_all_references = false)
     {
+      if ($and_clear_all_references)
+      {
+        foreach (EducationalPathPeer::$instances as $instance)
+        {
+          $instance->clearAllReferences(true);
+        }
+      }
         EducationalPathPeer::$instances = array();
     }
 
@@ -387,9 +394,6 @@ abstract class BaseEducationalPathPeer
         // Invalidate objects in EducationalPathsMandatoryCoursesPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         EducationalPathsMandatoryCoursesPeer::clearInstancePool();
-        // Invalidate objects in SchedulePeer instance pool,
-        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-        SchedulePeer::clearInstancePool();
     }
 
     /**
@@ -1146,7 +1150,7 @@ abstract class BaseEducationalPathPeer
      *
      * @return string ClassName
      */
-    public static function getOMClass()
+    public static function getOMClass($row = 0, $colnum = 0)
     {
         return EducationalPathPeer::OM_CLASS;
     }
@@ -1372,12 +1376,6 @@ abstract class BaseEducationalPathPeer
 
             $criteria->add(EducationalPathsMandatoryCoursesPeer::PATH_ID, $obj->getId());
             $affectedRows += EducationalPathsMandatoryCoursesPeer::doDelete($criteria, $con);
-
-            // delete related Schedule objects
-            $criteria = new Criteria(SchedulePeer::DATABASE_NAME);
-
-            $criteria->add(SchedulePeer::PATH_ID, $obj->getId());
-            $affectedRows += SchedulePeer::doDelete($criteria, $con);
         }
 
         return $affectedRows;

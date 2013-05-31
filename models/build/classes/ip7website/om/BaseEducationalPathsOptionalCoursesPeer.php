@@ -32,11 +32,11 @@ abstract class BaseEducationalPathsOptionalCoursesPeer
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
     const NUM_HYDRATE_COLUMNS = 2;
 
-    /** the column name for the COURSE_ID field */
-    const COURSE_ID = 'educational_paths_optional_courses.COURSE_ID';
+    /** the column name for the course_id field */
+    const COURSE_ID = 'educational_paths_optional_courses.course_id';
 
-    /** the column name for the PATH_ID field */
-    const PATH_ID = 'educational_paths_optional_courses.PATH_ID';
+    /** the column name for the path_id field */
+    const PATH_ID = 'educational_paths_optional_courses.path_id';
 
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -154,8 +154,8 @@ abstract class BaseEducationalPathsOptionalCoursesPeer
             $criteria->addSelectColumn(EducationalPathsOptionalCoursesPeer::COURSE_ID);
             $criteria->addSelectColumn(EducationalPathsOptionalCoursesPeer::PATH_ID);
         } else {
-            $criteria->addSelectColumn($alias . '.COURSE_ID');
-            $criteria->addSelectColumn($alias . '.PATH_ID');
+            $criteria->addSelectColumn($alias . '.course_id');
+            $criteria->addSelectColumn($alias . '.path_id');
         }
     }
 
@@ -239,7 +239,7 @@ abstract class BaseEducationalPathsOptionalCoursesPeer
     /**
      * Prepares the Criteria object and uses the parent doSelect() method to execute a PDOStatement.
      *
-     * Use this method directly if you want to work with an executed statement durirectly (for example
+     * Use this method directly if you want to work with an executed statement directly (for example
      * to perform your own object hydration).
      *
      * @param      Criteria $criteria The Criteria object used to build the SELECT statement.
@@ -344,8 +344,15 @@ abstract class BaseEducationalPathsOptionalCoursesPeer
      *
      * @return void
      */
-    public static function clearInstancePool()
+    public static function clearInstancePool($and_clear_all_references = false)
     {
+      if ($and_clear_all_references)
+      {
+        foreach (EducationalPathsOptionalCoursesPeer::$instances as $instance)
+        {
+          $instance->clearAllReferences(true);
+        }
+      }
         EducationalPathsOptionalCoursesPeer::$instances = array();
     }
 
@@ -1111,7 +1118,7 @@ abstract class BaseEducationalPathsOptionalCoursesPeer
      *
      * @return string ClassName
      */
-    public static function getOMClass()
+    public static function getOMClass($row = 0, $colnum = 0)
     {
         return EducationalPathsOptionalCoursesPeer::OM_CLASS;
     }

@@ -53,7 +53,7 @@ abstract class BaseCoursesContentsArchivesQuery extends ModelCriteria
      * Returns a new CoursesContentsArchivesQuery object.
      *
      * @param     string $modelAlias The alias of a model in the query
-     * @param     CoursesContentsArchivesQuery|Criteria $criteria Optional Criteria to build the query from
+     * @param   CoursesContentsArchivesQuery|Criteria $criteria Optional Criteria to build the query from
      *
      * @return CoursesContentsArchivesQuery
      */
@@ -117,12 +117,12 @@ abstract class BaseCoursesContentsArchivesQuery extends ModelCriteria
      * @param     mixed $key Primary key to use for the query
      * @param     PropelPDO $con A connection object
      *
-     * @return   CoursesContentsArchives A model object, or null if the key is not found
-     * @throws   PropelException
+     * @return                 CoursesContentsArchives A model object, or null if the key is not found
+     * @throws PropelException
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `COURSE_ID`, `FILE_ID` FROM `courses_contents_archives` WHERE `COURSE_ID` = :p0 AND `FILE_ID` = :p1';
+        $sql = 'SELECT `course_id`, `file_id` FROM `courses_contents_archives` WHERE `course_id` = :p0 AND `file_id` = :p1';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key[0], PDO::PARAM_INT);
@@ -230,7 +230,8 @@ abstract class BaseCoursesContentsArchivesQuery extends ModelCriteria
      * <code>
      * $query->filterByCourseId(1234); // WHERE course_id = 1234
      * $query->filterByCourseId(array(12, 34)); // WHERE course_id IN (12, 34)
-     * $query->filterByCourseId(array('min' => 12)); // WHERE course_id > 12
+     * $query->filterByCourseId(array('min' => 12)); // WHERE course_id >= 12
+     * $query->filterByCourseId(array('max' => 12)); // WHERE course_id <= 12
      * </code>
      *
      * @see       filterByCourse()
@@ -245,8 +246,22 @@ abstract class BaseCoursesContentsArchivesQuery extends ModelCriteria
      */
     public function filterByCourseId($courseId = null, $comparison = null)
     {
-        if (is_array($courseId) && null === $comparison) {
-            $comparison = Criteria::IN;
+        if (is_array($courseId)) {
+            $useMinMax = false;
+            if (isset($courseId['min'])) {
+                $this->addUsingAlias(CoursesContentsArchivesPeer::COURSE_ID, $courseId['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($courseId['max'])) {
+                $this->addUsingAlias(CoursesContentsArchivesPeer::COURSE_ID, $courseId['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
         }
 
         return $this->addUsingAlias(CoursesContentsArchivesPeer::COURSE_ID, $courseId, $comparison);
@@ -259,7 +274,8 @@ abstract class BaseCoursesContentsArchivesQuery extends ModelCriteria
      * <code>
      * $query->filterByFileId(1234); // WHERE file_id = 1234
      * $query->filterByFileId(array(12, 34)); // WHERE file_id IN (12, 34)
-     * $query->filterByFileId(array('min' => 12)); // WHERE file_id > 12
+     * $query->filterByFileId(array('min' => 12)); // WHERE file_id >= 12
+     * $query->filterByFileId(array('max' => 12)); // WHERE file_id <= 12
      * </code>
      *
      * @see       filterByContentsArchive()
@@ -274,8 +290,22 @@ abstract class BaseCoursesContentsArchivesQuery extends ModelCriteria
      */
     public function filterByFileId($fileId = null, $comparison = null)
     {
-        if (is_array($fileId) && null === $comparison) {
-            $comparison = Criteria::IN;
+        if (is_array($fileId)) {
+            $useMinMax = false;
+            if (isset($fileId['min'])) {
+                $this->addUsingAlias(CoursesContentsArchivesPeer::FILE_ID, $fileId['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($fileId['max'])) {
+                $this->addUsingAlias(CoursesContentsArchivesPeer::FILE_ID, $fileId['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
         }
 
         return $this->addUsingAlias(CoursesContentsArchivesPeer::FILE_ID, $fileId, $comparison);
@@ -287,8 +317,8 @@ abstract class BaseCoursesContentsArchivesQuery extends ModelCriteria
      * @param   Course|PropelObjectCollection $course The related object(s) to use as filter
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return   CoursesContentsArchivesQuery The current query, for fluid interface
-     * @throws   PropelException - if the provided filter is invalid.
+     * @return                 CoursesContentsArchivesQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
      */
     public function filterByCourse($course, $comparison = null)
     {
@@ -363,8 +393,8 @@ abstract class BaseCoursesContentsArchivesQuery extends ModelCriteria
      * @param   File|PropelObjectCollection $file The related object(s) to use as filter
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return   CoursesContentsArchivesQuery The current query, for fluid interface
-     * @throws   PropelException - if the provided filter is invalid.
+     * @return                 CoursesContentsArchivesQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
      */
     public function filterByContentsArchive($file, $comparison = null)
     {

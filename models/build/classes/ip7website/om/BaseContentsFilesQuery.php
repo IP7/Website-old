@@ -53,7 +53,7 @@ abstract class BaseContentsFilesQuery extends ModelCriteria
      * Returns a new ContentsFilesQuery object.
      *
      * @param     string $modelAlias The alias of a model in the query
-     * @param     ContentsFilesQuery|Criteria $criteria Optional Criteria to build the query from
+     * @param   ContentsFilesQuery|Criteria $criteria Optional Criteria to build the query from
      *
      * @return ContentsFilesQuery
      */
@@ -117,12 +117,12 @@ abstract class BaseContentsFilesQuery extends ModelCriteria
      * @param     mixed $key Primary key to use for the query
      * @param     PropelPDO $con A connection object
      *
-     * @return   ContentsFiles A model object, or null if the key is not found
-     * @throws   PropelException
+     * @return                 ContentsFiles A model object, or null if the key is not found
+     * @throws PropelException
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `CONTENT_ID`, `FILE_ID` FROM `contents_files` WHERE `CONTENT_ID` = :p0 AND `FILE_ID` = :p1';
+        $sql = 'SELECT `content_id`, `file_id` FROM `contents_files` WHERE `content_id` = :p0 AND `file_id` = :p1';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key[0], PDO::PARAM_INT);
@@ -230,7 +230,8 @@ abstract class BaseContentsFilesQuery extends ModelCriteria
      * <code>
      * $query->filterByContentId(1234); // WHERE content_id = 1234
      * $query->filterByContentId(array(12, 34)); // WHERE content_id IN (12, 34)
-     * $query->filterByContentId(array('min' => 12)); // WHERE content_id > 12
+     * $query->filterByContentId(array('min' => 12)); // WHERE content_id >= 12
+     * $query->filterByContentId(array('max' => 12)); // WHERE content_id <= 12
      * </code>
      *
      * @see       filterByContent()
@@ -245,8 +246,22 @@ abstract class BaseContentsFilesQuery extends ModelCriteria
      */
     public function filterByContentId($contentId = null, $comparison = null)
     {
-        if (is_array($contentId) && null === $comparison) {
-            $comparison = Criteria::IN;
+        if (is_array($contentId)) {
+            $useMinMax = false;
+            if (isset($contentId['min'])) {
+                $this->addUsingAlias(ContentsFilesPeer::CONTENT_ID, $contentId['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($contentId['max'])) {
+                $this->addUsingAlias(ContentsFilesPeer::CONTENT_ID, $contentId['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
         }
 
         return $this->addUsingAlias(ContentsFilesPeer::CONTENT_ID, $contentId, $comparison);
@@ -259,7 +274,8 @@ abstract class BaseContentsFilesQuery extends ModelCriteria
      * <code>
      * $query->filterByFileId(1234); // WHERE file_id = 1234
      * $query->filterByFileId(array(12, 34)); // WHERE file_id IN (12, 34)
-     * $query->filterByFileId(array('min' => 12)); // WHERE file_id > 12
+     * $query->filterByFileId(array('min' => 12)); // WHERE file_id >= 12
+     * $query->filterByFileId(array('max' => 12)); // WHERE file_id <= 12
      * </code>
      *
      * @see       filterByFile()
@@ -274,8 +290,22 @@ abstract class BaseContentsFilesQuery extends ModelCriteria
      */
     public function filterByFileId($fileId = null, $comparison = null)
     {
-        if (is_array($fileId) && null === $comparison) {
-            $comparison = Criteria::IN;
+        if (is_array($fileId)) {
+            $useMinMax = false;
+            if (isset($fileId['min'])) {
+                $this->addUsingAlias(ContentsFilesPeer::FILE_ID, $fileId['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($fileId['max'])) {
+                $this->addUsingAlias(ContentsFilesPeer::FILE_ID, $fileId['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
         }
 
         return $this->addUsingAlias(ContentsFilesPeer::FILE_ID, $fileId, $comparison);
@@ -287,8 +317,8 @@ abstract class BaseContentsFilesQuery extends ModelCriteria
      * @param   Content|PropelObjectCollection $content The related object(s) to use as filter
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return   ContentsFilesQuery The current query, for fluid interface
-     * @throws   PropelException - if the provided filter is invalid.
+     * @return                 ContentsFilesQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
      */
     public function filterByContent($content, $comparison = null)
     {
@@ -363,8 +393,8 @@ abstract class BaseContentsFilesQuery extends ModelCriteria
      * @param   File|PropelObjectCollection $file The related object(s) to use as filter
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return   ContentsFilesQuery The current query, for fluid interface
-     * @throws   PropelException - if the provided filter is invalid.
+     * @return                 ContentsFilesQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
      */
     public function filterByFile($file, $comparison = null)
     {

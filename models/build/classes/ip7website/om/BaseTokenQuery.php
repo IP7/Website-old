@@ -31,7 +31,6 @@
  * @method Token findOne(PropelPDO $con = null) Return the first Token matching the query
  * @method Token findOneOrCreate(PropelPDO $con = null) Return the first Token matching the query, or a new Token object populated from the query conditions when no match is found
  *
- * @method Token findOneById(int $id) Return the first Token filtered by the id column
  * @method Token findOneByUserId(int $user_id) Return the first Token filtered by the user_id column
  * @method Token findOneByExpirationDate(string $expiration_date) Return the first Token filtered by the expiration_date column
  * @method Token findOneByRights(int $rights) Return the first Token filtered by the rights column
@@ -65,7 +64,7 @@ abstract class BaseTokenQuery extends ModelCriteria
      * Returns a new TokenQuery object.
      *
      * @param     string $modelAlias The alias of a model in the query
-     * @param     TokenQuery|Criteria $criteria Optional Criteria to build the query from
+     * @param   TokenQuery|Criteria $criteria Optional Criteria to build the query from
      *
      * @return TokenQuery
      */
@@ -122,18 +121,32 @@ abstract class BaseTokenQuery extends ModelCriteria
     }
 
     /**
+     * Alias of findPk to use instance pooling
+     *
+     * @param     mixed $key Primary key to use for the query
+     * @param     PropelPDO $con A connection object
+     *
+     * @return                 Token A model object, or null if the key is not found
+     * @throws PropelException
+     */
+     public function findOneById($key, $con = null)
+     {
+        return $this->findPk($key, $con);
+     }
+
+    /**
      * Find object by primary key using raw SQL to go fast.
      * Bypass doSelect() and the object formatter by using generated code.
      *
      * @param     mixed $key Primary key to use for the query
      * @param     PropelPDO $con A connection object
      *
-     * @return   Token A model object, or null if the key is not found
-     * @throws   PropelException
+     * @return                 Token A model object, or null if the key is not found
+     * @throws PropelException
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `ID`, `USER_ID`, `EXPIRATION_DATE`, `RIGHTS`, `VALUE`, `METHOD` FROM `tokens` WHERE `ID` = :p0';
+        $sql = 'SELECT `id`, `user_id`, `expiration_date`, `rights`, `value`, `method` FROM `tokens` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -229,7 +242,8 @@ abstract class BaseTokenQuery extends ModelCriteria
      * <code>
      * $query->filterById(1234); // WHERE id = 1234
      * $query->filterById(array(12, 34)); // WHERE id IN (12, 34)
-     * $query->filterById(array('min' => 12)); // WHERE id > 12
+     * $query->filterById(array('min' => 12)); // WHERE id >= 12
+     * $query->filterById(array('max' => 12)); // WHERE id <= 12
      * </code>
      *
      * @param     mixed $id The value to use as filter.
@@ -242,8 +256,22 @@ abstract class BaseTokenQuery extends ModelCriteria
      */
     public function filterById($id = null, $comparison = null)
     {
-        if (is_array($id) && null === $comparison) {
-            $comparison = Criteria::IN;
+        if (is_array($id)) {
+            $useMinMax = false;
+            if (isset($id['min'])) {
+                $this->addUsingAlias(TokenPeer::ID, $id['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($id['max'])) {
+                $this->addUsingAlias(TokenPeer::ID, $id['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
         }
 
         return $this->addUsingAlias(TokenPeer::ID, $id, $comparison);
@@ -256,7 +284,8 @@ abstract class BaseTokenQuery extends ModelCriteria
      * <code>
      * $query->filterByUserId(1234); // WHERE user_id = 1234
      * $query->filterByUserId(array(12, 34)); // WHERE user_id IN (12, 34)
-     * $query->filterByUserId(array('min' => 12)); // WHERE user_id > 12
+     * $query->filterByUserId(array('min' => 12)); // WHERE user_id >= 12
+     * $query->filterByUserId(array('max' => 12)); // WHERE user_id <= 12
      * </code>
      *
      * @see       filterByUser()
@@ -342,7 +371,8 @@ abstract class BaseTokenQuery extends ModelCriteria
      * <code>
      * $query->filterByRights(1234); // WHERE rights = 1234
      * $query->filterByRights(array(12, 34)); // WHERE rights IN (12, 34)
-     * $query->filterByRights(array('min' => 12)); // WHERE rights > 12
+     * $query->filterByRights(array('min' => 12)); // WHERE rights >= 12
+     * $query->filterByRights(array('max' => 12)); // WHERE rights <= 12
      * </code>
      *
      * @param     mixed $rights The value to use as filter.
@@ -416,19 +446,12 @@ abstract class BaseTokenQuery extends ModelCriteria
      */
     public function filterByMethod($method = null, $comparison = null)
     {
-        $valueSet = TokenPeer::getValueSet(TokenPeer::METHOD);
         if (is_scalar($method)) {
-            if (!in_array($method, $valueSet)) {
-                throw new PropelException(sprintf('Value "%s" is not accepted in this enumerated column', $method));
-            }
-            $method = array_search($method, $valueSet);
+            $method = TokenPeer::getSqlValueForEnum(TokenPeer::METHOD, $method);
         } elseif (is_array($method)) {
             $convertedValues = array();
             foreach ($method as $value) {
-                if (!in_array($value, $valueSet)) {
-                    throw new PropelException(sprintf('Value "%s" is not accepted in this enumerated column', $value));
-                }
-                $convertedValues []= array_search($value, $valueSet);
+                $convertedValues[] = TokenPeer::getSqlValueForEnum(TokenPeer::METHOD, $value);
             }
             $method = $convertedValues;
             if (null === $comparison) {
@@ -445,8 +468,8 @@ abstract class BaseTokenQuery extends ModelCriteria
      * @param   User|PropelObjectCollection $user The related object(s) to use as filter
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return   TokenQuery The current query, for fluid interface
-     * @throws   PropelException - if the provided filter is invalid.
+     * @return                 TokenQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
      */
     public function filterByUser($user, $comparison = null)
     {

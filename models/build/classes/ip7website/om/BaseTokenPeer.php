@@ -32,25 +32,25 @@ abstract class BaseTokenPeer
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
     const NUM_HYDRATE_COLUMNS = 6;
 
-    /** the column name for the ID field */
-    const ID = 'tokens.ID';
+    /** the column name for the id field */
+    const ID = 'tokens.id';
 
-    /** the column name for the USER_ID field */
-    const USER_ID = 'tokens.USER_ID';
+    /** the column name for the user_id field */
+    const USER_ID = 'tokens.user_id';
 
-    /** the column name for the EXPIRATION_DATE field */
-    const EXPIRATION_DATE = 'tokens.EXPIRATION_DATE';
+    /** the column name for the expiration_date field */
+    const EXPIRATION_DATE = 'tokens.expiration_date';
 
-    /** the column name for the RIGHTS field */
-    const RIGHTS = 'tokens.RIGHTS';
+    /** the column name for the rights field */
+    const RIGHTS = 'tokens.rights';
 
-    /** the column name for the VALUE field */
-    const VALUE = 'tokens.VALUE';
+    /** the column name for the value field */
+    const VALUE = 'tokens.value';
 
-    /** the column name for the METHOD field */
-    const METHOD = 'tokens.METHOD';
+    /** the column name for the method field */
+    const METHOD = 'tokens.method';
 
-    /** The enumerated values for the METHOD field */
+    /** The enumerated values for the method field */
     const METHOD_GET = 'GET';
     const METHOD_POST = 'POST';
 
@@ -163,7 +163,28 @@ abstract class BaseTokenPeer
     {
         $valueSets = TokenPeer::getValueSets();
 
+        if (!isset($valueSets[$colname])) {
+            throw new PropelException(sprintf('Column "%s" has no ValueSet.', $colname));
+        }
+
         return $valueSets[$colname];
+    }
+
+    /**
+     * Gets the SQL value for the ENUM column value
+     *
+     * @param string $colname ENUM column name.
+     * @param string $enumVal ENUM value.
+     *
+     * @return int            SQL value
+     */
+    public static function getSqlValueForEnum($colname, $enumVal)
+    {
+        $values = TokenPeer::getValueSet($colname);
+        if (!in_array($enumVal, $values)) {
+            throw new PropelException(sprintf('Value "%s" is not accepted in this enumerated column', $colname));
+        }
+        return array_search($enumVal, $values);
     }
 
     /**
@@ -205,12 +226,12 @@ abstract class BaseTokenPeer
             $criteria->addSelectColumn(TokenPeer::VALUE);
             $criteria->addSelectColumn(TokenPeer::METHOD);
         } else {
-            $criteria->addSelectColumn($alias . '.ID');
-            $criteria->addSelectColumn($alias . '.USER_ID');
-            $criteria->addSelectColumn($alias . '.EXPIRATION_DATE');
-            $criteria->addSelectColumn($alias . '.RIGHTS');
-            $criteria->addSelectColumn($alias . '.VALUE');
-            $criteria->addSelectColumn($alias . '.METHOD');
+            $criteria->addSelectColumn($alias . '.id');
+            $criteria->addSelectColumn($alias . '.user_id');
+            $criteria->addSelectColumn($alias . '.expiration_date');
+            $criteria->addSelectColumn($alias . '.rights');
+            $criteria->addSelectColumn($alias . '.value');
+            $criteria->addSelectColumn($alias . '.method');
         }
     }
 
@@ -294,7 +315,7 @@ abstract class BaseTokenPeer
     /**
      * Prepares the Criteria object and uses the parent doSelect() method to execute a PDOStatement.
      *
-     * Use this method directly if you want to work with an executed statement durirectly (for example
+     * Use this method directly if you want to work with an executed statement directly (for example
      * to perform your own object hydration).
      *
      * @param      Criteria $criteria The Criteria object used to build the SELECT statement.
@@ -399,8 +420,15 @@ abstract class BaseTokenPeer
      *
      * @return void
      */
-    public static function clearInstancePool()
+    public static function clearInstancePool($and_clear_all_references = false)
     {
+      if ($and_clear_all_references)
+      {
+        foreach (TokenPeer::$instances as $instance)
+        {
+          $instance->clearAllReferences(true);
+        }
+      }
         TokenPeer::$instances = array();
     }
 
@@ -504,6 +532,17 @@ abstract class BaseTokenPeer
         }
 
         return array($obj, $col);
+    }
+
+    /**
+     * Gets the SQL value for Method ENUM value
+     *
+     * @param  string $enumVal ENUM value to get SQL value for
+     * @return int             SQL value
+     */
+    public static function getMethodSqlValue($enumVal)
+    {
+        return TokenPeer::getSqlValueForEnum(TokenPeer::METHOD, $enumVal);
     }
 
 
@@ -773,7 +812,7 @@ abstract class BaseTokenPeer
      *
      * @return string ClassName
      */
-    public static function getOMClass()
+    public static function getOMClass($row = 0, $colnum = 0)
     {
         return TokenPeer::OM_CLASS;
     }

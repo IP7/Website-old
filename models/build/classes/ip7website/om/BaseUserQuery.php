@@ -90,10 +90,6 @@
  * @method UserQuery rightJoinContent($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Content relation
  * @method UserQuery innerJoinContent($relationAlias = null) Adds a INNER JOIN clause to the query using the Content relation
  *
- * @method UserQuery leftJoinComment($relationAlias = null) Adds a LEFT JOIN clause to the query using the Comment relation
- * @method UserQuery rightJoinComment($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Comment relation
- * @method UserQuery innerJoinComment($relationAlias = null) Adds a INNER JOIN clause to the query using the Comment relation
- *
  * @method UserQuery leftJoinReport($relationAlias = null) Adds a LEFT JOIN clause to the query using the Report relation
  * @method UserQuery rightJoinReport($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Report relation
  * @method UserQuery innerJoinReport($relationAlias = null) Adds a INNER JOIN clause to the query using the Report relation
@@ -102,14 +98,6 @@
  * @method UserQuery rightJoinNews($relationAlias = null) Adds a RIGHT JOIN clause to the query using the News relation
  * @method UserQuery innerJoinNews($relationAlias = null) Adds a INNER JOIN clause to the query using the News relation
  *
- * @method UserQuery leftJoinTransaction($relationAlias = null) Adds a LEFT JOIN clause to the query using the Transaction relation
- * @method UserQuery rightJoinTransaction($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Transaction relation
- * @method UserQuery innerJoinTransaction($relationAlias = null) Adds a INNER JOIN clause to the query using the Transaction relation
- *
- * @method UserQuery leftJoinScheduledCourse($relationAlias = null) Adds a LEFT JOIN clause to the query using the ScheduledCourse relation
- * @method UserQuery rightJoinScheduledCourse($relationAlias = null) Adds a RIGHT JOIN clause to the query using the ScheduledCourse relation
- * @method UserQuery innerJoinScheduledCourse($relationAlias = null) Adds a INNER JOIN clause to the query using the ScheduledCourse relation
- *
  * @method UserQuery leftJoinToken($relationAlias = null) Adds a LEFT JOIN clause to the query using the Token relation
  * @method UserQuery rightJoinToken($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Token relation
  * @method UserQuery innerJoinToken($relationAlias = null) Adds a INNER JOIN clause to the query using the Token relation
@@ -117,7 +105,6 @@
  * @method User findOne(PropelPDO $con = null) Return the first User matching the query
  * @method User findOneOrCreate(PropelPDO $con = null) Return the first User matching the query, or a new User object populated from the query conditions when no match is found
  *
- * @method User findOneById(int $id) Return the first User filtered by the id column
  * @method User findOneByUsername(string $username) Return the first User filtered by the username column
  * @method User findOneByPasswordHash(string $password_hash) Return the first User filtered by the password_hash column
  * @method User findOneByRights(int $rights) Return the first User filtered by the rights column
@@ -197,7 +184,7 @@ abstract class BaseUserQuery extends ModelCriteria
      * Returns a new UserQuery object.
      *
      * @param     string $modelAlias The alias of a model in the query
-     * @param     UserQuery|Criteria $criteria Optional Criteria to build the query from
+     * @param   UserQuery|Criteria $criteria Optional Criteria to build the query from
      *
      * @return UserQuery
      */
@@ -254,18 +241,32 @@ abstract class BaseUserQuery extends ModelCriteria
     }
 
     /**
+     * Alias of findPk to use instance pooling
+     *
+     * @param     mixed $key Primary key to use for the query
+     * @param     PropelPDO $con A connection object
+     *
+     * @return                 User A model object, or null if the key is not found
+     * @throws PropelException
+     */
+     public function findOneById($key, $con = null)
+     {
+        return $this->findPk($key, $con);
+     }
+
+    /**
      * Find object by primary key using raw SQL to go fast.
      * Bypass doSelect() and the object formatter by using generated code.
      *
      * @param     mixed $key Primary key to use for the query
      * @param     PropelPDO $con A connection object
      *
-     * @return   User A model object, or null if the key is not found
-     * @throws   PropelException
+     * @return                 User A model object, or null if the key is not found
+     * @throws PropelException
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `ID`, `USERNAME`, `PASSWORD_HASH`, `RIGHTS`, `FIRSTNAME`, `LASTNAME`, `GENDER`, `EMAIL`, `PHONE`, `WEBSITE`, `BIRTH_DATE`, `FIRST_ENTRY`, `LAST_ENTRY`, `EXPIRATION_DATE`, `LAST_VISIT`, `VISITS_COUNT`, `CONFIG_SHOW_EMAIL`, `CONFIG_SHOW_PHONE`, `CONFIG_SHOW_REAL_NAME`, `CONFIG_SHOW_BIRTHDATE`, `CONFIG_SHOW_AGE`, `CONFIG_INDEX_PROFILE`, `CONFIG_PRIVATE_PROFILE`, `ACTIVATED`, `IS_A_TEACHER`, `IS_A_STUDENT`, `IS_AN_ALUMNI` FROM `users` WHERE `ID` = :p0';
+        $sql = 'SELECT `id`, `username`, `password_hash`, `rights`, `firstname`, `lastname`, `gender`, `email`, `phone`, `website`, `birth_date`, `first_entry`, `last_entry`, `expiration_date`, `last_visit`, `visits_count`, `config_show_email`, `config_show_phone`, `config_show_real_name`, `config_show_birthdate`, `config_show_age`, `config_index_profile`, `config_private_profile`, `activated`, `is_a_teacher`, `is_a_student`, `is_an_alumni` FROM `users` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -361,7 +362,8 @@ abstract class BaseUserQuery extends ModelCriteria
      * <code>
      * $query->filterById(1234); // WHERE id = 1234
      * $query->filterById(array(12, 34)); // WHERE id IN (12, 34)
-     * $query->filterById(array('min' => 12)); // WHERE id > 12
+     * $query->filterById(array('min' => 12)); // WHERE id >= 12
+     * $query->filterById(array('max' => 12)); // WHERE id <= 12
      * </code>
      *
      * @param     mixed $id The value to use as filter.
@@ -374,8 +376,22 @@ abstract class BaseUserQuery extends ModelCriteria
      */
     public function filterById($id = null, $comparison = null)
     {
-        if (is_array($id) && null === $comparison) {
-            $comparison = Criteria::IN;
+        if (is_array($id)) {
+            $useMinMax = false;
+            if (isset($id['min'])) {
+                $this->addUsingAlias(UserPeer::ID, $id['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($id['max'])) {
+                $this->addUsingAlias(UserPeer::ID, $id['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
         }
 
         return $this->addUsingAlias(UserPeer::ID, $id, $comparison);
@@ -446,7 +462,8 @@ abstract class BaseUserQuery extends ModelCriteria
      * <code>
      * $query->filterByRights(1234); // WHERE rights = 1234
      * $query->filterByRights(array(12, 34)); // WHERE rights IN (12, 34)
-     * $query->filterByRights(array('min' => 12)); // WHERE rights > 12
+     * $query->filterByRights(array('min' => 12)); // WHERE rights >= 12
+     * $query->filterByRights(array('max' => 12)); // WHERE rights <= 12
      * </code>
      *
      * @param     mixed $rights The value to use as filter.
@@ -549,19 +566,12 @@ abstract class BaseUserQuery extends ModelCriteria
      */
     public function filterByGender($gender = null, $comparison = null)
     {
-        $valueSet = UserPeer::getValueSet(UserPeer::GENDER);
         if (is_scalar($gender)) {
-            if (!in_array($gender, $valueSet)) {
-                throw new PropelException(sprintf('Value "%s" is not accepted in this enumerated column', $gender));
-            }
-            $gender = array_search($gender, $valueSet);
+            $gender = UserPeer::getSqlValueForEnum(UserPeer::GENDER, $gender);
         } elseif (is_array($gender)) {
             $convertedValues = array();
             foreach ($gender as $value) {
-                if (!in_array($value, $valueSet)) {
-                    throw new PropelException(sprintf('Value "%s" is not accepted in this enumerated column', $value));
-                }
-                $convertedValues []= array_search($value, $valueSet);
+                $convertedValues[] = UserPeer::getSqlValueForEnum(UserPeer::GENDER, $value);
             }
             $gender = $convertedValues;
             if (null === $comparison) {
@@ -881,7 +891,8 @@ abstract class BaseUserQuery extends ModelCriteria
      * <code>
      * $query->filterByVisitsCount(1234); // WHERE visits_count = 1234
      * $query->filterByVisitsCount(array(12, 34)); // WHERE visits_count IN (12, 34)
-     * $query->filterByVisitsCount(array('min' => 12)); // WHERE visits_count > 12
+     * $query->filterByVisitsCount(array('min' => 12)); // WHERE visits_count >= 12
+     * $query->filterByVisitsCount(array('max' => 12)); // WHERE visits_count <= 12
      * </code>
      *
      * @param     mixed $visitsCount The value to use as filter.
@@ -936,7 +947,7 @@ abstract class BaseUserQuery extends ModelCriteria
     public function filterByConfigShowEmail($configShowEmail = null, $comparison = null)
     {
         if (is_string($configShowEmail)) {
-            $config_show_email = in_array(strtolower($configShowEmail), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+            $configShowEmail = in_array(strtolower($configShowEmail), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
         }
 
         return $this->addUsingAlias(UserPeer::CONFIG_SHOW_EMAIL, $configShowEmail, $comparison);
@@ -963,7 +974,7 @@ abstract class BaseUserQuery extends ModelCriteria
     public function filterByConfigShowPhone($configShowPhone = null, $comparison = null)
     {
         if (is_string($configShowPhone)) {
-            $config_show_phone = in_array(strtolower($configShowPhone), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+            $configShowPhone = in_array(strtolower($configShowPhone), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
         }
 
         return $this->addUsingAlias(UserPeer::CONFIG_SHOW_PHONE, $configShowPhone, $comparison);
@@ -990,7 +1001,7 @@ abstract class BaseUserQuery extends ModelCriteria
     public function filterByConfigShowRealName($configShowRealName = null, $comparison = null)
     {
         if (is_string($configShowRealName)) {
-            $config_show_real_name = in_array(strtolower($configShowRealName), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+            $configShowRealName = in_array(strtolower($configShowRealName), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
         }
 
         return $this->addUsingAlias(UserPeer::CONFIG_SHOW_REAL_NAME, $configShowRealName, $comparison);
@@ -1017,7 +1028,7 @@ abstract class BaseUserQuery extends ModelCriteria
     public function filterByConfigShowBirthdate($configShowBirthdate = null, $comparison = null)
     {
         if (is_string($configShowBirthdate)) {
-            $config_show_birthdate = in_array(strtolower($configShowBirthdate), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+            $configShowBirthdate = in_array(strtolower($configShowBirthdate), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
         }
 
         return $this->addUsingAlias(UserPeer::CONFIG_SHOW_BIRTHDATE, $configShowBirthdate, $comparison);
@@ -1044,7 +1055,7 @@ abstract class BaseUserQuery extends ModelCriteria
     public function filterByConfigShowAge($configShowAge = null, $comparison = null)
     {
         if (is_string($configShowAge)) {
-            $config_show_age = in_array(strtolower($configShowAge), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+            $configShowAge = in_array(strtolower($configShowAge), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
         }
 
         return $this->addUsingAlias(UserPeer::CONFIG_SHOW_AGE, $configShowAge, $comparison);
@@ -1071,7 +1082,7 @@ abstract class BaseUserQuery extends ModelCriteria
     public function filterByConfigIndexProfile($configIndexProfile = null, $comparison = null)
     {
         if (is_string($configIndexProfile)) {
-            $config_index_profile = in_array(strtolower($configIndexProfile), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+            $configIndexProfile = in_array(strtolower($configIndexProfile), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
         }
 
         return $this->addUsingAlias(UserPeer::CONFIG_INDEX_PROFILE, $configIndexProfile, $comparison);
@@ -1098,7 +1109,7 @@ abstract class BaseUserQuery extends ModelCriteria
     public function filterByConfigPrivateProfile($configPrivateProfile = null, $comparison = null)
     {
         if (is_string($configPrivateProfile)) {
-            $config_private_profile = in_array(strtolower($configPrivateProfile), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+            $configPrivateProfile = in_array(strtolower($configPrivateProfile), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
         }
 
         return $this->addUsingAlias(UserPeer::CONFIG_PRIVATE_PROFILE, $configPrivateProfile, $comparison);
@@ -1152,7 +1163,7 @@ abstract class BaseUserQuery extends ModelCriteria
     public function filterByIsATeacher($isATeacher = null, $comparison = null)
     {
         if (is_string($isATeacher)) {
-            $is_a_teacher = in_array(strtolower($isATeacher), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+            $isATeacher = in_array(strtolower($isATeacher), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
         }
 
         return $this->addUsingAlias(UserPeer::IS_A_TEACHER, $isATeacher, $comparison);
@@ -1179,7 +1190,7 @@ abstract class BaseUserQuery extends ModelCriteria
     public function filterByIsAStudent($isAStudent = null, $comparison = null)
     {
         if (is_string($isAStudent)) {
-            $is_a_student = in_array(strtolower($isAStudent), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+            $isAStudent = in_array(strtolower($isAStudent), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
         }
 
         return $this->addUsingAlias(UserPeer::IS_A_STUDENT, $isAStudent, $comparison);
@@ -1206,7 +1217,7 @@ abstract class BaseUserQuery extends ModelCriteria
     public function filterByIsAnAlumni($isAnAlumni = null, $comparison = null)
     {
         if (is_string($isAnAlumni)) {
-            $is_an_alumni = in_array(strtolower($isAnAlumni), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+            $isAnAlumni = in_array(strtolower($isAnAlumni), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
         }
 
         return $this->addUsingAlias(UserPeer::IS_AN_ALUMNI, $isAnAlumni, $comparison);
@@ -1276,8 +1287,8 @@ abstract class BaseUserQuery extends ModelCriteria
      * @param   Cursus|PropelObjectCollection $cursus  the related object to use as filter
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return   UserQuery The current query, for fluid interface
-     * @throws   PropelException - if the provided filter is invalid.
+     * @return                 UserQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
      */
     public function filterByCursusResponsability($cursus, $comparison = null)
     {
@@ -1350,8 +1361,8 @@ abstract class BaseUserQuery extends ModelCriteria
      * @param   EducationalPath|PropelObjectCollection $educationalPath  the related object to use as filter
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return   UserQuery The current query, for fluid interface
-     * @throws   PropelException - if the provided filter is invalid.
+     * @return                 UserQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
      */
     public function filterByEducationalPathResponsability($educationalPath, $comparison = null)
     {
@@ -1424,8 +1435,8 @@ abstract class BaseUserQuery extends ModelCriteria
      * @param   UsersPaths|PropelObjectCollection $usersPaths  the related object to use as filter
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return   UserQuery The current query, for fluid interface
-     * @throws   PropelException - if the provided filter is invalid.
+     * @return                 UserQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
      */
     public function filterByUsersPaths($usersPaths, $comparison = null)
     {
@@ -1498,8 +1509,8 @@ abstract class BaseUserQuery extends ModelCriteria
      * @param   File|PropelObjectCollection $file  the related object to use as filter
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return   UserQuery The current query, for fluid interface
-     * @throws   PropelException - if the provided filter is invalid.
+     * @return                 UserQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
      */
     public function filterByFile($file, $comparison = null)
     {
@@ -1572,8 +1583,8 @@ abstract class BaseUserQuery extends ModelCriteria
      * @param   Content|PropelObjectCollection $content  the related object to use as filter
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return   UserQuery The current query, for fluid interface
-     * @throws   PropelException - if the provided filter is invalid.
+     * @return                 UserQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
      */
     public function filterByContent($content, $comparison = null)
     {
@@ -1641,87 +1652,13 @@ abstract class BaseUserQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query by a related Comment object
-     *
-     * @param   Comment|PropelObjectCollection $comment  the related object to use as filter
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return   UserQuery The current query, for fluid interface
-     * @throws   PropelException - if the provided filter is invalid.
-     */
-    public function filterByComment($comment, $comparison = null)
-    {
-        if ($comment instanceof Comment) {
-            return $this
-                ->addUsingAlias(UserPeer::ID, $comment->getAuthorId(), $comparison);
-        } elseif ($comment instanceof PropelObjectCollection) {
-            return $this
-                ->useCommentQuery()
-                ->filterByPrimaryKeys($comment->getPrimaryKeys())
-                ->endUse();
-        } else {
-            throw new PropelException('filterByComment() only accepts arguments of type Comment or PropelCollection');
-        }
-    }
-
-    /**
-     * Adds a JOIN clause to the query using the Comment relation
-     *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return UserQuery The current query, for fluid interface
-     */
-    public function joinComment($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
-    {
-        $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('Comment');
-
-        // create a ModelJoin object for this join
-        $join = new ModelJoin();
-        $join->setJoinType($joinType);
-        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
-        if ($previousJoin = $this->getPreviousJoin()) {
-            $join->setPreviousJoin($previousJoin);
-        }
-
-        // add the ModelJoin to the current object
-        if ($relationAlias) {
-            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
-            $this->addJoinObject($join, $relationAlias);
-        } else {
-            $this->addJoinObject($join, 'Comment');
-        }
-
-        return $this;
-    }
-
-    /**
-     * Use the Comment relation Comment object
-     *
-     * @see       useQuery()
-     *
-     * @param     string $relationAlias optional alias for the relation,
-     *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return   CommentQuery A secondary query class using the current class as primary query
-     */
-    public function useCommentQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
-    {
-        return $this
-            ->joinComment($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'Comment', 'CommentQuery');
-    }
-
-    /**
      * Filter the query by a related Report object
      *
      * @param   Report|PropelObjectCollection $report  the related object to use as filter
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return   UserQuery The current query, for fluid interface
-     * @throws   PropelException - if the provided filter is invalid.
+     * @return                 UserQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
      */
     public function filterByReport($report, $comparison = null)
     {
@@ -1794,8 +1731,8 @@ abstract class BaseUserQuery extends ModelCriteria
      * @param   News|PropelObjectCollection $news  the related object to use as filter
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return   UserQuery The current query, for fluid interface
-     * @throws   PropelException - if the provided filter is invalid.
+     * @return                 UserQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
      */
     public function filterByNews($news, $comparison = null)
     {
@@ -1863,161 +1800,13 @@ abstract class BaseUserQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query by a related Transaction object
-     *
-     * @param   Transaction|PropelObjectCollection $transaction  the related object to use as filter
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return   UserQuery The current query, for fluid interface
-     * @throws   PropelException - if the provided filter is invalid.
-     */
-    public function filterByTransaction($transaction, $comparison = null)
-    {
-        if ($transaction instanceof Transaction) {
-            return $this
-                ->addUsingAlias(UserPeer::ID, $transaction->getUserId(), $comparison);
-        } elseif ($transaction instanceof PropelObjectCollection) {
-            return $this
-                ->useTransactionQuery()
-                ->filterByPrimaryKeys($transaction->getPrimaryKeys())
-                ->endUse();
-        } else {
-            throw new PropelException('filterByTransaction() only accepts arguments of type Transaction or PropelCollection');
-        }
-    }
-
-    /**
-     * Adds a JOIN clause to the query using the Transaction relation
-     *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return UserQuery The current query, for fluid interface
-     */
-    public function joinTransaction($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
-    {
-        $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('Transaction');
-
-        // create a ModelJoin object for this join
-        $join = new ModelJoin();
-        $join->setJoinType($joinType);
-        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
-        if ($previousJoin = $this->getPreviousJoin()) {
-            $join->setPreviousJoin($previousJoin);
-        }
-
-        // add the ModelJoin to the current object
-        if ($relationAlias) {
-            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
-            $this->addJoinObject($join, $relationAlias);
-        } else {
-            $this->addJoinObject($join, 'Transaction');
-        }
-
-        return $this;
-    }
-
-    /**
-     * Use the Transaction relation Transaction object
-     *
-     * @see       useQuery()
-     *
-     * @param     string $relationAlias optional alias for the relation,
-     *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return   TransactionQuery A secondary query class using the current class as primary query
-     */
-    public function useTransactionQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
-    {
-        return $this
-            ->joinTransaction($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'Transaction', 'TransactionQuery');
-    }
-
-    /**
-     * Filter the query by a related ScheduledCourse object
-     *
-     * @param   ScheduledCourse|PropelObjectCollection $scheduledCourse  the related object to use as filter
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return   UserQuery The current query, for fluid interface
-     * @throws   PropelException - if the provided filter is invalid.
-     */
-    public function filterByScheduledCourse($scheduledCourse, $comparison = null)
-    {
-        if ($scheduledCourse instanceof ScheduledCourse) {
-            return $this
-                ->addUsingAlias(UserPeer::ID, $scheduledCourse->getTeacherId(), $comparison);
-        } elseif ($scheduledCourse instanceof PropelObjectCollection) {
-            return $this
-                ->useScheduledCourseQuery()
-                ->filterByPrimaryKeys($scheduledCourse->getPrimaryKeys())
-                ->endUse();
-        } else {
-            throw new PropelException('filterByScheduledCourse() only accepts arguments of type ScheduledCourse or PropelCollection');
-        }
-    }
-
-    /**
-     * Adds a JOIN clause to the query using the ScheduledCourse relation
-     *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return UserQuery The current query, for fluid interface
-     */
-    public function joinScheduledCourse($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
-    {
-        $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('ScheduledCourse');
-
-        // create a ModelJoin object for this join
-        $join = new ModelJoin();
-        $join->setJoinType($joinType);
-        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
-        if ($previousJoin = $this->getPreviousJoin()) {
-            $join->setPreviousJoin($previousJoin);
-        }
-
-        // add the ModelJoin to the current object
-        if ($relationAlias) {
-            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
-            $this->addJoinObject($join, $relationAlias);
-        } else {
-            $this->addJoinObject($join, 'ScheduledCourse');
-        }
-
-        return $this;
-    }
-
-    /**
-     * Use the ScheduledCourse relation ScheduledCourse object
-     *
-     * @see       useQuery()
-     *
-     * @param     string $relationAlias optional alias for the relation,
-     *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return   ScheduledCourseQuery A secondary query class using the current class as primary query
-     */
-    public function useScheduledCourseQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
-    {
-        return $this
-            ->joinScheduledCourse($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'ScheduledCourse', 'ScheduledCourseQuery');
-    }
-
-    /**
      * Filter the query by a related Token object
      *
      * @param   Token|PropelObjectCollection $token  the related object to use as filter
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return   UserQuery The current query, for fluid interface
-     * @throws   PropelException - if the provided filter is invalid.
+     * @return                 UserQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
      */
     public function filterByToken($token, $comparison = null)
     {

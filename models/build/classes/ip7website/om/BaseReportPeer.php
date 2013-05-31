@@ -32,20 +32,20 @@ abstract class BaseReportPeer
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
     const NUM_HYDRATE_COLUMNS = 5;
 
-    /** the column name for the ID field */
-    const ID = 'reports.ID';
+    /** the column name for the id field */
+    const ID = 'reports.id';
 
-    /** the column name for the CONTENT_ID field */
-    const CONTENT_ID = 'reports.CONTENT_ID';
+    /** the column name for the content_id field */
+    const CONTENT_ID = 'reports.content_id';
 
-    /** the column name for the AUTHOR_ID field */
-    const AUTHOR_ID = 'reports.AUTHOR_ID';
+    /** the column name for the author_id field */
+    const AUTHOR_ID = 'reports.author_id';
 
-    /** the column name for the DATE field */
-    const DATE = 'reports.DATE';
+    /** the column name for the date field */
+    const DATE = 'reports.date';
 
-    /** the column name for the TEXT field */
-    const TEXT = 'reports.TEXT';
+    /** the column name for the text field */
+    const TEXT = 'reports.text';
 
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -166,11 +166,11 @@ abstract class BaseReportPeer
             $criteria->addSelectColumn(ReportPeer::DATE);
             $criteria->addSelectColumn(ReportPeer::TEXT);
         } else {
-            $criteria->addSelectColumn($alias . '.ID');
-            $criteria->addSelectColumn($alias . '.CONTENT_ID');
-            $criteria->addSelectColumn($alias . '.AUTHOR_ID');
-            $criteria->addSelectColumn($alias . '.DATE');
-            $criteria->addSelectColumn($alias . '.TEXT');
+            $criteria->addSelectColumn($alias . '.id');
+            $criteria->addSelectColumn($alias . '.content_id');
+            $criteria->addSelectColumn($alias . '.author_id');
+            $criteria->addSelectColumn($alias . '.date');
+            $criteria->addSelectColumn($alias . '.text');
         }
     }
 
@@ -254,7 +254,7 @@ abstract class BaseReportPeer
     /**
      * Prepares the Criteria object and uses the parent doSelect() method to execute a PDOStatement.
      *
-     * Use this method directly if you want to work with an executed statement durirectly (for example
+     * Use this method directly if you want to work with an executed statement directly (for example
      * to perform your own object hydration).
      *
      * @param      Criteria $criteria The Criteria object used to build the SELECT statement.
@@ -359,8 +359,15 @@ abstract class BaseReportPeer
      *
      * @return void
      */
-    public static function clearInstancePool()
+    public static function clearInstancePool($and_clear_all_references = false)
     {
+      if ($and_clear_all_references)
+      {
+        foreach (ReportPeer::$instances as $instance)
+        {
+          $instance->clearAllReferences(true);
+        }
+      }
         ReportPeer::$instances = array();
     }
 
@@ -1126,7 +1133,7 @@ abstract class BaseReportPeer
      *
      * @return string ClassName
      */
-    public static function getOMClass()
+    public static function getOMClass($row = 0, $colnum = 0)
     {
         return ReportPeer::OM_CLASS;
     }

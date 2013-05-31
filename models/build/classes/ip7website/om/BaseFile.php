@@ -134,6 +134,12 @@ abstract class BaseFile extends BaseObject implements Persistent
     protected $alreadyInValidation = false;
 
     /**
+     * Flag to prevent endless clearAllReferences($deep=true) loop, if this object is referenced
+     * @var        boolean
+     */
+    protected $alreadyInClearAllReferencesDeep = false;
+
+    /**
      * An array of objects scheduled for deletion.
      * @var		PropelObjectCollection
      */
@@ -226,22 +232,25 @@ abstract class BaseFile extends BaseObject implements Persistent
             // while technically this is not a default value of null,
             // this seems to be closest in meaning.
             return null;
-        } else {
-            try {
-                $dt = new DateTime($this->date);
-            } catch (Exception $x) {
-                throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->date, true), $x);
-            }
+        }
+
+        try {
+            $dt = new DateTime($this->date);
+        } catch (Exception $x) {
+            throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->date, true), $x);
         }
 
         if ($format === null) {
             // Because propel.useDateTimeClass is true, we return a DateTime object.
             return $dt;
-        } elseif (strpos($format, '%') !== false) {
-            return strftime($format, $dt->format('U'));
-        } else {
-            return $dt->format($format);
         }
+
+        if (strpos($format, '%') !== false) {
+            return strftime($format, $dt->format('U'));
+        }
+
+        return $dt->format($format);
+
     }
 
     /**
@@ -321,7 +330,7 @@ abstract class BaseFile extends BaseObject implements Persistent
      */
     public function setId($v)
     {
-        if ($v !== null) {
+        if ($v !== null && is_numeric($v)) {
             $v = (int) $v;
         }
 
@@ -342,7 +351,7 @@ abstract class BaseFile extends BaseObject implements Persistent
      */
     public function setAuthorId($v)
     {
-        if ($v !== null) {
+        if ($v !== null && is_numeric($v)) {
             $v = (int) $v;
         }
 
@@ -367,7 +376,7 @@ abstract class BaseFile extends BaseObject implements Persistent
      */
     public function setTitle($v)
     {
-        if ($v !== null) {
+        if ($v !== null && is_numeric($v)) {
             $v = (string) $v;
         }
 
@@ -411,7 +420,7 @@ abstract class BaseFile extends BaseObject implements Persistent
      */
     public function setDescription($v)
     {
-        if ($v !== null) {
+        if ($v !== null && is_numeric($v)) {
             $v = (string) $v;
         }
 
@@ -458,7 +467,7 @@ abstract class BaseFile extends BaseObject implements Persistent
      */
     public function setPath($v)
     {
-        if ($v !== null) {
+        if ($v !== null && is_numeric($v)) {
             $v = (string) $v;
         }
 
@@ -479,7 +488,7 @@ abstract class BaseFile extends BaseObject implements Persistent
      */
     public function setAccessRights($v)
     {
-        if ($v !== null) {
+        if ($v !== null && is_numeric($v)) {
             $v = (int) $v;
         }
 
@@ -500,7 +509,7 @@ abstract class BaseFile extends BaseObject implements Persistent
      */
     public function setDownloadsCount($v)
     {
-        if ($v !== null) {
+        if ($v !== null && is_numeric($v)) {
             $v = (int) $v;
         }
 
@@ -591,7 +600,7 @@ abstract class BaseFile extends BaseObject implements Persistent
             if ($rehydrate) {
                 $this->ensureConsistency();
             }
-
+            $this->postHydrate($row, $startcol, $rehydrate);
             return $startcol + 10; // 10 = FilePeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
@@ -818,6 +827,12 @@ abstract class BaseFile extends BaseObject implements Persistent
                         $content->save($con);
                     }
                 }
+            } elseif ($this->collContents) {
+                foreach ($this->collContents as $content) {
+                    if ($content->isModified()) {
+                        $content->save($con);
+                    }
+                }
             }
 
             if ($this->coursesScheduledForDeletion !== null) {
@@ -838,6 +853,12 @@ abstract class BaseFile extends BaseObject implements Persistent
                         $course->save($con);
                     }
                 }
+            } elseif ($this->collCourses) {
+                foreach ($this->collCourses as $course) {
+                    if ($course->isModified()) {
+                        $course->save($con);
+                    }
+                }
             }
 
             if ($this->contentsFilessScheduledForDeletion !== null) {
@@ -851,7 +872,7 @@ abstract class BaseFile extends BaseObject implements Persistent
 
             if ($this->collContentsFiless !== null) {
                 foreach ($this->collContentsFiless as $referrerFK) {
-                    if (!$referrerFK->isDeleted()) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
                         $affectedRows += $referrerFK->save($con);
                     }
                 }
@@ -868,7 +889,7 @@ abstract class BaseFile extends BaseObject implements Persistent
 
             if ($this->collCoursesContentsArchivess !== null) {
                 foreach ($this->collCoursesContentsArchivess as $referrerFK) {
-                    if (!$referrerFK->isDeleted()) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
                         $affectedRows += $referrerFK->save($con);
                     }
                 }
@@ -901,34 +922,34 @@ abstract class BaseFile extends BaseObject implements Persistent
 
          // check the columns in natural order for more readable SQL queries
         if ($this->isColumnModified(FilePeer::ID)) {
-            $modifiedColumns[':p' . $index++]  = '`ID`';
+            $modifiedColumns[':p' . $index++]  = '`id`';
         }
         if ($this->isColumnModified(FilePeer::AUTHOR_ID)) {
-            $modifiedColumns[':p' . $index++]  = '`AUTHOR_ID`';
+            $modifiedColumns[':p' . $index++]  = '`author_id`';
         }
         if ($this->isColumnModified(FilePeer::TITLE)) {
-            $modifiedColumns[':p' . $index++]  = '`TITLE`';
+            $modifiedColumns[':p' . $index++]  = '`title`';
         }
         if ($this->isColumnModified(FilePeer::DATE)) {
-            $modifiedColumns[':p' . $index++]  = '`DATE`';
+            $modifiedColumns[':p' . $index++]  = '`date`';
         }
         if ($this->isColumnModified(FilePeer::DESCRIPTION)) {
-            $modifiedColumns[':p' . $index++]  = '`DESCRIPTION`';
+            $modifiedColumns[':p' . $index++]  = '`description`';
         }
         if ($this->isColumnModified(FilePeer::FILE_TYPE)) {
-            $modifiedColumns[':p' . $index++]  = '`FILE_TYPE`';
+            $modifiedColumns[':p' . $index++]  = '`file_type`';
         }
         if ($this->isColumnModified(FilePeer::PATH)) {
-            $modifiedColumns[':p' . $index++]  = '`PATH`';
+            $modifiedColumns[':p' . $index++]  = '`path`';
         }
         if ($this->isColumnModified(FilePeer::ACCESS_RIGHTS)) {
-            $modifiedColumns[':p' . $index++]  = '`ACCESS_RIGHTS`';
+            $modifiedColumns[':p' . $index++]  = '`access_rights`';
         }
         if ($this->isColumnModified(FilePeer::DOWNLOADS_COUNT)) {
-            $modifiedColumns[':p' . $index++]  = '`DOWNLOADS_COUNT`';
+            $modifiedColumns[':p' . $index++]  = '`downloads_count`';
         }
         if ($this->isColumnModified(FilePeer::DELETED)) {
-            $modifiedColumns[':p' . $index++]  = '`DELETED`';
+            $modifiedColumns[':p' . $index++]  = '`deleted`';
         }
 
         $sql = sprintf(
@@ -941,34 +962,34 @@ abstract class BaseFile extends BaseObject implements Persistent
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
-                    case '`ID`':
+                    case '`id`':
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
-                    case '`AUTHOR_ID`':
+                    case '`author_id`':
                         $stmt->bindValue($identifier, $this->author_id, PDO::PARAM_INT);
                         break;
-                    case '`TITLE`':
+                    case '`title`':
                         $stmt->bindValue($identifier, $this->title, PDO::PARAM_STR);
                         break;
-                    case '`DATE`':
+                    case '`date`':
                         $stmt->bindValue($identifier, $this->date, PDO::PARAM_STR);
                         break;
-                    case '`DESCRIPTION`':
+                    case '`description`':
                         $stmt->bindValue($identifier, $this->description, PDO::PARAM_STR);
                         break;
-                    case '`FILE_TYPE`':
+                    case '`file_type`':
                         $stmt->bindValue($identifier, $this->file_type, PDO::PARAM_INT);
                         break;
-                    case '`PATH`':
+                    case '`path`':
                         $stmt->bindValue($identifier, $this->path, PDO::PARAM_STR);
                         break;
-                    case '`ACCESS_RIGHTS`':
+                    case '`access_rights`':
                         $stmt->bindValue($identifier, $this->access_rights, PDO::PARAM_INT);
                         break;
-                    case '`DOWNLOADS_COUNT`':
+                    case '`downloads_count`':
                         $stmt->bindValue($identifier, $this->downloads_count, PDO::PARAM_INT);
                         break;
-                    case '`DELETED`':
+                    case '`deleted`':
                         $stmt->bindValue($identifier, (int) $this->deleted, PDO::PARAM_INT);
                         break;
                 }
@@ -1039,11 +1060,11 @@ abstract class BaseFile extends BaseObject implements Persistent
             $this->validationFailures = array();
 
             return true;
-        } else {
-            $this->validationFailures = $res;
-
-            return false;
         }
+
+        $this->validationFailures = $res;
+
+        return false;
     }
 
     /**
@@ -1510,12 +1531,13 @@ abstract class BaseFile extends BaseObject implements Persistent
      * Get the associated User object
      *
      * @param PropelPDO $con Optional Connection object.
+     * @param $doQuery Executes a query to get the object if required
      * @return User The associated User object.
      * @throws PropelException
      */
-    public function getAuthor(PropelPDO $con = null)
+    public function getAuthor(PropelPDO $con = null, $doQuery = true)
     {
-        if ($this->aAuthor === null && ($this->author_id !== null)) {
+        if ($this->aAuthor === null && ($this->author_id !== null) && $doQuery) {
             $this->aAuthor = UserQuery::create()->findPk($this->author_id, $con);
             /* The following can be used additionally to
                 guarantee the related object contains a reference
@@ -1554,13 +1576,15 @@ abstract class BaseFile extends BaseObject implements Persistent
      * This does not modify the database; however, it will remove any associated objects, causing
      * them to be refetched by subsequent calls to accessor method.
      *
-     * @return void
+     * @return File The current object (for fluent API support)
      * @see        addContentsFiless()
      */
     public function clearContentsFiless()
     {
         $this->collContentsFiless = null; // important to set this to null since that means it is uninitialized
         $this->collContentsFilessPartial = null;
+
+        return $this;
     }
 
     /**
@@ -1632,6 +1656,7 @@ abstract class BaseFile extends BaseObject implements Persistent
                       $this->collContentsFilessPartial = true;
                     }
 
+                    $collContentsFiless->getInternalIterator()->rewind();
                     return $collContentsFiless;
                 }
 
@@ -1659,12 +1684,15 @@ abstract class BaseFile extends BaseObject implements Persistent
      *
      * @param PropelCollection $contentsFiless A Propel collection.
      * @param PropelPDO $con Optional connection object
+     * @return File The current object (for fluent API support)
      */
     public function setContentsFiless(PropelCollection $contentsFiless, PropelPDO $con = null)
     {
-        $this->contentsFilessScheduledForDeletion = $this->getContentsFiless(new Criteria(), $con)->diff($contentsFiless);
+        $contentsFilessToDelete = $this->getContentsFiless(new Criteria(), $con)->diff($contentsFiless);
 
-        foreach ($this->contentsFilessScheduledForDeletion as $contentsFilesRemoved) {
+        $this->contentsFilessScheduledForDeletion = unserialize(serialize($contentsFilessToDelete));
+
+        foreach ($contentsFilessToDelete as $contentsFilesRemoved) {
             $contentsFilesRemoved->setFile(null);
         }
 
@@ -1675,6 +1703,8 @@ abstract class BaseFile extends BaseObject implements Persistent
 
         $this->collContentsFiless = $contentsFiless;
         $this->collContentsFilessPartial = false;
+
+        return $this;
     }
 
     /**
@@ -1692,22 +1722,22 @@ abstract class BaseFile extends BaseObject implements Persistent
         if (null === $this->collContentsFiless || null !== $criteria || $partial) {
             if ($this->isNew() && null === $this->collContentsFiless) {
                 return 0;
-            } else {
-                if($partial && !$criteria) {
-                    return count($this->getContentsFiless());
-                }
-                $query = ContentsFilesQuery::create(null, $criteria);
-                if ($distinct) {
-                    $query->distinct();
-                }
-
-                return $query
-                    ->filterByFile($this)
-                    ->count($con);
             }
-        } else {
-            return count($this->collContentsFiless);
+
+            if($partial && !$criteria) {
+                return count($this->getContentsFiless());
+            }
+            $query = ContentsFilesQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByFile($this)
+                ->count($con);
         }
+
+        return count($this->collContentsFiless);
     }
 
     /**
@@ -1723,7 +1753,7 @@ abstract class BaseFile extends BaseObject implements Persistent
             $this->initContentsFiless();
             $this->collContentsFilessPartial = true;
         }
-        if (!$this->collContentsFiless->contains($l)) { // only add it if the **same** object is not already associated
+        if (!in_array($l, $this->collContentsFiless->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
             $this->doAddContentsFiles($l);
         }
 
@@ -1741,6 +1771,7 @@ abstract class BaseFile extends BaseObject implements Persistent
 
     /**
      * @param	ContentsFiles $contentsFiles The contentsFiles object to remove.
+     * @return File The current object (for fluent API support)
      */
     public function removeContentsFiles($contentsFiles)
     {
@@ -1750,9 +1781,11 @@ abstract class BaseFile extends BaseObject implements Persistent
                 $this->contentsFilessScheduledForDeletion = clone $this->collContentsFiless;
                 $this->contentsFilessScheduledForDeletion->clear();
             }
-            $this->contentsFilessScheduledForDeletion[]= $contentsFiles;
+            $this->contentsFilessScheduledForDeletion[]= clone $contentsFiles;
             $contentsFiles->setFile(null);
         }
+
+        return $this;
     }
 
 
@@ -1786,13 +1819,15 @@ abstract class BaseFile extends BaseObject implements Persistent
      * This does not modify the database; however, it will remove any associated objects, causing
      * them to be refetched by subsequent calls to accessor method.
      *
-     * @return void
+     * @return File The current object (for fluent API support)
      * @see        addCoursesContentsArchivess()
      */
     public function clearCoursesContentsArchivess()
     {
         $this->collCoursesContentsArchivess = null; // important to set this to null since that means it is uninitialized
         $this->collCoursesContentsArchivessPartial = null;
+
+        return $this;
     }
 
     /**
@@ -1864,6 +1899,7 @@ abstract class BaseFile extends BaseObject implements Persistent
                       $this->collCoursesContentsArchivessPartial = true;
                     }
 
+                    $collCoursesContentsArchivess->getInternalIterator()->rewind();
                     return $collCoursesContentsArchivess;
                 }
 
@@ -1891,12 +1927,15 @@ abstract class BaseFile extends BaseObject implements Persistent
      *
      * @param PropelCollection $coursesContentsArchivess A Propel collection.
      * @param PropelPDO $con Optional connection object
+     * @return File The current object (for fluent API support)
      */
     public function setCoursesContentsArchivess(PropelCollection $coursesContentsArchivess, PropelPDO $con = null)
     {
-        $this->coursesContentsArchivessScheduledForDeletion = $this->getCoursesContentsArchivess(new Criteria(), $con)->diff($coursesContentsArchivess);
+        $coursesContentsArchivessToDelete = $this->getCoursesContentsArchivess(new Criteria(), $con)->diff($coursesContentsArchivess);
 
-        foreach ($this->coursesContentsArchivessScheduledForDeletion as $coursesContentsArchivesRemoved) {
+        $this->coursesContentsArchivessScheduledForDeletion = unserialize(serialize($coursesContentsArchivessToDelete));
+
+        foreach ($coursesContentsArchivessToDelete as $coursesContentsArchivesRemoved) {
             $coursesContentsArchivesRemoved->setContentsArchive(null);
         }
 
@@ -1907,6 +1946,8 @@ abstract class BaseFile extends BaseObject implements Persistent
 
         $this->collCoursesContentsArchivess = $coursesContentsArchivess;
         $this->collCoursesContentsArchivessPartial = false;
+
+        return $this;
     }
 
     /**
@@ -1924,22 +1965,22 @@ abstract class BaseFile extends BaseObject implements Persistent
         if (null === $this->collCoursesContentsArchivess || null !== $criteria || $partial) {
             if ($this->isNew() && null === $this->collCoursesContentsArchivess) {
                 return 0;
-            } else {
-                if($partial && !$criteria) {
-                    return count($this->getCoursesContentsArchivess());
-                }
-                $query = CoursesContentsArchivesQuery::create(null, $criteria);
-                if ($distinct) {
-                    $query->distinct();
-                }
-
-                return $query
-                    ->filterByContentsArchive($this)
-                    ->count($con);
             }
-        } else {
-            return count($this->collCoursesContentsArchivess);
+
+            if($partial && !$criteria) {
+                return count($this->getCoursesContentsArchivess());
+            }
+            $query = CoursesContentsArchivesQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByContentsArchive($this)
+                ->count($con);
         }
+
+        return count($this->collCoursesContentsArchivess);
     }
 
     /**
@@ -1955,7 +1996,7 @@ abstract class BaseFile extends BaseObject implements Persistent
             $this->initCoursesContentsArchivess();
             $this->collCoursesContentsArchivessPartial = true;
         }
-        if (!$this->collCoursesContentsArchivess->contains($l)) { // only add it if the **same** object is not already associated
+        if (!in_array($l, $this->collCoursesContentsArchivess->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
             $this->doAddCoursesContentsArchives($l);
         }
 
@@ -1973,6 +2014,7 @@ abstract class BaseFile extends BaseObject implements Persistent
 
     /**
      * @param	CoursesContentsArchives $coursesContentsArchives The coursesContentsArchives object to remove.
+     * @return File The current object (for fluent API support)
      */
     public function removeCoursesContentsArchives($coursesContentsArchives)
     {
@@ -1982,9 +2024,11 @@ abstract class BaseFile extends BaseObject implements Persistent
                 $this->coursesContentsArchivessScheduledForDeletion = clone $this->collCoursesContentsArchivess;
                 $this->coursesContentsArchivessScheduledForDeletion->clear();
             }
-            $this->coursesContentsArchivessScheduledForDeletion[]= $coursesContentsArchives;
+            $this->coursesContentsArchivessScheduledForDeletion[]= clone $coursesContentsArchives;
             $coursesContentsArchives->setContentsArchive(null);
         }
+
+        return $this;
     }
 
 
@@ -2018,13 +2062,15 @@ abstract class BaseFile extends BaseObject implements Persistent
      * This does not modify the database; however, it will remove any associated objects, causing
      * them to be refetched by subsequent calls to accessor method.
      *
-     * @return void
+     * @return File The current object (for fluent API support)
      * @see        addContents()
      */
     public function clearContents()
     {
         $this->collContents = null; // important to set this to null since that means it is uninitialized
         $this->collContentsPartial = null;
+
+        return $this;
     }
 
     /**
@@ -2085,6 +2131,7 @@ abstract class BaseFile extends BaseObject implements Persistent
      *
      * @param PropelCollection $contents A Propel collection.
      * @param PropelPDO $con Optional connection object
+     * @return File The current object (for fluent API support)
      */
     public function setContents(PropelCollection $contents, PropelPDO $con = null)
     {
@@ -2100,6 +2147,8 @@ abstract class BaseFile extends BaseObject implements Persistent
         }
 
         $this->collContents = $contents;
+
+        return $this;
     }
 
     /**
@@ -2137,7 +2186,7 @@ abstract class BaseFile extends BaseObject implements Persistent
      * through the contents_files cross reference table.
      *
      * @param  Content $content The ContentsFiles object to relate
-     * @return void
+     * @return File The current object (for fluent API support)
      */
     public function addContent(Content $content)
     {
@@ -2149,6 +2198,8 @@ abstract class BaseFile extends BaseObject implements Persistent
 
             $this->collContents[]= $content;
         }
+
+        return $this;
     }
 
     /**
@@ -2166,7 +2217,7 @@ abstract class BaseFile extends BaseObject implements Persistent
      * through the contents_files cross reference table.
      *
      * @param Content $content The ContentsFiles object to relate
-     * @return void
+     * @return File The current object (for fluent API support)
      */
     public function removeContent(Content $content)
     {
@@ -2178,6 +2229,8 @@ abstract class BaseFile extends BaseObject implements Persistent
             }
             $this->contentsScheduledForDeletion[]= $content;
         }
+
+        return $this;
     }
 
     /**
@@ -2186,13 +2239,15 @@ abstract class BaseFile extends BaseObject implements Persistent
      * This does not modify the database; however, it will remove any associated objects, causing
      * them to be refetched by subsequent calls to accessor method.
      *
-     * @return void
+     * @return File The current object (for fluent API support)
      * @see        addCourses()
      */
     public function clearCourses()
     {
         $this->collCourses = null; // important to set this to null since that means it is uninitialized
         $this->collCoursesPartial = null;
+
+        return $this;
     }
 
     /**
@@ -2253,6 +2308,7 @@ abstract class BaseFile extends BaseObject implements Persistent
      *
      * @param PropelCollection $courses A Propel collection.
      * @param PropelPDO $con Optional connection object
+     * @return File The current object (for fluent API support)
      */
     public function setCourses(PropelCollection $courses, PropelPDO $con = null)
     {
@@ -2268,6 +2324,8 @@ abstract class BaseFile extends BaseObject implements Persistent
         }
 
         $this->collCourses = $courses;
+
+        return $this;
     }
 
     /**
@@ -2305,7 +2363,7 @@ abstract class BaseFile extends BaseObject implements Persistent
      * through the courses_contents_archives cross reference table.
      *
      * @param  Course $course The CoursesContentsArchives object to relate
-     * @return void
+     * @return File The current object (for fluent API support)
      */
     public function addCourse(Course $course)
     {
@@ -2317,6 +2375,8 @@ abstract class BaseFile extends BaseObject implements Persistent
 
             $this->collCourses[]= $course;
         }
+
+        return $this;
     }
 
     /**
@@ -2334,7 +2394,7 @@ abstract class BaseFile extends BaseObject implements Persistent
      * through the courses_contents_archives cross reference table.
      *
      * @param Course $course The CoursesContentsArchives object to relate
-     * @return void
+     * @return File The current object (for fluent API support)
      */
     public function removeCourse(Course $course)
     {
@@ -2346,6 +2406,8 @@ abstract class BaseFile extends BaseObject implements Persistent
             }
             $this->coursesScheduledForDeletion[]= $course;
         }
+
+        return $this;
     }
 
     /**
@@ -2365,6 +2427,7 @@ abstract class BaseFile extends BaseObject implements Persistent
         $this->deleted = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
+        $this->alreadyInClearAllReferencesDeep = false;
         $this->clearAllReferences();
         $this->applyDefaultValues();
         $this->resetModified();
@@ -2383,7 +2446,8 @@ abstract class BaseFile extends BaseObject implements Persistent
      */
     public function clearAllReferences($deep = false)
     {
-        if ($deep) {
+        if ($deep && !$this->alreadyInClearAllReferencesDeep) {
+            $this->alreadyInClearAllReferencesDeep = true;
             if ($this->collContentsFiless) {
                 foreach ($this->collContentsFiless as $o) {
                     $o->clearAllReferences($deep);
@@ -2404,6 +2468,11 @@ abstract class BaseFile extends BaseObject implements Persistent
                     $o->clearAllReferences($deep);
                 }
             }
+            if ($this->aAuthor instanceof Persistent) {
+              $this->aAuthor->clearAllReferences($deep);
+            }
+
+            $this->alreadyInClearAllReferencesDeep = false;
         } // if ($deep)
 
         if ($this->collContentsFiless instanceof PropelCollection) {

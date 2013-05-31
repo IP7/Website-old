@@ -27,7 +27,6 @@
  * @method ContentType findOne(PropelPDO $con = null) Return the first ContentType matching the query
  * @method ContentType findOneOrCreate(PropelPDO $con = null) Return the first ContentType matching the query, or a new ContentType object populated from the query conditions when no match is found
  *
- * @method ContentType findOneById(int $id) Return the first ContentType filtered by the id column
  * @method ContentType findOneByName(string $name) Return the first ContentType filtered by the name column
  * @method ContentType findOneByShortName(string $short_name) Return the first ContentType filtered by the short_name column
  * @method ContentType findOneByAccessRights(int $access_rights) Return the first ContentType filtered by the access_rights column
@@ -57,7 +56,7 @@ abstract class BaseContentTypeQuery extends ModelCriteria
      * Returns a new ContentTypeQuery object.
      *
      * @param     string $modelAlias The alias of a model in the query
-     * @param     ContentTypeQuery|Criteria $criteria Optional Criteria to build the query from
+     * @param   ContentTypeQuery|Criteria $criteria Optional Criteria to build the query from
      *
      * @return ContentTypeQuery
      */
@@ -114,18 +113,32 @@ abstract class BaseContentTypeQuery extends ModelCriteria
     }
 
     /**
+     * Alias of findPk to use instance pooling
+     *
+     * @param     mixed $key Primary key to use for the query
+     * @param     PropelPDO $con A connection object
+     *
+     * @return                 ContentType A model object, or null if the key is not found
+     * @throws PropelException
+     */
+     public function findOneById($key, $con = null)
+     {
+        return $this->findPk($key, $con);
+     }
+
+    /**
      * Find object by primary key using raw SQL to go fast.
      * Bypass doSelect() and the object formatter by using generated code.
      *
      * @param     mixed $key Primary key to use for the query
      * @param     PropelPDO $con A connection object
      *
-     * @return   ContentType A model object, or null if the key is not found
-     * @throws   PropelException
+     * @return                 ContentType A model object, or null if the key is not found
+     * @throws PropelException
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `ID`, `NAME`, `SHORT_NAME`, `ACCESS_RIGHTS` FROM `content_types` WHERE `ID` = :p0';
+        $sql = 'SELECT `id`, `name`, `short_name`, `access_rights` FROM `content_types` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -221,7 +234,8 @@ abstract class BaseContentTypeQuery extends ModelCriteria
      * <code>
      * $query->filterById(1234); // WHERE id = 1234
      * $query->filterById(array(12, 34)); // WHERE id IN (12, 34)
-     * $query->filterById(array('min' => 12)); // WHERE id > 12
+     * $query->filterById(array('min' => 12)); // WHERE id >= 12
+     * $query->filterById(array('max' => 12)); // WHERE id <= 12
      * </code>
      *
      * @param     mixed $id The value to use as filter.
@@ -234,8 +248,22 @@ abstract class BaseContentTypeQuery extends ModelCriteria
      */
     public function filterById($id = null, $comparison = null)
     {
-        if (is_array($id) && null === $comparison) {
-            $comparison = Criteria::IN;
+        if (is_array($id)) {
+            $useMinMax = false;
+            if (isset($id['min'])) {
+                $this->addUsingAlias(ContentTypePeer::ID, $id['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($id['max'])) {
+                $this->addUsingAlias(ContentTypePeer::ID, $id['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
         }
 
         return $this->addUsingAlias(ContentTypePeer::ID, $id, $comparison);
@@ -306,7 +334,8 @@ abstract class BaseContentTypeQuery extends ModelCriteria
      * <code>
      * $query->filterByAccessRights(1234); // WHERE access_rights = 1234
      * $query->filterByAccessRights(array(12, 34)); // WHERE access_rights IN (12, 34)
-     * $query->filterByAccessRights(array('min' => 12)); // WHERE access_rights > 12
+     * $query->filterByAccessRights(array('min' => 12)); // WHERE access_rights >= 12
+     * $query->filterByAccessRights(array('max' => 12)); // WHERE access_rights <= 12
      * </code>
      *
      * @param     mixed $accessRights The value to use as filter.
@@ -346,8 +375,8 @@ abstract class BaseContentTypeQuery extends ModelCriteria
      * @param   Content|PropelObjectCollection $content  the related object to use as filter
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return   ContentTypeQuery The current query, for fluid interface
-     * @throws   PropelException - if the provided filter is invalid.
+     * @return                 ContentTypeQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
      */
     public function filterByContent($content, $comparison = null)
     {

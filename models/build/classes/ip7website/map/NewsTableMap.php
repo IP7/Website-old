@@ -38,19 +38,19 @@ class NewsTableMap extends TableMap
         $this->setPackage('ip7website');
         $this->setUseIdGenerator(true);
         // columns
-        $this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
-        $this->addForeignKey('AUTHOR_ID', 'AuthorId', 'INTEGER', 'users', 'ID', true, null, null);
-        $this->addColumn('TITLE', 'Title', 'VARCHAR', true, 255, null);
-        $this->addColumn('TEXT', 'Text', 'LONGVARCHAR', true, 1024, null);
-        $this->addColumn('EXPIRATION_DATE', 'ExpirationDate', 'TIMESTAMP', false, null, null);
-        $this->addForeignKey('CURSUS_ID', 'CursusId', 'INTEGER', 'cursus', 'ID', false, null, null);
-        $this->addForeignKey('COURSE_ID', 'CourseId', 'INTEGER', 'courses', 'ID', false, null, null);
-        $this->addColumn('ACCESS_RIGHTS', 'AccessRights', 'TINYINT', false, null, 0);
-        $this->addColumn('CREATED_AT', 'CreatedAt', 'TIMESTAMP', false, null, null);
-        $this->addColumn('UPDATED_AT', 'UpdatedAt', 'TIMESTAMP', false, null, null);
+        $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
+        $this->addForeignKey('author_id', 'AuthorId', 'INTEGER', 'users', 'id', true, null, null);
+        $this->addColumn('title', 'Title', 'VARCHAR', true, 255, null);
+        $this->addColumn('text', 'Text', 'LONGVARCHAR', true, 1024, null);
+        $this->addColumn('expiration_date', 'ExpirationDate', 'TIMESTAMP', false, null, null);
+        $this->addForeignKey('cursus_id', 'CursusId', 'INTEGER', 'cursus', 'id', false, null, null);
+        $this->addForeignKey('course_id', 'CourseId', 'INTEGER', 'courses', 'id', false, null, null);
+        $this->addColumn('access_rights', 'AccessRights', 'TINYINT', false, null, 0);
+        $this->addColumn('created_at', 'CreatedAt', 'TIMESTAMP', false, null, null);
+        $this->addColumn('updated_at', 'UpdatedAt', 'TIMESTAMP', false, null, null);
         // validators
-        $this->addValidator('TITLE', 'minLength', 'propel.validator.MinLengthValidator', '1', 'Le titre doit faire au moins 1 caractère.');
-        $this->addValidator('TEXT', 'minLength', 'propel.validator.MinLengthValidator', '1', 'Le texte doit faire au moins 1 caractère.');
+        $this->addValidator('title', 'minLength', 'propel.validator.MinLengthValidator', '1', 'Le titre doit faire au moins 1 caractère.');
+        $this->addValidator('text', 'minLength', 'propel.validator.MinLengthValidator', '1', 'Le texte doit faire au moins 1 caractère.');
     } // initialize()
 
     /**
@@ -72,7 +72,11 @@ class NewsTableMap extends TableMap
     public function getBehaviors()
     {
         return array(
-            'timestampable' => array('create_column' => 'created_at', 'update_column' => 'updated_at', 'disable_updated_at' => 'false', ),
+            'timestampable' =>  array (
+  'create_column' => 'created_at',
+  'update_column' => 'updated_at',
+  'disable_updated_at' => 'false',
+),
         );
     } // getBehaviors()
 

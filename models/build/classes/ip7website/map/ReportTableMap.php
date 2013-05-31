@@ -38,11 +38,11 @@ class ReportTableMap extends TableMap
         $this->setPackage('ip7website');
         $this->setUseIdGenerator(true);
         // columns
-        $this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
-        $this->addForeignKey('CONTENT_ID', 'ContentId', 'INTEGER', 'contents', 'ID', false, null, null);
-        $this->addForeignKey('AUTHOR_ID', 'AuthorId', 'INTEGER', 'users', 'ID', false, null, null);
-        $this->addColumn('DATE', 'Date', 'TIMESTAMP', true, null, null);
-        $this->addColumn('TEXT', 'Text', 'VARCHAR', false, 255, null);
+        $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
+        $this->addForeignKey('content_id', 'ContentId', 'INTEGER', 'contents', 'id', false, null, null);
+        $this->addForeignKey('author_id', 'AuthorId', 'INTEGER', 'users', 'id', false, null, null);
+        $this->addColumn('date', 'Date', 'TIMESTAMP', true, null, null);
+        $this->addColumn('text', 'Text', 'VARCHAR', false, 255, null);
         // validators
     } // initialize()
 

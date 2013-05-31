@@ -38,10 +38,10 @@ class CourseUrlTableMap extends TableMap
         $this->setPackage('ip7website');
         $this->setUseIdGenerator(true);
         // columns
-        $this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
-        $this->addForeignKey('COURSE_ID', 'CourseId', 'INTEGER', 'courses', 'ID', true, null, null);
-        $this->addColumn('TEXT', 'Text', 'VARCHAR', true, 255, null);
-        $this->addColumn('URL', 'Url', 'VARCHAR', true, 255, null);
+        $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
+        $this->addForeignKey('course_id', 'CourseId', 'INTEGER', 'courses', 'id', true, null, null);
+        $this->addColumn('text', 'Text', 'VARCHAR', true, 255, null);
+        $this->addColumn('url', 'Url', 'VARCHAR', true, 255, null);
         // validators
     } // initialize()
 

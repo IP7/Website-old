@@ -27,7 +27,6 @@
  * @method CourseUrl findOne(PropelPDO $con = null) Return the first CourseUrl matching the query
  * @method CourseUrl findOneOrCreate(PropelPDO $con = null) Return the first CourseUrl matching the query, or a new CourseUrl object populated from the query conditions when no match is found
  *
- * @method CourseUrl findOneById(int $id) Return the first CourseUrl filtered by the id column
  * @method CourseUrl findOneByCourseId(int $course_id) Return the first CourseUrl filtered by the course_id column
  * @method CourseUrl findOneByText(string $text) Return the first CourseUrl filtered by the text column
  * @method CourseUrl findOneByUrl(string $url) Return the first CourseUrl filtered by the url column
@@ -57,7 +56,7 @@ abstract class BaseCourseUrlQuery extends ModelCriteria
      * Returns a new CourseUrlQuery object.
      *
      * @param     string $modelAlias The alias of a model in the query
-     * @param     CourseUrlQuery|Criteria $criteria Optional Criteria to build the query from
+     * @param   CourseUrlQuery|Criteria $criteria Optional Criteria to build the query from
      *
      * @return CourseUrlQuery
      */
@@ -114,18 +113,32 @@ abstract class BaseCourseUrlQuery extends ModelCriteria
     }
 
     /**
+     * Alias of findPk to use instance pooling
+     *
+     * @param     mixed $key Primary key to use for the query
+     * @param     PropelPDO $con A connection object
+     *
+     * @return                 CourseUrl A model object, or null if the key is not found
+     * @throws PropelException
+     */
+     public function findOneById($key, $con = null)
+     {
+        return $this->findPk($key, $con);
+     }
+
+    /**
      * Find object by primary key using raw SQL to go fast.
      * Bypass doSelect() and the object formatter by using generated code.
      *
      * @param     mixed $key Primary key to use for the query
      * @param     PropelPDO $con A connection object
      *
-     * @return   CourseUrl A model object, or null if the key is not found
-     * @throws   PropelException
+     * @return                 CourseUrl A model object, or null if the key is not found
+     * @throws PropelException
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `ID`, `COURSE_ID`, `TEXT`, `URL` FROM `courses_urls` WHERE `ID` = :p0';
+        $sql = 'SELECT `id`, `course_id`, `text`, `url` FROM `courses_urls` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -221,7 +234,8 @@ abstract class BaseCourseUrlQuery extends ModelCriteria
      * <code>
      * $query->filterById(1234); // WHERE id = 1234
      * $query->filterById(array(12, 34)); // WHERE id IN (12, 34)
-     * $query->filterById(array('min' => 12)); // WHERE id > 12
+     * $query->filterById(array('min' => 12)); // WHERE id >= 12
+     * $query->filterById(array('max' => 12)); // WHERE id <= 12
      * </code>
      *
      * @param     mixed $id The value to use as filter.
@@ -234,8 +248,22 @@ abstract class BaseCourseUrlQuery extends ModelCriteria
      */
     public function filterById($id = null, $comparison = null)
     {
-        if (is_array($id) && null === $comparison) {
-            $comparison = Criteria::IN;
+        if (is_array($id)) {
+            $useMinMax = false;
+            if (isset($id['min'])) {
+                $this->addUsingAlias(CourseUrlPeer::ID, $id['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($id['max'])) {
+                $this->addUsingAlias(CourseUrlPeer::ID, $id['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
         }
 
         return $this->addUsingAlias(CourseUrlPeer::ID, $id, $comparison);
@@ -248,7 +276,8 @@ abstract class BaseCourseUrlQuery extends ModelCriteria
      * <code>
      * $query->filterByCourseId(1234); // WHERE course_id = 1234
      * $query->filterByCourseId(array(12, 34)); // WHERE course_id IN (12, 34)
-     * $query->filterByCourseId(array('min' => 12)); // WHERE course_id > 12
+     * $query->filterByCourseId(array('min' => 12)); // WHERE course_id >= 12
+     * $query->filterByCourseId(array('max' => 12)); // WHERE course_id <= 12
      * </code>
      *
      * @see       filterByCourse()
@@ -348,8 +377,8 @@ abstract class BaseCourseUrlQuery extends ModelCriteria
      * @param   Course|PropelObjectCollection $course The related object(s) to use as filter
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return   CourseUrlQuery The current query, for fluid interface
-     * @throws   PropelException - if the provided filter is invalid.
+     * @return                 CourseUrlQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
      */
     public function filterByCourse($course, $comparison = null)
     {

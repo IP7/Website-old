@@ -32,17 +32,17 @@ abstract class BaseCourseUrlPeer
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
     const NUM_HYDRATE_COLUMNS = 4;
 
-    /** the column name for the ID field */
-    const ID = 'courses_urls.ID';
+    /** the column name for the id field */
+    const ID = 'courses_urls.id';
 
-    /** the column name for the COURSE_ID field */
-    const COURSE_ID = 'courses_urls.COURSE_ID';
+    /** the column name for the course_id field */
+    const COURSE_ID = 'courses_urls.course_id';
 
-    /** the column name for the TEXT field */
-    const TEXT = 'courses_urls.TEXT';
+    /** the column name for the text field */
+    const TEXT = 'courses_urls.text';
 
-    /** the column name for the URL field */
-    const URL = 'courses_urls.URL';
+    /** the column name for the url field */
+    const URL = 'courses_urls.url';
 
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -162,10 +162,10 @@ abstract class BaseCourseUrlPeer
             $criteria->addSelectColumn(CourseUrlPeer::TEXT);
             $criteria->addSelectColumn(CourseUrlPeer::URL);
         } else {
-            $criteria->addSelectColumn($alias . '.ID');
-            $criteria->addSelectColumn($alias . '.COURSE_ID');
-            $criteria->addSelectColumn($alias . '.TEXT');
-            $criteria->addSelectColumn($alias . '.URL');
+            $criteria->addSelectColumn($alias . '.id');
+            $criteria->addSelectColumn($alias . '.course_id');
+            $criteria->addSelectColumn($alias . '.text');
+            $criteria->addSelectColumn($alias . '.url');
         }
     }
 
@@ -249,7 +249,7 @@ abstract class BaseCourseUrlPeer
     /**
      * Prepares the Criteria object and uses the parent doSelect() method to execute a PDOStatement.
      *
-     * Use this method directly if you want to work with an executed statement durirectly (for example
+     * Use this method directly if you want to work with an executed statement directly (for example
      * to perform your own object hydration).
      *
      * @param      Criteria $criteria The Criteria object used to build the SELECT statement.
@@ -354,8 +354,15 @@ abstract class BaseCourseUrlPeer
      *
      * @return void
      */
-    public static function clearInstancePool()
+    public static function clearInstancePool($and_clear_all_references = false)
     {
+      if ($and_clear_all_references)
+      {
+        foreach (CourseUrlPeer::$instances as $instance)
+        {
+          $instance->clearAllReferences(true);
+        }
+      }
         CourseUrlPeer::$instances = array();
     }
 
@@ -728,7 +735,7 @@ abstract class BaseCourseUrlPeer
      *
      * @return string ClassName
      */
-    public static function getOMClass()
+    public static function getOMClass($row = 0, $colnum = 0)
     {
         return CourseUrlPeer::OM_CLASS;
     }

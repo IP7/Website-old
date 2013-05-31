@@ -66,6 +66,12 @@ abstract class BaseCoursesContentsArchives extends BaseObject implements Persist
     protected $alreadyInValidation = false;
 
     /**
+     * Flag to prevent endless clearAllReferences($deep=true) loop, if this object is referenced
+     * @var        boolean
+     */
+    protected $alreadyInClearAllReferencesDeep = false;
+
+    /**
      * Get the [course_id] column value.
      *
      * @return int
@@ -93,7 +99,7 @@ abstract class BaseCoursesContentsArchives extends BaseObject implements Persist
      */
     public function setCourseId($v)
     {
-        if ($v !== null) {
+        if ($v !== null && is_numeric($v)) {
             $v = (int) $v;
         }
 
@@ -118,7 +124,7 @@ abstract class BaseCoursesContentsArchives extends BaseObject implements Persist
      */
     public function setFileId($v)
     {
-        if ($v !== null) {
+        if ($v !== null && is_numeric($v)) {
             $v = (int) $v;
         }
 
@@ -176,7 +182,7 @@ abstract class BaseCoursesContentsArchives extends BaseObject implements Persist
             if ($rehydrate) {
                 $this->ensureConsistency();
             }
-
+            $this->postHydrate($row, $startcol, $rehydrate);
             return $startcol + 2; // 2 = CoursesContentsArchivesPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
@@ -413,10 +419,10 @@ abstract class BaseCoursesContentsArchives extends BaseObject implements Persist
 
          // check the columns in natural order for more readable SQL queries
         if ($this->isColumnModified(CoursesContentsArchivesPeer::COURSE_ID)) {
-            $modifiedColumns[':p' . $index++]  = '`COURSE_ID`';
+            $modifiedColumns[':p' . $index++]  = '`course_id`';
         }
         if ($this->isColumnModified(CoursesContentsArchivesPeer::FILE_ID)) {
-            $modifiedColumns[':p' . $index++]  = '`FILE_ID`';
+            $modifiedColumns[':p' . $index++]  = '`file_id`';
         }
 
         $sql = sprintf(
@@ -429,10 +435,10 @@ abstract class BaseCoursesContentsArchives extends BaseObject implements Persist
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
-                    case '`COURSE_ID`':
+                    case '`course_id`':
                         $stmt->bindValue($identifier, $this->course_id, PDO::PARAM_INT);
                         break;
-                    case '`FILE_ID`':
+                    case '`file_id`':
                         $stmt->bindValue($identifier, $this->file_id, PDO::PARAM_INT);
                         break;
                 }
@@ -496,11 +502,11 @@ abstract class BaseCoursesContentsArchives extends BaseObject implements Persist
             $this->validationFailures = array();
 
             return true;
-        } else {
-            $this->validationFailures = $res;
-
-            return false;
         }
+
+        $this->validationFailures = $res;
+
+        return false;
     }
 
     /**
@@ -865,12 +871,13 @@ abstract class BaseCoursesContentsArchives extends BaseObject implements Persist
      * Get the associated Course object
      *
      * @param PropelPDO $con Optional Connection object.
+     * @param $doQuery Executes a query to get the object if required
      * @return Course The associated Course object.
      * @throws PropelException
      */
-    public function getCourse(PropelPDO $con = null)
+    public function getCourse(PropelPDO $con = null, $doQuery = true)
     {
-        if ($this->aCourse === null && ($this->course_id !== null)) {
+        if ($this->aCourse === null && ($this->course_id !== null) && $doQuery) {
             $this->aCourse = CourseQuery::create()->findPk($this->course_id, $con);
             /* The following can be used additionally to
                 guarantee the related object contains a reference
@@ -916,12 +923,13 @@ abstract class BaseCoursesContentsArchives extends BaseObject implements Persist
      * Get the associated File object
      *
      * @param PropelPDO $con Optional Connection object.
+     * @param $doQuery Executes a query to get the object if required
      * @return File The associated File object.
      * @throws PropelException
      */
-    public function getContentsArchive(PropelPDO $con = null)
+    public function getContentsArchive(PropelPDO $con = null, $doQuery = true)
     {
-        if ($this->aContentsArchive === null && ($this->file_id !== null)) {
+        if ($this->aContentsArchive === null && ($this->file_id !== null) && $doQuery) {
             $this->aContentsArchive = FileQuery::create()->findPk($this->file_id, $con);
             /* The following can be used additionally to
                 guarantee the related object contains a reference
@@ -944,6 +952,7 @@ abstract class BaseCoursesContentsArchives extends BaseObject implements Persist
         $this->file_id = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
+        $this->alreadyInClearAllReferencesDeep = false;
         $this->clearAllReferences();
         $this->resetModified();
         $this->setNew(true);
@@ -961,7 +970,16 @@ abstract class BaseCoursesContentsArchives extends BaseObject implements Persist
      */
     public function clearAllReferences($deep = false)
     {
-        if ($deep) {
+        if ($deep && !$this->alreadyInClearAllReferencesDeep) {
+            $this->alreadyInClearAllReferencesDeep = true;
+            if ($this->aCourse instanceof Persistent) {
+              $this->aCourse->clearAllReferences($deep);
+            }
+            if ($this->aContentsArchive instanceof Persistent) {
+              $this->aContentsArchive->clearAllReferences($deep);
+            }
+
+            $this->alreadyInClearAllReferencesDeep = false;
         } // if ($deep)
 
         $this->aCourse = null;

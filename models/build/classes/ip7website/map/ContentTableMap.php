@@ -38,19 +38,19 @@ class ContentTableMap extends TableMap
         $this->setPackage('ip7website');
         $this->setUseIdGenerator(true);
         // columns
-        $this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
-        $this->addForeignKey('AUTHOR_ID', 'AuthorId', 'INTEGER', 'users', 'ID', false, null, null);
-        $this->addForeignKey('CONTENT_TYPE_ID', 'ContentTypeId', 'INTEGER', 'content_types', 'ID', false, null, null);
-        $this->addColumn('ACCESS_RIGHTS', 'AccessRights', 'TINYINT', false, null, 0);
-        $this->addColumn('VALIDATED', 'Validated', 'BOOLEAN', false, 1, '0');
-        $this->addColumn('TITLE', 'Title', 'VARCHAR', false, 255, null);
-        $this->addColumn('TEXT', 'Text', 'LONGVARCHAR', false, null, null);
-        $this->addForeignKey('CURSUS_ID', 'CursusId', 'INTEGER', 'cursus', 'ID', false, null, null);
-        $this->addForeignKey('COURSE_ID', 'CourseId', 'INTEGER', 'courses', 'ID', false, null, null);
-        $this->addColumn('YEAR', 'Year', 'INTEGER', false, null, null);
-        $this->addColumn('DELETED', 'Deleted', 'BOOLEAN', false, 1, '0');
-        $this->addColumn('CREATED_AT', 'CreatedAt', 'TIMESTAMP', false, null, null);
-        $this->addColumn('UPDATED_AT', 'UpdatedAt', 'TIMESTAMP', false, null, null);
+        $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
+        $this->addForeignKey('author_id', 'AuthorId', 'INTEGER', 'users', 'id', false, null, null);
+        $this->addForeignKey('content_type_id', 'ContentTypeId', 'INTEGER', 'content_types', 'id', false, null, null);
+        $this->addColumn('access_rights', 'AccessRights', 'TINYINT', false, null, 0);
+        $this->addColumn('validated', 'Validated', 'BOOLEAN', false, 1, '0');
+        $this->addColumn('title', 'Title', 'VARCHAR', false, 255, null);
+        $this->addColumn('text', 'Text', 'LONGVARCHAR', false, null, null);
+        $this->addForeignKey('cursus_id', 'CursusId', 'INTEGER', 'cursus', 'id', false, null, null);
+        $this->addForeignKey('course_id', 'CourseId', 'INTEGER', 'courses', 'id', false, null, null);
+        $this->addColumn('year', 'Year', 'INTEGER', false, null, null);
+        $this->addColumn('deleted', 'Deleted', 'BOOLEAN', false, 1, '0');
+        $this->addColumn('created_at', 'CreatedAt', 'TIMESTAMP', false, null, null);
+        $this->addColumn('updated_at', 'UpdatedAt', 'TIMESTAMP', false, null, null);
         // validators
     } // initialize()
 
@@ -64,7 +64,6 @@ class ContentTableMap extends TableMap
         $this->addRelation('Course', 'Course', RelationMap::MANY_TO_ONE, array('course_id' => 'id', ), 'CASCADE', 'CASCADE');
         $this->addRelation('ContentType', 'ContentType', RelationMap::MANY_TO_ONE, array('content_type_id' => 'id', ), 'SET NULL', 'CASCADE');
         $this->addRelation('ContentsFiles', 'ContentsFiles', RelationMap::ONE_TO_MANY, array('id' => 'content_id', ), 'CASCADE', 'CASCADE', 'ContentsFiless');
-        $this->addRelation('Comment', 'Comment', RelationMap::ONE_TO_MANY, array('id' => 'content_id', ), 'CASCADE', 'CASCADE', 'Comments');
         $this->addRelation('Report', 'Report', RelationMap::ONE_TO_MANY, array('id' => 'content_id', ), 'CASCADE', 'CASCADE', 'Reports');
         $this->addRelation('File', 'File', RelationMap::MANY_TO_MANY, array(), 'CASCADE', 'CASCADE', 'Files');
     } // buildRelations()
@@ -78,7 +77,11 @@ class ContentTableMap extends TableMap
     public function getBehaviors()
     {
         return array(
-            'timestampable' => array('create_column' => 'created_at', 'update_column' => 'updated_at', 'disable_updated_at' => 'false', ),
+            'timestampable' =>  array (
+  'create_column' => 'created_at',
+  'update_column' => 'updated_at',
+  'disable_updated_at' => 'false',
+),
         );
     } // getBehaviors()
 

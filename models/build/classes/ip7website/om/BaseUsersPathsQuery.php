@@ -53,7 +53,7 @@ abstract class BaseUsersPathsQuery extends ModelCriteria
      * Returns a new UsersPathsQuery object.
      *
      * @param     string $modelAlias The alias of a model in the query
-     * @param     UsersPathsQuery|Criteria $criteria Optional Criteria to build the query from
+     * @param   UsersPathsQuery|Criteria $criteria Optional Criteria to build the query from
      *
      * @return UsersPathsQuery
      */
@@ -117,12 +117,12 @@ abstract class BaseUsersPathsQuery extends ModelCriteria
      * @param     mixed $key Primary key to use for the query
      * @param     PropelPDO $con A connection object
      *
-     * @return   UsersPaths A model object, or null if the key is not found
-     * @throws   PropelException
+     * @return                 UsersPaths A model object, or null if the key is not found
+     * @throws PropelException
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `USER_ID`, `PATH_ID` FROM `users_paths` WHERE `USER_ID` = :p0 AND `PATH_ID` = :p1';
+        $sql = 'SELECT `user_id`, `path_id` FROM `users_paths` WHERE `user_id` = :p0 AND `path_id` = :p1';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key[0], PDO::PARAM_INT);
@@ -230,7 +230,8 @@ abstract class BaseUsersPathsQuery extends ModelCriteria
      * <code>
      * $query->filterByUserId(1234); // WHERE user_id = 1234
      * $query->filterByUserId(array(12, 34)); // WHERE user_id IN (12, 34)
-     * $query->filterByUserId(array('min' => 12)); // WHERE user_id > 12
+     * $query->filterByUserId(array('min' => 12)); // WHERE user_id >= 12
+     * $query->filterByUserId(array('max' => 12)); // WHERE user_id <= 12
      * </code>
      *
      * @see       filterByUser()
@@ -245,8 +246,22 @@ abstract class BaseUsersPathsQuery extends ModelCriteria
      */
     public function filterByUserId($userId = null, $comparison = null)
     {
-        if (is_array($userId) && null === $comparison) {
-            $comparison = Criteria::IN;
+        if (is_array($userId)) {
+            $useMinMax = false;
+            if (isset($userId['min'])) {
+                $this->addUsingAlias(UsersPathsPeer::USER_ID, $userId['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($userId['max'])) {
+                $this->addUsingAlias(UsersPathsPeer::USER_ID, $userId['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
         }
 
         return $this->addUsingAlias(UsersPathsPeer::USER_ID, $userId, $comparison);
@@ -259,7 +274,8 @@ abstract class BaseUsersPathsQuery extends ModelCriteria
      * <code>
      * $query->filterByPathId(1234); // WHERE path_id = 1234
      * $query->filterByPathId(array(12, 34)); // WHERE path_id IN (12, 34)
-     * $query->filterByPathId(array('min' => 12)); // WHERE path_id > 12
+     * $query->filterByPathId(array('min' => 12)); // WHERE path_id >= 12
+     * $query->filterByPathId(array('max' => 12)); // WHERE path_id <= 12
      * </code>
      *
      * @see       filterByEducationalPath()
@@ -274,8 +290,22 @@ abstract class BaseUsersPathsQuery extends ModelCriteria
      */
     public function filterByPathId($pathId = null, $comparison = null)
     {
-        if (is_array($pathId) && null === $comparison) {
-            $comparison = Criteria::IN;
+        if (is_array($pathId)) {
+            $useMinMax = false;
+            if (isset($pathId['min'])) {
+                $this->addUsingAlias(UsersPathsPeer::PATH_ID, $pathId['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($pathId['max'])) {
+                $this->addUsingAlias(UsersPathsPeer::PATH_ID, $pathId['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
         }
 
         return $this->addUsingAlias(UsersPathsPeer::PATH_ID, $pathId, $comparison);
@@ -287,8 +317,8 @@ abstract class BaseUsersPathsQuery extends ModelCriteria
      * @param   User|PropelObjectCollection $user The related object(s) to use as filter
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return   UsersPathsQuery The current query, for fluid interface
-     * @throws   PropelException - if the provided filter is invalid.
+     * @return                 UsersPathsQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
      */
     public function filterByUser($user, $comparison = null)
     {
@@ -363,8 +393,8 @@ abstract class BaseUsersPathsQuery extends ModelCriteria
      * @param   EducationalPath|PropelObjectCollection $educationalPath The related object(s) to use as filter
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return   UsersPathsQuery The current query, for fluid interface
-     * @throws   PropelException - if the provided filter is invalid.
+     * @return                 UsersPathsQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
      */
     public function filterByEducationalPath($educationalPath, $comparison = null)
     {

@@ -38,12 +38,12 @@ class ExamTableMap extends TableMap
         $this->setPackage('ip7website');
         $this->setUseIdGenerator(true);
         // columns
-        $this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
-        $this->addForeignKey('COURSE_ID', 'CourseId', 'INTEGER', 'courses', 'ID', true, null, null);
-        $this->addColumn('DATE', 'Date', 'DATE', true, null, null);
-        $this->addColumn('BEGINNING', 'Beginning', 'TIME', false, null, null);
-        $this->addColumn('END', 'End', 'TIME', false, null, null);
-        $this->addColumn('COMMENTS', 'Comments', 'VARCHAR', false, 255, null);
+        $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
+        $this->addForeignKey('course_id', 'CourseId', 'INTEGER', 'courses', 'id', true, null, null);
+        $this->addColumn('date', 'Date', 'DATE', true, null, null);
+        $this->addColumn('beginning', 'Beginning', 'TIME', false, null, null);
+        $this->addColumn('end', 'End', 'TIME', false, null, null);
+        $this->addColumn('comments', 'Comments', 'VARCHAR', false, 255, null);
         // validators
     } // initialize()
 

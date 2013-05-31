@@ -32,23 +32,23 @@ abstract class BaseExamPeer
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
     const NUM_HYDRATE_COLUMNS = 6;
 
-    /** the column name for the ID field */
-    const ID = 'exams.ID';
+    /** the column name for the id field */
+    const ID = 'exams.id';
 
-    /** the column name for the COURSE_ID field */
-    const COURSE_ID = 'exams.COURSE_ID';
+    /** the column name for the course_id field */
+    const COURSE_ID = 'exams.course_id';
 
-    /** the column name for the DATE field */
-    const DATE = 'exams.DATE';
+    /** the column name for the date field */
+    const DATE = 'exams.date';
 
-    /** the column name for the BEGINNING field */
-    const BEGINNING = 'exams.BEGINNING';
+    /** the column name for the beginning field */
+    const BEGINNING = 'exams.beginning';
 
-    /** the column name for the END field */
-    const END = 'exams.END';
+    /** the column name for the end field */
+    const END = 'exams.end';
 
-    /** the column name for the COMMENTS field */
-    const COMMENTS = 'exams.COMMENTS';
+    /** the column name for the comments field */
+    const COMMENTS = 'exams.comments';
 
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -170,12 +170,12 @@ abstract class BaseExamPeer
             $criteria->addSelectColumn(ExamPeer::END);
             $criteria->addSelectColumn(ExamPeer::COMMENTS);
         } else {
-            $criteria->addSelectColumn($alias . '.ID');
-            $criteria->addSelectColumn($alias . '.COURSE_ID');
-            $criteria->addSelectColumn($alias . '.DATE');
-            $criteria->addSelectColumn($alias . '.BEGINNING');
-            $criteria->addSelectColumn($alias . '.END');
-            $criteria->addSelectColumn($alias . '.COMMENTS');
+            $criteria->addSelectColumn($alias . '.id');
+            $criteria->addSelectColumn($alias . '.course_id');
+            $criteria->addSelectColumn($alias . '.date');
+            $criteria->addSelectColumn($alias . '.beginning');
+            $criteria->addSelectColumn($alias . '.end');
+            $criteria->addSelectColumn($alias . '.comments');
         }
     }
 
@@ -259,7 +259,7 @@ abstract class BaseExamPeer
     /**
      * Prepares the Criteria object and uses the parent doSelect() method to execute a PDOStatement.
      *
-     * Use this method directly if you want to work with an executed statement durirectly (for example
+     * Use this method directly if you want to work with an executed statement directly (for example
      * to perform your own object hydration).
      *
      * @param      Criteria $criteria The Criteria object used to build the SELECT statement.
@@ -364,8 +364,15 @@ abstract class BaseExamPeer
      *
      * @return void
      */
-    public static function clearInstancePool()
+    public static function clearInstancePool($and_clear_all_references = false)
     {
+      if ($and_clear_all_references)
+      {
+        foreach (ExamPeer::$instances as $instance)
+        {
+          $instance->clearAllReferences(true);
+        }
+      }
         ExamPeer::$instances = array();
     }
 
@@ -738,7 +745,7 @@ abstract class BaseExamPeer
      *
      * @return string ClassName
      */
-    public static function getOMClass()
+    public static function getOMClass($row = 0, $colnum = 0)
     {
         return ExamPeer::OM_CLASS;
     }

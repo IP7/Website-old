@@ -32,20 +32,20 @@ abstract class BaseCursusPeer
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
     const NUM_HYDRATE_COLUMNS = 4;
 
-    /** the column name for the ID field */
-    const ID = 'cursus.ID';
+    /** the column name for the id field */
+    const ID = 'cursus.id';
 
-    /** the column name for the SHORT_NAME field */
-    const SHORT_NAME = 'cursus.SHORT_NAME';
+    /** the column name for the short_name field */
+    const SHORT_NAME = 'cursus.short_name';
 
-    /** the column name for the NAME field */
-    const NAME = 'cursus.NAME';
+    /** the column name for the name field */
+    const NAME = 'cursus.name';
 
-    /** the column name for the DESCRIPTION field */
-    const DESCRIPTION = 'cursus.DESCRIPTION';
+    /** the column name for the description field */
+    const DESCRIPTION = 'cursus.description';
 
-    /** the column name for the RESPONSABLE_ID field */
-    const RESPONSABLE_ID = 'cursus.RESPONSABLE_ID';
+    /** the column name for the responsable_id field */
+    const RESPONSABLE_ID = 'cursus.responsable_id';
 
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -165,10 +165,10 @@ abstract class BaseCursusPeer
             $criteria->addSelectColumn(CursusPeer::NAME);
             $criteria->addSelectColumn(CursusPeer::RESPONSABLE_ID);
         } else {
-            $criteria->addSelectColumn($alias . '.ID');
-            $criteria->addSelectColumn($alias . '.SHORT_NAME');
-            $criteria->addSelectColumn($alias . '.NAME');
-            $criteria->addSelectColumn($alias . '.RESPONSABLE_ID');
+            $criteria->addSelectColumn($alias . '.id');
+            $criteria->addSelectColumn($alias . '.short_name');
+            $criteria->addSelectColumn($alias . '.name');
+            $criteria->addSelectColumn($alias . '.responsable_id');
         }
     }
 
@@ -252,7 +252,7 @@ abstract class BaseCursusPeer
     /**
      * Prepares the Criteria object and uses the parent doSelect() method to execute a PDOStatement.
      *
-     * Use this method directly if you want to work with an executed statement durirectly (for example
+     * Use this method directly if you want to work with an executed statement directly (for example
      * to perform your own object hydration).
      *
      * @param      Criteria $criteria The Criteria object used to build the SELECT statement.
@@ -357,8 +357,15 @@ abstract class BaseCursusPeer
      *
      * @return void
      */
-    public static function clearInstancePool()
+    public static function clearInstancePool($and_clear_all_references = false)
     {
+      if ($and_clear_all_references)
+      {
+        foreach (CursusPeer::$instances as $instance)
+        {
+          $instance->clearAllReferences(true);
+        }
+      }
         CursusPeer::$instances = array();
     }
 
@@ -380,9 +387,6 @@ abstract class BaseCursusPeer
         // Invalidate objects in NewsPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         NewsPeer::clearInstancePool();
-        // Invalidate objects in SchedulePeer instance pool,
-        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-        SchedulePeer::clearInstancePool();
     }
 
     /**
@@ -746,7 +750,7 @@ abstract class BaseCursusPeer
      *
      * @return string ClassName
      */
-    public static function getOMClass()
+    public static function getOMClass($row = 0, $colnum = 0)
     {
         return CursusPeer::OM_CLASS;
     }
@@ -978,12 +982,6 @@ abstract class BaseCursusPeer
 
             $criteria->add(NewsPeer::CURSUS_ID, $obj->getId());
             $affectedRows += NewsPeer::doDelete($criteria, $con);
-
-            // delete related Schedule objects
-            $criteria = new Criteria(SchedulePeer::DATABASE_NAME);
-
-            $criteria->add(SchedulePeer::CURSUS_ID, $obj->getId());
-            $affectedRows += SchedulePeer::doDelete($criteria, $con);
         }
 
         return $affectedRows;

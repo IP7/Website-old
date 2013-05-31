@@ -38,16 +38,16 @@ class CursusTableMap extends TableMap
         $this->setPackage('ip7website');
         $this->setUseIdGenerator(true);
         // columns
-        $this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
-        $this->addColumn('SHORT_NAME', 'ShortName', 'CHAR', true, 2, null);
-        $this->addColumn('NAME', 'Name', 'VARCHAR', true, 16, null);
-        $this->addColumn('DESCRIPTION', 'Description', 'LONGVARCHAR', false, 1024, null);
-        $this->addForeignKey('RESPONSABLE_ID', 'ResponsableId', 'INTEGER', 'users', 'ID', false, null, null);
+        $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
+        $this->addColumn('short_name', 'ShortName', 'CHAR', true, 2, null);
+        $this->addColumn('name', 'Name', 'VARCHAR', true, 16, null);
+        $this->addColumn('description', 'Description', 'LONGVARCHAR', false, 1024, null);
+        $this->addForeignKey('responsable_id', 'ResponsableId', 'INTEGER', 'users', 'id', false, null, null);
         // validators
-        $this->addValidator('NAME', 'minLength', 'propel.validator.MinLengthValidator', '1', 'Le nom doit faire au moins 1 caractère.');
-        $this->addValidator('NAME', 'unique', 'propel.validator.UniqueValidator', '', 'Le nom existe déjà.');
-        $this->addValidator('SHORT_NAME', 'minLength', 'propel.validator.MinLengthValidator', '1', 'Le nom court doit faire au moins 1 caractère.');
-        $this->addValidator('SHORT_NAME', 'unique', 'propel.validator.UniqueValidator', '', 'Le nom court existe déjà.');
+        $this->addValidator('name', 'minLength', 'propel.validator.MinLengthValidator', '1', 'Le nom doit faire au moins 1 caractère.');
+        $this->addValidator('name', 'unique', 'propel.validator.UniqueValidator', '', 'Le nom existe déjà.');
+        $this->addValidator('short_name', 'minLength', 'propel.validator.MinLengthValidator', '1', 'Le nom court doit faire au moins 1 caractère.');
+        $this->addValidator('short_name', 'unique', 'propel.validator.UniqueValidator', '', 'Le nom court existe déjà.');
     } // initialize()
 
     /**
@@ -60,7 +60,6 @@ class CursusTableMap extends TableMap
         $this->addRelation('EducationalPath', 'EducationalPath', RelationMap::ONE_TO_MANY, array('id' => 'cursus_id', ), 'CASCADE', 'CASCADE', 'EducationalPaths');
         $this->addRelation('Content', 'Content', RelationMap::ONE_TO_MANY, array('id' => 'cursus_id', ), 'CASCADE', 'CASCADE', 'Contents');
         $this->addRelation('News', 'News', RelationMap::ONE_TO_MANY, array('id' => 'cursus_id', ), 'CASCADE', 'CASCADE', 'Newss');
-        $this->addRelation('Schedule', 'Schedule', RelationMap::ONE_TO_MANY, array('id' => 'cursus_id', ), 'CASCADE', 'CASCADE', 'Schedules');
     } // buildRelations()
 
 } // CursusTableMap

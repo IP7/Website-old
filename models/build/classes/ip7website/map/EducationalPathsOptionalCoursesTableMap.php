@@ -39,8 +39,8 @@ class EducationalPathsOptionalCoursesTableMap extends TableMap
         $this->setUseIdGenerator(false);
         $this->setIsCrossRef(true);
         // columns
-        $this->addForeignPrimaryKey('COURSE_ID', 'CourseId', 'INTEGER' , 'courses', 'ID', true, null, null);
-        $this->addForeignPrimaryKey('PATH_ID', 'PathId', 'INTEGER' , 'educational_paths', 'ID', true, null, null);
+        $this->addForeignPrimaryKey('course_id', 'CourseId', 'INTEGER' , 'courses', 'id', true, null, null);
+        $this->addForeignPrimaryKey('path_id', 'PathId', 'INTEGER' , 'educational_paths', 'id', true, null, null);
         // validators
     } // initialize()
 

@@ -66,6 +66,12 @@ abstract class BaseEducationalPathsOptionalCourses extends BaseObject implements
     protected $alreadyInValidation = false;
 
     /**
+     * Flag to prevent endless clearAllReferences($deep=true) loop, if this object is referenced
+     * @var        boolean
+     */
+    protected $alreadyInClearAllReferencesDeep = false;
+
+    /**
      * Get the [course_id] column value.
      *
      * @return int
@@ -93,7 +99,7 @@ abstract class BaseEducationalPathsOptionalCourses extends BaseObject implements
      */
     public function setCourseId($v)
     {
-        if ($v !== null) {
+        if ($v !== null && is_numeric($v)) {
             $v = (int) $v;
         }
 
@@ -118,7 +124,7 @@ abstract class BaseEducationalPathsOptionalCourses extends BaseObject implements
      */
     public function setPathId($v)
     {
-        if ($v !== null) {
+        if ($v !== null && is_numeric($v)) {
             $v = (int) $v;
         }
 
@@ -176,7 +182,7 @@ abstract class BaseEducationalPathsOptionalCourses extends BaseObject implements
             if ($rehydrate) {
                 $this->ensureConsistency();
             }
-
+            $this->postHydrate($row, $startcol, $rehydrate);
             return $startcol + 2; // 2 = EducationalPathsOptionalCoursesPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
@@ -413,10 +419,10 @@ abstract class BaseEducationalPathsOptionalCourses extends BaseObject implements
 
          // check the columns in natural order for more readable SQL queries
         if ($this->isColumnModified(EducationalPathsOptionalCoursesPeer::COURSE_ID)) {
-            $modifiedColumns[':p' . $index++]  = '`COURSE_ID`';
+            $modifiedColumns[':p' . $index++]  = '`course_id`';
         }
         if ($this->isColumnModified(EducationalPathsOptionalCoursesPeer::PATH_ID)) {
-            $modifiedColumns[':p' . $index++]  = '`PATH_ID`';
+            $modifiedColumns[':p' . $index++]  = '`path_id`';
         }
 
         $sql = sprintf(
@@ -429,10 +435,10 @@ abstract class BaseEducationalPathsOptionalCourses extends BaseObject implements
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
-                    case '`COURSE_ID`':
+                    case '`course_id`':
                         $stmt->bindValue($identifier, $this->course_id, PDO::PARAM_INT);
                         break;
-                    case '`PATH_ID`':
+                    case '`path_id`':
                         $stmt->bindValue($identifier, $this->path_id, PDO::PARAM_INT);
                         break;
                 }
@@ -496,11 +502,11 @@ abstract class BaseEducationalPathsOptionalCourses extends BaseObject implements
             $this->validationFailures = array();
 
             return true;
-        } else {
-            $this->validationFailures = $res;
-
-            return false;
         }
+
+        $this->validationFailures = $res;
+
+        return false;
     }
 
     /**
@@ -865,12 +871,13 @@ abstract class BaseEducationalPathsOptionalCourses extends BaseObject implements
      * Get the associated Course object
      *
      * @param PropelPDO $con Optional Connection object.
+     * @param $doQuery Executes a query to get the object if required
      * @return Course The associated Course object.
      * @throws PropelException
      */
-    public function getOptionalCourse(PropelPDO $con = null)
+    public function getOptionalCourse(PropelPDO $con = null, $doQuery = true)
     {
-        if ($this->aOptionalCourse === null && ($this->course_id !== null)) {
+        if ($this->aOptionalCourse === null && ($this->course_id !== null) && $doQuery) {
             $this->aOptionalCourse = CourseQuery::create()->findPk($this->course_id, $con);
             /* The following can be used additionally to
                 guarantee the related object contains a reference
@@ -916,12 +923,13 @@ abstract class BaseEducationalPathsOptionalCourses extends BaseObject implements
      * Get the associated EducationalPath object
      *
      * @param PropelPDO $con Optional Connection object.
+     * @param $doQuery Executes a query to get the object if required
      * @return EducationalPath The associated EducationalPath object.
      * @throws PropelException
      */
-    public function getOptionalEducationalPath(PropelPDO $con = null)
+    public function getOptionalEducationalPath(PropelPDO $con = null, $doQuery = true)
     {
-        if ($this->aOptionalEducationalPath === null && ($this->path_id !== null)) {
+        if ($this->aOptionalEducationalPath === null && ($this->path_id !== null) && $doQuery) {
             $this->aOptionalEducationalPath = EducationalPathQuery::create()->findPk($this->path_id, $con);
             /* The following can be used additionally to
                 guarantee the related object contains a reference
@@ -944,6 +952,7 @@ abstract class BaseEducationalPathsOptionalCourses extends BaseObject implements
         $this->path_id = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
+        $this->alreadyInClearAllReferencesDeep = false;
         $this->clearAllReferences();
         $this->resetModified();
         $this->setNew(true);
@@ -961,7 +970,16 @@ abstract class BaseEducationalPathsOptionalCourses extends BaseObject implements
      */
     public function clearAllReferences($deep = false)
     {
-        if ($deep) {
+        if ($deep && !$this->alreadyInClearAllReferencesDeep) {
+            $this->alreadyInClearAllReferencesDeep = true;
+            if ($this->aOptionalCourse instanceof Persistent) {
+              $this->aOptionalCourse->clearAllReferences($deep);
+            }
+            if ($this->aOptionalEducationalPath instanceof Persistent) {
+              $this->aOptionalEducationalPath->clearAllReferences($deep);
+            }
+
+            $this->alreadyInClearAllReferencesDeep = false;
         } // if ($deep)
 
         $this->aOptionalCourse = null;

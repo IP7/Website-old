@@ -53,7 +53,7 @@ abstract class BaseEducationalPathsMandatoryCoursesQuery extends ModelCriteria
      * Returns a new EducationalPathsMandatoryCoursesQuery object.
      *
      * @param     string $modelAlias The alias of a model in the query
-     * @param     EducationalPathsMandatoryCoursesQuery|Criteria $criteria Optional Criteria to build the query from
+     * @param   EducationalPathsMandatoryCoursesQuery|Criteria $criteria Optional Criteria to build the query from
      *
      * @return EducationalPathsMandatoryCoursesQuery
      */
@@ -117,12 +117,12 @@ abstract class BaseEducationalPathsMandatoryCoursesQuery extends ModelCriteria
      * @param     mixed $key Primary key to use for the query
      * @param     PropelPDO $con A connection object
      *
-     * @return   EducationalPathsMandatoryCourses A model object, or null if the key is not found
-     * @throws   PropelException
+     * @return                 EducationalPathsMandatoryCourses A model object, or null if the key is not found
+     * @throws PropelException
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `COURSE_ID`, `PATH_ID` FROM `educational_paths_mandatory_courses` WHERE `COURSE_ID` = :p0 AND `PATH_ID` = :p1';
+        $sql = 'SELECT `course_id`, `path_id` FROM `educational_paths_mandatory_courses` WHERE `course_id` = :p0 AND `path_id` = :p1';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key[0], PDO::PARAM_INT);
@@ -230,7 +230,8 @@ abstract class BaseEducationalPathsMandatoryCoursesQuery extends ModelCriteria
      * <code>
      * $query->filterByCourseId(1234); // WHERE course_id = 1234
      * $query->filterByCourseId(array(12, 34)); // WHERE course_id IN (12, 34)
-     * $query->filterByCourseId(array('min' => 12)); // WHERE course_id > 12
+     * $query->filterByCourseId(array('min' => 12)); // WHERE course_id >= 12
+     * $query->filterByCourseId(array('max' => 12)); // WHERE course_id <= 12
      * </code>
      *
      * @see       filterByMandatoryCourse()
@@ -245,8 +246,22 @@ abstract class BaseEducationalPathsMandatoryCoursesQuery extends ModelCriteria
      */
     public function filterByCourseId($courseId = null, $comparison = null)
     {
-        if (is_array($courseId) && null === $comparison) {
-            $comparison = Criteria::IN;
+        if (is_array($courseId)) {
+            $useMinMax = false;
+            if (isset($courseId['min'])) {
+                $this->addUsingAlias(EducationalPathsMandatoryCoursesPeer::COURSE_ID, $courseId['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($courseId['max'])) {
+                $this->addUsingAlias(EducationalPathsMandatoryCoursesPeer::COURSE_ID, $courseId['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
         }
 
         return $this->addUsingAlias(EducationalPathsMandatoryCoursesPeer::COURSE_ID, $courseId, $comparison);
@@ -259,7 +274,8 @@ abstract class BaseEducationalPathsMandatoryCoursesQuery extends ModelCriteria
      * <code>
      * $query->filterByPathId(1234); // WHERE path_id = 1234
      * $query->filterByPathId(array(12, 34)); // WHERE path_id IN (12, 34)
-     * $query->filterByPathId(array('min' => 12)); // WHERE path_id > 12
+     * $query->filterByPathId(array('min' => 12)); // WHERE path_id >= 12
+     * $query->filterByPathId(array('max' => 12)); // WHERE path_id <= 12
      * </code>
      *
      * @see       filterByMandatoryEducationalPath()
@@ -274,8 +290,22 @@ abstract class BaseEducationalPathsMandatoryCoursesQuery extends ModelCriteria
      */
     public function filterByPathId($pathId = null, $comparison = null)
     {
-        if (is_array($pathId) && null === $comparison) {
-            $comparison = Criteria::IN;
+        if (is_array($pathId)) {
+            $useMinMax = false;
+            if (isset($pathId['min'])) {
+                $this->addUsingAlias(EducationalPathsMandatoryCoursesPeer::PATH_ID, $pathId['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($pathId['max'])) {
+                $this->addUsingAlias(EducationalPathsMandatoryCoursesPeer::PATH_ID, $pathId['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
         }
 
         return $this->addUsingAlias(EducationalPathsMandatoryCoursesPeer::PATH_ID, $pathId, $comparison);
@@ -287,8 +317,8 @@ abstract class BaseEducationalPathsMandatoryCoursesQuery extends ModelCriteria
      * @param   Course|PropelObjectCollection $course The related object(s) to use as filter
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return   EducationalPathsMandatoryCoursesQuery The current query, for fluid interface
-     * @throws   PropelException - if the provided filter is invalid.
+     * @return                 EducationalPathsMandatoryCoursesQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
      */
     public function filterByMandatoryCourse($course, $comparison = null)
     {
@@ -363,8 +393,8 @@ abstract class BaseEducationalPathsMandatoryCoursesQuery extends ModelCriteria
      * @param   EducationalPath|PropelObjectCollection $educationalPath The related object(s) to use as filter
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return   EducationalPathsMandatoryCoursesQuery The current query, for fluid interface
-     * @throws   PropelException - if the provided filter is invalid.
+     * @return                 EducationalPathsMandatoryCoursesQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
      */
     public function filterByMandatoryEducationalPath($educationalPath, $comparison = null)
     {

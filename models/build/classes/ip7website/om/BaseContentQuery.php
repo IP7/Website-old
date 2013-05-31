@@ -58,10 +58,6 @@
  * @method ContentQuery rightJoinContentsFiles($relationAlias = null) Adds a RIGHT JOIN clause to the query using the ContentsFiles relation
  * @method ContentQuery innerJoinContentsFiles($relationAlias = null) Adds a INNER JOIN clause to the query using the ContentsFiles relation
  *
- * @method ContentQuery leftJoinComment($relationAlias = null) Adds a LEFT JOIN clause to the query using the Comment relation
- * @method ContentQuery rightJoinComment($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Comment relation
- * @method ContentQuery innerJoinComment($relationAlias = null) Adds a INNER JOIN clause to the query using the Comment relation
- *
  * @method ContentQuery leftJoinReport($relationAlias = null) Adds a LEFT JOIN clause to the query using the Report relation
  * @method ContentQuery rightJoinReport($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Report relation
  * @method ContentQuery innerJoinReport($relationAlias = null) Adds a INNER JOIN clause to the query using the Report relation
@@ -69,7 +65,6 @@
  * @method Content findOne(PropelPDO $con = null) Return the first Content matching the query
  * @method Content findOneOrCreate(PropelPDO $con = null) Return the first Content matching the query, or a new Content object populated from the query conditions when no match is found
  *
- * @method Content findOneById(int $id) Return the first Content filtered by the id column
  * @method Content findOneByAuthorId(int $author_id) Return the first Content filtered by the author_id column
  * @method Content findOneByContentTypeId(int $content_type_id) Return the first Content filtered by the content_type_id column
  * @method Content findOneByAccessRights(int $access_rights) Return the first Content filtered by the access_rights column
@@ -117,7 +112,7 @@ abstract class BaseContentQuery extends ModelCriteria
      * Returns a new ContentQuery object.
      *
      * @param     string $modelAlias The alias of a model in the query
-     * @param     ContentQuery|Criteria $criteria Optional Criteria to build the query from
+     * @param   ContentQuery|Criteria $criteria Optional Criteria to build the query from
      *
      * @return ContentQuery
      */
@@ -174,18 +169,32 @@ abstract class BaseContentQuery extends ModelCriteria
     }
 
     /**
+     * Alias of findPk to use instance pooling
+     *
+     * @param     mixed $key Primary key to use for the query
+     * @param     PropelPDO $con A connection object
+     *
+     * @return                 Content A model object, or null if the key is not found
+     * @throws PropelException
+     */
+     public function findOneById($key, $con = null)
+     {
+        return $this->findPk($key, $con);
+     }
+
+    /**
      * Find object by primary key using raw SQL to go fast.
      * Bypass doSelect() and the object formatter by using generated code.
      *
      * @param     mixed $key Primary key to use for the query
      * @param     PropelPDO $con A connection object
      *
-     * @return   Content A model object, or null if the key is not found
-     * @throws   PropelException
+     * @return                 Content A model object, or null if the key is not found
+     * @throws PropelException
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `ID`, `AUTHOR_ID`, `CONTENT_TYPE_ID`, `ACCESS_RIGHTS`, `VALIDATED`, `TITLE`, `CURSUS_ID`, `COURSE_ID`, `YEAR`, `DELETED`, `CREATED_AT`, `UPDATED_AT` FROM `contents` WHERE `ID` = :p0';
+        $sql = 'SELECT `id`, `author_id`, `content_type_id`, `access_rights`, `validated`, `title`, `cursus_id`, `course_id`, `year`, `deleted`, `created_at`, `updated_at` FROM `contents` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -281,7 +290,8 @@ abstract class BaseContentQuery extends ModelCriteria
      * <code>
      * $query->filterById(1234); // WHERE id = 1234
      * $query->filterById(array(12, 34)); // WHERE id IN (12, 34)
-     * $query->filterById(array('min' => 12)); // WHERE id > 12
+     * $query->filterById(array('min' => 12)); // WHERE id >= 12
+     * $query->filterById(array('max' => 12)); // WHERE id <= 12
      * </code>
      *
      * @param     mixed $id The value to use as filter.
@@ -294,8 +304,22 @@ abstract class BaseContentQuery extends ModelCriteria
      */
     public function filterById($id = null, $comparison = null)
     {
-        if (is_array($id) && null === $comparison) {
-            $comparison = Criteria::IN;
+        if (is_array($id)) {
+            $useMinMax = false;
+            if (isset($id['min'])) {
+                $this->addUsingAlias(ContentPeer::ID, $id['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($id['max'])) {
+                $this->addUsingAlias(ContentPeer::ID, $id['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
         }
 
         return $this->addUsingAlias(ContentPeer::ID, $id, $comparison);
@@ -308,7 +332,8 @@ abstract class BaseContentQuery extends ModelCriteria
      * <code>
      * $query->filterByAuthorId(1234); // WHERE author_id = 1234
      * $query->filterByAuthorId(array(12, 34)); // WHERE author_id IN (12, 34)
-     * $query->filterByAuthorId(array('min' => 12)); // WHERE author_id > 12
+     * $query->filterByAuthorId(array('min' => 12)); // WHERE author_id >= 12
+     * $query->filterByAuthorId(array('max' => 12)); // WHERE author_id <= 12
      * </code>
      *
      * @see       filterByAuthor()
@@ -351,7 +376,8 @@ abstract class BaseContentQuery extends ModelCriteria
      * <code>
      * $query->filterByContentTypeId(1234); // WHERE content_type_id = 1234
      * $query->filterByContentTypeId(array(12, 34)); // WHERE content_type_id IN (12, 34)
-     * $query->filterByContentTypeId(array('min' => 12)); // WHERE content_type_id > 12
+     * $query->filterByContentTypeId(array('min' => 12)); // WHERE content_type_id >= 12
+     * $query->filterByContentTypeId(array('max' => 12)); // WHERE content_type_id <= 12
      * </code>
      *
      * @see       filterByContentType()
@@ -394,7 +420,8 @@ abstract class BaseContentQuery extends ModelCriteria
      * <code>
      * $query->filterByAccessRights(1234); // WHERE access_rights = 1234
      * $query->filterByAccessRights(array(12, 34)); // WHERE access_rights IN (12, 34)
-     * $query->filterByAccessRights(array('min' => 12)); // WHERE access_rights > 12
+     * $query->filterByAccessRights(array('min' => 12)); // WHERE access_rights >= 12
+     * $query->filterByAccessRights(array('max' => 12)); // WHERE access_rights <= 12
      * </code>
      *
      * @param     mixed $accessRights The value to use as filter.
@@ -520,7 +547,8 @@ abstract class BaseContentQuery extends ModelCriteria
      * <code>
      * $query->filterByCursusId(1234); // WHERE cursus_id = 1234
      * $query->filterByCursusId(array(12, 34)); // WHERE cursus_id IN (12, 34)
-     * $query->filterByCursusId(array('min' => 12)); // WHERE cursus_id > 12
+     * $query->filterByCursusId(array('min' => 12)); // WHERE cursus_id >= 12
+     * $query->filterByCursusId(array('max' => 12)); // WHERE cursus_id <= 12
      * </code>
      *
      * @see       filterByCursus()
@@ -563,7 +591,8 @@ abstract class BaseContentQuery extends ModelCriteria
      * <code>
      * $query->filterByCourseId(1234); // WHERE course_id = 1234
      * $query->filterByCourseId(array(12, 34)); // WHERE course_id IN (12, 34)
-     * $query->filterByCourseId(array('min' => 12)); // WHERE course_id > 12
+     * $query->filterByCourseId(array('min' => 12)); // WHERE course_id >= 12
+     * $query->filterByCourseId(array('max' => 12)); // WHERE course_id <= 12
      * </code>
      *
      * @see       filterByCourse()
@@ -606,7 +635,8 @@ abstract class BaseContentQuery extends ModelCriteria
      * <code>
      * $query->filterByYear(1234); // WHERE year = 1234
      * $query->filterByYear(array(12, 34)); // WHERE year IN (12, 34)
-     * $query->filterByYear(array('min' => 12)); // WHERE year > 12
+     * $query->filterByYear(array('min' => 12)); // WHERE year >= 12
+     * $query->filterByYear(array('max' => 12)); // WHERE year <= 12
      * </code>
      *
      * @param     mixed $year The value to use as filter.
@@ -759,8 +789,8 @@ abstract class BaseContentQuery extends ModelCriteria
      * @param   User|PropelObjectCollection $user The related object(s) to use as filter
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return   ContentQuery The current query, for fluid interface
-     * @throws   PropelException - if the provided filter is invalid.
+     * @return                 ContentQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
      */
     public function filterByAuthor($user, $comparison = null)
     {
@@ -835,8 +865,8 @@ abstract class BaseContentQuery extends ModelCriteria
      * @param   Cursus|PropelObjectCollection $cursus The related object(s) to use as filter
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return   ContentQuery The current query, for fluid interface
-     * @throws   PropelException - if the provided filter is invalid.
+     * @return                 ContentQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
      */
     public function filterByCursus($cursus, $comparison = null)
     {
@@ -911,8 +941,8 @@ abstract class BaseContentQuery extends ModelCriteria
      * @param   Course|PropelObjectCollection $course The related object(s) to use as filter
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return   ContentQuery The current query, for fluid interface
-     * @throws   PropelException - if the provided filter is invalid.
+     * @return                 ContentQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
      */
     public function filterByCourse($course, $comparison = null)
     {
@@ -987,8 +1017,8 @@ abstract class BaseContentQuery extends ModelCriteria
      * @param   ContentType|PropelObjectCollection $contentType The related object(s) to use as filter
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return   ContentQuery The current query, for fluid interface
-     * @throws   PropelException - if the provided filter is invalid.
+     * @return                 ContentQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
      */
     public function filterByContentType($contentType, $comparison = null)
     {
@@ -1063,8 +1093,8 @@ abstract class BaseContentQuery extends ModelCriteria
      * @param   ContentsFiles|PropelObjectCollection $contentsFiles  the related object to use as filter
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return   ContentQuery The current query, for fluid interface
-     * @throws   PropelException - if the provided filter is invalid.
+     * @return                 ContentQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
      */
     public function filterByContentsFiles($contentsFiles, $comparison = null)
     {
@@ -1132,87 +1162,13 @@ abstract class BaseContentQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query by a related Comment object
-     *
-     * @param   Comment|PropelObjectCollection $comment  the related object to use as filter
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return   ContentQuery The current query, for fluid interface
-     * @throws   PropelException - if the provided filter is invalid.
-     */
-    public function filterByComment($comment, $comparison = null)
-    {
-        if ($comment instanceof Comment) {
-            return $this
-                ->addUsingAlias(ContentPeer::ID, $comment->getContentId(), $comparison);
-        } elseif ($comment instanceof PropelObjectCollection) {
-            return $this
-                ->useCommentQuery()
-                ->filterByPrimaryKeys($comment->getPrimaryKeys())
-                ->endUse();
-        } else {
-            throw new PropelException('filterByComment() only accepts arguments of type Comment or PropelCollection');
-        }
-    }
-
-    /**
-     * Adds a JOIN clause to the query using the Comment relation
-     *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return ContentQuery The current query, for fluid interface
-     */
-    public function joinComment($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
-    {
-        $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('Comment');
-
-        // create a ModelJoin object for this join
-        $join = new ModelJoin();
-        $join->setJoinType($joinType);
-        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
-        if ($previousJoin = $this->getPreviousJoin()) {
-            $join->setPreviousJoin($previousJoin);
-        }
-
-        // add the ModelJoin to the current object
-        if ($relationAlias) {
-            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
-            $this->addJoinObject($join, $relationAlias);
-        } else {
-            $this->addJoinObject($join, 'Comment');
-        }
-
-        return $this;
-    }
-
-    /**
-     * Use the Comment relation Comment object
-     *
-     * @see       useQuery()
-     *
-     * @param     string $relationAlias optional alias for the relation,
-     *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return   CommentQuery A secondary query class using the current class as primary query
-     */
-    public function useCommentQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
-    {
-        return $this
-            ->joinComment($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'Comment', 'CommentQuery');
-    }
-
-    /**
      * Filter the query by a related Report object
      *
      * @param   Report|PropelObjectCollection $report  the related object to use as filter
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return   ContentQuery The current query, for fluid interface
-     * @throws   PropelException - if the provided filter is invalid.
+     * @return                 ContentQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
      */
     public function filterByReport($report, $comparison = null)
     {

@@ -38,10 +38,10 @@ class ShortLinkTableMap extends TableMap
         $this->setPackage('ip7website');
         $this->setUseIdGenerator(true);
         // columns
-        $this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
-        $this->addColumn('SHORT_URL', 'ShortUrl', 'VARCHAR', true, 255, null);
-        $this->addColumn('URL', 'Url', 'VARCHAR', true, 255, null);
-        $this->addColumn('CLICKS_COUNT', 'ClicksCount', 'INTEGER', false, null, 0);
+        $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
+        $this->addColumn('short_url', 'ShortUrl', 'VARCHAR', true, 255, null);
+        $this->addColumn('url', 'Url', 'VARCHAR', true, 255, null);
+        $this->addColumn('clicks_count', 'ClicksCount', 'INTEGER', false, null, 0);
         // validators
     } // initialize()
 

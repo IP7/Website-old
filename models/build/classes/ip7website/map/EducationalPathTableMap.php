@@ -38,13 +38,13 @@ class EducationalPathTableMap extends TableMap
         $this->setPackage('ip7website');
         $this->setUseIdGenerator(true);
         // columns
-        $this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
-        $this->addColumn('SHORT_NAME', 'ShortName', 'VARCHAR', true, 8, null);
-        $this->addColumn('NAME', 'Name', 'VARCHAR', true, 50, null);
-        $this->addColumn('DESCRIPTION', 'Description', 'LONGVARCHAR', false, 1024, null);
-        $this->addForeignKey('CURSUS_ID', 'CursusId', 'INTEGER', 'cursus', 'ID', true, null, null);
-        $this->addForeignKey('RESPONSABLE_ID', 'ResponsableId', 'INTEGER', 'users', 'ID', false, null, null);
-        $this->addColumn('DELETED', 'Deleted', 'BOOLEAN', false, 1, '0');
+        $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
+        $this->addColumn('short_name', 'ShortName', 'VARCHAR', true, 8, null);
+        $this->addColumn('name', 'Name', 'VARCHAR', true, 50, null);
+        $this->addColumn('description', 'Description', 'LONGVARCHAR', false, 1024, null);
+        $this->addForeignKey('cursus_id', 'CursusId', 'INTEGER', 'cursus', 'id', true, null, null);
+        $this->addForeignKey('responsable_id', 'ResponsableId', 'INTEGER', 'users', 'id', false, null, null);
+        $this->addColumn('deleted', 'Deleted', 'BOOLEAN', false, 1, '0');
         // validators
     } // initialize()
 
@@ -58,7 +58,6 @@ class EducationalPathTableMap extends TableMap
         $this->addRelation('UsersPaths', 'UsersPaths', RelationMap::ONE_TO_MANY, array('id' => 'path_id', ), 'CASCADE', 'CASCADE', 'UsersPathss');
         $this->addRelation('EducationalPathsOptionalCourses', 'EducationalPathsOptionalCourses', RelationMap::ONE_TO_MANY, array('id' => 'path_id', ), 'CASCADE', 'CASCADE', 'EducationalPathsOptionalCoursess');
         $this->addRelation('EducationalPathsMandatoryCourses', 'EducationalPathsMandatoryCourses', RelationMap::ONE_TO_MANY, array('id' => 'path_id', ), 'CASCADE', 'CASCADE', 'EducationalPathsMandatoryCoursess');
-        $this->addRelation('Schedule', 'Schedule', RelationMap::ONE_TO_MANY, array('id' => 'path_id', ), 'CASCADE', 'CASCADE', 'Schedules');
         $this->addRelation('User', 'User', RelationMap::MANY_TO_MANY, array(), 'CASCADE', 'CASCADE', 'Users');
         $this->addRelation('OptionalCourse', 'Course', RelationMap::MANY_TO_MANY, array(), 'CASCADE', 'CASCADE', 'OptionalCourses');
         $this->addRelation('MandatoryCourse', 'Course', RelationMap::MANY_TO_MANY, array(), 'CASCADE', 'CASCADE', 'MandatoryCourses');

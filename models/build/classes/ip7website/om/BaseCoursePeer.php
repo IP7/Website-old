@@ -32,35 +32,35 @@ abstract class BaseCoursePeer
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
     const NUM_HYDRATE_COLUMNS = 10;
 
-    /** the column name for the ID field */
-    const ID = 'courses.ID';
+    /** the column name for the id field */
+    const ID = 'courses.id';
 
-    /** the column name for the CURSUS_ID field */
-    const CURSUS_ID = 'courses.CURSUS_ID';
+    /** the column name for the cursus_id field */
+    const CURSUS_ID = 'courses.cursus_id';
 
-    /** the column name for the SEMESTER field */
-    const SEMESTER = 'courses.SEMESTER';
+    /** the column name for the semester field */
+    const SEMESTER = 'courses.semester';
 
-    /** the column name for the NAME field */
-    const NAME = 'courses.NAME';
+    /** the column name for the name field */
+    const NAME = 'courses.name';
 
-    /** the column name for the SHORT_NAME field */
-    const SHORT_NAME = 'courses.SHORT_NAME';
+    /** the column name for the short_name field */
+    const SHORT_NAME = 'courses.short_name';
 
     /** the column name for the ECTS field */
     const ECTS = 'courses.ECTS';
 
-    /** the column name for the DESCRIPTION field */
-    const DESCRIPTION = 'courses.DESCRIPTION';
+    /** the column name for the description field */
+    const DESCRIPTION = 'courses.description';
 
-    /** the column name for the USE_LATEX field */
-    const USE_LATEX = 'courses.USE_LATEX';
+    /** the column name for the use_latex field */
+    const USE_LATEX = 'courses.use_latex';
 
-    /** the column name for the USE_SOURCECODE field */
-    const USE_SOURCECODE = 'courses.USE_SOURCECODE';
+    /** the column name for the use_sourcecode field */
+    const USE_SOURCECODE = 'courses.use_sourcecode';
 
-    /** the column name for the DELETED field */
-    const DELETED = 'courses.DELETED';
+    /** the column name for the deleted field */
+    const DELETED = 'courses.deleted';
 
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -186,16 +186,16 @@ abstract class BaseCoursePeer
             $criteria->addSelectColumn(CoursePeer::USE_SOURCECODE);
             $criteria->addSelectColumn(CoursePeer::DELETED);
         } else {
-            $criteria->addSelectColumn($alias . '.ID');
-            $criteria->addSelectColumn($alias . '.CURSUS_ID');
-            $criteria->addSelectColumn($alias . '.SEMESTER');
-            $criteria->addSelectColumn($alias . '.NAME');
-            $criteria->addSelectColumn($alias . '.SHORT_NAME');
+            $criteria->addSelectColumn($alias . '.id');
+            $criteria->addSelectColumn($alias . '.cursus_id');
+            $criteria->addSelectColumn($alias . '.semester');
+            $criteria->addSelectColumn($alias . '.name');
+            $criteria->addSelectColumn($alias . '.short_name');
             $criteria->addSelectColumn($alias . '.ECTS');
-            $criteria->addSelectColumn($alias . '.DESCRIPTION');
-            $criteria->addSelectColumn($alias . '.USE_LATEX');
-            $criteria->addSelectColumn($alias . '.USE_SOURCECODE');
-            $criteria->addSelectColumn($alias . '.DELETED');
+            $criteria->addSelectColumn($alias . '.description');
+            $criteria->addSelectColumn($alias . '.use_latex');
+            $criteria->addSelectColumn($alias . '.use_sourcecode');
+            $criteria->addSelectColumn($alias . '.deleted');
         }
     }
 
@@ -279,7 +279,7 @@ abstract class BaseCoursePeer
     /**
      * Prepares the Criteria object and uses the parent doSelect() method to execute a PDOStatement.
      *
-     * Use this method directly if you want to work with an executed statement durirectly (for example
+     * Use this method directly if you want to work with an executed statement directly (for example
      * to perform your own object hydration).
      *
      * @param      Criteria $criteria The Criteria object used to build the SELECT statement.
@@ -384,8 +384,15 @@ abstract class BaseCoursePeer
      *
      * @return void
      */
-    public static function clearInstancePool()
+    public static function clearInstancePool($and_clear_all_references = false)
     {
+      if ($and_clear_all_references)
+      {
+        foreach (CoursePeer::$instances as $instance)
+        {
+          $instance->clearAllReferences(true);
+        }
+      }
         CoursePeer::$instances = array();
     }
 
@@ -413,9 +420,6 @@ abstract class BaseCoursePeer
         // Invalidate objects in ExamPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         ExamPeer::clearInstancePool();
-        // Invalidate objects in ScheduledCoursePeer instance pool,
-        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-        ScheduledCoursePeer::clearInstancePool();
         // Invalidate objects in CourseUrlPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         CourseUrlPeer::clearInstancePool();
@@ -785,7 +789,7 @@ abstract class BaseCoursePeer
      *
      * @return string ClassName
      */
-    public static function getOMClass()
+    public static function getOMClass($row = 0, $colnum = 0)
     {
         return CoursePeer::OM_CLASS;
     }
@@ -1029,12 +1033,6 @@ abstract class BaseCoursePeer
 
             $criteria->add(ExamPeer::COURSE_ID, $obj->getId());
             $affectedRows += ExamPeer::doDelete($criteria, $con);
-
-            // delete related ScheduledCourse objects
-            $criteria = new Criteria(ScheduledCoursePeer::DATABASE_NAME);
-
-            $criteria->add(ScheduledCoursePeer::COURSE_ID, $obj->getId());
-            $affectedRows += ScheduledCoursePeer::doDelete($criteria, $con);
 
             // delete related CourseUrl objects
             $criteria = new Criteria(CourseUrlPeer::DATABASE_NAME);

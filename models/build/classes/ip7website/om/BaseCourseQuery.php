@@ -60,10 +60,6 @@
  * @method CourseQuery rightJoinExam($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Exam relation
  * @method CourseQuery innerJoinExam($relationAlias = null) Adds a INNER JOIN clause to the query using the Exam relation
  *
- * @method CourseQuery leftJoinScheduledCourse($relationAlias = null) Adds a LEFT JOIN clause to the query using the ScheduledCourse relation
- * @method CourseQuery rightJoinScheduledCourse($relationAlias = null) Adds a RIGHT JOIN clause to the query using the ScheduledCourse relation
- * @method CourseQuery innerJoinScheduledCourse($relationAlias = null) Adds a INNER JOIN clause to the query using the ScheduledCourse relation
- *
  * @method CourseQuery leftJoinCourseUrl($relationAlias = null) Adds a LEFT JOIN clause to the query using the CourseUrl relation
  * @method CourseQuery rightJoinCourseUrl($relationAlias = null) Adds a RIGHT JOIN clause to the query using the CourseUrl relation
  * @method CourseQuery innerJoinCourseUrl($relationAlias = null) Adds a INNER JOIN clause to the query using the CourseUrl relation
@@ -75,7 +71,6 @@
  * @method Course findOne(PropelPDO $con = null) Return the first Course matching the query
  * @method Course findOneOrCreate(PropelPDO $con = null) Return the first Course matching the query, or a new Course object populated from the query conditions when no match is found
  *
- * @method Course findOneById(int $id) Return the first Course filtered by the id column
  * @method Course findOneByCursusId(int $cursus_id) Return the first Course filtered by the cursus_id column
  * @method Course findOneBySemester(int $semester) Return the first Course filtered by the semester column
  * @method Course findOneByName(string $name) Return the first Course filtered by the name column
@@ -117,7 +112,7 @@ abstract class BaseCourseQuery extends ModelCriteria
      * Returns a new CourseQuery object.
      *
      * @param     string $modelAlias The alias of a model in the query
-     * @param     CourseQuery|Criteria $criteria Optional Criteria to build the query from
+     * @param   CourseQuery|Criteria $criteria Optional Criteria to build the query from
      *
      * @return CourseQuery
      */
@@ -174,18 +169,32 @@ abstract class BaseCourseQuery extends ModelCriteria
     }
 
     /**
+     * Alias of findPk to use instance pooling
+     *
+     * @param     mixed $key Primary key to use for the query
+     * @param     PropelPDO $con A connection object
+     *
+     * @return                 Course A model object, or null if the key is not found
+     * @throws PropelException
+     */
+     public function findOneById($key, $con = null)
+     {
+        return $this->findPk($key, $con);
+     }
+
+    /**
      * Find object by primary key using raw SQL to go fast.
      * Bypass doSelect() and the object formatter by using generated code.
      *
      * @param     mixed $key Primary key to use for the query
      * @param     PropelPDO $con A connection object
      *
-     * @return   Course A model object, or null if the key is not found
-     * @throws   PropelException
+     * @return                 Course A model object, or null if the key is not found
+     * @throws PropelException
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `ID`, `CURSUS_ID`, `SEMESTER`, `NAME`, `SHORT_NAME`, `ECTS`, `DESCRIPTION`, `USE_LATEX`, `USE_SOURCECODE`, `DELETED` FROM `courses` WHERE `ID` = :p0';
+        $sql = 'SELECT `id`, `cursus_id`, `semester`, `name`, `short_name`, `ECTS`, `description`, `use_latex`, `use_sourcecode`, `deleted` FROM `courses` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -281,7 +290,8 @@ abstract class BaseCourseQuery extends ModelCriteria
      * <code>
      * $query->filterById(1234); // WHERE id = 1234
      * $query->filterById(array(12, 34)); // WHERE id IN (12, 34)
-     * $query->filterById(array('min' => 12)); // WHERE id > 12
+     * $query->filterById(array('min' => 12)); // WHERE id >= 12
+     * $query->filterById(array('max' => 12)); // WHERE id <= 12
      * </code>
      *
      * @param     mixed $id The value to use as filter.
@@ -294,8 +304,22 @@ abstract class BaseCourseQuery extends ModelCriteria
      */
     public function filterById($id = null, $comparison = null)
     {
-        if (is_array($id) && null === $comparison) {
-            $comparison = Criteria::IN;
+        if (is_array($id)) {
+            $useMinMax = false;
+            if (isset($id['min'])) {
+                $this->addUsingAlias(CoursePeer::ID, $id['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($id['max'])) {
+                $this->addUsingAlias(CoursePeer::ID, $id['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
         }
 
         return $this->addUsingAlias(CoursePeer::ID, $id, $comparison);
@@ -308,7 +332,8 @@ abstract class BaseCourseQuery extends ModelCriteria
      * <code>
      * $query->filterByCursusId(1234); // WHERE cursus_id = 1234
      * $query->filterByCursusId(array(12, 34)); // WHERE cursus_id IN (12, 34)
-     * $query->filterByCursusId(array('min' => 12)); // WHERE cursus_id > 12
+     * $query->filterByCursusId(array('min' => 12)); // WHERE cursus_id >= 12
+     * $query->filterByCursusId(array('max' => 12)); // WHERE cursus_id <= 12
      * </code>
      *
      * @see       filterByCursus()
@@ -351,7 +376,8 @@ abstract class BaseCourseQuery extends ModelCriteria
      * <code>
      * $query->filterBySemester(1234); // WHERE semester = 1234
      * $query->filterBySemester(array(12, 34)); // WHERE semester IN (12, 34)
-     * $query->filterBySemester(array('min' => 12)); // WHERE semester > 12
+     * $query->filterBySemester(array('min' => 12)); // WHERE semester >= 12
+     * $query->filterBySemester(array('max' => 12)); // WHERE semester <= 12
      * </code>
      *
      * @param     mixed $semester The value to use as filter.
@@ -450,7 +476,8 @@ abstract class BaseCourseQuery extends ModelCriteria
      * <code>
      * $query->filterByEcts(1234); // WHERE ECTS = 1234
      * $query->filterByEcts(array(12, 34)); // WHERE ECTS IN (12, 34)
-     * $query->filterByEcts(array('min' => 12)); // WHERE ECTS > 12
+     * $query->filterByEcts(array('min' => 12)); // WHERE ECTS >= 12
+     * $query->filterByEcts(array('max' => 12)); // WHERE ECTS <= 12
      * </code>
      *
      * @param     mixed $ects The value to use as filter.
@@ -534,7 +561,7 @@ abstract class BaseCourseQuery extends ModelCriteria
     public function filterByUseLatex($useLatex = null, $comparison = null)
     {
         if (is_string($useLatex)) {
-            $use_latex = in_array(strtolower($useLatex), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+            $useLatex = in_array(strtolower($useLatex), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
         }
 
         return $this->addUsingAlias(CoursePeer::USE_LATEX, $useLatex, $comparison);
@@ -561,7 +588,7 @@ abstract class BaseCourseQuery extends ModelCriteria
     public function filterByUseSourcecode($useSourcecode = null, $comparison = null)
     {
         if (is_string($useSourcecode)) {
-            $use_sourcecode = in_array(strtolower($useSourcecode), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+            $useSourcecode = in_array(strtolower($useSourcecode), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
         }
 
         return $this->addUsingAlias(CoursePeer::USE_SOURCECODE, $useSourcecode, $comparison);
@@ -600,8 +627,8 @@ abstract class BaseCourseQuery extends ModelCriteria
      * @param   Cursus|PropelObjectCollection $cursus The related object(s) to use as filter
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return   CourseQuery The current query, for fluid interface
-     * @throws   PropelException - if the provided filter is invalid.
+     * @return                 CourseQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
      */
     public function filterByCursus($cursus, $comparison = null)
     {
@@ -676,8 +703,8 @@ abstract class BaseCourseQuery extends ModelCriteria
      * @param   CourseAlias|PropelObjectCollection $courseAlias  the related object to use as filter
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return   CourseQuery The current query, for fluid interface
-     * @throws   PropelException - if the provided filter is invalid.
+     * @return                 CourseQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
      */
     public function filterByCourseAlias($courseAlias, $comparison = null)
     {
@@ -750,8 +777,8 @@ abstract class BaseCourseQuery extends ModelCriteria
      * @param   EducationalPathsOptionalCourses|PropelObjectCollection $educationalPathsOptionalCourses  the related object to use as filter
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return   CourseQuery The current query, for fluid interface
-     * @throws   PropelException - if the provided filter is invalid.
+     * @return                 CourseQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
      */
     public function filterByEducationalPathsOptionalCourses($educationalPathsOptionalCourses, $comparison = null)
     {
@@ -824,8 +851,8 @@ abstract class BaseCourseQuery extends ModelCriteria
      * @param   EducationalPathsMandatoryCourses|PropelObjectCollection $educationalPathsMandatoryCourses  the related object to use as filter
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return   CourseQuery The current query, for fluid interface
-     * @throws   PropelException - if the provided filter is invalid.
+     * @return                 CourseQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
      */
     public function filterByEducationalPathsMandatoryCourses($educationalPathsMandatoryCourses, $comparison = null)
     {
@@ -898,8 +925,8 @@ abstract class BaseCourseQuery extends ModelCriteria
      * @param   Content|PropelObjectCollection $content  the related object to use as filter
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return   CourseQuery The current query, for fluid interface
-     * @throws   PropelException - if the provided filter is invalid.
+     * @return                 CourseQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
      */
     public function filterByContent($content, $comparison = null)
     {
@@ -972,8 +999,8 @@ abstract class BaseCourseQuery extends ModelCriteria
      * @param   News|PropelObjectCollection $news  the related object to use as filter
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return   CourseQuery The current query, for fluid interface
-     * @throws   PropelException - if the provided filter is invalid.
+     * @return                 CourseQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
      */
     public function filterByNews($news, $comparison = null)
     {
@@ -1046,8 +1073,8 @@ abstract class BaseCourseQuery extends ModelCriteria
      * @param   Exam|PropelObjectCollection $exam  the related object to use as filter
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return   CourseQuery The current query, for fluid interface
-     * @throws   PropelException - if the provided filter is invalid.
+     * @return                 CourseQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
      */
     public function filterByExam($exam, $comparison = null)
     {
@@ -1115,87 +1142,13 @@ abstract class BaseCourseQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query by a related ScheduledCourse object
-     *
-     * @param   ScheduledCourse|PropelObjectCollection $scheduledCourse  the related object to use as filter
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return   CourseQuery The current query, for fluid interface
-     * @throws   PropelException - if the provided filter is invalid.
-     */
-    public function filterByScheduledCourse($scheduledCourse, $comparison = null)
-    {
-        if ($scheduledCourse instanceof ScheduledCourse) {
-            return $this
-                ->addUsingAlias(CoursePeer::ID, $scheduledCourse->getCourseId(), $comparison);
-        } elseif ($scheduledCourse instanceof PropelObjectCollection) {
-            return $this
-                ->useScheduledCourseQuery()
-                ->filterByPrimaryKeys($scheduledCourse->getPrimaryKeys())
-                ->endUse();
-        } else {
-            throw new PropelException('filterByScheduledCourse() only accepts arguments of type ScheduledCourse or PropelCollection');
-        }
-    }
-
-    /**
-     * Adds a JOIN clause to the query using the ScheduledCourse relation
-     *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return CourseQuery The current query, for fluid interface
-     */
-    public function joinScheduledCourse($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-    {
-        $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('ScheduledCourse');
-
-        // create a ModelJoin object for this join
-        $join = new ModelJoin();
-        $join->setJoinType($joinType);
-        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
-        if ($previousJoin = $this->getPreviousJoin()) {
-            $join->setPreviousJoin($previousJoin);
-        }
-
-        // add the ModelJoin to the current object
-        if ($relationAlias) {
-            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
-            $this->addJoinObject($join, $relationAlias);
-        } else {
-            $this->addJoinObject($join, 'ScheduledCourse');
-        }
-
-        return $this;
-    }
-
-    /**
-     * Use the ScheduledCourse relation ScheduledCourse object
-     *
-     * @see       useQuery()
-     *
-     * @param     string $relationAlias optional alias for the relation,
-     *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return   ScheduledCourseQuery A secondary query class using the current class as primary query
-     */
-    public function useScheduledCourseQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-    {
-        return $this
-            ->joinScheduledCourse($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'ScheduledCourse', 'ScheduledCourseQuery');
-    }
-
-    /**
      * Filter the query by a related CourseUrl object
      *
      * @param   CourseUrl|PropelObjectCollection $courseUrl  the related object to use as filter
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return   CourseQuery The current query, for fluid interface
-     * @throws   PropelException - if the provided filter is invalid.
+     * @return                 CourseQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
      */
     public function filterByCourseUrl($courseUrl, $comparison = null)
     {
@@ -1268,8 +1221,8 @@ abstract class BaseCourseQuery extends ModelCriteria
      * @param   CoursesContentsArchives|PropelObjectCollection $coursesContentsArchives  the related object to use as filter
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return   CourseQuery The current query, for fluid interface
-     * @throws   PropelException - if the provided filter is invalid.
+     * @return                 CourseQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
      */
     public function filterByCoursesContentsArchives($coursesContentsArchives, $comparison = null)
     {

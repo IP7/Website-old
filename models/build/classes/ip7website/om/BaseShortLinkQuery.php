@@ -23,7 +23,6 @@
  * @method ShortLink findOne(PropelPDO $con = null) Return the first ShortLink matching the query
  * @method ShortLink findOneOrCreate(PropelPDO $con = null) Return the first ShortLink matching the query, or a new ShortLink object populated from the query conditions when no match is found
  *
- * @method ShortLink findOneById(int $id) Return the first ShortLink filtered by the id column
  * @method ShortLink findOneByShortUrl(string $short_url) Return the first ShortLink filtered by the short_url column
  * @method ShortLink findOneByUrl(string $url) Return the first ShortLink filtered by the url column
  * @method ShortLink findOneByClicksCount(int $clicks_count) Return the first ShortLink filtered by the clicks_count column
@@ -53,7 +52,7 @@ abstract class BaseShortLinkQuery extends ModelCriteria
      * Returns a new ShortLinkQuery object.
      *
      * @param     string $modelAlias The alias of a model in the query
-     * @param     ShortLinkQuery|Criteria $criteria Optional Criteria to build the query from
+     * @param   ShortLinkQuery|Criteria $criteria Optional Criteria to build the query from
      *
      * @return ShortLinkQuery
      */
@@ -110,18 +109,32 @@ abstract class BaseShortLinkQuery extends ModelCriteria
     }
 
     /**
+     * Alias of findPk to use instance pooling
+     *
+     * @param     mixed $key Primary key to use for the query
+     * @param     PropelPDO $con A connection object
+     *
+     * @return                 ShortLink A model object, or null if the key is not found
+     * @throws PropelException
+     */
+     public function findOneById($key, $con = null)
+     {
+        return $this->findPk($key, $con);
+     }
+
+    /**
      * Find object by primary key using raw SQL to go fast.
      * Bypass doSelect() and the object formatter by using generated code.
      *
      * @param     mixed $key Primary key to use for the query
      * @param     PropelPDO $con A connection object
      *
-     * @return   ShortLink A model object, or null if the key is not found
-     * @throws   PropelException
+     * @return                 ShortLink A model object, or null if the key is not found
+     * @throws PropelException
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `ID`, `SHORT_URL`, `URL`, `CLICKS_COUNT` FROM `shortlinks` WHERE `ID` = :p0';
+        $sql = 'SELECT `id`, `short_url`, `url`, `clicks_count` FROM `shortlinks` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -217,7 +230,8 @@ abstract class BaseShortLinkQuery extends ModelCriteria
      * <code>
      * $query->filterById(1234); // WHERE id = 1234
      * $query->filterById(array(12, 34)); // WHERE id IN (12, 34)
-     * $query->filterById(array('min' => 12)); // WHERE id > 12
+     * $query->filterById(array('min' => 12)); // WHERE id >= 12
+     * $query->filterById(array('max' => 12)); // WHERE id <= 12
      * </code>
      *
      * @param     mixed $id The value to use as filter.
@@ -230,8 +244,22 @@ abstract class BaseShortLinkQuery extends ModelCriteria
      */
     public function filterById($id = null, $comparison = null)
     {
-        if (is_array($id) && null === $comparison) {
-            $comparison = Criteria::IN;
+        if (is_array($id)) {
+            $useMinMax = false;
+            if (isset($id['min'])) {
+                $this->addUsingAlias(ShortLinkPeer::ID, $id['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($id['max'])) {
+                $this->addUsingAlias(ShortLinkPeer::ID, $id['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
         }
 
         return $this->addUsingAlias(ShortLinkPeer::ID, $id, $comparison);
@@ -302,7 +330,8 @@ abstract class BaseShortLinkQuery extends ModelCriteria
      * <code>
      * $query->filterByClicksCount(1234); // WHERE clicks_count = 1234
      * $query->filterByClicksCount(array(12, 34)); // WHERE clicks_count IN (12, 34)
-     * $query->filterByClicksCount(array('min' => 12)); // WHERE clicks_count > 12
+     * $query->filterByClicksCount(array('min' => 12)); // WHERE clicks_count >= 12
+     * $query->filterByClicksCount(array('max' => 12)); // WHERE clicks_count <= 12
      * </code>
      *
      * @param     mixed $clicksCount The value to use as filter.

@@ -38,50 +38,50 @@ class UserTableMap extends TableMap
         $this->setPackage('ip7website');
         $this->setUseIdGenerator(true);
         // columns
-        $this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
-        $this->addColumn('USERNAME', 'Username', 'VARCHAR', false, 16, null);
-        $this->addColumn('PASSWORD_HASH', 'PasswordHash', 'VARCHAR', false, 255, null);
-        $this->addColumn('RIGHTS', 'Rights', 'TINYINT', true, null, 0);
-        $this->addColumn('FIRSTNAME', 'Firstname', 'VARCHAR', true, 64, null);
-        $this->addColumn('LASTNAME', 'Lastname', 'VARCHAR', true, 128, null);
-        $this->addColumn('GENDER', 'Gender', 'ENUM', false, null, 'N');
-        $this->getColumn('GENDER', false)->setValueSet(array (
+        $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
+        $this->addColumn('username', 'Username', 'VARCHAR', false, 16, null);
+        $this->addColumn('password_hash', 'PasswordHash', 'VARCHAR', false, 255, null);
+        $this->addColumn('rights', 'Rights', 'TINYINT', true, null, 0);
+        $this->addColumn('firstname', 'Firstname', 'VARCHAR', true, 64, null);
+        $this->addColumn('lastname', 'Lastname', 'VARCHAR', true, 128, null);
+        $this->addColumn('gender', 'Gender', 'ENUM', false, null, 'N');
+        $this->getColumn('gender', false)->setValueSet(array (
   0 => 'N',
   1 => 'M',
   2 => 'F',
 ));
-        $this->addColumn('EMAIL', 'Email', 'VARCHAR', true, 255, null);
-        $this->addColumn('PHONE', 'Phone', 'VARCHAR', false, 20, null);
-        $this->addColumn('WEBSITE', 'Website', 'VARCHAR', false, 255, null);
-        $this->addColumn('BIRTH_DATE', 'BirthDate', 'DATE', false, null, null);
-        $this->addColumn('FIRST_ENTRY', 'FirstEntry', 'DATE', false, null, null);
-        $this->addColumn('LAST_ENTRY', 'LastEntry', 'DATE', false, null, null);
-        $this->addColumn('EXPIRATION_DATE', 'ExpirationDate', 'DATE', false, null, null);
-        $this->addColumn('LAST_VISIT', 'LastVisit', 'TIMESTAMP', false, null, null);
-        $this->addColumn('VISITS_COUNT', 'VisitsCount', 'INTEGER', false, null, 0);
-        $this->addColumn('CONFIG_SHOW_EMAIL', 'ConfigShowEmail', 'BOOLEAN', false, 1, '0');
-        $this->addColumn('CONFIG_SHOW_PHONE', 'ConfigShowPhone', 'BOOLEAN', false, 1, '0');
-        $this->addColumn('CONFIG_SHOW_REAL_NAME', 'ConfigShowRealName', 'BOOLEAN', false, 1, '1');
-        $this->addColumn('CONFIG_SHOW_BIRTHDATE', 'ConfigShowBirthdate', 'BOOLEAN', false, 1, '0');
-        $this->addColumn('CONFIG_SHOW_AGE', 'ConfigShowAge', 'BOOLEAN', false, 1, '1');
-        $this->addColumn('CONFIG_INDEX_PROFILE', 'ConfigIndexProfile', 'BOOLEAN', false, 1, '0');
-        $this->addColumn('CONFIG_PRIVATE_PROFILE', 'ConfigPrivateProfile', 'BOOLEAN', false, 1, '0');
-        $this->addColumn('ACTIVATED', 'Activated', 'BOOLEAN', false, 1, '0');
-        $this->addColumn('IS_A_TEACHER', 'IsATeacher', 'BOOLEAN', false, 1, '0');
-        $this->addColumn('IS_A_STUDENT', 'IsAStudent', 'BOOLEAN', false, 1, '0');
-        $this->addColumn('IS_AN_ALUMNI', 'IsAnAlumni', 'BOOLEAN', false, 1, '0');
-        $this->addColumn('DESCRIPTION', 'Description', 'LONGVARCHAR', false, 512, null);
-        $this->addColumn('REMARKS', 'Remarks', 'VARCHAR', false, 255, null);
+        $this->addColumn('email', 'Email', 'VARCHAR', true, 255, null);
+        $this->addColumn('phone', 'Phone', 'VARCHAR', false, 20, null);
+        $this->addColumn('website', 'Website', 'VARCHAR', false, 255, null);
+        $this->addColumn('birth_date', 'BirthDate', 'DATE', false, null, null);
+        $this->addColumn('first_entry', 'FirstEntry', 'DATE', false, null, null);
+        $this->addColumn('last_entry', 'LastEntry', 'DATE', false, null, null);
+        $this->addColumn('expiration_date', 'ExpirationDate', 'DATE', false, null, null);
+        $this->addColumn('last_visit', 'LastVisit', 'TIMESTAMP', false, null, null);
+        $this->addColumn('visits_count', 'VisitsCount', 'INTEGER', false, null, 0);
+        $this->addColumn('config_show_email', 'ConfigShowEmail', 'BOOLEAN', false, 1, '0');
+        $this->addColumn('config_show_phone', 'ConfigShowPhone', 'BOOLEAN', false, 1, '0');
+        $this->addColumn('config_show_real_name', 'ConfigShowRealName', 'BOOLEAN', false, 1, '1');
+        $this->addColumn('config_show_birthdate', 'ConfigShowBirthdate', 'BOOLEAN', false, 1, '0');
+        $this->addColumn('config_show_age', 'ConfigShowAge', 'BOOLEAN', false, 1, '1');
+        $this->addColumn('config_index_profile', 'ConfigIndexProfile', 'BOOLEAN', false, 1, '0');
+        $this->addColumn('config_private_profile', 'ConfigPrivateProfile', 'BOOLEAN', false, 1, '0');
+        $this->addColumn('activated', 'Activated', 'BOOLEAN', false, 1, '0');
+        $this->addColumn('is_a_teacher', 'IsATeacher', 'BOOLEAN', false, 1, '0');
+        $this->addColumn('is_a_student', 'IsAStudent', 'BOOLEAN', false, 1, '0');
+        $this->addColumn('is_an_alumni', 'IsAnAlumni', 'BOOLEAN', false, 1, '0');
+        $this->addColumn('description', 'Description', 'LONGVARCHAR', false, 512, null);
+        $this->addColumn('remarks', 'Remarks', 'VARCHAR', false, 255, null);
         // validators
-        $this->addValidator('USERNAME', 'minLength', 'propel.validator.MinLengthValidator', '3', 'Le pseudo doit faire au moins 3 caractères.');
-        $this->addValidator('USERNAME', 'match', 'propel.validator.MatchValidator', '/^[_a-z][_a-z0-9]+$/i', 'Le pseudo n\'est pas valide (Doit commencer par une lettre, et être uniquement composé de caractères alphanumériques).');
-        $this->addValidator('USERNAME', 'unique', 'propel.validator.UniqueValidator', '', 'Le pseudo est déjà pris.');
-        $this->addValidator('FIRSTNAME', 'minLength', 'propel.validator.MinLengthValidator', '1', 'Le prénom doit faire au moins 1 caractère.');
-        $this->addValidator('LASTNAME', 'minLength', 'propel.validator.MinLengthValidator', '1', 'Le nom doit faire au moins 1 caractère.');
-        $this->addValidator('EMAIL', 'minLength', 'propel.validator.MinLengthValidator', '6', 'L\'e-mail doit faire au moins 6 caractères.');
-        $this->addValidator('EMAIL', 'match', 'propel.validator.MatchValidator', '/^[-+\w\.]+@[-\.\w]+\.[a-z]{2,4}$/', 'L\'adresse e-mail n\'est pas valide.');
-        $this->addValidator('EMAIL', 'unique', 'propel.validator.UniqueValidator', '', 'L\'email est déjà pris.');
-        $this->addValidator('VISITS_COUNT', 'minValue', 'propel.validator.MinValueValidator', '0', 'Le nombre de visites ne peut pas être négatif.');
+        $this->addValidator('username', 'minLength', 'propel.validator.MinLengthValidator', '3', 'Le pseudo doit faire au moins 3 caractères.');
+        $this->addValidator('username', 'match', 'propel.validator.MatchValidator', '/^[_a-z][_a-z0-9]+$/i', 'Le pseudo n\'est pas valide (Doit commencer par une lettre, et être uniquement composé de caractères alphanumériques).');
+        $this->addValidator('username', 'unique', 'propel.validator.UniqueValidator', '', 'Le pseudo est déjà pris.');
+        $this->addValidator('firstname', 'minLength', 'propel.validator.MinLengthValidator', '1', 'Le prénom doit faire au moins 1 caractère.');
+        $this->addValidator('lastname', 'minLength', 'propel.validator.MinLengthValidator', '1', 'Le nom doit faire au moins 1 caractère.');
+        $this->addValidator('email', 'minLength', 'propel.validator.MinLengthValidator', '6', 'L\'e-mail doit faire au moins 6 caractères.');
+        $this->addValidator('email', 'match', 'propel.validator.MatchValidator', '/^[-+\w\.]+@[-\.\w]+\.[a-z]{2,4}$/', 'L\'adresse e-mail n\'est pas valide.');
+        $this->addValidator('email', 'unique', 'propel.validator.UniqueValidator', '', 'L\'email est déjà pris.');
+        $this->addValidator('visits_count', 'minValue', 'propel.validator.MinValueValidator', '0', 'Le nombre de visites ne peut pas être négatif.');
     } // initialize()
 
     /**
@@ -94,11 +94,8 @@ class UserTableMap extends TableMap
         $this->addRelation('UsersPaths', 'UsersPaths', RelationMap::ONE_TO_MANY, array('id' => 'user_id', ), 'CASCADE', 'CASCADE', 'UsersPathss');
         $this->addRelation('File', 'File', RelationMap::ONE_TO_MANY, array('id' => 'author_id', ), 'SET NULL', 'CASCADE', 'Files');
         $this->addRelation('Content', 'Content', RelationMap::ONE_TO_MANY, array('id' => 'author_id', ), 'SET NULL', 'CASCADE', 'Contents');
-        $this->addRelation('Comment', 'Comment', RelationMap::ONE_TO_MANY, array('id' => 'author_id', ), 'CASCADE', 'CASCADE', 'Comments');
         $this->addRelation('Report', 'Report', RelationMap::ONE_TO_MANY, array('id' => 'author_id', ), 'SET NULL', 'CASCADE', 'Reports');
         $this->addRelation('News', 'News', RelationMap::ONE_TO_MANY, array('id' => 'author_id', ), 'SET NULL', 'CASCADE', 'Newss');
-        $this->addRelation('Transaction', 'Transaction', RelationMap::ONE_TO_MANY, array('id' => 'user_id', ), 'SET NULL', 'CASCADE', 'Transactions');
-        $this->addRelation('ScheduledCourse', 'ScheduledCourse', RelationMap::ONE_TO_MANY, array('id' => 'teacher_id', ), 'SET NULL', 'CASCADE', 'ScheduledCourses');
         $this->addRelation('Token', 'Token', RelationMap::ONE_TO_MANY, array('id' => 'user_id', ), 'CASCADE', 'CASCADE', 'Tokens');
         $this->addRelation('EducationalPath', 'EducationalPath', RelationMap::MANY_TO_MANY, array(), 'CASCADE', 'CASCADE', 'EducationalPaths');
     } // buildRelations()

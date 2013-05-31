@@ -32,17 +32,17 @@ abstract class BaseShortLinkPeer
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
     const NUM_HYDRATE_COLUMNS = 4;
 
-    /** the column name for the ID field */
-    const ID = 'shortlinks.ID';
+    /** the column name for the id field */
+    const ID = 'shortlinks.id';
 
-    /** the column name for the SHORT_URL field */
-    const SHORT_URL = 'shortlinks.SHORT_URL';
+    /** the column name for the short_url field */
+    const SHORT_URL = 'shortlinks.short_url';
 
-    /** the column name for the URL field */
-    const URL = 'shortlinks.URL';
+    /** the column name for the url field */
+    const URL = 'shortlinks.url';
 
-    /** the column name for the CLICKS_COUNT field */
-    const CLICKS_COUNT = 'shortlinks.CLICKS_COUNT';
+    /** the column name for the clicks_count field */
+    const CLICKS_COUNT = 'shortlinks.clicks_count';
 
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -162,10 +162,10 @@ abstract class BaseShortLinkPeer
             $criteria->addSelectColumn(ShortLinkPeer::URL);
             $criteria->addSelectColumn(ShortLinkPeer::CLICKS_COUNT);
         } else {
-            $criteria->addSelectColumn($alias . '.ID');
-            $criteria->addSelectColumn($alias . '.SHORT_URL');
-            $criteria->addSelectColumn($alias . '.URL');
-            $criteria->addSelectColumn($alias . '.CLICKS_COUNT');
+            $criteria->addSelectColumn($alias . '.id');
+            $criteria->addSelectColumn($alias . '.short_url');
+            $criteria->addSelectColumn($alias . '.url');
+            $criteria->addSelectColumn($alias . '.clicks_count');
         }
     }
 
@@ -249,7 +249,7 @@ abstract class BaseShortLinkPeer
     /**
      * Prepares the Criteria object and uses the parent doSelect() method to execute a PDOStatement.
      *
-     * Use this method directly if you want to work with an executed statement durirectly (for example
+     * Use this method directly if you want to work with an executed statement directly (for example
      * to perform your own object hydration).
      *
      * @param      Criteria $criteria The Criteria object used to build the SELECT statement.
@@ -354,8 +354,15 @@ abstract class BaseShortLinkPeer
      *
      * @return void
      */
-    public static function clearInstancePool()
+    public static function clearInstancePool($and_clear_all_references = false)
     {
+      if ($and_clear_all_references)
+      {
+        foreach (ShortLinkPeer::$instances as $instance)
+        {
+          $instance->clearAllReferences(true);
+        }
+      }
         ShortLinkPeer::$instances = array();
     }
 
@@ -490,7 +497,7 @@ abstract class BaseShortLinkPeer
      *
      * @return string ClassName
      */
-    public static function getOMClass()
+    public static function getOMClass($row = 0, $colnum = 0)
     {
         return ShortLinkPeer::OM_CLASS;
     }

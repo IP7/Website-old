@@ -47,7 +47,6 @@
  * @method News findOne(PropelPDO $con = null) Return the first News matching the query
  * @method News findOneOrCreate(PropelPDO $con = null) Return the first News matching the query, or a new News object populated from the query conditions when no match is found
  *
- * @method News findOneById(int $id) Return the first News filtered by the id column
  * @method News findOneByAuthorId(int $author_id) Return the first News filtered by the author_id column
  * @method News findOneByTitle(string $title) Return the first News filtered by the title column
  * @method News findOneByText(string $text) Return the first News filtered by the text column
@@ -89,7 +88,7 @@ abstract class BaseNewsQuery extends ModelCriteria
      * Returns a new NewsQuery object.
      *
      * @param     string $modelAlias The alias of a model in the query
-     * @param     NewsQuery|Criteria $criteria Optional Criteria to build the query from
+     * @param   NewsQuery|Criteria $criteria Optional Criteria to build the query from
      *
      * @return NewsQuery
      */
@@ -146,18 +145,32 @@ abstract class BaseNewsQuery extends ModelCriteria
     }
 
     /**
+     * Alias of findPk to use instance pooling
+     *
+     * @param     mixed $key Primary key to use for the query
+     * @param     PropelPDO $con A connection object
+     *
+     * @return                 News A model object, or null if the key is not found
+     * @throws PropelException
+     */
+     public function findOneById($key, $con = null)
+     {
+        return $this->findPk($key, $con);
+     }
+
+    /**
      * Find object by primary key using raw SQL to go fast.
      * Bypass doSelect() and the object formatter by using generated code.
      *
      * @param     mixed $key Primary key to use for the query
      * @param     PropelPDO $con A connection object
      *
-     * @return   News A model object, or null if the key is not found
-     * @throws   PropelException
+     * @return                 News A model object, or null if the key is not found
+     * @throws PropelException
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `ID`, `AUTHOR_ID`, `TITLE`, `TEXT`, `EXPIRATION_DATE`, `CURSUS_ID`, `COURSE_ID`, `ACCESS_RIGHTS`, `CREATED_AT`, `UPDATED_AT` FROM `news` WHERE `ID` = :p0';
+        $sql = 'SELECT `id`, `author_id`, `title`, `text`, `expiration_date`, `cursus_id`, `course_id`, `access_rights`, `created_at`, `updated_at` FROM `news` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -253,7 +266,8 @@ abstract class BaseNewsQuery extends ModelCriteria
      * <code>
      * $query->filterById(1234); // WHERE id = 1234
      * $query->filterById(array(12, 34)); // WHERE id IN (12, 34)
-     * $query->filterById(array('min' => 12)); // WHERE id > 12
+     * $query->filterById(array('min' => 12)); // WHERE id >= 12
+     * $query->filterById(array('max' => 12)); // WHERE id <= 12
      * </code>
      *
      * @param     mixed $id The value to use as filter.
@@ -266,8 +280,22 @@ abstract class BaseNewsQuery extends ModelCriteria
      */
     public function filterById($id = null, $comparison = null)
     {
-        if (is_array($id) && null === $comparison) {
-            $comparison = Criteria::IN;
+        if (is_array($id)) {
+            $useMinMax = false;
+            if (isset($id['min'])) {
+                $this->addUsingAlias(NewsPeer::ID, $id['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($id['max'])) {
+                $this->addUsingAlias(NewsPeer::ID, $id['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
         }
 
         return $this->addUsingAlias(NewsPeer::ID, $id, $comparison);
@@ -280,7 +308,8 @@ abstract class BaseNewsQuery extends ModelCriteria
      * <code>
      * $query->filterByAuthorId(1234); // WHERE author_id = 1234
      * $query->filterByAuthorId(array(12, 34)); // WHERE author_id IN (12, 34)
-     * $query->filterByAuthorId(array('min' => 12)); // WHERE author_id > 12
+     * $query->filterByAuthorId(array('min' => 12)); // WHERE author_id >= 12
+     * $query->filterByAuthorId(array('max' => 12)); // WHERE author_id <= 12
      * </code>
      *
      * @see       filterByAuthor()
@@ -424,7 +453,8 @@ abstract class BaseNewsQuery extends ModelCriteria
      * <code>
      * $query->filterByCursusId(1234); // WHERE cursus_id = 1234
      * $query->filterByCursusId(array(12, 34)); // WHERE cursus_id IN (12, 34)
-     * $query->filterByCursusId(array('min' => 12)); // WHERE cursus_id > 12
+     * $query->filterByCursusId(array('min' => 12)); // WHERE cursus_id >= 12
+     * $query->filterByCursusId(array('max' => 12)); // WHERE cursus_id <= 12
      * </code>
      *
      * @see       filterByCursus()
@@ -467,7 +497,8 @@ abstract class BaseNewsQuery extends ModelCriteria
      * <code>
      * $query->filterByCourseId(1234); // WHERE course_id = 1234
      * $query->filterByCourseId(array(12, 34)); // WHERE course_id IN (12, 34)
-     * $query->filterByCourseId(array('min' => 12)); // WHERE course_id > 12
+     * $query->filterByCourseId(array('min' => 12)); // WHERE course_id >= 12
+     * $query->filterByCourseId(array('max' => 12)); // WHERE course_id <= 12
      * </code>
      *
      * @see       filterByCourse()
@@ -510,7 +541,8 @@ abstract class BaseNewsQuery extends ModelCriteria
      * <code>
      * $query->filterByAccessRights(1234); // WHERE access_rights = 1234
      * $query->filterByAccessRights(array(12, 34)); // WHERE access_rights IN (12, 34)
-     * $query->filterByAccessRights(array('min' => 12)); // WHERE access_rights > 12
+     * $query->filterByAccessRights(array('min' => 12)); // WHERE access_rights >= 12
+     * $query->filterByAccessRights(array('max' => 12)); // WHERE access_rights <= 12
      * </code>
      *
      * @param     mixed $accessRights The value to use as filter.
@@ -636,8 +668,8 @@ abstract class BaseNewsQuery extends ModelCriteria
      * @param   User|PropelObjectCollection $user The related object(s) to use as filter
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return   NewsQuery The current query, for fluid interface
-     * @throws   PropelException - if the provided filter is invalid.
+     * @return                 NewsQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
      */
     public function filterByAuthor($user, $comparison = null)
     {
@@ -712,8 +744,8 @@ abstract class BaseNewsQuery extends ModelCriteria
      * @param   Course|PropelObjectCollection $course The related object(s) to use as filter
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return   NewsQuery The current query, for fluid interface
-     * @throws   PropelException - if the provided filter is invalid.
+     * @return                 NewsQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
      */
     public function filterByCourse($course, $comparison = null)
     {
@@ -788,8 +820,8 @@ abstract class BaseNewsQuery extends ModelCriteria
      * @param   Cursus|PropelObjectCollection $cursus The related object(s) to use as filter
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return   NewsQuery The current query, for fluid interface
-     * @throws   PropelException - if the provided filter is invalid.
+     * @return                 NewsQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
      */
     public function filterByCursus($cursus, $comparison = null)
     {

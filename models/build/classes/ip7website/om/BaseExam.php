@@ -85,6 +85,12 @@ abstract class BaseExam extends BaseObject implements Persistent
     protected $alreadyInValidation = false;
 
     /**
+     * Flag to prevent endless clearAllReferences($deep=true) loop, if this object is referenced
+     * @var        boolean
+     */
+    protected $alreadyInClearAllReferencesDeep = false;
+
+    /**
      * Get the [id] column value.
      *
      * @return int
@@ -123,22 +129,25 @@ abstract class BaseExam extends BaseObject implements Persistent
             // while technically this is not a default value of null,
             // this seems to be closest in meaning.
             return null;
-        } else {
-            try {
-                $dt = new DateTime($this->date);
-            } catch (Exception $x) {
-                throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->date, true), $x);
-            }
+        }
+
+        try {
+            $dt = new DateTime($this->date);
+        } catch (Exception $x) {
+            throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->date, true), $x);
         }
 
         if ($format === null) {
             // Because propel.useDateTimeClass is true, we return a DateTime object.
             return $dt;
-        } elseif (strpos($format, '%') !== false) {
-            return strftime($format, $dt->format('U'));
-        } else {
-            return $dt->format($format);
         }
+
+        if (strpos($format, '%') !== false) {
+            return strftime($format, $dt->format('U'));
+        }
+
+        return $dt->format($format);
+
     }
 
     /**
@@ -166,11 +175,14 @@ abstract class BaseExam extends BaseObject implements Persistent
         if ($format === null) {
             // Because propel.useDateTimeClass is true, we return a DateTime object.
             return $dt;
-        } elseif (strpos($format, '%') !== false) {
-            return strftime($format, $dt->format('U'));
-        } else {
-            return $dt->format($format);
         }
+
+        if (strpos($format, '%') !== false) {
+            return strftime($format, $dt->format('U'));
+        }
+
+        return $dt->format($format);
+
     }
 
     /**
@@ -198,11 +210,14 @@ abstract class BaseExam extends BaseObject implements Persistent
         if ($format === null) {
             // Because propel.useDateTimeClass is true, we return a DateTime object.
             return $dt;
-        } elseif (strpos($format, '%') !== false) {
-            return strftime($format, $dt->format('U'));
-        } else {
-            return $dt->format($format);
         }
+
+        if (strpos($format, '%') !== false) {
+            return strftime($format, $dt->format('U'));
+        }
+
+        return $dt->format($format);
+
     }
 
     /**
@@ -223,7 +238,7 @@ abstract class BaseExam extends BaseObject implements Persistent
      */
     public function setId($v)
     {
-        if ($v !== null) {
+        if ($v !== null && is_numeric($v)) {
             $v = (int) $v;
         }
 
@@ -244,7 +259,7 @@ abstract class BaseExam extends BaseObject implements Persistent
      */
     public function setCourseId($v)
     {
-        if ($v !== null) {
+        if ($v !== null && is_numeric($v)) {
             $v = (int) $v;
         }
 
@@ -338,7 +353,7 @@ abstract class BaseExam extends BaseObject implements Persistent
      */
     public function setComments($v)
     {
-        if ($v !== null) {
+        if ($v !== null && is_numeric($v)) {
             $v = (string) $v;
         }
 
@@ -396,7 +411,7 @@ abstract class BaseExam extends BaseObject implements Persistent
             if ($rehydrate) {
                 $this->ensureConsistency();
             }
-
+            $this->postHydrate($row, $startcol, $rehydrate);
             return $startcol + 6; // 6 = ExamPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
@@ -626,22 +641,22 @@ abstract class BaseExam extends BaseObject implements Persistent
 
          // check the columns in natural order for more readable SQL queries
         if ($this->isColumnModified(ExamPeer::ID)) {
-            $modifiedColumns[':p' . $index++]  = '`ID`';
+            $modifiedColumns[':p' . $index++]  = '`id`';
         }
         if ($this->isColumnModified(ExamPeer::COURSE_ID)) {
-            $modifiedColumns[':p' . $index++]  = '`COURSE_ID`';
+            $modifiedColumns[':p' . $index++]  = '`course_id`';
         }
         if ($this->isColumnModified(ExamPeer::DATE)) {
-            $modifiedColumns[':p' . $index++]  = '`DATE`';
+            $modifiedColumns[':p' . $index++]  = '`date`';
         }
         if ($this->isColumnModified(ExamPeer::BEGINNING)) {
-            $modifiedColumns[':p' . $index++]  = '`BEGINNING`';
+            $modifiedColumns[':p' . $index++]  = '`beginning`';
         }
         if ($this->isColumnModified(ExamPeer::END)) {
-            $modifiedColumns[':p' . $index++]  = '`END`';
+            $modifiedColumns[':p' . $index++]  = '`end`';
         }
         if ($this->isColumnModified(ExamPeer::COMMENTS)) {
-            $modifiedColumns[':p' . $index++]  = '`COMMENTS`';
+            $modifiedColumns[':p' . $index++]  = '`comments`';
         }
 
         $sql = sprintf(
@@ -654,22 +669,22 @@ abstract class BaseExam extends BaseObject implements Persistent
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
-                    case '`ID`':
+                    case '`id`':
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
-                    case '`COURSE_ID`':
+                    case '`course_id`':
                         $stmt->bindValue($identifier, $this->course_id, PDO::PARAM_INT);
                         break;
-                    case '`DATE`':
+                    case '`date`':
                         $stmt->bindValue($identifier, $this->date, PDO::PARAM_STR);
                         break;
-                    case '`BEGINNING`':
+                    case '`beginning`':
                         $stmt->bindValue($identifier, $this->beginning, PDO::PARAM_STR);
                         break;
-                    case '`END`':
+                    case '`end`':
                         $stmt->bindValue($identifier, $this->end, PDO::PARAM_STR);
                         break;
-                    case '`COMMENTS`':
+                    case '`comments`':
                         $stmt->bindValue($identifier, $this->comments, PDO::PARAM_STR);
                         break;
                 }
@@ -740,11 +755,11 @@ abstract class BaseExam extends BaseObject implements Persistent
             $this->validationFailures = array();
 
             return true;
-        } else {
-            $this->validationFailures = $res;
-
-            return false;
         }
+
+        $this->validationFailures = $res;
+
+        return false;
     }
 
     /**
@@ -1133,12 +1148,13 @@ abstract class BaseExam extends BaseObject implements Persistent
      * Get the associated Course object
      *
      * @param PropelPDO $con Optional Connection object.
+     * @param $doQuery Executes a query to get the object if required
      * @return Course The associated Course object.
      * @throws PropelException
      */
-    public function getCourse(PropelPDO $con = null)
+    public function getCourse(PropelPDO $con = null, $doQuery = true)
     {
-        if ($this->aCourse === null && ($this->course_id !== null)) {
+        if ($this->aCourse === null && ($this->course_id !== null) && $doQuery) {
             $this->aCourse = CourseQuery::create()->findPk($this->course_id, $con);
             /* The following can be used additionally to
                 guarantee the related object contains a reference
@@ -1165,6 +1181,7 @@ abstract class BaseExam extends BaseObject implements Persistent
         $this->comments = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
+        $this->alreadyInClearAllReferencesDeep = false;
         $this->clearAllReferences();
         $this->resetModified();
         $this->setNew(true);
@@ -1182,7 +1199,13 @@ abstract class BaseExam extends BaseObject implements Persistent
      */
     public function clearAllReferences($deep = false)
     {
-        if ($deep) {
+        if ($deep && !$this->alreadyInClearAllReferencesDeep) {
+            $this->alreadyInClearAllReferencesDeep = true;
+            if ($this->aCourse instanceof Persistent) {
+              $this->aCourse->clearAllReferences($deep);
+            }
+
+            $this->alreadyInClearAllReferencesDeep = false;
         } // if ($deep)
 
         $this->aCourse = null;

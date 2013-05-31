@@ -32,11 +32,11 @@ abstract class BaseContentsFilesPeer
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
     const NUM_HYDRATE_COLUMNS = 2;
 
-    /** the column name for the CONTENT_ID field */
-    const CONTENT_ID = 'contents_files.CONTENT_ID';
+    /** the column name for the content_id field */
+    const CONTENT_ID = 'contents_files.content_id';
 
-    /** the column name for the FILE_ID field */
-    const FILE_ID = 'contents_files.FILE_ID';
+    /** the column name for the file_id field */
+    const FILE_ID = 'contents_files.file_id';
 
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -154,8 +154,8 @@ abstract class BaseContentsFilesPeer
             $criteria->addSelectColumn(ContentsFilesPeer::CONTENT_ID);
             $criteria->addSelectColumn(ContentsFilesPeer::FILE_ID);
         } else {
-            $criteria->addSelectColumn($alias . '.CONTENT_ID');
-            $criteria->addSelectColumn($alias . '.FILE_ID');
+            $criteria->addSelectColumn($alias . '.content_id');
+            $criteria->addSelectColumn($alias . '.file_id');
         }
     }
 
@@ -239,7 +239,7 @@ abstract class BaseContentsFilesPeer
     /**
      * Prepares the Criteria object and uses the parent doSelect() method to execute a PDOStatement.
      *
-     * Use this method directly if you want to work with an executed statement durirectly (for example
+     * Use this method directly if you want to work with an executed statement directly (for example
      * to perform your own object hydration).
      *
      * @param      Criteria $criteria The Criteria object used to build the SELECT statement.
@@ -344,8 +344,15 @@ abstract class BaseContentsFilesPeer
      *
      * @return void
      */
-    public static function clearInstancePool()
+    public static function clearInstancePool($and_clear_all_references = false)
     {
+      if ($and_clear_all_references)
+      {
+        foreach (ContentsFilesPeer::$instances as $instance)
+        {
+          $instance->clearAllReferences(true);
+        }
+      }
         ContentsFilesPeer::$instances = array();
     }
 
@@ -1111,7 +1118,7 @@ abstract class BaseContentsFilesPeer
      *
      * @return string ClassName
      */
-    public static function getOMClass()
+    public static function getOMClass($row = 0, $colnum = 0)
     {
         return ContentsFilesPeer::OM_CLASS;
     }
