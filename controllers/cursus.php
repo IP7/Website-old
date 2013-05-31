@@ -78,13 +78,6 @@ function display_cursus() {
 
     $other_links = array();
 
-    if ($cursus->countSchedules() > 0) {
-        $other_links []= array(
-            'href'  => $base_uri.'emplois-du-temps',
-            'title' => 'Emplois du temps'
-        );
-    }
-
     $moderation_bar = array();
     $add_news = false;
 
