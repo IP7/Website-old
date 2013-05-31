@@ -1,4 +1,7 @@
 {
+    "name": "ip7/website",
+    "description": "IP7's Website",
+    "license": "MIT",
     "require": {
         "michelf/php-markdown": "dev-lib",
         "propel/propel1": "1.6.7",
