@@ -13,7 +13,7 @@ class LoginHelpersTest extends PHPUnit_Framework_TestCase {
     $u->setFirstName('Foo');
     $u->setLastName('Bar');
     $u->setRights(0);
-    $u->setDeactivated(0);
+    $u->setActivated(1);
     $u->save();
 
   } 
