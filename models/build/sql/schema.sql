@@ -289,21 +289,43 @@ CREATE TABLE `news`
 ) ENGINE=MyISAM;
 
 -- ---------------------------------------------------------------------
--- exams
+-- events
 -- ---------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `exams`;
+DROP TABLE IF EXISTS `events`;
 
-CREATE TABLE `exams`
+CREATE TABLE `events`
 (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `course_id` INTEGER NOT NULL,
-    `date` DATE NOT NULL,
-    `beginning` TIME,
-    `end` TIME,
-    `comments` VARCHAR(255),
+    `author_id` INTEGER,
+    `title` VARCHAR(255) NOT NULL,
+    `access_rights` TINYINT DEFAULT 0,
+    `description` TEXT(1024) NOT NULL,
+    `place` VARCHAR(255),
+    `fee` DECIMAL DEFAULT 0,
+    `start_date` DATETIME NOT NULL,
+    `end_date` DATETIME,
+    `created_at` DATETIME,
+    `updated_at` DATETIME,
     PRIMARY KEY (`id`),
-    INDEX `exams_FI_1` (`course_id`)
+    INDEX `events_FI_1` (`author_id`)
+) ENGINE=MyISAM;
+
+-- ---------------------------------------------------------------------
+-- events_types
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `events_types`;
+
+CREATE TABLE `events_types`
+(
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(32) NOT NULL,
+    `short_name` VARCHAR(16) NOT NULL,
+    `access_rights` TINYINT DEFAULT 0,
+    PRIMARY KEY (`id`),
+    UNIQUE INDEX `events_types_U_1` (`name`),
+    UNIQUE INDEX `events_types_U_2` (`short_name`)
 ) ENGINE=MyISAM;
 
 -- ---------------------------------------------------------------------

@@ -109,13 +109,6 @@ function display_educational_path() {
 
     $other_links = array();
 
-    if ($path->countSchedules() > 0) {
-        $other_links []= array(
-            'href'  => $base_uri.'emplois-du-temps',
-            'title' => 'Emplois du temps'
-        );
-    }
-
     $is_page_admin = is_connected() && (user()->isAdmin() || user()->isResponsibleFor($cursus));
 
     $responsable = $cursus->getResponsable();

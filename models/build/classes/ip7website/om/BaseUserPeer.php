@@ -572,6 +572,9 @@ abstract class BaseUserPeer
         // Invalidate objects in NewsPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         NewsPeer::clearInstancePool();
+        // Invalidate objects in EventPeer instance pool,
+        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+        EventPeer::clearInstancePool();
         // Invalidate objects in TokenPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         TokenPeer::clearInstancePool();
@@ -1006,6 +1009,14 @@ abstract class BaseUserPeer
             $updateValues = new Criteria(UserPeer::DATABASE_NAME);
             $selectCriteria->add(NewsPeer::AUTHOR_ID, $obj->getId());
             $updateValues->add(NewsPeer::AUTHOR_ID, null);
+
+            BasePeer::doUpdate($selectCriteria, $updateValues, $con); // use BasePeer because generated Peer doUpdate() methods only update using pkey
+
+            // set fkey col in related Event rows to null
+            $selectCriteria = new Criteria(UserPeer::DATABASE_NAME);
+            $updateValues = new Criteria(UserPeer::DATABASE_NAME);
+            $selectCriteria->add(EventPeer::AUTHOR_ID, $obj->getId());
+            $updateValues->add(EventPeer::AUTHOR_ID, null);
 
             BasePeer::doUpdate($selectCriteria, $updateValues, $con); // use BasePeer because generated Peer doUpdate() methods only update using pkey
 

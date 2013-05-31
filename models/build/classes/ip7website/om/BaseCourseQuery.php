@@ -56,10 +56,6 @@
  * @method CourseQuery rightJoinNews($relationAlias = null) Adds a RIGHT JOIN clause to the query using the News relation
  * @method CourseQuery innerJoinNews($relationAlias = null) Adds a INNER JOIN clause to the query using the News relation
  *
- * @method CourseQuery leftJoinExam($relationAlias = null) Adds a LEFT JOIN clause to the query using the Exam relation
- * @method CourseQuery rightJoinExam($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Exam relation
- * @method CourseQuery innerJoinExam($relationAlias = null) Adds a INNER JOIN clause to the query using the Exam relation
- *
  * @method CourseQuery leftJoinCourseUrl($relationAlias = null) Adds a LEFT JOIN clause to the query using the CourseUrl relation
  * @method CourseQuery rightJoinCourseUrl($relationAlias = null) Adds a RIGHT JOIN clause to the query using the CourseUrl relation
  * @method CourseQuery innerJoinCourseUrl($relationAlias = null) Adds a INNER JOIN clause to the query using the CourseUrl relation
@@ -1065,80 +1061,6 @@ abstract class BaseCourseQuery extends ModelCriteria
         return $this
             ->joinNews($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'News', 'NewsQuery');
-    }
-
-    /**
-     * Filter the query by a related Exam object
-     *
-     * @param   Exam|PropelObjectCollection $exam  the related object to use as filter
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return                 CourseQuery The current query, for fluid interface
-     * @throws PropelException - if the provided filter is invalid.
-     */
-    public function filterByExam($exam, $comparison = null)
-    {
-        if ($exam instanceof Exam) {
-            return $this
-                ->addUsingAlias(CoursePeer::ID, $exam->getCourseId(), $comparison);
-        } elseif ($exam instanceof PropelObjectCollection) {
-            return $this
-                ->useExamQuery()
-                ->filterByPrimaryKeys($exam->getPrimaryKeys())
-                ->endUse();
-        } else {
-            throw new PropelException('filterByExam() only accepts arguments of type Exam or PropelCollection');
-        }
-    }
-
-    /**
-     * Adds a JOIN clause to the query using the Exam relation
-     *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return CourseQuery The current query, for fluid interface
-     */
-    public function joinExam($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-    {
-        $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('Exam');
-
-        // create a ModelJoin object for this join
-        $join = new ModelJoin();
-        $join->setJoinType($joinType);
-        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
-        if ($previousJoin = $this->getPreviousJoin()) {
-            $join->setPreviousJoin($previousJoin);
-        }
-
-        // add the ModelJoin to the current object
-        if ($relationAlias) {
-            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
-            $this->addJoinObject($join, $relationAlias);
-        } else {
-            $this->addJoinObject($join, 'Exam');
-        }
-
-        return $this;
-    }
-
-    /**
-     * Use the Exam relation Exam object
-     *
-     * @see       useQuery()
-     *
-     * @param     string $relationAlias optional alias for the relation,
-     *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return   ExamQuery A secondary query class using the current class as primary query
-     */
-    public function useExamQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-    {
-        return $this
-            ->joinExam($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'Exam', 'ExamQuery');
     }
 
     /**
