@@ -28,6 +28,6 @@ rm -rf build/classes/ip7website/om
 ../vendor/propel/propel1/generator/bin/propel-gen
 
 echo -- Generating the tables
-mysql -e 'use infop7db_test;\. build/sql/schema.sql'
+mysql -e 'use myapp_test;\. build/sql/schema.sql'
 
 echo -- Done.
