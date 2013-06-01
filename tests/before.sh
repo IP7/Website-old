@@ -8,26 +8,26 @@ echo -- Installing the dependencies
 composer install --dev
 
 echo -- Creating the DB
-mysql -u root -e 'create database infop7db_test;'
-
-echo -- Creating the user
-mysql -u root -e 'create user infop7user;grant all on infop7db_test.* to infop7user;'
+mysql -e 'create database myapp_test;'
 
 echo -- Generating the DB schema
-sed -e 's/infop7db/infop7db_test/g' models/schema.xml > tmp
+sed -e 's/infop7db/myapp_test/g' models/schema.xml > tmp
 mv tmp models/schema.xml
 
 echo -- Setting-up Propel files
-cp {tests,models}/buildtime-conf.xml
+cp tests/buildtime-conf.xml models/buildtime-conf.xml
 cp tests/buildtime-conf.xml models/runtime-conf.xml
 
-cd models
-
 echo -- Generating the model classes
-rm -rf build
+cd models
+rm -rf build/conf
+rm -rf build/migrations
+rm -rf build/sql
+rm -rf build/classes/ip7website/map
+rm -rf build/classes/ip7website/om
 ../vendor/propel/propel1/generator/bin/propel-gen
 
 echo -- Generating the tables
-mysql -u infop7user -e 'use infop7db_test;\. build/sql/schema.sql'
+mysql -e 'use infop7db_test;\. build/sql/schema.sql'
 
 echo -- Done.
