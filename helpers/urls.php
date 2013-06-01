@@ -56,7 +56,7 @@ function news_url($n) {
 
 // return the URL of an educational path
 function educpath_url($cursus, $ep) {
-    return cursus_url($cursus).'/parcours/'.$ep.'/';
+    return cursus_url($cursus).'/parcours/'.$ep->getShortName().'/';
 }
 
 // return the URL for a CSS file
