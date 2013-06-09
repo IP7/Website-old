@@ -106,5 +106,19 @@ function display_admin_migrate_db_page() {
     ));
 }
 
+function display_page() {
+	$url  = params('url');
+    $page = PageQuery::create()->findOneByUrl($url);
 
-?>
+    if ($page === null) {
+        halt(NOT_FOUND);
+    }
+
+    return tpl_render('page.html', array(
+        'page' => array(
+            'title' => $page->getTitle(),
+            'text'  => $page->getText()
+        )
+    );
+}
+

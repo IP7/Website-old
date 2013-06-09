@@ -770,5 +770,21 @@
         </foreign-key>
     </table>
 
+    <!-- pages (#341) -->
+    <table name="pages" phpName="Page">
+        <!-- id -->
+        <column name="id"            type="INTEGER" required="true" primaryKey="true" autoIncrement="true"/>
+
+        <!-- URL (relative) -->
+        <column name="url" type="VARCHAR" required="true" size="64" />
+
+        <!-- titre -->
+        <column name="title" type="VARCHAR" required="true" size="64" />
+
+        <!-- texte -->
+        <column name="text" type="LONGVARCHAR" size="4096" required="true" lazyLoad="true" />
+
+        <behavior name="timestampable" />
+    </table>
 
 </database>

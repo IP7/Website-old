@@ -1,0 +1,5 @@
+{% extends 'main.html' %}
+{% block content %}
+{{ parent() }}
+<article class="page">{{ page.text|md2html|raw }}</article>
+{% endblock %}
