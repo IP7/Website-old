@@ -163,6 +163,14 @@ function display_course_archive_page() {
         )
     );
 
+    $msg = null;
+    $msg_type = null;
+
+    if ($archive == null) {
+        $msg = 'Il n\'y a pas d\'archive disponible pour ce cours.';
+        $msg_type = 'error';
+    }
+
     $tpl_page = array(
         'page' => array(
             'title' => 'Télécharger tous les contenus ' . Lang\de($course->getShortName()),
@@ -173,7 +181,10 @@ function display_course_archive_page() {
                 $course->getShortName(), 'zip', 'archive'
             ),
             'breadcrumbs' => $breadcrumbs,
-            'archive' => tpl_file($archive)
+            'archive' => tpl_file($archive),
+
+            'message' => $msg,
+            'message_type' => $msg_type
         )
 
     );
