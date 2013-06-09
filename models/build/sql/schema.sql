@@ -381,17 +381,23 @@ CREATE TABLE `shortlinks`
 ) ENGINE=MyISAM;
 
 -- ---------------------------------------------------------------------
--- courses_contents_archives
+-- files_archives
 -- ---------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `courses_contents_archives`;
+DROP TABLE IF EXISTS `files_archives`;
 
-CREATE TABLE `courses_contents_archives`
+CREATE TABLE `files_archives`
 (
-    `course_id` INTEGER NOT NULL,
-    `file_id` INTEGER NOT NULL,
-    PRIMARY KEY (`course_id`,`file_id`),
-    INDEX `courses_contents_archives_FI_2` (`file_id`)
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `files_ids` VARCHAR(255) NOT NULL,
+    `title` VARCHAR(128) NOT NULL,
+    `date` DATETIME NOT NULL,
+    `path` VARCHAR(255) NOT NULL,
+    `access_rights` TINYINT DEFAULT 0,
+    `downloads_count` INTEGER DEFAULT 0,
+    `deleted` TINYINT(1) DEFAULT 0,
+    PRIMARY KEY (`id`),
+    UNIQUE INDEX `files_archives_U_1` (`path`)
 ) ENGINE=MyISAM;
 
 # This restores the fkey checks, after having unset them earlier

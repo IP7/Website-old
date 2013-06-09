@@ -3,7 +3,7 @@
 
 
 /**
- * This class defines the structure of the 'files' table.
+ * This class defines the structure of the 'files_archives' table.
  *
  *
  *
@@ -14,13 +14,13 @@
  *
  * @package    propel.generator.ip7website.map
  */
-class FileTableMap extends TableMap
+class FilesArchiveTableMap extends TableMap
 {
 
     /**
      * The (dot-path) name of this class
      */
-    const CLASS_NAME = 'ip7website.map.FileTableMap';
+    const CLASS_NAME = 'ip7website.map.FilesArchiveTableMap';
 
     /**
      * Initialize the table attributes, columns and validators
@@ -32,27 +32,16 @@ class FileTableMap extends TableMap
     public function initialize()
     {
         // attributes
-        $this->setName('files');
-        $this->setPhpName('File');
-        $this->setClassname('File');
+        $this->setName('files_archives');
+        $this->setPhpName('FilesArchive');
+        $this->setClassname('FilesArchive');
         $this->setPackage('ip7website');
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
-        $this->addForeignKey('author_id', 'AuthorId', 'INTEGER', 'users', 'id', false, null, null);
+        $this->addColumn('files_ids', 'FilesIds', 'VARCHAR', true, 255, null);
         $this->addColumn('title', 'Title', 'VARCHAR', true, 128, null);
         $this->addColumn('date', 'Date', 'TIMESTAMP', true, null, null);
-        $this->addColumn('description', 'Description', 'VARCHAR', false, 255, null);
-        $this->addColumn('file_type', 'FileType', 'ENUM', false, null, null);
-        $this->getColumn('file_type', false)->setValueSet(array (
-  0 => 'archive',
-  1 => 'text',
-  2 => 'image',
-  3 => 'video',
-  4 => 'audio',
-  5 => 'pdf',
-  6 => 'binary',
-));
         $this->addColumn('path', 'Path', 'VARCHAR', true, 255, null);
         $this->addColumn('access_rights', 'AccessRights', 'TINYINT', false, null, 0);
         $this->addColumn('downloads_count', 'DownloadsCount', 'INTEGER', false, null, 0);
@@ -60,7 +49,7 @@ class FileTableMap extends TableMap
         // validators
         $this->addValidator('title', 'minLength', 'propel.validator.MinLengthValidator', '3', 'Le nom doit faire au moins 3 caractères.');
         $this->addValidator('path', 'minLength', 'propel.validator.MinLengthValidator', '3', 'Le chemin doit faire au moins 3 caractères.');
-        $this->addValidator('path', 'notMatch', 'propel.validator.NotMatchValidator', '/^[a-z]:\/\//i', 'Le fichier ne peut être distant.');
+        $this->addValidator('path', 'notMatch', 'propel.validator.NotMatchValidator', '/^[a-z]+:\/\//i', 'Le fichier ne peut être distant.');
     } // initialize()
 
     /**
@@ -68,9 +57,6 @@ class FileTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('Author', 'User', RelationMap::MANY_TO_ONE, array('author_id' => 'id', ), 'SET NULL', 'CASCADE');
-        $this->addRelation('ContentsFiles', 'ContentsFiles', RelationMap::ONE_TO_MANY, array('id' => 'file_id', ), 'CASCADE', 'CASCADE', 'ContentsFiless');
-        $this->addRelation('Content', 'Content', RelationMap::MANY_TO_MANY, array(), 'CASCADE', 'CASCADE', 'Contents');
     } // buildRelations()
 
-} // FileTableMap
+} // FilesArchiveTableMap

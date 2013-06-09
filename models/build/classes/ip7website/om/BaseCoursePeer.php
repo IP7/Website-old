@@ -420,9 +420,6 @@ abstract class BaseCoursePeer
         // Invalidate objects in CourseUrlPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         CourseUrlPeer::clearInstancePool();
-        // Invalidate objects in CoursesContentsArchivesPeer instance pool,
-        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-        CoursesContentsArchivesPeer::clearInstancePool();
     }
 
     /**
@@ -1030,12 +1027,6 @@ abstract class BaseCoursePeer
 
             $criteria->add(CourseUrlPeer::COURSE_ID, $obj->getId());
             $affectedRows += CourseUrlPeer::doDelete($criteria, $con);
-
-            // delete related CoursesContentsArchives objects
-            $criteria = new Criteria(CoursesContentsArchivesPeer::DATABASE_NAME);
-
-            $criteria->add(CoursesContentsArchivesPeer::COURSE_ID, $obj->getId());
-            $affectedRows += CoursesContentsArchivesPeer::doDelete($criteria, $con);
         }
 
         return $affectedRows;

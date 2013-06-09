@@ -136,12 +136,6 @@ abstract class BaseCourse extends BaseObject implements Persistent
     protected $collCourseUrlsPartial;
 
     /**
-     * @var        PropelObjectCollection|CoursesContentsArchives[] Collection to store aggregation of CoursesContentsArchives objects.
-     */
-    protected $collCoursesContentsArchivess;
-    protected $collCoursesContentsArchivessPartial;
-
-    /**
      * @var        PropelObjectCollection|EducationalPath[] Collection to store aggregation of EducationalPath objects.
      */
     protected $collOptionalEducationalPaths;
@@ -150,11 +144,6 @@ abstract class BaseCourse extends BaseObject implements Persistent
      * @var        PropelObjectCollection|EducationalPath[] Collection to store aggregation of EducationalPath objects.
      */
     protected $collMandatoryEducationalPaths;
-
-    /**
-     * @var        PropelObjectCollection|File[] Collection to store aggregation of File objects.
-     */
-    protected $collContentsArchives;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -192,12 +181,6 @@ abstract class BaseCourse extends BaseObject implements Persistent
      * An array of objects scheduled for deletion.
      * @var		PropelObjectCollection
      */
-    protected $contentsArchivesScheduledForDeletion = null;
-
-    /**
-     * An array of objects scheduled for deletion.
-     * @var		PropelObjectCollection
-     */
     protected $courseAliassScheduledForDeletion = null;
 
     /**
@@ -229,12 +212,6 @@ abstract class BaseCourse extends BaseObject implements Persistent
      * @var		PropelObjectCollection
      */
     protected $courseUrlsScheduledForDeletion = null;
-
-    /**
-     * An array of objects scheduled for deletion.
-     * @var		PropelObjectCollection
-     */
-    protected $coursesContentsArchivessScheduledForDeletion = null;
 
     /**
      * Applies default values to this object.
@@ -722,11 +699,8 @@ abstract class BaseCourse extends BaseObject implements Persistent
 
             $this->collCourseUrls = null;
 
-            $this->collCoursesContentsArchivess = null;
-
             $this->collOptionalEducationalPaths = null;
             $this->collMandatoryEducationalPaths = null;
-            $this->collContentsArchives = null;
         } // if (deep)
     }
 
@@ -915,32 +889,6 @@ abstract class BaseCourse extends BaseObject implements Persistent
                 }
             }
 
-            if ($this->contentsArchivesScheduledForDeletion !== null) {
-                if (!$this->contentsArchivesScheduledForDeletion->isEmpty()) {
-                    $pks = array();
-                    $pk = $this->getPrimaryKey();
-                    foreach ($this->contentsArchivesScheduledForDeletion->getPrimaryKeys(false) as $remotePk) {
-                        $pks[] = array($pk, $remotePk);
-                    }
-                    CoursesContentsArchivesQuery::create()
-                        ->filterByPrimaryKeys($pks)
-                        ->delete($con);
-                    $this->contentsArchivesScheduledForDeletion = null;
-                }
-
-                foreach ($this->getContentsArchives() as $contentsArchive) {
-                    if ($contentsArchive->isModified()) {
-                        $contentsArchive->save($con);
-                    }
-                }
-            } elseif ($this->collContentsArchives) {
-                foreach ($this->collContentsArchives as $contentsArchive) {
-                    if ($contentsArchive->isModified()) {
-                        $contentsArchive->save($con);
-                    }
-                }
-            }
-
             if ($this->courseAliassScheduledForDeletion !== null) {
                 if (!$this->courseAliassScheduledForDeletion->isEmpty()) {
                     CourseAliasQuery::create()
@@ -1039,23 +987,6 @@ abstract class BaseCourse extends BaseObject implements Persistent
 
             if ($this->collCourseUrls !== null) {
                 foreach ($this->collCourseUrls as $referrerFK) {
-                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
-                        $affectedRows += $referrerFK->save($con);
-                    }
-                }
-            }
-
-            if ($this->coursesContentsArchivessScheduledForDeletion !== null) {
-                if (!$this->coursesContentsArchivessScheduledForDeletion->isEmpty()) {
-                    CoursesContentsArchivesQuery::create()
-                        ->filterByPrimaryKeys($this->coursesContentsArchivessScheduledForDeletion->getPrimaryKeys(false))
-                        ->delete($con);
-                    $this->coursesContentsArchivessScheduledForDeletion = null;
-                }
-            }
-
-            if ($this->collCoursesContentsArchivess !== null) {
-                foreach ($this->collCoursesContentsArchivess as $referrerFK) {
                     if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
                         $affectedRows += $referrerFK->save($con);
                     }
@@ -1318,14 +1249,6 @@ abstract class BaseCourse extends BaseObject implements Persistent
                     }
                 }
 
-                if ($this->collCoursesContentsArchivess !== null) {
-                    foreach ($this->collCoursesContentsArchivess as $referrerFK) {
-                        if (!$referrerFK->validate($columns)) {
-                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
-                        }
-                    }
-                }
-
 
             $this->alreadyInValidation = false;
         }
@@ -1452,9 +1375,6 @@ abstract class BaseCourse extends BaseObject implements Persistent
             }
             if (null !== $this->collCourseUrls) {
                 $result['CourseUrls'] = $this->collCourseUrls->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
-            }
-            if (null !== $this->collCoursesContentsArchivess) {
-                $result['CoursesContentsArchivess'] = $this->collCoursesContentsArchivess->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
         }
 
@@ -1691,12 +1611,6 @@ abstract class BaseCourse extends BaseObject implements Persistent
                 }
             }
 
-            foreach ($this->getCoursesContentsArchivess() as $relObj) {
-                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addCoursesContentsArchives($relObj->copy($deepCopy));
-                }
-            }
-
             //unflag object copy
             $this->startCopy = false;
         } // if ($deepCopy)
@@ -1827,9 +1741,6 @@ abstract class BaseCourse extends BaseObject implements Persistent
         }
         if ('CourseUrl' == $relationName) {
             $this->initCourseUrls();
-        }
-        if ('CoursesContentsArchives' == $relationName) {
-            $this->initCoursesContentsArchivess();
         }
     }
 
@@ -3317,249 +3228,6 @@ abstract class BaseCourse extends BaseObject implements Persistent
     }
 
     /**
-     * Clears out the collCoursesContentsArchivess collection
-     *
-     * This does not modify the database; however, it will remove any associated objects, causing
-     * them to be refetched by subsequent calls to accessor method.
-     *
-     * @return Course The current object (for fluent API support)
-     * @see        addCoursesContentsArchivess()
-     */
-    public function clearCoursesContentsArchivess()
-    {
-        $this->collCoursesContentsArchivess = null; // important to set this to null since that means it is uninitialized
-        $this->collCoursesContentsArchivessPartial = null;
-
-        return $this;
-    }
-
-    /**
-     * reset is the collCoursesContentsArchivess collection loaded partially
-     *
-     * @return void
-     */
-    public function resetPartialCoursesContentsArchivess($v = true)
-    {
-        $this->collCoursesContentsArchivessPartial = $v;
-    }
-
-    /**
-     * Initializes the collCoursesContentsArchivess collection.
-     *
-     * By default this just sets the collCoursesContentsArchivess collection to an empty array (like clearcollCoursesContentsArchivess());
-     * however, you may wish to override this method in your stub class to provide setting appropriate
-     * to your application -- for example, setting the initial array to the values stored in database.
-     *
-     * @param boolean $overrideExisting If set to true, the method call initializes
-     *                                        the collection even if it is not empty
-     *
-     * @return void
-     */
-    public function initCoursesContentsArchivess($overrideExisting = true)
-    {
-        if (null !== $this->collCoursesContentsArchivess && !$overrideExisting) {
-            return;
-        }
-        $this->collCoursesContentsArchivess = new PropelObjectCollection();
-        $this->collCoursesContentsArchivess->setModel('CoursesContentsArchives');
-    }
-
-    /**
-     * Gets an array of CoursesContentsArchives objects which contain a foreign key that references this object.
-     *
-     * If the $criteria is not null, it is used to always fetch the results from the database.
-     * Otherwise the results are fetched from the database the first time, then cached.
-     * Next time the same method is called without $criteria, the cached collection is returned.
-     * If this Course is new, it will return
-     * an empty collection or the current collection; the criteria is ignored on a new object.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @return PropelObjectCollection|CoursesContentsArchives[] List of CoursesContentsArchives objects
-     * @throws PropelException
-     */
-    public function getCoursesContentsArchivess($criteria = null, PropelPDO $con = null)
-    {
-        $partial = $this->collCoursesContentsArchivessPartial && !$this->isNew();
-        if (null === $this->collCoursesContentsArchivess || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collCoursesContentsArchivess) {
-                // return empty collection
-                $this->initCoursesContentsArchivess();
-            } else {
-                $collCoursesContentsArchivess = CoursesContentsArchivesQuery::create(null, $criteria)
-                    ->filterByCourse($this)
-                    ->find($con);
-                if (null !== $criteria) {
-                    if (false !== $this->collCoursesContentsArchivessPartial && count($collCoursesContentsArchivess)) {
-                      $this->initCoursesContentsArchivess(false);
-
-                      foreach($collCoursesContentsArchivess as $obj) {
-                        if (false == $this->collCoursesContentsArchivess->contains($obj)) {
-                          $this->collCoursesContentsArchivess->append($obj);
-                        }
-                      }
-
-                      $this->collCoursesContentsArchivessPartial = true;
-                    }
-
-                    $collCoursesContentsArchivess->getInternalIterator()->rewind();
-                    return $collCoursesContentsArchivess;
-                }
-
-                if($partial && $this->collCoursesContentsArchivess) {
-                    foreach($this->collCoursesContentsArchivess as $obj) {
-                        if($obj->isNew()) {
-                            $collCoursesContentsArchivess[] = $obj;
-                        }
-                    }
-                }
-
-                $this->collCoursesContentsArchivess = $collCoursesContentsArchivess;
-                $this->collCoursesContentsArchivessPartial = false;
-            }
-        }
-
-        return $this->collCoursesContentsArchivess;
-    }
-
-    /**
-     * Sets a collection of CoursesContentsArchives objects related by a one-to-many relationship
-     * to the current object.
-     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
-     * and new objects from the given Propel collection.
-     *
-     * @param PropelCollection $coursesContentsArchivess A Propel collection.
-     * @param PropelPDO $con Optional connection object
-     * @return Course The current object (for fluent API support)
-     */
-    public function setCoursesContentsArchivess(PropelCollection $coursesContentsArchivess, PropelPDO $con = null)
-    {
-        $coursesContentsArchivessToDelete = $this->getCoursesContentsArchivess(new Criteria(), $con)->diff($coursesContentsArchivess);
-
-        $this->coursesContentsArchivessScheduledForDeletion = unserialize(serialize($coursesContentsArchivessToDelete));
-
-        foreach ($coursesContentsArchivessToDelete as $coursesContentsArchivesRemoved) {
-            $coursesContentsArchivesRemoved->setCourse(null);
-        }
-
-        $this->collCoursesContentsArchivess = null;
-        foreach ($coursesContentsArchivess as $coursesContentsArchives) {
-            $this->addCoursesContentsArchives($coursesContentsArchives);
-        }
-
-        $this->collCoursesContentsArchivess = $coursesContentsArchivess;
-        $this->collCoursesContentsArchivessPartial = false;
-
-        return $this;
-    }
-
-    /**
-     * Returns the number of related CoursesContentsArchives objects.
-     *
-     * @param Criteria $criteria
-     * @param boolean $distinct
-     * @param PropelPDO $con
-     * @return int             Count of related CoursesContentsArchives objects.
-     * @throws PropelException
-     */
-    public function countCoursesContentsArchivess(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
-    {
-        $partial = $this->collCoursesContentsArchivessPartial && !$this->isNew();
-        if (null === $this->collCoursesContentsArchivess || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collCoursesContentsArchivess) {
-                return 0;
-            }
-
-            if($partial && !$criteria) {
-                return count($this->getCoursesContentsArchivess());
-            }
-            $query = CoursesContentsArchivesQuery::create(null, $criteria);
-            if ($distinct) {
-                $query->distinct();
-            }
-
-            return $query
-                ->filterByCourse($this)
-                ->count($con);
-        }
-
-        return count($this->collCoursesContentsArchivess);
-    }
-
-    /**
-     * Method called to associate a CoursesContentsArchives object to this object
-     * through the CoursesContentsArchives foreign key attribute.
-     *
-     * @param    CoursesContentsArchives $l CoursesContentsArchives
-     * @return Course The current object (for fluent API support)
-     */
-    public function addCoursesContentsArchives(CoursesContentsArchives $l)
-    {
-        if ($this->collCoursesContentsArchivess === null) {
-            $this->initCoursesContentsArchivess();
-            $this->collCoursesContentsArchivessPartial = true;
-        }
-        if (!in_array($l, $this->collCoursesContentsArchivess->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
-            $this->doAddCoursesContentsArchives($l);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param	CoursesContentsArchives $coursesContentsArchives The coursesContentsArchives object to add.
-     */
-    protected function doAddCoursesContentsArchives($coursesContentsArchives)
-    {
-        $this->collCoursesContentsArchivess[]= $coursesContentsArchives;
-        $coursesContentsArchives->setCourse($this);
-    }
-
-    /**
-     * @param	CoursesContentsArchives $coursesContentsArchives The coursesContentsArchives object to remove.
-     * @return Course The current object (for fluent API support)
-     */
-    public function removeCoursesContentsArchives($coursesContentsArchives)
-    {
-        if ($this->getCoursesContentsArchivess()->contains($coursesContentsArchives)) {
-            $this->collCoursesContentsArchivess->remove($this->collCoursesContentsArchivess->search($coursesContentsArchives));
-            if (null === $this->coursesContentsArchivessScheduledForDeletion) {
-                $this->coursesContentsArchivessScheduledForDeletion = clone $this->collCoursesContentsArchivess;
-                $this->coursesContentsArchivessScheduledForDeletion->clear();
-            }
-            $this->coursesContentsArchivessScheduledForDeletion[]= clone $coursesContentsArchives;
-            $coursesContentsArchives->setCourse(null);
-        }
-
-        return $this;
-    }
-
-
-    /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this Course is new, it will return
-     * an empty collection; or if this Course has previously
-     * been saved, it will retrieve related CoursesContentsArchivess from storage.
-     *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in Course.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return PropelObjectCollection|CoursesContentsArchives[] List of CoursesContentsArchives objects
-     */
-    public function getCoursesContentsArchivessJoinContentsArchive($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $query = CoursesContentsArchivesQuery::create(null, $criteria);
-        $query->joinWith('ContentsArchive', $join_behavior);
-
-        return $this->getCoursesContentsArchivess($query, $con);
-    }
-
-    /**
      * Clears out the collOptionalEducationalPaths collection
      *
      * This does not modify the database; however, it will remove any associated objects, causing
@@ -3914,183 +3582,6 @@ abstract class BaseCourse extends BaseObject implements Persistent
     }
 
     /**
-     * Clears out the collContentsArchives collection
-     *
-     * This does not modify the database; however, it will remove any associated objects, causing
-     * them to be refetched by subsequent calls to accessor method.
-     *
-     * @return Course The current object (for fluent API support)
-     * @see        addContentsArchives()
-     */
-    public function clearContentsArchives()
-    {
-        $this->collContentsArchives = null; // important to set this to null since that means it is uninitialized
-        $this->collContentsArchivesPartial = null;
-
-        return $this;
-    }
-
-    /**
-     * Initializes the collContentsArchives collection.
-     *
-     * By default this just sets the collContentsArchives collection to an empty collection (like clearContentsArchives());
-     * however, you may wish to override this method in your stub class to provide setting appropriate
-     * to your application -- for example, setting the initial array to the values stored in database.
-     *
-     * @return void
-     */
-    public function initContentsArchives()
-    {
-        $this->collContentsArchives = new PropelObjectCollection();
-        $this->collContentsArchives->setModel('File');
-    }
-
-    /**
-     * Gets a collection of File objects related by a many-to-many relationship
-     * to the current object by way of the courses_contents_archives cross-reference table.
-     *
-     * If the $criteria is not null, it is used to always fetch the results from the database.
-     * Otherwise the results are fetched from the database the first time, then cached.
-     * Next time the same method is called without $criteria, the cached collection is returned.
-     * If this Course is new, it will return
-     * an empty collection or the current collection; the criteria is ignored on a new object.
-     *
-     * @param Criteria $criteria Optional query object to filter the query
-     * @param PropelPDO $con Optional connection object
-     *
-     * @return PropelObjectCollection|File[] List of File objects
-     */
-    public function getContentsArchives($criteria = null, PropelPDO $con = null)
-    {
-        if (null === $this->collContentsArchives || null !== $criteria) {
-            if ($this->isNew() && null === $this->collContentsArchives) {
-                // return empty collection
-                $this->initContentsArchives();
-            } else {
-                $collContentsArchives = FileQuery::create(null, $criteria)
-                    ->filterByCourse($this)
-                    ->find($con);
-                if (null !== $criteria) {
-                    return $collContentsArchives;
-                }
-                $this->collContentsArchives = $collContentsArchives;
-            }
-        }
-
-        return $this->collContentsArchives;
-    }
-
-    /**
-     * Sets a collection of File objects related by a many-to-many relationship
-     * to the current object by way of the courses_contents_archives cross-reference table.
-     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
-     * and new objects from the given Propel collection.
-     *
-     * @param PropelCollection $contentsArchives A Propel collection.
-     * @param PropelPDO $con Optional connection object
-     * @return Course The current object (for fluent API support)
-     */
-    public function setContentsArchives(PropelCollection $contentsArchives, PropelPDO $con = null)
-    {
-        $this->clearContentsArchives();
-        $currentContentsArchives = $this->getContentsArchives();
-
-        $this->contentsArchivesScheduledForDeletion = $currentContentsArchives->diff($contentsArchives);
-
-        foreach ($contentsArchives as $contentsArchive) {
-            if (!$currentContentsArchives->contains($contentsArchive)) {
-                $this->doAddContentsArchive($contentsArchive);
-            }
-        }
-
-        $this->collContentsArchives = $contentsArchives;
-
-        return $this;
-    }
-
-    /**
-     * Gets the number of File objects related by a many-to-many relationship
-     * to the current object by way of the courses_contents_archives cross-reference table.
-     *
-     * @param Criteria $criteria Optional query object to filter the query
-     * @param boolean $distinct Set to true to force count distinct
-     * @param PropelPDO $con Optional connection object
-     *
-     * @return int the number of related File objects
-     */
-    public function countContentsArchives($criteria = null, $distinct = false, PropelPDO $con = null)
-    {
-        if (null === $this->collContentsArchives || null !== $criteria) {
-            if ($this->isNew() && null === $this->collContentsArchives) {
-                return 0;
-            } else {
-                $query = FileQuery::create(null, $criteria);
-                if ($distinct) {
-                    $query->distinct();
-                }
-
-                return $query
-                    ->filterByCourse($this)
-                    ->count($con);
-            }
-        } else {
-            return count($this->collContentsArchives);
-        }
-    }
-
-    /**
-     * Associate a File object to this object
-     * through the courses_contents_archives cross reference table.
-     *
-     * @param  File $file The CoursesContentsArchives object to relate
-     * @return Course The current object (for fluent API support)
-     */
-    public function addContentsArchive(File $file)
-    {
-        if ($this->collContentsArchives === null) {
-            $this->initContentsArchives();
-        }
-        if (!$this->collContentsArchives->contains($file)) { // only add it if the **same** object is not already associated
-            $this->doAddContentsArchive($file);
-
-            $this->collContentsArchives[]= $file;
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param	ContentsArchive $contentsArchive The contentsArchive object to add.
-     */
-    protected function doAddContentsArchive($contentsArchive)
-    {
-        $coursesContentsArchives = new CoursesContentsArchives();
-        $coursesContentsArchives->setContentsArchive($contentsArchive);
-        $this->addCoursesContentsArchives($coursesContentsArchives);
-    }
-
-    /**
-     * Remove a File object to this object
-     * through the courses_contents_archives cross reference table.
-     *
-     * @param File $file The CoursesContentsArchives object to relate
-     * @return Course The current object (for fluent API support)
-     */
-    public function removeContentsArchive(File $file)
-    {
-        if ($this->getContentsArchives()->contains($file)) {
-            $this->collContentsArchives->remove($this->collContentsArchives->search($file));
-            if (null === $this->contentsArchivesScheduledForDeletion) {
-                $this->contentsArchivesScheduledForDeletion = clone $this->collContentsArchives;
-                $this->contentsArchivesScheduledForDeletion->clear();
-            }
-            $this->contentsArchivesScheduledForDeletion[]= $file;
-        }
-
-        return $this;
-    }
-
-    /**
      * Clears the current object and sets all attributes to their default values
      */
     public function clear()
@@ -4158,11 +3649,6 @@ abstract class BaseCourse extends BaseObject implements Persistent
                     $o->clearAllReferences($deep);
                 }
             }
-            if ($this->collCoursesContentsArchivess) {
-                foreach ($this->collCoursesContentsArchivess as $o) {
-                    $o->clearAllReferences($deep);
-                }
-            }
             if ($this->collOptionalEducationalPaths) {
                 foreach ($this->collOptionalEducationalPaths as $o) {
                     $o->clearAllReferences($deep);
@@ -4170,11 +3656,6 @@ abstract class BaseCourse extends BaseObject implements Persistent
             }
             if ($this->collMandatoryEducationalPaths) {
                 foreach ($this->collMandatoryEducationalPaths as $o) {
-                    $o->clearAllReferences($deep);
-                }
-            }
-            if ($this->collContentsArchives) {
-                foreach ($this->collContentsArchives as $o) {
                     $o->clearAllReferences($deep);
                 }
             }
@@ -4209,10 +3690,6 @@ abstract class BaseCourse extends BaseObject implements Persistent
             $this->collCourseUrls->clearIterator();
         }
         $this->collCourseUrls = null;
-        if ($this->collCoursesContentsArchivess instanceof PropelCollection) {
-            $this->collCoursesContentsArchivess->clearIterator();
-        }
-        $this->collCoursesContentsArchivess = null;
         if ($this->collOptionalEducationalPaths instanceof PropelCollection) {
             $this->collOptionalEducationalPaths->clearIterator();
         }
@@ -4221,10 +3698,6 @@ abstract class BaseCourse extends BaseObject implements Persistent
             $this->collMandatoryEducationalPaths->clearIterator();
         }
         $this->collMandatoryEducationalPaths = null;
-        if ($this->collContentsArchives instanceof PropelCollection) {
-            $this->collContentsArchives->clearIterator();
-        }
-        $this->collContentsArchives = null;
         $this->aCursus = null;
     }
 

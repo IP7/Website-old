@@ -703,22 +703,54 @@
 
     </table>
 
-    <!-- === Zip des contenus des cours (#207) === -->
-    <table name="courses_contents_archives" isCrossRef="true">
-        <!-- id du cours -->
-        <column name="course_id" type="INTEGER" primaryKey="true" />
-        <!-- id du fichier -->
-        <column name="file_id"    type="INTEGER" primaryKey="true" />
+    <!-- === Zip de fichiers === -->
+    <table name="files_archives" phpName="FilesArchive">
+        <!-- id -->
+        <column name="id"            type="INTEGER" required="true" primaryKey="true" autoIncrement="true"/>
+
+        <!-- liste ordonnée des ids des fichiers contenus dans l'archive
+             Exemple : 
+                42,43,1034,1037 -->
+        <column name="files_ids" type="VARCHAR" required="true" size="255" />
+
+        <!-- == Informations basiques == -->
+
+        <!-- titre, peut être différent du vrai nom du fichier stocké -->
+        <column name="title"         type="VARCHAR" required="true" size="128" />
+
+        <!-- date à laquelle a été posté le fichier -->
+        <column name="date"          type="TIMESTAMP" required="true" />
+
+        <!-- == accès == -->
+
+        <!-- chemin d'accès (comprenant le « vrai » nom du fichier) -->
+        <column name="path"          type="VARCHAR" required="true" />
+
+        <!-- droits d'accès -->
+        <column name="access_rights" type="TINYINT" defaultExpr="0" />
+
+        <!-- compteur de téléchargements -->
+        <column name="downloads_count" type="INTEGER" defaultExpr="0" />
+
+        <!-- si le fichier a été supprimé -->
+        <column name="deleted"       type="BOOLEAN" defaultExpr="0" />
 
         <!-- == index & clefs étrangères == -->
 
-        <foreign-key foreignTable="courses" onDelete="CASCADE" onUpdate="CASCADE" phpName="Course">
-            <reference local="course_id" foreign="id" />
-        </foreign-key>
+        <unique>
+            <unique-column name="path" />
+        </unique>
 
-        <foreign-key foreignTable="files" onDelete="CASCADE" onUpdate="CASCADE" phpName="ContentsArchive">
-            <reference local="file_id" foreign="id" />
-        </foreign-key>
+        <validator column="title">
+            <rule name="minLength" value="3" message="Le nom doit faire au moins ${value} caractères." />
+        </validator>
+
+        <validator column="path">
+            <rule name="minLength" value="3" message="Le chemin doit faire au moins ${value} caractères." />
+            <rule name="notMatch"  value="/^[a-z]+:\/\//i"
+                                             message="Le fichier ne peut être distant." />
+        </validator>
     </table>
+
 
 </database>

@@ -68,10 +68,8 @@ class CourseTableMap extends TableMap
         $this->addRelation('Content', 'Content', RelationMap::ONE_TO_MANY, array('id' => 'course_id', ), 'CASCADE', 'CASCADE', 'Contents');
         $this->addRelation('News', 'News', RelationMap::ONE_TO_MANY, array('id' => 'course_id', ), 'CASCADE', 'CASCADE', 'Newss');
         $this->addRelation('CourseUrl', 'CourseUrl', RelationMap::ONE_TO_MANY, array('id' => 'course_id', ), 'CASCADE', 'CASCADE', 'CourseUrls');
-        $this->addRelation('CoursesContentsArchives', 'CoursesContentsArchives', RelationMap::ONE_TO_MANY, array('id' => 'course_id', ), 'CASCADE', 'CASCADE', 'CoursesContentsArchivess');
         $this->addRelation('OptionalEducationalPath', 'EducationalPath', RelationMap::MANY_TO_MANY, array(), 'CASCADE', 'CASCADE', 'OptionalEducationalPaths');
         $this->addRelation('MandatoryEducationalPath', 'EducationalPath', RelationMap::MANY_TO_MANY, array(), 'CASCADE', 'CASCADE', 'MandatoryEducationalPaths');
-        $this->addRelation('ContentsArchive', 'File', RelationMap::MANY_TO_MANY, array(), 'CASCADE', 'CASCADE', 'ContentsArchives');
     } // buildRelations()
 
 } // CourseTableMap
