@@ -1,22 +1,35 @@
+# Vim tmp files
 *~
 *.swp
 *.swo
+
+# Docs
 *.pdf
-*.jar
-*.zip
-*.min.css
-*.min.js
-/cache
 /**/docs
 doc
-.bundle
-.sass-cache
-.DS_Store
-/tests/local_config.php
+
+# Minified files
+*.min.css
+*.min.js
+
+# Templates cache
+/cache
+
+# Models
 /models/build/migrations
 migration.sql
 /models/runtime-conf.xml
 /models/buildtime-conf.xml
 /models/build/conf/ip7website-conf.php
+models/build/classes/ip7website/om
+models/build/classes/ip7website/map
+
+# Composer (vendor files)
 /vendor
 composer.lock
+
+.bundle
+.sass-cache
+.DS_Store
+*.jar
+*.zip
