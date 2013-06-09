@@ -400,5 +400,19 @@ CREATE TABLE `files_archives`
     UNIQUE INDEX `files_archives_U_1` (`path`)
 ) ENGINE=MyISAM;
 
+-- ---------------------------------------------------------------------
+-- courses_contents_archives
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `courses_contents_archives`;
+
+CREATE TABLE `courses_contents_archives`
+(
+    `course_id` INTEGER NOT NULL,
+    `archive_id` INTEGER NOT NULL,
+    PRIMARY KEY (`course_id`,`archive_id`),
+    INDEX `courses_contents_archives_FI_2` (`archive_id`)
+) ENGINE=MyISAM;
+
 # This restores the fkey checks, after having unset them earlier
 SET FOREIGN_KEY_CHECKS = 1;
