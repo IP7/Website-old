@@ -414,5 +414,22 @@ CREATE TABLE `courses_contents_archives`
     INDEX `courses_contents_archives_FI_2` (`archive_id`)
 ) ENGINE=MyISAM;
 
+-- ---------------------------------------------------------------------
+-- pages
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `pages`;
+
+CREATE TABLE `pages`
+(
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `url` VARCHAR(64) NOT NULL,
+    `title` VARCHAR(64) NOT NULL,
+    `text` TEXT(4096) NOT NULL,
+    `created_at` DATETIME,
+    `updated_at` DATETIME,
+    PRIMARY KEY (`id`)
+) ENGINE=MyISAM;
+
 # This restores the fkey checks, after having unset them earlier
 SET FOREIGN_KEY_CHECKS = 1;
