@@ -184,9 +184,11 @@ function display_course_content() {
         );
     }
 
+    $ctitle = $content->getTitle();
+
     $tpl_content = array(
         'id'     => $content->getId(),
-        'title'  => $content->getTitle(),
+        'title'  => $ctitle,
         'text'   => $content->getText(),
         'date'   => array(
             'text'     => Lang\date_fr($content->getCreatedAt()),
@@ -239,13 +241,29 @@ function display_course_content() {
 
     $breadcrumbs [$breadcrumbs_next_indice]= array(
         'href'  => url(),
-        'title' => $content->getTitle()
+        'title' => $ctitle
     );
+
+    $toptitle = $cursus->getShortName();
+
+    if ($course && $course_code != 'global') {
+        $toptitle .= ' › ' . $course->getShortName();
+    }
+
+    $toptitle .= ' › ' . $ctitle;
+
+    if ($year
+            // if the year is already in the title, don't display it again
+            && strpos($ctitle, (string)($year + 1)) === false
+            && strpos($ctitle, (string)$year) === false) {
+        $toptitle .= ' (' . $year . '/' . ($year + 1) . ')';
+    }
 
 	return tpl_render('contents/base.html', array(
         'page' => Array(
             'url' => url(),
-            'title' => $content->getTitle(),
+            'toptitle' => $toptitle,
+            'title' => $ctitle,
             'keywords' => $keywords,
             'description' => truncate_string($content->getText()),
 

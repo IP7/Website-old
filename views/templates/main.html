@@ -8,7 +8,8 @@
 {% endautoescape %}
 
             {# titre_site — titre_page #}
-            <title>{% block title %}{{ site.title }}{% if page.title is defined and page.title %} – {{ page.title }}{% endif %}{% endblock %}</title>
+            <title>{% block title %}{{ site.title }}{% if page.toptitle is defined and page.toptitle %}
+                — {{ page.toptitle }}{% elseif page.title is defined and page.title %} – {{ page.title }}{% endif %}{% endblock %}</title>
 
 
                 {% block metas %}
