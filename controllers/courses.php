@@ -35,7 +35,7 @@ function display_course() {
         $moderation_bar = array(
             array(
                 'href' => $base_uri.'/proposer',
-                'title' => 'Proposer un contenu'
+                'title' => 'Déposer un fichier'
             )
         );
     }
