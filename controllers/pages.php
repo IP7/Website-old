@@ -119,6 +119,6 @@ function display_page() {
             'title' => $page->getTitle(),
             'text'  => $page->getText()
         )
-    );
+    ));
 }
 
