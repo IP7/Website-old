@@ -1,8 +1,18 @@
 {% extends 'main.html' %}
 {% block content %}
+{{ parent() }}
 <ul>
     <li>Nombre de contenus&nbsp;: {{ page.stats.contents_count }}</li>
     <li>Nombre de fichiers&nbsp;: {{ page.stats.files_count }}</li>
-    <li>Meilleur contributeur&nbsp;: {{ _m.a_user(page.stats.best_contributor) }} ({{ page.stats.best_contributor.count }})
+    <li>Meilleur contributeur&nbsp;: {{ _m.a_user(page.stats.best_contributor) }} ({{ page.stats.best_contributor.count }})</li>
 </ul>
+
+<h2>Répartition des contenus par cursus</h2>
+
+<ul>
+    {% for cursus in page.stats.cursus_counts %}
+    <li>{{ cursus.name }}&nbsp;:&nbsp;{{ cursus.count }}</li>
+    {% endfor %}
+</ul>
+
 {% endblock %}

@@ -76,11 +76,30 @@ function display_stats_page() {
                                     ->filterByAuthor($best_contributor)
                                     ->count();
 
+    $cursus_counts = array();
+
+    $cursus = CursusQuery::create()->find();
+
+    foreach ($cursus as $c) {
+        $count = ContentQuery::create()
+                    ->filterByValidated(true)
+                    ->filterByCursus($c)
+                    ->count();
+
+        if ($count == 0) { continue; }
+
+        $cursus_counts []= array(
+            'name'  => $c->getShortName(),
+            'count' => $count
+        );
+    }
+
     return tpl_render('stats.html', array(
         'page' => array(
             'title' => 'Statistiques',
             'stats' => array(
                 'contents_count'   => $contents_count,
+                'cursus_counts'    => $cursus_counts,
                 'files_count'      => $files_count,
                 'best_contributor' => array(
                     'count' => $best_contributor_count,
