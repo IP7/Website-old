@@ -89,7 +89,8 @@
         "files": [
             "jquery-1.9.1.min.js",
             "polyfills.js",
-            "es5-shim.min.js"
+            "es5-shim.min.js",
+            "logging.js"
         ]
     },
 
