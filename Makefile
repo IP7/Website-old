@@ -30,5 +30,5 @@ vendor:
 vendor-update: composer.json
 	composer update
 
-minify: scripts/css-bundles.json js-bundles.json
+minify: scripts/css-bundles.json scripts/js-bundles.json
 	node ./scripts/minify.js
