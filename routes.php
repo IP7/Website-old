@@ -188,8 +188,6 @@ if (strpos(LIM_REQUEST_URI, '/jsapi') === 0) {
     dispatch_post('/jsapi/log.json', 'json_js_log');
 }
 
-# trying to avoid 404 errors
-dispatch('/:name/**', 'bad_url');
-
 # pages
-dispatch('/:url', 'display_page');
+dispatch('/:name/**', 'display_page');
+

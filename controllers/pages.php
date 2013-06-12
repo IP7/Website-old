@@ -126,11 +126,11 @@ function display_admin_migrate_db_page() {
 }
 
 function display_page() {
-	$url  = params('url');
+	$url  = params('name');
     $page = PageQuery::create()->findOneByUrl($url);
 
     if ($page === null) {
-        halt(NOT_FOUND);
+        return bad_url();
     }
 
     return tpl_render('page.html', array(
