@@ -145,7 +145,7 @@ function display_course_archive_page() {
         halt(NOT_FOUND);
     }
 
-    $archives = $course->getContentsArchives();
+    $archives = $course->getFilesArchives();
     $archive =  (count($archives)>0) ? $archives[0] : NULL;
 
     $breadcrumbs = array(
