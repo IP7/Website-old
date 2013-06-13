@@ -97,7 +97,9 @@ function display_admin_migrate_db_page() {
 
 function display_page() {
 	$url  = params('name');
-    $page = PageQuery::create()->findOneByUrl($url);
+    $page = PageQuery::create()
+                ->withColumn('Page.text')
+                ->findOneByUrl($url);
 
     if ($page === null) {
         return bad_url();
