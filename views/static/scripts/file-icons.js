@@ -16,10 +16,12 @@
 
         lis  = document.getElementsByClassName('file-li'),
 
-        i=0, _l = lis.length, ext, ext_n;
+        i=0, _l = lis.length, ext, ext_n, text;
 
     for (;i<_l; i++) {
-        ext = lis[i].textContent.trimRight().split('.').slice(-1)[0];
+
+        text = lis[i].textContent || text.innerText;
+        ext = text.trimRight().split('.').slice(-1)[0];
         if (!ext)
             continue;
 
