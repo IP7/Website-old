@@ -15,6 +15,13 @@ function is_admin() {
 }
 
 /**
+ * check if the current user is a moderator
+ **/
+function is_moderator() {
+    return is_connected() && user()->isModerator();
+}
+
+/**
  * Verify if user's credentials are valid. If so,
  * return the corresponding User object. If the credentials
  * are invalid, return DEACTIVATED_ACCOUNT or
