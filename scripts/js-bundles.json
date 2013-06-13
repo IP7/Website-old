@@ -28,6 +28,7 @@
             "file-icons.js",
             "prettify.js",
             "jquery.jeditable.min.js",
+            "editable-base.js",
             "usercontents.js"
         ]
     },
@@ -57,6 +58,7 @@
             "menus.js",
             "news-admin.js",
             "jquery.jeditable.min.js",
+            "editable-base.js",
             "course-admin.js"
         ]
     },

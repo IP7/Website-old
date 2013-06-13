@@ -4,12 +4,9 @@ $(function() {
         prettyPrint();
     }
 
-    if ($.fn.editable) {
-        $( '.content_header h1' ).first()
-            .attr( 'id', $( '.user_content' ).first().data( 'contentId' ) )
-            .editable( '/api/1/edit/content/title.html', {
-                indicator : 'sauvegarde…',
-                tooltip : 'Cliquez pour éditer'
-            });
-    }
+    IP7W.setEditable({
+        target: $( '.content_header h1' ).first(),
+        id: $( '.user_content' ).first().data( 'contentId' ),
+        saveurl: '/api/1/edit/content/title.html'
+    });
 });
