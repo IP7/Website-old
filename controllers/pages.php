@@ -105,10 +105,20 @@ function display_page() {
         return bad_url();
     }
 
+    $scripts = array();
+
+    if (is_connected() && is_admin()) {
+        $scripts []= array(
+            'href' => js_url('page-admin')
+        );
+    }
+
     return tpl_render('page.html', array(
         'page' => array(
             'title' => $page->getTitle(),
-            'text'  => $page->getText()
+            'text'  => $page->getText(),
+            'id'    => $page->getId(),
+            'scripts' => $scripts
         )
     ));
 }

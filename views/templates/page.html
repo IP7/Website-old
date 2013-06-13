@@ -2,5 +2,5 @@
 {% block content_attrs %}class="page-container"{% endblock %}
 {% block content %}
 {{ parent() }}
-<article class="page">{{ page.text|md2html|raw }}</article>
+<article class="page" data-page-id="{{ page.id }}">{{ page.text|md2html|raw }}</article>
 {% endblock %}

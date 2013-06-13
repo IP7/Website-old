@@ -113,5 +113,14 @@
         "files": [
             "news-page.js"
         ]
+    },
+
+    {
+        "name": "page-admin.min.js",
+        "files": [
+            "jquery.jeditable.min.js",
+            "editable-base.js",
+            "page-admin.js"
+        ]
     }
 ]

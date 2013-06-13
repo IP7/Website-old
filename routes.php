@@ -181,8 +181,15 @@ if (strpos(LIM_REQUEST_URI, '/api') === 0) {
 
 }
 
+# API for internal usage (AJAX calls)
 if (strpos(LIM_REQUEST_URI, '/jsapi') === 0) {
+
+    # Logging
     dispatch_post('/jsapi/log.json', 'json_js_log');
+
+    # Edit pages' texts
+    dispatch('/jsapi/edit/page.md',    'jsapi_get_page_markdown');
+    dispatch_post('/jsapi/edit/page.html', 'jsapi_post_page');
 }
 
 # pages

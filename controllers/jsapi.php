@@ -18,3 +18,43 @@ function json_js_log() {
 
     return json(array('status' => 'ok'));
 }
+
+// used by Jeditable
+function jsapi_get_page_markdown() {
+
+    $id = (int)get_string('id', 'GET');
+
+    $page = PageQuery::create()
+                ->withColumn('Page.text')
+                ->findOneById($id);
+
+    if (!$page) {
+        halt(NOT_FOUND);
+    }
+
+    return $page->getText();
+
+}
+
+// used by Jeditable
+function jsapi_post_page() {
+
+    $id = (int)get_string('id', 'POST');
+    $newvalue = get_string('value', 'POST');
+
+    $page = PageQuery::create()->findOneById($id);
+
+    if (!$page) {
+        halt(NOT_FOUND);
+    }
+
+    if (!is_connected() || !is_moderator()) {
+        halt(HTTP_FORBIDDEN);
+    }
+
+    $page->setText(truncate_string($newvalue, 4096));
+    $page->save();
+
+    return tpl_render('utils/md.html', array('content'=>$page->getText()));
+
+}
