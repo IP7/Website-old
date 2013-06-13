@@ -105,6 +105,7 @@ function json_get_course() { // short_name=<short_name> or id=<id>
 
 }
 
+// used by Jeditable
 function api_get_course_intro_markdown() {
 
     $id = (int)get_string('id', 'GET');
@@ -121,6 +122,7 @@ function api_get_course_intro_markdown() {
 
 }
 
+// used by Jeditable
 function api_post_course_intro() {
 
     $id = (int)get_string('id', 'POST');
