@@ -49,8 +49,12 @@
         delete opts.target;
 
         jeditable_opts = $.extend({
+
+            // defaults
+
             indicator:   'sauvegarde…',
-            tooltip:     'Cliquez pour éditer',
+            tooltip:     'Double-cliquez pour éditer',
+            onblur:      'ignore', // the only way to cancel is to press ESC
             cols:        80,
             rows:        8,
             event:       'dblclick'

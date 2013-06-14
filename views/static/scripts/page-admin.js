@@ -5,6 +5,7 @@ $(function() {
     IP7W.setEditable({
         target: $page,
         submit: 'OK',
+        tooltip: false,
         type: 'textarea',
         rows: 16,
         saveurl: '/jsapi/edit/page.html',
