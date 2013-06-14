@@ -190,6 +190,10 @@ if (strpos(LIM_REQUEST_URI, '/jsapi') === 0) {
     # Edit pages' texts
     dispatch('/jsapi/edit/page.md',    'jsapi_get_page_markdown');
     dispatch_post('/jsapi/edit/page.html', 'jsapi_post_page');
+
+    # Edit cursus' intros
+    dispatch('/jsapi/edit/cursus/intro.md',  'jsapi_get_cursus_intro_markdown');
+    dispatch_post('/jsapi/edit/cursus/intro.html', 'jsapi_post_cursus_intro');
 }
 
 # pages

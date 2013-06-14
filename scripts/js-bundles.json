@@ -45,9 +45,16 @@
     },
 
     {
+        "name": "simple-cursus.min.js",
+        "files": [
+            "menus.js"
+        ]
+    },
+
+    {
         "name": "simple-course.min.js",
         "files": [
-            "tabs.js", "menus.js"
+            "tabs.js"
         ]
     },
 
@@ -55,11 +62,21 @@
         "name": "admin-course.min.js",
         "files": [
             "tabs.js",
-            "menus.js",
             "news-admin.js",
             "jquery.jeditable.min.js",
             "editable-base.js",
             "course-admin.js"
+        ]
+    },
+
+    {
+        "name": "admin-cursus.min.js",
+        "files": [
+            "menus.js",
+            "news-admin.js",
+            "jquery.jeditable.min.js",
+            "editable-base.js",
+            "cursus-admin.js"
         ]
     },
 

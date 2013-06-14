@@ -19,6 +19,8 @@ function json_js_log() {
     return json(array('status' => 'ok'));
 }
 
+// === PAGES ===
+
 // used by Jeditable
 function jsapi_get_page_markdown() {
 
@@ -56,5 +58,44 @@ function jsapi_post_page() {
     $page->save();
 
     return tpl_render('utils/md.html', array('content'=>$page->getText()));
+
+}
+
+// === CURSUS ===
+
+// used by Jeditable
+function jsapi_get_cursus_intro_markdown() {
+
+    $id = (int)get_string('id', 'GET');
+
+    $cursus = CursusQuery::create()
+                ->withColumn('Cursus.description')
+                ->findOneById($id);
+
+    if (!$cursus) { halt(NOT_FOUND); }
+
+    return $cursus->getDescription();
+
+}
+
+// used by Jeditable
+function jsapi_post_cursus_intro() {
+
+    $id = (int)get_string('id', 'POST');
+    $newvalue = get_string('value', 'POST');
+
+    $cursus = CursusQuery::create()
+                ->findOneById($id);
+
+    if (!$cursus) { halt(NOT_FOUND); }
+
+    if (!is_connected() || (!is_admin() && !user()->isResponsibleFor($cursus))) {
+        halt(HTTP_FORBIDDEN);
+    }
+
+    $cursus->setDescription(truncate_string($newvalue, 1024));
+    $cursus->save();
+
+    return tpl_render('utils/md.html', array('content'=>$cursus->getDescription()));
 
 }

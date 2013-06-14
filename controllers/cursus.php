@@ -136,8 +136,7 @@ function display_cursus() {
             'add_news_button' => $add_news,
 
             'scripts' => array(
-                // this script is used for both courses and cursus
-                array( 'href'  => js_url( ($is_page_admin ? 'admin' : 'simple') . '-course') )
+                array( 'href'  => js_url( ($is_page_admin ? 'admin' : 'simple') . '-cursus') )
             ),
 
             'feeds' => array(

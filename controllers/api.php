@@ -111,10 +111,11 @@ function api_get_course_intro_markdown() {
     $id = (int)get_string('id', 'GET');
 
     $course = CourseQuery::create()
+                ->filterByDeleted(0)
                 ->withColumn('Course.description')
                 ->findOneById($id);
 
-    if (!$course || $course->getDeleted()) {
+    if (!$course) {
         halt(NOT_FOUND);
     }
 
@@ -129,9 +130,10 @@ function api_post_course_intro() {
     $newvalue = get_string('value', 'POST');
 
     $course = CourseQuery::create()
+                ->filterByDeleted(0)
                 ->findOneById($id);
 
-    if (!$course || $course->getDeleted()) {
+    if (!$course) {
         halt(NOT_FOUND);
     }
 
