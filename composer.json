@@ -4,9 +4,10 @@
     "license": "MIT",
     "require": {
         "michelf/php-markdown": "dev-lib",
+        "mibe/feedwriter": "dev-master",
+        "mustangostang/spyc": "0.5.1",
         "propel/propel1": "1.6.9",
         "sofadesign/limonade": "dev-master",
-        "mustangostang/spyc": "0.5.1",
         "twig/twig": "1.9.0"
     },
     "require-dev": {

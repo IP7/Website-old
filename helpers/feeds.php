@@ -1,7 +1,5 @@
 <?php
 
-require_once Config::$app_dir.'/lib/vendors/FeedWriter/FeedTypes.php';
-
 // used to sort dated feed elements
 function feedElCmp($a, $b) {
     if ($a['date'] === $b['date']) { return 0; }
@@ -63,7 +61,7 @@ function feed_helper($cursus_sn, $course_sn, $type='atom',
     $root  = 'http://www.infop7.org';
     $url   = $root . url();
 
-    $feed = $isRSS ? new RSS2FeedWriter() : new ATOMFeedWriter();
+    $feed = $isRSS ? new \FeedWriter\RSS2() : new \FeedWriter\Atom();
 
     $feed->setTitle($title);
     $feed->setLink($url);
