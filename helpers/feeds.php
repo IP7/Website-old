@@ -166,6 +166,14 @@ function feed_helper($cursus_sn, $course_sn, $type='atom',
 
     }
 
+    # RSS2
+    $contentType = 'application/rss+xml';
+
+    if (!$isRSS) {
+        $contentType = 'application/atom+xml';
+    }
+
+    send_header('Content-Type: ' . $contentType . '; charset='.strtolower(option('encoding')));
     return $feed->generateFeed();
 
 }
