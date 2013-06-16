@@ -153,10 +153,6 @@ if (strpos(LIM_REQUEST_URI, '/api') === 0) {
     ## API endpoints for Jeditable
     if (strpos(LIM_REQUEST_URI, '/api/1/edit') === 0) {
 
-        ### Contents
-        # Edit title
-        dispatch_post('/api/1/edit/content/title.html', 'api_post_change_content_title');
-
         ### Courses
         # Edit intro text
         dispatch('/api/1/edit/course/intro.md', 'api_get_course_intro_markdown');
@@ -194,6 +190,9 @@ if (strpos(LIM_REQUEST_URI, '/jsapi') === 0) {
     # Edit cursus' intros
     dispatch('/jsapi/edit/cursus/intro.md',  'jsapi_get_cursus_intro_markdown');
     dispatch_post('/jsapi/edit/cursus/intro.html', 'jsapi_post_cursus_intro');
+
+    # Edit content's title
+    dispatch_post('/jsapi/edit/content/title.html', 'jsapi_post_change_content_title');
 }
 
 # pages

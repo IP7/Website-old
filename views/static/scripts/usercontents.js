@@ -7,6 +7,6 @@ $(function() {
     IP7W.setEditable({
         target: $( '.content_header h1' ).first(),
         id: $( '.user_content' ).first().data( 'contentId' ),
-        saveurl: '/api/1/edit/content/title.html'
+        saveurl: '/jsapi/edit/content/title.html'
     });
 });
