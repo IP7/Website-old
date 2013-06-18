@@ -194,6 +194,7 @@ function display_course_content() {
             'text'     => Lang\date_fr($content->getCreatedAt()),
             'datetime' => datetime_attr($content->getCreatedAt())
         ),
+        'year'   => $tpl_year,
         'files'  => $tpl_files,
         'author' => array(
             'name' => $user->getPublicName(),

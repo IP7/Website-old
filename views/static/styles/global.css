@@ -1,10 +1,5 @@
 /* global.css */
 
-/* tmp:
- *  Since it doesn't have CSS yet, it's ugly, so we don't display it.
- */
-.content-type {display:none}
-
 /* == General ============================================= */
 
 html {

@@ -25,19 +25,17 @@
 
     <article class="user_content" data-content-id="{{ page.content.id }}">
         <header class="content_header">
-            {% if page.content.year is defined and page.content.year %}
-            <time datetime="{{ page.content.year.begin }}-09-01T00:00:00Z/P1Y" class="content-year">{#
-            #}{{ page.content.year.begin }}/{{ page.content.year.end }}</time>
-            {% endif %}
-            {% if page.content.type is defined and page.content.type %}
-            <span class="content-type"><a href="{{ page.content.type.href }}">{{ page.content.type.title }}</a></span>
-            {% endif %}
             <h1>{{ page.content.title }}</h1>
-            <p>Posté par <a href="{{ page.content.author.href }}" class="user" rel="author">{{ page.content.author.name }}</a>{#
+            <p>{% if page.content.type is defined and page.content.type
+                %}<span class="content-type">{{ page.content.type.title|capitalize }}</span> • {% endif %}{#
+
+            #}{% if page.content.year is defined and page.content.year %}<time datetime="{{ page.content.year.begin }}-09-01T00:00:00Z/P1Y" class="content-year">{#
+            #}{{ page.content.year.begin }}/{{ page.content.year.end }}</time> • {% endif %}{#
+            #}Posté par <a href="{{ page.content.author.href }}" class="user" rel="author">{{ page.content.author.name }}</a>{#
             #} <time datetime="{{ page.content.date.datetime }}">{{ page.content.date.text }}</time>{#
                 #}{% if page.content.last_update is defined and page.content.last_update %}{#
                     #} (dernière modification <time datetime="{{ page.content.last_update.datetime }}">{#
-                        #}{{ page.content.last_update.text }}</time>){% endif %}.</p>
+                        #}{{ page.content.last_update.text }}</time>){% endif %}
         </header>
         <section class="user_content_text">{{ page.content.text|md2html|raw }}</section>
         {% if page.content.files is defined and page.content.files is not empty %}
