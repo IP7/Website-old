@@ -27,7 +27,7 @@
         <header class="content_header">
             <h1>{{ page.content.title }}</h1>
             <p>{% if page.content.type is defined and page.content.type
-                %}<span class="content-type">{{ page.content.type.title|capitalize }}</span> • {% endif %}{#
+                %}<span class="content-type">{{ page.content.type.title }}</span> • {% endif %}{#
 
             #}{% if page.content.year is defined and page.content.year %}<time datetime="{{ page.content.year.begin }}-09-01T00:00:00Z/P1Y" class="content-year">{#
             #}{{ page.content.year.begin }}/{{ page.content.year.end }}</time> • {% endif %}{#

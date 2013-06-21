@@ -171,8 +171,7 @@ function display_course_content() {
     }
 
     $tpl_type = !$type ? null : array(
-        'title' => $type->getName(),
-        'href'  => ($cursus && $course) ? course_url($cursus, $course).'/#'.$type->getShortName() : '#'
+        'title' => ucfirst($type->getName())
     );
 
     $tpl_year = null;
