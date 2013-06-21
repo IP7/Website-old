@@ -199,4 +199,6 @@ function tpl_file($file) {
     );
 }
 
-?>
+function tpl_year($y) {
+    return $y . '/' . ($y + 1);
+}

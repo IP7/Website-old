@@ -595,6 +595,17 @@ a.news-title {
 .content_header a.user {
     color: #222;
 }
+.content_header .content-year form {
+    display: inline;
+    margin:0 -2px;
+    cursor: pointer;
+}
+.content_header .content-year select {
+    background: transparent;
+    border: 0;
+    margin:0 -1px;
+    line-height: 1;
+}
 
 .content-footer {
 

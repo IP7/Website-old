@@ -191,8 +191,10 @@ if (strpos(LIM_REQUEST_URI, '/jsapi') === 0) {
     dispatch('/jsapi/edit/cursus/intro.md',  'jsapi_get_cursus_intro_markdown');
     dispatch_post('/jsapi/edit/cursus/intro.html', 'jsapi_post_cursus_intro');
 
-    # Edit content's title
+    # Edit content's titles
     dispatch_post('/jsapi/edit/content/title.html', 'jsapi_post_change_content_title');
+    # Edit content's years
+    dispatch_post('/jsapi/edit/content/year.html', 'jsapi_post_change_content_year');
 }
 
 # pages

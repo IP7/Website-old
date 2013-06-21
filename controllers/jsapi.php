@@ -153,3 +153,53 @@ function jsapi_post_change_content_title() {
 
     return htmlentities($content->getTitle(), ENT_COMPAT, 'UTF-8');
 }
+
+// used by Jeditable
+function jsapi_post_change_content_year() {
+
+    $content_id = (int)get_string('id', 'POST');
+    $newvalue   = get_string('value', 'POST');
+
+    $content = ContentQuery::create()
+                    ->filterByDeleted(false)
+                    ->findOneById($content_id);
+
+    if (!$content) { halt(HTTP_NOT_FOUND); }
+
+    $len = strlen($newvalue);
+
+    if ($len === 0) {
+        return tpl_year($content->getYear());
+    }
+
+    $cursus = $content->getCursus();
+
+    // user can only edit the title if he/she is a moderator/admin and/or the
+    // content has not been validated yet and he/she is its author.
+    if (   !is_connected()
+        || (   !is_moderator()
+            && !user()->isResponsibleFor($cursus)
+            && ($content->isValidated()
+                || user()->getId() !== $content->getAuthorId() ))) {
+
+        halt(HTTP_FORBIDDEN);
+
+    }
+
+    $title_is_taken = ContentQuery::create()
+                        ->filterByCursus($cursus)
+                        ->filterByCourseId($content->getCourseId())
+                        ->filterByTitle($content->getTitle())
+                        ->filterByDeleted(0)
+                        ->findOneByYear($newvalue);
+
+    if ($title_is_taken && $title_is_taken->getId() !== $content->getId()) {
+
+        halt(HTTP_BAD_REQUEST);
+    }
+
+    $content->setYear($newvalue);
+    $content->save();
+
+    return tpl_year($content->getYear());
+}
