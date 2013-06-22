@@ -30,6 +30,8 @@ function tpl_user($user, $extended=false) {
         'name'        => $user->getName(),
         'pseudo'      => $user->getUsername(),
         'displayed_name' => $displayed_name,
+        'id'          => $user->getId(),
+        'rank'        => rights2rank($user->getRights()),
 
         'avatar'      => array(
             'href'   => gravatar_url($user, 128),
@@ -102,4 +104,22 @@ function tpl_user($user, $extended=false) {
 
     return $tpl_user;
 }
-?>
+
+// convert a rank into a rights level
+function rank2rights($rank) {
+
+    foreach (Config::$user_rights as $n => $s) {
+        if ($s === $rank) return $n;
+    }
+
+    return VISITOR_RANK;
+}
+
+// convert a rights level into a rank
+function rights2rank($rights) {
+    if (isset(Config::$user_rights[$rights])) {
+        return Config::$user_rights[$rights];
+    }
+
+    return null;
+}

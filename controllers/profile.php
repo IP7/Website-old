@@ -125,6 +125,8 @@ function display_profile_page($username=NULL, $is_my_profile=false) {
         $tpl_user['age'] = false;
     }
 
+    if (!$is_admin) { $tpl_user['rank'] = null; }
+
     $profile = array(
         'page' => array(
             'message' => $msg_str,

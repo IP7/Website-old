@@ -58,7 +58,12 @@ class Config {
     static $default_tpl_values;
     static $default_twig_env;
 
-    #static $timezone = 'Europe/Paris';
+    static $user_rights = array(
+        VISITOR_RANK   => 'visiteur',
+        MEMBER_RANK    => 'membre',
+        MODERATOR_RANK => 'modérateur',
+        ADMIN_RANK     => 'administrateur'
+    );
 
     static $root_uri = '/';
     static $app_dir = __DIR__;

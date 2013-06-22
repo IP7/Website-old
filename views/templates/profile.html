@@ -2,7 +2,8 @@
 {% block metas %}
 {% if page.user.noindex is defined and page.user.noindex %}{{ _m.robots(['noindex']) }}{% else %}{{ parent() }}{% endif %}
 {% endblock %}
-{% block content_attrs %}class="profile" itemtype="http://schema.org/Person" itemscope{% endblock %}
+{% block content_attrs %}class="profile" itemtype="http://schema.org/Person" itemscope{#
+    #}{% if page.user.id is defined and page.user.id %} data-user-id="{{ page.user.id }}"{% endif %}{% endblock %}
 {% block content %}
 
         <div class="avatar-wrapper">
@@ -54,6 +55,9 @@
           #}{% endif %}
             {% if page.user.contents_count is defined and page.user.contents_count %}{#
                 #}<dt>Nombre de contenus proposés&nbsp;:</dt><dd>{{ page.user.contents_count }}</dd>{#
+          #}{% endif %}
+            {% if page.user.rank is defined and page.user.rank %}{#
+                #}<dt>Rang&nbsp;:</dt><dd class="user-rank">{{ page.user.rank }}</dd>{#
           #}{% endif %}
         </dl>
 
