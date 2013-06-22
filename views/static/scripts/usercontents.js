@@ -10,8 +10,12 @@ $(function() {
         // if we are after august 2042 (for example), the current year is 2042/2043,
         // while if we are before, it's 2041/2042.
         year  = d.getMonth > 9 ? d.getFullYear() : d.getFullYear() - 1,
+        $ctitle = $( '.content_header h1' ).first(),
         $cyear = $('.content_header .content-year').first(),
+        
+        ctitle = $ctitle.text(),
         cyear  = $cyear.text(),
+        
         i=2006, text;
 
     for (; i<=year; i++) {
@@ -26,7 +30,14 @@ $(function() {
     IP7W.setEditable({
         target: $( '.content_header h1' ).first(),
         id: cid,
-        saveurl: '/jsapi/edit/content/title.html'
+        saveurl: '/jsapi/edit/content/title.html',
+
+        callback: function( ctitle2 ) {
+
+            document.title = document.title.replace(ctitle, ctitle2);
+            ctitle = ctitle2;
+
+        }
     });
 
     IP7W.setEditable({
