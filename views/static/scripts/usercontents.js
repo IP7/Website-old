@@ -37,13 +37,8 @@ $(function() {
         data: years,
         indicator: cyear,
         saveurl: '/jsapi/edit/content/year.html',
-        onblur: 'cancel'/*,
+        onblur: 'cancel',
 
-        // FIXME: this is not error-proof, since that if the year
-        // cannot be changed and the server return an error, we won't know about
-        // it, and won't return to the previous title/path. Unfortunately Jeditable
-        // does not provide any 'success/error' callbacks, so we may have to use
-        // a custom function to perform the AJAX stuff.
         callback: function( cyear2 ) {
             if (   !window.history
                 || typeof window.history.replaceState !== 'function') {
@@ -55,7 +50,7 @@ $(function() {
                                                  cyear2.replace('/', '-')));
             document.title = document.title.replace(cyear, cyear2);
             cyear = cyear2;
-        }*/
+        }
     });
 
     $cyear.on('change', 'select', function() {
