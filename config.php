@@ -180,7 +180,7 @@ class Config {
                 'breadcrumbs' => 'default',
                 'url'         => $_SERVER['REQUEST_URI'],
 
-                'favicon'     => self::$root_uri.'views/static/images/logo32.png',
+                'favicon'     => self::$root_uri.'views/static/images/logo32transp.png',
                 'apple_icon'  => self::$root_uri.'views/static/images/logo256.png'
             )
         );
