@@ -81,13 +81,6 @@ function display_cursus() {
     $moderation_bar = array();
     $add_news = false;
 
-    if (is_connected() && user()->isModerator()) {
-        $moderation_bar []= array(
-            'href' => $base_uri.'edit',
-            'title' => 'Éditer'
-        );
-    }
-
     $responsable = $cursus->getResponsable();
     $tpl_responsable = null;
 
@@ -220,35 +213,6 @@ function display_empty_cursus($cursus, $base_uri, $breadcrumb) {
 
         )
     ));
-}
-
-function display_moderation_edit_cursus() {
-
-    $name = params('name');
-
-    $cursus = CursusQuery::create()->findOneByShortName($name);
-
-    if ($cursus == null) {
-        halt(NOT_FOUND);
-    }
-
-    $base_uri = cursus_url($cursus);
-
-    return tpl_render('cursus/edit.html', array(
-        'page' => array(
-            'title' => 'Édition de « '.$cursus->getName().' »',
-
-            'breadcrumbs' => array(
-                1 => array( 'href' => cursus_url($cursus), 'title' => $cursus->getName() ),
-                2 => array( 'href' => url(),               'title' => 'Éditer' )
-            ),
-
-            'cursus' => array( 'name' => $cursus->getName(), 'intro' => $cursus->getDescription() ),
-
-            'cursus_edit_post_url' => $base_uri
-        )
-    ));
-
 }
 
 function display_cursus_courses() {
