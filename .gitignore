@@ -31,5 +31,8 @@ composer.lock
 .bundle
 .sass-cache
 .DS_Store
+node_modules
+
 *.jar
 *.zip
+*.bz2
