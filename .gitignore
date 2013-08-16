@@ -28,11 +28,19 @@ models/build/classes/ip7website/map
 /vendor
 composer.lock
 
-.bundle
-.sass-cache
+# OSX
 .DS_Store
+
+# Node
 node_modules
 
+# Archives
 *.jar
 *.zip
 *.bz2
+
+# Misc
+/data
+jslog
+.bundle
+.sass-cache
