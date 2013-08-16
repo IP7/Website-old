@@ -80,6 +80,7 @@ class Durations {
     const ONE_MINUTE = 60;
     const ONE_HOUR   = 3600;
     const ONE_DAY    = 86400; // 3600 * 24
+    const ONE_WEEK   = 604800; // 3600 * 24 * 7
     const ONE_MONTH  = 2592000; // 3600 * 24 * 30
     const ONE_YEAR   = 31536000; // 3600 * 24 * 365
 }

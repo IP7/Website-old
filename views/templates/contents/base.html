@@ -34,8 +34,8 @@
             #}Posté par <a href="{{ page.content.author.href }}" class="user" rel="author">{{ page.content.author.name }}</a>{#
             #} <time datetime="{{ page.content.date.datetime }}">{{ page.content.date.text }}</time>{#
                 #}{% if page.content.last_update is defined and page.content.last_update %}{#
-                    #} (dernière modification <time datetime="{{ page.content.last_update.datetime }}">{#
-                        #}{{ page.content.last_update.text }}</time>){% endif %}
+                    #}<span class="last_modification"> (dernière modification <time datetime="{{ page.content.last_update.datetime }}">{#
+                        #}{{ page.content.last_update.text }}</time>)</span>{% endif %}.</p>
         </header>
         <section class="user_content_text">{{ page.content.text|md2html|raw }}</section>
         {% if page.content.files is defined and page.content.files is not empty %}

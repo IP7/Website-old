@@ -184,14 +184,15 @@ function display_course_content() {
     }
 
     $ctitle = $content->getTitle();
+    $creation_date = $content->getCreatedAt();
 
     $tpl_content = array(
         'id'     => $content->getId(),
         'title'  => $ctitle,
         'text'   => $content->getText(),
         'date'   => array(
-            'text'     => Lang\date_fr($content->getCreatedAt()),
-            'datetime' => datetime_attr($content->getCreatedAt())
+            'text'     => Lang\date_fr($creation_date),
+            'datetime' => datetime_attr($creation_date)
         ),
         'year'   => $tpl_year,
         'files'  => $tpl_files,
@@ -206,12 +207,28 @@ function display_course_content() {
 
     if ($content->hasBeenUpdated()) {
 
-        $tpl_content['last_update'] = array(
+        $creation_date = $content->getCreatedAt(null)->getTimestamp();
+        $update_date   = $content->getUpdatedAt(null)->getTimestamp();
+        $now           = $_SERVER['REQUEST_TIME'];
 
-            'text' => Lang\date_fr($content->getUpdatedAt()),
-            'datetime' => datetime_attr($content->getUpdatedAt())
+        $update_duration = $now - $update_date;
 
-        );
+        // See issue #312
+        $ratio = $update_duration / ($now - $creation_date);
+        $threshold = 0.8;
+
+        if ($update_duration > 2*Durations::ONE_WEEK) {
+            $threshold = 0.5;
+        } else if ($update_duration > Durations::ONE_MONTH) {
+            $threshold = 0.2;
+        }
+
+        if ($ratio < $threshold) {
+            $tpl_content['last_update'] = array(
+                'text' => Lang\date_fr($content->getUpdatedAt()),
+                'datetime' => datetime_attr($content->getUpdatedAt())
+            );
+        }
 
     }
 
