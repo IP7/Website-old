@@ -95,7 +95,7 @@ function display_admin_content_report($msg_str=null, $msg_type=null){
 
 	}
 
-    return Config::$tpl->render('admin/content_report.html', tpl_array(admin_tpl_default(),array(
+    return tpl_admin_render('admin/content_report.html', array(
         'page' => array(
             'title'    => 'Contenus signalés',
 
@@ -107,11 +107,11 @@ function display_admin_content_report($msg_str=null, $msg_type=null){
             'msg_type' => $msg_type,
             'reports'  => $tpl_reports
         )
-    )));
+    ));
 
 }
 
-function post_admin_content_report(){
+function post_admin_content_report() {
 
     $msg_str = null;
     $msg_type = null;
@@ -199,20 +199,20 @@ function display_admin_proposed_content($msg_str=null, $msg_type=null){
 			$tpl_contents []= $tpl_c;
 		}
 
-		return Config::$tpl->render('admin/content_proposed.html', tpl_array(admin_tpl_default(), array(
+		return tpl_admin_render('admin/content_proposed.html', array(
             'page' => Array(
                 'title' => 'Contenu proposé',
                 'contents' => $tpl_contents,
 				    'msg_str'  => $msg_str,
 					'msg_type' => $msg_type
 				)
-        )));
+        ));
 
 	}
 
 }
 
-function post_admin_proposed_content(){
+function post_admin_proposed_content() {
 
    $msg_str = null;
    $msg_type = null;
@@ -275,7 +275,7 @@ function display_admin_add_member($values=null, $msg=null, $msg_type=null) {
         );
     }
 
-    return Config::$tpl->render('admin/add_member.html', tpl_array(admin_tpl_default(), array(
+    return tpl_admin_render('admin/add_member.html', array(
         'page' => array(
             'title' => 'Ajouter un membre',
             'breadcrumbs' => array(
@@ -300,7 +300,7 @@ function display_admin_add_member($values=null, $msg=null, $msg_type=null) {
                 'values' => $values
             )
         )
-    )));
+    ));
 }
 
 function post_admin_add_member() {
@@ -486,7 +486,7 @@ function display_admin_members() {
         }
     }
 
-    return Config::$tpl->render('admin/members.html', tpl_array(admin_tpl_default(),array(
+    return tpl_admin_render('admin/members.html', array(
         'page' => array(
             'title' => 'Membres',
 
@@ -502,7 +502,6 @@ function display_admin_members() {
                 array( 'href' => js_url( 'admin' ) )
             )
         )
-    )));
+    ));
 }
 
-?>
