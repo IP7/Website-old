@@ -145,7 +145,7 @@ function display_cursus() {
     return tpl_render('cursus/base.html', $tpl_cursus);
 }
 
-function display_cursus_dashboard() {
+function display_cursus_dashboard($has_msg=false, $msg_str='', $msg_type='') {
     $name = params('name');
     $cursus = CursusQuery::create()->findOneByShortName($name);
 
@@ -159,6 +159,8 @@ function display_cursus_dashboard() {
     if (!is_connected() || !(user()->isAdmin() || user()->isResponsibleFor($cursus))) {
         halt(HTTP_FORBIDDEN);
     }
+
+    $has_msg &= ($msg_str && $msg_type);
 
     $base_uri = Config::$root_uri.'cursus/'.strtoupper($cursus->getShortName()).'/';
 
@@ -213,11 +215,55 @@ function display_cursus_dashboard() {
 
     return tpl_render('cursus/dashboard.html', array(
         'page' => array(
-            'title'       => $cursus->getName().' - Administration',
-            'breadcrumbs' => $breadcrumbs,
-            'contents'    => $tpl_contents
+            'title'        => $cursus->getName().' - Administration',
+            'breadcrumbs'  => $breadcrumbs,
+            'contents'     => $tpl_contents,
+            'message'      => ($has_msg === true) ? $msg_str : null,
+            'message_type' => ($has_msg === true) ? $msg_type : null
         )
     ));
+}
+
+function post_cursus_dashboard() {
+    $name = params('name');
+    $cursus = CursusQuery::create()->findOneByShortName($name);
+
+    if ($cursus == null) { halt(NOT_FOUND); }
+
+    if (!is_connected() || !(user()->isAdmin() || user()->isResponsibleFor($cursus))) {
+        halt(HTTP_FORBIDDEN);
+    }
+
+    $msg_str = null;
+ 
+    if (!has_post('t')) { halt(HTTP_BAD_REQUEST); }
+ 
+    $token = $_POST['t'];
+ 
+    $fd = FormData::create($token);
+ 
+    if ((!use_token($token, 'POST')) || (!$fd->exists())) {
+        halt(HTTP_FORBIDDEN, 'Le jeton d\'authentification est invalide ou a expiré.');
+    }
+ 
+    $content = $fd->get('proposed');
+ 
+ 	if ( !has_post('validate') && !has_post('delete') )
+        return display_cursus_dashboard(true,
+                    'Erreur interne (nopost:validate,delete)', 'error');
+ 
+ 	if ( has_post('validate') ) {
+ 		$content->setValidated(1);
+ 		$content->save();
+ 		$msg_str = 'Le contenu a bien été validé.';	
+ 	}
+ 		
+ 	if ( has_post('delete') ){
+         $content->delete();
+         $msg_str = 'Le contenu a bien été supprimé.';
+ 	}
+ 
+ 	return display_cursus_dashboard(true, $msg_str, 'success');
 }
 
 function display_cursus_with_multiple_educational_paths($cursus, $msg_str, $msg_type, $base_uri, $breadcrumb) {

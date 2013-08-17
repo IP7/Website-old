@@ -5,7 +5,7 @@
 <h1>{{ page.title }}</h1>
 <h2>Contenus non validés</h2>
 {% if page.contents is defined and page.contents %}
-<table>
+<table id="proposedList" border="1">
 <tr><th>Titre</th><th>Cursus</th><th>Cours</th><th>Auteur</th><th>Date</th><th class="empty"</th></tr>
 
 {% for c in page.contents %}

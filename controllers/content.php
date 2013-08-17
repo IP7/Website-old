@@ -97,7 +97,9 @@ function display_course_content() {
     }
 
     if (!$content->getValidated()) {
-        if (!is_connected() || (user()->getId() != $user->getId() && !user()->isAdmin())) {
+        if (!is_connected() || (!user()->isResponsibleFor($cursus)
+                                    && user()->getId() != $user->getId()
+                                    && !user()->isAdmin())) {
             halt(NOT_FOUND);
         }
         $msg_str  = 'Ce contenu est en attente de validation.';
@@ -107,46 +109,18 @@ function display_course_content() {
 
         $tpl_proposed = null;
 
-        if (user()->isAdmin()) {
+        if (user()->isAdmin() || user()->isResponsibleFor($cursus)) {
             $post_token = generate_post_token(user());
             FormData::create($post_token)->store('proposed', $content);
 
             $tpl_proposed = array(
                 'form' => array(
-                    'action' => Config::$root_uri. 'admin/content/proposed',
+                    'action' => cursus_url($cursus).'/dash',
                     'post_token' => $post_token
                 )
             );
         }
 
-    }
-    else if (is_connected() && user()->isAdmin()) {
-        $report = ReportQuery::create()->findOneByContent($content);
-
-        if ($report && is_connected() && user()->isAdmin()) {
-
-            $post_token = generate_post_token(user());
-
-            FormData::create($post_token)->store('report', $report);
-
-            $r_author = $report->getAuthor();
-
-            $tpl_report = array(
-                'author' => array(
-                    'name' => $r_author->getPublicName(),
-                    'href' => user_url($r_author)
-                ),
-                'date'   => array(
-                    'text'     => Lang\date_fr($report->getDate()),
-                    'datetime' => datetime_attr($report->getDate())
-                ),
-                'form'   => array(
-                    'action'      => Config::$root_uri.'admin/reports',
-                    'post_token'  => $post_token
-                ),
-                'explication' => $report->getText()
-            );
-        }
     }
     
     if (is_connected() && (user()->isModerator() || user()->isResponsibleFor($cursus))) {
@@ -287,7 +261,6 @@ function display_course_content() {
             'breadcrumbs' => $breadcrumbs,
 
             'proposed' => $tpl_proposed,
-            'report'   => $tpl_report,
             'content'  => $tpl_content,
 
             'message'      => $msg_str,

@@ -81,7 +81,7 @@ class Config {
         $loader = new Twig_Loader_Filesystem(self::$app_dir.'/views/templates');
 
         self::$default_twig_env = array(
-            'cache'            => self::$app_dir.'/cache/templates',
+            'cache'            => null, // self::$app_dir.'/cache/templates',
             'charset'          => 'utf-8',
             'strict_variables' => true,
             'autoescape'       => true
