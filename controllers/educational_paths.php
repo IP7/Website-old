@@ -124,6 +124,9 @@ function display_educational_path() {
     }
 
     return Config::$tpl->render('cursus/educational_path.html', tpl_array(array(
+        'user' => array(
+            'is_responsable' => $is_page_admin
+        ),
         'page' => array(
             'title'           => $path->getName(),
 

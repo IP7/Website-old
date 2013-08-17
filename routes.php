@@ -70,8 +70,12 @@ if (strpos(LIM_REQUEST_URI, '/cursus') === 0) {
     dispatch('/cursus/:name',      'display_cursus');
     dispatch_post('/cursus/:name', 'display_cursus');
 
+    ## cursus admin
+    dispatch('/cursus/:name/dash', 'display_cursus_dashboard');
+
     ## educational paths
     dispatch('/cursus/:cursus/parcours/:path', 'display_educational_path');
+    dispatch('/cursus/:name/parcours/:path/dash', 'display_cursus_dashboard');
 
     ## cursus feeds
     dispatch('/cursus/:name/flux.rss', 'display_cursus_rss_feed');

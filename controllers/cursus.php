@@ -98,6 +98,9 @@ function display_cursus() {
                             || user()->isResponsibleFor($cursus)));
 
     $tpl_cursus = array(
+        'user' => array(
+            'is_responsable' => $is_page_admin
+        ),
         'page' => array(
             'title'           => $cursus->getName(),
 
@@ -140,6 +143,81 @@ function display_cursus() {
     );
 
     return tpl_render('cursus/base.html', $tpl_cursus);
+}
+
+function display_cursus_dashboard() {
+    $name = params('name');
+    $cursus = CursusQuery::create()->findOneByShortName($name);
+
+    if ($cursus == null) { halt(NOT_FOUND); }
+
+    if (params('path')) {
+        // If this is a path, redirect to the main cursus dashboard
+        redirect_to(cursus_url($cursus).'/dash');
+    }
+
+    if (!is_connected() || !(user()->isAdmin() || user()->isResponsibleFor($cursus))) {
+        halt(HTTP_FORBIDDEN);
+    }
+
+    $base_uri = Config::$root_uri.'cursus/'.strtoupper($cursus->getShortName()).'/';
+
+    $breadcrumbs = array(
+        array(
+            'href' => $base_uri,
+            'title' => $cursus->getName()
+        ),
+        array(
+            'href' => url(),
+            'title' => 'Administration'
+        )
+    );
+
+	$contents = ContentQuery::create()
+							->limit(50)
+                            ->filterByCursus($cursus)
+							->orderById()
+							->findByValidated(0);
+
+	$tpl_contents = Array();
+
+	if ($contents){
+
+		foreach ( $contents as $c ){
+
+			$user   = $c->getAuthor();
+			$course = $c->getCourse();
+
+            $tpl_c = array(
+                'title' => $c->getTitle(),
+                'href'  => content_url($cursus, $course, $c),
+                'date'  => tpl_date($c->getCreatedAt()),
+                'author' => array(
+                    'href' => user_url($user),
+                    'name' => $user->getPublicName()
+                )
+            );
+
+            $tpl_c['cursus'] = array( 'name' => $cursus->getShortName() );
+
+            if ($course) {
+                $tpl_c ['course'] = array(
+                    'name' => $course->getShortName()
+                );
+            }
+
+			$tpl_contents []= $tpl_c;
+		}
+
+    }
+
+    return tpl_render('cursus/dashboard.html', array(
+        'page' => array(
+            'title'       => $cursus->getName().' - Administration',
+            'breadcrumbs' => $breadcrumbs,
+            'contents'    => $tpl_contents
+        )
+    ));
 }
 
 function display_cursus_with_multiple_educational_paths($cursus, $msg_str, $msg_type, $base_uri, $breadcrumb) {
