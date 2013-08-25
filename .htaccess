@@ -11,6 +11,7 @@ AddType text/cache-manifest .appcache
 Options +FollowSymlinks
 Options -Indexes
 RewriteEngine on
+RewriteBase /
 
 # Redirect to www.
 RewriteCond %{HTTP_HOST} ^infop7.org$ [NC]
@@ -35,6 +36,7 @@ RewriteCond %{SCRIPT_FILENAME} !-f
 RewriteCond %{SCRIPT_FILENAME} !-d
 
 RewriteCond %{HTTP_HOST} !^s.infop7.org$ [NC]
+RewriteCond %{REQUEST_URI} !=/index.php
 # with QSA flag (query string append),
 # forces the rewrite engine to append a query string part of the
 # substitution string to the existing string, instead of replacing it.
