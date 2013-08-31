@@ -66,6 +66,13 @@ $(function() {
 
     $cyear.on('change', 'select', function() {
         $cyear.find( 'form' ).first().submit();
+    }).on('focus mouseover', 'select', function() {
+        // sort with mre recent years first (#352)
+        var $opts = $cyear.find('option').sort(function(a, b) {
+            var atext = a.text, btext = b.text;
+            return (atext < btext) ? 1 : (atext > btext) ? -1 : 0;
+        });
+        $cyear.find('select').empty().append( $opts );
     });
 
 });
