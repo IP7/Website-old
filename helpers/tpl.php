@@ -135,9 +135,12 @@ function global_footer_links() {
 # array, and return a new array.
 function tpl_array() {
     $arrays = func_get_args();
-    array_unshift(&$arrays, global_menu_links());
-    array_unshift(&$arrays, global_footer_links());
-    array_unshift(&$arrays, Config::$default_tpl_values);
+    $before = array(
+        Config::$default_tpl_values,
+        global_footer_links(),
+        global_menu_links()
+    );
+    $arrays = array_merge($before, $arrays);
     return call_user_func_array('array_merge_recursive_new', $arrays);
 }
 
