@@ -7,9 +7,9 @@ $(function() {
     var cid   = $( '.user_content' ).first().data( 'contentId' ),
         years = {},
         d     = new Date(),
-        // if we are after august 2042 (for example), the current year is 2042/2043,
+        // if we are after july 2042 (for example), the current year is 2042/2043,
         // while if we are before, it's 2041/2042.
-        year  = d.getMonth > 9 ? d.getFullYear() : d.getFullYear() - 1,
+        year  = d.getMonth() > 6 ? d.getFullYear() : d.getFullYear() - 1,
         $ctitle = $( '.content_header h1' ).first(),
         $cyear = $('.content_header .content-year').first(),
         
