@@ -29,7 +29,7 @@ function display_home() {
 
             'feeds' => array(
                 'atom' => '/actus/flux.atom',
-                'rss2' => '/actus/flux.rss2'
+                'rss2' => '/actus/flux.rss'
             )
         )
     ));
