@@ -4,6 +4,8 @@
 # some other things.
 #
 
+echo -- Updating Composer
+composer self-update
 echo -- Installing the dependencies
 composer install --dev
 
