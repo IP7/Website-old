@@ -10,7 +10,7 @@ doc
 
 # Minified files
 *.min.css
-*.min.js
+/public
 
 # Templates cache
 /cache
