@@ -266,9 +266,6 @@ function display_course_content() {
             'message'      => $msg_str,
             'message_type' => $msg_type,
 
-            'scripts' => array(
-                array( 'href' => js_url( $js ) )
-            ),
             'styles'  => array(
                 array( 'href' => css_url( $css ) )
             )
@@ -367,10 +364,6 @@ function display_member_proposing_content_form() {
                 'max_files_nb' => MAX_FILES_PER_CONTENT,
 
                 'types' => $tpl_content_types
-            ),
-
-            'scripts' => array(
-                array( 'href' => js_url('proposing-content') )
             ),
 
             'styles' => array(
@@ -512,9 +505,6 @@ function display_post_member_proposed_content_preview() {
 
             'styles' => array(
                 array( 'href' => css_url( 'simple-content' ) )
-            ),
-            'scripts' => array(
-                array( 'href' => js_url( 'simple-content' ) )
             )
         )
     ));

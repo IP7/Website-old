@@ -23,10 +23,6 @@ function display_home() {
 
             'news' => array(),
 
-            'scripts' => !is_connected() ? null : array(
-                array( 'href' => js_url('connected-home') )
-            ),
-
             'feeds' => array(
                 'atom' => '/actus/flux.atom',
                 'rss2' => '/actus/flux.rss'
@@ -79,11 +75,7 @@ function display_connection($message=null, $message_type=null) {
             ),
 
             'message'                => $message,
-            'message_type'           => $message_type,
-
-            'scripts'                => array(
-                array( 'href' => js_url('connection') )
-            )
+            'message_type'           => $message_type
         )
     ));
 }

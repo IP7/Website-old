@@ -496,11 +496,7 @@ function display_admin_members() {
 
             'members'         => $members,
             'almost_members'  => $almost_members,
-            'add_member_link' => Config::$root_uri.'admin/membres/add',
-
-            'scripts' => array(
-                array( 'href' => js_url( 'admin' ) )
-            )
+            'add_member_link' => Config::$root_uri.'admin/membres/add'
         )
     ));
 }

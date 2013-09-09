@@ -73,7 +73,7 @@
                 {% endif %}
         </head>
 {% flush %}
-        <body>
+        <body data-jsconfig="{% if page.jsconfig is defined and page.jsconfig %}{{ page.jsconfig|json_encode }}{% else %}{}{% endif %}">
             <div id="container">
                 {# barre du haut #}
                 <header id="global_header" class="bar">

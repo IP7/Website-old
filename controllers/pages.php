@@ -107,12 +107,6 @@ function display_page() {
 
     $scripts = array();
 
-    if (is_connected() && is_admin()) {
-        $scripts []= array(
-            'href' => js_url('page-admin')
-        );
-    }
-
     return tpl_render('page.html', array(
         'page' => array(
             'title' => $page->getTitle(),

@@ -148,10 +148,6 @@ function display_educational_path() {
                 'courses'      => $courses,
                 'news'         => $news,
                 'other_links'  => $other_links
-            ),
-
-            'scripts' => array(
-                array( 'href'  => js_url( ($is_page_admin ? 'admin' : 'simple') . '-course') )
             )
         )
     )));

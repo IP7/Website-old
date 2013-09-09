@@ -113,11 +113,9 @@ class Config {
 
                 # Scripts
                 'rendering_scripts' => array(
-                    array( 'href' => $scripts.'/base-head.min.js' )
+                    array( 'href' => self::$root_uri.'public/js/main.min.js')
                 ),
-                'scripts'           => array(
-                    array( 'href' => $scripts.'/base-body.min.js' )
-                ),
+                'scripts'           => array(),
 
                 'logo' => array(
                     'href'   => self::$root_uri.'views/static/images/logo32transp.png',

@@ -131,10 +131,6 @@ function display_cursus() {
             'moderation_bar'  => $moderation_bar,
             'add_news_button' => $add_news,
 
-            'scripts' => array(
-                array( 'href'  => js_url( ($is_page_admin ? 'admin' : 'simple') . '-cursus') )
-            ),
-
             'feeds' => array(
                 'atom' => $base_uri . 'flux.atom',
                 'rss2' => $base_uri . 'flux.rss'

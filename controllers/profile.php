@@ -428,11 +428,7 @@ function display_init_my_profile_page($token=null, $message=null, $message_type=
 
                 'fields' => $fields
             ),
-            'infos' => $infos,
-
-            'scripts' => array(
-                array( 'href' => js_url('subscription') )
-            )
+            'infos' => $infos
         )
     ));
 }
