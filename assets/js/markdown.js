@@ -1,8 +1,13 @@
 define([
-    'Markdown.Converter.js',
-    'Markdown.Editor.js',
-    'Markdown.Sanitizer.js',
-    'pagedown-i18n-fr.js'], function( _, _, _, M ) {
+    'jquery',
+    'Markdown.Converter',
+    'Markdown.Editor',
+    'Markdown.Sanitizer',
+    'pagedown-i18n-fr'], function( $ ) {
 
-    return M;
+    var modules = [].slice.call(arguments, 1);
+
+    modules.unshift({});
+
+    return $.extend.apply($, modules);
 });

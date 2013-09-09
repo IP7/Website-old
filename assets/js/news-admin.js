@@ -1,5 +1,6 @@
-require(['jquery'], function( $ ) {
+require(['jquery', 'config'], function( $, config ) {
 $(function() {
+    if (config('no_news')) { return; }
 
     // shortcuts
     var d  = document,

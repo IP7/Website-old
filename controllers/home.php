@@ -26,6 +26,10 @@ function display_home() {
             'feeds' => array(
                 'atom' => '/actus/flux.atom',
                 'rss2' => '/actus/flux.rss'
+            ),
+
+            'jsconfig' => array(
+                'no_news' => true
             )
         )
     ));

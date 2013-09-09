@@ -1,4 +1,4 @@
-﻿define(function( require, exports, module ) {
+﻿define(['Markdown.Converter'], function( Markdown ) {
 // needs Markdown.Converter.js at the moment
 
     var util = {},
@@ -9,12 +9,10 @@
         nav = window.navigator,
         SETTINGS = { lineLength: 72 },
 
-        Markdown = require('Markdown.Converter'),
-
     // Used to work around some browser bugs where we can't use feature testing.
         uaSniffed = {
             isIE: /msie/.test(nav.userAgent.toLowerCase()),
-            isIE_5or6: /msie 6/.test(nav.userAgent.toLowerCase()) || /msie 5/.test(nav.userAgent.toLowerCase()),
+            isIE_5or6: /msie [56]/.test(nav.userAgent.toLowerCase()),
             isOpera: /opera/.test(nav.userAgent.toLowerCase())
         };
 
@@ -2209,5 +2207,5 @@
         chunk.skipLines(2, 1, true);
     }
 
-
+    return { Editor: Markdown.Editor };
 });

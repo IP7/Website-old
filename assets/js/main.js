@@ -17,6 +17,7 @@ require([
     'login',
     'proposing-content',
     'news-page',
+
     'usercontents',
 
     'course-admin',
