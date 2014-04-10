@@ -140,8 +140,6 @@ dispatch('/actus/flux.atom', 'display_global_atom_feed');
 
 ## (almost-)static pages
 dispatch('/sitemap',  'display_sitemap_page');
-dispatch('/bug',      'display_bug_report');
-dispatch_post('/bug', 'post_bug_report');
 dispatch('/a-propos', 'display_apropos_page');
 dispatch('/stats',    'display_stats_page');
 

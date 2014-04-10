@@ -103,10 +103,6 @@ function global_footer_links() {
         array(
             'href'  => Config::$root_uri.'a-propos',
             'title' => 'À Propos'
-        ),
-        array(
-            'href'  => Config::$root_uri . 'bug',
-            'title' => 'Signaler un bug'
         )
     );
 
