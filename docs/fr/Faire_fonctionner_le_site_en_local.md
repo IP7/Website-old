@@ -1,7 +1,7 @@
 # Faire fonctionner le site en local
 
-Ce guide indique comment dupliquer le site en local, sous Ubuntu. Ça doit
-probablement marcher sous les autres \*NIX moyennant quelques adaptations
+Ce guide indique comment dupliquer le site en local, sous Ubuntu ou OSX. Ça
+doit probablement marcher sous les autres \*NIX moyennant quelques adaptations
 concernant les commandes à utiliser.
 
 ## 1. Préparer l’environnement
@@ -10,7 +10,11 @@ La partie serveur du site est écrite complètement en PHP5, avec MySQL pour la
 base de données. Le site tourne sous Apache. Il faut donc installer tout ça :
 
 ```sh
+# pour Ubuntu
 sudo apt-get install apache2 php5 mysql-server libapache2-mod-php5 php5-mysql
+
+# pour OSX (quasiment tout est déjà installé)
+brew install mysql
 ```
 
 De façon optionnelle, vous pouvez utiliser phpMyAdmin :
@@ -27,10 +31,14 @@ MySQL s’appelle `root` et a pour mot de passe `secretrootpassword`.
 Les dépendances PHP (code tier) sont gérées avec Composer. Il faut donc
 l’installer :
 ```sh
+# pour Ubuntu
 cd /usr/local/bin
 curl -sS https://getcomposer.org/installer | sudo php
 sudo chmod a+x composer.phar
 sudo mv composer.phar composer
+
+# pour OSX
+brew install composer
 ```
 
 ## 2. Récupérer le code-source
@@ -40,7 +48,7 @@ dépôt Github en local, ce qui a l’avantage de vous permettre de le maintenir
 jour par la suite :
 
 ```sh
-https://github.com/IP7/Website.git IP7Website
+git clone https://github.com/IP7/Website.git IP7Website
 ```
 
 Cela va créer un répertoire `IP7Website` qui contient l’ensemble du code du site
@@ -225,8 +233,13 @@ de diminuer le nombre de requêtes HTTP à chaque chargement de page.
 Le script utilisé pour générer les scripts/styles fonctionne avec Node.js :
 
 ```sh
+# Ubuntu
 sudo apt-get-install nodejs npm
 sudo npm -g install node-minify
+
+# OSX
+brew install node
+npm -g install node-minify
 ```
 
 Ensuite, placez-vous dans le répertoire contenant le code du site, et exécutez
