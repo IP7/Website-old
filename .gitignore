@@ -41,6 +41,9 @@ node_modules
 
 # Misc
 /data
+/web
+/bin
+/app
 jslog
 .bundle
 .sass-cache
