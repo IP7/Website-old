@@ -13,7 +13,7 @@
     <td>{{ c.title }}</td>
     <td>{% if c.cursus is defined %}{{ c.cursus.name }}{% endif %}</td>
     <td>{% if c.course is defined %}{{ c.course.name }}{% endif %}</td>
-    <td>{{ _m.a_user(c.author) }}</td>
+    <td>{{ c.author.name }}</td>
     <td>{{ _m.date(c.date) }}</td>
     <td><a href="{{ c.href }}" class="button">Voir</a></td>
 </tr>

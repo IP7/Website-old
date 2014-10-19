@@ -16,9 +16,9 @@
 {{ _self.a(href, value, title, hreflang, external, ['button']) }}
 {% endmacro %}
 
-{# a.user #}
+{# a.user -- deprecated #}
 {% macro a_user(u) %}
-{{ _self.a(u.href, u.name, null, null, null, ['user']) }}
+<span class="user">{{ u.name }}</span>
 {% endmacro %}
 
 {# abbr #}

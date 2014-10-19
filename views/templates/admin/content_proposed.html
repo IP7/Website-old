@@ -2,27 +2,27 @@
 {% block admin_content %}
 {{ parent() }}
 
-	{% if page.contents is empty %}
-		<p>Aucun contenu proposé actuellement.</p>
+  {% if page.contents is empty %}
+    <p>Aucun contenu proposé actuellement.</p>
 
-	{% else %}
+  {% else %}
 
-		<table id="proposedList" border="1">
-			<tr><th>Titre</th><th>Cursus</th><th>Cours</th><th>Auteur</th><th>Date</th><th class="empty"</th></tr>
+    <table id="proposedList" border="1">
+      <tr><th>Titre</th><th>Cursus</th><th>Cours</th><th>Auteur</th><th>Date</th><th class="empty"</th></tr>
 
-			{% for c in page.contents %}
-			<tr>
-				<td>{{ c.title }}</td>
+      {% for c in page.contents %}
+      <tr>
+        <td>{{ c.title }}</td>
                 <td>{% if c.cursus is defined %}{{ c.cursus.name }}{% endif %}</td>
                 <td>{% if c.course is defined %}{{ c.course.name }}{% endif %}</td>
-				<td>{{ _m.a_user(c.author) }}</td>
-				<td>{{ _m.date(c.date) }}</td>
-				<td><a href="{{ c.href }}" class="button">Voir</a></td>
-			</tr>
-			{% endfor %}
+        <td>{{ c.author.name }}</td>
+        <td>{{ _m.date(c.date) }}</td>
+        <td><a href="{{ c.href }}" class="button">Voir</a></td>
+      </tr>
+      {% endfor %}
 
-		</table>
+    </table>
 
-	{% endif %}
+  {% endif %}
 
 {% endblock %}

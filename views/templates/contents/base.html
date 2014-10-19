@@ -31,7 +31,7 @@
 
             #}{% if page.content.year is defined and page.content.year %}<time datetime="{{ page.content.year.begin }}-09-01T00:00:00Z/P1Y" class="content-year">{#
             #}{{ page.content.year.begin }}/{{ page.content.year.end }}</time> • {% endif %}{#
-            #}Posté par <a href="{{ page.content.author.href }}" class="user" rel="author">{{ page.content.author.name }}</a>{#
+            #}Posté par <span class="user" rel="author">{{ page.content.author.name }}</span>{#
             #} <time datetime="{{ page.content.date.datetime }}">{{ page.content.date.text }}</time>{#
                 #}{% if page.content.last_update is defined and page.content.last_update %}{#
                     #}<span class="last_modification"> (dernière modification <time datetime="{{ page.content.last_update.datetime }}">{#

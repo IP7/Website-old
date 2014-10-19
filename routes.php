@@ -13,36 +13,15 @@ dispatch_post('/connexion', 'post_connection');
 dispatch('/oubli',      'display_forgotten_password');
 dispatch_post('/oubli', 'post_forgotten_password');
 
-## users' profiles
-if (strpos(LIM_REQUEST_URI, '/p/') === 0) {
-
-    dispatch('/p/*',           'display_profile_page');
-
-    # old URLs (#308)
-    dispatch('/p/*/edit',      'display_edit_profile_page');
-    dispatch_post('/p/*/edit', 'post_edit_profile_page');
-
-    # new URLs (#308)
-    dispatch('/p/*/éditer',      'display_edit_profile_page');
-    dispatch_post('/p/*/éditer', 'post_edit_profile_page');
-
-}
-
 ## my profile
 if (strpos(LIM_REQUEST_URI, '/profil') === 0) {
 
     # old URLs (#308)
     if (strpos(LIM_REQUEST_URI, '/profile') === 0) {
 
-        function redirect_profile()      { redirect_to('/profil'); }
-        function redirect_profile_edit() { redirect_to('/profil/éditer'); }
         function redirect_profile_init() { redirect_to('/profil/créer'); }
 
-        dispatch('/profile',      'redirect_profile');
-        dispatch_post('/profile', 'redirect_profile');
         ## edit my profile
-        dispatch('/profile/edit',      'redirect_profile_edit');
-        dispatch_post('/profile/edit', 'redirect_profile_edit');
         dispatch('/profile/init',      'redirect_profile_init');
         dispatch_post('/profile/init', 'redirect_profile_init');
 
@@ -50,11 +29,7 @@ if (strpos(LIM_REQUEST_URI, '/profil') === 0) {
     # new URLs (#308)
     else {
 
-        dispatch('/profil',      'display_my_profile_page');
-        dispatch_post('/profil', 'display_my_profile_page');
         ## edit my profile
-        dispatch('/profil/éditer',      'display_edit_my_profile_page');
-        dispatch_post('/profil/éditer', 'post_edit_my_profile_page');
         dispatch('/profil/créer',       'display_init_my_profile_page');
         dispatch_post('/profil/créer',  'post_init_my_profile_page');
 
@@ -111,14 +86,9 @@ dispatch('/file/:id/:name', 'serve_user_file_by_id_and_name');
 ## admin home
 dispatch('/admin', 'display_admin_home');
 
-## moderation 
-dispatch('/admin/moderation',            'display_admin_moderation');
+## moderation
 dispatch('/admin/content/proposed',      'display_admin_proposed_content');
 dispatch_post('/admin/content/proposed', 'post_admin_proposed_content');
-
-## signin
-dispatch('/inscription', 'display_signin_form');
-dispatch_post('/inscription', 'post_signin_form');
 
 ## global news
 dispatch('/actus/archives', 'display_news_archives');
@@ -145,7 +115,7 @@ if (strpos(LIM_REQUEST_URI, '/api') === 0) {
         # Edit intro text
         dispatch('/api/1/edit/course/intro.md', 'api_get_course_intro_markdown');
         dispatch_post('/api/1/edit/course/intro.html', 'api_post_course_intro');
-    
+
     }
 
     dispatch('/api/1/cursus.json',            'json_get_cursus');
