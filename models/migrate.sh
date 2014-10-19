@@ -1,8 +1,8 @@
 #! /bin/bash
 #
-# This is script is used to generate DB migration SQL code.
-# If an argument is given, it is used as a migration number. If there
-# is no argument, the last migration number is used.
+# This script is used to generate DB migration SQL code. If an argument is
+# given, it is used as a migration number. If there is no argument, the last
+# migration number is used.
 #
 # The script must be executed in the `models` directory. It creates a
 # 'migration.sql' file if it succeeds.
