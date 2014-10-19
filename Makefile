@@ -17,8 +17,10 @@ models: propel
 
 migrate: propel
 	cd models; \
-		../${PROPEL_GEN} diff; \
-		./migrate.sh; \
+		../${PROPEL_GEN} diff
+	cd models; \
+		./migrate.sh
+	cd models; \
 		../${PROPEL_GEN}
 
 propel: vendor

@@ -21,8 +21,9 @@ migration.sql
 /models/runtime-conf.xml
 /models/buildtime-conf.xml
 /models/build/conf/ip7website-conf.php
-models/build/classes/ip7website/om
-models/build/classes/ip7website/map
+/models/build/classes/ip7website/om
+/models/build/classes/ip7website/map
+/models/migrations
 
 # Composer (vendor files)
 /vendor

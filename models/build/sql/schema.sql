@@ -247,24 +247,6 @@ CREATE TABLE `content_types`
 ) ENGINE=MyISAM;
 
 -- ---------------------------------------------------------------------
--- reports
--- ---------------------------------------------------------------------
-
-DROP TABLE IF EXISTS `reports`;
-
-CREATE TABLE `reports`
-(
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `content_id` INTEGER,
-    `author_id` INTEGER,
-    `date` DATETIME NOT NULL,
-    `text` VARCHAR(255),
-    PRIMARY KEY (`id`),
-    INDEX `reports_FI_1` (`content_id`),
-    INDEX `reports_FI_2` (`author_id`)
-) ENGINE=MyISAM;
-
--- ---------------------------------------------------------------------
 -- news
 -- ---------------------------------------------------------------------
 
