@@ -61,9 +61,6 @@ if (strpos(LIM_REQUEST_URI, '/profil') === 0) {
     }
 }
 
-## search
-dispatch('/recherche', 'display_search_results');
-
 if (strpos(LIM_REQUEST_URI, '/cursus') === 0) {
 
     ## cursus
@@ -137,7 +134,6 @@ dispatch('/stats',    'display_stats_page');
 if (strpos(LIM_REQUEST_URI, '/api') === 0) {
 
     dispatch('/api/1/users/exists.json',     'json_check_username');
-    dispatch('/api/1/search.json',           'json_global_search');
     dispatch('/api/1/links_list.json',       'json_get_entities_links_list');
 
     dispatch('/api/1/contents/last.json',    'json_get_last_contents');
@@ -159,8 +155,6 @@ if (strpos(LIM_REQUEST_URI, '/api') === 0) {
     dispatch_post('/api/1/news/update.json', 'json_post_update_news');
     dispatch_post('/api/1/news/delete.json', 'json_post_delete_news');
     dispatch_post('/api/1/news/create.json', 'json_post_create_news');
-    dispatch_post('/api/1/news/is_old.json', 'json_post_news_mark_as_old');
-    dispatch_post('/api/1/news/is_not_old.json', 'json_post_news_mark_as_not_old');
 
     dispatch_post('/api/1/files/rename.json', 'json_post_rename_file');
     dispatch_post('/api/1/files/delete.json', 'json_post_delete_file');

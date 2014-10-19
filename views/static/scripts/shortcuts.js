@@ -1,5 +1,5 @@
 $(function(d,u,l,r){
-    var search = (d=document).getElementById('q'),
+    var d      = document,
         b      = d.body,
         reversed_body = false,
         transform_body = function(v) {
@@ -15,13 +15,6 @@ $(function(d,u,l,r){
             ['O','Moz','Ms','Webkit'].forEach(function(s){b.style[s+'Transform'] = v});
             b.style.transform = v;
         };
-
-    // focus on search with '/'
-    if (search) {
-        Mousetrap.bind('/', function(){
-            return !!search.focus();    
-        });
-    }
 
     // shortcuts to some pages
     [

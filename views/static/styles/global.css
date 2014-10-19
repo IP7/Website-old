@@ -299,8 +299,7 @@ form.proposing-content h6 {
 
 #main_logo_link,
 #cursus_nav,
-#others_nav,
-#search {
+#others_nav {
     vertical-align:middle;
     display:table-cell;
 }
@@ -313,14 +312,8 @@ form.proposing-content h6 {
     padding-left:20px;
 }
 
-#others_nav,
-#search {
+#others_nav {
     text-align:right;
-}
-#search {
-    width:250px;
-    padding-left:16px;
-    padding-right:16px;
 }
 
 /* -- Messages -------------------------------------------- */
@@ -514,6 +507,9 @@ a.news-title {
 .profile-bar .user {
     margin-left:3px;
     margin-right:5px;
+}
+.profile-bar-wrapper {
+  padding-right: 16px;
 }
 
 .logout-bar-link {

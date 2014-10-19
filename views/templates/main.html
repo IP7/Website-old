@@ -51,8 +51,6 @@
                 <link rel="icon" type="image/png" href="{{ page.favicon }}" />
                 <link rel="apple-touch-icon" href="{{ page.apple_icon }}" />
 
-                <link rel="search" type="application/opensearchdescription+xml" title="IP7" href="//www.infop7.org/views/static/opensearch.xml" />
-
                 {# flux Atom/RSS #}
                 {% if page.feeds is defined and page.feeds is not empty %}
                     {% if page.feeds.rss2 is defined and page.feeds.rss2 is not empty %}
@@ -115,16 +113,6 @@
                             {% endif %}
                         </ul>
                         {% endblock %}
-
-                    {# recherche #}
-                    {% if page.no_search is not defined or page.no_search == false %}
-                        <form id="search" {#
-                        #}action="{{ site.search.action |raw }}" method="{{ site.search.method |e('html_attr') }}">
-                            <label for="q" class="hidden explicit">Recherche</label>
-                            <input type="search" id="q" name="q" placeholder="Recherche…" />
-                            <input type="submit" value="Ok" />
-                        </form>
-                    {% endif %}
                     </nav>
                 </header>
 

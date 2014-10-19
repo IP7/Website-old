@@ -1,23 +1,5 @@
 <?php
 
-function json_global_search() {
-    if (!has_get('q')) {
-        return json(array('data' => array()));
-    }
-
-    $raw_results = perform_search(escape_mysql_wildcards(get_string('q', 'GET')), false, 5);
-
-    $results = array();
-
-    foreach ($raw_results as $k => $cat_results) {
-        foreach ($cat_results['values'] as $_ => $v) {
-            $results []= $v;
-        }
-    }
-
-    return json(array('data' => $results));
-}
-
 // return a list of objects {title: <title>, href: <url>}
 // for all entities of the given types, up to 150 for each type
 // currently supported types:
