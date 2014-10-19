@@ -80,7 +80,7 @@
 
         <!-- si c'est actuellement un enseignant -->
         <column name="is_a_teacher"          type="BOOLEAN" defaultExpr="0" />
-        
+
         <!-- si c'est actuellement un étudiant -->
         <column name="is_a_student"          type="BOOLEAN" defaultExpr="0" />
 
@@ -176,7 +176,7 @@
         <column name="id"          type="INTEGER" required="true" primaryKey="true" autoIncrement="true"/>
 
         <!-- cursus correspondant -->
-        <column name="cursus_id"   type="INTEGER" /> 
+        <column name="cursus_id"   type="INTEGER" />
 
         <!-- semestre correspondant -->
         <column name="semester"    type="TINYINT" defaultExpr="0" />
@@ -510,34 +510,6 @@
         </unique>
     </table>
 
-    <!-- === contenu signalé === -->
-    <table name="reports" phpName="Report">
-        <!-- id -->
-        <column name="id"         type="INTEGER" required="true" primaryKey="true" autoIncrement="true"/>
-
-        <!-- id du contenu -->
-        <column name="content_id" type="INTEGER" />
-        
-        <!-- id du signaleur -->
-        <column name="author_id"  type="INTEGER" />
-
-        <!-- date -->
-        <column name="date"       type="TIMESTAMP" required="true" />
-
-        <!-- courte explication -->
-        <column name="text"       type="VARCHAR" />
-
-        <!-- == index & clefs étrangères == -->
-
-        <foreign-key foreignTable="contents" onDelete="CASCADE" onUpdate="CASCADE" phpName="Content">
-            <reference local="content_id" foreign="id" />
-        </foreign-key>
-
-        <foreign-key foreignTable="users" onDelete="SETNULL" onUpdate="CASCADE" phpName="Author">
-            <reference local="author_id" foreign="id" />
-        </foreign-key>
-    </table>
-
     <!-- === actualités === -->
     <table name="news" phpName="News">
         <!-- id -->
@@ -601,7 +573,7 @@
         <column name="start_date"    type="TIMESTAMP" required="true" />
         <column name="end_date"      type="TIMESTAMP" />
 
-        <behavior name="timestampable" /> 
+        <behavior name="timestampable" />
 
         <foreign-key foreignTable="users" onDelete="SETNULL" onUpdate="CASCADE" phpName="Author">
             <reference local="author_id" foreign="id" />
@@ -626,7 +598,7 @@
     </table>
 
 
-    <!-- === jetons uniques pour authentifications === -->
+    <!-- === jetons uniques pour authentification === -->
     <table name="tokens" phpName="Token">
         <!-- id -->
         <column name="id" type="INTEGER" required="true" primaryKey="true" autoIncrement="true"/>
@@ -683,10 +655,10 @@
     <table name="shortlinks" phpName="ShortLink">
         <!-- id -->
         <column name="id" type="INTEGER" required="true" primaryKey="true" autoIncrement="true"/>
-        
+
         <!-- adresse courte (partie après "/") -->
         <column name="short_url" type="VARCHAR" required="true" />
-        
+
         <!-- adresse longue (partie après "/") -->
         <column name="url" type="VARCHAR" required="true" />
 
@@ -709,7 +681,7 @@
         <column name="id"            type="INTEGER" required="true" primaryKey="true" autoIncrement="true"/>
 
         <!-- liste ordonnée des ids des fichiers contenus dans l'archive
-             Exemple : 
+             Exemple :
                 42,43,1034,1037 -->
         <column name="files_ids" type="VARCHAR" required="true" size="255" />
 

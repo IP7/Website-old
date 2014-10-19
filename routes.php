@@ -91,7 +91,7 @@ if (strpos(LIM_REQUEST_URI, '/cursus') === 0) {
 
     ## course
     dispatch('/cursus/:cursus/:course', 'display_course');
-    
+
     ## contents (course)
     dispatch('/cursus/:cursus/:course/proposer',      'display_member_proposing_content_form');
     dispatch_post('/cursus/:cursus/:course/proposer', 'display_post_member_proposed_content');
@@ -116,22 +116,12 @@ dispatch('/admin', 'display_admin_home');
 
 ## moderation 
 dispatch('/admin/moderation',            'display_admin_moderation');
-dispatch('/admin/reports',               'display_admin_content_report');
-dispatch_post('/admin/reports',          'post_admin_content_report');
 dispatch('/admin/content/proposed',      'display_admin_proposed_content');
 dispatch_post('/admin/content/proposed', 'post_admin_proposed_content');
-
-## members
-dispatch('/admin/membres',          'display_admin_members');
-dispatch('/admin/membres/add',      'display_admin_add_member');
-dispatch_post('/admin/membres/add', 'post_admin_add_member');
 
 ## signin
 dispatch('/inscription', 'display_signin_form');
 dispatch_post('/inscription', 'post_signin_form');
-
-## maintenance
-dispatch('/admin/migrate', 'display_admin_migrate_db_page');
 
 ## global news
 dispatch('/actus/archives', 'display_news_archives');

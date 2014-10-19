@@ -1,12 +1,5 @@
 [
     {
-        "name": "admin.min.js",
-        "files": [
-            "admin_members.js"
-        ]
-    },
-
-    {
         "name": "simple-content.min.js",
         "files": [
             "file-icons.js"

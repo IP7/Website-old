@@ -83,8 +83,7 @@ function display_course_content() {
     $msg_str  = null;
     $msg_type = null;
 
-    $tpl_report = null;
-	$tpl_proposed = null;
+    $tpl_proposed = null;
 
     $tpl_files = null;
 
