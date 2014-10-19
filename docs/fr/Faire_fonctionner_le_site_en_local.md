@@ -41,6 +41,12 @@ sudo mv composer.phar composer
 brew install composer
 ```
 
+Puis :
+
+```sh
+composer install
+```
+
 ## 2. Récupérer le code-source
 
 Si vous avez `git` installé (`sudo apt-get install git`), vous pouvez cloner le
@@ -145,6 +151,13 @@ return $conf;
 N’oubliez pas de modifier le mot de passe et/ou le nom d’utilisateur si vous
 n’avez pas utilisé ceux de ce guide.
 
+Générez les fichiers PHP correspondant :
+
+```sh
+cd models
+../vendor/bin/propel-gen
+```
+
 ## 4. Configurer l’accès au site
 
 Il faut maintenant définir l’URL d’accès au site. Il existe deux méthodes, l’une
@@ -160,7 +173,11 @@ le répertoire du code du site (placez-vous dans le répertoire qui contient le
 code du site avant) :
 
 ```sh
-sudo ln -s /var/www/ip7 $(pwd)
+# pour Ubuntu
+sudo ln -s $(pwd) /var/www/ip7
+
+# pour OSX
+sudo ln -s $(pwd) /Library/WebServer/Documents/
 ```
 
 Ensuite, éditez le fichier `config.php`, et vers la ligne 66, changez :
