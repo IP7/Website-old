@@ -109,7 +109,6 @@
     {
         "name": "base-body.min.js",
         "files": [
-            "piwik.js",
             "jquery-ui-1.8.23.custom.min.js",
             "jquery.timeago.min.js",
             "mousetrap.min.js",

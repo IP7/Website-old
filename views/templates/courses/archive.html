@@ -3,7 +3,7 @@
 <div class="course-archive-page">
     <h1>{{ page.title }}</h1>
     {% if page.archive is defined and page.archive %}
-    <a class="piwik_download archive-download-link" href="{{ page.archive.href }}">Télécharger (zip)</a>
+    <a class="archive-download-link" href="{{ page.archive.href }}">Télécharger (zip)</a>
     {% else %}
     <p>Il n’y a pas d’archive disponible pour ce cours.</p>
     {% endif %}
