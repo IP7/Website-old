@@ -50,18 +50,11 @@ function json_get_cursus() { // short_name=<short_name> or id=<id>
         halt(NOT_FOUND);
     }
 
-    $resp_id = $cursus->getResponsableId();
-
     return json(array(
-
         'id'          => $cursus->getId(),
         'short_name'  => $cursus->getShortName(),
         'name'        => $cursus->getName(),
-        'description' => $cursus->getDescription(),
-        'responsable' => !$resp_id ? null : array(
-            'id' => $resp_id
-        ) 
-
+        'description' => $cursus->getDescription()
     ));
 
 }
@@ -137,7 +130,7 @@ function api_post_course_intro() {
         halt(NOT_FOUND);
     }
 
-    if (!is_connected() || (!is_admin() && !user()->isResponsibleFor($course->getCursus()))) {
+    if (!is_connected() || !is_admin()) {
         halt(HTTP_FORBIDDEN);
     }
 

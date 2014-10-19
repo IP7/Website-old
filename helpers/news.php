@@ -50,9 +50,7 @@ function check_and_save_news($title, $body, &$news, $cursus=null, $course=null) 
     }
 
     if (!user()->isAdmin()) {
-        if (!$cursus || !user()->isResponsibleFor($cursus)) {
-            halt(HTTP_FORBIDDEN);
-        }
+        halt(HTTP_FORBIDDEN);
     }
 
     if (!$title || strlen($title) > 255)  {

@@ -41,9 +41,7 @@ function json_post_update_news() {
     $cursus = $news->getCursus();
 
     if (!user()->isAdmin()) {
-        if (!$cursus || !user()->isResponsibleFor($cursus)) {
-            halt(HTTP_FORBIDDEN);
-        }
+        halt(HTTP_FORBIDDEN);
     }
 
     $title = get_string('title', 'POST');
@@ -84,10 +82,7 @@ function json_post_delete_news() {
     }
 
     if (!user()->isAdmin()) {
-        $cursus = $news->getCursus();
-        if (!$cursus || !user()->isResponsibleFor($cursus)) {
-            halt(HTTP_FORBIDDEN);
-        }
+        halt(HTTP_FORBIDDEN);
     }
 
     $news->delete();
@@ -157,9 +152,7 @@ function _json_post_news_mark_as( $old = true ) { // ?id=<news id>
 
     if (!user()->isAdmin()) {
         $cursus = $news->getCursus();
-        if (!$cursus || !user()->isResponsibleFor($cursus)) {
-            halt(HTTP_FORBIDDEN);
-        }
+        halt(HTTP_FORBIDDEN);
     }
 
     $news->setExpirationDate( $old ? 'now' : NULL );

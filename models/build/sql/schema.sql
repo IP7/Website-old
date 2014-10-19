@@ -55,11 +55,9 @@ CREATE TABLE `cursus`
     `short_name` CHAR(2) NOT NULL,
     `name` VARCHAR(16) NOT NULL,
     `description` TEXT(1024),
-    `responsable_id` INTEGER,
     PRIMARY KEY (`id`),
     UNIQUE INDEX `cursus_U_1` (`name`),
-    INDEX `cursus_I_1` (`short_name`),
-    INDEX `cursus_FI_1` (`responsable_id`)
+    INDEX `cursus_I_1` (`short_name`)
 ) ENGINE=MyISAM;
 
 -- ---------------------------------------------------------------------
@@ -114,12 +112,10 @@ CREATE TABLE `educational_paths`
     `name` VARCHAR(50) NOT NULL,
     `description` TEXT(1024),
     `cursus_id` INTEGER NOT NULL,
-    `responsable_id` INTEGER,
     `deleted` TINYINT(1) DEFAULT 0,
     PRIMARY KEY (`id`),
     UNIQUE INDEX `educational_paths_U_1` (`short_name`, `cursus_id`),
-    INDEX `educational_paths_FI_1` (`cursus_id`),
-    INDEX `educational_paths_FI_2` (`responsable_id`)
+    INDEX `educational_paths_FI_1` (`cursus_id`)
 ) ENGINE=MyISAM;
 
 -- ---------------------------------------------------------------------

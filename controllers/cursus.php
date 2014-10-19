@@ -81,21 +81,7 @@ function display_cursus() {
     $moderation_bar = array();
     $add_news = false;
 
-    $responsable = $cursus->getResponsable();
-    $tpl_responsable = null;
-
-    if ( $responsable !== null ) {
-        $tpl_responsable = array(
-
-            'name' => $responsable->getPublicName(),
-            'href' => user_url($responsable)
-
-        );
-    }
-
-    $is_page_admin = (is_connected()
-                        && (user()->isAdmin()
-                            || user()->isResponsibleFor($cursus)));
+    $is_page_admin = (is_connected() && user()->isAdmin());
 
     $tpl_cursus = array(
         'user' => array(
@@ -119,7 +105,6 @@ function display_cursus() {
                 'name'         => $cursus->getName(),
                 'introduction' => $cursus->getDescription(),
 
-                'responsable'  => $tpl_responsable,
                 'path_name'    => $path->getName(),
 
                 'courses'      => $courses,
@@ -156,7 +141,7 @@ function display_cursus_dashboard($has_msg=false, $msg_str='', $msg_type='') {
         redirect_to(cursus_url($cursus).'/dash');
     }
 
-    if (!is_connected() || !(user()->isAdmin() || user()->isResponsibleFor($cursus))) {
+    if (!is_connected() || !user()->isAdmin()) {
         halt(HTTP_FORBIDDEN);
     }
 
@@ -230,7 +215,7 @@ function post_cursus_dashboard() {
 
     if ($cursus == null) { halt(NOT_FOUND); }
 
-    if (!is_connected() || !(user()->isAdmin() || user()->isResponsibleFor($cursus))) {
+    if (!is_connected() || !user()->isAdmin()) {
         halt(HTTP_FORBIDDEN);
     }
 

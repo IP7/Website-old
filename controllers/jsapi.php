@@ -89,7 +89,7 @@ function jsapi_post_cursus_intro() {
 
     if (!$cursus) { halt(NOT_FOUND); }
 
-    if (!is_connected() || (!is_admin() && !user()->isResponsibleFor($cursus))) {
+    if (!is_connected() || !is_admin()) {
         halt(HTTP_FORBIDDEN);
     }
 
@@ -124,7 +124,6 @@ function jsapi_post_change_content_title() {
     // content has not been validated yet and he/she is its author.
     if (   !is_connected()
         || (   !is_moderator()
-            && !user()->isResponsibleFor($cursus)
             && ($content->isValidated()
                 || user()->getId() !== $content->getAuthorId() ))) {
 
@@ -178,7 +177,6 @@ function jsapi_post_change_content_year() {
     // content has not been validated yet and he/she is its author.
     if (   !is_connected()
         || (   !is_moderator()
-            && !user()->isResponsibleFor($cursus)
             && ($content->isValidated()
                 || user()->getId() !== $content->getAuthorId() ))) {
 

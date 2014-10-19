@@ -53,21 +53,7 @@ function display_course() {
         )
     );
 
-    $responsable = $cursus->getResponsable();
-    $tpl_responsable = null;
-
-    if ( $responsable !== null ) {
-        $tpl_responsable = array(
-
-            'name' => $responsable->getPublicName(),
-            'href' => user_url($responsable)
-
-        );
-    }
-
-    $is_page_admin = (is_connected()
-                        && (user()->isAdmin()
-                             || user()->isResponsibleFor($cursus)));
+    $is_page_admin = (is_connected() && user()->isAdmin());
 
     if ($course->getName() === $course->getShortName()) {
         $course_title = $course->getName();
@@ -90,7 +76,6 @@ function display_course() {
             'course'         => array(
                 'name'  => $course_title,
                 'ects'  => $course->getECTS(),
-                'responsable' => $tpl_responsable,
                 'intro' => $course->getDescription(),
 
                 'links' => $course_links,

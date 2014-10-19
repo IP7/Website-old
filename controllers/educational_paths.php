@@ -109,19 +109,7 @@ function display_educational_path() {
 
     $other_links = array();
 
-    $is_page_admin = is_connected() && (user()->isAdmin() || user()->isResponsibleFor($cursus));
-
-    $responsable = $cursus->getResponsable();
-    $tpl_responsable = null;
-
-    if ( $responsable !== null ) {
-        $tpl_responsable = array(
-
-            'name' => $responsable->getPublicName(),
-            'href' => user_url($responsable)
-
-        );
-    }
+    $is_page_admin = is_connected() && user()->isAdmin();
 
     return Config::$tpl->render('cursus/educational_path.html', tpl_array(array(
         'user' => array(
@@ -144,7 +132,6 @@ function display_educational_path() {
 
                 'path_name'    => $path->getName(),
 
-                'responsable'  => $tpl_responsable,
                 'courses'      => $courses,
                 'news'         => $news,
                 'other_links'  => $other_links

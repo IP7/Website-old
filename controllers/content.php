@@ -96,8 +96,7 @@ function display_course_content() {
     }
 
     if (!$content->getValidated()) {
-        if (!is_connected() || (!user()->isResponsibleFor($cursus)
-                                    && user()->getId() != $user->getId()
+        if (!is_connected() || (user()->getId() != $user->getId()
                                     && !user()->isAdmin())) {
             halt(NOT_FOUND);
         }
@@ -108,7 +107,7 @@ function display_course_content() {
 
         $tpl_proposed = null;
 
-        if (user()->isAdmin() || user()->isResponsibleFor($cursus)) {
+        if (user()->isAdmin()) {
             $post_token = generate_post_token(user());
             FormData::create($post_token)->store('proposed', $content);
 
@@ -121,8 +120,8 @@ function display_course_content() {
         }
 
     }
-    
-    if (is_connected() && (user()->isModerator() || user()->isResponsibleFor($cursus))) {
+
+    if (is_connected() && user()->isModerator()) {
         $js = 'editable-content';
     }
 

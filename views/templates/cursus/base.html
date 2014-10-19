@@ -54,12 +54,6 @@
 {# Intro #}
     <header>
         <h1>{{ page.cursus.path_name }} ({{ page.cursus.name }})</h1>
-        {% if page.cursus.responsable is not null %}
-        <p class="details"> Référent&nbsp;: {{ _m.a_user( page.cursus.responsable ) }}
-            {% if user.is_responsable %}
-        <span class="dot">•</span>&nbsp;<a href="{{ page.url }}/dash">Administration</a>
-            {% endif %}</p>
-        {% endif %}
     </header>
 <section class="intro">{{ page.cursus.introduction|md2html|raw }}</section>
 {# News #}
