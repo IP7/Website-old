@@ -467,7 +467,7 @@ function display_post_member_proposed_content_preview() {
         $desc = has_post('desc') ? $_POST['desc'] : '';
 
         $fd2->store('files',
-                upload_user_file(user(), 'userfiles', $desc, &$msg_str, &$msg_type));
+                upload_user_file(user(), 'userfiles', $desc, $msg_str, $msg_type));
     }
 
     $tpl_files = array();
