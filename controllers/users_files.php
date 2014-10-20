@@ -39,6 +39,12 @@ function _serve_user_file($f) {
         halt(NOT_FOUND);
     }
 
+    $user_rights = is_connected() ? user()->getRights() : 0;
+
+    if ($user_rights < $f->getAccessRights()) {
+        return halt(HTTP_FORBIDDEN);
+    }
+
     $path = Config::$app_dir.'/../data/usersfiles/'.$f->getPath();
     // get absolute path
     $path = preg_replace('@/([^/]+)/\.\./@', '/', $path);
@@ -46,15 +52,6 @@ function _serve_user_file($f) {
     if (!file_exists($path)) {
         halt(NOT_FOUND);
     }
-
-    $user_rights = is_connected() ? user()->getRights() : 0;
-
-    if ($user_rights < $f->getAccessRights()) {
-        return halt(HTTP_FORBIDDEN);
-    }
-
-    $f->incrementDownloadsCount();
-    $f->save();
 
     return render_file($path, true);
 }
