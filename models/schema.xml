@@ -186,9 +186,6 @@
         <!-- description -->
         <column name="description" type="LONGVARCHAR" size="1024" />
 
-        <!-- si les contenus peuvent contenir du code (programmation) -->
-        <column name="use_latex"   type="BOOLEAN" defaultExpr="0" />
-
         <!-- si les contenus peuvent contenir du LaTeX (i.e. si c'est des maths) -->
         <column name="use_sourcecode"
                                    type="BOOLEAN" defaultExpr="1" />
@@ -274,23 +271,6 @@
             <unique-column name="short_name" />
             <unique-column name="cursus_id" />
         </unique>
-    </table>
-
-    <!-- parcours au(x)quel(s) sont inscrit les utilisateurs -->
-    <table name="users_paths" isCrossRef="true">
-        <!-- id de l'utilisateur -->
-        <column name="user_id" type="INTEGER" primaryKey="true" />
-        <!-- id du parcours -->
-        <column name="path_id" type="INTEGER" primaryKey="true" />
-
-        <!-- == index & clefs étrangères == -->
-
-        <foreign-key foreignTable="users" onDelete="CASCADE" onUpdate="CASCADE">
-            <reference local="user_id" foreign="id"/>
-        </foreign-key>
-        <foreign-key foreignTable="educational_paths" onDelete="CASCADE" onUpdate="CASCADE">
-            <reference local="path_id" foreign="id"/>
-        </foreign-key>
     </table>
 
     <!-- liens matières/parcours (facultatives) -->
@@ -544,42 +524,6 @@
         </validator>
 
     </table>
-
-    <table name="events" phpName="Event">
-        <column name="id"            type="INTEGER" required="true" primaryKey="true" autoIncrement="true"/>
-        <column name="author_id"     type="INTEGER" />
-        <column name="title"         type="VARCHAR" required="true" />
-        <column name="access_rights" type="TINYINT" defaultExpr="0" />
-        <column name="description"   type="LONGVARCHAR" size="1024" required="true" />
-        <column name="place"         type="VARCHAR" />
-        <column name="fee"           type="DECIMAL" defaultExpr="0" />
-        <column name="start_date"    type="TIMESTAMP" required="true" />
-        <column name="end_date"      type="TIMESTAMP" />
-
-        <behavior name="timestampable" />
-
-        <foreign-key foreignTable="users" onDelete="SETNULL" onUpdate="CASCADE" phpName="Author">
-            <reference local="author_id" foreign="id" />
-        </foreign-key>
-    </table>
-
-    <table name="events_types" phpName="EventType">
-        <column name="id"            type="INTEGER" required="true" primaryKey="true" autoIncrement="true"/>
-        <column name="name"          type="VARCHAR" size="32" required="true" />
-
-        <!-- short name (for URLs) -->
-        <column name="short_name"    type="VARCHAR" size="16" required="true" />
-        <column name="access_rights" type="TINYINT" defaultExpr="0" />
-
-        <unique>
-            <unique-column name="name" />
-        </unique>
-
-        <unique>
-            <unique-column name="short_name" />
-        </unique>
-    </table>
-
 
     <!-- === jetons uniques pour authentification === -->
     <table name="tokens" phpName="Token">

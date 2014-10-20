@@ -75,7 +75,6 @@ CREATE TABLE `courses`
     `short_name` VARCHAR(16) NOT NULL,
     `ECTS` FLOAT DEFAULT 3,
     `description` TEXT(1024),
-    `use_latex` TINYINT(1) DEFAULT 0,
     `use_sourcecode` TINYINT(1) DEFAULT 1,
     `deleted` TINYINT(1) DEFAULT 0,
     PRIMARY KEY (`id`),
@@ -116,20 +115,6 @@ CREATE TABLE `educational_paths`
     PRIMARY KEY (`id`),
     UNIQUE INDEX `educational_paths_U_1` (`short_name`, `cursus_id`),
     INDEX `educational_paths_FI_1` (`cursus_id`)
-) ENGINE=MyISAM;
-
--- ---------------------------------------------------------------------
--- users_paths
--- ---------------------------------------------------------------------
-
-DROP TABLE IF EXISTS `users_paths`;
-
-CREATE TABLE `users_paths`
-(
-    `user_id` INTEGER NOT NULL,
-    `path_id` INTEGER NOT NULL,
-    PRIMARY KEY (`user_id`,`path_id`),
-    INDEX `users_paths_FI_2` (`path_id`)
 ) ENGINE=MyISAM;
 
 -- ---------------------------------------------------------------------
@@ -176,7 +161,6 @@ CREATE TABLE `files`
     `file_type` TINYINT,
     `path` VARCHAR(255) NOT NULL,
     `access_rights` TINYINT DEFAULT 0,
-    `downloads_count` INTEGER DEFAULT 0,
     `deleted` TINYINT(1) DEFAULT 0,
     PRIMARY KEY (`id`),
     UNIQUE INDEX `files_U_1` (`path`),
@@ -267,46 +251,6 @@ CREATE TABLE `news`
 ) ENGINE=MyISAM;
 
 -- ---------------------------------------------------------------------
--- events
--- ---------------------------------------------------------------------
-
-DROP TABLE IF EXISTS `events`;
-
-CREATE TABLE `events`
-(
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `author_id` INTEGER,
-    `title` VARCHAR(255) NOT NULL,
-    `access_rights` TINYINT DEFAULT 0,
-    `description` TEXT(1024) NOT NULL,
-    `place` VARCHAR(255),
-    `fee` DECIMAL DEFAULT 0,
-    `start_date` DATETIME NOT NULL,
-    `end_date` DATETIME,
-    `created_at` DATETIME,
-    `updated_at` DATETIME,
-    PRIMARY KEY (`id`),
-    INDEX `events_FI_1` (`author_id`)
-) ENGINE=MyISAM;
-
--- ---------------------------------------------------------------------
--- events_types
--- ---------------------------------------------------------------------
-
-DROP TABLE IF EXISTS `events_types`;
-
-CREATE TABLE `events_types`
-(
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `name` VARCHAR(32) NOT NULL,
-    `short_name` VARCHAR(16) NOT NULL,
-    `access_rights` TINYINT DEFAULT 0,
-    PRIMARY KEY (`id`),
-    UNIQUE INDEX `events_types_U_1` (`name`),
-    UNIQUE INDEX `events_types_U_2` (`short_name`)
-) ENGINE=MyISAM;
-
--- ---------------------------------------------------------------------
 -- tokens
 -- ---------------------------------------------------------------------
 
@@ -372,7 +316,6 @@ CREATE TABLE `files_archives`
     `date` DATETIME NOT NULL,
     `path` VARCHAR(255) NOT NULL,
     `access_rights` TINYINT DEFAULT 0,
-    `downloads_count` INTEGER DEFAULT 0,
     `deleted` TINYINT(1) DEFAULT 0,
     PRIMARY KEY (`id`),
     UNIQUE INDEX `files_archives_U_1` (`path`)
