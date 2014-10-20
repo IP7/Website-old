@@ -110,10 +110,7 @@
         "name": "base-body.min.js",
         "files": [
             "jquery-ui-1.8.23.custom.min.js",
-            "jquery.timeago.min.js",
-            "mousetrap.min.js",
-            "search.js",
-            "shortcuts.js"
+            "jquery.timeago.min.js"
         ]
     },
 
