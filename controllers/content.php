@@ -105,7 +105,17 @@ function display_course_content() {
 
         $js = 'editable-content';
 
-        $tpl_proposed = null;
+        if (user()->isAdmin()) {
+            $post_token = generate_post_token(user());
+            FormData::create($post_token)->store('proposed', $content);
+
+            $tpl_proposed = array(
+                'form' => array(
+                    'action' => Config::$root_uri. 'admin/content/proposed',
+                    'post_token' => $post_token
+                )
+            );
+        }
     }
 
     if (is_connected() && user()->isModerator()) {
