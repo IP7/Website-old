@@ -12,10 +12,10 @@ if (!Object.prototype.hasOwnProperty.call(HTMLElement.prototype, 'textContent'))
 if ( typeof Object.create === 'undefined' ) {
 
     // From Douglas Crockford's "JavaScript: The Good Parts"
-    Object.create = function (o) { 
-        function F() {} 
-        F.prototype = o; 
-        return new F(); 
+    Object.create = function (o) {
+        function F() {}
+        F.prototype = o;
+        return new F();
     };
 
 }

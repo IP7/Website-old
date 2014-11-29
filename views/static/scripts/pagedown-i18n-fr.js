@@ -18,7 +18,7 @@
         strings = options.strings || {};
 
         options.strings = {
-            
+
             bold: "Gras <strong> Ctrl+B",
             boldexample: "texte en gras",
 
@@ -58,7 +58,7 @@
 
         for ( s in strings ) {
             if ( strings.hasOwnProperty( s ) ) {
-                
+
                 options.strings[ s ] = strings[ s ];
 
             }

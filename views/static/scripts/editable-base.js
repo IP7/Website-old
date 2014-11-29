@@ -26,9 +26,9 @@
      **/
     global.IP7W.setEditable = function ip7w_setEditable(opts) {
         if (!$.fn.editable) { return; }
-        
+
         if (!opts || !opts.target || !opts.saveurl) {
-            
+
             IP7W.error('IP7W#editable: wrong argument:', opts);
             return;
         }
@@ -58,7 +58,7 @@
             cols:        80,
             rows:        8,
             event:       'dblclick'
-        }, opts)
+        }, opts);
 
         $el.editable( url, jeditable_opts );
 

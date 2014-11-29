@@ -10,7 +10,7 @@
             $.ajax('/api/1/users/exists.json', {
                 data: { username: $inp.val() },
                 success: function(resp) {
-                    $inp.addClass(resp['data'] ? 'invalid' : 'valid');
+                    $inp.addClass(resp.data ? 'invalid' : 'valid');
                 }
             });
         });

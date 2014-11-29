@@ -33,11 +33,11 @@ var compressor = require( 'node-minify' ),
 
                 var createFile = function() {
 
-                    var headers = '/*! '
-                                + b.files.join('+')
-                                + ', ' + +new Date() + ' */\n',
+                    var headers = '/*! ' +
+                                b.files.join('+') +
+                                ', ' + Date.now() + ' */\n',
 
-                        tmpfile = paths.tmp + 'f' + +new Date() + (0|Math.random()*10);
+                        tmpfile = paths.tmp + 'f' + Date.now() + (0|Math.random()*10);
 
                     fs.writeFile( tmpfile, headers, function( err ) {
 
@@ -57,7 +57,7 @@ var compressor = require( 'node-minify' ),
                                 if ( err ) { console.log( err ); }
 
                                 fs.unlink( tmpfile );
-                            
+
                             }
 
                         });
@@ -67,7 +67,7 @@ var compressor = require( 'node-minify' ),
                 };
 
                 if ( !exists ) {
-                    
+
                     return createFile();
 
                 } else {
@@ -93,9 +93,8 @@ var compressor = require( 'node-minify' ),
 
                                 fi = filesIn[ i ].split( path.sep );
 
-                                console.log( fi[ fi.length - 1 ]
-                                           + ' modified, updating '
-                                           + fo );
+                                console.log( fi[ fi.length - 1 ] +
+                                           ' modified, updating ' + fo );
                                 return createFile();
 
                             }

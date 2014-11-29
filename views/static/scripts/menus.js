@@ -1,5 +1,5 @@
-;$(function() {
-    
+$(function() {
+
     var menus = document.getElementsByClassName('optional'),
         buttons = [
             '&#9650;', // up arrow
@@ -29,5 +29,5 @@
         }, false );
 
     });
-    
+
 });

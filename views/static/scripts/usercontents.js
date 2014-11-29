@@ -12,10 +12,10 @@ $(function() {
         year  = d.getMonth() > 6 ? d.getFullYear() : d.getFullYear() - 1,
         $ctitle = $( '.content_header h1' ).first(),
         $cyear = $('.content_header .content-year').first(),
-        
+
         ctitle = $ctitle.text(),
         cyear  = $cyear.text(),
-        
+
         i=2006, text;
 
     for (; i<=year; i++) {
@@ -51,8 +51,8 @@ $(function() {
         onblur: 'cancel',
 
         callback: function( cyear2 ) {
-            if (   !window.history
-                || typeof window.history.replaceState !== 'function') {
+            if (  !window.history ||
+                  typeof window.history.replaceState !== 'function') {
                 return;
             }
 
