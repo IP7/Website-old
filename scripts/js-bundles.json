@@ -72,13 +72,6 @@
     },
 
     {
-        "name": "connected-home.min.js",
-        "files": [
-            "connected_home.js"
-        ]
-    },
-
-    {
         "name": "connection.min.js",
         "files": [
             "pretty_inputs.js",

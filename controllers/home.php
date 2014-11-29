@@ -11,19 +11,13 @@ function display_home() {
         }
     }
 
-    $tpl_name = is_connected() ? 'connected_home.html' : 'home.html';
-
     # Rendering
-    return tpl_render($tpl_name, array(
+    return tpl_render('home.html', array(
 
         'page' => array(
             'title'  => 'Accueil',
 
             'breadcrumbs' => false,
-
-            'scripts' => !is_connected() ? null : array(
-                array( 'href' => js_url('connected-home') )
-            ),
 
             'feeds' => array(
                 'atom' => '/actus/flux.atom',
