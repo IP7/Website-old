@@ -1,7 +1,0 @@
-{% extends 'main.html' %}
-{% block content %}
-<h1>{{ page.title }}</h1>
-<p>Votre inscription a bien été enregistrée.
-Consultez {% if page.inbox_url %}<a href="{{ page.inbox_url|raw }}">{% endif %}vos emails{% if page.inbox_url %}</a>{% endif %} pour
-valider votre compte.</p>
-{% endblock %}

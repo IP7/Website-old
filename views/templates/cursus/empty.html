@@ -1,8 +1,0 @@
-{% extends 'main.html' %}
-{% block content %}
-<article class="cursus">
-{# Intro #}
-<h1>{{ page.cursus.name }}</h1>
-<section class="intro">{{ page.cursus.introduction|md2html|raw }}</section>
-</article>
-{% endblock %}
