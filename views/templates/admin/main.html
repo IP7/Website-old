@@ -14,11 +14,6 @@
     {% block admin_content %}
 <h1>{% if page.title is defined and page.title %}{{ page.title }}{% else %}Administration{% endif %}</h1>
         {% if page.sections is defined and page.sections %}
-    <ul id="sections">
-            {% for s in page.sections %}
-        {{ _m.navlink('#' ~ s.id, s.title) }}    
-            {% endfor %}
-    </ul>
             {% for s in page.sections %}
 <section id="{{ s.id }}">
     <h2 id="{{s.id}}">{{ s.title }}</h2>

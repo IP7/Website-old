@@ -6,7 +6,7 @@ function display_admin_home($message, $message_type) {
     $admin_uri = Config::$root_uri.'admin';
 
     $token = generate_token(null, 0, time() + Durations::ONE_MINUTE*2);
-    
+
     if ( has_get('t') ){
         $message = get_message(get_string('t', 'GET'));
     }
@@ -16,9 +16,6 @@ function display_admin_home($message, $message_type) {
         array(
             'page' => array(
                 'title'        => 'Accueil',
-
-                'message'      => $message,
-                'message_type' => $message_type,
 
                 'sections'     => array(
                     array(
