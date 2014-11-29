@@ -40,8 +40,6 @@ function display_course() {
         );
     }
 
-    $news = get_news($cursus, $course);
-
     $breadcrumbs = array(
         array(
             'href'  => cursus_url($cursus),
@@ -70,8 +68,6 @@ function display_course() {
 
             'keywords'       => array( $course->getName(), $course->getShortName() ),
             'description'    => truncate_string($course->getDescription()),
-
-            'news'           => tpl_news($news),
 
             'course'         => array(
                 'name'  => $course_title,

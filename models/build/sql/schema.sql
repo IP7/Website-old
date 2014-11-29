@@ -180,30 +180,6 @@ CREATE TABLE `content_types`
 ) ENGINE=MyISAM;
 
 -- ---------------------------------------------------------------------
--- news
--- ---------------------------------------------------------------------
-
-DROP TABLE IF EXISTS `news`;
-
-CREATE TABLE `news`
-(
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `author_id` INTEGER NOT NULL,
-    `title` VARCHAR(255) NOT NULL,
-    `text` TEXT(1024) NOT NULL,
-    `expiration_date` DATETIME,
-    `cursus_id` INTEGER,
-    `course_id` INTEGER,
-    `access_rights` TINYINT DEFAULT 0,
-    `created_at` DATETIME,
-    `updated_at` DATETIME,
-    PRIMARY KEY (`id`),
-    INDEX `news_FI_1` (`author_id`),
-    INDEX `news_FI_2` (`course_id`),
-    INDEX `news_FI_3` (`cursus_id`)
-) ENGINE=MyISAM;
-
--- ---------------------------------------------------------------------
 -- tokens
 -- ---------------------------------------------------------------------
 

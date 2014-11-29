@@ -1,5 +1,0 @@
-<li class="news" itemscope itemptype="http://schema.org/NewsArticle" data-id="{{ news.id }}">
-<h3><a class="news-title" itemprop="name" href="/actus/archives#news-{{ news.id }}">{{ news.title }}</a> {#
-    #}<span class="news-date">(<time datetime="{{ news.datetime_attr }}" itemprop="datePublished">{{ news.datetime }}</time>)</span></h3>
-    <article class="content">{{ news.content|md2html|raw }}</article>
-</li>

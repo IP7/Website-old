@@ -21,8 +21,6 @@ function display_home() {
 
             'breadcrumbs' => false,
 
-            'news' => array(),
-
             'scripts' => !is_connected() ? null : array(
                 array( 'href' => js_url('connected-home') )
             ),

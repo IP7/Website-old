@@ -113,13 +113,6 @@ function global_footer_links() {
         );
     }
 
-    if (!is_connected()) {
-        $footer_links []= array(
-            'href'  => Config::$root_uri.'anciens',
-            'title' => 'Anciens étudiants'
-        );
-    }
-
     return array(
         'site' => array(
             'footer_links' => $footer_links
@@ -153,34 +146,6 @@ function tpl_admin_render($tp, $values) {
 // return an array which represents a date
 function tpl_date($d) {
   return array( 'date' => Lang\date_fr($d), 'datetime_attr' => datetime_attr($d));
-}
-
-// return an array of news, formatted for templates
-function tpl_news($n) {
-    $tpl_n = array();
-
-    foreach ($n as $news) {
-
-        $author = $news->getAuthor();
-
-        $tpl_author = !$author ? null : array(
-            'href' => Config::$root_uri.'p/'.$author->getUsername(),
-            'name' => $author->getPublicName()
-        );
-
-        $tpl_n []= array(
-            'datetime_attr' => datetime_attr($news->getCreatedAt()),
-            'datetime'      => Lang\date_fr($news->getCreatedAt()),
-            'title'         => $news->getTitle(),
-            'content'       => $news->getText(),
-            'author'        => $tpl_author,
-            'id'            => $news->getId(),
-
-            'can_edit'      => is_connected() && (user()->isAdmin() || user() === $author)
-         );
-    }
-
-    return $tpl_n;
 }
 
 /**

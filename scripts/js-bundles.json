@@ -55,7 +55,6 @@
         "name": "admin-course.min.js",
         "files": [
             "tabs.js",
-            "news-admin.js",
             "jquery.jeditable.min.js",
             "editable-base.js",
             "course-admin.js"
@@ -66,7 +65,6 @@
         "name": "admin-cursus.min.js",
         "files": [
             "menus.js",
-            "news-admin.js",
             "jquery.jeditable.min.js",
             "editable-base.js",
             "cursus-admin.js"
@@ -111,13 +109,6 @@
         "files": [
             "jquery-ui-1.8.23.custom.min.js",
             "jquery.timeago.min.js"
-        ]
-    },
-
-    {
-        "name": "news-page.min.js",
-        "files": [
-            "news-page.js"
         ]
     },
 

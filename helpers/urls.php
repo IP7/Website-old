@@ -47,18 +47,6 @@ function user_url($user) {
     return Config::$root_uri.'p/'.$user->getUsername();
 }
 
-// return the URL of a news
-function news_url($n) {
-    $anchor = $n ? '#news-' . $n->getId() : '';
-
-    return Config::$root_uri.'actus/archives' . $anchor;
-}
-
-// return the URL of an educational path
-function educpath_url($cursus, $ep) {
-    return cursus_url($cursus).'/parcours/'.$ep->getShortName().'/';
-}
-
 // return the URL for a CSS file
 function css_url($name) {
     return css_or_js_url('styles', $name, 'css');

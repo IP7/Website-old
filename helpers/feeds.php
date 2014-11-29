@@ -7,16 +7,17 @@ function feedElCmp($a, $b) {
 }
 
 /**
- * Helper to generate feeds for cursus/courses. It includes last 25 news
- * and 25 last publicly added contents (default)
+ * Helper to generate feeds for cursus/courses. It includes
+ * 25 last publicly added contents (default)
  *
  * $cursus_sn: cursus short name, given in the URL
  * $course_sn: course short name, given in the URL. May be null, if
  *             we use the helper for a cursus
  * $type:      feed type, 'rss' or 'atom'
+ * $nc:        deprecated, always 0
  **/
 function feed_helper($cursus_sn, $course_sn, $type='atom',
-                     $news_count=25, $contents_count=25) {
+                     $nc=0, $contents_count=25) {
 
     $cursus = null;
     if ($cursus_sn !== null) {
@@ -50,11 +51,7 @@ function feed_helper($cursus_sn, $course_sn, $type='atom',
         $title = $cursus->getName();
     }
 
-    $desc = 'Dernières actualités ';
-
-    if ($contents_count > 0) {
-        $desc .= 'et nouveaux contenus ';
-    }
+    $desc = 'Nouveaux contenus';
 
     $isRSS = ($type === 'rss'); // RSS2 or Atom
     $time  = time();
@@ -68,19 +65,17 @@ function feed_helper($cursus_sn, $course_sn, $type='atom',
     $feed->setDescription($desc . \Lang\de($title));
 
     if ($isRSS) {
-        
+
         $feed->setImage($title, $url, 'http://www.infop7.org/views/static/images/logo32transp.png');
         $feed->setChannelElement('pubDate', date(DATE_RSS , $time));
         $feed->setChannelElement('language', 'fr');
-   
+
     } else {
-   
+
         $feed->setChannelElement('updated', date(DATE_ATOM , $time));
         $feed->setChannelElement('author', array('name'=>'InfoP7'));
-   
-    }
 
-    $news = get_news($cursus, $course, $news_count, true, array( 'News.Cursus' ));
+    }
 
     if ($contents_count > 0) {
 
@@ -111,23 +106,6 @@ function feed_helper($cursus_sn, $course_sn, $type='atom',
 
     $els = array();
 
-    foreach ($news as $_ => $n) {
-
-        $text = $n->getText();
-
-        $els []= array(
-
-            'title' => ($n->getCursus() ? '[' . $n->getCursus()->getShortName() . '] ' : '') . $n->getTitle(),
-            'link'  => $root . news_url($n),
-            'date'  => $n->getCreatedAt(),
-            'desc'  => $text ? $text : ' ',
-            'guid'  => 'news-' . $n->getId(),
-            'perma' => 'false'
-
-        );
-
-    }
-
     foreach ($contents as $_ => $c) {
 
         $link = $root . content_url($cursus, $c->getCourse(), $c, true);
@@ -146,7 +124,7 @@ function feed_helper($cursus_sn, $course_sn, $type='atom',
 
     }
 
-    if ($contents_count > 0 && $news_count > 0) {
+    if ($contents_count > 0) {
         usort($els, 'feedElCmp');
     }
 
