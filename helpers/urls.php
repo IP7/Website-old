@@ -32,9 +32,9 @@ function course_url($cursus, $course) {
 // return the URL of a content
 function content_url($cursus, $course, $content, $force_uri=false) {
     if (!$cursus) { return ''; }
-    
+
     $uri = course_url($cursus, $course) . '/' . $content->getId();
-    
+
     if ($content->getYear()) {
         $uri .= '/' . $content->getYear() . '-' . ($content->getYear() + 1);
     }

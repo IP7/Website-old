@@ -7,45 +7,21 @@
     <section class="semester">
         <h5>Semestre 1</h5>
         <nav>
-            <section class="mandatory">
             <ul>
-                {% for course in page.cursus.courses.s1.mandatory %}
+                {% for course in page.cursus.courses.s1 %}
                 <li class="navlink course"><a href="{{ course.href }}">{{ _m.abbr(course.name, course.title) }}</a></li>
                 {% endfor %}
-                {% if page.cursus.courses.s1.optional is not empty %}
             </ul>
-            </section>
-            <section class="optional">
-            <h6>Options</h6>
-            <ul>
-                    {% for course in page.cursus.courses.s1.optional %}
-                <li class="navlink course"><a href="{{ course.href }}">{{ _m.abbr(course.name, course.title) }}</a></li>
-                    {% endfor %}
-                {% endif %}
-            </ul>
-            </section>
         </nav>
     </section>
     <section class="semester">
         <h5>Semestre 2</h5>
         <nav>
-            <section class="mandatory">
             <ul>
-                {% for course in page.cursus.courses.s2.mandatory %}
+                {% for course in page.cursus.courses.s2 %}
                 <li class="navlink course"><a href="{{ course.href }}">{{ _m.abbr(course.name, course.title) }}</a></li>
                 {% endfor %}
-            {% if page.cursus.courses.s2.optional is not empty %}
             </ul>
-            </section>
-            <section class="optional">
-            <h6>Options</h6>
-            <ul>
-                    {% for course in page.cursus.courses.s2.optional %}
-                <li class="navlink course"><a href="{{ course.href }}">{{ _m.abbr(course.name, course.title) }}</a></li>
-                    {% endfor %}
-            {% endif %}
-            </ul>
-            </section>
         </nav>
     </section>
 </aside>
@@ -53,10 +29,8 @@
 <article class="cursus" data-cursus-id="{{ page.cursus.id }}">
 {# Intro #}
     <header>
-        <h1>{{ page.cursus.path_name }} ({{ page.cursus.name }})</h1>
+        <h1>{{ page.cursus.name }}</h1>
     </header>
 <section class="intro">{{ page.cursus.introduction|md2html|raw }}</section>
-{# News #}
-{% include 'utils/news.html' %}
 </article>
 {% endblock %}

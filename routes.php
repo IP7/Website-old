@@ -13,43 +13,20 @@ dispatch_post('/connexion', 'post_connection');
 dispatch('/oubli',      'display_forgotten_password');
 dispatch_post('/oubli', 'post_forgotten_password');
 
-## my profile
-if (strpos(LIM_REQUEST_URI, '/profil') === 0) {
-
-    # old URLs (#308)
-    if (strpos(LIM_REQUEST_URI, '/profile') === 0) {
-
-        function redirect_profile_init() { redirect_to('/profil/créer'); }
-
-        ## edit my profile
-        dispatch('/profile/init',      'redirect_profile_init');
-        dispatch_post('/profile/init', 'redirect_profile_init');
-
-    }
-    # new URLs (#308)
-    else {
-
-        ## edit my profile
-        dispatch('/profil/créer',       'display_init_my_profile_page');
-        dispatch_post('/profil/créer',  'post_init_my_profile_page');
-
-    }
-}
-
 if (strpos(LIM_REQUEST_URI, '/cursus') === 0) {
 
     ## cursus
     dispatch('/cursus/:name',      'display_cursus');
     dispatch_post('/cursus/:name', 'display_cursus');
 
-    ## educational paths
+    ## educational paths (deprecated Nov 2014)
     dispatch('/cursus/:cursus/parcours/:path', 'display_educational_path');
 
     ## cursus feeds
     dispatch('/cursus/:name/flux.rss', 'display_cursus_rss_feed');
     dispatch('/cursus/:name/flux.atom', 'display_cursus_atom_feed');
 
-    ## courses
+    ## courses (deprecated Nov 2014)
     dispatch('/cursus/:name/matières', 'display_cursus_courses');
 
     ## courses feeds
@@ -66,16 +43,12 @@ if (strpos(LIM_REQUEST_URI, '/cursus') === 0) {
                         'display_post_member_proposed_content_preview');
     dispatch('/cursus/:cursus/:course/zip',           'display_course_archive_page');
 
-    # old URLs
-    dispatch('/cursus/:cursus/:course/:id',           'display_course_content');
-    # new URLs (2013, January)
     dispatch('/cursus/:cursus/:course/:id/:title',     'display_course_content');
     dispatch('/cursus/:cursus/:course/:id/:year/:title', 'display_course_content');
 
 }
 
 ## contents' files
-# dispatch('/file/:id',       'serve_user_file');
 dispatch('/file/:id/:name', 'serve_user_file_by_id_and_name');
 
 ## admin home
@@ -84,11 +57,6 @@ dispatch('/admin', 'display_admin_home');
 ## moderation
 dispatch('/admin/content/proposed',      'display_admin_proposed_content');
 dispatch_post('/admin/content/proposed', 'post_admin_proposed_content');
-
-## global news
-dispatch('/actus/archives', 'display_news_archives');
-dispatch('/actus/flux.rss', 'display_global_rss_feed');
-dispatch('/actus/flux.atom', 'display_global_atom_feed');
 
 ## (almost-)static pages
 dispatch('/sitemap',  'display_sitemap_page');
@@ -115,11 +83,6 @@ if (strpos(LIM_REQUEST_URI, '/api') === 0) {
 
     dispatch('/api/1/cursus.json',            'json_get_cursus');
     dispatch('/api/1/course.json',            'json_get_course');
-
-    dispatch('/api/1/news/get_one.json',     'json_get_news_by_id');
-    dispatch_post('/api/1/news/update.json', 'json_post_update_news');
-    dispatch_post('/api/1/news/delete.json', 'json_post_delete_news');
-    dispatch_post('/api/1/news/create.json', 'json_post_create_news');
 
     dispatch_post('/api/1/files/rename.json', 'json_post_rename_file');
     dispatch_post('/api/1/files/delete.json', 'json_post_delete_file');
