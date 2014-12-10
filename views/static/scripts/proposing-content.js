@@ -6,7 +6,7 @@ $(function(){
 
     var $files = $('.files_inputs').first(),
         $f = $('<label>Fichier&nbsp;:&nbsp;<input type="file" name="userfiles[]" />' +
-               '<p class="microcopy">Facultatif, 10Mio max.</p></label>'),
+               '<p class="microcopy">Facultatif, 10Mo max.</p></label>'),
         maxf = $files.data( 'max' ),
 
         title_inp = document.querySelector('input[name=title]'),
