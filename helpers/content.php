@@ -57,6 +57,8 @@ function get_prev_next_contents($content, $cursus=null, $course=null) {
     $next = null;
     $id   = $content->getId();
     $len  = count($tpl_contents);
+    // rewrite the indexes, messed up by uasort.
+    $tpl_contents = array_values($tpl_contents);
 
     foreach ($tpl_contents as $k => $c) {
 
