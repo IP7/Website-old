@@ -7,7 +7,6 @@ require_once $dirname.'/helpers/PasswordHash.php';
 
 ### Constants ###
 #
-# add '@xxxxxxxx' with the commit when putting online
 define('IP7WEBSITE_VERSION', '1');
 #
 # - login constants
