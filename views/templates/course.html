@@ -8,6 +8,9 @@
         </p>
     </header>
     <div class="course-infos">
+        {% if page.course.deleted is defined and page.course.deleted %}
+        <p>Note&nbsp;: Ce cours a été supprimé. Il est conservé ici pour archives.</p>
+        {% endif %}
         <section class="intro">{{ page.course.intro|md2html|raw }}</section>
         {% if page.course.links is defined and page.course.links is not empty %}
         <div class="course-links-wrapper">

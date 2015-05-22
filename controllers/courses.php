@@ -18,13 +18,10 @@ function display_course() {
 
     $course = CourseQuery::create()
                 ->filterByCursus($cursus)
-                ->filterByDeleted(false)
                 ->findOneByShortName($code);
 
     if ($course == null) {
-
         bad_url_try_with_course_alias($code);
-
     }
 
     $base_uri  = cursus_url($cursus) . '/' . $course->getShortName();
@@ -80,7 +77,9 @@ function display_course() {
 
                 'content_types' => tpl_course_contents($cursus, $course),
 
-                'wiki_url' => '//wiki.infop7.org/index.php?title=' . wiki_url($course->getName())
+                'wiki_url' => '//wiki.infop7.org/index.php?title=' . wiki_url($course->getName()),
+
+                'deleted' => $course->getDeleted()
             ),
 
             'cursus'         => array(
