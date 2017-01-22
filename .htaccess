@@ -13,9 +13,10 @@ Options -Indexes
 RewriteEngine on
 RewriteBase /
 
-# Redirect to www.
+# Redirect to www. & https
+RewriteCond %{HTTPS} off [or]
 RewriteCond %{HTTP_HOST} ^infop7.org$ [NC]
-RewriteRule ^(.*)$ http://www.infop7.org/$1 [L,R=301]
+RewriteRule ^(.*)$ https://www.infop7.org/$1 [L,R=301]
 
 # Short links
 
