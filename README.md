@@ -1,3 +1,6 @@
+# Dépôt archivé
+Nouveau site en construction
+
 # Site d’IP7
 
 Ce dépôt contient l’ensemble du code utilisé pour le site Web d’infoP7,
